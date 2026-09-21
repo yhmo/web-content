@@ -1,9 +1,11 @@
 ---
 id: default-values.md
-title: 默认值
-summary: 为标量字段设置默认值，以便 Milvus 在插入实体时填补缺失值。
+title: Default Values
+summary: >-
+  Set default values for scalar fields so Milvus fills missing values during
+  entity insertion.
 ---
-<h1 id="Default-Values" class="common-anchor-header">默认值<button data-href="#Default-Values" class="anchor-icon" translate="no">
+<h1 id="Default-Values" class="common-anchor-header">Default Values<button data-href="#Default-Values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,9 +20,9 @@ summary: 为标量字段设置默认值，以便 Milvus 在插入实体时填补
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 允许为标量字段（主字段除外）设置默认值。当一个字段配置了默认值时，如果在插入过程中没有提供数据，Milvus 会自动应用该值。</p>
-<p>通过保留现有的默认值设置，默认值简化了从其他数据库系统到 Milvus 的数据迁移。对于插入时可能无法确定值的字段，也可以使用默认值。</p>
-<h2 id="Limits" class="common-anchor-header">限制<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus allows you to set default values for scalar fields (excluding the primary field). When a field has a default value configured, Milvus automatically applies this value if no data is provided during insertion.</p>
+<p>Default values simplify data migration from other database systems to Milvus by preserving existing default value settings. You can also use default values for fields where values might be uncertain at the time of insertion.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,11 +38,11 @@ summary: 为标量字段设置默认值，以便 Milvus 在插入实体时填补
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>只有标量字段支持默认值。主字段和向量字段不能使用默认值。</p></li>
-<li><p><code translate="no">JSON</code> 和<code translate="no">ARRAY</code> 字段不支持默认值。</p></li>
-<li><p>默认值只能在创建 Collections 时配置，之后不能修改。</p></li>
+<li><p>Only scalar fields support default values. The primary field and vector fields cannot have default values.</p></li>
+<li><p><code translate="no">JSON</code> and <code translate="no">ARRAY</code> fields do not support default values.</p></li>
+<li><p>Default values can only be configured during collection creation and cannot be modified afterward.</p></li>
 </ul>
-<h2 id="Set-default-values" class="common-anchor-header">设置默认值<button data-href="#Set-default-values" class="anchor-icon" translate="no">
+<h2 id="Set-default-values" class="common-anchor-header">Set default values<button data-href="#Set-default-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,10 +57,15 @@ summary: 为标量字段设置默认值，以便 Milvus 在插入实体时填补
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>创建 Collections 时，使用<code translate="no">add_field()</code> 中的<code translate="no">default_value</code> 参数定义字段的默认值。</p>
-<p>下面的示例创建了一个集合，其中有两个标量字段具有默认值：<code translate="no">age</code> 默认为<code translate="no">18</code> ，<code translate="no">status</code> 默认为<code translate="no">&quot;active&quot;</code> 。</p>
+    </button></h2><p>When creating a collection, use the <code translate="no">default_value</code> parameter in <code translate="no">add_field()</code> to define the default value for a field.</p>
+<p>The following example creates a collection with two scalar fields that have default values: <code translate="no">age</code> defaults to <code translate="no">18</code> and <code translate="no">status</code> defaults to <code translate="no">&quot;active&quot;</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&#x27;http://localhost:19530&#x27;</span>)
@@ -89,7 +96,7 @@ client.create_collection(collection_name=<span class="hljs-string">&quot;my_coll
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-entities" class="common-anchor-header">插入实体<button data-href="#Insert-entities" class="anchor-icon" translate="no">
+<h2 id="Insert-entities" class="common-anchor-header">Insert entities<button data-href="#Insert-entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -104,9 +111,14 @@ client.create_collection(collection_name=<span class="hljs-string">&quot;my_coll
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>插入数据时，如果省略了有默认值的字段或显式地将其设置为 NULL，Milvus 会自动使用配置的默认值。</p>
+    </button></h2><p>When inserting data, if you omit a field that has a default value or explicitly set it to NULL, Milvus automatically uses the configured default value.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">data = [
     <span class="hljs-comment"># All fields provided explicitly</span>
     {<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&quot;vector&quot;</span>: [<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.5</span>], <span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">30</span>, <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;premium&quot;</span>},
@@ -128,7 +140,7 @@ client.insert(collection_name=<span class="hljs-string">&quot;my_collection&quot
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Search-and-query-with-default-values" class="common-anchor-header">使用默认值搜索和查询<button data-href="#Search-and-query-with-default-values" class="anchor-icon" translate="no">
+<h2 id="Search-and-query-with-default-values" class="common-anchor-header">Search and query with default values<button data-href="#Search-and-query-with-default-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -143,10 +155,15 @@ client.insert(collection_name=<span class="hljs-string">&quot;my_collection&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在向量搜索和标量过滤过程中，包含默认值的实体与其他实体的行为相同。您可以在<code translate="no">search</code> 和<code translate="no">query</code> 操作符中使用默认值进行过滤。</p>
-<p>下面的示例搜索<code translate="no">age</code> 等于默认值<code translate="no">18</code> 的实体：</p>
+    </button></h2><p>Entities containing default values behave the same as any other entities during vector searches and scalar filtering. You can filter by default values in both <code translate="no">search</code> and <code translate="no">query</code> operations.</p>
+<p>The following example searches for entities where <code translate="no">age</code> equals the default value <code translate="no">18</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
     data=[[<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.5</span>]],
@@ -169,16 +186,21 @@ client.insert(collection_name=<span class="hljs-string">&quot;my_collection&quot
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>预期输出</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Output:
 Search results (age == 18):
   id: 2, age: 18, status: active
   id: 4, age: 18, status: inactive
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>您也可以直接通过匹配默认值来查询实体：</p>
+<p>You can also query entities by matching default values directly:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Query entities where age equals the default value (18)</span>
 default_age_results = client.query(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -210,7 +232,7 @@ default_status_results = client.query(
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>预期输出</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Query results (age == 18):
   id: 2, age: 18, status: active
   id: 4, age: 18, status: inactive
@@ -220,7 +242,7 @@ Query results (status == &#x27;active&#x27;):
   id: 3, age: 25, status: active
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h2 id="Applicable-rules" class="common-anchor-header">适用规则<button data-href="#Applicable-rules" class="anchor-icon" translate="no">
+<h2 id="Applicable-rules" class="common-anchor-header">Applicable rules<button data-href="#Applicable-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,49 +257,49 @@ Query results (status == &#x27;active&#x27;):
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>当<code translate="no">nullable</code> 和<code translate="no">default_value</code> 都配置为一个字段时，以下规则决定了 Milvus 在插入过程中如何处理 NULL 输入或缺少的字段值。</p>
+    </button></h2><p>When both <code translate="no">nullable</code> and <code translate="no">default_value</code> are configured for a field, the following rules determine how Milvus handles NULL input or missing field values during insertion.</p>
 <table>
    <tr>
-     <th><p>可为空</p></th>
-     <th><p>默认值</p></th>
-     <th><p>用户输入</p></th>
-     <th><p>结果</p></th>
+     <th><p>Nullable</p></th>
+     <th><p>Default Value</p></th>
+     <th><p>User Input</p></th>
+     <th><p>Result</p></th>
    </tr>
    <tr>
      <td><p>✅</p></td>
-     <td><p>✅（非空）</p></td>
-     <td><p>空或省略</p></td>
-     <td><p>使用默认值</p></td>
+     <td><p>✅ (non-NULL)</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Uses the default value</p></td>
    </tr>
    <tr>
      <td><p>✅</p></td>
      <td><p>❌</p></td>
-     <td><p>NULL 或省略</p></td>
-     <td><p>存储为 NULL</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Stored as NULL</p></td>
    </tr>
    <tr>
      <td><p>❌</p></td>
-     <td><p>✅（非空）</p></td>
-     <td><p>NULL 或省略</p></td>
-     <td><p>使用默认值</p></td>
+     <td><p>✅ (non-NULL)</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Uses the default value</p></td>
    </tr>
    <tr>
      <td><p>❌</p></td>
      <td><p>❌</p></td>
-     <td><p>NULL 或省略</p></td>
-     <td><p>抛出错误</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Throws an error</p></td>
    </tr>
    <tr>
      <td><p>❌</p></td>
-     <td><p>✅（NULL）</p></td>
-     <td><p>空或省略</p></td>
-     <td><p>抛出错误</p></td>
+     <td><p>✅ (NULL)</p></td>
+     <td><p>NULL or omitted</p></td>
+     <td><p>Throws an error</p></td>
    </tr>
 </table>
-<p><strong>主要启示</strong></p>
+<p><strong>Key takeaways:</strong></p>
 <ul>
-<li><p>当一个字段有一个非空的默认值时，无论是否启用<code translate="no">nullable</code> ，都会使用该值。</p></li>
-<li><p>当<code translate="no">nullable=True</code> 但未设置默认值时，字段存储 NULL。</p></li>
-<li><p>当<code translate="no">nullable=False</code> 但未设置默认值时，插入失败并显示错误。</p></li>
-<li><p>在不可为空的字段上设置 NULL 默认值是无效的，会导致错误。</p></li>
+<li><p>When a field has a non-NULL default value, that value is used regardless of whether <code translate="no">nullable</code> is enabled.</p></li>
+<li><p>When <code translate="no">nullable=True</code> but no default value is set, the field stores NULL.</p></li>
+<li><p>When <code translate="no">nullable=False</code> and no default value is set, insertion fails with an error.</p></li>
+<li><p>Setting a NULL default value on a non-nullable field is invalid and causes an error.</p></li>
 </ul>

@@ -2,8 +2,10 @@
 id: minhash-lsh.md
 title: MINHASH_LSH
 summary: >-
-  효율적인 중복 제거와 유사도 검색은 대규모 머신 러닝 데이터 세트, 특히 대규모 언어 모델(LLM)을 위한 학습 코퍼라 정리와 같은 작업에서
-  매우 중요합니다. 수백만 또는 수십억 개의 문서를 처리할 때 기존의 정확한 일치 검색은 너무 느리고 비용이 많이 듭니다.
+  Efficient deduplication and similarity search are critical for large-scale
+  machine learning datasets, especially for tasks like cleaning training corpora
+  for Large Language Models (LLMs). When dealing with millions or billions of
+  documents, traditional exact matching becomes too slow and costly.
 ---
 <h1 id="MINHASHLSH" class="common-anchor-header">MINHASH_LSH<button data-href="#MINHASHLSH" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -20,14 +22,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>효율적인 중복 제거와 유사도 검색은 대규모 머신 러닝 데이터 세트, 특히 대규모 언어 모델(LLM)을 위한 학습 코퍼라 정리와 같은 작업에서 매우 중요합니다. 수백만 또는 수십억 개의 문서를 다룰 때, 기존의 정확한 일치 검색은 너무 느리고 비용이 많이 듭니다.</p>
-<p>Milvus의 <strong>MINHASH_LSH</strong> 인덱스는 두 가지 강력한 기술을 결합하여 빠르고 확장 가능하며 정확한 대략적인 중복 제거를 가능하게 합니다:</p>
+    </button></h1><p>Efficient deduplication and similarity search are critical for large-scale machine learning datasets, especially for tasks like cleaning training corpora for Large Language Models (LLMs). When dealing with millions or billions of documents, traditional exact matching becomes too slow and costly.</p>
+<p>The <strong>MINHASH_LSH</strong> index in Milvus enables fast, scalable, and accurate approximate deduplication by combining two powerful techniques:</p>
 <ul>
-<li><p><a href="https://en.wikipedia.org/wiki/MinHash">MinHash</a>: 문서 유사성을 추정하기 위해 압축 서명(또는 "지문")을 빠르게 생성합니다.</p></li>
-<li><p><a href="https://en.wikipedia.org/wiki/Locality-sensitive_hashing">LSH(지역 민감 해싱)</a>: MinHash 서명을 기반으로 유사한 문서 그룹을 빠르게 찾습니다.</p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/MinHash">MinHash</a>: Quickly generates compact signatures (or “fingerprints”) to estimate document similarity.</p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/Locality-sensitive_hashing">Locality-Sensitive Hashing (LSH)</a>: Rapidly finds groups of similar documents based on their MinHash signatures.</p></li>
 </ul>
-<p>이 가이드에서는 Milvus에서 MINHASH_LSH를 사용하기 위한 개념, 전제 조건, 설정 및 모범 사례를 안내합니다.</p>
-<h2 id="Overview" class="common-anchor-header">개요<button data-href="#Overview" class="anchor-icon" translate="no">
+<p>This guide walks you through the concepts, prerequisites, setup, and best practices for using MINHASH_LSH in Milvus.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,7 +44,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Jaccard-similarity" class="common-anchor-header">Jaccard 유사성<button data-href="#Jaccard-similarity" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Jaccard-similarity" class="common-anchor-header">Jaccard similarity<button data-href="#Jaccard-similarity" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,11 +59,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Jaccard 유사성은 공식적으로 다음과 같이 정의되는 두 세트 A와 B 사이의 중첩을 측정합니다:</p>
+    </button></h3><p>Jaccard similarity measures the overlap between two sets A and B, formally defined as:</p>
 <p><span class="katex-display" translate="no"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>J</mi><mo stretchy="false">(</mo><mi>A</mi><mo separator="true">,</mo><mi>B</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mi mathvariant="normal">∣</mi><mi>A</mi><mo>∩</mo><mi>B</mi><mi mathvariant="normal">∣</mi></mrow><mrow><mi mathvariant="normal">∣</mi><mi>A</mi><mo>∪</mo><mi>B</mi><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">J(A, B) = \frac{|A \cap B|}{|A \cup B|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord">∣</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∩</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord">∣</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
-<p>여기서 그 값은 0(완전히 일치하지 않음)에서 1(동일함)까지의 범위입니다.</p>
-<p>그러나 대규모 데이터 세트의 모든 문서 쌍 간에 Jaccard 유사도를 정확히 계산하려면 <strong>n이</strong> 클 경우 시간과 메모리에 O<strong>(n²</strong> )의 계산 비용이 듭니다. 따라서 LLM 학습 코퍼스 정리나 웹 규모의 문서 분석과 같은 사용 사례에는 적용이 불가능합니다.</p>
-<h3 id="MinHash-signatures-Approximate-Jaccard-similarity" class="common-anchor-header">최소 해시 서명: 대략적인 Jaccard 유사성<button data-href="#MinHash-signatures-Approximate-Jaccard-similarity" class="anchor-icon" translate="no">
+<p>Where its value ranges from 0 (completely disjoint) to 1 (identical).</p>
+<p>However, computing Jaccard similarity exactly between all document pairs in large-scale datasets is computationally expensive—<strong>O(n²)</strong> in time and memory when <strong>n</strong> is large. This makes it infeasible for use cases such as LLM training corpus cleaning or web-scale document analysis.</p>
+<h3 id="MinHash-signatures-Approximate-Jaccard-similarity" class="common-anchor-header">MinHash signatures: Approximate Jaccard similarity<button data-href="#MinHash-signatures-Approximate-Jaccard-similarity" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,25 +78,27 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><a href="https://en.wikipedia.org/wiki/MinHash">MinHash는</a> Jaccard 유사성을 추정하는 효율적인 방법을 제공하는 확률적 기법입니다. 각 집합을 간결한 <strong>서명 벡터로</strong> 변환하여 집합 유사도를 효율적으로 추정할 수 있는 충분한 정보를 보존하는 방식으로 작동합니다.</p>
-<p><strong>핵심 아이디어</strong>:</p>
-<p>두 세트가 더 유사할수록 MinHash 서명이 같은 위치에서 일치할 가능성이 높아집니다. 이 속성을 통해 MinHash는 세트 간의 Jaccard 유사성을 근사화할 수 있습니다.</p>
-<p>이 속성을 사용하면 전체 집합을 직접 비교할 필요 없이 MinHash가 집합 간의 <strong>Jaccard 유사성을 근사화할</strong> 수 있습니다.</p>
-<p>MinHash 프로세스에는 다음이 포함됩니다:</p>
+    </button></h3><p><a href="https://en.wikipedia.org/wiki/MinHash">MinHash</a> is a probabilistic technique that offers an efficient way to estimate Jaccard similarity. It works by transforming each set into a compact <strong>signature vector</strong>, preserving enough information to approximate set similarity efficiently.</p>
+<p><strong>The core idea</strong>:</p>
+<p>The more similar the two sets are, the more likely their MinHash signatures will match at the same positions. This property enables MinHash to approximate the Jaccard similarity between sets.</p>
+<p>This property allows MinHash to <strong>approximate the Jaccard similarity</strong> between sets without needing to compare the full sets directly.</p>
+<p>The MinHash process involves:</p>
 <ol>
-<li><p><strong>슁글링:</strong> 문서를 겹치는 토큰 시퀀스 집합(대상포진)으로 변환합니다.</p></li>
-<li><p><strong>해싱</strong>: 각 싱글에 여러 개의 독립적인 해시 함수를 적용합니다.</p></li>
-<li><p><strong>최소 선택</strong>: 각 해시 함수에 대해 모든 싱글에 걸쳐 <strong>최소</strong> 해시 값을 기록합니다.</p></li>
+<li><p><strong>Shingling</strong>: Convert documents into sets of overlapping token sequences (shingles)</p></li>
+<li><p><strong>Hashing</strong>: Apply multiple independent hash functions to each shingle</p></li>
+<li><p><strong>Min Selection</strong>: For each hash function, record the <strong>minimum</strong> hash value across all shingles</p></li>
 </ol>
-<p>아래 그림에서 전체 프로세스를 확인할 수 있습니다:</p>
+<p>You can see the entire process illustrated below:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/minhash-workflow.png" alt="Minhash Workflow" class="doc-image" id="minhash-workflow" />
-   </span> <span class="img-wrapper"> <span>민해시 워크플로</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/minhash-workflow.png" alt="Minhash Workflow" class="doc-image" id="minhash-workflow" />
+    <span>Minhash Workflow</span>
+  </span>
+</p>
 <div class="alert note">
-<p>사용되는 해시 함수의 수에 따라 MinHash 서명의 차원이 결정됩니다. 차원이 높을수록 근사치 정확도가 높아지지만, 저장 공간과 계산량이 증가합니다.</p>
+<p>The number of hash functions used determines the dimensionality of the MinHash signature. Higher dimensions provide better approximation accuracy, at the cost of increased storage and computation.</p>
 </div>
-<h3 id="LSH-for-MinHash" class="common-anchor-header">MinHash용 LSH<button data-href="#LSH-for-MinHash" class="anchor-icon" translate="no">
+<h3 id="LSH-for-MinHash" class="common-anchor-header">LSH for MinHash<button data-href="#LSH-for-MinHash" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -109,47 +113,53 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>MinHash 서명은 문서 간의 정확한 Jaccard 유사성을 계산하는 데 드는 비용을 크게 줄여주지만, 모든 서명 벡터 쌍을 철저하게 비교하는 것은 여전히 규모에 따라 비효율적입니다.</p>
-<p>이 문제를 해결하기 위해 <a href="https://zilliz.com/learn/Local-Sensitivity-Hashing-A-Comprehensive-Guide">LSH가</a> 사용됩니다. LSH는 모든 쌍을 직접 비교할 필요 없이 유사한 항목이 높은 확률로 동일한 '버킷'에 해시되도록 함으로써 빠른 대략적인 유사성 검색을 가능하게 합니다.</p>
-<p>프로세스에는 다음이 포함됩니다:</p>
+    </button></h3><p>While MinHash signatures significantly reduce the cost of computing exact Jaccard similarity between documents, exhaustively comparing every pair of signature vectors is still inefficient at scale.</p>
+<p>To solve this, <a href="https://zilliz.com/learn/Local-Sensitivity-Hashing-A-Comprehensive-Guide">LSH</a> is used. LSH enables fast approximate similarity search by ensuring that similar items are hashed into the same “bucket” with high probability — avoiding the need to compare every pair directly.</p>
+<p>The process involves:</p>
 <ol>
-<li><p><strong>서명 세분화:</strong></p>
-<p><em>n차원</em> MinHash 서명은 <em>b개의</em> 밴드로 나뉩니다. 각 밴드에는 <em>r</em> 개의 연속 해시 값이 포함되므로 총 서명 길이는 <em>n = b × r을</em> 만족합니다.</p>
-<p>예를 들어 128차원 MinHash 서명<em>(n = 128)</em>을 32개의 밴드<em>(b = 32)</em>로 나눈다면 각 밴드에는 4개의 해시 값이 포함됩니다<em>(r = 4)</em>.</p></li>
-<li><p><strong>밴드 수준 해싱:</strong></p>
-<p>세분화 후 각 밴드는 표준 해시 함수를 사용하여 독립적으로 처리되어 버킷에 할당됩니다. 두 서명이 한 밴드 내에서 동일한 해시 값을 생성하는 경우(즉, 동일한 버킷에 속하는 경우) 잠재적 일치로 간주됩니다.</p></li>
-<li><p><strong>후보 선택:</strong></p>
-<p>적어도 하나의 밴드에서 충돌하는 쌍이 유사성 후보로 선택됩니다.</p></li>
+<li><p><strong>Signature segmentation:</strong></p>
+<p>An <em>n</em>-dimensional MinHash signature is divided into <em>b</em> bands. Each band contains <em>r</em> consecutive hash values, so the total signature length satisfies: <em>n = b × r</em>.</p>
+<p>For example, if you have a 128-dimensional MinHash signature (<em>n = 128</em>) and divide it into 32 bands (<em>b = 32</em>), then each band contains 4 hash values (<em>r = 4</em>).</p></li>
+<li><p><strong>Band-level hashing:</strong></p>
+<p>After segmentation, each band is independently processed using a standard hash function to assign it to a bucket. If two signatures produce the same hash value within a band—i.e., they fall into the same bucket—they are considered potential matches.</p></li>
+<li><p><strong>Candidate selection:</strong></p>
+<p>Pairs that collide in at least one band are selected as similarity candidates.</p></li>
 </ol>
 <div class="alert note">
-<p>왜 작동하나요?</p>
-<p>수학적으로 두 서명의 Jaccard 유사도 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">ss는</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span></span></span></span> s입니다,</p>
+<p>Why it works?</p>
+<p>Mathematically, if two signatures have Jaccard similarity <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span>,</p>
 <ul>
-<li><p>한 행(해시 위치)에서 동일할 확률은 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">ss</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span></span></span></span> s입니다.</p></li>
-<li><p>밴드의 모든 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">rr</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span></span></span></span> r 행에서 일치할 확률은 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">srs^r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span></span></span></span> s <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord"><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span> r입니다.</span></span></span></span></span></span></span></span></span></p></li>
-<li><p><strong>적어도 하나의 밴드에서</strong> 일치할 확률은 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1-</mn><mo stretchy="false">(</mo><msup><mi>1-sr</mi></msup><msup><mo stretchy="false">)</mo><mi>b1</mi></msup></mrow><annotation encoding="application/x-tex">- (1 - s^r)^b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span></span></span></span> 1 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">-</span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">(1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">-</span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0991em;vertical-align:-0.25em;"></span> s</span></span></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord"><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span> r</span></span></span></span></span></span></span></span></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mclose"><span class="mclose">)</span></span></span></span></span><span class="pstrut" style="height:2.7em;"></span> b</p></li>
+<li><p>The probability they are identical in one row (hash position) is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span></p></li>
+<li><p>The probability they match in all <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi></mrow><annotation encoding="application/x-tex">r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span></span></span> rows of a band is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>s</mi><mi>r</mi></msup></mrow><annotation encoding="application/x-tex">s^r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span></span></span></span></span></span></span></span></p></li>
+<li><p>The probability that they match in <strong>at least one band</strong> is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><msup><mi>s</mi><mi>r</mi></msup><msup><mo stretchy="false">)</mo><mi>b</mi></msup></mrow><annotation encoding="application/x-tex">1 - (1 - s^r)^b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0991em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span></span></span></span></span></span></span></span></p></li>
 </ul>
-<p>자세한 내용은 <a href="https://en.wikipedia.org/wiki/Locality-sensitive_hashing">위치 정보</a>에 <a href="https://en.wikipedia.org/wiki/Locality-sensitive_hashing">민감한 해싱을</a> 참조하세요.</p>
+<p>For details, refer to <a href="https://en.wikipedia.org/wiki/Locality-sensitive_hashing">Locality-sensitive hashing</a>.</p>
 </div>
-<p>128차원 MinHash 서명이 있는 세 개의 문서를 예로 들어 보겠습니다:</p>
+<p>Consider three documents with 128-dimensional MinHash signatures:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/lsh-workflow-1.png" alt="Lsh Workflow 1" class="doc-image" id="lsh-workflow-1" />
-   </span> <span class="img-wrapper"> <span>LSH 워크플로 1</span> </span></p>
-<p>먼저, LSH는 128차원 서명을 각각 4개의 연속된 값으로 구성된 32개의 밴드로 나눕니다:</p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/lsh-workflow-1.png" alt="Lsh Workflow 1" class="doc-image" id="lsh-workflow-1" />
+    <span>Lsh Workflow 1</span>
+  </span>
+</p>
+<p>First, LSH divides the 128-dimensional signature into 32 bands of 4 consecutive values each:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/lsh-workflow-2.png" alt="Lsh Workflow 2" class="doc-image" id="lsh-workflow-2" />
-   </span> <span class="img-wrapper"> <span>Lsh 워크플로우 2</span> </span></p>
-<p>그런 다음 해시 함수를 사용해 각 밴드를 서로 다른 버킷으로 해시합니다. 버킷을 공유하는 문서 쌍이 유사성 후보로 선택됩니다. 아래 예에서 문서 A와 문서 B는 해시 결과가 <strong>밴드 0에서</strong> 충돌하므로 유사도 후보로 선택됩니다:</p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/lsh-workflow-2.png" alt="Lsh Workflow 2" class="doc-image" id="lsh-workflow-2" />
+    <span>Lsh Workflow 2</span>
+  </span>
+</p>
+<p>Then, each band is hashed into different buckets using a hash function. Document pairs sharing buckets are selected as similarity candidates. In the example below, Document A and Document B are selected as similarity candidates as their hash results collide in <strong>Band 0</strong>:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/lsh-workflow-3.png" alt="Lsh Workflow 3" class="doc-image" id="lsh-workflow-3" />
-   </span> <span class="img-wrapper"> <span>Lsh 워크플로 3</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/lsh-workflow-3.png" alt="Lsh Workflow 3" class="doc-image" id="lsh-workflow-3" />
+    <span>Lsh Workflow 3</span>
+  </span>
+</p>
 <div class="alert note">
-<p>밴드 수는 <code translate="no">mh_lsh_band</code> 매개변수에 의해 제어됩니다. 자세한 내용은 <a href="/docs/ko/minhash-lsh.md#Index-building-params">색인 구축 매개변수를</a> 참조하세요.</p>
+<p>The number of bands is controlled by the <code translate="no">mh_lsh_band</code> parameter. For more information, refer to <a href="/docs/ko/v2.6.x/minhash-lsh.md#Index-building-params">Index building params</a>.</p>
 </div>
-<h3 id="MHJACCARD-Comparing-MinHash-signatures" class="common-anchor-header">MHJACCARD: MinHash 서명 비교<button data-href="#MHJACCARD-Comparing-MinHash-signatures" class="anchor-icon" translate="no">
+<h3 id="MHJACCARD-Comparing-MinHash-signatures" class="common-anchor-header">MHJACCARD: Comparing MinHash signatures<button data-href="#MHJACCARD-Comparing-MinHash-signatures" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -164,17 +174,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>MinHash 서명은 고정 길이 바이너리 벡터를 사용하여 세트 간의 Jaccard 유사성을 근사화합니다. 그러나 이러한 서명은 원본 집합을 보존하지 않기 때문에 <code translate="no">JACCARD</code>, <code translate="no">L2</code>, <code translate="no">COSINE</code> 와 같은 표준 메트릭을 직접 적용하여 비교할 수 없습니다.</p>
-<p>이 문제를 해결하기 위해 Milvus는 MinHash 서명 비교를 위해 특별히 설계된 <code translate="no">MHJACCARD</code> 이라는 특수 메트릭 유형을 도입했습니다.</p>
-<p>Milvus에서 MinHash를 사용할 때:</p>
+    </button></h3><p>MinHash signatures approximate the Jaccard similarity between sets using fixed-length binary vectors. However, since these signatures do not preserve the original sets, standard metrics such as <code translate="no">JACCARD</code>, <code translate="no">L2</code>, or <code translate="no">COSINE</code> cannot be directly applied to compare them.</p>
+<p>To address this, Milvus introduces a specialized metric type called <code translate="no">MHJACCARD</code>, designed specifically for comparing MinHash signatures.</p>
+<p>When using MinHash in Milvus:</p>
 <ul>
-<li><p>벡터 필드의 유형은 다음과 같아야 합니다. <code translate="no">BINARY_VECTOR</code></p></li>
-<li><p><code translate="no">index_type</code> 은 <code translate="no">MINHASH_LSH</code> (또는 <code translate="no">BIN_FLAT</code>)이어야 합니다.</p></li>
-<li><p><code translate="no">metric_type</code> 은 다음과 같이 설정되어야 합니다. <code translate="no">MHJACCARD</code></p></li>
+<li><p>The vector field must be of type <code translate="no">BINARY_VECTOR</code></p></li>
+<li><p>The <code translate="no">index_type</code> must be <code translate="no">MINHASH_LSH</code> (or <code translate="no">BIN_FLAT</code>)</p></li>
+<li><p>The <code translate="no">metric_type</code> must be set to <code translate="no">MHJACCARD</code></p></li>
 </ul>
-<p>다른 메트릭을 사용하면 유효하지 않거나 잘못된 결과가 산출됩니다.</p>
-<p>이 메트릭 유형에 대한 자세한 내용은 <a href="/docs/ko/metric.md#MHJACCARD">MHJACCARD를</a> 참조하세요.</p>
-<h3 id="Deduplication-workflow" class="common-anchor-header">중복 제거 워크플로<button data-href="#Deduplication-workflow" class="anchor-icon" translate="no">
+<p>Using other metrics will either be invalid or yield incorrect results.</p>
+<p>For more information about this metric type, refer to <a href="/docs/ko/v2.6.x/metric.md#MHJACCARD">MHJACCARD</a>.</p>
+<h3 id="Deduplication-workflow" class="common-anchor-header">Deduplication workflow<button data-href="#Deduplication-workflow" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -189,17 +199,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>MinHash LSH로 구동되는 중복 제거 프로세스를 통해 Milvus는 컬렉션에 삽입하기 전에 중복에 가까운 텍스트 또는 구조화된 레코드를 효율적으로 식별하고 필터링할 수 있습니다.</p>
+    </button></h3><p>The deduplication process powered by MinHash LSH allows Milvus to efficiently identify and filter out near-duplicate text or structured records before inserting them into the collection.</p>
 <p><img translate="no" src="/docs/v2.6.x/assets/deduplication-workflow.png" alt="Deduplication Workflow" width="600"></p>
 <ol>
-<li><p><strong>청크 및 전처리</strong>: 들어오는 텍스트 데이터나 구조화된 데이터(예: 레코드, 필드)를 청크로 분할하고, 텍스트를 정규화하고(소문자, 구두점 제거), 필요에 따라 중지어를 제거합니다.</p></li>
-<li><p><strong>기능 구성</strong>: MinHash에 사용되는 토큰 집합을 구축합니다(예: 텍스트의 대상포진, 구조화된 데이터의 연결된 필드 토큰).</p></li>
-<li><p><strong>MinHash 서명 생성</strong>: 각 청크 또는 레코드에 대한 MinHash 서명을 계산합니다.</p></li>
-<li><p><strong>바이너리 벡터 변환</strong>: 서명을 Milvus와 호환되는 바이너리 벡터로 변환합니다.</p></li>
-<li><p><strong>삽입하기 전에 검색</strong>: MinHash LSH 인덱스를 사용해 대상 컬렉션에서 들어오는 항목의 거의 중복된 항목을 검색합니다.</p></li>
-<li><p><strong>삽입 및 저장</strong>: 컬렉션에 고유한 항목만 삽입합니다. 이렇게 하면 향후 중복 제거 검사를 위해 검색할 수 있게 됩니다.</p></li>
+<li><p><strong>Chunk & preprocess</strong>: Split incoming text data or structured data (e.g., records, fields) into chunks; normalize text (lowercasing, punctuation removal), and remove stopwords as needed.</p></li>
+<li><p><strong>Feature construction</strong>: Build the token set used for MinHash (e.g., shingles from text; concatenated field tokens for structured data).</p></li>
+<li><p><strong>MinHash signature generation</strong>: Compute MinHash signatures for each chunk or record.</p></li>
+<li><p><strong>Binary vector conversion</strong>: Convert the signature to a binary vector compatible with Milvus.</p></li>
+<li><p><strong>Search before insert</strong>: Use the MinHash LSH index to search the target collection for near-duplicates of the incoming item.</p></li>
+<li><p><strong>Insert & store</strong>: Insert only unique items into the collection. They become searchable for future dedup checks.</p></li>
 </ol>
-<h2 id="Prerequisites" class="common-anchor-header">전제 조건<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,8 +224,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus에서 MinHash LSH를 사용하기 전에 먼저 <strong>MinHash 서명을</strong> 생성해야 합니다. 이 간결한 바이너리 서명은 세트 간의 Jaccard 유사성을 대략적으로 나타내며 Milvus의 <code translate="no">MHJACCARD</code> 기반 검색에 필요합니다.</p>
-<h3 id="Choose-a-method-to-generate-MinHash-signatures" class="common-anchor-header">MinHash 서명을 생성하는 방법 선택하기<button data-href="#Choose-a-method-to-generate-MinHash-signatures" class="anchor-icon" translate="no">
+    </button></h2><p>Before using MinHash LSH in Milvus, you must first generate <strong>MinHash signatures</strong>. These compact binary signatures approximate Jaccard similarity between sets and are required for <code translate="no">MHJACCARD</code>-based search in Milvus.</p>
+<h3 id="Choose-a-method-to-generate-MinHash-signatures" class="common-anchor-header">Choose a method to generate MinHash signatures<button data-href="#Choose-a-method-to-generate-MinHash-signatures" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -230,14 +240,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>워크로드에 따라 선택할 수 있습니다:</p>
+    </button></h3><p>Depending on your workload, you can choose:</p>
 <ul>
-<li><p>Python의 <a href="https://ekzhu.github.io/datasketch/"><code translate="no">datasketch</code></a> 사용(프로토타이핑에 권장)</p></li>
-<li><p>대규모 데이터 세트에 분산 도구(예: Spark, Ray) 사용</p></li>
-<li><p>성능 튜닝이 중요한 경우 사용자 정의 로직(NumPy, C++ 등)을 구현합니다.</p></li>
+<li><p>Use Python’s <a href="https://ekzhu.github.io/datasketch/"><code translate="no">datasketch</code></a> for simplicity (recommended for prototyping)</p></li>
+<li><p>Use distributed tools (e.g., Spark, Ray) for large-scale datasets</p></li>
+<li><p>Implement custom logic (NumPy, C++, etc.) if performance tuning is critical</p></li>
 </ul>
-<p>이 가이드에서는 단순성과 Milvus 입력 형식과의 호환성을 위해 <code translate="no">datasketch</code> 을 사용합니다.</p>
-<h3 id="Install-required-libraries" class="common-anchor-header">필요한 라이브러리 설치<button data-href="#Install-required-libraries" class="anchor-icon" translate="no">
+<p>In this guide, we use <code translate="no">datasketch</code> for simplicity and compatibility with Milvus input format.</p>
+<h3 id="Install-required-libraries" class="common-anchor-header">Install required libraries<button data-href="#Install-required-libraries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -252,10 +262,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 예제에 필요한 패키지를 설치합니다:</p>
+    </button></h3><p>Install the necessary packages for this example:</p>
 <pre><code translate="no" class="language-bash">pip install pymilvus datasketch numpy
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Generate-MinHash-signatures" class="common-anchor-header">MinHash 서명 생성<button data-href="#Generate-MinHash-signatures" class="anchor-icon" translate="no">
+<h3 id="Generate-MinHash-signatures" class="common-anchor-header">Generate MinHash signatures<button data-href="#Generate-MinHash-signatures" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -270,7 +280,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>각 해시 값이 64비트 정수로 표시되는 256차원 MinHash 서명을 생성하겠습니다. 이는 <code translate="no">MINHASH_LSH</code> 에 대해 예상되는 벡터 형식과 일치합니다.</p>
+    </button></h3><p>We’ll generate 256-dimensional MinHash signatures, with each hash value represented as a 64-bit integer. This aligns with the expected vector format for <code translate="no">MINHASH_LSH</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> datasketch <span class="hljs-keyword">import</span> MinHash
 <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 
@@ -283,8 +293,8 @@ HASH_BIT_WIDTH = <span class="hljs-number">64</span>
         m.update(token.encode(<span class="hljs-string">&quot;utf8&quot;</span>))
     <span class="hljs-keyword">return</span> m.hashvalues.astype(<span class="hljs-string">&#x27;&gt;u8&#x27;</span>).tobytes()  <span class="hljs-comment"># Returns 2048 bytes</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>각 서명은 256 × 64비트 = 2048바이트입니다. 이 바이트 문자열은 <code translate="no">BINARY_VECTOR</code> 필드에 직접 삽입할 수 있습니다. Milvus에서 사용되는 바이너리 벡터에 대한 자세한 내용은 <a href="/docs/ko/binary-vector.md">바이너리 벡터를</a> 참조하세요.</p>
-<h3 id="Optional-Prepare-raw-token-sets-for-refined-search" class="common-anchor-header">(선택 사항) 원시 토큰 세트 준비(정제된 검색을 위해)<button data-href="#Optional-Prepare-raw-token-sets-for-refined-search" class="anchor-icon" translate="no">
+<p>Each signature is 256 × 64 bits = 2048 bytes. This byte string can be directly inserted into a <code translate="no">BINARY_VECTOR</code> field. For more information on binary vectors used in Milvus, refer to <a href="/docs/ko/v2.6.x/binary-vector.md">Binary Vector</a>.</p>
+<h3 id="Optional-Prepare-raw-token-sets-for-refined-search" class="common-anchor-header">(Optional) Prepare raw token sets (for refined search)<button data-href="#Optional-Prepare-raw-token-sets-for-refined-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -299,19 +309,19 @@ HASH_BIT_WIDTH = <span class="hljs-number">64</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>기본적으로 Milvus는 MinHash 서명과 LSH 인덱스만 사용하여 대략적인 이웃을 찾습니다. 이 방법은 빠르지만 오탐을 반환하거나 가까운 일치 항목을 놓칠 수 있습니다.</p>
-<p><strong>정확한 Jaccard 유사성을</strong> 원하는 경우, Milvus는 원본 토큰 세트를 사용하는 정교한 검색을 지원합니다. 사용하려면 다음과 같이 하세요:</p>
+    </button></h3><p>By default, Milvus uses only the MinHash signatures and LSH index to find approximate neighbors. This is fast but may return false positives or miss close matches.</p>
+<p>If you want <strong>accurate Jaccard similarity</strong>, Milvus supports refined search that uses original token sets. To enable it:</p>
 <ul>
-<li><p>토큰 세트를 별도의 <code translate="no">VARCHAR</code> 필드로 저장합니다.</p></li>
-<li><p><a href="/docs/ko/minhash-lsh.md#Build-index-parameters-and-create-collection">인덱스 파라미터를 구축할</a> 때 <code translate="no">&quot;with_raw_data&quot;: True</code> 설정</p></li>
-<li><p>그리고 <a href="/docs/ko/minhash-lsh.md#Perform-similarity-search">유사도 검색을 수행할</a> 때 <code translate="no">&quot;mh_search_with_jaccard&quot;: True</code> 을 활성화합니다.</p></li>
+<li><p>Store token sets as a separate <code translate="no">VARCHAR</code> field</p></li>
+<li><p>Set <code translate="no">&quot;with_raw_data&quot;: True</code> when <a href="/docs/ko/v2.6.x/minhash-lsh.md#Build-index-parameters-and-create-collection">building index parameters</a></p></li>
+<li><p>And enable <code translate="no">&quot;mh_search_with_jaccard&quot;: True</code> when <a href="/docs/ko/v2.6.x/minhash-lsh.md#Perform-similarity-search">performing similarity search</a></p></li>
 </ul>
-<p><strong>토큰 세트 추출 예시</strong>:</p>
+<p><strong>Token set extraction example</strong>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">extract_token_set</span>(<span class="hljs-params">text: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:
     tokens = <span class="hljs-built_in">set</span>(text.lower().split())
     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot; &quot;</span>.join(tokens)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Use-MinHash-LSH" class="common-anchor-header">MinHash LSH 사용<button data-href="#Use-MinHash-LSH" class="anchor-icon" translate="no">
+<h2 id="Use-MinHash-LSH" class="common-anchor-header">Use MinHash LSH<button data-href="#Use-MinHash-LSH" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -326,8 +336,8 @@ HASH_BIT_WIDTH = <span class="hljs-number">64</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>MinHash 벡터와 원본 토큰 세트가 준비되면, <code translate="no">MINHASH_LSH</code> 을 사용하여 Milvus를 사용하여 저장, 색인 및 검색할 수 있습니다.</p>
-<h3 id="Connect-to-your-cluster" class="common-anchor-header">클러스터에 연결<button data-href="#Connect-to-your-cluster" class="anchor-icon" translate="no">
+    </button></h2><p>Once your MinHash vectors and original token sets are ready, you can store, index, and search them using Milvus with <code translate="no">MINHASH_LSH</code>.</p>
+<h3 id="Connect-to-your-cluster" class="common-anchor-header">Connect to your cluster<button data-href="#Connect-to-your-cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -343,7 +353,12 @@ HASH_BIT_WIDTH = <span class="hljs-number">64</span>
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)  <span class="hljs-comment"># Update if your URI is different</span>
@@ -356,7 +371,7 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Define-collection-schema" class="common-anchor-header">수집 스키마 정의<button data-href="#Define-collection-schema" class="anchor-icon" translate="no">
+<h3 id="Define-collection-schema" class="common-anchor-header">Define collection schema<button data-href="#Define-collection-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -371,15 +386,20 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>스키마를 정의합니다:</p>
+    </button></h3><p>Define a schema with:</p>
 <ul>
-<li><p>기본 키</p></li>
-<li><p>MinHash 서명을 위한 <code translate="no">BINARY_VECTOR</code> 필드</p></li>
-<li><p>원본 토큰 세트에 대한 <code translate="no">VARCHAR</code> 필드(정밀 검색이 활성화된 경우)</p></li>
-<li><p>선택 사항, 원본 텍스트를 위한 <code translate="no">document</code> 필드</p></li>
+<li><p>The primary key</p></li>
+<li><p>A <code translate="no">BINARY_VECTOR</code> field for the MinHash signatures</p></li>
+<li><p>A <code translate="no">VARCHAR</code> field for the original token set (if refined search is enabled)</p></li>
+<li><p>Optionally, a <code translate="no">document</code> field for original text</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType
 
 VECTOR_DIM = MINHASH_DIM * HASH_BIT_WIDTH  <span class="hljs-comment"># 256 × 64 = 8192 bits</span>
@@ -398,7 +418,7 @@ schema.add_field(<span class="hljs-string">&quot;document&quot;</span>, DataType
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Build-index-parameters-and-create-collection" class="common-anchor-header">인덱스 매개변수 빌드 및 컬렉션 생성<button data-href="#Build-index-parameters-and-create-collection" class="anchor-icon" translate="no">
+<h3 id="Build-index-parameters-and-create-collection" class="common-anchor-header">Build index parameters and create collection<button data-href="#Build-index-parameters-and-create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -413,9 +433,14 @@ schema.add_field(<span class="hljs-string">&quot;document&quot;</span>, DataType
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Jaccard 세분화가 활성화된 <code translate="no">MINHASH_LSH</code> 인덱스를 빌드합니다:</p>
+    </button></h3><p>Build a <code translate="no">MINHASH_LSH</code> index with Jaccard refinement enabled:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;minhash_signature&quot;</span>,
@@ -438,8 +463,8 @@ client.create_collection(<span class="hljs-string">&quot;minhash_demo&quot;</spa
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>인덱스 작성 매개변수에 대한 자세한 내용은 <a href="/docs/ko/minhash-lsh.md#Index-building-params">인덱스 작성 매개변수를</a> 참조하세요.</p>
-<h3 id="Insert-data" class="common-anchor-header">데이터 삽입<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<p>For more information on index building parameters, refer to <a href="/docs/ko/v2.6.x/minhash-lsh.md#Index-building-params">Index building params</a>.</p>
+<h3 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -454,14 +479,19 @@ client.create_collection(<span class="hljs-string">&quot;minhash_demo&quot;</spa
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>각 문서에 대해 준비합니다:</p>
+    </button></h3><p>For each document, prepare:</p>
 <ul>
-<li><p>이진 MinHash 서명</p></li>
-<li><p>직렬화된 토큰 세트 문자열</p></li>
-<li><p>(선택 사항) 원본 텍스트</p></li>
+<li><p>A binary MinHash signature</p></li>
+<li><p>A serialized token set string</p></li>
+<li><p>(Optionally) the original text</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">documents = [
     <span class="hljs-string">&quot;machine learning algorithms process data automatically&quot;</span>,
     <span class="hljs-string">&quot;deep learning uses neural networks to model patterns&quot;</span>
@@ -489,7 +519,7 @@ client.flush(<span class="hljs-string">&quot;minhash_demo&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Perform-similarity-search" class="common-anchor-header">유사도 검색 수행<button data-href="#Perform-similarity-search" class="anchor-icon" translate="no">
+<h3 id="Perform-similarity-search" class="common-anchor-header">Perform similarity search<button data-href="#Perform-similarity-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -504,14 +534,19 @@ client.flush(<span class="hljs-string">&quot;minhash_demo&quot;</span>)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus는 MinHash LSH를 사용하여 두 가지 유사성 검색 모드를 지원합니다:</p>
+    </button></h3><p>Milvus supports two modes of similarity search using MinHash LSH:</p>
 <ul>
-<li><p><strong>근사 검색</strong> - MinHash 서명과 LSH만을 사용하여 빠르고 확률적인 결과를 제공합니다.</p></li>
-<li><p><strong>정밀 검색</strong> - 정확도 향상을 위해 원본 토큰 세트를 사용하여 Jaccard 유사성을 다시 계산합니다.</p></li>
+<li><p><strong>Approximate search</strong> — uses only MinHash signatures and LSH for fast but probabilistic results.</p></li>
+<li><p><strong>Refined search</strong> — re-computes Jaccard similarity using original token sets for improved accuracy.</p></li>
 </ul>
-<h4 id="51-Prepare-the-query" class="common-anchor-header">5.1 쿼리 준비</h4><p>유사도 검색을 수행하려면 쿼리 문서에 대한 MinHash 서명을 생성합니다. 이 서명은 데이터 삽입 시 사용된 것과 동일한 차원 및 인코딩 형식과 일치해야 합니다.</p>
+<h4 id="51-Prepare-the-query" class="common-anchor-header">5.1 Prepare the query</h4><p>To perform a similarity search, generate a MinHash signature for the query document. This signature must match the same dimension and encoding format used during data insertion.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">query_text = <span class="hljs-string">&quot;neural networks model patterns in data&quot;</span>
 query_sig = generate_minhash_signature(query_text)
 <button class="copy-code-btn"></button></code></pre>
@@ -523,9 +558,14 @@ query_sig = generate_minhash_signature(query_text)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="52-Approximate-search-LSH-only" class="common-anchor-header">5.2 대략적인 검색(LSH 전용)</h4><p>이 방법은 빠르고 확장 가능하지만 일치하는 항목을 놓치거나 오탐을 포함할 수 있습니다:</p>
+<h4 id="52-Approximate-search-LSH-only" class="common-anchor-header">5.2 Approximate search (LSH-only)</h4><p>This is fast and scalable but may miss close matches or include false positives:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">search_params={</span>
 <span class="highlighted-comment-line">    <span class="hljs-string">&quot;metric_type&quot;</span>: <span class="hljs-string">&quot;MHJACCARD&quot;</span>, </span>
 <span class="highlighted-comment-line">    <span class="hljs-string">&quot;params&quot;</span>: {}</span>
@@ -553,9 +593,14 @@ approx_results = client.search(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="53-Refined-search-recommended-for-accuracy" class="common-anchor-header">5.3 정밀 검색(정확도를 위해 권장):</h4><p>Milvus에 저장된 원본 토큰 세트를 사용하여 정확한 Jaccard 비교를 가능하게 합니다. 약간 느리지만 품질에 민감한 작업에 권장됩니다:</p>
+<h4 id="53-Refined-search-recommended-for-accuracy" class="common-anchor-header">5.3 Refined search (recommended for accuracy):</h4><p>This enables accurate Jaccard comparison using the original token sets stored in Milvus. It’s slightly slower but recommended for quality-sensitive tasks:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">search_params = {</span>
 <span class="highlighted-comment-line">    <span class="hljs-string">&quot;metric_type&quot;</span>: <span class="hljs-string">&quot;MHJACCARD&quot;</span>,</span>
 <span class="highlighted-comment-line">    <span class="hljs-string">&quot;params&quot;</span>: {</span>
@@ -586,7 +631,7 @@ refined_results = client.search(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Index-params" class="common-anchor-header">인덱스 매개변수<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -601,8 +646,8 @@ refined_results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이 섹션에서는 인덱스를 구축하고 인덱스에서 검색을 수행하는 데 사용되는 매개변수에 대한 개요를 제공합니다.</p>
-<h3 id="Index-building-params" class="common-anchor-header">인덱스 구축 매개변수<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>This section provides an overview of the parameters used for building an index and performing searches on the index.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -617,46 +662,46 @@ refined_results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>다음 표에는 <a href="/docs/ko/minhash-lsh.md#Build-index-parameters-and-create-collection">인덱스 작성</a> 시 <code translate="no">params</code> 에서 구성할 수 있는 매개변수가 나열되어 있습니다.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/ko/v2.6.x/minhash-lsh.md#Build-index-parameters-and-create-collection">building an index</a>.</p>
 <table>
    <tr>
-     <th><p>파라미터</p></th>
-     <th><p>설명</p></th>
-     <th><p>값 범위</p></th>
-     <th><p>조정 제안</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">mh_element_bit_width</code></p></td>
-     <td><p>MinHash 서명에서 각 해시 값의 비트 폭입니다. 8로 나눌 수 있어야 합니다.</p></td>
+     <td><p>Bit width of each hash value in the MinHash signature. Must be divisible by 8.</p></td>
      <td><p>8, 16, 32, 64</p></td>
-     <td><p>균형 잡힌 성능과 정확도를 위해 <code translate="no">32</code> 을 사용합니다. 더 큰 데이터 세트에서 더 높은 정밀도를 원하시면 <code translate="no">64</code> 을 사용하세요. 허용 가능한 정확도 손실로 메모리를 절약하려면 <code translate="no">16</code> 을 사용합니다.</p></td>
+     <td><p>Use <code translate="no">32</code> for balanced performance and accuracy. Use <code translate="no">64</code> for higher precision with larger datasets. Use <code translate="no">16</code> to save memory with acceptable accuracy loss.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">mh_lsh_band</code></p></td>
-     <td><p>LSH에 대한 최소 해시 서명을 나눌 밴드 수입니다. 리콜-성능 트레이드오프를 제어합니다.</p></td>
-     <td><p>[1, <em>서명_길이</em>]</p></td>
-     <td><p>128딤 서명의 경우: 32개 밴드(4개 값/밴드)로 시작합니다. 리콜률을 높이려면 64로 늘리고, 성능을 높이려면 16으로 줄입니다. 서명 길이를 균등하게 나누어야 합니다.</p></td>
+     <td><p>Number of bands to divide the MinHash signature for LSH. Controls the recall-performance tradeoff.</p></td>
+     <td><p>[1, <em>signature_length</em>]</p></td>
+     <td><p>For 128-dim signatures: start with 32 bands (4 values/band). Increase to 64 for higher recall, decrease to 16 for better performance. Must divide signature length evenly.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">mh_lsh_code_in_mem</code></p></td>
-     <td><p>LSH 해시 코드를 익명 메모리에 저장할지 (<code translate="no">true</code>) 또는 메모리 매핑을 사용할지 (<code translate="no">false</code>).</p></td>
-     <td><p>참, 거짓</p></td>
-     <td><p>메모리 사용량을 줄이려면 대규모 데이터 세트(100만 세트 이상)의 경우 <code translate="no">false</code> 을 사용합니다. 최대 검색 속도가 필요한 소규모 데이터 세트의 경우 <code translate="no">true</code> 을 사용합니다.</p></td>
+     <td><p>Whether to store LSH hash codes in anonymous memory (<code translate="no">true</code>) or use memory mapping (<code translate="no">false</code>).</p></td>
+     <td><p>true, false</p></td>
+     <td><p>Use <code translate="no">false</code> for large datasets (&gt;1M sets) to reduce memory usage. Use <code translate="no">true</code> for smaller datasets requiring maximum search speed.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">with_raw_data</code></p></td>
-     <td><p>세분화를 위해 LSH 코드와 함께 원본 MinHash 서명을 저장할지 여부.</p></td>
+     <td><p>Whether to store original MinHash signatures alongside LSH codes for refinement.</p></td>
      <td><p>true, false</p></td>
-     <td><p>높은 정밀도가 필요하고 저장 비용이 허용되는 경우 <code translate="no">true</code> 을 사용합니다. 약간의 정확도 감소와 함께 스토리지 오버헤드를 최소화하려면 <code translate="no">false</code> 을 사용합니다.</p></td>
+     <td><p>Use <code translate="no">true</code> when high precision is required and storage cost is acceptable. Use <code translate="no">false</code> to minimize storage overhead with slight accuracy reduction.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">mh_lsh_bloom_false_positive_prob</code></p></td>
-     <td><p>LSH 버킷 최적화에 사용되는 블룸 필터의 오탐 확률입니다.</p></td>
+     <td><p>False positive probability for Bloom filter used in LSH bucket optimization.</p></td>
      <td><p>[0.001, 0.1]</p></td>
-     <td><p>균형 잡힌 메모리 사용량과 정확도를 위해 <code translate="no">0.01</code> 을 사용하세요. 값이 낮을수록 (<code translate="no">0.001</code>) 오탐 확률은 감소하지만 메모리가 증가합니다. 값이 높을수록(<code translate="no">0.05</code>) 메모리는 절약되지만 정확도가 떨어질 수 있습니다.</p></td>
+     <td><p>Use <code translate="no">0.01</code> for balanced memory usage and accuracy. Lower values (<code translate="no">0.001</code>) reduce false positives but increase memory. Higher values (<code translate="no">0.05</code>) save memory but may reduce precision.</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">인덱스별 검색 매개변수<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -671,30 +716,30 @@ refined_results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>다음 표에는 <a href="/docs/ko/minhash-lsh.md#Perform-similarity-search">색인에서 검색할</a> 때 <code translate="no">search_params.params</code> 에서 구성할 수 있는 매개변수가 나와 있습니다.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/ko/v2.6.x/minhash-lsh.md#Perform-similarity-search">searching on the index</a>.</p>
 <table>
    <tr>
-     <th><p>파라미터</p></th>
-     <th><p>설명</p></th>
-     <th><p>값 범위</p></th>
-     <th><p>조정 제안</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">mh_search_with_jaccard</code></p></td>
-     <td><p>세분화를 위해 후보 결과에 대해 정확한 Jaccard 유사도 계산을 수행할지 여부입니다.</p></td>
-     <td><p>참, 거짓</p></td>
-     <td><p>높은 정밀도(예: 중복 제거)가 필요한 애플리케이션에는 <code translate="no">true</code> 을 사용합니다. 약간의 정확도 손실이 허용되는 경우 <code translate="no">false</code> 을 사용하여 더 빠른 근사치 검색을 수행하세요.</p></td>
+     <td><p>Whether to perform exact Jaccard similarity computation on candidate results for refinement.</p></td>
+     <td><p>true, false</p></td>
+     <td><p>Use <code translate="no">true</code> for applications requiring high precision (e.g., deduplication). Use <code translate="no">false</code> for faster approximate search when slight accuracy loss is acceptable.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">refine_k</code></p></td>
-     <td><p>Jaccard 정제 전에 검색할 후보자 수입니다. <code translate="no">mh_search_with_jaccard</code> 이 <code translate="no">true</code> 일 때만 유효합니다.</p></td>
+     <td><p>Number of candidates to retrieve before Jaccard refinement. Only effective when <code translate="no">mh_search_with_jaccard</code> is <code translate="no">true</code>.</p></td>
      <td><p>[<em>top_k</em>, *top_k * 10*]</p></td>
-     <td><p>리콜과 성능의 균형을 맞추기 위해 원하는 <em>top_k의</em> 2~5배로 설정합니다. 값이 클수록 리콜 성능이 향상되지만 계산 비용이 증가합니다.</p></td>
+     <td><p>Set to 2-5x the desired <em>top_k</em> for good recall-performance balance. Higher values improve recall but increase computation cost.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">mh_lsh_batch_search</code></p></td>
-     <td><p>여러 개의 동시 쿼리에 대해 일괄 최적화를 활성화할지 여부입니다.</p></td>
+     <td><p>Whether to enable batch optimization for multiple simultaneous queries.</p></td>
      <td><p>true, false</p></td>
-     <td><p>처리량 향상을 위해 여러 쿼리를 동시에 검색할 때는 <code translate="no">true</code> 을 사용합니다. 단일 쿼리 시나리오에서는 <code translate="no">false</code> 을 사용하여 메모리 오버헤드를 줄입니다.</p></td>
+     <td><p>Use <code translate="no">true</code> when searching with multiple queries simultaneously for better throughput. Use <code translate="no">false</code> for single-query scenarios to reduce memory overhead.</p></td>
    </tr>
 </table>

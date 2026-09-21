@@ -1,10 +1,12 @@
 ---
 id: snapshots.md
-title: 快照Compatible with Milvus 3.0.x
-summary: 使用快照来捕获特定时间点的Collection状态，以便进行回滚、版本控制和测试。
+title: SnapshotsCompatible with Milvus 3.0.x
+summary: >-
+  Use snapshots to capture point-in-time collection states for rollback,
+  versioning, and testing.
 beta: Milvus 3.0.x
 ---
-<h1 id="Snapshots" class="common-anchor-header">快照<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Snapshots" class="anchor-icon" translate="no">
+<h1 id="Snapshots" class="common-anchor-header">Snapshots<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Snapshots" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,10 +21,10 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>快照是 Milvus Collection 在特定时间点的镜像，非常适合快速回滚、版本控制和测试。它捕获 Collection 在特定时间戳下的状态，并仅存储元数据和清单文件（如 Schema、索引和向量数据文件（二进制日志）），以实现高效的存储和恢复。</p>
-<p>快照是数据的快速、特定时间点的镜像，适用于快速回滚或测试（<strong>时间跨度为数天至数周</strong>）。与此同时，备份则是独立的完整副本，单独存储以用于长期灾难恢复（<strong>时间跨度为数周至数年</strong>），并能更好地防范存储系统完全故障。</p>
-<p>要创建备份，请参阅《<a href="/docs/zh/milvus_backup_overview.md">Milvus 备份</a>》。</p>
-<h2 id="Snapshot-anatomy" class="common-anchor-header">快照结构<button data-href="#Snapshot-anatomy" class="anchor-icon" translate="no">
+    </button></h1><p>A snapshot is a point-in-time image of a Milvus collection, ideal for quick rollbacks, versioning, and testing. It captures the collection’s state at a specific timestamp and stores only metadata and manifest files, such as the schema, indexes, and vector data files (binlogs), for efficient storage and restoration.</p>
+<p>Snapshots are quick, point-in-time images of data, suitable for fast rollbacks or testing (<strong>days to weeks</strong>). At the same time, backups are independent, complete copies stored separately for long-term disaster recovery (<strong>weeks to years</strong>) and for better protection against total storage failure.</p>
+<p>To create backups, refer to <a href="/docs/zh/milvus_backup_overview.md">Milvus Backup</a>.</p>
+<h2 id="Snapshot-anatomy" class="common-anchor-header">Snapshot anatomy<button data-href="#Snapshot-anatomy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,19 +39,19 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 采用基于清单的快照架构，可在不复制实际向量数据的情况下，高效地捕获、存储和恢复特定时间点的数据。该架构将元数据管理与物理数据存储分离，从而实现轻量级快照，这些快照引用对象存储中现有的分段文件。</p>
-<p>当您为 Collection 创建快照时，Milvus 会收集以下信息：</p>
+    </button></h2><p>Milvus implements a manifest-based snapshot architecture for efficient point-in-time capture, storage, and restoration of data without duplicating the actual vector data. The architecture separates metadata management from physical data storage, enabling lightweight snapshots that reference existing segment files in object storage.</p>
+<p>When you create a snapshot for a collection, Milvus collects the following:</p>
 <ul>
-<li><p><strong>快照元数据</strong></p>
-<p>它提供用于创建快照的基本信息，包括快照名称和描述、目标 Collection ID 以及创建快照的时间点。</p></li>
+<li><p><strong>Snapshot metadata</strong></p>
+<p>It provides basic information for creating the snapshot, including the snapshot name and description, the target collection ID, and the time point at which the snapshot is created.</p></li>
 <li><p><strong>Collection description</strong></p>
-<p>包含目标Collection的描述，包括其Schema定义、分区信息和属性。</p></li>
-<li><p><strong>索引信息</strong></p>
-<p>它存储索引元数据和索引文件的路径。</p></li>
-<li><p><strong>分段数据</strong></p>
-<p>该部分包含向量数据文件（binlogs）、删除日志（deltalogs）和索引文件。</p></li>
+<p>It contains the description of the target collection, including its schema definition, partition information, and properties.</p></li>
+<li><p><strong>Index information</strong></p>
+<p>It stores the index metadata and the paths to index files.</p></li>
+<li><p><strong>Segment data</strong></p>
+<p>It captures the vector data files (binlogs), deletion logs (deltalogs), and index files.</p></li>
 </ul>
-<p>在上述信息中，Milvus 为每个分段生成一个 Apache Avro 清单文件，并将快照元数据、Collection 描述、索引信息以及清单文件的路径存储在一个 JSON 文件中。下图说明了快照的文件夹结构。</p>
+<p>Among the above information, Milvus generates an Apache Avro manifest file for each segment and stores the snapshot metadata, collection description, index information, and the paths to the manifest files in a JSON file. The following diagram illustrates the snapshot folder structure.</p>
 <pre><code translate="no" class="language-text">snapshots/{collection_id}/
 ├── metadata/
 │   └── {snapshot_id}.json         # Snapshot metadata (JSON format)
@@ -60,8 +62,8 @@ beta: Milvus 3.0.x
         ├── {segment_id_2}.avro
         └── ...
 <button class="copy-code-btn"></button></code></pre>
-<p>创建快照通常只需几毫秒，而恢复快照则根据数据量不同，可能需要几秒到几分钟不等。</p>
-<h2 id="Storage-impacts-and-considerations" class="common-anchor-header">对存储的影响及注意事项<button data-href="#Storage-impacts-and-considerations" class="anchor-icon" translate="no">
+<p>Creating a snapshot usually takes milliseconds, and restoring it takes seconds to minutes, depending on the data volume.</p>
+<h2 id="Storage-impacts-and-considerations" class="common-anchor-header">Storage impacts and considerations<button data-href="#Storage-impacts-and-considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,15 +78,15 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>一旦 Milvus 引用了快照中的某个分段或索引文件，除非您删除该快照，否则它不会对这些文件进行垃圾回收。快照占用的存储空间与目标 Collections 的大小成正比，且快照保留期间会产生对象存储费用。在极端情况下，单个快照甚至可能使您的对象存储成本翻倍。建议您</p>
+    </button></h2><p>Once Milvus references a segment or index file in a snapshot, it does not garbage-collect those files unless you drop the snapshot. Snapshots consume storage proportional to the size of the target collections, and object storage costs apply to snapshot retention. In extreme cases, a single snapshot can even double your object storage costs. You are advised to</p>
 <ul>
-<li>定期删除旧快照以节省存储空间。</li>
-<li>使用描述性名称和说明以便日后参考。</li>
-<li>始终验证快照创建和还原结果。</li>
-<li>跟踪快照的创建时间戳和存储使用情况，以便进行监控和故障排除。</li>
-<li>保存还原作业 ID，以便进行监控和故障排除。</li>
+<li>Remove old snapshots regularly to save storage.</li>
+<li>Use descriptive names and descriptions for future reference.</li>
+<li>Always verify snapshot creation and restoration results.</li>
+<li>Track snapshot creation timestamps and storage usage for monitoring and troubleshooting.</li>
+<li>Store restoration job IDs for monitoring and troubleshooting.</li>
 </ul>
-<h2 id="Limits-and-restrictions" class="common-anchor-header">限制与约束<button data-href="#Limits-and-restrictions" class="anchor-icon" translate="no">
+<h2 id="Limits-and-restrictions" class="common-anchor-header">Limits and restrictions<button data-href="#Limits-and-restrictions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,13 +102,13 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><ul>
-<li>快照在创建后即成为不可变的。</li>
-<li>您只能将快照还原到与原始快照位于同一集群中的新Collection中。</li>
-<li>恢复后的 Collections 将保留相同的 Schema、分片数和分区数。</li>
-<li>恢复的历史数据可能会与 TTL 策略发生冲突。建议您在创建快照之前禁用 TTL 或调整 TTL 设置。</li>
-<li>若要将快照用作<code translate="no">milvus-table</code> 的外部数据源，该源快照必须来自常规的StorageV3 Milvus Collection。外部Collection的快照不支持作为<code translate="no">milvus-table</code> 的数据源。</li>
+<li>Snapshots become immutable after creation.</li>
+<li>You can restore a snapshot only to a new collection within the same cluster as the original.</li>
+<li>Restored collections retain the same schema, number of shards, and partition count.</li>
+<li>Restored historical data may conflict with TTL policies. You are advised to disable TTL or adjust TTL settings before creating snapshots.</li>
+<li>To use a snapshot as a <code translate="no">milvus-table</code> external source, the source snapshot must come from a normal StorageV3 Milvus collection. Snapshots of external collections are not supported as <code translate="no">milvus-table</code> sources.</li>
 </ul>
-<h2 id="Further-readings" class="common-anchor-header">进一步阅读<button data-href="#Further-readings" class="anchor-icon" translate="no">
+<h2 id="Further-readings" class="common-anchor-header">Further readings<button data-href="#Further-readings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,7 +124,7 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="/docs/zh/manage-snapshots.md">管理快照</a>— 创建、列出、描述、固定、恢复和删除快照。</li>
-<li><a href="/docs/zh/snapshot-use-cases.md">快照用例</a>— 常见模式和工作流。</li>
-<li><a href="/docs/zh/milvus_backup_overview.md">Milvus 备份</a>— 跨集群的长期备份与恢复。</li>
+<li><a href="/docs/zh/manage-snapshots.md">Manage Snapshots</a> — create, list, describe, pin, restore, and delete snapshots.</li>
+<li><a href="/docs/zh/snapshot-use-cases.md">Snapshot Use Cases</a> — common patterns and workflows.</li>
+<li><a href="/docs/zh/milvus_backup_overview.md">Milvus Backup</a> — long-term backup and restore across clusters.</li>
 </ul>

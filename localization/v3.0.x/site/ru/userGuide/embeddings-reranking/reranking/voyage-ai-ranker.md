@@ -2,10 +2,10 @@
 id: voyage-ai-ranker.md
 title: Voyage AI RankerCompatible with Milvus 2.6.x
 summary: >-
-  Voyage AI Ranker использует специализированные реранкеры Voyage AI для
-  повышения релевантности поиска путем семантического реранкинга. Он
-  обеспечивает высокопроизводительные возможности ранжирования, оптимизированные
-  для генерации с расширенным поиском (RAG) и поисковых приложений.
+  The Voyage AI Ranker leverages Voyage AI's specialized rerankers to enhance
+  search relevance through semantic reranking. It provides high-performance
+  reranking capabilities optimized for retrieval-augmented generation (RAG) and
+  search applications.
 beta: Milvus 2.6.x
 ---
 <h1 id="Voyage-AI-Ranker" class="common-anchor-header">Voyage AI Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Voyage-AI-Ranker" class="anchor-icon" translate="no">
@@ -23,15 +23,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Voyage AI Ranker использует специализированные реранкеры <a href="https://www.voyageai.com/">Voyage AI</a> для повышения релевантности поиска путем семантического реранкинга. Он обеспечивает высокопроизводительные возможности ранжирования, оптимизированные для генерации с расширением поиска (RAG) и поисковых приложений.</p>
-<p>Voyage AI Ranker особенно ценен для приложений, требующих:</p>
+    </button></h1><p>The Voyage AI Ranker leverages <a href="https://www.voyageai.com/">Voyage AI’s</a> specialized rerankers to enhance search relevance through semantic reranking. It provides high-performance reranking capabilities optimized for retrieval-augmented generation (RAG) and search applications.</p>
+<p>Voyage AI Ranker is particularly valuable for applications requiring:</p>
 <ul>
-<li><p>Расширенное понимание семантики с помощью моделей, специально обученных для задач ранжирования</p></li>
-<li><p>Высокопроизводительная обработка с оптимизированными выводами для производственных рабочих нагрузок</p></li>
-<li><p>Гибкие элементы управления усечением для работы с документами различной длины</p></li>
-<li><p>Тонкая настройка производительности для различных вариантов моделей (rerank-2, rerank-lite и т.д.).</p></li>
+<li><p>Advanced semantic understanding with models specifically trained for reranking tasks</p></li>
+<li><p>High-performance processing with optimized inference for production workloads</p></li>
+<li><p>Flexible truncation controls for handling diverse document lengths</p></li>
+<li><p>Fine-tuned performance across different model variants (rerank-2, rerank-lite, etc.)</p></li>
 </ul>
-<h2 id="Prerequisites" class="common-anchor-header">Предварительные условия<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -46,16 +46,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Перед внедрением Voyage AI Ranker в Milvus убедитесь, что у вас есть:</p>
+    </button></h2><p>Before implementing Voyage AI Ranker in Milvus, ensure you have:</p>
 <ul>
-<li><p>Коллекция Milvus с полем <code translate="no">VARCHAR</code>, содержащим текст для ранжирования.</p></li>
-<li><p>Действительный API-ключ Voyage AI с доступом к ранжировщикам. Зарегистрируйтесь на <a href="https://www.voyageai.com/">платформе Voyage AI</a>, чтобы получить учетные данные API. Вы можете либо:</p>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A valid Voyage AI API key with access to rerankers. Sign up at <a href="https://www.voyageai.com/">Voyage AI’s platform</a> to obtain your API credentials. You can either:</p>
 <ul>
-<li><p>Задать переменную окружения <code translate="no">VOYAGE_API_KEY</code>, либо</p></li>
-<li><p>Указать API-ключ непосредственно в конфигурации ранкера.</p></li>
+<li><p>Set the <code translate="no">VOYAGE_API_KEY</code> environment variable, or</p></li>
+<li><p>Specify the API key directly in the ranker configuration</p></li>
 </ul></li>
 </ul>
-<h2 id="Create-a-Voyage-AI-ranker-function" class="common-anchor-header">Создание функции ранжирования Voyage AI<button data-href="#Create-a-Voyage-AI-ranker-function" class="anchor-icon" translate="no">
+<h2 id="Create-a-Voyage-AI-ranker-function" class="common-anchor-header">Create a Voyage AI ranker function<button data-href="#Create-a-Voyage-AI-ranker-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,9 +70,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Чтобы использовать Voyage AI Ranker в вашем приложении Milvus, создайте объект Function, который определяет, как должно работать ранжирование. Эта функция будет передаваться в поисковые операции Milvus для улучшения ранжирования результатов.</p>
+    </button></h2><p>To use Voyage AI Ranker in your Milvus application, create a Function object that specifies how the reranking should operate. This function will be passed to Milvus search operations to enhance result ranking.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -124,7 +129,7 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Voyage-AI-ranker-specific-parameters" class="common-anchor-header">Специфические параметры ранжировщика Voyage AI<button data-href="#Voyage-AI-ranker-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="Voyage-AI-ranker-specific-parameters" class="common-anchor-header">Voyage AI ranker-specific parameters<button data-href="#Voyage-AI-ranker-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,61 +144,61 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Следующие параметры специфичны для ранжировщика Voyage AI:</p>
+    </button></h3><p>The following parameters are specific to the Voyage AI ranker:</p>
 <table>
    <tr>
-     <th><p><strong>Параметр</strong></p></th>
-     <th><p><strong>Требуемый?</strong></p></th>
-     <th><p><strong>Описание</strong></p></th>
-     <th><p><strong>Значение / Пример</strong></p></th>
+     <th><p><strong>Parameter</strong></p></th>
+     <th><p><strong>Required?</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
+     <th><p><strong>Value / Example</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reranker</code></p></td>
-     <td><p>Да</p></td>
-     <td><p>Должно быть установлено значение <code translate="no">"model"</code>, чтобы включить повторное ранжирование моделей.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>Да</p></td>
-     <td><p>Поставщик услуг модели, который будет использоваться для повторного ранжирования.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"voyageai"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">model_name</code></p></td>
-     <td><p>Да</p></td>
-     <td><p>Реранкер Voyage AI для использования из поддерживаемых моделей на платформе Voyage AI.</p><p>Список доступных реранкеров см. в<a href="https://docs.voyageai.com/docs/reranker"> документации</a> <a href="https://docs.voyageai.com/docs/reranker">Voyage AI</a>.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The Voyage AI reranker to use from supported models on Voyage AI platform.</p><p>For a list of rerankers available, refer to <a href="https://docs.voyageai.com/docs/reranker">Voyage AI</a><a href="https://docs.voyageai.com/docs/reranker"> documentation</a>.</p></td>
      <td><p><code translate="no">"rerank-2.5"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queries</code></p></td>
-     <td><p>Да</p></td>
-     <td><p>Список строк запросов, используемых моделью ранжирования для расчета баллов релевантности. Количество строк запросов должно точно соответствовать количеству запросов в вашей поисковой операции (даже при использовании векторов запросов вместо текста), иначе будет выдано сообщение об ошибке.</p></td>
-     <td><p><em>["поисковый запрос"].</em></p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the rerank model to calculate relevance scores. The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
+     <td><p><em>["search query"]</em></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>Нет</p></td>
-     <td><p>Поскольку сервисы моделей могут обрабатывать не все данные сразу, здесь задается размер пакета для обращения к сервису моделей при нескольких запросах.</p></td>
-     <td><p><code translate="no">128</code> (по умолчанию)</p></td>
+     <td><p>No</p></td>
+     <td><p>Since model services may not process all data at once, this sets the batch size for accessing the model service in multiple requests.</p></td>
+     <td><p><code translate="no">128</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">truncation</code></p></td>
-     <td><p>Нет</p></td>
-     <td><p>Нужно ли усекать входные данные, чтобы удовлетворить "ограничение длины контекста" для запроса и документов.</p><ul><li><p>Если <code translate="no">True</code>, то запрос и документы будут усечены, чтобы уложиться в ограничение длины контекста, перед обработкой моделью реранкера.</p></li><li><p>Если <code translate="no">False</code>, то будет выдана ошибка, если запрос превышает 8 000 лексем для <code translate="no">rerank-2.5</code> и <code translate="no">rerank-2.5-lite</code>; 4 000 лексем для <code translate="no">rerank-2</code>; 2 000 лексем <code translate="no">rerank-2-lite</code> и <code translate="no">rerank-1</code>; и 1 000 лексем для <code translate="no">rerank-lite-1</code>, или сумма количества лексем в запросе и количества лексем в любом отдельном документе превышает 16 000 для <code translate="no">rerank-2</code>; 8 000 для <code translate="no">rerank-2-lite</code> и <code translate="no">rerank-1</code>; и 4 000 для <code translate="no">rerank-lite-1</code>.</p></li></ul></td>
-     <td><p><code translate="no">True</code> (по умолчанию) или <code translate="no">False</code></p></td>
+     <td><p>No</p></td>
+     <td><p>Whether to truncate the input to satisfy the "context length limit" on the query and the documents.</p><ul><li><p>If <code translate="no">True</code>, the query and documents will be truncated to fit within the context length limit, before processed by the reranker model.</p></li><li><p>If <code translate="no">False</code>, an error will be raised when the query exceeds 8,000 tokens for <code translate="no">rerank-2.5</code> and <code translate="no">rerank-2.5-lite</code>; 4,000 tokens for <code translate="no">rerank-2</code>; 2,000 tokens <code translate="no">rerank-2-lite</code> and <code translate="no">rerank-1</code>; and 1,000 tokens for <code translate="no">rerank-lite-1</code>, or the sum of the number of tokens in the query and the number of tokens in any single document exceeds 16,000 for <code translate="no">rerank-2</code>; 8,000 for <code translate="no">rerank-2-lite</code> and <code translate="no">rerank-1</code>; and 4,000 for <code translate="no">rerank-lite-1</code>.</p></li></ul></td>
+     <td><p><code translate="no">True</code> (default) or <code translate="no">False</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">credential</code></p></td>
-     <td><p>Нет</p></td>
-     <td><p>Учетные данные для доступа к службам Voyage AI API. Если не указано, система будет искать переменную окружения <code translate="no">VOYAGE_API_KEY</code>.</p></td>
+     <td><p>No</p></td>
+     <td><p>Authentication credential for accessing Voyage AI API services. If not specified, the system will look for the <code translate="no">VOYAGE_API_KEY</code> environment variable.</p></td>
      <td><p><em>"your-voyage-api-key"</em></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>Общие параметры, общие для всех ранжировщиков моделей (например, <code translate="no">provider</code>, <code translate="no">queries</code>), см. в разделе <a href="/docs/ru/model-ranker-overview.md#Create-a-model-ranker">Создание ранжировщика моделей</a>.</p>
+<p>For general parameters shared across all model rankers (e.g., <code translate="no">provider</code>, <code translate="no">queries</code>), refer to <a href="/docs/ru/model-ranker-overview.md#Create-a-model-ranker">Create a model ranker</a>.</p>
 </div>
-<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Применение к стандартному векторному поиску<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -208,9 +213,14 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Чтобы применить Voyage AI Ranker к стандартному векторному поиску:</p>
+    </button></h2><p>To apply Voyage AI Ranker to a standard vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Execute search with Voyage AI reranker</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;your_collection&quot;</span>,

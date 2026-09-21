@@ -1,13 +1,12 @@
 ---
 id: schema.md
-title: Schema spiegato
+title: Schema Explained
 summary: >-
-  Uno schema definisce la struttura dei dati di una collezione. Prima di creare
-  una collezione, è necessario progettare il suo schema. Questa pagina aiuta a
-  comprendere lo schema delle raccolte e a progettare un esempio di schema per
-  conto proprio.
+  A schema defines the data structure of a collection. Before creating a
+  collection, you need to work out a design of its schema. This page helps you
+  understand the collection schema and design an example schema on your own.
 ---
-<h1 id="Schema-Explained" class="common-anchor-header">Schema spiegato<button data-href="#Schema-Explained" class="anchor-icon" translate="no">
+<h1 id="Schema-Explained" class="common-anchor-header">Schema Explained<button data-href="#Schema-Explained" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Uno schema definisce la struttura dei dati di una collezione. Prima di creare una collezione, è necessario progettare il suo schema. Questa pagina aiuta a comprendere lo schema delle raccolte e a progettare un esempio di schema per conto proprio.</p>
-<h2 id="Overview" class="common-anchor-header">Panoramica<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>A schema defines the data structure of a collection. Before creating a collection, you need to work out a design of its schema. This page helps you understand the collection schema and design an example schema on your own.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,16 +37,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>In Milvus, lo schema di una collezione è una tabella di un database relazionale che definisce come Milvus organizza i dati nella collezione.</p>
-<p>Uno schema ben progettato è essenziale perché astrae il modello dei dati e decide se è possibile raggiungere gli obiettivi aziendali attraverso una ricerca. Inoltre, poiché ogni riga di dati inserita nella raccolta deve seguire lo schema, contribuisce a mantenere la coerenza dei dati e la qualità a lungo termine. Da un punto di vista tecnico, uno schema ben definito porta a una memorizzazione ben organizzata dei dati delle colonne e a una struttura dell'indice più pulita, aumentando le prestazioni della ricerca.</p>
-<p>Uno schema di raccolta ha una chiave primaria, almeno un campo vettoriale e diversi campi scalari. Il diagramma seguente illustra come mappare un articolo in un elenco di campi dello schema.</p>
+    </button></h2><p>On Milvus, a collection schema assembles a table in a relational database, which defines how Milvus organizes data in the collection.</p>
+<p>A well-designed schema is essential as it abstracts the data model and decides if you can achieve the business objectives through a search. Furthermore, since every row of data inserted into the collection must follow the schema, it helps maintain data consistency and long-term quality. From a technical perspective, a well-defined schema leads to well-organized column data storage and a cleaner index structure, boosting search performance.</p>
+<p>A collection schema has a primary key, at least one vector field, and several scalar fields. The following diagram illustrates how to map an article to a list of schema fields.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/schema-design-anatomy.png" alt="Schema Design Anatomy" class="doc-image" id="schema-design-anatomy" />
-   </span> <span class="img-wrapper"> <span>Anatomia della progettazione dello schema</span> </span></p>
-<p>La progettazione del modello di dati di un sistema di ricerca comporta l'analisi delle esigenze aziendali e l'astrazione delle informazioni in un modello di dati espresso in forma di schema. Ad esempio, la ricerca di un testo deve essere "indicizzata" convertendo la stringa letterale in un vettore attraverso l'"embedding" e consentendo la ricerca vettoriale. Oltre a questo requisito essenziale, può essere necessario memorizzare altre proprietà, come la data di pubblicazione e l'autore. Questi metadati consentono di affinare le ricerche semantiche attraverso un filtro, restituendo solo i testi pubblicati dopo una data specifica o da un particolare autore. È anche possibile recuperare questi scalari con il testo principale per rendere il risultato della ricerca nell'applicazione. A ciascuno di essi deve essere assegnato un identificatore unico per organizzare questi pezzi di testo, espresso come un numero intero o una stringa. Questi elementi sono essenziali per ottenere una logica di ricerca sofisticata.</p>
-<p>Fare riferimento a <a href="/docs/it/schema-hands-on.md">Schema Design Hands-On</a> per capire come creare uno schema ben progettato.</p>
-<h2 id="Create-Schema" class="common-anchor-header">Creare uno schema<button data-href="#Create-Schema" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/schema-design-anatomy.png" alt="Schema Design Anatomy" class="doc-image" id="schema-design-anatomy" />
+    <span>Schema Design Anatomy</span>
+  </span>
+</p>
+<p>The data model design of a search system involves analyzing business needs and abstracting information into a schema-expressed data model. For instance, searching a piece of text must be “indexed” by converting the literal string into a vector through “embedding” and enabling vector search. Beyond this essential requirement, storing other properties such as publication timestamp and author may be necessary. This metadata allows for semantic searches to be refined through filtering, returning only texts published after a specific date or by a particular author. You can also retrieve these scalars with the main text to render the search result in the application. Each should be assigned a unique identifier to organize these text pieces, expressed as an integer or string. These elements are essential for achieving sophisticated search logic.</p>
+<p>Refer to <a href="/docs/it/v2.6.x/schema-hands-on.md">Schema Design Hands-On</a> to figure out how to make a well-designed schema.</p>
+<h2 id="Create-Schema" class="common-anchor-header">Create Schema<button data-href="#Create-Schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,9 +63,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Il seguente frammento di codice mostra come creare uno schema.</p>
+    </button></h2><p>The following code snippet demonstrates how to create a schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 schema = MilvusClient.create_schema()
@@ -85,7 +91,7 @@ schema := entity.NewSchema()
     &quot;fields&quot;: []
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Add-Primary-Field" class="common-anchor-header">Aggiungere un campo primario<button data-href="#Add-Primary-Field" class="anchor-icon" translate="no">
+<h2 id="Add-Primary-Field" class="common-anchor-header">Add Primary Field<button data-href="#Add-Primary-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,9 +106,14 @@ schema := entity.NewSchema()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Il campo primario di una collezione identifica in modo univoco un'entità. Accetta solo valori <strong>Int64</strong> o <strong>VarChar</strong>. I seguenti frammenti di codice mostrano come aggiungere il campo primario.</p>
+    </button></h2><p>The primary field in a collection uniquely identifies an entity. It only accepts <strong>Int64</strong> or <strong>VarChar</strong> values. The following code snippets demonstrate how to add the primary field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_id&quot;</span>,
     datatype=DataType.INT64,
@@ -146,13 +157,13 @@ schema.addField(AddFieldReq.builder()
     ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Quando si aggiunge un campo, si può chiarire esplicitamente che si tratta di un campo primario, impostando la proprietà <code translate="no">is_primary</code> a <code translate="no">True</code>. Un campo primario accetta valori <strong>Int64</strong> per impostazione predefinita. In questo caso, il valore del campo primario dovrebbe essere un numero intero, simile a <code translate="no">12345</code>. Se si sceglie di usare valori <strong>VarChar</strong> nel campo primario, il valore dovrebbe essere una stringa, simile a <code translate="no">my_entity_1234</code>.</p>
-<p>È anche possibile impostare la proprietà <code translate="no">autoId</code> su <code translate="no">True</code> per fare in modo che Milvus assegni automaticamente i valori del campo primario all'inserimento dei dati.</p>
+<p>When adding a field, you can explicitly clarify the field as the primary field by setting its <code translate="no">is_primary</code> property to <code translate="no">True</code>. A primary field accepts <strong>Int64</strong> values by default. In this case, the primary field value should be integers similar to <code translate="no">12345</code>. If you choose to use <strong>VarChar</strong> values in the primary field, the value should be strings similar to <code translate="no">my_entity_1234</code>.</p>
+<p>You can also set the <code translate="no">autoId</code> properties to <code translate="no">True</code> to make Milvus automatically allocate primary field values upon data insertions.</p>
 <div class="alert note">
-<p>Si consiglia di affidarsi a <code translate="no">autoId</code> in tutti i casi, a meno che non sia utile impostare manualmente le chiavi primarie.</p>
+<p>You are advised to rely on <code translate="no">autoId</code> in all cases unless manually setting primary keys is beneficial.</p>
 </div>
-<p>Per maggiori dettagli, consultare <a href="/docs/it/primary-field.md">Campo primario e AutoId</a>.</p>
-<h2 id="Add-Vector-Fields" class="common-anchor-header">Aggiungere campi vettoriali<button data-href="#Add-Vector-Fields" class="anchor-icon" translate="no">
+<p>For details, refer to <a href="/docs/it/v2.6.x/primary-field.md">Primary Field & AutoId</a>.</p>
+<h2 id="Add-Vector-Fields" class="common-anchor-header">Add Vector Fields<button data-href="#Add-Vector-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -167,9 +178,14 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>I campi vettoriali accettano varie incorporazioni vettoriali rade e dense. Su Milvus, è possibile aggiungere quattro campi vettoriali a una collezione. I seguenti frammenti di codice mostrano come aggiungere un campo vettoriale.</p>
+    </button></h2><p>Vector fields accept various sparse and dense vector embeddings. On Milvus, you can add four vector fields to a collection. The following code snippets demonstrate how to add a vector field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_vector&quot;</span>,
     datatype=DataType.FLOAT_VECTOR,
@@ -209,20 +225,20 @@ schema.addField(AddFieldReq.builder()
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Il parametro <code translate="no">dim</code> nei frammenti di codice sopra riportati indica la dimensionalità degli embeddings vettoriali da contenere nel campo vettoriale. Il valore <code translate="no">FLOAT_VECTOR</code> indica che il campo vettoriale contiene un elenco di numeri fluttuanti a 32 bit, che di solito vengono utilizzati per rappresentare gli antilogaritmi:</p>
+<p>The <code translate="no">dim</code> paramter in the above code snippets indicates the dimensionality of the vector embeddings to be held in the vector field. The <code translate="no">FLOAT_VECTOR</code> value indicates that the vector field holds a list of 32-bit floating numbers, which are usually used to represent antilogarithms.In addition to that, Milvus also supports the following types of vector embeddings:</p>
 <ul>
 <li><p><code translate="no">FLOAT16_VECTOR</code></p>
-<p>Un campo vettoriale di questo tipo contiene un elenco di numeri flottanti a mezza precisione a 16 bit e di solito si applica a scenari di deep learning o di calcolo basato su GPU con limitazioni di memoria o di larghezza di banda.</p></li>
+<p>A vector field of this type holds a list of 16-bit half-precision floating numbers and usually applies to memory- or bandwidth-restricted deep learning or GPU-based computing scenarios.</p></li>
 <li><p><code translate="no">BFLOAT16_VECTOR</code></p>
-<p>Un campo vettore di questo tipo contiene un elenco di numeri in virgola mobile a 16 bit con precisione ridotta ma con lo stesso intervallo di esponenti di Float32. Questo tipo di dati è comunemente usato in scenari di deep learning, in quanto riduce l'uso della memoria senza incidere significativamente sulla precisione.</p></li>
+<p>A vector field of this type holds a list of 16-bit floating-point numbers that have reduced precision but the same exponent range as Float32. This type of data is commonly used in deep learning scenarios, as it reduces memory usage without significantly impacting accuracy.</p></li>
 <li><p><code translate="no">INT8_VECTOR</code></p>
-<p>Un campo vettoriale di questo tipo memorizza vettori composti da numeri interi firmati a 8 bit (int8), con ciascun componente compreso tra -128 e 127. Pensato per le architetture di deep learning quantizzate, come ResNet ed EfficientNet, riduce sostanzialmente le dimensioni del modello e aumenta la velocità di inferenza, con una perdita di precisione minima. <strong>Nota</strong>: questo tipo di vettore è supportato solo per gli indici HNSW.</p></li>
+<p>A vector field of this type stores vectors composed of 8-bit signed integers (int8), with each component ranging from –128 to 127. Tailored for quantized deep learning architectures—such as ResNet and EfficientNet—it substantially shrinks model size and boosts inference speed, all while incurring only minimal precision loss. <strong>Note</strong>: This vector type is supported only for HNSW indexes.</p></li>
 <li><p><code translate="no">BINARY_VECTOR</code></p>
-<p>Un campo vettoriale di questo tipo contiene un elenco di 0 e 1. Servono come caratteristiche compatte per rappresentare i dati in scenari di elaborazione delle immagini e di recupero delle informazioni.</p></li>
+<p>A vector field of this type holds a list of 0s and 1s. They serve as compact features for representing data in image processing and information retrieval scenarios.</p></li>
 <li><p><code translate="no">SPARSE_FLOAT_VECTOR</code></p>
-<p>Un campo vettoriale di questo tipo contiene un elenco di numeri non nulli e i loro numeri di sequenza per rappresentare incorporazioni vettoriali rade.</p></li>
+<p>A vector field of this type holds a list of non-zero numbers and their sequence numbers to represent sparse vector embeddings.</p></li>
 </ul>
-<h2 id="Add-Scalar-Fields" class="common-anchor-header">Aggiungere campi scalari<button data-href="#Add-Scalar-Fields" class="anchor-icon" translate="no">
+<h2 id="Add-Scalar-Fields" class="common-anchor-header">Add Scalar Fields<button data-href="#Add-Scalar-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -237,8 +253,8 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Nei casi più comuni, è possibile utilizzare campi scalari per memorizzare i metadati delle incorporazioni vettoriali memorizzate in Milvus e condurre ricerche ANN con filtraggio dei metadati per migliorare la correttezza dei risultati della ricerca. Milvus supporta diversi tipi di campi scalari, tra cui <strong>VarChar</strong>, <strong>Boolean</strong>, <strong>Int</strong>, <strong>Float</strong> e <strong>Double</strong>.</p>
-<h3 id="Add-String-Fields" class="common-anchor-header">Aggiungere campi stringa<button data-href="#Add-String-Fields" class="anchor-icon" translate="no">
+    </button></h2><p>In common cases, you can use scalar fields to store the metadata of the vector embeddings stored in Milvus, and conduct ANN searches with metadata filtering to improve the correctness of the search results. Milvus supports multiple scalar field types, including <strong>VarChar</strong>, <strong>Boolean</strong>, <strong>Int</strong>, <strong>Float</strong>, and <strong>Double</strong>.</p>
+<h3 id="Add-String-Fields" class="common-anchor-header">Add String Fields<button data-href="#Add-String-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -253,9 +269,14 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>In Milvus è possibile utilizzare campi VarChar per memorizzare stringhe. Per maggiori informazioni sul campo VarChar, consultare <a href="/docs/it/string.md">Campo stringa</a>.</p>
+    </button></h3><p>In Milvus, you can use VarChar fields to store strings. For more on the VarChar field, refer to <a href="/docs/it/v2.6.x/string.md">String Field</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_varchar&quot;</span>,
     datatype=DataType.VARCHAR,
@@ -296,7 +317,7 @@ schema.addField(AddFieldReq.builder()
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Add-Number-Fields" class="common-anchor-header">Aggiungere campi numerici<button data-href="#Add-Number-Fields" class="anchor-icon" translate="no">
+<h3 id="Add-Number-Fields" class="common-anchor-header">Add Number Fields<button data-href="#Add-Number-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -311,9 +332,14 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>I tipi di numeri supportati da Milvus sono <code translate="no">Int8</code>, <code translate="no">Int16</code>, <code translate="no">Int32</code>, <code translate="no">Int64</code>, <code translate="no">Float</code> e <code translate="no">Double</code>. Per ulteriori informazioni sui campi numerici, consultare <a href="/docs/it/number.md">Campo numerico</a>.</p>
+    </button></h3><p>The types of numbers that Milvus supports are <code translate="no">Int8</code>, <code translate="no">Int16</code>, <code translate="no">Int32</code>, <code translate="no">Int64</code>, <code translate="no">Float</code>, and <code translate="no">Double</code>. For more on the number fields, refer to <a href="/docs/it/v2.6.x/number.md">Number Field</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_int64&quot;</span>,
     datatype=DataType.INT64,
@@ -348,7 +374,7 @@ schema.addField(AddFieldReq.builder()
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Add-Boolean-Fields" class="common-anchor-header">Aggiungere campi booleani<button data-href="#Add-Boolean-Fields" class="anchor-icon" translate="no">
+<h3 id="Add-Boolean-Fields" class="common-anchor-header">Add Boolean Fields<button data-href="#Add-Boolean-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -363,9 +389,14 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus supporta i campi booleani. I seguenti frammenti di codice mostrano come aggiungere un campo booleano.</p>
+    </button></h3><p>Milvus supports boolean fields. The following code snippets demonstrate how to add a boolean field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_bool&quot;</span>,
     datatype=DataType.BOOL,
@@ -401,7 +432,7 @@ schema.addField(AddFieldReq.builder()
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Add-Composite-Fields" class="common-anchor-header">Aggiungere campi composti<button data-href="#Add-Composite-Fields" class="anchor-icon" translate="no">
+<h2 id="Add-Composite-Fields" class="common-anchor-header">Add Composite Fields<button data-href="#Add-Composite-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -416,8 +447,8 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>In Milvus, un campo composito è un campo che può essere suddiviso in sottocampi più piccoli, come le chiavi di un campo JSON o gli indici di un campo Array.</p>
-<h3 id="Add-JSON-fields" class="common-anchor-header">Aggiungere campi JSON<button data-href="#Add-JSON-fields" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, a composite field is a field that can be divided into smaller sub-fields, such as the keys in a JSON field or the indices in an Array field.</p>
+<h3 id="Add-JSON-fields" class="common-anchor-header">Add JSON fields<button data-href="#Add-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -432,9 +463,14 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Un campo JSON di solito memorizza dati JSON semistrutturati. Per maggiori informazioni sui campi JSON, consultare <a href="/docs/it/json-field">Campo JSON</a>.</p>
+    </button></h3><p>A JSON field usually stores half-structured JSON data. For more on the JSON fields, refer to <a href="/docs/it/v2.6.x/json-field">JSON Field</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_json&quot;</span>,
     datatype=DataType.JSON,
@@ -471,7 +507,7 @@ schema.addField(AddFieldReq.builder()
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Add-Array-Fields" class="common-anchor-header">Aggiungere campi array<button data-href="#Add-Array-Fields" class="anchor-icon" translate="no">
+<h3 id="Add-Array-Fields" class="common-anchor-header">Add Array Fields<button data-href="#Add-Array-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -486,9 +522,14 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Un campo array memorizza un elenco di elementi. I tipi di dati di tutti gli elementi di un campo array devono essere gli stessi. Per ulteriori informazioni sui campi array, consultare <a href="/docs/it/array_data_type.md">Campo array</a>.</p>
+    </button></h3><p>An array field stores a list of elements. The data types of all elements in an array field should be the same. For more on the array fields, refer to <a href="/docs/it/v2.6.x/array_data_type.md">Array Field</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_array&quot;</span>,
     datatype=DataType.ARRAY,

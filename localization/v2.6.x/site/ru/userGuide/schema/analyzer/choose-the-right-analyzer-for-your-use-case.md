@@ -1,9 +1,9 @@
 ---
 id: choose-the-right-analyzer-for-your-use-case.md
-title: Выберите правильный анализатор для вашего случая использования
-summary: Примечания
+title: Choose the Right Analyzer for Your Use Case
+summary: Notes
 ---
-<h1 id="Choose-the-Right-Analyzer-for-Your-Use-Case" class="common-anchor-header">Выберите правильный анализатор для вашего случая использования<button data-href="#Choose-the-Right-Analyzer-for-Your-Use-Case" class="anchor-icon" translate="no">
+<h1 id="Choose-the-Right-Analyzer-for-Your-Use-Case" class="common-anchor-header">Choose the Right Analyzer for Your Use Case<button data-href="#Choose-the-Right-Analyzer-for-Your-Use-Case" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +19,9 @@ summary: Примечания
         ></path>
       </svg>
     </button></h1><div class="alert note">
-<p>Это руководство посвящено принятию практических решений по выбору анализатора. Технические подробности о компонентах анализатора и о том, как добавлять параметры анализатора, см. в разделе <a href="/docs/ru/analyzer-overview.md">Обзор анализатора</a>.</p>
+<p>This guide focuses on practical decision-making for analyzer selection. For technical details about analyzer components and how to add analyzer parameters, refer to <a href="/docs/ru/v2.6.x/analyzer-overview.md">Analyzer Overview</a>.</p>
 </div>
-<h2 id="Understand-analyzers-in-2-minutes" class="common-anchor-header">Понимание анализаторов за 2 минуты<button data-href="#Understand-analyzers-in-2-minutes" class="anchor-icon" translate="no">
+<h2 id="Understand-analyzers-in-2-minutes" class="common-anchor-header">Understand analyzers in 2 minutes<button data-href="#Understand-analyzers-in-2-minutes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,22 +36,24 @@ summary: Примечания
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В Milvus анализатор обрабатывает текст, хранящийся в этом поле, чтобы сделать его доступным для поиска с помощью таких функций, как <a href="/docs/ru/full-text-search.md">полнотекстовый поиск</a> (BM25), <a href="/docs/ru/phrase-match.md">совпадение фраз</a> или <a href="/docs/ru/keyword-match.md">совпадение текста</a>. Считайте, что это текстовый процессор, который преобразует ваш необработанный контент в лексемы, пригодные для поиска.</p>
-<p>Анализатор работает по простой двухступенчатой схеме:</p>
+    </button></h2><p>In Milvus, an analyzer processes the text stored in this field to make it searchable for features like <a href="/docs/ru/v2.6.x/full-text-search.md">full text search</a> (BM25), <a href="/docs/ru/v2.6.x/phrase-match.md">phrase match</a>, or <a href="/docs/ru/v2.6.x/keyword-match.md">text match</a>. Think of it as a text processor that transforms your raw content into searchable tokens.</p>
+<p>An analyzer works in a simple, two-stage pipeline:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/analyzer-workflow.png" alt="Analyzer Workflow" class="doc-image" id="analyzer-workflow" />
-   </span> <span class="img-wrapper"> <span>Рабочий процесс анализатора</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/analyzer-workflow.png" alt="Analyzer Workflow" class="doc-image" id="analyzer-workflow" />
+    <span>Analyzer Workflow</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>Токенизация (обязательно):</strong> На этом начальном этапе применяется <strong>токенизатор</strong>, разбивающий непрерывную строку текста на дискретные, осмысленные единицы, называемые токенами. Метод токенизации может существенно различаться в зависимости от языка и типа содержимого.</p></li>
-<li><p><strong>Фильтрация токенов (необязательно):</strong> После токенизации применяются <strong>фильтры</strong> для изменения, удаления или уточнения токенов. Эти операции могут включать преобразование всех лексем в строчные буквы, удаление общих бессмысленных слов (например, стоп-слов) или сокращение слов до их корневой формы (стемминг).</p></li>
+<li><p><strong>Tokenization (required):</strong> This initial stage applies a <strong>tokenizer</strong> to break a continuous string of text into discrete, meaningful units called tokens. The tokenization method can vary significantly depending on the language and content type.</p></li>
+<li><p><strong>Token filtering (optional):</strong> After tokenization, <strong>filters</strong> are applied to modify, remove, or refine the tokens. These operations can include converting all tokens to lowercase, removing common meaningless words (such as stopwords), or reducing words to their root form (stemming).</p></li>
 </ol>
-<p><strong>Пример</strong>:</p>
+<p><strong>Example</strong>:</p>
 <pre><code translate="no" class="language-plaintext">Input: &quot;Hello World!&quot; 
        1. Tokenization → [&quot;Hello&quot;, &quot;World&quot;, &quot;!&quot;]
        2. Lowercase &amp; Punctuation Filtering → [&quot;hello&quot;, &quot;world&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Why-the-choice-of-analyzer-matters" class="common-anchor-header">Почему выбор анализатора имеет значение<button data-href="#Why-the-choice-of-analyzer-matters" class="anchor-icon" translate="no">
+<h2 id="Why-the-choice-of-analyzer-matters" class="common-anchor-header">Why the choice of analyzer matters<button data-href="#Why-the-choice-of-analyzer-matters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -66,39 +68,39 @@ summary: Примечания
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Выбор неправильного анализатора может сделать релевантные документы непоисковыми или вернуть нерелевантные результаты.</p>
-<p>В следующей таблице приведены общие проблемы, возникающие из-за неправильного выбора анализатора, и даны практические решения для диагностики проблем поиска.</p>
+    </button></h2><p>Choosing the wrong analyzer can make relevant documents unsearchable or return irrelevant results.</p>
+<p>The following table summarizes common problems caused by improper analyzer selection and provides actionable solutions for diagnosing search issues.</p>
 <table>
    <tr>
-     <th><p>Проблема</p></th>
-     <th><p>Симптом</p></th>
-     <th><p>Пример (вход и выход)</p></th>
-     <th><p>Причина (плохой анализатор)</p></th>
-     <th><p>Решение (хороший анализатор)</p></th>
+     <th><p>Problem</p></th>
+     <th><p>Symptom</p></th>
+     <th><p>Example (Input &amp; Output)</p></th>
+     <th><p>Cause (Bad Analyzer)</p></th>
+     <th><p>Solution (Good Analyzer)</p></th>
    </tr>
    <tr>
-     <td><p>Чрезмерная токинизация</p></td>
-     <td><p>Текстовые запросы к техническим терминам, идентификаторам или URL не находят нужных документов.</p></td>
+     <td><p>Over-tokenization</p></td>
+     <td><p>Text queries for technical terms, identifiers, or URLs fail to find relevant documents.</p></td>
      <td><ul><li><p><code translate="no">"user_id"</code> → <code translate="no">['user', 'id']</code></p></li><li><p><code translate="no">"C++"</code> → <code translate="no">['c']</code></p></li></ul></td>
-     <td><p><a href="/docs/ru/standard-analyzer.md"><code translate="no">standard</code></a> анализатор</p></td>
-     <td><p>Используйте <a href="/docs/ru/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> токенизатор; комбинируйте с <a href="/docs/ru/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> фильтром.</p></td>
+     <td><p><a href="/docs/ru/v2.6.x/standard-analyzer.md"><code translate="no">standard</code></a> analyzer</p></td>
+     <td><p>Use a <a href="/docs/ru/v2.6.x/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer; combine with an <a href="/docs/ru/v2.6.x/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> filter.</p></td>
    </tr>
    <tr>
-     <td><p>Недостаточная токенизация</p></td>
-     <td><p>Поиск компонента многословной фразы не возвращает документы, содержащие полную фразу.</p></td>
+     <td><p>Under-tokenization</p></td>
+     <td><p>Search for a component of a multi-word phrase fails to return documents containing the full phrase.</p></td>
      <td><p><code translate="no">"state-of-the-art"</code> → <code translate="no">['state-of-the-art']</code></p></td>
-     <td><p>Анализатор с <a href="/docs/ru/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> токенизатором</p></td>
-     <td><p>Используйте <a href="/docs/ru/standard-tokenizer.md"><code translate="no">standard</code></a> токенизатор для разделения на знаки препинания и пробелы; используйте пользовательский <a href="/docs/ru/regex-filter.md">регекс-фильтр</a>.</p></td>
+     <td><p>Analyzer with a <a href="/docs/ru/v2.6.x/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer</p></td>
+     <td><p>Use a <a href="/docs/ru/v2.6.x/standard-tokenizer.md"><code translate="no">standard</code></a> tokenizer to split on punctuation and spaces; use a custom <a href="/docs/ru/v2.6.x/regex-filter.md">regex</a> filter.</p></td>
    </tr>
    <tr>
-     <td><p>Языковые несоответствия</p></td>
-     <td><p>Результаты поиска для определенного языка не имеют смысла или отсутствуют.</p></td>
-     <td><p>Китайский текст: <code translate="no">"机器学习"</code> → <code translate="no">['机器学习']</code> (одна лексема).</p></td>
-     <td><p><a href="/docs/ru/english-analyzer.md"><code translate="no">english</code></a> анализатор</p></td>
-     <td><p>Используйте анализатор для конкретного языка, например <a href="/docs/ru/chinese-analyzer.md"><code translate="no">chinese</code></a>.</p></td>
+     <td><p>Language Mismatches</p></td>
+     <td><p>Search results for a specific language are nonsensical or nonexistent.</p></td>
+     <td><p>Chinese text: <code translate="no">"机器学习"</code> → <code translate="no">['机器学习']</code> (one token)</p></td>
+     <td><p><a href="/docs/ru/v2.6.x/english-analyzer.md"><code translate="no">english</code></a> analyzer</p></td>
+     <td><p>Use a language-specific analyzer, such as <a href="/docs/ru/v2.6.x/chinese-analyzer.md"><code translate="no">chinese</code></a>.</p></td>
    </tr>
 </table>
-<h2 id="First-question-Do-you-need-to-choose-an-analyzer" class="common-anchor-header">Первый вопрос: Нужно ли вам выбирать анализатор?<button data-href="#First-question-Do-you-need-to-choose-an-analyzer" class="anchor-icon" translate="no">
+<h2 id="First-question-Do-you-need-to-choose-an-analyzer" class="common-anchor-header">First question: Do you need to choose an analyzer?<button data-href="#First-question-Do-you-need-to-choose-an-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -113,8 +115,8 @@ summary: Примечания
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Для многих случаев вам не нужно делать ничего особенного. Давайте определим, относитесь ли вы к их числу.</p>
-<h3 id="Default-behavior-standard-analyzer" class="common-anchor-header">Поведение по умолчанию: <code translate="no">standard</code> анализатор<button data-href="#Default-behavior-standard-analyzer" class="anchor-icon" translate="no">
+    </button></h2><p>For many use cases, you don’t need to do anything special. Let’s determine if you’re one of them.</p>
+<h3 id="Default-behavior-standard-analyzer" class="common-anchor-header">Default behavior: <code translate="no">standard</code> analyzer<button data-href="#Default-behavior-standard-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,18 +131,18 @@ summary: Примечания
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Если вы не указываете анализатор при использовании таких функций поиска текста, как полнотекстовый поиск, Milvus автоматически использует <a href="/docs/ru/standard-analyzer.md"><code translate="no">standard</code></a> анализатор.</p>
-<p>Анализатор <code translate="no">standard</code>:</p>
+    </button></h3><p>If you don’t specify an analyzer when using text retrieval features like full text search, Milvus automatically uses the <a href="/docs/ru/v2.6.x/standard-analyzer.md"><code translate="no">standard</code></a> analyzer.</p>
+<p>The <code translate="no">standard</code> analyzer:</p>
 <ul>
-<li><p>Разделяет текст на пробелы и знаки препинания</p></li>
-<li><p>Преобразует все лексемы в строчные буквы</p></li>
-<li><p>Удаляет встроенный набор распространенных английских стоп-слов и большинство знаков препинания.</p></li>
+<li><p>Splits text on spaces and punctuation</p></li>
+<li><p>Converts all tokens to lowercase</p></li>
+<li><p>Removes a built-in set of common English stop words and most punctuation</p></li>
 </ul>
-<p><strong>Пример преобразования</strong>:</p>
+<p><strong>Example transformation</strong>:</p>
 <pre><code translate="no" class="language-plaintext">Input:  &quot;The Milvus vector database is built for scale!&quot;
 Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database&#x27;, &#x27;is&#x27;, &#x27;built&#x27;, &#x27;scale&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Decision-criteria-A-quick-check" class="common-anchor-header">Критерии принятия решений: Быстрая проверка<button data-href="#Decision-criteria-A-quick-check" class="anchor-icon" translate="no">
+<h3 id="Decision-criteria-A-quick-check" class="common-anchor-header">Decision criteria: A quick check<button data-href="#Decision-criteria-A-quick-check" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -155,51 +157,51 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Используйте эту таблицу, чтобы быстро определить, удовлетворяет ли стандартный анализатор <code translate="no">standard</code> вашим потребностям. Если нет, вам нужно выбрать другой путь.</p>
+    </button></h3><p>Use this table to quickly determine if the default <code translate="no">standard</code> analyzer meets your needs. If it doesn’t, you’ll need to choose a different path.</p>
 <table>
    <tr>
-     <th><p>Ваш контент</p></th>
-     <th><p>Стандартный анализатор подходит?</p></th>
-     <th><p>Почему</p></th>
-     <th><p>Что вам нужно</p></th>
+     <th><p>Your Content</p></th>
+     <th><p>Standard Analyzer OK?</p></th>
+     <th><p>Why</p></th>
+     <th><p>What You Need</p></th>
    </tr>
    <tr>
-     <td><p>Записи в блоге на английском языке</p></td>
-     <td><p>✅ Да</p></td>
-     <td><p>Поведение по умолчанию является достаточным.</p></td>
-     <td><p>Используйте значение по умолчанию (настройка не требуется).</p></td>
+     <td><p>English blog posts</p></td>
+     <td><p>✅ Yes</p></td>
+     <td><p>Default behavior is sufficient.</p></td>
+     <td><p>Use the default (no configuration needed).</p></td>
    </tr>
    <tr>
-     <td><p>Документы на китайском языке</p></td>
-     <td><p>❌ Нет</p></td>
-     <td><p>Китайские слова не имеют пробелов и будут рассматриваться как один токен.</p></td>
-     <td><p>Используйте встроенный <a href="/docs/ru/chinese-analyzer.md"><code translate="no">chinese</code></a> анализатор.</p></td>
+     <td><p>Chinese documents</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>Chinese words have no spaces and will be treated as one token.</p></td>
+     <td><p>Use a built-in <a href="/docs/ru/v2.6.x/chinese-analyzer.md"><code translate="no">chinese</code></a> analyzer.</p></td>
    </tr>
    <tr>
-     <td><p>Техническая документация</p></td>
-     <td><p>❌ Нет</p></td>
-     <td><p>Пунктуация удаляется из таких терминов, как <code translate="no">C++</code>.</p></td>
-     <td><p>Создайте собственный анализатор с <a href="/docs/ru/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> токенизатором и <a href="/docs/ru/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> фильтром.</p></td>
+     <td><p>Technical documentation</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>Punctuation is stripped from terms like <code translate="no">C++</code>.</p></td>
+     <td><p>Create a custom analyzer with a <a href="/docs/ru/v2.6.x/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer and an <a href="/docs/ru/v2.6.x/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> filter.</p></td>
    </tr>
    <tr>
-     <td><p>Языки, разделенные пробелами, например французский/испанский текст</p></td>
-     <td><p>⚠️ Возможно.</p></td>
-     <td><p>Акцентированные символы (<code translate="no">café</code> vs. <code translate="no">cafe</code>) могут не совпадать.</p></td>
-     <td><p>Для получения лучших результатов рекомендуется использовать собственный анализатор с <a href="/docs/ru/ascii-folding-filter.md"><code translate="no">asciifolding</code></a> рекомендуется для получения лучших результатов.</p></td>
+     <td><p>Space-separated languages such as French/Spanish text</p></td>
+     <td><p>⚠️ Maybe</p></td>
+     <td><p>Accented characters (<code translate="no">café</code> vs. <code translate="no">cafe</code>) may not match.</p></td>
+     <td><p>A custom analyzer with the <a href="/docs/ru/v2.6.x/ascii-folding-filter.md"><code translate="no">asciifolding</code></a> is recommended for better results.</p></td>
    </tr>
    <tr>
-     <td><p>Многоязычные или неизвестные языки</p></td>
-     <td><p>❌ Нет</p></td>
-     <td><p>В анализаторе <code translate="no">standard</code> отсутствует логика, необходимая для работы с различными наборами символов и правилами токенизации.</p></td>
-     <td><p>Используйте собственный анализатор с <a href="/docs/ru/icu-tokenizer.md"><code translate="no">icu</code></a> токенизатором для уникодовой токенизации. </p><p>Кроме того, для более точной обработки <a href="/docs/ru/multi-language-analyzers.md">многоязычного</a> контента можно использовать <a href="/docs/ru/multi-language-analyzers.md">мультиязычные анализаторы</a> или <a href="/docs/ru/language-identifier.md">языковой идентификатор</a>.</p></td>
+     <td><p>Multilingual or unknown languages</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>The <code translate="no">standard</code> analyzer lacks the language-specific logic needed to handle different character sets and tokenization rules.</p></td>
+     <td><p>Use a custom analyzer with the <a href="/docs/ru/v2.6.x/icu-tokenizer.md"><code translate="no">icu</code></a> tokenizer for unicode-aware tokenization. </p><p>Alternatively, consider configuring <a href="/docs/ru/v2.6.x/multi-language-analyzers.md">multi-language analyzers</a> or a <a href="/docs/ru/v2.6.x/language-identifier.md">language identifier</a> for more precise handling of multilingual content.</p></td>
    </tr>
 </table>
-<p>Если стандартный анализатор <code translate="no">standard</code> не удовлетворяет вашим требованиям, вам необходимо реализовать другой анализатор. У вас есть два пути:</p>
+<p>If the default <code translate="no">standard</code> analyzer cannot meet your requirements, you need to implement a different one. You have two paths:</p>
 <ul>
-<li><p><a href="/docs/ru/choose-the-right-analyzer-for-your-use-case.md#Path-A-Use-built-in-analyzers">Использовать встроенный анализатор</a> или</p></li>
-<li><p><a href="/docs/ru/choose-the-right-analyzer-for-your-use-case.md#Path-B-Create-a-custom-analyzer">Создание собственного анализатора</a></p></li>
+<li><p><a href="/docs/ru/v2.6.x/choose-the-right-analyzer-for-your-use-case.md#Path-A-Use-built-in-analyzers">Using a built-in analyzer</a> or</p></li>
+<li><p><a href="/docs/ru/v2.6.x/choose-the-right-analyzer-for-your-use-case.md#Path-B-Create-a-custom-analyzer">Creating a custom one</a></p></li>
 </ul>
-<h2 id="Path-A-Use-built-in-analyzers" class="common-anchor-header">Путь A: Использование встроенных анализаторов<button data-href="#Path-A-Use-built-in-analyzers" class="anchor-icon" translate="no">
+<h2 id="Path-A-Use-built-in-analyzers" class="common-anchor-header">Path A: Use built-in analyzers<button data-href="#Path-A-Use-built-in-analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,8 +216,8 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Встроенные анализаторы - это заранее настроенные решения для распространенных языков. Это самый простой способ начать работу, когда стандартный анализатор по умолчанию не подходит.</p>
-<h3 id="Available-built-in-analyzers" class="common-anchor-header">Доступные встроенные анализаторы<button data-href="#Available-built-in-analyzers" class="anchor-icon" translate="no">
+    </button></h2><p>Built-in analyzers are pre-configured solutions for common languages. They are the easiest way to get started when the default standard analyzer isn’t a perfect fit.</p>
+<h3 id="Available-built-in-analyzers" class="common-anchor-header">Available built-in analyzers<button data-href="#Available-built-in-analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -232,31 +234,31 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
       </svg>
     </button></h3><table>
    <tr>
-     <th><p>Анализатор</p></th>
-     <th><p>Поддержка языка</p></th>
-     <th><p>Компоненты</p></th>
-     <th><p>Примечания</p></th>
+     <th><p>Analyzer</p></th>
+     <th><p>Language Support</p></th>
+     <th><p>Components</p></th>
+     <th><p>Notes</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/standard-analyzer.md"><code translate="no">standard</code></a></p></td>
-     <td><p>Большинство языков, разделенных пробелами (английский, французский, немецкий, испанский и т.д.)</p></td>
-     <td><ul><li><p>Токенизатор: <code translate="no">standard</code></p></li><li><p>Фильтры: <code translate="no">lowercase</code></p></li></ul></td>
-     <td><p>Анализатор общего назначения для начальной обработки текста. Для моноязычных сценариев более высокую производительность обеспечивают анализаторы, ориентированные на конкретный язык (например, <code translate="no">english</code>).</p></td>
+     <td><p><a href="/docs/ru/v2.6.x/standard-analyzer.md"><code translate="no">standard</code></a></p></td>
+     <td><p>Most space-separated languages (English, French, German, Spanish, etc.)</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">standard</code></p></li><li><p>Filters: <code translate="no">lowercase</code></p></li></ul></td>
+     <td><p>General-purpose analyzer for initial text processing. For monolingual scenarios, language-specific analyzers (like <code translate="no">english</code>) provide better performance.</p></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/english-analyzer.md"><code translate="no">english</code></a></p></td>
-     <td><p>Специализированный для английского языка, который применяет стемминг и удаление стоп-слов для лучшего соответствия английской семантике</p></td>
-     <td><ul><li><p>Токенизатор: <code translate="no">standard</code></p></li><li><p>Фильтры: <code translate="no">lowercase</code>, <code translate="no">stemmer</code>, <code translate="no">stop</code></p></li></ul></td>
-     <td><p>Рекомендуется для англоязычного контента по сравнению с <code translate="no">standard</code>.</p></td>
+     <td><p><a href="/docs/ru/v2.6.x/english-analyzer.md"><code translate="no">english</code></a></p></td>
+     <td><p>Dedicated to English, which applies stemming and stop word removal for better English semantic matching</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">standard</code></p></li><li><p>Filters: <code translate="no">lowercase</code>, <code translate="no">stemmer</code>, <code translate="no">stop</code></p></li></ul></td>
+     <td><p>Recommended for English-only content over <code translate="no">standard</code>.</p></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/chinese-analyzer.md"><code translate="no">chinese</code></a></p></td>
-     <td><p>Китайский</p></td>
-     <td><ul><li><p>Токенизатор: <code translate="no">jieba</code></p></li><li><p>Фильтры: <code translate="no">cnalphanumonly</code></p></li></ul></td>
-     <td><p>В настоящее время по умолчанию используется словарь упрощенного китайского языка.</p></td>
+     <td><p><a href="/docs/ru/v2.6.x/chinese-analyzer.md"><code translate="no">chinese</code></a></p></td>
+     <td><p>Chinese</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">jieba</code></p></li><li><p>Filters: <code translate="no">cnalphanumonly</code></p></li></ul></td>
+     <td><p>Currently uses Simplified Chinese dictionary by default.</p></td>
    </tr>
 </table>
-<h3 id="Implementation-example" class="common-anchor-header">Пример реализации<button data-href="#Implementation-example" class="anchor-icon" translate="no">
+<h3 id="Implementation-example" class="common-anchor-header">Implementation example<button data-href="#Implementation-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -271,7 +273,7 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Чтобы использовать встроенный анализатор, просто укажите его тип на странице <code translate="no">analyzer_params</code> при определении схемы поля.</p>
+    </button></h3><p>To use a built-in analyzer, simply specify its type in the <code translate="no">analyzer_params</code> when defining your field schema.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Using built-in English analyzer</span>
 analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;english&quot;</span>
@@ -287,9 +289,9 @@ schema.add_field(
 )
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Подробнее об использовании см. в разделах <a href="/docs/ru/full-text-search.md">"Полнотекстовый поиск"</a>, <a href="/docs/ru/keyword-match.md">"Совпадение текста"</a> или <a href="/docs/ru/phrase-match.md">"Совпадение фразы</a>".</p>
+<p>For detailed usage, refer to <a href="/docs/ru/v2.6.x/full-text-search.md">Full Text Search</a>, <a href="/docs/ru/v2.6.x/keyword-match.md">Text Match</a>, or <a href="/docs/ru/v2.6.x/phrase-match.md">Phrase Match</a>.</p>
 </div>
-<h2 id="Path-B-Create-a-custom-analyzer" class="common-anchor-header">Путь B: Создание пользовательского анализатора<button data-href="#Path-B-Create-a-custom-analyzer" class="anchor-icon" translate="no">
+<h2 id="Path-B-Create-a-custom-analyzer" class="common-anchor-header">Path B: Create a custom analyzer<button data-href="#Path-B-Create-a-custom-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -304,8 +306,8 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Если <a href="/docs/ru/choose-the-right-analyzer-for-your-use-case.md#Available-built-in-analyzers">встроенные опции</a> не удовлетворяют вашим потребностям, вы можете создать собственный анализатор, объединив токенизатор с набором фильтров. Это дает вам полный контроль над конвейером обработки текста.</p>
-<h3 id="Step-1-Select-the-tokenizer-based-on-language" class="common-anchor-header">Шаг 1: Выберите токенизатор на основе языка<button data-href="#Step-1-Select-the-tokenizer-based-on-language" class="anchor-icon" translate="no">
+    </button></h2><p>When <a href="/docs/ru/v2.6.x/choose-the-right-analyzer-for-your-use-case.md#Available-built-in-analyzers">built-in options</a> don’t meet your needs, you can create a custom analyzer by combining a tokenizer with a set of filters. This gives you full control over the text processing pipeline.</p>
+<h3 id="Step-1-Select-the-tokenizer-based-on-language" class="common-anchor-header">Step 1: Select the tokenizer based on language<button data-href="#Step-1-Select-the-tokenizer-based-on-language" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -320,95 +322,95 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Выберите токенизатор в зависимости от основного языка вашего контента:</p>
-<h4 id="Western-languages" class="common-anchor-header">Западные языки</h4><p>Для языков, разделенных пробелами, у вас есть следующие варианты:</p>
+    </button></h3><p>Choose your tokenizer based on your content’s primary language:</p>
+<h4 id="Western-languages" class="common-anchor-header">Western languages</h4><p>For space-separated languages, you have these options:</p>
 <table>
    <tr>
-     <th><p>Токенизатор</p></th>
-     <th><p>Как это работает</p></th>
-     <th><p>Лучший для</p></th>
-     <th><p>Примеры</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/standard-tokenizer.md"><code translate="no">standard</code></a></p></td>
-     <td><p>Разделяет текст на основе пробелов и знаков препинания</p></td>
-     <td><p>Общий текст, смешанная пунктуация</p></td>
-     <td><ul><li><p>Вход: <code translate="no">"Hello, world! Visit example.com"</code></p></li><li><p>Выход: <code translate="no">['Hello', 'world', 'Visit', 'example', 'com']</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/standard-tokenizer.md"><code translate="no">standard</code></a></p></td>
+     <td><p>Splits text based on spaces and punctuation marks</p></td>
+     <td><p>General text, mixed punctuation</p></td>
+     <td><ul><li><p>Input: <code translate="no">"Hello, world! Visit example.com"</code></p></li><li><p>Output: <code translate="no">['Hello', 'world', 'Visit', 'example', 'com']</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/whitespace-tokenizer.md"><code translate="no">whitespace</code></a></p></td>
-     <td><p>Разделение только по пробельным символам</p></td>
-     <td><p>Предварительно обработанный контент, текст, отформатированный пользователем</p></td>
-     <td><ul><li><p>Вход: <code translate="no">"user_id = get_user_data()"</code></p></li><li><p>Выходные данные: <code translate="no">['user_id', '=', 'get_user_data()']</code></p></li></ul></td>
-   </tr>
-</table>
-<h4 id="East-Asian-languages" class="common-anchor-header">Восточноазиатские языки</h4><p>Языки, основанные на словарях, требуют специализированных токенизаторов для правильной сегментации слов:</p>
-<h5 id="Chinese" class="common-anchor-header">Китайский</h5><table>
-   <tr>
-     <th><p>Токенизатор</p></th>
-     <th><p>Как работает</p></th>
-     <th><p>Лучший для</p></th>
-     <th><p>Примеры</p></th>
-   </tr>
-   <tr>
-     <td><p><a href="/docs/ru/jieba-tokenizer.md"><code translate="no">jieba</code></a></p></td>
-     <td><p>Сегментация на основе китайского словаря с интеллектуальным алгоритмом</p></td>
-     <td><p><strong>Рекомендуется для китайского контента</strong> - сочетает в себе словарь и интеллектуальные алгоритмы, специально разработанные для китайского языка</p></td>
-     <td><ul><li><p>Вход: <code translate="no">"机器学习是人工智能的一个分支"</code></p></li><li><p>Выход: <code translate="no">['机器', '学习', '是', '人工', '智能', '人工智能', '的', '一个', '分支']</code></p></li></ul></td>
-   </tr>
-   <tr>
-     <td><p><a href="/docs/ru/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
-     <td><p>Морфологический анализ на основе чистого словаря с китайским словарем<a href="https://cc-cedict.org/wiki/">(cc-cedict</a>)</p></td>
-     <td><p>По сравнению с <code translate="no">jieba</code>, обрабатывает китайский текст более универсальным образом.</p></td>
-     <td><ul><li><p>Вход: <code translate="no">"机器学习算法"</code></p></li><li><p>Выходные данные: <code translate="no">["机器", "学习", "算法"]</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/whitespace-tokenizer.md"><code translate="no">whitespace</code></a></p></td>
+     <td><p>Splits only on whitespace characters</p></td>
+     <td><p>Pre-processed content, user-formatted text</p></td>
+     <td><ul><li><p>Input: <code translate="no">"user_id = get_user_data()"</code></p></li><li><p>Output: <code translate="no">['user_id', '=', 'get_user_data()']</code></p></li></ul></td>
    </tr>
 </table>
-<h5 id="Japanese-and-Korean" class="common-anchor-header">Японский и корейский</h5><table>
+<h4 id="East-Asian-languages" class="common-anchor-header">East Asian languages</h4><p>Dictionary-based languages require specialized tokenizers for proper word segmentation:</p>
+<h5 id="Chinese" class="common-anchor-header">Chinese</h5><table>
    <tr>
-     <th><p>Язык</p></th>
-     <th><p>Токенизатор</p></th>
-     <th><p>Параметры словаря</p></th>
-     <th><p>Лучший для</p></th>
-     <th><p>Примеры</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p>Японский</p></td>
-     <td><p><a href="/docs/ru/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
-     <td><p><a href="https://taku910.github.io/mecab/">ipadic</a> (общего назначения), <a href="https://github.com/neologd/mecab-ipadic-neologd">ipadic-neologd</a> (современные термины), <a href="https://clrd.ninjal.ac.jp/unidic/">unidic</a> (академический)</p></td>
-     <td><p>Морфологический анализ с обработкой правильных существительных</p></td>
-     <td><ul><li><p>Вход: <code translate="no">"東京都渋谷区"</code></p></li><li><p>Выход: <code translate="no">["東京", "都", "渋谷", "区"]</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/jieba-tokenizer.md"><code translate="no">jieba</code></a></p></td>
+     <td><p>Chinese dictionary-based segmentation with intelligent algorithm</p></td>
+     <td><p><strong>Recommended for Chinese content</strong> - combines dictionary with intelligent algorithms, specifically designed for Chinese</p></td>
+     <td><ul><li><p>Input: <code translate="no">"机器学习是人工智能的一个分支"</code></p></li><li><p>Output: <code translate="no">['机器', '学习', '是', '人工', '智能', '人工智能', '的', '一个', '分支']</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p>Корейский</p></td>
-     <td><p><a href="/docs/ru/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
+     <td><p><a href="/docs/ru/v2.6.x/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
+     <td><p>Pure dictionary-based morphological analysis with Chinese dictionary (<a href="https://cc-cedict.org/wiki/">cc-cedict</a>)</p></td>
+     <td><p>Compared to <code translate="no">jieba</code>, processes Chinese text in a more generic manner</p></td>
+     <td><ul><li><p>Input: <code translate="no">"机器学习算法"</code></p></li><li><p>Output: <code translate="no">["机器", "学习", "算法"]</code></p></li></ul></td>
+   </tr>
+</table>
+<h5 id="Japanese-and-Korean" class="common-anchor-header">Japanese and Korean</h5><table>
+   <tr>
+     <th><p>Language</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>Dictionary Options</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
+   </tr>
+   <tr>
+     <td><p>Japanese</p></td>
+     <td><p><a href="/docs/ru/v2.6.x/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
+     <td><p><a href="https://taku910.github.io/mecab/">ipadic</a> (general-purpose), <a href="https://github.com/neologd/mecab-ipadic-neologd">ipadic-neologd</a> (modern terms), <a href="https://clrd.ninjal.ac.jp/unidic/">unidic</a> (academic)</p></td>
+     <td><p>Morphological analysis with proper noun handling</p></td>
+     <td><ul><li><p>Input: <code translate="no">"東京都渋谷区"</code></p></li><li><p>Output: <code translate="no">["東京", "都", "渋谷", "区"]</code></p></li></ul></td>
+   </tr>
+   <tr>
+     <td><p>Korean</p></td>
+     <td><p><a href="/docs/ru/v2.6.x/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
      <td><p><a href="https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/">ko-dic</a></p></td>
-     <td><p>Морфологический анализ корейского языка</p></td>
-     <td><ul><li><p>Вход: <code translate="no">"안녕하세요"</code></p></li><li><p>Выходные данные: <code translate="no">["안녕", "하", "세요"]</code></p></li></ul></td>
+     <td><p>Korean morphological analysis</p></td>
+     <td><ul><li><p>Input: <code translate="no">"안녕하세요"</code></p></li><li><p>Output: <code translate="no">["안녕", "하", "세요"]</code></p></li></ul></td>
    </tr>
 </table>
-<h4 id="Multilingual-or-unknown-languages" class="common-anchor-header">Многоязычие или неизвестные языки</h4><p>Для контента, в котором языки непредсказуемы или смешаны внутри документов:</p>
+<h4 id="Multilingual-or-unknown-languages" class="common-anchor-header">Multilingual or unknown languages</h4><p>For content where languages are unpredictable or mixed within documents:</p>
 <table>
    <tr>
-     <th><p>Токенизатор</p></th>
-     <th><p>Как это работает</p></th>
-     <th><p>Лучше всего подходит для</p></th>
-     <th><p>Примеры</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/icu-tokenizer.md"><code translate="no">icu</code></a></p></td>
-     <td><p>Токенизация с учетом Юникода (Международные компоненты для Юникода)</p></td>
-     <td><p>Смешанные шрифты, неизвестные языки или когда достаточно простой токенизации</p></td>
-     <td><ul><li><p>Вход: <code translate="no">"Hello 世界 مرحبا"</code></p></li><li><p>Выход: <code translate="no">['Hello', ' ', '世界', ' ', 'مرحبا']</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/icu-tokenizer.md"><code translate="no">icu</code></a></p></td>
+     <td><p>Unicode-aware tokenization (International Components for Unicode)</p></td>
+     <td><p>Mixed scripts, unknown languages, or when simple tokenization is sufficient</p></td>
+     <td><ul><li><p>Input: <code translate="no">"Hello 世界 مرحبا"</code></p></li><li><p>Output: <code translate="no">['Hello', ' ', '世界', ' ', 'مرحبا']</code></p></li></ul></td>
    </tr>
 </table>
-<p><strong>Когда использовать icu</strong>:</p>
+<p><strong>When to use icu</strong>:</p>
 <ul>
-<li><p>Смешанные языки, когда идентификация языка нецелесообразна.</p></li>
-<li><p>Вам не нужны накладные расходы на <a href="/docs/ru/multi-language-analyzers.md">многоязычные анализаторы</a> или <a href="/docs/ru/language-identifier.md">идентификатор языка</a>.</p></li>
-<li><p>Контент имеет основной язык, в котором иногда встречаются иностранные слова, вносящие незначительный вклад в общий смысл (например, английский текст с единичными названиями брендов или техническими терминами на японском или французском).</p></li>
+<li><p>Mixed languages where language identification is impractical.</p></li>
+<li><p>You don’t want the overhead of <a href="/docs/ru/v2.6.x/multi-language-analyzers.md">multi-language analyzers</a> or the <a href="/docs/ru/v2.6.x/language-identifier.md">language identifier</a>.</p></li>
+<li><p>Content has a primary language with occasional foreign words that contribute little to the overall meaning (e.g., English text with sporadic brand names or technical terms in Japanese or French).</p></li>
 </ul>
-<p><strong>Альтернативные подходы</strong>: Для более точной обработки многоязычного содержимого используйте многоязычные анализаторы или идентификатор языка. Подробнее см. в разделе <a href="/docs/ru/multi-language-analyzers.md">Многоязычные анализаторы</a> или <a href="/docs/ru/language-identifier.md">языковой идентификатор</a>.</p>
-<h3 id="Step-2-Add-filters-for-precision" class="common-anchor-header">Шаг 2: Добавьте фильтры для повышения точности<button data-href="#Step-2-Add-filters-for-precision" class="anchor-icon" translate="no">
+<p><strong>Alternative approaches</strong>: For more precise handling of multilingual content, consider using multi-language analyzers or the language identifier. For details, refer to <a href="/docs/ru/v2.6.x/multi-language-analyzers.md">Multi-language Analyzers</a> or <a href="/docs/ru/v2.6.x/language-identifier.md">Language Identifier</a>.</p>
+<h3 id="Step-2-Add-filters-for-precision" class="common-anchor-header">Step 2: Add filters for precision<button data-href="#Step-2-Add-filters-for-precision" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -423,113 +425,113 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>После <a href="/docs/ru/choose-the-right-analyzer-for-your-use-case.md#Step-1-Select-the-tokenizer-based-on-language">выбора токенизатора</a> примените фильтры в соответствии с вашими требованиями к поиску и характеристиками контента.</p>
-<h4 id="Commonly-used-filters" class="common-anchor-header">Часто используемые фильтры</h4><p>Эти фильтры необходимы для большинства языковых конфигураций с раздельным пробелом (английский, французский, немецкий, испанский и т. д.) и значительно улучшают качество поиска:</p>
+    </button></h3><p>After <a href="/docs/ru/v2.6.x/choose-the-right-analyzer-for-your-use-case.md#Step-1-Select-the-tokenizer-based-on-language">selecting your tokenizer</a>, apply filters based on your specific search requirements and content characteristics.</p>
+<h4 id="Commonly-used-filters" class="common-anchor-header">Commonly used filters</h4><p>These filters are essential for most space-separated language configurations (English, French, German, Spanish, etc.) and significantly improve search quality:</p>
 <table>
    <tr>
-     <th><p>Фильтр</p></th>
-     <th><p>Как работает</p></th>
-     <th><p>Когда использовать</p></th>
-     <th><p>Примеры</p></th>
+     <th><p>Filter</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>When to Use</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/lowercase-filter.md"><code translate="no">lowercase</code></a></p></td>
-     <td><p>Преобразовать все лексемы в нижний регистр</p></td>
-     <td><p>Универсальный - применяется ко всем языкам с различием регистра</p></td>
-     <td><ul><li><p>Вход: <code translate="no">["Apple", "iPhone"]</code></p></li><li><p>Выход: <code translate="no">[['apple'], ['iphone']]</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/lowercase-filter.md"><code translate="no">lowercase</code></a></p></td>
+     <td><p>Convert all tokens to lowercase</p></td>
+     <td><p>Universal - applies to all languages with case distinctions</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Apple", "iPhone"]</code></p></li><li><p>Output: <code translate="no">[['apple'], ['iphone']]</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/stemmer-filter.md"><code translate="no">stemmer</code></a></p></td>
-     <td><p>Сократить слова до их корневой формы</p></td>
-     <td><p>Языки с падежными окончаниями слов (английский, французский, немецкий и т.д.)</p></td>
-     <td><p>Для английского языка:</p><ul><li><p>Вход: <code translate="no">["running", "runs", "ran"]</code></p></li><li><p>Выход: <code translate="no">[['run'], ['run'], ['ran']]</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/stemmer-filter.md"><code translate="no">stemmer</code></a></p></td>
+     <td><p>Reduce words to their root form</p></td>
+     <td><p>Languages with word inflections (English, French, German, etc.)</p></td>
+     <td><p>For English:</p><ul><li><p>Input: <code translate="no">["running", "runs", "ran"]</code></p></li><li><p>Output: <code translate="no">[['run'], ['run'], ['ran']]</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/stop-filter.md"><code translate="no">stop</code></a></p></td>
-     <td><p>Удалить общие бессмысленные слова</p></td>
-     <td><p>Для большинства языков - особенно эффективно для языков, разделенных пробелами</p></td>
-     <td><ul><li><p>Ввод: <code translate="no">["the", "quick", "brown", "fox"]</code></p></li><li><p>Выходные данные: <code translate="no">[[], ['quick'], ['brown'], ['fox']]</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/stop-filter.md"><code translate="no">stop</code></a></p></td>
+     <td><p>Remove common meaningless words</p></td>
+     <td><p>Most languages - particularly effective for space-separated languages</p></td>
+     <td><ul><li><p>Input: <code translate="no">["the", "quick", "brown", "fox"]</code></p></li><li><p>Output: <code translate="no">[[], ['quick'], ['brown'], ['fox']]</code></p></li></ul></td>
    </tr>
 </table>
 <div class="alert note">
-<p>Для восточноазиатских языков (китайского, японского, корейского и т. д.) используйте <a href="/docs/ru/choose-the-right-analyzer-for-your-use-case.md#Language-specific-filters">фильтры, ориентированные на конкретный язык</a>. Эти языки обычно используют другие подходы к обработке текстов и не могут извлечь значительной пользы из стемминга.</p>
+<p>For East Asian languages (Chinese, Japanese, Korean, etc.), focus on <a href="/docs/ru/v2.6.x/choose-the-right-analyzer-for-your-use-case.md#Language-specific-filters">language-specific filters</a> instead. These languages typically use different approaches for text processing and may not benefit significantly from stemming.</p>
 </div>
-<h4 id="Text-normalization-filters" class="common-anchor-header">Фильтры нормализации текста</h4><p>Эти фильтры стандартизируют варианты текста, чтобы улучшить согласованность совпадений:</p>
+<h4 id="Text-normalization-filters" class="common-anchor-header">Text normalization filters</h4><p>These filters standardize text variations to improve matching consistency:</p>
 <table>
    <tr>
-     <th><p>Фильтр</p></th>
-     <th><p>Как работает</p></th>
-     <th><p>Когда использовать</p></th>
-     <th><p>Примеры</p></th>
+     <th><p>Filter</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>When to Use</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/ascii-folding-filter.md"><code translate="no">asciifolding</code></a></p></td>
-     <td><p>Преобразование акцентированных символов в эквиваленты ASCII</p></td>
-     <td><p>Международный контент, пользовательский контент</p></td>
-     <td><ul><li><p>Вход: <code translate="no">["café", "naïve", "résumé"]</code></p></li><li><p>Выход: <code translate="no">[['cafe'], ['naive'], ['resume']]</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/ascii-folding-filter.md"><code translate="no">asciifolding</code></a></p></td>
+     <td><p>Convert accented characters to ASCII equivalents</p></td>
+     <td><p>International content, user-generated content</p></td>
+     <td><ul><li><p>Input: <code translate="no">["café", "naïve", "résumé"]</code></p></li><li><p>Output: <code translate="no">[['cafe'], ['naive'], ['resume']]</code></p></li></ul></td>
    </tr>
 </table>
-<h4 id="Token-filtering" class="common-anchor-header">Фильтрация токенов</h4><p>Контролируйте, какие токены будут сохранены на основе содержания или длины символов:</p>
+<h4 id="Token-filtering" class="common-anchor-header">Token filtering</h4><p>Control which tokens are preserved based on character content or length:</p>
 <table>
    <tr>
-     <th><p>Фильтр</p></th>
-     <th><p>Как это работает</p></th>
-     <th><p>Когда использовать</p></th>
-     <th><p>Примеры</p></th>
+     <th><p>Filter</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>When to Use</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/removepunct-filter.md"><code translate="no">removepunct</code></a></p></td>
-     <td><p>Удалить отдельные знаки препинания</p></td>
-     <td><p>Очистка вывода токенизаторов <code translate="no">jieba</code>, <code translate="no">lindera</code>, <code translate="no">icu</code>, которые возвращают знаки препинания в виде отдельных лексем</p></td>
-     <td><ul><li><p>Вход: <code translate="no">["Hello", "!", "world"]</code></p></li><li><p>Выход: <code translate="no">[['Hello'], ['world']]</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/removepunct-filter.md"><code translate="no">removepunct</code></a></p></td>
+     <td><p>Remove standalone punctuation tokens</p></td>
+     <td><p>Clean output from <code translate="no">jieba</code>, <code translate="no">lindera</code>, <code translate="no">icu</code> tokenizers, which will return punctuations as single tokens</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Hello", "!", "world"]</code></p></li><li><p>Output: <code translate="no">[['Hello'], ['world']]</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a></p></td>
-     <td><p>Оставить только буквы и цифры</p></td>
-     <td><p>Технический контент, обработка чистого текста</p></td>
-     <td><ul><li><p>Вход: <code translate="no">["user123", "test@email.com"]</code></p></li><li><p>Выходные данные: <code translate="no">[['user123'], ['test', 'email', 'com']]</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a></p></td>
+     <td><p>Keep only letters and numbers</p></td>
+     <td><p>Technical content, clean text processing</p></td>
+     <td><ul><li><p>Input: <code translate="no">["user123", "test@email.com"]</code></p></li><li><p>Output: <code translate="no">[['user123'], ['test', 'email', 'com']]</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/length-filter.md"><code translate="no">length</code></a></p></td>
-     <td><p>Удаление лексем, выходящих за пределы заданного диапазона длины</p></td>
-     <td><p>Отфильтровать шум (слишком длинные лексемы)</p></td>
-     <td><ul><li><p>Вход: <code translate="no">["a", "very", "extraordinarily"]</code></p></li><li><p>Выход: <code translate="no">[['a'], ['very'], []]</code> (если <strong>max=10</strong>)</p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/length-filter.md"><code translate="no">length</code></a></p></td>
+     <td><p>Remove tokens outside specified length range</p></td>
+     <td><p>Filter noise (exccessively long tokens)</p></td>
+     <td><ul><li><p>Input: <code translate="no">["a", "very", "extraordinarily"]</code></p></li><li><p>Output: <code translate="no">[['a'], ['very'], []]</code> (if <strong>max=10</strong>)</p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/regex-filter.md"><code translate="no">regex</code></a></p></td>
-     <td><p>Пользовательская фильтрация на основе шаблонов</p></td>
-     <td><p>Требования к токенам, специфичные для домена</p></td>
-     <td><ul><li><p>Вход: <code translate="no">["test123", "prod456"]</code></p></li><li><p>Выход: <code translate="no">[[], ['prod456']]</code> (если <strong>expr="^prod"</strong>)</p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/regex-filter.md"><code translate="no">regex</code></a></p></td>
+     <td><p>Custom pattern-based filtering</p></td>
+     <td><p>Domain-specific token requirements</p></td>
+     <td><ul><li><p>Input: <code translate="no">["test123", "prod456"]</code></p></li><li><p>Output: <code translate="no">[[], ['prod456']]</code> (if <strong>expr="^prod"</strong>)</p></li></ul></td>
    </tr>
 </table>
-<h4 id="Language-specific-filters" class="common-anchor-header">Фильтры по специфике языка</h4><p>Эти фильтры учитывают специфические особенности языка:</p>
+<h4 id="Language-specific-filters" class="common-anchor-header">Language-specific filters</h4><p>These filters handle specific language characteristics:</p>
 <table>
    <tr>
-     <th><p>Фильтр</p></th>
-     <th><p>Язык</p></th>
-     <th><p>Как работает</p></th>
-     <th><p>Примеры</p></th>
+     <th><p>Filter</p></th>
+     <th><p>Language</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/decompounder-filter.md"><code translate="no">decompounder</code></a></p></td>
-     <td><p>Немецкий</p></td>
-     <td><p>Разделяет сложные слова на компоненты для поиска</p></td>
-     <td><ul><li><p>Вход: <code translate="no">["dampfschifffahrt"]</code></p></li><li><p>Выход: <code translate="no">[['dampf', 'schiff', 'fahrt']]</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/decompounder-filter.md"><code translate="no">decompounder</code></a></p></td>
+     <td><p>German</p></td>
+     <td><p>Splits compound words into searchable components</p></td>
+     <td><ul><li><p>Input: <code translate="no">["dampfschifffahrt"]</code></p></li><li><p>Output: <code translate="no">[['dampf', 'schiff', 'fahrt']]</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/cnalphanumonly-filter.md">cnalphanumonly</a></p></td>
-     <td><p>Китайский</p></td>
-     <td><p>Сохраняет китайские иероглифы + алфавитно-цифровые</p></td>
-     <td><ul><li><p>Ввод: <code translate="no">["Hello", "世界", "123", "!@#"]</code></p></li><li><p>Выход: <code translate="no">[['Hello'], ['世界'], ['123'], []]</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/cnalphanumonly-filter.md">cnalphanumonly</a></p></td>
+     <td><p>Chinese</p></td>
+     <td><p>Keeps Chinese characters + alphanumeric</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Hello", "世界", "123", "!@#"]</code></p></li><li><p>Output: <code translate="no">[['Hello'], ['世界'], ['123'], []]</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/ru/cncharonly-filter.md"><code translate="no">cncharonly</code></a></p></td>
-     <td><p>Китайский</p></td>
-     <td><p>Сохраняет только китайские иероглифы</p></td>
-     <td><ul><li><p>Ввод: <code translate="no">["Hello", "世界", "123"]</code></p></li><li><p>Выходные данные: <code translate="no">[[], ['世界'], []]</code></p></li></ul></td>
+     <td><p><a href="/docs/ru/v2.6.x/cncharonly-filter.md"><code translate="no">cncharonly</code></a></p></td>
+     <td><p>Chinese</p></td>
+     <td><p>Keeps only Chinese characters</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Hello", "世界", "123"]</code></p></li><li><p>Output: <code translate="no">[[], ['世界'], []]</code></p></li></ul></td>
    </tr>
 </table>
-<h3 id="Step-3-Combine-and-implement" class="common-anchor-header">Шаг 3: Объединить и реализовать<button data-href="#Step-3-Combine-and-implement" class="anchor-icon" translate="no">
+<h3 id="Step-3-Combine-and-implement" class="common-anchor-header">Step 3: Combine and implement<button data-href="#Step-3-Combine-and-implement" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -544,7 +546,7 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Чтобы создать свой собственный анализатор, вы определяете токенизатор и список фильтров в словаре <code translate="no">analyzer_params</code>. Фильтры применяются в том порядке, в котором они перечислены.</p>
+    </button></h3><p>To create your custom analyzer, you define the tokenizer and a list of filters in the <code translate="no">analyzer_params</code> dictionary. The filters are applied in the order they are listed.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Example: A custom analyzer for technical content</span>
 analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -560,7 +562,7 @@ schema.add_field(
 <span class="highlighted-wrapper-line">    analyzer_params=analyzer_params,</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Final-Test-with-runanalyzer" class="common-anchor-header">Финал: Протестируйте <code translate="no">run_analyzer</code><button data-href="#Final-Test-with-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Final-Test-with-runanalyzer" class="common-anchor-header">Final: Test with <code translate="no">run_analyzer</code><button data-href="#Final-Test-with-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -575,7 +577,7 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Всегда проверяйте свою конфигурацию перед применением к коллекции:</p>
+    </button></h3><p>Always validate your configuration before applying to a collection:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample text to analyze</span>
 sample_text = <span class="hljs-string">&quot;The Milvus vector database is built for scale!&quot;</span>
 
@@ -583,14 +585,14 @@ sample_text = <span class="hljs-string">&quot;The Milvus vector database is buil
 result = client.run_analyzer(sample_text, analyzer_params)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Analyzer output:&quot;</span>, result)
 <button class="copy-code-btn"></button></code></pre>
-<p>Общие проблемы для проверки:</p>
+<p>Common issues to check:</p>
 <ul>
-<li><p><strong>Чрезмерная токинизация</strong>: Неправильное разделение технических терминов</p></li>
-<li><p><strong>Недостаточная токинизация</strong>: Фразы не разделяются должным образом</p></li>
-<li><p><strong>Пропущенные лексемы</strong>: Важные термины отфильтровываются</p></li>
+<li><p><strong>Over-tokenization</strong>: Technical terms being split incorrectly</p></li>
+<li><p><strong>Under-tokenization</strong>: Phrases not being separated properly</p></li>
+<li><p><strong>Missing tokens</strong>: Important terms being filtered out</p></li>
 </ul>
-<p>Подробную информацию об использовании см. в разделе <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md">run_analyzer</a>.</p>
-<h2 id="Recommended-configurations-by-use-case" class="common-anchor-header">Рекомендуемые конфигурации для каждого случая использования<button data-href="#Recommended-configurations-by-use-case" class="anchor-icon" translate="no">
+<p>For detailed usage, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md">run_analyzer</a>.</p>
+<h2 id="Recommended-configurations-by-use-case" class="common-anchor-header">Recommended configurations by use case<button data-href="#Recommended-configurations-by-use-case" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -605,11 +607,11 @@ result = client.run_analyzer(sample_text, analyzer_params)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В этом разделе приведены рекомендуемые конфигурации токенизаторов и фильтров для распространенных случаев использования анализаторов в Milvus. Выберите комбинацию, которая лучше всего соответствует вашему типу контента и требованиям поиска.</p>
+    </button></h2><p>This section provides recommended tokenizer and filter configurations for common use cases when working with analyzers in Milvus. Choose the combination that best matches your content type and search requirements.</p>
 <div class="alert note">
-<p>Прежде чем применять анализатор к вашей коллекции, мы рекомендуем вам использовать <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md"><code translate="no">run_analyzer</code></a> для тестирования и проверки эффективности анализа текста.</p>
+<p>Before applying an analyzer to your collection, we recommend you use <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md"><code translate="no">run_analyzer</code></a> to test and validate text analysis performance.</p>
 </div>
-<h3 id="Languages-with-accent-marks-French-Spanish-German-etc" class="common-anchor-header">Языки со знаками ударения (французский, испанский, немецкий и т. д.)<button data-href="#Languages-with-accent-marks-French-Spanish-German-etc" class="anchor-icon" translate="no">
+<h3 id="Languages-with-accent-marks-French-Spanish-German-etc" class="common-anchor-header">Languages with accent marks (French, Spanish, German, etc.)<button data-href="#Languages-with-accent-marks-French-Spanish-German-etc" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -624,7 +626,7 @@ result = client.run_analyzer(sample_text, analyzer_params)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Используйте токенизатор <code translate="no">standard</code> с преобразованием строчных букв, стеммингом для конкретного языка и удалением стоп-слов. Эта конфигурация также работает для других европейских языков, если изменить параметры <code translate="no">language</code> и <code translate="no">stop_words</code>.</p>
+    </button></h3><p>Use a <code translate="no">standard</code> tokenizer with lowercase conversion, language-specific stemming, and stopword removal. This configuration also works for other European languages by modifying the <code translate="no">language</code> and <code translate="no">stop_words</code> parameters.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># French example</span>
 analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -647,7 +649,7 @@ analyzer_params = {
 <span class="hljs-comment"># &quot;language&quot;: &quot;german&quot; for German</span>
 <span class="hljs-comment"># &quot;stop_words&quot;: [&quot;_spanish_&quot;] or [&quot;_german_&quot;] accordingly</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="English-content" class="common-anchor-header">Английский контент<button data-href="#English-content" class="anchor-icon" translate="no">
+<h3 id="English-content" class="common-anchor-header">English content<button data-href="#English-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -662,7 +664,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Для обработки англоязычного текста с комплексной фильтрацией. Вы также можете использовать встроенный <a href="/docs/ru/english-analyzer.md"><code translate="no">english</code></a> анализатор:</p>
+    </button></h3><p>For English text processing with comprehensive filtering. You can also use the built-in <a href="/docs/ru/v2.6.x/english-analyzer.md"><code translate="no">english</code></a> analyzer:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [
@@ -683,7 +685,7 @@ analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;english&quot;</span>
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Chinese-content" class="common-anchor-header">Китайский контент<button data-href="#Chinese-content" class="anchor-icon" translate="no">
+<h3 id="Chinese-content" class="common-anchor-header">Chinese content<button data-href="#Chinese-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -698,7 +700,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Используйте токенизатор <code translate="no">jieba</code> и применяйте фильтр символов для сохранения только китайских символов, латинских букв и цифр.</p>
+    </button></h3><p>Use the <code translate="no">jieba</code> tokenizer and apply a character filter to retain only Chinese characters, Latin letters, and digits.</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [<span class="hljs-string">&quot;cnalphanumonly&quot;</span>]
@@ -710,9 +712,9 @@ analyzer_params = {
 }
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Для упрощенного китайского языка <code translate="no">cnalphanumonly</code> удаляет все лексемы, кроме китайских иероглифов, буквенно-цифрового текста и цифр. Это позволяет избежать влияния пунктуации на качество поиска.</p>
+<p>For Simplified Chinese, <code translate="no">cnalphanumonly</code> removes all tokens except Chinese characters, alphanumeric text, and digits. This prevents punctuation from affecting search quality.</p>
 </div>
-<h3 id="Japanese-content" class="common-anchor-header">Японское содержимое<button data-href="#Japanese-content" class="anchor-icon" translate="no">
+<h3 id="Japanese-content" class="common-anchor-header">Japanese content<button data-href="#Japanese-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -727,7 +729,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Используйте токенизатор <code translate="no">lindera</code> с японским словарем и фильтрами для очистки пунктуации и контроля длины лексем:</p>
+    </button></h3><p>Use the <code translate="no">lindera</code> tokenizer with Japanese dictionary and filters to clean punctuation and control token length:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
         <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;lindera&quot;</span>,
@@ -743,7 +745,7 @@ analyzer_params = {
     ]
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Korean-content" class="common-anchor-header">Корейский контент<button data-href="#Korean-content" class="anchor-icon" translate="no">
+<h3 id="Korean-content" class="common-anchor-header">Korean content<button data-href="#Korean-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -758,7 +760,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Аналогично японскому, с использованием токенизатора <code translate="no">lindera</code> и корейского словаря:</p>
+    </button></h3><p>Similar to Japanese, using <code translate="no">lindera</code> tokenizer with Korean dictionary:</p>
 <pre><code translate="no" class="language-json">analyzer_params = <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;tokenizer&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
         <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;lindera&quot;</span><span class="hljs-punctuation">,</span>
@@ -774,7 +776,7 @@ analyzer_params = {
     <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Mixed-or-multilingual-content" class="common-anchor-header">Смешанный или многоязычный контент<button data-href="#Mixed-or-multilingual-content" class="anchor-icon" translate="no">
+<h3 id="Mixed-or-multilingual-content" class="common-anchor-header">Mixed or multilingual content<button data-href="#Mixed-or-multilingual-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -789,20 +791,20 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>При работе с контентом, который охватывает несколько языков или непредсказуемо использует скрипты, начните с анализатора <code translate="no">icu</code>. Этот анализатор с поддержкой Юникода эффективно справляется со смешанными шрифтами и символами.</p>
-<p><strong>Базовая многоязычная настройка (без стемминга)</strong>:</p>
+    </button></h3><p>When working with content that spans multiple languages or uses scripts unpredictably, start with the <code translate="no">icu</code> analyzer. This Unicode-aware analyzer handles mixed scripts and symbols effectively.</p>
+<p><strong>Basic multilingual configuration (no stemming)</strong>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;icu&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [<span class="hljs-string">&quot;lowercase&quot;</span>, <span class="hljs-string">&quot;asciifolding&quot;</span>]
 }
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Расширенная многоязычная обработка</strong>:</p>
-<p>Для лучшего контроля над поведением токенов в разных языках:</p>
+<p><strong>Advanced multilingual processing</strong>:</p>
+<p>For better control over token behavior across different languages:</p>
 <ul>
-<li><p>Используйте <strong>многоязыковую</strong> конфигурацию <strong>анализатора</strong>. Подробности см. в разделе <a href="/docs/ru/multi-language-analyzers.md">Многоязычные анализаторы</a>.</p></li>
-<li><p>Внедрите <strong>идентификатор языка</strong> в содержимое. Подробнее см. в разделе <a href="/docs/ru/language-identifier.md">Языковой идентификатор</a>.</p></li>
+<li><p>Use a <strong>multi-language analyzer</strong> configuration. For details, refer to <a href="/docs/ru/v2.6.x/multi-language-analyzers.md">Multi-language Analyzers</a>.</p></li>
+<li><p>Implement a <strong>language identifier</strong> on your content. For details, refer to <a href="/docs/ru/v2.6.x/language-identifier.md">Language Identifier</a>.</p></li>
 </ul>
-<h2 id="Integrate-with-text-retrieval-features" class="common-anchor-header">Интеграция с функциями поиска текста<button data-href="#Integrate-with-text-retrieval-features" class="anchor-icon" translate="no">
+<h2 id="Integrate-with-text-retrieval-features" class="common-anchor-header">Integrate with text retrieval features<button data-href="#Integrate-with-text-retrieval-features" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -817,12 +819,12 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Выбрав анализатор, вы можете интегрировать его с функциями поиска текста, предоставляемыми Milvus.</p>
+    </button></h2><p>After selecting your analyzer, you can integrate it with text retrieval features provided by Milvus.</p>
 <ul>
-<li><p><strong>Полнотекстовый поиск</strong></p>
-<p>Анализаторы оказывают непосредственное влияние на полнотекстовый поиск на основе BM25 благодаря генерации разреженных векторов. Используйте один и тот же анализатор для индексации и запроса, чтобы обеспечить согласованную токенизацию. Анализаторы для конкретного языка обычно обеспечивают лучшие показатели BM25, чем общие анализаторы. Подробности реализации см. в разделе <a href="/docs/ru/full-text-search.md">Полнотекстовый поиск</a>.</p></li>
-<li><p><strong>Текстовое соответствие</strong></p>
-<p>Операции сопоставления текста выполняют точное сопоставление лексем между запросами и проиндексированным содержимым на основе результатов работы анализатора. Подробности реализации см. в разделе <a href="/docs/ru/keyword-match.md">Совпадение текста</a>.</p></li>
-<li><p><strong>Совпадение фраз</strong></p>
-<p>Сопоставление фраз требует последовательной токенизации многословных выражений для сохранения границ и смысла фраз. Подробности реализации см. в разделе <a href="/docs/ru/phrase-match.md">Совпадение фраз</a>.</p></li>
+<li><p><strong>Full text search</strong></p>
+<p>Analyzers directly impact BM25-based full text search through sparse vector generation. Use the same analyzer for both indexing and querying to ensure consistent tokenization. Language-specific analyzers generally provide better BM25 scoring than generic ones. For implementation details, refer to <a href="/docs/ru/v2.6.x/full-text-search.md">Full Text Search</a>.</p></li>
+<li><p><strong>Text match</strong></p>
+<p>Text match operations perform exact token matching between queries and indexed content based on your analyzer output. For implementation details, refer to <a href="/docs/ru/v2.6.x/keyword-match.md">Text Match</a>.</p></li>
+<li><p><strong>Phrase match</strong></p>
+<p>Phrase match requires consistent tokenization across multi-word expressions to maintain phrase boundaries and meaning. For implementation details, refer to <a href="/docs/ru/v2.6.x/phrase-match.md">Phrase Match</a>.</p></li>
 </ul>

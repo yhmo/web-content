@@ -1,8 +1,8 @@
 ---
 id: mq_kafka.md
-title: كافكا
+title: Kafka
 ---
-<h1 id="Use-Kafka-as-the-Milvus-Message-Queue" class="common-anchor-header">استخدام Kafka كطابور رسائل لـ Milvus<button data-href="#Use-Kafka-as-the-Milvus-Message-Queue" class="anchor-icon" translate="no">
+<h1 id="Use-Kafka-as-the-Milvus-Message-Queue" class="common-anchor-header">Use Kafka as the Milvus Message Queue<button data-href="#Use-Kafka-as-the-Milvus-Message-Queue" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -17,8 +17,8 @@ title: كافكا
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يعد Apache Kafka أحد الخلفيات الخاصة بقوائم انتظار الرسائل (WAL) التي يدعمها Milvus. في Milvus 3.x، يُعد <a href="/docs/ar/woodpecker.md">Woodpecker</a> قائمة انتظار الرسائل الافتراضية؛ بينما يظل Kafka مدعومًا بالكامل للمستخدمين الذين يفضلونه. يُستخدم Kafka بشكل أساسي مع Milvus Distributed (المجموعة)؛ بينما تستخدم عمليات النشر المستقلة عادةً Woodpecker المدمج أو <a href="/docs/ar/mq_rocksmq.md">RocksMQ</a>.</p>
-<h2 id="Version-compatibility" class="common-anchor-header">توافق الإصدارات<button data-href="#Version-compatibility" class="anchor-icon" translate="no">
+    </button></h1><p>Apache Kafka is one of the message-queue (WAL) backends Milvus supports. In Milvus 3.x, <a href="/docs/ar/woodpecker.md">Woodpecker</a> is the default message queue; Kafka remains fully supported for users who prefer it. Kafka is primarily used with Milvus Distributed (cluster); standalone deployments typically use embedded Woodpecker or <a href="/docs/ar/mq_rocksmq.md">RocksMQ</a>.</p>
+<h2 id="Version-compatibility" class="common-anchor-header">Version compatibility<button data-href="#Version-compatibility" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,10 +34,10 @@ title: كافكا
         ></path>
       </svg>
     </button></h2><ul>
-<li>يدعم Milvus <strong>Kafka 2.x و3.x</strong> فقط.</li>
-<li>يتم تكوين Kafka لـ Milvus Distributed (العنقود) عبر Helm أو Milvus Operator.</li>
+<li>Milvus supports <strong>Kafka 2.x and 3.x</strong> only.</li>
+<li>Kafka is configured for Milvus Distributed (cluster) via Helm or Milvus Operator.</li>
 </ul>
-<h2 id="Deploy-a-Milvus-cluster-with-Kafka-using-Helm" class="common-anchor-header">نشر مجموعة Milvus مع Kafka باستخدام Helm<button data-href="#Deploy-a-Milvus-cluster-with-Kafka-using-Helm" class="anchor-icon" translate="no">
+<h2 id="Deploy-a-Milvus-cluster-with-Kafka-using-Helm" class="common-anchor-header">Deploy a Milvus cluster with Kafka using Helm<button data-href="#Deploy-a-Milvus-cluster-with-Kafka-using-Helm" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -52,7 +52,7 @@ title: كافكا
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Install-and-configure" class="common-anchor-header">التثبيت والتكوين<button data-href="#Install-and-configure" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Install-and-configure" class="common-anchor-header">Install and configure<button data-href="#Install-and-configure" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,7 +67,7 @@ title: كافكا
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لاستخدام خدمة Kafka خارجية، قم بتعطيل Pulsar المدمج وتمكين <code translate="no">externalKafka</code> في تجاوز <code translate="no">values.yaml</code> ، ثم قم بتثبيت Milvus باستخدامه:</p>
+    </button></h3><p>To use an external Kafka service, disable the bundled Pulsar and enable <code translate="no">externalKafka</code> in a <code translate="no">values.yaml</code> override, then install Milvus with it:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">pulsarv3:</span>
   <span class="hljs-attr">enabled:</span> <span class="hljs-literal">false</span>
 <span class="hljs-attr">externalKafka:</span>
@@ -81,8 +81,8 @@ title: كافكا
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">helm install my-release zilliztech/milvus -f values.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>للحصول على تفاصيل مصادقة SASL/SSL، راجع <a href="/docs/ar/connect_kafka_ssl.md">«الاتصال بـ Kafka باستخدام SASL/SSL</a>».</p>
-<h3 id="Uninstall" class="common-anchor-header">إلغاء التثبيت<button data-href="#Uninstall" class="anchor-icon" translate="no">
+<p>For SASL/SSL authentication details, see <a href="/docs/ar/connect_kafka_ssl.md">Connect to Kafka with SASL/SSL</a>.</p>
+<h3 id="Uninstall" class="common-anchor-header">Uninstall<button data-href="#Uninstall" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,7 +99,7 @@ title: كافكا
       </svg>
     </button></h3><pre><code translate="no" class="language-bash">helm uninstall my-release
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Deploy-a-Milvus-cluster-with-Kafka-using-Milvus-Operator" class="common-anchor-header">نشر مجموعة Milvus مع Kafka باستخدام Milvus Operator<button data-href="#Deploy-a-Milvus-cluster-with-Kafka-using-Milvus-Operator" class="anchor-icon" translate="no">
+<h2 id="Deploy-a-Milvus-cluster-with-Kafka-using-Milvus-Operator" class="common-anchor-header">Deploy a Milvus cluster with Kafka using Milvus Operator<button data-href="#Deploy-a-Milvus-cluster-with-Kafka-using-Milvus-Operator" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -114,8 +114,8 @@ title: كافكا
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>باستخدام Milvus Operator، قم بتعيين <code translate="no">spec.dependencies.msgStreamType: &quot;kafka&quot;</code> وتكوين Kafka ضمن <code translate="no">spec.dependencies.kafka</code> (المجموعة فقط). يدعم <code translate="no">kafka</code> <code translate="no">external</code> و <code translate="no">inCluster</code>.</p>
-<h3 id="External-Kafka" class="common-anchor-header">Kafka الخارجي<button data-href="#External-Kafka" class="anchor-icon" translate="no">
+    </button></h2><p>With Milvus Operator, set <code translate="no">spec.dependencies.msgStreamType: &quot;kafka&quot;</code> and configure Kafka under <code translate="no">spec.dependencies.kafka</code> (cluster only). <code translate="no">kafka</code> supports <code translate="no">external</code> and <code translate="no">inCluster</code>.</p>
+<h3 id="External-Kafka" class="common-anchor-header">External Kafka<button data-href="#External-Kafka" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -154,9 +154,9 @@ title: كافكا
         <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;kafkaBrokerAddr2:9092&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>يتم دعم تكوينات SASL في Milvus Operator الإصدار v0.8.5 أو الأحدث.</p>
+<p>SASL configurations are supported in Milvus Operator v0.8.5 or later.</p>
 </div>
-<h3 id="Internal-in-cluster-Kafka" class="common-anchor-header">Kafka الداخلي (داخل المجموعة)<button data-href="#Internal-in-cluster-Kafka" class="anchor-icon" translate="no">
+<h3 id="Internal-in-cluster-Kafka" class="common-anchor-header">Internal (in-cluster) Kafka<button data-href="#Internal-in-cluster-Kafka" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -186,10 +186,10 @@ title: كافكا
   <span class="hljs-attr">components:</span> {}
   <span class="hljs-attr">config:</span> {}
 <button class="copy-code-btn"></button></code></pre>
-<p>قم بتطبيق التكوين (بافتراض أن الملف هو <code translate="no">milvuscluster.yaml</code>):</p>
+<p>Apply the configuration (assuming the file is <code translate="no">milvuscluster.yaml</code>):</p>
 <pre><code translate="no" class="language-bash">kubectl apply -f milvuscluster.yaml
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Uninstall" class="common-anchor-header">إلغاء التثبيت<button data-href="#Uninstall" class="anchor-icon" translate="no">
+<h3 id="Uninstall" class="common-anchor-header">Uninstall<button data-href="#Uninstall" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -206,7 +206,7 @@ title: كافكا
       </svg>
     </button></h3><pre><code translate="no" class="language-bash">kubectl delete milvus my-release
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Notes" class="common-anchor-header">ملاحظات<button data-href="#Notes" class="anchor-icon" translate="no">
+<h2 id="Notes" class="common-anchor-header">Notes<button data-href="#Notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -222,12 +222,12 @@ title: كافكا
         ></path>
       </svg>
     </button></h2><ul>
-<li><strong>الترقية من الإصدار 2.5.x إلى الإصدار 2.6.x:</strong> <strong>قيود قائمة انتظار الرسائل</strong>: عند الترقية إلى Milvus v3.0.1، يجب الحفاظ على اختيارك الحالي لقائمة انتظار الرسائل. لا يُدعم التبديل بين أنظمة قوائم انتظار الرسائل المختلفة أثناء الترقية. سيتوفر دعم تغيير أنظمة قوائم انتظار الرسائل في الإصدارات المستقبلية.
-إذا كنت تستخدم Kafka وترغب في الاحتفاظ به، فلا تقم بتغيير قائمة انتظار الرسائل أثناء الترقية.</li>
-<li>يتم دعم <strong>Kafka 2.x و3.x</strong> فقط.</li>
-<li>بالنسبة لاتصال SASL/SSL، راجع <a href="/docs/ar/connect_kafka_ssl.md">«الاتصال بـ Kafka باستخدام SASL/SSL</a>».</li>
+<li><strong>Upgrading from 2.5.x to 2.6.x:</strong> <strong>Message Queue limitations</strong>: When upgrading to Milvus v3.0.1, you must maintain your current message queue choice. Switching between different message queue systems during the upgrade is not supported. Support for changing message queue systems will be available in future versions.
+If you run Kafka and want to keep it, do not change the message queue during the upgrade.</li>
+<li>Only <strong>Kafka 2.x and 3.x</strong> are supported.</li>
+<li>For SASL/SSL connectivity, see <a href="/docs/ar/connect_kafka_ssl.md">Connect to Kafka with SASL/SSL</a>.</li>
 </ul>
-<h2 id="Whats-next" class="common-anchor-header">الخطوة التالية<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -243,6 +243,6 @@ title: كافكا
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="/docs/ar/woodpecker.md">Woodpecker (قائمة انتظار الرسائل الافتراضية)</a></li>
-<li><a href="/docs/ar/switch-kafka-woodpecker.md">التبديل بين Kafka و Woodpecker</a></li>
+<li><a href="/docs/ar/woodpecker.md">Woodpecker (default message queue)</a></li>
+<li><a href="/docs/ar/switch-kafka-woodpecker.md">Switch between Kafka and Woodpecker</a></li>
 </ul>

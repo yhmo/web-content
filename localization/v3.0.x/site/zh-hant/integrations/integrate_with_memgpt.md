@@ -1,9 +1,12 @@
 ---
 id: integrate_with_memgpt.md
-summary: MemGPT 可讓您輕鬆建立和部署有狀 LLM 代理。透過 Milvus 整合，您可以建立與外部資料來源 (RAG) 連結的代理。
-title: 與 Milvus 整合的 MemGPT
+summary: >-
+  MemGPT makes it easy to build and deploy stateful LLM agents. With Milvus
+  integration, you can build agents with connections to external data sources
+  (RAG).
+title: MemGPT with Milvus Integration
 ---
-<h1 id="MemGPT-with-Milvus-Integration" class="common-anchor-header">與 Milvus 整合的 MemGPT<button data-href="#MemGPT-with-Milvus-Integration" class="anchor-icon" translate="no">
+<h1 id="MemGPT-with-Milvus-Integration" class="common-anchor-header">MemGPT with Milvus Integration<button data-href="#MemGPT-with-Milvus-Integration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,9 +21,9 @@ title: 與 Milvus 整合的 MemGPT
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><a href="https://memgpt.readme.io/docs/index">MemGPT</a>可讓您輕鬆建立和部署有狀 LLM 代理。透過 Milvus 整合，您可以建立與外部資料來源 (RAG) 連結的代理。</p>
-<p>在本範例中，我們要使用 MemGPT 與儲存於 Milvus 的自訂資料來源聊天。</p>
-<h2 id="Configuration" class="common-anchor-header">設定<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p><a href="https://memgpt.readme.io/docs/index">MemGPT</a> makes it easy to build and deploy stateful LLM agents. With Milvus integration, you can build agents with connections to external data sources (RAG).</p>
+<p>In this example, we’re going to use MemGPT to chat with a custom data source which is stored in Milvus.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,20 +38,21 @@ title: 與 Milvus 整合的 MemGPT
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要執行 MemGPT，您必須確定 Python 版本 &gt;= 3.10。</p>
-<p>要啟用 Milvus 後端，請確認安裝所需的相依性：</p>
+    </button></h2><p>To run MemGPT, you should make sure the Python version >= 3.10.</p>
+<p>To enable the Milvus backend, make sure to install the required dependencies with:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip install <span class="hljs-string">&#x27;pymemgpt[milvus]&#x27;</span></span>
 <button class="copy-code-btn"></button></code></pre>
-<p>您可以透過命令設定 Milvus 連線。</p>
+<p>You can configure Milvus connection via command</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">memgpt configure</span>
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-shell">...
 ? Select storage backend for archival data: milvus
 ? Enter the Milvus connection URI (Default: ~/.memgpt/milvus.db): ~/.memgpt/milvus.db
 <button class="copy-code-btn"></button></code></pre>
-<p>您只需將 URI 設定為本機檔案路徑，例如<code translate="no">~/.memgpt/milvus.db</code> ，這將自動透過 Milvus Lite 啟用本機的 Milvus 服務實體。</p>
-<p>如果您有大規模的資料，例如超過一百萬份的文件，我們建議您在<a href="https://milvus.io/docs/quickstart.md">docker 或 kubenetes</a> 上架設效能更高的 Milvus 伺服器。 在這種情況下，您的 URI 應該是伺服器的 URI，例如<code translate="no">http://localhost:19530</code> 。</p>
-<h2 id="Creating-an-external-data-source" class="common-anchor-header">建立外部資料來源<button data-href="#Creating-an-external-data-source" class="anchor-icon" translate="no">
+<p>You just set the URI to the local file path, e.g. <code translate="no">~/.memgpt/milvus.db</code>, which will automatically invoke the local Milvus service instance through Milvus Lite.</p>
+<p>If you have large scale of data such as more than a million docs, we recommend setting up a more performant Milvus server on <a href="https://milvus.io/docs/quickstart.md">docker or kubenetes</a>.
+And in this case, your URI should be the server URI, e.g. <code translate="no">http://localhost:19530</code>.</p>
+<h2 id="Creating-an-external-data-source" class="common-anchor-header">Creating an external data source<button data-href="#Creating-an-external-data-source" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -63,18 +67,18 @@ title: 與 Milvus 整合的 MemGPT
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要將外部資料饋送至 MemGPT 聊天機，我們首先需要建立資料來源。</p>
-<p>要下載 MemGPT 研究論文，我們會使用<code translate="no">curl</code> （您也可以直接從瀏覽器下載 PDF）：</p>
+    </button></h2><p>To feed external data into a MemGPT chatbot, we first need to create a data source.</p>
+<p>To download the MemGPT research paper we’ll use <code translate="no">curl</code> (you can also just download the PDF from your browser):</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">we<span class="hljs-string">&#x27;re saving the file as &quot;memgpt_research_paper.pdf&quot;</span></span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-string">curl -L -o memgpt_research_paper.pdf https://arxiv.org/pdf/2310.08560.pdf</span></span>
 <button class="copy-code-btn"></button></code></pre>
-<p>現在我們已經下載了論文，可以使用<code translate="no">memgpt load</code> 建立 MemGPT 資料來源：</p>
+<p>Now that we have the paper downloaded, we can create a MemGPT data source using <code translate="no">memgpt load</code>:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">memgpt load directory --name memgpt_research_paper --input-files=memgpt_research_paper.pdf</span>
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-text">Loading files: 100%|███████████████████████████████████| 1/1 [00:00&lt;00:00,  3.94file/s]
 Loaded 74 passages and 13 documents from memgpt_research_paper
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Attaching-the-data-source-to-a-MemGPT-agent" class="common-anchor-header">將資料來源附加到 MemGPT 代理<button data-href="#Attaching-the-data-source-to-a-MemGPT-agent" class="anchor-icon" translate="no">
+<h2 id="Attaching-the-data-source-to-a-MemGPT-agent" class="common-anchor-header">Attaching the data source to a MemGPT agent<button data-href="#Attaching-the-data-source-to-a-MemGPT-agent" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -89,12 +93,12 @@ Loaded 74 passages and 13 documents from memgpt_research_paper
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>既然我們已經建立了這個資料來源，就可以隨時將它附加到 MemGPT 聊天機上。</p>
-<p>讓我們使用<code translate="no">memgpt_doc</code> 角色建立一個新的聊天機器人（但您也可以使用任何角色）：</p>
+    </button></h2><p>Now that we’ve created this data source, we can attach it to a MemGPT chatbot at any time.</p>
+<p>Let’s create a new chatbot using the <code translate="no">memgpt_doc</code> persona (but you can use any persona you want):</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">reminder: `memgpt run --persona memgpt_doc` will create a new MemGPT agent using the `memgpt_doc` persona</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">memgpt run --persona memgpt_doc</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>與代理聊天後，我們就可以將資料來源「附加」到代理的存檔記憶體：</p>
+<p>Once we’re chatting with the agent, we can “attach” the data source to the agent’s archival memory:</p>
 <pre><code translate="no" class="language-text">? Would you like to select an existing agent? No
 
 🧬 Creating new agent...
@@ -111,7 +115,7 @@ Hit enter to begin (will request first MemGPT message)
 ? Select data source memgpt_research_paper
 100%|███████████████████████████████████| 1/1 [00:00&lt;00:00,  4.81it/s]
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Testing-out-our-new-chatbot" class="common-anchor-header">測試我們的新聊天機器人<button data-href="#Testing-out-our-new-chatbot" class="anchor-icon" translate="no">
+<h2 id="Testing-out-our-new-chatbot" class="common-anchor-header">Testing out our new chatbot<button data-href="#Testing-out-our-new-chatbot" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -126,7 +130,7 @@ Hit enter to begin (will request first MemGPT message)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>既然資料已經載入聊天機器人的記憶體，我們就可以開始詢問相關問題了：</p>
+    </button></h2><p>Now that the data has been loaded into the chatbot’s memory, we can start to ask questions about it:</p>
 <pre><code translate="no" class="language-text">&gt; Enter your message: The paper I loaded into your archival memory is called MemGPT. Can you tell me more about it?
 
 💭 It seems Chad would like to know more about the paper titled &#x27;MemGPT&#x27; that&#x27;s stored in my archival memory. It&#x27;s time to search the archival memory for details and background data to provide a comprehensive

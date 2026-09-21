@@ -2,9 +2,9 @@
 id: configure_common.md
 related_key: configure
 group: system_configuration.md
-summary: Découvrez comment configurer les paramètres courants de Milvus.
+summary: Learn how to configure common for Milvus.
 ---
-<h1 id="common-related-Configurations" class="common-anchor-header">Configurations courantes<button data-href="#common-related-Configurations" class="anchor-icon" translate="no">
+<h1 id="common-related-Configurations" class="common-anchor-header">common-related Configurations<button data-href="#common-related-Configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,12 +38,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Nom de la partition par défaut lors de la création d'une collection      </td>
+      <td>        Name of the default partition when a collection is created      </td>
       <td>_default</td>
     </tr>
   </tbody>
@@ -67,12 +67,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Nom de l'index lorsqu'il est créé sans nom spécifié      </td>
+      <td>        Name of the index when it is created with name unspecified      </td>
       <td>_default_idx</td>
     </tr>
   </tbody>
@@ -96,12 +96,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Durée de validité de l'entité en secondes. ATTENTION : -1 signifie « sans date d'expiration »      </td>
+      <td>        Entity expiration in seconds, CAUTION -1 means never expire      </td>
       <td>-1</td>
     </tr>
   </tbody>
@@ -125,12 +125,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Taille de tranche d'index en Mo      </td>
+      <td>        Index slice size in MB      </td>
       <td>16</td>
     </tr>
   </tbody>
@@ -154,12 +154,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Ce paramètre spécifie combien de fois le nombre de threads est égal au nombre de cœurs dans le pool haute priorité      </td>
+      <td>        This parameter specify how many times the number of threads is the number of cores in high priority pool      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -183,12 +183,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Ce paramètre spécifie combien de fois le nombre de threads est supérieur au nombre de cœurs dans le pool de priorité moyenne.      </td>
+      <td>        This parameter specify how many times the number of threads is the number of cores in middle priority pool      </td>
       <td>5</td>
     </tr>
   </tbody>
@@ -212,12 +212,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Ce paramètre spécifie combien de fois le nombre de threads est supérieur au nombre de cœurs dans le pool de priorité faible.      </td>
+      <td>        This parameter specify how many times the number of threads is the number of cores in low priority pool      </td>
       <td>1</td>
     </tr>
   </tbody>
@@ -241,13 +241,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        millisecondes. Il représente l'intervalle (en ms) dont il faut soustraire l'heure d'arrivée de la requête dans le cas d'une cohérence limitée.      </td>
-      <td>5 000</td>
+      <td>        milliseconds. it represents the interval (in ms) by which the request arrival time needs to be subtracted in the case of Bounded Consistency.      </td>
+      <td>5000</td>
     </tr>
   </tbody>
 </table>
@@ -270,12 +270,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        secondes. Le serveur sera forcé de s'arrêter si le processus d'arrêt en douceur n'est pas terminé dans ce délai.      </td>
+      <td>        seconds. it will force quit the server if the graceful stop process is not completed during this time.      </td>
       <td>1800</td>
     </tr>
   </tbody>
@@ -299,12 +299,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        À ajuster dans Milvus embarqué : local ; les valeurs disponibles sont [local, remote, opendal] ; la valeur « minio » est obsolète, utilisez « remote » à la place      </td>
+      <td>        please adjust in embedded Milvus: local, available values are [local, remote, opendal], value minio is deprecated, use remote instead      </td>
       <td>remote</td>
     </tr>
   </tbody>
@@ -328,12 +328,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th>
+      <th class="width20">Default Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Indique s'il faut utiliser Storage V3 pour les nouvelles écritures et la sortie de compaction. Ce paramètre peut être actualisé.      </td>
+      <td>        Whether to use Storage V3 for new writes and compaction output. This parameter is refreshable.      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -357,15 +357,15 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Valeur par défaut : auto</li>      
-        <li>Valeurs valides : [auto, avx512, avx2, avx, sse4_2]</li>      
-        <li>Cette configuration est uniquement utilisée par les nœuds de requête (querynode) et d'indexation (indexnode) ; elle permet de sélectionner le jeu d'instructions du processeur pour la recherche et la création d'index.</li>      </td>
+        <li>Default value: auto</li>      
+        <li>Valid values: [auto, avx512, avx2, avx, sse4_2]</li>      
+        <li>This configuration is only used by querynode and indexnode, it selects CPU instruction set for Searching and Index-building.</li>      </td>
       <td>auto</td>
     </tr>
   </tbody>
@@ -389,14 +389,14 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Les superutilisateurs ignoreront certains processus de vérification du système,</li>      
-        <li>tels que la vérification de l’ancien mot de passe lors de la mise à jour des identifiants</li>      </td>
+        <li>The superusers will ignore some system check processes,</li>      
+        <li>like the old password verification when updating the credential</li>      </td>
       <td></td>
     </tr>
   </tbody>
@@ -420,12 +420,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Mot de passe par défaut de l'utilisateur root. La longueur maximale est de 72 caractères et l'utilisation de guillemets doubles est obligatoire.      </td>
+      <td>        default password for root user. The maximum length is 72 characters, and double quotes are required.      </td>
       <td>Milvus</td>
     </tr>
   </tbody>
@@ -449,12 +449,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Indique si l'utilisateur root doit se voir attribuer un rôle lorsque l'autorisation est activée.      </td>
+      <td>        Whether the root user should bind a role when the authorization is enabled.      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -478,12 +478,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Indique s'il faut remplacer les groupes de privilèges intégrés      </td>
+      <td>        Whether to override build-in privilege groups      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -507,13 +507,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Privilèges en lecture seule au niveau du cluster      </td>
-      <td>ListDatabases, SelectOwnership, SelectUser, DescribeResourceGroup, ListResourceGroups, ListPrivilegeGroups</td>
+      <td>        Cluster level readonly privileges      </td>
+      <td>ListDatabases,SelectOwnership,SelectUser,DescribeResourceGroup,ListResourceGroups,ListPrivilegeGroups</td>
     </tr>
   </tbody>
 </table>
@@ -536,13 +536,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Privilèges en lecture-écriture au niveau du cluster      </td>
-      <td>ListDatabases, SelectOwnership, SelectUser, DescribeResourceGroup, ListResourceGroups, ListPrivilegeGroups, FlushAll, TransferNode, TransferReplica, UpdateResourceGroups</td>
+      <td>        Cluster level readwrite privileges      </td>
+      <td>ListDatabases,SelectOwnership,SelectUser,DescribeResourceGroup,ListResourceGroups,ListPrivilegeGroups,FlushAll,TransferNode,TransferReplica,UpdateResourceGroups</td>
     </tr>
   </tbody>
 </table>
@@ -565,13 +565,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Privilèges d'administration au niveau du cluster      </td>
-      <td>ListDatabases, SelectOwnership, SelectUser, DescribeResourceGroup, ListResourceGroups, ListPrivilegeGroups, FlushAll, TransferNode, TransferReplica,Mettre à jour les groupes de ressources, Sauvegarder le RBAC, Restaurer le RBAC, Créer une base de données, Supprimer une base de données, Créer une propriété, Supprimer une propriété, Gérer une propriété, Créer un groupe de ressources, Supprimer un groupe de ressources, Mettre à jour un utilisateur, Renommer une collection, Créer un groupe de privilèges, Supprimer un groupe de privilèges, Gérer un groupe de privilèges</td>
+      <td>        Cluster level admin privileges      </td>
+      <td>ListDatabases,SelectOwnership,SelectUser,DescribeResourceGroup,ListResourceGroups,ListPrivilegeGroups,FlushAll,TransferNode,TransferReplica,UpdateResourceGroups,BackupRBAC,RestoreRBAC,CreateDatabase,DropDatabase,CreateOwnership,DropOwnership,ManageOwnership,CreateResourceGroup,DropResourceGroup,UpdateUser,RenameCollection,CreatePrivilegeGroup,DropPrivilegeGroup,OperatePrivilegeGroup</td>
     </tr>
   </tbody>
 </table>
@@ -594,13 +594,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Privilèges en lecture seule au niveau de la base de données      </td>
-      <td>ShowCollections, DescribeDatabase</td>
+      <td>        Database level readonly privileges      </td>
+      <td>ShowCollections,DescribeDatabase</td>
     </tr>
   </tbody>
 </table>
@@ -623,13 +623,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Privilèges de lecture-écriture au niveau de la base de données      </td>
-      <td>ShowCollections, DescribeDatabase, AlterDatabase</td>
+      <td>        Database level readwrite privileges      </td>
+      <td>ShowCollections,DescribeDatabase,AlterDatabase</td>
     </tr>
   </tbody>
 </table>
@@ -652,13 +652,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Privilèges d'administration au niveau de la base de données      </td>
-      <td>ShowCollections, DescribeDatabase, AlterDatabase, CreateCollection, DropCollection</td>
+      <td>        Database level admin privileges      </td>
+      <td>ShowCollections,DescribeDatabase,AlterDatabase,CreateCollection,DropCollection</td>
     </tr>
   </tbody>
 </table>
@@ -681,13 +681,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Privilèges en lecture seule au niveau des collections      </td>
-      <td>Query, Search, IndexDetail, GetFlushState, GetLoadState, GetLoadingProgress, HasPartition, ShowPartitions, DescribeCollection, DescribeAlias, GetStatistics, ListAliases</td>
+      <td>        Collection level readonly privileges      </td>
+      <td>Query,Search,IndexDetail,GetFlushState,GetLoadState,GetLoadingProgress,HasPartition,ShowPartitions,DescribeCollection,DescribeAlias,GetStatistics,ListAliases</td>
     </tr>
   </tbody>
 </table>
@@ -710,13 +710,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Privilèges en lecture-écriture au niveau de la collection      </td>
-      <td>Query, Search, IndexDetail, GetFlushState, GetLoadState, GetLoadingProgress, HasPartition, ShowPartitions, DescribeCollection,DescribeAlias, GetStatistics, ListAliases, Load, Release, Insert, Delete, Upsert, Import, Flush, Compaction, LoadBalance, CreateIndex, DropIndex, CreatePartition, DropPartition</td>
+      <td>        Collection level readwrite privileges      </td>
+      <td>Query,Search,IndexDetail,GetFlushState,GetLoadState,GetLoadingProgress,HasPartition,ShowPartitions,DescribeCollection,DescribeAlias,GetStatistics,ListAliases,Load,Release,Insert,Delete,Upsert,Import,Flush,Compaction,LoadBalance,CreateIndex,DropIndex,CreatePartition,DropPartition</td>
     </tr>
   </tbody>
 </table>
@@ -739,13 +739,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Privilèges d'administration au niveau de la collection      </td>
-      <td>Requête, Recherche, Détails de l’index, Obtenir l’état de vidage, Obtenir l’état de chargement, Obtenir la progression du chargement, A-t-il une partition?, Afficher les partitions, Décrire la collection,DescribeAlias, GetStatistics, ListAliases, Load, Release, Insert, Delete, Upsert, Import, Flush, Compaction, LoadBalance, CreateIndex, DropIndex, CreatePartition, DropPartition, CreateAlias, DropAlias</td>
+      <td>        Collection level admin privileges      </td>
+      <td>Query,Search,IndexDetail,GetFlushState,GetLoadState,GetLoadingProgress,HasPartition,ShowPartitions,DescribeCollection,DescribeAlias,GetStatistics,ListAliases,Load,Release,Insert,Delete,Upsert,Import,Flush,Compaction,LoadBalance,CreateIndex,DropIndex,CreatePartition,DropPartition,CreateAlias,DropAlias</td>
     </tr>
   </tbody>
 </table>
@@ -768,12 +768,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Valeur de TTL lorsque la session accorde un bail au service d'enregistrement      </td>
+      <td>        ttl value when session granting a lease to register service      </td>
       <td>30</td>
     </tr>
   </tbody>
@@ -797,12 +797,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Nombre de tentatives lors de l'envoi de requêtes etcd par la session      </td>
+      <td>        retry times when session sending etcd requests      </td>
       <td>30</td>
     </tr>
   </tbody>
@@ -826,12 +826,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Indique s’il faut collecter des statistiques sur les verrous de métriques      </td>
+      <td>        whether gather statistics for metrics locks      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -855,12 +855,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Nombre minimum de millisecondes pour l'affichage des durées au niveau d'information      </td>
+      <td>        minimum milliseconds for printing durations in info level      </td>
       <td>500</td>
     </tr>
   </tbody>
@@ -884,13 +884,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        nombre minimum de millisecondes pour l'affichage des durées au niveau « warn »      </td>
-      <td>1 000</td>
+      <td>        minimum milliseconds for printing durations in warn level      </td>
+      <td>1000</td>
     </tr>
   </tbody>
 </table>
@@ -913,12 +913,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Nombre maximal de secondes d'attente pour une condition wlock      </td>
+      <td>        maximum seconds for waiting wlock conditional      </td>
       <td>600</td>
     </tr>
   </tbody>
@@ -942,15 +942,15 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Indique s’il faut désactiver le mécanisme interne de gestion des délais pour le système. </li>      
-        <li>S'il est désactivé (réglé sur « false »), le système n'autorisera pas les opérations DML, notamment les insertions, les suppressions, les requêtes et les recherches. </li>      
-        <li>Cela permet à Milvus-CDC de synchroniser les données incrémentielles</li>      </td>
+        <li>Whether to disable the internal time messaging mechanism for the system. </li>      
+        <li>If disabled (set to false), the system will not allow DML operations, including insertion, deletion, queries, and searches. </li>      
+        <li>This helps Milvus-CDC synchronize incremental data</li>      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -974,12 +974,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        tracer les informations de requête      </td>
+      <td>        trace request info      </td>
       <td>0</td>
     </tr>
   </tbody>
@@ -1003,13 +1003,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Taille initiale du filtre Bloom      </td>
-      <td>100 000</td>
+      <td>        bloom filter initial size      </td>
+      <td>100000</td>
     </tr>
   </tbody>
 </table>
@@ -1032,12 +1032,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Type de filtre Bloom ; prend en charge BasicBloomFilter et BlockedBloomFilter      </td>
+      <td>        bloom filter type, support BasicBloomFilter and BlockedBloomFilter      </td>
       <td>BlockedBloomFilter</td>
     </tr>
   </tbody>
@@ -1061,13 +1061,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Taux maximal de faux positifs pour le filtre Bloom      </td>
-      <td>0,001</td>
+      <td>        max false positive rate for bloom filter      </td>
+      <td>0.001</td>
     </tr>
   </tbody>
 </table>
@@ -1090,13 +1090,13 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Taille du lot à partir de laquelle appliquer le pk au filtre de Bloom      </td>
-      <td>1 000</td>
+      <td>        batch size when to apply pk to bloom filter      </td>
+      <td>1000</td>
     </tr>
   </tbody>
 </table>
@@ -1119,12 +1119,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Indique s’il faut activer la réplication des collections.      </td>
+      <td>        Whether to enable collection replication.      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -1148,12 +1148,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        si true, effectuer la compaction par grappes et l'élagage des segments sur le champ de clé de partition      </td>
+      <td>        if true, do clustering compaction and segment prune on partition key field      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -1177,12 +1177,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        si true, effectuer une compaction par regroupement et un élagage de segments sur le champ vectoriel      </td>
+      <td>        if true, do clustering compaction and segment prune on vector field      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -1206,12 +1206,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        si vrai, active la clé de regroupement vectoriel et la compaction par regroupement vectoriel      </td>
+      <td>        if true, enable vector clustering key and vector clustering compaction      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -1235,12 +1235,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Active le RPC local pour la communication interne en mode mixte ou autonome.      </td>
+      <td>        enable local rpc for internal communication when mix or standalone mode.      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -1264,12 +1264,12 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Durée maximale d'attente pour que la tâche se termine et libère les ressources du pool      </td>
+      <td>        The maximum time to wait for the task to finish and release resources in the pool      </td>
       <td>60</td>
     </tr>
   </tbody>
@@ -1293,17 +1293,17 @@ summary: Découvrez comment configurer les paramètres courants de Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Identifiant unique du cluster utilisé lors de la génération d'AutoID afin de garantir l'unicité globale entre plusieurs clusters Milvus.</li>      
-        <li>Valeurs valides : [0, 1, 2, 3, 4, 5, 6, 7] (prend en charge jusqu’à 8 clusters)</li>      
-        <li>Chaque cluster doit disposer d'un clusterID unique afin d'éviter tout chevauchement des identifiants AutoID lors de l'exécution de plusieurs clusters.</li>      
-        <li>Cet identifiant est intégré dans la structure AutoID 64 bits au sein du segment cluster_id.</li>      
-        <li>Pour plus d’informations, consultez la section « <a href="/docs/fr/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">Champ principal et AutoID</a> ».</li>      </td>
+        <li>Unique identifier for the cluster used in AutoID generation to ensure global uniqueness across multiple Milvus clusters.</li>      
+        <li>Valid values: [0, 1, 2, 3, 4, 5, 6, 7] (supports up to 8 clusters)</li>      
+        <li>Each cluster must have a unique clusterID to prevent AutoID overlap when running multiple clusters.</li>      
+        <li>This ID is embedded in the 64-bit AutoID structure as part of the cluster_id segment.</li>      
+        <li>For more information, refer to <a href="/docs/fr/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">Primary Field & AutoID</a>.</li>      </td>
       <td>0</td>
     </tr>
   </tbody>

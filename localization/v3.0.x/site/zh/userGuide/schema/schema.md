@@ -1,11 +1,12 @@
 ---
 id: schema.md
-title: Schema说明
+title: Schema Explained
 summary: >-
-  Schema定义了Collection的数据结构。在创建Collection之前，您需要先设计好其Schema。本页面将帮助您了解Collection
-  Schema，并自行设计一个示例Schema。​
+  A schema defines the data structure of a collection. Before creating a
+  collection, you need to work out a design of its schema. This page helps you
+  understand the collection schema and design an example schema on your own.​
 ---
-<h1 id="Schema-Explained​" class="common-anchor-header">Schema详解​<button data-href="#Schema-Explained​" class="anchor-icon" translate="no">
+<h1 id="Schema-Explained​" class="common-anchor-header">Schema Explained​<button data-href="#Schema-Explained​" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Schema定义了Collection的数据结构。在创建Collection之前，您需要设计其Schema。本页面将帮助您理解Collection Schema，并独立设计一个示例Schema。​</p>
-<h2 id="Overview​" class="common-anchor-header">概述​<button data-href="#Overview​" class="anchor-icon" translate="no">
+    </button></h1><p>A schema defines the data structure of a collection. Before creating a collection, you need to work out a design of its schema. This page helps you understand the collection schema and design an example schema on your own.​</p>
+<h2 id="Overview​" class="common-anchor-header">Overview​<button data-href="#Overview​" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,18 +37,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在 Milvus 中，Collection Schema 相当于关系型数据库中的表，它定义了 Milvus 如何组织 Collection 中的数据。​</p>
-<p>设计良好的Schema至关重要，因为它抽象了数据模型，并决定了您能否通过搜索实现业务目标。此外，由于插入Collection的每一行数据都必须遵循Schema，这有助于维护数据的一致性和长期质量。 从技术角度来看，定义明确的Schema能实现井然有序的列数据存储和更简洁的索引结构，从而提升搜索性能。​</p>
-<p>Collection模式包含一个主键、最多四个向量字段以及若干标量字段。下图展示了如何将一篇文章映射到一组Schema字段中。​</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/schema-explained.png" alt="Schema design" class="doc-image" id="schema-design" /> 
-   <span>模式设计</span>
-  
- </span></p>
-<p>搜索系统的数据模型设计涉及分析业务需求，并将信息抽象为以Schema表达的数据模型。例如，对一段文本进行搜索时，必须通过“嵌入”将字符串转换为向量，从而实现“索引”，进而支持向量搜索。 除了这一基本要求外，可能还需要存储其他属性，例如发布时间戳和作者。这些元数据允许通过过滤来优化语义搜索，仅返回特定日期之后发布的文本或特定作者的文本。 您还可以将这些标量与正文一起检索，以便在应用程序中呈现搜索结果。应为每个元素分配一个唯一的标识符（以整数或字符串形式表示）来组织这些文本片段。这些元素对于实现复杂的搜索逻辑至关重要。​</p>
-<p>请参阅<a href="/docs/zh/schema-hands-on.md">《Schema设计实践指南》</a>，了解如何设计出结构合理的Schema。​</p>
-<h2 id="Create-Schema​" class="common-anchor-header">创建Schema​<button data-href="#Create-Schema​" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, a collection schema assembles a table in a relational database, which defines how Milvus organizes data in the collection. ​</p>
+<p>A well-designed schema is essential as it abstracts the data model and decides if you can achieve the business objectives through a search. Furthermore, since every row of data inserted into the collection must follow the schema, it helps maintain data consistency and long-term quality. From a technical perspective, a well-defined schema leads to well-organized column data storage and a cleaner index structure, boosting search performance.​</p>
+<p>A collection schema has a primary key, a maximum of four vector fields, and several scalar fields. The following diagram illustrates how to map an article to a list of schema fields.​</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/schema-explained.png" alt="Schema design" class="doc-image" id="schema-design" />
+    <span>Schema design</span>
+  </span>
+</p>
+<p>The data model design of a search system involves analyzing business needs and abstracting information into a schema-expressed data model. For instance, searching a piece of text must be “indexed” by converting the literal string into a vector through “embedding” and enabling vector search. Beyond this essential requirement, storing other properties such as publication timestamp and author may be necessary. This metadata allows for semantic searches to be refined through filtering, returning only texts published after a specific date or by a particular author. You can also retrieve these scalars with the main text to render the search result in the application. Each should be assigned a unique identifier to organize these text pieces, expressed as an integer or string. These elements are essential for achieving sophisticated search logic.​</p>
+<p>Refer to <a href="/docs/zh/schema-hands-on.md">Schema Design Hands-On</a> to figure out how to make a well-designed schema.​</p>
+<h2 id="Create-Schema​" class="common-anchor-header">Create Schema​<button data-href="#Create-Schema​" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,12 +63,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下代码片段演示了如何创建Schema。​</p>
+    </button></h2><p>The following code snippet demonstrates how to create a schema.​</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
- <a href="#javascript"> Node.js</a>
- <a href="#curl"> cURL</a>
+  <a href="#python">Python </a>
+  <a href="#java">Java</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#curl">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType​
 ​
@@ -89,7 +90,7 @@ CreateCollectionReq.<span class="hljs-type">CollectionSchema</span> <span class=
 }'​
 
 </code></pre>
-<h2 id="Add-Primary-Field​" class="common-anchor-header">添加主键​<button data-href="#Add-Primary-Field​" class="anchor-icon" translate="no">
+<h2 id="Add-Primary-Field​" class="common-anchor-header">Add Primary Field​<button data-href="#Add-Primary-Field​" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -104,12 +105,12 @@ CreateCollectionReq.<span class="hljs-type">CollectionSchema</span> <span class=
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Collection 中的主键字段用于唯一标识一个实体。它仅接受<strong>Int64</strong>或<strong>VARCHAR</strong>类型的值。以下代码片段演示了如何添加主键字段。​</p>
+    </button></h2><p>The primary field in a collection uniquely identifies an entity. It only accepts <strong>Int64</strong> or <strong>VARCHAR</strong> values. The following code snippets demonstrate how to add the primary field.​</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
- <a href="#javascript"> Node.js</a>
- <a href="#curl"> cURL</a>
+  <a href="#python">Python </a>
+  <a href="#java">Java</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#curl">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">schema.add_field(​
     field_name=<span class="hljs-string">&quot;my_id&quot;</span>,​
@@ -152,10 +153,10 @@ export schema='{​
 }'​
 
 </code></pre>
-<p>添加字段时，您可以通过将字段的 `<code translate="no">is_primary</code> ` 属性设置为 `<code translate="no">True</code>` 来显式指定该字段为主键字段。主键字段默认接受<strong>`Int64`</strong>值。在此情况下，主键字段的值应为类似于 `<code translate="no">12345</code>` 的整数。如果您选择在主键字段中使用<strong>`VARCHAR`</strong>值，则该值应为类似于 `<code translate="no">my_entity_1234</code>` 的字符串。​</p>
-<p>您还可以将<code translate="no">autoId</code> 属性设置为<code translate="no">True</code> ，以便 Milvus 在插入数据时自动分配主字段值。​</p>
-<p>有关详细信息，请参阅<a href="/docs/zh/primary-field.md">​主字段与AutoID</a>。​</p>
-<h2 id="Add-Vector-Fields​" class="common-anchor-header">添加向量字段​<button data-href="#Add-Vector-Fields​" class="anchor-icon" translate="no">
+<p>When adding a field, you can explicitly clarify the field as the primary field by setting its <code translate="no">is_primary</code> property to <code translate="no">True</code>. A primary field accepts <strong>Int64</strong> values by default. In this case, the primary field value should be integers similar to <code translate="no">12345</code>. If you choose to use <strong>VARCHAR</strong> values in the primary field, the value should be strings similar to <code translate="no">my_entity_1234</code>.​</p>
+<p>You can also set the <code translate="no">autoId</code> properties to <code translate="no">True</code> to make Milvus automatically allocate primary field values upon data insertions.​</p>
+<p>For details, refer to <a href="/docs/zh/primary-field.md">​Primary Field & AutoID</a>.​</p>
+<h2 id="Add-Vector-Fields​" class="common-anchor-header">Add Vector Fields​<button data-href="#Add-Vector-Fields​" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -170,12 +171,12 @@ export schema='{​
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>向量字段支持各种稀疏和稠密向量嵌入。在 Milvus 中，您可以向 Collection 添加四个向量字段。以下代码片段演示了如何添加向量字段。​</p>
+    </button></h2><p>Vector fields accept various sparse and dense vector embeddings. In Milvus, you can add four vector fields to a collection. The following code snippets demonstrate how to add a vector field.​</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
- <a href="#javascript"> Node.js</a>
- <a href="#curl"> cURL</a>
+  <a href="#python">Python </a>
+  <a href="#java">Java</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#curl">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">schema.add_field(​
     field_name=<span class="hljs-string">&quot;my_vector&quot;</span>,​
@@ -215,18 +216,18 @@ export schema=&quot;{​
 }&quot;​
 
 </code></pre>
-<p>上述代码片段中的<code translate="no">dim</code> 参数表示向量字段中将存储的向量Embeddings的维度。<code translate="no">FLOAT_VECTOR</code> 的值表示该向量字段包含一个32位浮点数列表，这些数值通常用于表示反对数。此外，Milvus还支持以下类型的向量Embeddings：​</p>
+<p>The <code translate="no">dim</code> paramter in the above code snippets indicates the dimensionality of the vector embeddings to be held in the vector field. The <code translate="no">FLOAT_VECTOR</code> value indicates that the vector field holds a list of 32-bit floating numbers, which are usually used to represent antilogarithms.In addition to that, Milvus also supports the following types of vector embeddings:​</p>
 <ul>
 <li><p><code translate="no">FLOAT16_VECTOR</code>​</p>
-<p>此类向量字段包含一个 16 位半精度浮点数列表，通常适用于内存或带宽受限的深度学习或基于 GPU 的计算场景。​</p></li>
+<p>A vector field of this type holds a list of 16-bit half-precision floating numbers and usually applies to memory- or bandwidth-restricted deep learning or GPU-based computing scenarios.​</p></li>
 <li><p><code translate="no">BFLOAT16_VECTOR</code>​</p>
-<p>此类向量字段包含一组 16 位浮点数，其精度虽有所降低，但指数范围与 Float32 相同。此类数据常用于深度学习场景，因为它能在不显著影响精度的同时减少内存占用。​</p></li>
+<p>A vector field of this type holds a list of 16-bit floating-point numbers that have reduced precision but the same exponent range as Float32. This type of data is commonly used in deep learning scenarios, as it reduces memory usage without significantly impacting accuracy.​</p></li>
 <li><p><code translate="no">BINARY_VECTOR</code>​</p>
-<p>此类向量字段包含一组由0和1组成的列表。它们在图像处理和信息检索场景中作为紧凑特征来表示数据。​</p></li>
+<p>A vector field of this type holds a list of 0s and 1s. They serve as compact features for representing data in image processing and information retrieval scenarios.​</p></li>
 <li><p><code translate="no">SPARSE_FLOAT_VECTOR</code>​</p>
-<p>此类向量字段包含一组非零数及其序列号，用于表示稀疏向量Embeddings。​</p></li>
+<p>A vector field of this type holds a list of non-zero numbers and their sequence numbers to represent sparse vector embeddings.​</p></li>
 </ul>
-<h2 id="Add-Scalar-Fields​" class="common-anchor-header">添加标量字段​<button data-href="#Add-Scalar-Fields​" class="anchor-icon" translate="no">
+<h2 id="Add-Scalar-Fields​" class="common-anchor-header">Add Scalar Fields​<button data-href="#Add-Scalar-Fields​" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -241,8 +242,8 @@ export schema=&quot;{​
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在常见情况下，您可以使用标量字段来存储保存在 Milvus 中的向量 Embeddings 的元数据，并通过元数据过滤进行人工神经网络（ANN）搜索，以提高搜索结果的准确性。Milvus 支持多种标量字段类型，包括<strong>VARCHAR</strong>、<strong>TEXT</strong>、<strong>Boolean</strong>、<strong>Int</strong>、Float、<strong>Double</strong>、<strong>Array</strong> 和 JSON。​</p>
-<h3 id="Add-VARCHAR-Fields​" class="common-anchor-header">添加 VARCHAR 字段​<button data-href="#Add-VARCHAR-Fields​" class="anchor-icon" translate="no">
+    </button></h2><p>In common cases, you can use scalar fields to store the metadata of the vector embeddings stored in Milvus, and conduct ANN searches with metadata filtering to improve the correctness of the search results. Milvus supports multiple scalar field types, including <strong>VARCHAR</strong>, <strong>TEXT</strong>, <strong>Boolean</strong>, <strong>Int</strong>, Float, <strong>Double</strong>, <strong>Array</strong>, and JSON.​</p>
+<h3 id="Add-VARCHAR-Fields​" class="common-anchor-header">Add VARCHAR Fields​<button data-href="#Add-VARCHAR-Fields​" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -257,12 +258,12 @@ export schema=&quot;{​
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在 Milvus 中，您可以使用<code translate="no">VARCHAR</code> 字段来存储字符串。有关<code translate="no">VARCHAR</code> 字段的更多信息，请参阅<a href="/docs/zh/string.md">​VARCHAR 字段</a>。​</p>
+    </button></h3><p>In Milvus, you can use <code translate="no">VARCHAR</code> fields to store strings. For more on the <code translate="no">VARCHAR</code> field, refer to <a href="/docs/zh/string.md">​VarChar Field</a>.​</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
- <a href="#javascript"> Node.js</a>
- <a href="#curl"> cURL</a>
+  <a href="#python">Python </a>
+  <a href="#java">Java</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#curl">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">schema.add_field(​
     field_name=<span class="hljs-string">&quot;my_varchar&quot;</span>,​
@@ -303,7 +304,7 @@ export schema=&quot;{​
 }&quot;​
 
 </code></pre>
-<h3 id="Add-TEXT-Fields" class="common-anchor-header">添加 TEXT 字段<button data-href="#Add-TEXT-Fields" class="anchor-icon" translate="no">
+<h3 id="Add-TEXT-Fields" class="common-anchor-header">Add TEXT Fields<button data-href="#Add-TEXT-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -318,13 +319,13 @@ export schema=&quot;{​
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在 Milvus 3.0 及更高版本中，您可以使用<code translate="no">TEXT</code> 字段来存储文档文本、段落、日志和其他长文本内容。与<code translate="no">VARCHAR</code> 不同，<code translate="no">TEXT</code> 字段不需要<code translate="no">max_length</code> 。有关<code translate="no">TEXT</code> 字段的更多信息，请参阅<a href="/docs/zh/text.md">“文本字段”</a>。</p>
+    </button></h3><p>In Milvus 3.0 and later, you can use <code translate="no">TEXT</code> fields to store document text, passages, logs, and other long text content. Unlike <code translate="no">VARCHAR</code>, a <code translate="no">TEXT</code> field does not require <code translate="no">max_length</code>. For more on the <code translate="no">TEXT</code> field, refer to <a href="/docs/zh/text.md">Text Field</a>.</p>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_text&quot;</span>,
     datatype=DataType.TEXT,
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Add-Number-Fields​" class="common-anchor-header">添加数字字段​<button data-href="#Add-Number-Fields​" class="anchor-icon" translate="no">
+<h3 id="Add-Number-Fields​" class="common-anchor-header">Add Number Fields​<button data-href="#Add-Number-Fields​" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -339,12 +340,12 @@ export schema=&quot;{​
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 支持的数字类型包括<code translate="no">Int8</code> 、<code translate="no">Int16</code> 、<code translate="no">Int32</code> 、<code translate="no">Int64</code> 、<code translate="no">Float</code> 和<code translate="no">Double</code> 。有关数字字段的更多信息，请参阅<a href="/docs/zh/number.md">“数字字段”</a>。</p>
+    </button></h3><p>The types of numbers that Milvus supports are <code translate="no">Int8</code>, <code translate="no">Int16</code>, <code translate="no">Int32</code>, <code translate="no">Int64</code>, <code translate="no">Float</code>, and <code translate="no">Double</code>. For more on the number fields, refer to <a href="/docs/zh/number.md">​Number Field</a>.​</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
- <a href="#javascript"> Node.js</a>
- <a href="#curl"> cURL</a>
+  <a href="#python">Python </a>
+  <a href="#java">Java</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#curl">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">schema.add_field(​
     field_name=<span class="hljs-string">&quot;my_int64&quot;</span>,​
@@ -380,7 +381,7 @@ export schema=&quot;{​
 }&quot;​
 
 </code></pre>
-<h3 id="Add-Boolean-Fields​" class="common-anchor-header">添加布尔字段​<button data-href="#Add-Boolean-Fields​" class="anchor-icon" translate="no">
+<h3 id="Add-Boolean-Fields​" class="common-anchor-header">Add Boolean Fields​<button data-href="#Add-Boolean-Fields​" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -395,12 +396,12 @@ export schema=&quot;{​
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 支持布尔字段。以下代码片段演示了如何添加布尔字段。​</p>
+    </button></h3><p>Milvus supports boolean fields. The following code snippets demonstrate how to add a boolean field.​</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
- <a href="#javascript"> Node.js</a>
- <a href="#curl"> cURL</a>
+  <a href="#python">Python </a>
+  <a href="#java">Java</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#curl">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">schema.add_field(​
     field_name=<span class="hljs-string">&quot;my_bool&quot;</span>,​
@@ -437,7 +438,7 @@ export schema=&quot;{​
 }&quot;​
 
 </code></pre>
-<h3 id="Add-JSON-fields​" class="common-anchor-header">添加 JSON 字段​<button data-href="#Add-JSON-fields​" class="anchor-icon" translate="no">
+<h3 id="Add-JSON-fields​" class="common-anchor-header">Add JSON fields​<button data-href="#Add-JSON-fields​" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -452,12 +453,12 @@ export schema=&quot;{​
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>JSON 字段通常用于存储半结构化 JSON 数据。有关 JSON 字段的更多信息，请参阅<a href="/docs/zh/use-json-fields.md">​JSON 字段​</a>。</p>
+    </button></h3><p>A JSON field usually stores half-structured JSON data. For more on the JSON fields, refer to <a href="/docs/zh/use-json-fields.md">​JSON Field</a>.​</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
- <a href="#javascript"> Node.js</a>
- <a href="#curl"> cURL</a>
+  <a href="#python">Python </a>
+  <a href="#java">Java</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#curl">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">schema.add_field(​
     field_name=<span class="hljs-string">&quot;my_json&quot;</span>,​
@@ -495,7 +496,7 @@ export schema=&quot;{​
 }&quot;​
 
 </code></pre>
-<h3 id="Add-Array-Fields​" class="common-anchor-header">添加数组字段​<button data-href="#Add-Array-Fields​" class="anchor-icon" translate="no">
+<h3 id="Add-Array-Fields​" class="common-anchor-header">Add Array Fields​<button data-href="#Add-Array-Fields​" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -510,12 +511,12 @@ export schema=&quot;{​
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>数组字段用于存储一组元素。数组字段中所有元素的数据类型应保持一致。有关数组字段的更多信息，请<a href="/docs/zh/array_data_type.md">参阅​数组字段​</a>。</p>
+    </button></h3><p>An array field stores a list of elements. The data types of all elements in an array field should be the same. For more on the array fields, refer to <a href="/docs/zh/array_data_type.md">​Array Field</a>.​</p>
 <div class="multipleCode">
- <a href="#python">Python 
- </a> <a href="#java"> Java</a>
- <a href="#javascript"> Node.js</a>
- <a href="#curl"> cURL</a>
+  <a href="#python">Python </a>
+  <a href="#java">Java</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#curl">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">schema.add_field(​
     field_name=<span class="hljs-string">&quot;my_array&quot;</span>,​

@@ -1,17 +1,15 @@
 ---
 id: tiered-storage-overview.md
-title: Gambaran Umum Penyimpanan BerjenjangCompatible with Milvus 2.6.4+
+title: Tiered Storage OverviewCompatible with Milvus 2.6.4+
 summary: >-
-  Dalam Milvus, mode beban penuh tradisional mengharuskan setiap QueryNode untuk
-  memuat semua bidang data dan indeks dari sebuah segmen pada saat inisialisasi,
-  bahkan data yang mungkin tidak pernah diakses. Hal ini memastikan ketersediaan
-  data secara langsung, tetapi sering kali menyebabkan pemborosan sumber daya,
-  termasuk penggunaan memori yang tinggi, aktivitas disk yang berat, dan
-  overhead I/O yang signifikan, terutama ketika menangani set data berskala
-  besar.
+  In Milvus, the traditional full-load mode requires each QueryNode to load all
+  data fields and indexes of a segment at initialization, even data that may
+  never be accessed. This ensures immediate data availability but often leads to
+  wasted resources, including high memory usage, heavy disk activity, and
+  significant I/O overhead, especially when handling large-scale datasets.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Tiered-Storage-Overview" class="common-anchor-header">Gambaran Umum Penyimpanan Berjenjang<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Tiered-Storage-Overview" class="anchor-icon" translate="no">
+<h1 id="Tiered-Storage-Overview" class="common-anchor-header">Tiered Storage Overview<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Tiered-Storage-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,21 +24,21 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Di Milvus, mode <em>beban penuh</em> tradisional mengharuskan setiap QueryNode untuk memuat semua bidang data dan indeks <a href="/docs/id/glossary.md#Segment">segmen</a> saat inisialisasi, bahkan data yang mungkin tidak pernah diakses. Hal ini memastikan ketersediaan data dengan segera, tetapi sering kali menyebabkan pemborosan sumber daya, termasuk penggunaan memori yang tinggi, aktivitas disk yang berat, dan overhead I/O yang signifikan, terutama saat menangani dataset berskala besar.</p>
-<p><em>Tiered Storage</em> menjawab tantangan ini dengan memisahkan cache data dari pemuatan segmen. Alih-alih memuat semua data sekaligus, QueryNode kini hanya memuat <em>metadata</em> ringan pada awalnya dan secara dinamis menarik atau mengeluarkan data lapangan sesuai permintaan. Hal ini secara signifikan mengurangi waktu muat, mengoptimalkan pemanfaatan sumber daya lokal, dan memungkinkan QueryNode untuk memproses kumpulan data yang jauh melebihi memori fisik atau kapasitas disk.</p>
-<p>Pertimbangkan untuk mengaktifkan Penyimpanan Berjenjang dalam skenario seperti:</p>
+    </button></h1><p>In Milvus, the traditional <em>full-load</em> mode requires each QueryNode to load all data fields and indexes of a <a href="/docs/id/glossary.md#Segment">segment</a> at initialization, even data that may never be accessed. This ensures immediate data availability but often leads to wasted resources, including high memory usage, heavy disk activity, and significant I/O overhead, especially when handling large-scale datasets.</p>
+<p><em>Tiered Storage</em> addresses this challenge by decoupling data caching from segment loading. Instead of loading all data at once, the QueryNode now loads only lightweight <em>metadata</em> initially and dynamically pulls or evicts field data on demand. This significantly reduces load time, optimizes local resource utilization, and enables QueryNodes to process datasets that far exceed their physical memory or disk capacity.</p>
+<p>Consider enabling Tiered Storage in scenarios such as:</p>
 <ul>
-<li><p>Koleksi yang melebihi memori yang tersedia atau kapasitas NVMe dari satu QueryNode</p></li>
-<li><p>Beban kerja analitis atau batch di mana pemuatan yang lebih cepat lebih penting daripada latensi kueri pertama</p></li>
-<li><p>Beban kerja campuran yang dapat mentoleransi kesalahan cache sesekali untuk data yang lebih jarang diakses</p></li>
+<li><p>Collections that exceed the available memory or NVMe capacity of a single QueryNode</p></li>
+<li><p>Analytical or batch workloads where faster loading is more important than the first-query latency</p></li>
+<li><p>Mixed workloads that can tolerate occasional cache misses for less frequently accessed data</p></li>
 </ul>
 <div class="alert note">
 <ul>
-<li><p><em>Metadata</em> mencakup skema, definisi indeks, peta potongan, jumlah baris, dan referensi ke objek jarak jauh. Jenis data ini berukuran kecil, selalu di-cache, dan tidak pernah digusur.</p></li>
-<li><p>Untuk detail lebih lanjut tentang segmen dan potongan, lihat <a href="/docs/id/glossary.md#Segment">Segmen</a>.</p></li>
+<li><p><em>Metadata</em> includes schema, index definitions, chunk maps, row counts, and references to remote objects. This type of data is small, always cached, and never evicted.</p></li>
+<li><p>For more details on segments and chunks, refer to <a href="/docs/id/glossary.md#Segment">Segment</a>.</p></li>
 </ul>
 </div>
-<h2 id="How-it-works" class="common-anchor-header">Bagaimana cara kerjanya<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,8 +53,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Penyimpanan Berjenjang mengubah cara QueryNode mengelola data segmen. Alih-alih menyimpan cache setiap bidang dan indeks pada saat pemuatan, QueryNode sekarang hanya memuat metadata dan menggunakan lapisan cache untuk mengambil dan mengeluarkan data secara dinamis.</p>
-<h3 id="Full-load-mode-vs-Tiered-Storage-mode" class="common-anchor-header">Mode beban penuh vs mode Penyimpanan Berjenjang<button data-href="#Full-load-mode-vs-Tiered-Storage-mode" class="anchor-icon" translate="no">
+    </button></h2><p>Tiered Storage changes how QueryNode manages segment data. Instead of caching every field and index at load time, QueryNode now loads metadata only and uses a caching layer to fetch and evict data dynamically.</p>
+<h3 id="Full-load-mode-vs-Tiered-Storage-mode" class="common-anchor-header">Full-load mode vs. Tiered Storage mode<button data-href="#Full-load-mode-vs-Tiered-Storage-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -71,17 +69,19 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Meskipun mode full-load dan Tiered Storage menangani data yang sama, keduanya berbeda dalam hal <em>kapan</em> dan <em>bagaimana</em> QueryNode menyimpan komponen-komponen ini di dalam cache.</p>
+    </button></h3><p>While both full-load and Tiered Storage modes handle the same data, they differ in <em>when</em> and <em>how</em> QueryNode caches these components.</p>
 <ul>
-<li><p><strong>Mode beban penuh</strong>: Pada saat pemuatan, QueryNode menyimpan data koleksi penuh, termasuk metadata, data bidang, dan indeks, dari penyimpanan objek.</p></li>
-<li><p><strong>Mode Penyimpanan Berjenjang</strong>: Pada waktu pemuatan, QueryNode hanya menyimpan metadata. Data bidang ditarik sesuai permintaan pada granularitas potongan. File indeks tetap berada di luar jangkauan hingga kueri pertama membutuhkannya; kemudian seluruh indeks per segmen diambil dan di-cache.</p></li>
+<li><p><strong>Full-load mode</strong>: At load time, QueryNode caches full collection data, including metadata, field data, and indexes, from object storage.</p></li>
+<li><p><strong>Tiered Storage mode</strong>: At load time, QueryNode caches metadata only. Field data is pulled on demand at chunk granularity. Index files remain remote until the first query needs them; then the entire per-segment index is fetched and cached.</p></li>
 </ul>
-<p>Diagram di bawah ini menunjukkan perbedaan ini.</p>
+<p>The diagram below shows these differences.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/full-load-mode-vs-tiered-storage-mode.png" alt="Full Load Mode Vs Tiered Storage Mode" class="doc-image" id="full-load-mode-vs-tiered-storage-mode" />
-   </span> <span class="img-wrapper"> <span>Mode Pemuatan Penuh Vs Mode Penyimpanan Berjenjang</span> </span></p>
-<h3 id="QueryNode-loading-workflow" class="common-anchor-header">Alur kerja pemuatan QueryNode<button data-href="#QueryNode-loading-workflow" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/full-load-mode-vs-tiered-storage-mode.png" alt="Full Load Mode Vs Tiered Storage Mode" class="doc-image" id="full-load-mode-vs-tiered-storage-mode" />
+    <span>Full Load Mode Vs Tiered Storage Mode</span>
+  </span>
+</p>
+<h3 id="QueryNode-loading-workflow" class="common-anchor-header">QueryNode loading workflow<button data-href="#QueryNode-loading-workflow" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,44 +96,46 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dalam Penyimpanan Berjenjang, alur kerja Penyimpanan Berjenjang memiliki fase-fase berikut:</p>
+    </button></h3><p>Under Tiered Storage, the workflow of Tiered Storage has these phases:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/querynode-load-workflow.png" alt="Querynode Load Workflow" class="doc-image" id="querynode-load-workflow" />
-   </span> <span class="img-wrapper"> <span>Alur Kerja Pemuatan Querynode</span> </span></p>
-<h4 id="Phase-1-Lazy-load" class="common-anchor-header">Fase 1: Beban malas</h4><p>Saat inisialisasi, Milvus melakukan pemuatan malas, hanya menyimpan metadata tingkat segmen seperti definisi skema, informasi indeks, dan pemetaan potongan.</p>
-<p>Tidak ada data lapangan aktual atau file indeks yang di-cache pada tahap ini. Hal ini memungkinkan koleksi untuk dapat diakses segera setelah startup sambil menjaga konsumsi memori dan disk tetap minimal.</p>
-<p>Karena data field dan file indeks tetap berada di penyimpanan jarak jauh hingga pertama kali diakses, <em>query pertama</em> mungkin mengalami latensi tambahan karena data yang diperlukan harus diambil sesuai permintaan. Untuk mengurangi efek ini untuk bidang atau indeks yang penting, Anda dapat menggunakan strategi <a href="/docs/id/tiered-storage-overview.md#Phase-2-Warm-up">Pemanasan</a> untuk secara proaktif melakukan pramuat sebelum segmen tersebut dapat di-query.</p>
-<p><strong>Konfigurasi</strong></p>
-<p>Diterapkan secara otomatis ketika Penyimpanan Berjenjang diaktifkan. Tidak diperlukan pengaturan manual.</p>
-<h4 id="Phase-2-Warm-up" class="common-anchor-header">Fase 2: Pemanasan</h4><p>Untuk mengurangi latensi serangan pertama yang disebabkan oleh <a href="/docs/id/tiered-storage-overview.md#Phase-1-Lazy-load">beban malas</a>, Milvus menyediakan mekanisme <em>Pemanasan</em>.</p>
-<p>Sebelum sebuah segmen dapat di-query, Milvus dapat secara proaktif mengambil dan menyimpan field atau indeks tertentu dari penyimpanan objek, memastikan bahwa query pertama langsung menyentuh data yang di-cache alih-alih memicu pemuatan sesuai permintaan.</p>
-<p>Selama pemanasan, field akan dimuat sebelumnya di tingkat chunk, sementara indeks akan dimuat sebelumnya di tingkat segmen.</p>
-<p><strong>Konfigurasi</strong></p>
-<p>Pemanasan dapat dikonfigurasi pada tiga tingkat:</p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/querynode-load-workflow.png" alt="Querynode Load Workflow" class="doc-image" id="querynode-load-workflow" />
+    <span>Querynode Load Workflow</span>
+  </span>
+</p>
+<h4 id="Phase-1-Lazy-load" class="common-anchor-header">Phase 1: Lazy load</h4><p>At initialization, Milvus performs a lazy load, caching only segment-level metadata such as schema definitions, index information, and chunk mappings.</p>
+<p>No actual field data or index files are cached at this stage. This allows collections to become queryable almost immediately after startup while keeping memory and disk consumption minimal.</p>
+<p>Because field data and index files remain in remote storage until first accessed, the <em>first query</em> may experience additional latency as required data must be fetched on demand. To mitigate this effect for critical fields or indexes, you can use the <a href="/docs/id/tiered-storage-overview.md#Phase-2-Warm-up">Warm Up</a> strategy to proactively preload them before the segment becomes queryable.</p>
+<p><strong>Configuration</strong></p>
+<p>Automatically applied when Tiered Storage is enabled. No manual setting is required.</p>
+<h4 id="Phase-2-Warm-up" class="common-anchor-header">Phase 2: Warm up</h4><p>To reduce the first-hit latency introduced by <a href="/docs/id/tiered-storage-overview.md#Phase-1-Lazy-load">lazy load</a>, Milvus provides a <em>Warm Up</em> mechanism.</p>
+<p>Before a segment becomes queryable, Milvus can proactively fetch and cache specific fields or indexes from object storage, ensuring that the first query directly hits cached data instead of triggering on-demand loading.</p>
+<p>During warmup, fields will be preloaded at the chunk level, while indexes will be preloaded at the segment level.</p>
+<p><strong>Configuration</strong></p>
+<p>Warmup can be configured at three levels:</p>
 <ul>
-<li><p><strong>Tingkat cluster</strong>: Tentukan default di <code translate="no">milvus.yaml</code> yang berlaku untuk semua koleksi.</p></li>
-<li><p><strong>Tingkat koleksi</strong>: Mengesampingkan default cluster untuk koleksi tertentu menggunakan metode SDK (<code translate="no">create_collection</code>, <code translate="no">alter_collection_properties</code>).</p></li>
-<li><p><strong>Tingkat Bidang/Indeks</strong>: Menyempurnakan bidang atau indeks individual menggunakan metode SDK (<code translate="no">add_field</code>, <code translate="no">alter_collection_field</code>, <code translate="no">add_index</code>, <code translate="no">alter_index_properties</code>).</p></li>
+<li><p><strong>Cluster level</strong>: Define defaults in <code translate="no">milvus.yaml</code> that apply to all collections.</p></li>
+<li><p><strong>Collection level</strong>: Override cluster defaults for a specific collection using SDK methods (<code translate="no">create_collection</code>, <code translate="no">alter_collection_properties</code>).</p></li>
+<li><p><strong>Field/Index level</strong>: Fine-tune individual fields or indexes using SDK methods (<code translate="no">add_field</code>, <code translate="no">alter_collection_field</code>, <code translate="no">add_index</code>, <code translate="no">alter_index_properties</code>).</p></li>
 </ul>
-<p>Pengaturan tingkat yang lebih tinggi mengesampingkan pengaturan tingkat yang lebih rendah (Field/Index &gt; Collection &gt; Cluster). Lihat <a href="/docs/id/warm-up.md">Pemanasan</a> untuk konfigurasi terperinci.</p>
-<h4 id="Phase-3-Partial-load" class="common-anchor-header">Tahap 3: Pemuatan sebagian</h4><p>Setelah kueri atau pencarian dimulai, QueryNode melakukan pemuatan <em>parsial</em>, hanya mengambil potongan data atau file indeks yang diperlukan dari penyimpanan objek.</p>
+<p>Higher-level settings override lower-level ones (Field/Index > Collection > Cluster). See <a href="/docs/id/warm-up.md">Warm Up</a> for detailed configurations.</p>
+<h4 id="Phase-3-Partial-load" class="common-anchor-header">Phase 3: Partial load</h4><p>Once queries or searches begin, the QueryNode performs a <em>partial load</em>, fetching only the required data chunks or index files from object storage.</p>
 <ul>
-<li><p><strong>Bidang</strong>: Dimuat sesuai permintaan pada <strong>tingkat potongan</strong>. Hanya potongan data yang sesuai dengan kondisi kueri saat ini yang diambil, sehingga meminimalkan penggunaan I/O dan memori.</p></li>
-<li><p><strong>Indeks</strong>: Dimuat sesuai permintaan pada <strong>tingkat segmen</strong>. File indeks harus diambil sebagai unit yang lengkap dan tidak dapat dipecah menjadi beberapa bagian.</p></li>
+<li><p><strong>Fields</strong>: Loaded on demand at the <strong>chunk level</strong>. Only data chunks that match the current query conditions are fetched, minimizing I/O and memory use.</p></li>
+<li><p><strong>Indexes</strong>: Loaded on demand at the <strong>segment level</strong>. Index files must be fetched as complete units and cannot be split across chunks.</p></li>
 </ul>
-<p><strong>Konfigurasi</strong></p>
-<p>Pemuatan sebagian secara otomatis diterapkan ketika Penyimpanan Berjenjang diaktifkan. Tidak diperlukan pengaturan manual. Untuk meminimalkan latensi yang pertama kali masuk untuk data penting, kombinasikan dengan <a href="/docs/id/warm-up.md">Pemanasan</a>.</p>
-<h4 id="Phase-4-Eviction" class="common-anchor-header">Fase 4: Penggusuran</h4><p>Untuk menjaga penggunaan sumber daya yang sehat, Milvus secara otomatis melepaskan data cache yang tidak terpakai ketika ambang batas tertentu tercapai.</p>
-<p>Eviction mengikuti kebijakan <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies">Least Recently Used (LRU</a> ), memastikan bahwa data yang jarang diakses akan dihapus terlebih dahulu sementara data yang aktif tetap berada di cache.</p>
-<p>Penggusuran diatur oleh item yang dapat dikonfigurasi berikut ini:</p>
+<p><strong>Configuration</strong></p>
+<p>Partial load is automatically applied when Tiered Storage is enabled. No manual setting is required. To minimize first-hit latency for critical data, combine with <a href="/docs/id/warm-up.md">Warm Up</a>.</p>
+<h4 id="Phase-4-Eviction" class="common-anchor-header">Phase 4: Eviction</h4><p>To maintain healthy resource usage, Milvus automatically releases unused cached data when specific thresholds are reached.</p>
+<p>Eviction follows a <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies">Least Recently Used (LRU)</a> policy, ensuring that infrequently accessed data is removed first while active data remains in cache.</p>
+<p>Eviction is governed by the following configurable items:</p>
 <ul>
-<li><p><strong>Tanda air</strong>: Menetapkan ambang batas memori atau disk yang memicu dan menghentikan penggusuran.</p></li>
-<li><p><strong>Cache TTL</strong>: Menghapus data cache yang sudah basi setelah durasi tidak aktif yang ditentukan.</p></li>
+<li><p><strong>Watermarks</strong>: Define memory or disk thresholds that trigger and stop eviction.</p></li>
+<li><p><strong>Cache TTL</strong>: Removes stale cached data after a defined duration of inactivity.</p></li>
 </ul>
-<p><strong>Konfigurasi</strong></p>
-<p>Mengaktifkan dan menyetel parameter penggusuran di <strong>milvus.yaml</strong>. Lihat <a href="/docs/id/eviction.md">Penggusuran</a> untuk konfigurasi terperinci.</p>
-<h2 id="Getting-started" class="common-anchor-header">Memulai<button data-href="#Getting-started" class="anchor-icon" translate="no">
+<p><strong>Configuration</strong></p>
+<p>Enable and tune eviction parameters in <strong>milvus.yaml</strong>. See <a href="/docs/id/eviction.md">Eviction</a> for detailed configuration.</p>
+<h2 id="Getting-started" class="common-anchor-header">Getting started<button data-href="#Getting-started" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -148,7 +150,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Prerequisites" class="common-anchor-header">Prasyarat<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -165,13 +167,13 @@ beta: Milvus 2.6.4+
       </svg>
     </button></h3><ul>
 <li><p>Milvus 2.6.4+</p></li>
-<li><p>QueryNode dengan memori dan sumber daya disk khusus</p></li>
-<li><p>Backend penyimpanan objek (S3, MinIO, dll.)</p></li>
+<li><p>QueryNodes with dedicated memory and disk resources</p></li>
+<li><p>Object storage backend (S3, MinIO, etc.)</p></li>
 </ul>
 <div class="alert warning">
-<p>Sumber daya QueryNode tidak boleh digunakan bersama dengan beban kerja lain. Sumber daya yang digunakan bersama dapat menyebabkan Penyimpanan Berjenjang salah menilai kapasitas yang tersedia, sehingga menyebabkan kerusakan.</p>
+<p>QueryNode resources should not be shared with other workloads. Shared resources can cause Tiered Storage to misjudge available capacity, leading to crashes.</p>
 </div>
-<h3 id="Basic-configuration-template" class="common-anchor-header">Templat konfigurasi dasar<button data-href="#Basic-configuration-template" class="anchor-icon" translate="no">
+<h3 id="Basic-configuration-template" class="common-anchor-header">Basic configuration template<button data-href="#Basic-configuration-template" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -186,7 +188,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Edit file konfigurasi Milvus (<code translate="no">milvus.yaml</code>) untuk mengonfigurasi pengaturan Penyimpanan Berjenjang tingkat cluster:</p>
+    </button></h3><p>Edit the Milvus configuration file (<code translate="no">milvus.yaml</code>) to configure cluster-level Tiered Storage settings:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
@@ -214,9 +216,9 @@ beta: Milvus 2.6.4+
       <span class="hljs-attr">cacheTtl:</span> <span class="hljs-number">604800</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Templat ini mendefinisikan default tingkat cluster. Anda dapat mengganti pengaturan pemanasan untuk koleksi tertentu atau bidang/indeks individual menggunakan SDK. Lihat <a href="/docs/id/warm-up.md">Pemanasan</a> untuk detailnya.</p>
+<p>This template defines cluster-level defaults. You can override warmup settings for specific collections or individual fields/indexes using the SDK. See <a href="/docs/id/warm-up.md">Warm Up</a> for details.</p>
 </div>
-<h3 id="Next-steps" class="common-anchor-header">Langkah selanjutnya<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h3 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -232,12 +234,12 @@ beta: Milvus 2.6.4+
         ></path>
       </svg>
     </button></h3><ol>
-<li><p><strong>Konfigurasikan</strong> Pemanasan - Optimalkan pemuatan awal untuk pola akses Anda. Lihat <a href="/docs/id/warm-up.md">Pemanasan</a>.</p></li>
-<li><p><strong>Tune Eviction</strong> - Tetapkan tanda air dan TTL yang sesuai untuk batasan sumber daya Anda. Lihat <a href="/docs/id/eviction.md">Penggusuran</a>.</p></li>
-<li><p>Pantau<strong>Performa</strong> - Melacak tingkat hit cache, frekuensi penggusuran, dan pola latensi kueri.</p></li>
-<li><p><strong>Konfigurasi Iterasi</strong> - Menyesuaikan pengaturan berdasarkan karakteristik beban kerja yang diamati.</p></li>
+<li><p><strong>Configure Warm Up</strong> - Optimize preloading for your access patterns. See <a href="/docs/id/warm-up.md">Warm Up</a>.</p></li>
+<li><p><strong>Tune Eviction</strong> - Set appropriate watermarks and TTL for your resource constraints. See <a href="/docs/id/eviction.md">Eviction</a>.</p></li>
+<li><p><strong>Monitor Performance</strong> - Track cache hit rates, eviction frequency, and query latency patterns.</p></li>
+<li><p><strong>Iterate Configuration</strong> - Adjust settings based on observed workload characteristics.</p></li>
 </ol>
-<h2 id="FAQ" class="common-anchor-header">PERTANYAAN UMUM<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -252,7 +254,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Can-I-change-Tiered-Storage-parameters-at-runtime" class="common-anchor-header">Dapatkah saya mengubah parameter Penyimpanan Berjenjang pada saat runtime?<button data-href="#Can-I-change-Tiered-Storage-parameters-at-runtime" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Can-I-change-Tiered-Storage-parameters-at-runtime" class="common-anchor-header">Can I change Tiered Storage parameters at runtime?<button data-href="#Can-I-change-Tiered-Storage-parameters-at-runtime" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -267,12 +269,12 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Tergantung pada jenis parameternya:</p>
+    </button></h3><p>It depends on the parameter type:</p>
 <ul>
-<li><p><strong>Pengaturan pemanasan</strong>: Pemanasan tingkat koleksi dan tingkat bidang/indeks dapat dikonfigurasikan melalui SDK sebelum memuat koleksi. Setelah koleksi dimuat, Anda harus melepaskannya terlebih dahulu, mengubah pengaturan, lalu memuat ulang.</p></li>
-<li><p><strong>Pengaturan penggusuran dan tanda air</strong>: Ini harus diatur di <code translate="no">milvus.yaml</code> sebelum memulai Milvus. Perubahan memerlukan restart untuk menerapkannya.</p></li>
+<li><p><strong>Warmup settings</strong>: Collection-level and field/index-level warmup can be configured via SDK before loading the collection. Once the collection is loaded, you must release it first, alter the settings, then reload.</p></li>
+<li><p><strong>Eviction and watermark settings</strong>: These must be set in <code translate="no">milvus.yaml</code> before starting Milvus. Changes require a restart to take effect.</p></li>
 </ul>
-<h3 id="Does-Tiered-Storage-affect-data-durability" class="common-anchor-header">Apakah Penyimpanan Berjenjang memengaruhi daya tahan data?<button data-href="#Does-Tiered-Storage-affect-data-durability" class="anchor-icon" translate="no">
+<h3 id="Does-Tiered-Storage-affect-data-durability" class="common-anchor-header">Does Tiered Storage affect data durability?<button data-href="#Does-Tiered-Storage-affect-data-durability" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -287,8 +289,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Tidak. Daya tahan data masih ditangani oleh penyimpanan objek jarak jauh. Penyimpanan Berjenjang hanya mengelola cache di QueryNode.</p>
-<h3 id="Will-queries-always-be-faster-with-Tiered-Storage" class="common-anchor-header">Apakah kueri akan selalu lebih cepat dengan Penyimpanan Berjenjang?<button data-href="#Will-queries-always-be-faster-with-Tiered-Storage" class="anchor-icon" translate="no">
+    </button></h3><p>No. Data persistence is still handled by remote object storage. Tiered Storage only manages caching on QueryNodes.</p>
+<h3 id="Will-queries-always-be-faster-with-Tiered-Storage" class="common-anchor-header">Will queries always be faster with Tiered Storage?<button data-href="#Will-queries-always-be-faster-with-Tiered-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -303,8 +305,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Belum tentu. Penyimpanan Berjenjang mengurangi waktu muat dan penggunaan sumber daya, tetapi kueri yang menyentuh data yang tidak di-cache (dingin) mungkin mengalami latensi yang lebih tinggi. Untuk beban kerja yang sensitif terhadap latensi, mode beban penuh direkomendasikan.</p>
-<h3 id="Why-does-a-QueryNode-still-run-out-of-resources-even-with-Tiered-Storage-enabled" class="common-anchor-header">Mengapa QueryNode masih kehabisan sumber daya meskipun Penyimpanan Berjenjang diaktifkan?<button data-href="#Why-does-a-QueryNode-still-run-out-of-resources-even-with-Tiered-Storage-enabled" class="anchor-icon" translate="no">
+    </button></h3><p>Not necessarily. Tiered Storage reduces load time and resource usage, but queries that touch uncached (cold) data may see higher latency. For latency-sensitive workloads, full-load mode is recommended.</p>
+<h3 id="Why-does-a-QueryNode-still-run-out-of-resources-even-with-Tiered-Storage-enabled" class="common-anchor-header">Why does a QueryNode still run out of resources even with Tiered Storage enabled?<button data-href="#Why-does-a-QueryNode-still-run-out-of-resources-even-with-Tiered-Storage-enabled" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -319,13 +321,13 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ada dua penyebab umum:</p>
+    </button></h3><p>Two common causes:</p>
 <ul>
-<li><p>QueryNode dikonfigurasikan dengan sumber daya yang terlalu sedikit. Watermark relatif terhadap sumber daya yang tersedia, sehingga penyediaan yang kurang akan memperkuat kesalahan penilaian.</p></li>
-<li><p>Sumber daya QueryNode digunakan bersama dengan beban kerja lain, sehingga Penyimpanan Berjenjang tidak dapat menilai kapasitas aktual yang tersedia dengan benar.</p></li>
+<li><p>The QueryNode was configured with too few resources. Watermarks are relative to available resources, so under-provisioning amplifies misjudgment.</p></li>
+<li><p>QueryNode resources are shared with other workloads, so Tiered Storage cannot correctly assess actual available capacity.</p></li>
 </ul>
-<p>Untuk mengatasi hal ini, kami sarankan Anda mengalokasikan sumber daya khusus untuk QueryNode.</p>
-<h3 id="Why-do-some-queries-fail-under-high-concurrency" class="common-anchor-header">Mengapa beberapa kueri gagal dalam konkurensi tinggi?<button data-href="#Why-do-some-queries-fail-under-high-concurrency" class="anchor-icon" translate="no">
+<p>To resolve this, we recommend you allocate dedicated resources for QueryNodes.</p>
+<h3 id="Why-do-some-queries-fail-under-high-concurrency" class="common-anchor-header">Why do some queries fail under high concurrency?<button data-href="#Why-do-some-queries-fail-under-high-concurrency" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -340,8 +342,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Jika terlalu banyak kueri yang mengakses data panas pada saat yang sama, batas sumber daya QueryNode mungkin akan terlampaui. Beberapa thread mungkin gagal karena batas waktu pemesanan sumber daya. Mencoba kembali setelah beban berkurang, atau mengalokasikan lebih banyak sumber daya, dapat mengatasi hal ini.</p>
-<h3 id="Why-does-searchquery-latency-increase-after-enabling-Tiered-Storage" class="common-anchor-header">Mengapa latensi pencarian/kueri meningkat setelah mengaktifkan Penyimpanan Berjenjang?<button data-href="#Why-does-searchquery-latency-increase-after-enabling-Tiered-Storage" class="anchor-icon" translate="no">
+    </button></h3><p>If too many queries hit hot data at the same time, QueryNode resource limits may still be exceeded. Some threads may fail due to resource reservation timeouts. Retrying after the load decreases, or allocating more resources, can resolve this.</p>
+<h3 id="Why-does-searchquery-latency-increase-after-enabling-Tiered-Storage" class="common-anchor-header">Why does search/query latency increase after enabling Tiered Storage?<button data-href="#Why-does-searchquery-latency-increase-after-enabling-Tiered-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -356,8 +358,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Kemungkinan penyebabnya meliputi:</p>
+    </button></h3><p>Possible causes include:</p>
 <ul>
-<li><p>Sering melakukan kueri ke data dingin, yang harus diambil dari penyimpanan.</p></li>
-<li><p>Tanda air yang ditetapkan terlalu berdekatan, menyebabkan seringnya penggusuran sinkron.</p></li>
+<li><p>Frequent queries to cold data, which must be fetched from storage.</p></li>
+<li><p>Watermarks set too close together, causing frequent synchronous eviction.</p></li>
 </ul>

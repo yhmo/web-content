@@ -1,14 +1,13 @@
 ---
 id: stemmer-filter.md
-title: Стеммер
+title: Stemmer
 summary: >-
-  Фильтр стемирования сводит слова к их базовой или корневой форме (процесс,
-  известный как стемирование), что упрощает сопоставление слов со схожими
-  значениями в различных формах склонения. Фильтр стемирования поддерживает
-  множество языков, что обеспечивает эффективный поиск и индексирование в
-  различных лингвистических контекстах.
+  The stemmer filter reduces words to their base or root form (known as
+  stemming), making it easier to match words with similar meanings across
+  different inflections. The stemmer filter supports multiple languages,
+  allowing for effective search and indexing in various linguistic contexts.
 ---
-<h1 id="Stemmer" class="common-anchor-header">Стеммер<button data-href="#Stemmer" class="anchor-icon" translate="no">
+<h1 id="Stemmer" class="common-anchor-header">Stemmer<button data-href="#Stemmer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Фильтр « <code translate="no">stemmer</code> » (Стеминг) преобразует слова в их базовую или корневую форму (процесс, известный как стеминг), что упрощает сопоставление слов с похожими значениями в различных формах словоизменения. Фильтр « <code translate="no">stemmer</code> » поддерживает множество языков, что позволяет осуществлять эффективный поиск и индексирование в различных лингвистических контекстах.</p>
-<h2 id="Configuration" class="common-anchor-header">Настройка<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">stemmer</code> filter reduces words to their base or root form (known as stemming), making it easier to match words with similar meanings across different inflections. The <code translate="no">stemmer</code> filter supports multiple languages, allowing for effective search and indexing in various linguistic contexts.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,13 +38,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Фильтр « <code translate="no">stemmer</code> » является пользовательским фильтром в Milvus. Чтобы использовать его, укажите « <code translate="no">&quot;type&quot;: &quot;stemmer&quot;</code> » в конфигурации фильтра вместе с параметром « <code translate="no">language</code> » для выбора нужного языка для стемминга.</p>
+    </button></h2><p>The <code translate="no">stemmer</code> filter is a custom filter in Milvus. To use it, specify <code translate="no">&quot;type&quot;: &quot;stemmer&quot;</code> in the filter configuration, along with a <code translate="no">language</code> parameter to select the desired language for stemming.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -92,21 +91,21 @@ analyzerParams=<span class="hljs-string">&#x27;{
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<p>Фильтр « <code translate="no">stemmer</code> » поддерживает следующие настраиваемые параметры.</p>
+<p>The <code translate="no">stemmer</code> filter accepts the following configurable parameters.</p>
 <table>
    <tr>
-     <th><p>Параметр</p></th>
-     <th><p>Описание</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">language</code></p></td>
-     <td><p>Указывает язык для процесса стемминга. Поддерживаемые языки: <code translate="no">"arabic"</code>, <code translate="no">"danish"</code>, <code translate="no">"dutch"</code>, <code translate="no">"english"</code>, <code translate="no">"finnish"</code>, <code translate="no">"french"</code>, <code translate="no">"german"</code>, <code translate="no">"greek"</code>, <code translate="no">"hungarian"</code>, <code translate="no">"italian"</code>, <code translate="no">"norwegian"</code>, <code translate="no">"portuguese"</code>, <code translate="no">"romanian"</code>, <code translate="no">"russian"</code>, <code translate="no">"spanish"</code>, <code translate="no">"swedish"</code>, <code translate="no">"tamil"</code>, <code translate="no">"turkish"</code></p></td>
+     <td><p>Specifies the language for the stemming process. Supported languages include: <code translate="no">"arabic"</code>, <code translate="no">"danish"</code>, <code translate="no">"dutch"</code>, <code translate="no">"english"</code>, <code translate="no">"finnish"</code>, <code translate="no">"french"</code>, <code translate="no">"german"</code>, <code translate="no">"greek"</code>, <code translate="no">"hungarian"</code>, <code translate="no">"italian"</code>, <code translate="no">"norwegian"</code>, <code translate="no">"portuguese"</code>, <code translate="no">"romanian"</code>, <code translate="no">"russian"</code>, <code translate="no">"spanish"</code>, <code translate="no">"swedish"</code>, <code translate="no">"tamil"</code>, <code translate="no">"turkish"</code></p></td>
    </tr>
 </table>
-<p>Фильтр « <code translate="no">stemmer</code> » работает с терминами, сгенерированными токенизатором, поэтому его необходимо использовать в сочетании с токенизатором.</p>
-<p>Для арабского текста в большинстве случаев следует использовать встроенный <a href="/docs/ru/arabic-analyzer.md"><code translate="no">arabic</code></a> анализатор. Встроенный анализатор включает в себя арабскую стеминг-обработку, а также нормализацию арабского языка, нормализацию десятичных цифр и удаление арабских стоп-слов. Используйте фильтр « <code translate="no">stemmer</code> » напрямую только в том случае, если вам необходимо построить собственный конвейер анализаторов.</p>
-<p>После определения фильтров « <code translate="no">analyzer_params</code> » их можно применить к полю « <code translate="no">VARCHAR</code> » при определении схемы коллекции. Это позволяет Milvus обрабатывать текст в этом поле с использованием указанного анализатора для эффективной токенизации и фильтрации. Подробности см. в разделе <a href="/docs/ru/analyzer-overview.md#Example-use">«Пример использования</a>».</p>
-<h2 id="Examples" class="common-anchor-header">Примеры<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>The <code translate="no">stemmer</code> filter operates on the terms generated by the tokenizer, so it must be used in combination with a tokenizer.</p>
+<p>For Arabic text, use the built-in <a href="/docs/ru/arabic-analyzer.md"><code translate="no">arabic</code></a> analyzer in most cases. The built-in analyzer includes Arabic stemming together with Arabic normalization, decimal digit normalization, and Arabic stop-word removal. Use the <code translate="no">stemmer</code> filter directly only when you need to build a custom analyzer pipeline.</p>
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/ru/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -121,8 +120,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Прежде чем применять конфигурацию анализатора к схеме коллекции, проверьте его поведение с помощью метода <code translate="no">run_analyzer</code>.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">Конфигурация анализатора<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -138,11 +137,11 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -183,7 +182,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer--Milvus-2511+" class="common-anchor-header">Проверка с помощью <code translate="no">run_analyzer</code><span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Verification-using-runanalyzer--Milvus-2511+" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -199,10 +198,10 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -269,7 +268,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 not support yet
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">Ожидаемый результат<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

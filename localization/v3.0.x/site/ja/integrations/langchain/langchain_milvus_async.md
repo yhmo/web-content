@@ -1,10 +1,13 @@
 ---
 id: langchain_milvus_async.md
 summary: >-
-  このチュートリアルでは、langchain-milvusの非同期関数を活用して高性能なアプリケーションを構築する方法について説明します。非同期メソッドを使用することで、特に大規模な検索を扱う場合に、アプリケーションのスループットと応答性を大幅に向上させることができます。
-title: LangChain-milvus統合における非同期関数
+  This tutorial explores how to leverage asynchronous functions in
+  langchain-milvus to build high-performance applications. By using async
+  methods, you can significantly improve your application's throughput and
+  responsiveness, especially when dealing with large-scale retrieval.
+title: Asynchronous Functions in LangChain Milvus Integration
 ---
-<h1 id="Asynchronous-Functions-in-LangChain-Milvus-Integration" class="common-anchor-header">LangChain-milvus統合における非同期関数<button data-href="#Asynchronous-Functions-in-LangChain-Milvus-Integration" class="anchor-icon" translate="no">
+<h1 id="Asynchronous-Functions-in-LangChain-Milvus-Integration" class="common-anchor-header">Asynchronous Functions in LangChain Milvus Integration<button data-href="#Asynchronous-Functions-in-LangChain-Milvus-Integration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -25,8 +28,8 @@ title: LangChain-milvus統合における非同期関数
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/langchain/langchain_milvus_async.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<p>このチュートリアルでは、<a href="https://github.com/langchain-ai/langchain-milvus">langchain-milvusの</a>非同期関数を活用して高性能なアプリケーションを構築する方法について説明します。非同期メソッドを使うことで、特に大規模な検索を扱う場合に、アプリケーションのスループットと応答性を大幅に向上させることができます。リアルタイムのレコメンデーションシステムを構築する場合でも、アプリケーションにセマンティック検索を実装する場合でも、RAG（Retrieval-Augmented Generation）パイプラインを作成する場合でも、非同期操作は同時リクエストをより効率的に処理するのに役立ちます。高性能ベクトルデータベースmilvusとLangChainの強力なLLM抽象化を組み合わせることで、スケーラブルなAIアプリケーションを構築するための強固な基盤を提供することができます。</p>
-<h2 id="Async-API-Overview" class="common-anchor-header">非同期APIの概要<button data-href="#Async-API-Overview" class="anchor-icon" translate="no">
+<p>This tutorial explores how to leverage asynchronous functions in <a href="https://github.com/langchain-ai/langchain-milvus">langchain-milvus</a> to build high-performance applications. By using async methods, you can significantly improve your application’s throughput and responsiveness, especially when dealing with large-scale retrieval. Whether you’re building a real-time recommendation system, implementing semantic search in your application, or creating a RAG (Retrieval-Augmented Generation) pipeline, async operations can help you handle concurrent requests more efficiently. The high-performance vector database Milvus combined with LangChain’s powerful LLM abstractions can provide a robust foundation for building scalable AI applications.</p>
+<h2 id="Async-API-Overview" class="common-anchor-header">Async API Overview<button data-href="#Async-API-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,8 +44,8 @@ title: LangChain-milvus統合における非同期関数
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>langchain-milvusは包括的な非同期処理のサポートを提供し、大規模な並行処理シナリオにおけるパフォーマンスを大幅に向上させます。非同期APIは同期APIと一貫したインターフェース設計を維持します。</p>
-<h3 id="Core-Async-Functions" class="common-anchor-header">コア非同期関数<button data-href="#Core-Async-Functions" class="anchor-icon" translate="no">
+    </button></h2><p>langchain-milvus provides comprehensive asynchronous operation support, significantly improving performance in large-scale concurrent scenarios. The async API maintains consistent interface design with sync API.</p>
+<h3 id="Core-Async-Functions" class="common-anchor-header">Core Async Functions<button data-href="#Core-Async-Functions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,30 +60,30 @@ title: LangChain-milvus統合における非同期関数
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>langchain-milvusで非同期操作を使用するには、メソッド名に<code translate="no">a</code> プレフィックスを追加するだけです。これにより、同時検索要求を処理する際のリソースの有効活用とスループットの向上が可能になります。</p>
+    </button></h3><p>To use async operations in langchain-milvus, simply add an <code translate="no">a</code> prefix to method names. This allows for better resource utilization and improved throughput when handling concurrent retrieval requests.</p>
 <table>
 <thead>
-<tr><th>操作タイプ</th><th>同期メソッド</th><th>非同期メソッド</th><th>説明</th></tr>
+<tr><th>Operation Type</th><th>Sync Method</th><th>Async Method</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>テキストの追加</td><td><code translate="no">add_texts()</code></td><td><code translate="no">aadd_texts()</code></td><td>ベクトルストアにテキストを追加</td></tr>
-<tr><td>ドキュメントの追加</td><td><code translate="no">add_documents()</code></td><td><code translate="no">aadd_documents()</code></td><td>ベクトルストアにドキュメントを追加する</td></tr>
-<tr><td>埋め込みベクターの追加</td><td><code translate="no">add_embeddings()</code></td><td><code translate="no">aadd_embeddings()</code></td><td>埋め込みベクトルを追加</td></tr>
-<tr><td>類似検索</td><td><code translate="no">similarity_search()</code></td><td><code translate="no">asimilarity_search()</code></td><td>テキストによる意味検索</td></tr>
-<tr><td>ベクトル検索</td><td><code translate="no">similarity_search_by_vector()</code></td><td><code translate="no">asimilarity_search_by_vector()</code></td><td>ベクトルによる意味検索</td></tr>
-<tr><td>スコアによる検索</td><td><code translate="no">similarity_search_with_score()</code></td><td><code translate="no">asimilarity_search_with_score()</code></td><td>テキストによる意味検索と類似度スコアを返す</td></tr>
-<tr><td>スコア付きベクトル検索</td><td><code translate="no">similarity_search_with_score_by_vector()</code></td><td><code translate="no">asimilarity_search_with_score_by_vector()</code></td><td>ベクトルによる意味検索と類似スコアを返す</td></tr>
-<tr><td>多様性検索</td><td><code translate="no">max_marginal_relevance_search()</code></td><td><code translate="no">amax_marginal_relevance_search()</code></td><td>MMR検索（多様性を最適化しつつ類似したものを返す）</td></tr>
-<tr><td>ベクトル多様性検索</td><td><code translate="no">max_marginal_relevance_search_by_vector()</code></td><td><code translate="no">amax_marginal_relevance_search_by_vector()</code></td><td>ベクトルによるMMR検索</td></tr>
-<tr><td>削除操作</td><td><code translate="no">delete()</code></td><td><code translate="no">adelete()</code></td><td>文書の削除</td></tr>
-<tr><td>Upsert操作</td><td><code translate="no">upsert()</code></td><td><code translate="no">aupsert()</code></td><td>文書をアップサート（既存の場合は更新、そうでない場合は挿入）する。</td></tr>
-<tr><td>メタデータ検索</td><td><code translate="no">search_by_metadata()</code></td><td><code translate="no">asearch_by_metadata()</code></td><td>メタデータフィルタリングによるクエリー</td></tr>
-<tr><td>主キーの取得</td><td><code translate="no">get_pks()</code></td><td><code translate="no">aget_pks()</code></td><td>式による主キーの取得</td></tr>
-<tr><td>テキストからの作成</td><td><code translate="no">from_texts()</code></td><td><code translate="no">afrom_texts()</code></td><td>テキストからベクトルストアを作成</td></tr>
+<tr><td>Add Texts</td><td><code translate="no">add_texts()</code></td><td><code translate="no">aadd_texts()</code></td><td>Add texts to vector store</td></tr>
+<tr><td>Add Documents</td><td><code translate="no">add_documents()</code></td><td><code translate="no">aadd_documents()</code></td><td>Add documents to vector store</td></tr>
+<tr><td>Add Embeddings</td><td><code translate="no">add_embeddings()</code></td><td><code translate="no">aadd_embeddings()</code></td><td>Add embedding vectors</td></tr>
+<tr><td>Similarity Search</td><td><code translate="no">similarity_search()</code></td><td><code translate="no">asimilarity_search()</code></td><td>Semantic search by text</td></tr>
+<tr><td>Vector Search</td><td><code translate="no">similarity_search_by_vector()</code></td><td><code translate="no">asimilarity_search_by_vector()</code></td><td>Semantic search by vector</td></tr>
+<tr><td>Search with Score</td><td><code translate="no">similarity_search_with_score()</code></td><td><code translate="no">asimilarity_search_with_score()</code></td><td>Semantic search by text and return similarity scores</td></tr>
+<tr><td>Vector Search with Score</td><td><code translate="no">similarity_search_with_score_by_vector()</code></td><td><code translate="no">asimilarity_search_with_score_by_vector()</code></td><td>Semantic search by vector and return similarity scores</td></tr>
+<tr><td>Diversity Search</td><td><code translate="no">max_marginal_relevance_search()</code></td><td><code translate="no">amax_marginal_relevance_search()</code></td><td>MMR search (return similar ones while also optimizing for diversity)</td></tr>
+<tr><td>Vector Diversity Search</td><td><code translate="no">max_marginal_relevance_search_by_vector()</code></td><td><code translate="no">amax_marginal_relevance_search_by_vector()</code></td><td>MMR search by vector</td></tr>
+<tr><td>Delete Operation</td><td><code translate="no">delete()</code></td><td><code translate="no">adelete()</code></td><td>Delete documents</td></tr>
+<tr><td>Upsert Operation</td><td><code translate="no">upsert()</code></td><td><code translate="no">aupsert()</code></td><td>Upsert (update if existing, otherwise insert) documents</td></tr>
+<tr><td>Metadata Search</td><td><code translate="no">search_by_metadata()</code></td><td><code translate="no">asearch_by_metadata()</code></td><td>Query with metadata filtering</td></tr>
+<tr><td>Get Primary Keys</td><td><code translate="no">get_pks()</code></td><td><code translate="no">aget_pks()</code></td><td>Get primary keys by expression</td></tr>
+<tr><td>Create from Texts</td><td><code translate="no">from_texts()</code></td><td><code translate="no">afrom_texts()</code></td><td>Create vector store from texts</td></tr>
 </tbody>
 </table>
-<p>これらの関数の詳細については、<a href="https://python.langchain.com/api_reference/milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#milvus">APIリファレンスを</a>参照してください。</p>
-<h3 id="Performance-Benefits" class="common-anchor-header">パフォーマンスの利点<button data-href="#Performance-Benefits" class="anchor-icon" translate="no">
+<p>For more detailed information about these functions, please refer to the <a href="https://python.langchain.com/api_reference/milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#milvus">API Reference</a>.</p>
+<h3 id="Performance-Benefits" class="common-anchor-header">Performance Benefits<button data-href="#Performance-Benefits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,15 +98,15 @@ title: LangChain-milvus統合における非同期関数
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>非同期操作により、大量の同時リクエストを処理する際のパフォーマンスが大幅に向上します：</p>
+    </button></h3><p>Async operations provide significant performance improvements when handling large volumes of concurrent requests, particularly suitable for:</p>
 <ul>
-<li>ドキュメントのバッチ処理</li>
-<li>高同時検索シナリオ</li>
-<li>プロダクションRAGアプリケーション</li>
-<li>大規模データのインポート/エクスポート</li>
+<li>Batch document processing</li>
+<li>High-concurrency search scenarios</li>
+<li>Production RAG applications</li>
+<li>Large-scale data import/export</li>
 </ul>
-<p>このチュートリアルでは、同期操作と非同期操作の詳細な比較を通じて、これらのパフォーマンス上の利点を実証し、非同期 API を活用してアプリケーションのパフォーマンスを最適化する方法を紹介します。</p>
-<h2 id="Before-you-begin" class="common-anchor-header">始める前に<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+<p>In this tutorial, we’ll demonstrate these performance benefits through detailed comparisons of synchronous and asynchronous operations, showing you how to leverage async APIs for optimal performance in your applications.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -118,23 +121,23 @@ title: LangChain-milvus統合における非同期関数
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>このページのコード・スニペットには、以下の依存関係が必要です：</p>
+    </button></h2><p>Code snippets on this page require the following dependencies:</p>
 <pre><code translate="no" class="language-python">! pip install -U pymilvus langchain-milvus langchain langchain-core langchain-openai langchain-text-splitters nest-asyncio
 <button class="copy-code-btn"></button></code></pre>
 <blockquote>
-<p>Google Colabを使用している場合、インストールしたばかりの依存関係を有効にするために、<strong>ランタイムを再起動</strong>する必要があるかもしれません（画面上部の "Runtime "メニューをクリックし、ドロップダウンメニューから "Restart session "を選択してください）。</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </blockquote>
-<p>OpenAIのモデルを使います。<a href="https://platform.openai.com/docs/quickstart">api key</a> <code translate="no">OPENAI_API_KEY</code> を環境変数として用意してください：</p>
+<p>We will use OpenAI models. You should prepare the <a href="https://platform.openai.com/docs/quickstart">api key</a> <code translate="no">OPENAI_API_KEY</code> as an environment variable:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 os.environ[<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>] = <span class="hljs-string">&quot;sk-***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Jupyter Notebookを使用している場合、非同期コードを実行する前にこのコードを実行する必要があります：</p>
+<p>If you are using Jupyter Notebook, you need to run this line of code before running the asynchronous code:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> nest_asyncio
 
 nest_asyncio.apply()
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Exploring-Async-APIs-and-Performance-Comparison" class="common-anchor-header">非同期APIの探索とパフォーマンス比較<button data-href="#Exploring-Async-APIs-and-Performance-Comparison" class="anchor-icon" translate="no">
+<h2 id="Exploring-Async-APIs-and-Performance-Comparison" class="common-anchor-header">Exploring Async APIs and Performance Comparison<button data-href="#Exploring-Async-APIs-and-Performance-Comparison" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -149,8 +152,8 @@ nest_asyncio.apply()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>それでは、langchain-milvusを使った同期処理と非同期処理のパフォーマンス比較について深く掘り下げてみよう。</p>
-<p>まず、必要なライブラリをインポートします：</p>
+    </button></h2><p>Now let’s dive deeper into the performance comparison between synchronous and asynchronous operations with langchain-milvus.</p>
+<p>First, import the necessary libraries:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> asyncio
 <span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">import</span> time
@@ -161,7 +164,7 @@ nest_asyncio.apply()
 <span class="hljs-comment"># Define the Milvus URI</span>
 URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Setting-up-Test-Functions" class="common-anchor-header">テスト関数のセットアップ<button data-href="#Setting-up-Test-Functions" class="anchor-icon" translate="no">
+<h3 id="Setting-up-Test-Functions" class="common-anchor-header">Setting up Test Functions<button data-href="#Setting-up-Test-Functions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -176,7 +179,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>テストデータを生成するヘルパー関数を作りましょう：</p>
+    </button></h3><p>Let’s create helper functions to generate test data:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">random_id</span>():
     <span class="hljs-string">&quot;&quot;&quot;Generate a random string ID&quot;&quot;&quot;</span>
     random_num_str = <span class="hljs-string">&quot;&quot;</span>
@@ -202,7 +205,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
         docs.append(doc)
     <span class="hljs-keyword">return</span> docs
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Initialize-the-Vector-Store" class="common-anchor-header">ベクターストアの初期化<button data-href="#Initialize-the-Vector-Store" class="anchor-icon" translate="no">
+<h3 id="Initialize-the-Vector-Store" class="common-anchor-header">Initialize the Vector Store<button data-href="#Initialize-the-Vector-Store" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -217,7 +220,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>パフォーマンステストを実行する前に、Milvusベクターストアを初期化する必要があります。この関数により、テストごとに新鮮なコレクションから開始し、以前のデータからの干渉を排除します：</p>
+    </button></h3><p>Before we can run our performance tests, we need to set up a clean Milvus vector store. This function ensures we start with a fresh collection for each test, eliminating any interference from previous data:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">init_vector_store</span>():
     <span class="hljs-string">&quot;&quot;&quot;Initialize and return a fresh vector store for testing&quot;&quot;&quot;</span>
     <span class="hljs-keyword">return</span> Milvus(
@@ -228,7 +231,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
         drop_old=<span class="hljs-literal">True</span>,  <span class="hljs-comment"># Always start with a fresh collection</span>
     )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Async-vs-Sync-Add-Documents" class="common-anchor-header">非同期と同期ドキュメントの追加<button data-href="#Async-vs-Sync-Add-Documents" class="anchor-icon" translate="no">
+<h3 id="Async-vs-Sync-Add-Documents" class="common-anchor-header">Async vs Sync: Add Documents<button data-href="#Async-vs-Sync-Add-Documents" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -243,7 +246,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>それでは、同期と非同期のドキュメント追加のパフォーマンスを比較してみましょう。これらの関数は、ベクトルストアに複数のドキュメントを追加するときに、非同期操作がどれだけ速くなるかを測定するのに役立ちます。非同期バージョンはドキュメント追加ごとにタスクを作成して同時に実行し、同期バージョンはドキュメントを1つずつ処理します：</p>
+    </button></h3><p>Now let’s compare the performance of synchronous vs asynchronous document addition. These functions will help us measure how much faster async operations can be when adding multiple documents to the vector store. The async version creates tasks for each document addition and runs them concurrently, while the sync version processes documents one by one:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">async_add</span>(<span class="hljs-params">milvus_store, num_adding</span>):
     <span class="hljs-string">&quot;&quot;&quot;Add documents asynchronously and measure the time&quot;&quot;&quot;</span>
     docs = generate_test_documents(num_adding)
@@ -267,7 +270,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
     end_time = time.time()
     <span class="hljs-keyword">return</span> end_time - start_time
 <button class="copy-code-btn"></button></code></pre>
-<p>では、ドキュメント数を変えてパフォーマンステストを実行し、実際のパフォーマンスの違いを見てみましょう。負荷を変化させてテストし、非同期操作が同期操作に比べてどのようにスケールするかを理解します。このテストでは、両方のアプローチの実行時間を測定し、非同期操作のパフォーマンス上の利点を実証します：</p>
+<p>Now let’s execute our performance tests with different document counts to see the real-world performance differences. We’ll test with varying loads to understand how async operations scale compared to their synchronous counterparts. The tests will measure execution time for both approaches and help demonstrate the performance benefits of asynchronous operations:</p>
 <pre><code translate="no" class="language-python">add_counts = [<span class="hljs-number">10</span>, <span class="hljs-number">100</span>]
 
 <span class="hljs-comment"># Get the event loop</span>
@@ -307,7 +310,7 @@ Async add for 100 documents took 2.77 seconds
 Sync add for 10 documents took 5.36 seconds
 Sync add for 100 documents took 65.60 seconds
 </code></pre>
-<h3 id="Async-vs-Sync-Search" class="common-anchor-header">非同期 vs 同期検索<button data-href="#Async-vs-Sync-Search" class="anchor-icon" translate="no">
+<h3 id="Async-vs-Sync-Search" class="common-anchor-header">Async vs Sync: Search<button data-href="#Async-vs-Sync-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -322,7 +325,7 @@ Sync add for 100 documents took 65.60 seconds
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>検索性能の比較では、まずベクターストアにデータを入れる必要がある。以下の関数は、複数の検索クエリーを同時に作成し、同期と非同期の実行時間を比較することで、検索パフォーマンスを測定するのに役立ちます：</p>
+    </button></h3><p>For the search performance comparison, we’ll need to populate the vector store first. The following functions will help us measure search performance by creating multiple concurrent search queries and comparing the execution time between synchronous and asynchronous approaches:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">populate_vector_store</span>(<span class="hljs-params">milvus_store, num_docs=<span class="hljs-number">1000</span></span>):
     <span class="hljs-string">&quot;&quot;&quot;Populate the vector store with test documents&quot;&quot;&quot;</span>
     docs = generate_test_documents(num_docs)
@@ -352,7 +355,7 @@ Sync add for 100 documents took 65.60 seconds
     end_time = time.time()
     <span class="hljs-keyword">return</span> end_time - start_time
 <button class="copy-code-btn"></button></code></pre>
-<p>では、包括的な検索パフォーマンス・テストを実行して、非同期操作が同期操作に比べてどの程度スケールするのかを見てみよう。異なるクエリーボリュームでテストを行い、特に同時処理の数が増えるほど、非同期処理のパフォーマンス上の利点が高まることを実証します：</p>
+<p>Now let’s run comprehensive search performance tests to see how async operations scale compared to synchronous ones. We’ll test with different query volumes to demonstrate the performance benefits of asynchronous operations, especially as the number of concurrent operations increases:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Initialize and populate the vector store</span>
 milvus_store = init_vector_store()
 populate_vector_store(milvus_store, <span class="hljs-number">1000</span>)
@@ -382,7 +385,7 @@ Async search for 100 queries took 3.72 seconds
 Sync search for 10 queries took 6.07 seconds
 Sync search for 100 queries took 54.22 seconds
 </code></pre>
-<h3 id="Async-vs-Sync-Delete" class="common-anchor-header">非同期と同期の比較削除<button data-href="#Async-vs-Sync-Delete" class="anchor-icon" translate="no">
+<h3 id="Async-vs-Sync-Delete" class="common-anchor-header">Async vs Sync: Delete<button data-href="#Async-vs-Sync-Delete" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -397,7 +400,7 @@ Sync search for 100 queries took 54.22 seconds
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>削除操作もまた、非同期操作によってパフォーマンスが大幅に向上する重要な要素です。同期削除操作と非同期削除操作のパフォーマンスの違いを測定する関数を作ってみましょう。これらのテストは、非同期オペレーションがバッチ削除をより効率的に処理できることを示すのに役立ちます：</p>
+    </button></h3><p>Delete operations are another critical aspect where async operations can provide significant performance improvements. Let’s create functions to measure the performance difference between synchronous and asynchronous delete operations. These tests will help demonstrate how async operations can handle batch deletions more efficiently:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">async_delete</span>(<span class="hljs-params">milvus_store, num_deleting</span>):
     <span class="hljs-string">&quot;&quot;&quot;Delete documents asynchronously and measure the time&quot;&quot;&quot;</span>
     start_time = time.time()
@@ -420,7 +423,7 @@ Sync search for 100 queries took 54.22 seconds
     end_time = time.time()
     <span class="hljs-keyword">return</span> end_time - start_time
 <button class="copy-code-btn"></button></code></pre>
-<p>では、削除パフォーマンステストを実行して、パフォーマンスの違いを定量化してみましょう。まず、新しいベクターストアにテストデータを入れ、同期と非同期の両方のアプローチで削除操作を実行します：</p>
+<p>Now let’s execute the delete performance tests to quantify the performance difference. We’ll start with a fresh vector store populated with test data, then perform delete operations using both synchronous and asynchronous approaches:</p>
 <pre><code translate="no" class="language-python">delete_counts = [<span class="hljs-number">10</span>, <span class="hljs-number">100</span>]
 
 <span class="hljs-comment"># Initialize and populate the vector store</span>
@@ -459,7 +462,7 @@ Async delete for 100 operations took 0.61 seconds
 Sync delete for 10 operations took 2.82 seconds
 Sync delete for 100 operations took 29.21 seconds
 </code></pre>
-<h2 id="Conclusion" class="common-anchor-header">まとめ<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<h2 id="Conclusion" class="common-anchor-header">Conclusion<button data-href="#Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -474,11 +477,11 @@ Sync delete for 100 operations took 29.21 seconds
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>このチュートリアルでは、LangChainとmilvusを使った非同期操作のパフォーマンス上の優位性を示しました。追加、検索、削除操作の同期版と非同期版を比較し、特に大規模なバッチ操作において、非同期操作がいかに大幅な速度向上をもたらすかを示しました。</p>
-<p>主な要点</p>
+    </button></h2><p>This tutorial demonstrated the significant performance advantages of using asynchronous operations with LangChain and Milvus. We compared the synchronous and asynchronous versions of add, search, and delete operations, showing how async operations can provide substantial speed improvements, especially for large batch operations.</p>
+<p>Key takeaways:</p>
 <ol>
-<li>非同期オペレーションは、並列実行可能な多数の個別オペレーションを実行する場合に、最大のメリットをもたらす。</li>
-<li>より高いスループットを生成するワークロードでは、同期操作と非同期操作の性能差は拡大する。</li>
-<li>非同期オペレーションは、マシンの計算能力をフルに活用します。</li>
+<li>Async operations deliver the most benefit when performing many individual operations that can run in parallel</li>
+<li>For workload that generates higher throughput, the performance gap between sync and async operations widens</li>
+<li>Async operations fully utilize the compute power of the machines</li>
 </ol>
-<p>LangChainとmilvusでプロダクションRAGアプリケーションを構築する場合、パフォーマンスが気になる場合、特に並列処理では非同期APIの使用を検討してください。</p>
+<p>When building production RAG applications with LangChain and Milvus, consider using the async API when performance is a concern, especially for concurrent operations.</p>

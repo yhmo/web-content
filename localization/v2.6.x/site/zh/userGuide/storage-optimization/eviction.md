@@ -1,10 +1,13 @@
 ---
 id: eviction.md
-title: 驱逐Compatible with Milvus 2.6.4+
-summary: 驱逐管理 Milvus 中每个查询节点的缓存资源。启用后，一旦达到资源阈值，它就会自动删除缓存数据，确保性能稳定，防止内存或磁盘耗尽。
+title: EvictionCompatible with Milvus 2.6.4+
+summary: >-
+  Eviction manages the cache resources of each QueryNode in Milvus. When
+  enabled, it automatically removes cached data once resource thresholds are
+  reached, ensuring stable performance and preventing memory or disk exhaustion.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Eviction" class="common-anchor-header">驱逐<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Eviction" class="anchor-icon" translate="no">
+<h1 id="Eviction" class="common-anchor-header">Eviction<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Eviction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,12 +22,12 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Eviction 管理 Milvus 中每个查询节点的缓存资源。启用后，一旦达到资源阈值，它就会自动删除缓存数据，确保性能稳定，防止内存或磁盘耗尽。</p>
-<p>驱逐使用<a href="https://en.wikipedia.org/wiki/Cache_replacement_policies">最近最少使用（LRU）</a>策略来回收缓存空间。元数据始终处于缓存状态，从不驱逐，因为元数据对查询规划至关重要，而且通常很小。</p>
+    </button></h1><p>Eviction manages the cache resources of each QueryNode in Milvus. When enabled, it automatically removes cached data once resource thresholds are reached, ensuring stable performance and preventing memory or disk exhaustion.</p>
+<p>Eviction uses a <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies">Least Recently Used (LRU)</a> policy to reclaim cache space. Metadata is always cached and never evicted, as it is essential for query planning and typically small.</p>
 <div class="alert note">
-<p>必须显式启用驱逐。如果没有配置，缓存数据将继续累积，直到资源耗尽。</p>
+<p>Eviction must be explicitly enabled. Without configuration, cached data will continue to accumulate until resources are depleted.</p>
 </div>
-<h2 id="Eviction-types" class="common-anchor-header">驱逐类型<button data-href="#Eviction-types" class="anchor-icon" translate="no">
+<h2 id="Eviction-types" class="common-anchor-header">Eviction types<button data-href="#Eviction-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,48 +42,48 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 支持两种互补的驱逐模式<strong>（</strong> <strong>sync</strong> 和<strong>async</strong>），这两种模式可共同实现最佳资源管理：</p>
+    </button></h2><p>Milvus supports two complementary eviction modes (<strong>sync</strong> and <strong>async</strong>) that work together for optimal resource management:</p>
 <table>
    <tr>
-     <th><p>方面</p></th>
-     <th><p>同步驱逐</p></th>
-     <th><p>异步驱逐</p></th>
+     <th><p>Aspect</p></th>
+     <th><p>Sync Eviction</p></th>
+     <th><p>Async Eviction</p></th>
    </tr>
    <tr>
-     <td><p>触发</p></td>
-     <td><p>当内存或磁盘使用量超过内部限制时，在查询或搜索过程中发生。</p></td>
-     <td><p>当使用量超过高水位线或缓存数据达到其生存时间 (TTL) 时，由后台线程触发。</p></td>
+     <td><p>Trigger</p></td>
+     <td><p>Occurs during query or search when memory or disk usage exceeds internal limits.</p></td>
+     <td><p>Triggered by a background thread when usage exceeds the high watermark or when cached data reaches its time-to-live (TTL).</p></td>
    </tr>
    <tr>
-     <td><p>行为</p></td>
-     <td><p>查询节点回收缓存空间时，查询或搜索操作会暂时停止。驱逐将继续进行，直到使用率降到低水位线以下或出现超时。如果超时且无法回收足够的数据，查询或搜索可能会失败。</p></td>
-     <td><p>定期在后台运行，当使用率超过高水位或数据根据 TTL 过期时，主动驱逐缓存数据。驱逐会一直持续，直到使用量降至低水位线以下。不会阻止查询。</p></td>
+     <td><p>Behavior</p></td>
+     <td><p>Query or search operations pause temporarily while the QueryNode reclaims cache space. Eviction continues until usage drops below the low watermark or a timeout occurs. If timeout is reached and insufficient data can be reclaimed, the query or search may fail.</p></td>
+     <td><p>Runs periodically in the background, proactively evicting cached data when usage exceeds the high watermark or when data expires based on TTL. Eviction continues until usage drops below the low watermark. Queries are not blocked.</p></td>
    </tr>
    <tr>
-     <td><p>最适合</p></td>
-     <td><p>能承受高峰使用期间短暂延迟峰值或暂时停顿的工作负载。当异步驱逐不能足够快地回收空间时非常有用。</p></td>
-     <td><p>需要流畅、可预测查询性能的延迟敏感型工作负载。是主动资源管理的理想选择。</p></td>
+     <td><p>Best For</p></td>
+     <td><p>Workloads that can tolerate brief latency spikes or temporary pauses during peak usage. Useful when async eviction cannot reclaim space fast enough.</p></td>
+     <td><p>Latency-sensitive workloads that require smooth and predictable query performance. Ideal for proactive resource management.</p></td>
    </tr>
    <tr>
-     <td><p>注意事项</p></td>
-     <td><p>如果可驱逐数据不足，可能会导致短暂的查询延迟或超时。</p></td>
-     <td><p>需要适当调整高/低水印和 TTL 设置。后台线程有轻微开销。</p></td>
+     <td><p>Cautions</p></td>
+     <td><p>Can cause short query delays or timeouts if insufficient evictable data is available.</p></td>
+     <td><p>Requires properly tuned high/low watermarks and TTL settings. Slight overhead from the background thread.</p></td>
    </tr>
    <tr>
-     <td><p>配置</p></td>
-     <td><p>通过<code translate="no">evictionEnabled: true</code></p></td>
-     <td><p>通过<code translate="no">backgroundEvictionEnabled: true</code> 启用（同时需要<code translate="no">evictionEnabled: true</code> ）</p></td>
+     <td><p>Configuration</p></td>
+     <td><p>Enabled via <code translate="no">evictionEnabled: true</code></p></td>
+     <td><p>Enabled via <code translate="no">backgroundEvictionEnabled: true</code> (requires <code translate="no">evictionEnabled: true</code> at the same time)</p></td>
    </tr>
 </table>
-<p><strong>建议设置</strong>：</p>
+<p><strong>Recommended setup</strong>:</p>
 <ul>
-<li><p>两种驱逐模式可同时启用，以实现最佳平衡，前提是您的工作负载受益于分层存储，并能承受与驱逐相关的获取延迟。</p></li>
-<li><p>对于性能测试或对延迟要求较高的场景，可考虑完全禁用驱逐，以避免驱逐后的网络获取开销。</p></li>
+<li><p>Both eviction modes can be enabled together for optimal balance, provided your workload benefits from Tiered Storage and can tolerate eviction-related fetch latency.</p></li>
+<li><p>For performance testing or latency-critical scenarios, consider disabling eviction entirely to avoid network fetch overhead after eviction.</p></li>
 </ul>
 <div class="alert note">
-<p>对于可驱逐字段和索引，驱逐单元与加载粒度相匹配--标量/向量字段按块驱逐，标量/向量索引按段驱逐。</p>
+<p>For evictable fields and indexes, the eviction unit matches the loading granularity—scalar/vector fields are evicted by chunk, and scalar/vector indexes are evicted by segment.</p>
 </div>
-<h2 id="Enable-eviction" class="common-anchor-header">启用驱逐<button data-href="#Enable-eviction" class="anchor-icon" translate="no">
+<h2 id="Enable-eviction" class="common-anchor-header">Enable eviction<button data-href="#Enable-eviction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,7 +98,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在<code translate="no">milvus.yaml</code> 的<code translate="no">queryNode.segcore.tieredStorage</code> 下配置驱逐：</p>
+    </button></h2><p>Configure eviction under <code translate="no">queryNode.segcore.tieredStorage</code> in <code translate="no">milvus.yaml</code>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
     <span class="hljs-attr">tieredStorage:</span>
@@ -104,28 +107,28 @@ beta: Milvus 2.6.4+
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>参数</p></th>
-     <th><p>类型</p></th>
-     <th><p>值</p></th>
-     <th><p>说明</p></th>
-     <th><p>建议用例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Type</p></th>
+     <th><p>Values</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended use case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">evictionEnabled</code></p></td>
-     <td><p>二进制</p></td>
+     <td><p>bool</p></td>
      <td><p><code translate="no">true</code>/<code translate="no">false</code></p></td>
-     <td><p>驱逐策略的主开关。默认为<code translate="no">false</code> 。启用同步驱逐模式。</p></td>
-     <td><p>在分层存储中始终设置为<code translate="no">true</code> 。</p></td>
+     <td><p>Master switch for eviction strategy. Defaults to <code translate="no">false</code>. Enables sync eviction mode.</p></td>
+     <td><p>Always set to <code translate="no">true</code> in Tiered Storage.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">backgroundEvictionEnabled</code></p></td>
      <td><p>bool</p></td>
      <td><p><code translate="no">true</code>/<code translate="no">false</code></p></td>
-     <td><p>在后台异步运行驱逐。需要<code translate="no">evictionEnabled: true</code> 。默认为<code translate="no">false</code> 。</p></td>
-     <td><p>使用<code translate="no">true</code> 可提高查询性能，减少同步驱逐频率。</p></td>
+     <td><p>Run eviction asynchronously in the background. Requires <code translate="no">evictionEnabled: true</code>. Defaults to <code translate="no">false</code>.</p></td>
+     <td><p>Use <code translate="no">true</code> for smoother query performance; it reduces sync eviction frequency.</p></td>
    </tr>
 </table>
-<h2 id="Configure-watermarks" class="common-anchor-header">配置水印<button data-href="#Configure-watermarks" class="anchor-icon" translate="no">
+<h2 id="Configure-watermarks" class="common-anchor-header">Configure watermarks<button data-href="#Configure-watermarks" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -140,15 +143,15 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>水印定义内存和磁盘的缓存驱逐开始和结束时间。每种资源类型有两个阈值：</p>
+    </button></h2><p>Watermarks define when cache eviction begins and ends for both memory and disk. Each resource type has two thresholds:</p>
 <ul>
-<li><p><strong>高水印</strong>：当使用量超过此值时，开始驱逐。</p></li>
-<li><p><strong>低水印</strong>：继续驱逐，直到使用率低于此值。</p></li>
+<li><p><strong>High watermark</strong>: Eviction starts when usage exceeds this value.</p></li>
+<li><p><strong>Low watermark</strong>: Eviction continues until usage falls below this value.</p></li>
 </ul>
 <div class="alert note">
-<p>此配置仅在<a href="/docs/zh/eviction.md#Enable-eviction">启用驱逐</a>时生效。</p>
+<p>This configuration takes effect only when <a href="/docs/zh/v2.6.x/eviction.md#Enable-eviction">eviction is enabled</a>.</p>
 </div>
-<p><strong>示例 YAML</strong>：</p>
+<p><strong>Example YAML</strong>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
     <span class="hljs-attr">tieredStorage:</span>
@@ -162,47 +165,47 @@ beta: Milvus 2.6.4+
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>参数</p></th>
-     <th><p>类型</p></th>
-     <th><p>范围</p></th>
-     <th><p>说明</p></th>
-     <th><p>推荐用例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Type</p></th>
+     <th><p>Range</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended use case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">memoryLowWatermarkRatio</code></p></td>
-     <td><p>浮点数</p></td>
+     <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>停止驱逐的内存使用水平。</p></td>
-     <td><p>从<code translate="no">0.75</code> 开始。如果查询节点内存有限，可略微降低。</p></td>
+     <td><p>Memory usage level where eviction stops.</p></td>
+     <td><p>Start at <code translate="no">0.75</code>. Lower slightly if QueryNode memory is limited.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">memoryHighWatermarkRatio</code></p></td>
-     <td><p>浮点数</p></td>
+     <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>异步驱逐开始时的内存使用水平。</p></td>
-     <td><p>从<code translate="no">0.8</code> 开始。与低水位线保持适当差距（例如 0.05-0.10），以防止频繁触发。</p></td>
+     <td><p>Memory usage level where async eviction starts.</p></td>
+     <td><p>Start at <code translate="no">0.8</code>. Keep a sensible gap from low watermark (e.g., 0.05–0.10) to prevent frequent triggers.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">diskLowWatermarkRatio</code></p></td>
-     <td><p>浮动</p></td>
+     <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>停止驱逐的磁盘使用水平。</p></td>
-     <td><p>从<code translate="no">0.75</code> 开始。如果磁盘 I/O 受限，可将其调低。</p></td>
+     <td><p>Disk usage level where eviction stops.</p></td>
+     <td><p>Start at <code translate="no">0.75</code>. Adjust lower if disk I/O is limited.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">diskHighWatermarkRatio</code></p></td>
-     <td><p>浮动</p></td>
+     <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>开始异步驱逐的磁盘使用级别。</p></td>
-     <td><p>从<code translate="no">0.8</code> 开始。与低水位线保持合理的差距（如 0.05-0.10），以防止频繁触发。</p></td>
+     <td><p>Disk usage level where async eviction starts.</p></td>
+     <td><p>Start at <code translate="no">0.8</code>. Keep a sensible gap from low watermark (e.g., 0.05–0.10) to prevent frequent triggers.</p></td>
    </tr>
 </table>
-<p><strong>最佳实践</strong>：</p>
+<p><strong>Best practices</strong>:</p>
 <ul>
-<li><p>不要将高水印或低水印设置在 ~0.80 以上，以便为 QueryNode 的静态使用和查询时间突发留出余地。</p></li>
-<li><p>避免在高水印和低水印之间出现大的间隙；大的间隙会延长每个驱逐周期并增加延迟。</p></li>
+<li><p>Do not set high or low watermarks above ~0.80 to leave headroom for QueryNode static usage and query-time bursts.</p></li>
+<li><p>Avoid large gaps between high and low watermarks; big gaps prolong each eviction cycle and can add latency.</p></li>
 </ul>
-<h2 id="Configure-cache-TTL" class="common-anchor-header">配置缓存 TTL<button data-href="#Configure-cache-TTL" class="anchor-icon" translate="no">
+<h2 id="Configure-cache-TTL" class="common-anchor-header">Configure cache TTL<button data-href="#Configure-cache-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -217,11 +220,11 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>即使未达到资源阈值，<strong>缓存生存时间（TTL）</strong>也会在设定的持续时间后自动删除缓存数据。它与 LRU 驱逐一起防止陈旧数据无限期占用缓存。</p>
+    </button></h2><p><strong>Cache Time-to-Live (TTL)</strong> automatically removes cached data after a set duration, even if resource thresholds are not reached. It works alongside LRU eviction to prevent stale data from occupying cache indefinitely.</p>
 <div class="alert note">
-<p>缓存 TTL 需要<code translate="no">backgroundEvictionEnabled: true</code> ，因为它在同一个后台线程上运行。</p>
+<p>Cache TTL requires <code translate="no">backgroundEvictionEnabled: true</code>, as it runs on the same background thread.</p>
 </div>
-<p><strong>YAML 示例</strong></p>
+<p><strong>Example YAML</strong>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
     <span class="hljs-attr">tieredStorage:</span>
@@ -233,17 +236,17 @@ beta: Milvus 2.6.4+
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>参数</p></th>
-     <th><p>类型</p></th>
-     <th><p>单位</p></th>
-     <th><p>说明</p></th>
-     <th><p>推荐用例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Type</p></th>
+     <th><p>Unit</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended use case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">cacheTtl</code></p></td>
-     <td><p>整数</p></td>
-     <td><p>秒</p></td>
-     <td><p>缓存数据过期前的持续时间。过期项目会在后台删除。</p></td>
-     <td><p>对于高度动态的数据，使用较短的 TTL（小时）；对于稳定的数据集，使用较长的 TTL（天）。设置 0 则禁用基于时间的过期。</p></td>
+     <td><p>integer</p></td>
+     <td><p>seconds</p></td>
+     <td><p>Duration before cached data expires. Expired items are removed in the background.</p></td>
+     <td><p>Use a short TTL (hours) for highly dynamic data; use a long TTL (days) for stable datasets. Set 0 to disable time-based expiration.</p></td>
    </tr>
 </table>

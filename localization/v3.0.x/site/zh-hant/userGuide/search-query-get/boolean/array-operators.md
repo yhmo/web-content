@@ -1,9 +1,11 @@
 ---
 id: array-operators.md
-title: ARRAY 運算子
-summary: Milvus 提供了 ARRAY 運算子，用於篩選 ARRAY 欄位以及部分更新 ARRAY 欄位的值。
+title: ARRAY Operators
+summary: >-
+  Milvus provides ARRAY operators for filtering ARRAY fields and partially
+  updating ARRAY field values.
 ---
-<h1 id="ARRAY-Operators" class="common-anchor-header">ARRAY 運算子<button data-href="#ARRAY-Operators" class="anchor-icon" translate="no">
+<h1 id="ARRAY-Operators" class="common-anchor-header">ARRAY Operators<button data-href="#ARRAY-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,16 +20,16 @@ summary: Milvus 提供了 ARRAY 運算子，用於篩選 ARRAY 欄位以及部�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 提供 ARRAY 運算子，用於篩選 ARRAY 欄位以及部分更新 ARRAY 欄位值。</p>
+    </button></h1><p>Milvus provides ARRAY operators for filtering ARRAY fields and partially updating ARRAY field values.</p>
 <div class="alert note">
-<p>陣列中的所有元素必須為相同類型，且陣列內的嵌套結構將被視為普通字串。因此，在處理 ARRAY 欄位時，建議避免過度深層的嵌套，並確保資料結構盡可能扁平化，以獲得最佳效能。</p>
+<p>All elements within an array must be the same type, and nested structures within arrays are treated as plain strings. Therefore, when working with ARRAY fields, it is advisable to avoid excessively deep nesting and ensure that your data structures are as flat as possible for optimal performance.</p>
 </div>
-<p>Milvus 中的 ARRAY 運算子涵蓋兩種使用情境：</p>
+<p>ARRAY operators in Milvus cover two usage scenarios:</p>
 <ul>
-<li><p>用於查詢與搜尋的篩選表達式。</p></li>
-<li><p><code translate="no">upsert</code> 請求中的部分更新。</p></li>
+<li><p>Filter expressions for query and search.</p></li>
+<li><p>Partial updates in <code translate="no">upsert</code> requests.</p></li>
 </ul>
-<h2 id="Available-ARRAY-operators" class="common-anchor-header">可用的 ARRAY 運算子<button data-href="#Available-ARRAY-operators" class="anchor-icon" translate="no">
+<h2 id="Available-ARRAY-operators" class="common-anchor-header">Available ARRAY operators<button data-href="#Available-ARRAY-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,18 +44,18 @@ summary: Milvus 提供了 ARRAY 運算子，用於篩選 ARRAY 欄位以及部�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>下表列出了 Milvus 中可用的 ARRAY 運算子。</p>
+    </button></h2><p>The following table lists ARRAY operators available in Milvus.</p>
 <table>
 <thead>
-<tr><th>運算子</th><th>適用於</th><th>說明</th></tr>
+<tr><th>Operator</th><th>Use in</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><a href="/docs/zh-hant/array-operators.md#ARRAYCONTAINS">ARRAY_CONTAINS(識別碼, 表達式)</a></td><td>篩選表達式</td><td>檢查特定元素是否存在於 ARRAY 欄位中。</td></tr>
-<tr><td><a href="/docs/zh-hant/array-operators.md#ARRAYCONTAINSALL">ARRAY_CONTAINS_ALL(識別碼, 表達式)</a></td><td>篩選式</td><td>檢查指定清單中的所有元素是否皆存在於 ARRAY 欄位中。</td></tr>
-<tr><td><a href="/docs/zh-hant/array-operators.md#ARRAYCONTAINSANY">ARRAY_CONTAINS_ANY(識別碼, 表達式)</a></td><td>篩選表達式</td><td>檢查指定清單中的任何元素是否存在於 ARRAY 欄位中。</td></tr>
-<tr><td><a href="/docs/zh-hant/array-operators.md#ARRAYLENGTH">ARRAY_LENGTH(識別碼)</a></td><td>篩選表達式</td><td>返回 ARRAY 欄位中的元素個數，並可與比較運算子結合進行篩選。</td></tr>
-<tr><td><a href="/docs/zh-hant/array-operators.md#ARRAYAPPEND">ARRAY_APPEND</a></td><td><code translate="no">upsert</code> with<code translate="no">field_ops</code></td><td>將有效載荷元素追加至現有的 ARRAY 欄位。適用於 Milvus v2.6.17 及後續版本。</td></tr>
-<tr><td><a href="/docs/zh-hant/array-operators.md#ARRAYREMOVE">ARRAY_REMOVE</a></td><td><code translate="no">upsert</code> 與<code translate="no">field_ops</code></td><td>從現有的 ARRAY 欄位中移除所有與請求有效載荷中某個值相符的元素。適用於 Milvus v2.6.17 及後續版本。</td></tr>
+<tr><td><a href="/docs/zh-hant/array-operators.md#ARRAYCONTAINS">ARRAY_CONTAINS(identifier, expr)</a></td><td>Filter expression</td><td>Checks whether a specific element exists in an ARRAY field.</td></tr>
+<tr><td><a href="/docs/zh-hant/array-operators.md#ARRAYCONTAINSALL">ARRAY_CONTAINS_ALL(identifier, expr)</a></td><td>Filter expression</td><td>Checks whether all elements in a specified list exist in an ARRAY field.</td></tr>
+<tr><td><a href="/docs/zh-hant/array-operators.md#ARRAYCONTAINSANY">ARRAY_CONTAINS_ANY(identifier, expr)</a></td><td>Filter expression</td><td>Checks whether any element in a specified list exists in an ARRAY field.</td></tr>
+<tr><td><a href="/docs/zh-hant/array-operators.md#ARRAYLENGTH">ARRAY_LENGTH(identifier)</a></td><td>Filter expression</td><td>Returns the number of elements in an ARRAY field and can be combined with comparison operators for filtering.</td></tr>
+<tr><td><a href="/docs/zh-hant/array-operators.md#ARRAYAPPEND">ARRAY_APPEND</a></td><td><code translate="no">upsert</code> with <code translate="no">field_ops</code></td><td>Appends payload elements to an existing ARRAY field. Available in Milvus v2.6.17 and later.</td></tr>
+<tr><td><a href="/docs/zh-hant/array-operators.md#ARRAYREMOVE">ARRAY_REMOVE</a></td><td><code translate="no">upsert</code> with <code translate="no">field_ops</code></td><td>Removes every element from an existing ARRAY field that matches a value in the request payload. Available in Milvus v2.6.17 and later.</td></tr>
 </tbody>
 </table>
 <h2 id="ARRAYCONTAINS" class="common-anchor-header">ARRAY_CONTAINS<button data-href="#ARRAYCONTAINS" class="anchor-icon" translate="no">
@@ -71,12 +73,12 @@ summary: Milvus 提供了 ARRAY 運算子，用於篩選 ARRAY 欄位以及部�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">ARRAY_CONTAINS</code> 運算子用於檢查陣列欄位中是否存在特定元素。當您需要查找陣列中包含特定元素的實體時，此功能非常實用。</p>
-<p><strong>範例</strong></p>
-<p>假設您有一個名為 `<code translate="no">history_temperatures</code>` 的陣列欄位，其中包含各年份的最低氣溫紀錄。若要找出陣列中包含值 `<code translate="no">23</code>` 的所有實體，可使用以下篩選表達式：</p>
+    </button></h2><p>The <code translate="no">ARRAY_CONTAINS</code> operator checks if a specific element exists in an array field. It’s useful when you want to find entities where a given element is present in the array.</p>
+<p><strong>Example</strong></p>
+<p>Suppose you have an array field <code translate="no">history_temperatures</code>, which contains the recorded lowest temperatures for different years. To find all entities where the array contains the value <code translate="no">23</code>, you can use the following filter expression:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;ARRAY_CONTAINS(history_temperatures, 23)&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>這將回傳所有<code translate="no">history_temperatures</code> 陣列中包含值<code translate="no">23</code> 的實體。</p>
+<p>This will return all entities where the <code translate="no">history_temperatures</code> array contains the value <code translate="no">23</code>.</p>
 <h2 id="ARRAYCONTAINSALL" class="common-anchor-header">ARRAY_CONTAINS_ALL<button data-href="#ARRAYCONTAINSALL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -92,12 +94,12 @@ summary: Milvus 提供了 ARRAY 運算子，用於篩選 ARRAY 欄位以及部�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">ARRAY_CONTAINS_ALL</code> 運算子可確保指定清單中的所有元素均存在於陣列欄位中。當您需要篩選陣列中包含多個值的實體時，此運算子便十分實用。</p>
-<p><strong>範例</strong></p>
-<p>若要找出所有<code translate="no">history_temperatures</code> 陣列同時包含<code translate="no">23</code> 和<code translate="no">24</code> 的實體，可使用：</p>
+    </button></h2><p>The <code translate="no">ARRAY_CONTAINS_ALL</code> operator ensures that all elements of the specified list are present in the array field. This operator is useful when you want to match entities that contain multiple values in the array.</p>
+<p><strong>Example</strong></p>
+<p>If you want to find all entities where the <code translate="no">history_temperatures</code> array contains both <code translate="no">23</code> and <code translate="no">24</code>, you can use:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;ARRAY_CONTAINS_ALL(history_temperatures, [23, 24])&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>這將回傳所有<code translate="no">history_temperatures</code> 陣列同時包含上述兩個指定值的實體。</p>
+<p>This will return all entities where the <code translate="no">history_temperatures</code> array contains both of the specified values.</p>
 <h2 id="ARRAYCONTAINSANY" class="common-anchor-header">ARRAY_CONTAINS_ANY<button data-href="#ARRAYCONTAINSANY" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -113,12 +115,12 @@ summary: Milvus 提供了 ARRAY 運算子，用於篩選 ARRAY 欄位以及部�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">ARRAY_CONTAINS_ANY</code> 運算子會檢查陣列欄位中是否存在指定清單中的任何元素。當您希望匹配陣列中至少包含一個指定值的實體時，此功能非常實用。</p>
-<p><strong>範例</strong></p>
-<p>若要找出所有<code translate="no">history_temperatures</code> 陣列中包含<code translate="no">23</code> 或<code translate="no">24</code> 任一項的實體，可使用以下語法：</p>
+    </button></h2><p>The <code translate="no">ARRAY_CONTAINS_ANY</code> operator checks if any of the elements from the specified list are present in the array field. This is useful when you want to match entities that contain at least one of the specified values in the array.</p>
+<p><strong>Example</strong></p>
+<p>To find all entities where the <code translate="no">history_temperatures</code> array contains either <code translate="no">23</code> or <code translate="no">24</code>, you can use:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;ARRAY_CONTAINS_ANY(history_temperatures, [23, 24])&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>這將回傳所有<code translate="no">history_temperatures</code> 陣列中至少包含<code translate="no">23</code> 或<code translate="no">24</code> 其中一個值的實體。</p>
+<p>This will return all entities where the <code translate="no">history_temperatures</code> array contains at least one of the values <code translate="no">23</code> or <code translate="no">24</code>.</p>
 <h2 id="ARRAYLENGTH" class="common-anchor-header">ARRAY_LENGTH<button data-href="#ARRAYLENGTH" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -134,13 +136,13 @@ summary: Milvus 提供了 ARRAY 運算子，用於篩選 ARRAY 欄位以及部�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">ARRAY_LENGTH</code> 會傳回陣列欄位的長度（元素數量）。它僅接受一個參數：陣列欄位識別碼。</p>
-<p><strong>範例</strong></p>
-<p>要查詢所有<code translate="no">history_temperatures</code> 陣列元素數少於 10 個的實體：</p>
+    </button></h2><p>The <code translate="no">ARRAY_LENGTH</code> returns the length (number of elements) of an array field. It accepts exactly one parameter: the array field identifier.</p>
+<p><strong>Example</strong></p>
+<p>To find all entities where the <code translate="no">history_temperatures</code> array has fewer than 10 elements:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;ARRAY_LENGTH(history_temperatures) &lt; 10&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>這將回傳所有<code translate="no">history_temperatures</code> 陣列元素數少於10個的實體。</p>
-<h2 id="ARRAYAPPEND--Milvus-2617+" class="common-anchor-header">ARRAY_APPEND<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.17+</span><button data-href="#ARRAYAPPEND--Milvus-2617+" class="anchor-icon" translate="no">
+<p>This will return all entities where the <code translate="no">history_temperatures</code> array has fewer than 10 elements.</p>
+<h2 id="ARRAYAPPEND" class="common-anchor-header">ARRAY_APPEND<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.17+</span><button data-href="#ARRAYAPPEND" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -155,8 +157,8 @@ summary: Milvus 提供了 ARRAY 運算子，用於篩選 ARRAY 欄位以及部�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">ARRAY_APPEND</code> 運算子會在執行<code translate="no">upsert</code> 請求時，將有效載荷元素追加至現有的 ARRAY 欄位中。它並非篩選表達式。當您希望直接向陣列新增值，而無需先查詢當前陣列值時，請使用此運算子。</p>
-<p>以下 Python 範例將 `<code translate="no">&quot;premium&quot;</code> ` 附加至主鍵為 `<code translate="no">1</code>` 的實體之 `<code translate="no">tags</code> ` ARRAY 欄位：</p>
+    </button></h2><p>The <code translate="no">ARRAY_APPEND</code> operator appends payload elements to an existing ARRAY field during an <code translate="no">upsert</code> request. It is not a filter expression. Use it when you want to add values to an array without first querying the current array value.</p>
+<p>The following Python example appends <code translate="no">&quot;premium&quot;</code> to the <code translate="no">tags</code> ARRAY field of the entity whose primary key is <code translate="no">1</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> FieldOp, MilvusClient
 
 client = MilvusClient(
@@ -170,8 +172,8 @@ client.upsert(
 <span class="highlighted-wrapper-line">    field_ops={<span class="hljs-string">&quot;tags&quot;</span>: FieldOp.array_append()},</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>透過 `<code translate="no">field_ops</code> ` 將 `<code translate="no">ARRAY_APPEND</code> ` 附加至欄位，可為該欄位啟用部分更新語義。有關完整工作流程、受支援的元素類型及限制，請參閱「<a href="/docs/zh-hant/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">合併模式下的 Upsert ARRAY 欄位</a>」。</p>
-<h2 id="ARRAYREMOVE--Milvus-2617+" class="common-anchor-header">ARRAY_REMOVE<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.17+</span><button data-href="#ARRAYREMOVE--Milvus-2617+" class="anchor-icon" translate="no">
+<p>Attaching <code translate="no">ARRAY_APPEND</code> to a field through <code translate="no">field_ops</code> enables partial-update semantics for that field. For the full workflow, supported element types, and limits, refer to <a href="/docs/zh-hant/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">Upsert ARRAY fields in merge mode</a>.</p>
+<h2 id="ARRAYREMOVE" class="common-anchor-header">ARRAY_REMOVE<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.17+</span><button data-href="#ARRAYREMOVE" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -186,8 +188,8 @@ client.upsert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">ARRAY_REMOVE</code> 運算子會在<code translate="no">upsert</code> 請求期間，從現有的 ARRAY 欄位中移除所有與請求載荷中值相符的元素。這並非篩選表達式。當您希望從陣列中移除相符值，且無需事先查詢當前陣列值時，請使用此運算子。</p>
-<p>以下 Python 範例會從主鍵為<code translate="no">1</code> 的實體之<code translate="no">tags</code> ARRAY 欄位中，移除<code translate="no">&quot;trial&quot;</code> ：</p>
+    </button></h2><p>The <code translate="no">ARRAY_REMOVE</code> operator removes every element from an existing ARRAY field that matches a value in the request payload during an <code translate="no">upsert</code> request. It is not a filter expression. Use it when you want to remove matching values from an array without first querying the current array value.</p>
+<p>The following Python example removes <code translate="no">&quot;trial&quot;</code> from the <code translate="no">tags</code> ARRAY field of the entity whose primary key is <code translate="no">1</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> FieldOp, MilvusClient
 
 client = MilvusClient(
@@ -201,4 +203,4 @@ client.upsert(
 <span class="highlighted-wrapper-line">    field_ops={<span class="hljs-string">&quot;tags&quot;</span>: FieldOp.array_remove()},</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>透過 `<code translate="no">field_ops</code> ` 將 `<code translate="no">ARRAY_REMOVE</code> ` 附加至欄位，可為該欄位啟用部分更新語義。有關完整工作流程、受支援的元素類型及限制，請參閱「<a href="/docs/zh-hant/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">合併模式下的 Upsert ARRAY 欄位</a>」。</p>
+<p>Attaching <code translate="no">ARRAY_REMOVE</code> to a field through <code translate="no">field_ops</code> enables partial-update semantics for that field. For the full workflow, supported element types, and limits, refer to <a href="/docs/zh-hant/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">Upsert ARRAY fields in merge mode</a>.</p>

@@ -1,11 +1,12 @@
 ---
 id: streaming_service.md
-title: خدمة البث
+title: Streaming Service
 summary: >-
-  خدمة البث هي مفهوم لوحدة نظام البث الداخلي في Milvus، مبنية حول سجل الكتابة
-  الأمامية (WAL) لدعم مختلف الوظائف المتعلقة بالبث.
+  The Streaming Service is a concept for Milvus internal streaming system
+  module, built around the Write-Ahead Log (WAL) to support various
+  streaming-related function.
 ---
-<h1 id="Streaming-Service" class="common-anchor-header">خدمة البث<button data-href="#Streaming-Service" class="anchor-icon" translate="no">
+<h1 id="Streaming-Service" class="common-anchor-header">Streaming Service<button data-href="#Streaming-Service" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,17 +21,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><strong>خدمة التدفق</strong> هي مفهوم لوحدة نظام التدفق الداخلي في Milvus، وهي مبنية حول سجل الكتابة الأمامية (WAL) لدعم مختلف الوظائف المتعلقة بالبث. وتشمل هذه الوظائف استيعاب/اشتراك البيانات المتدفقة، واسترداد الأخطاء لحالة المجموعة، وتحويل البيانات المتدفقة إلى بيانات تاريخية، والاستعلامات المتزايدة للبيانات. من الناحية المعمارية، تتكون خدمة التدفق من ثلاثة مكونات رئيسية:</p>
+    </button></h1><p>The <strong>Streaming Service</strong> is a concept for Milvus internal streaming system module, built around the Write-Ahead Log (WAL) to support various streaming-related function. These include streaming data ingestion/subscription, fault recovery of cluster state, conversion of streaming data into historical data, and growing data queries. Architecturally, the Streaming Service is composed of three main components:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/streaming_distributed_arch.png" alt="Streaming Distributed Arc" class="doc-image" id="streaming-distributed-arc" />
-   </span> <span class="img-wrapper"> <span>قوس التدفق الموزع</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/streaming_distributed_arch.png" alt="Streaming Distributed Arc" class="doc-image" id="streaming-distributed-arc" />
+    <span>Streaming Distributed Arc</span>
+  </span>
+</p>
 <ul>
-<li><p><strong>منسق التدفق</strong>: مكون منطقي في عقدة المنسق. ويستخدم Etcd لاكتشاف الخدمة لتحديد موقع عقد التدفق المتاحة وهو مسؤول عن ربط WAL بعقد التدفق المقابلة. كما أنها تسجل الخدمة لفضح طوبولوجيا توزيع WAL، مما يسمح لعملاء البث بمعرفة عقدة البث المناسبة لعقدة دفق معينة.</p></li>
-<li><p><strong>مجموعة عقدة التدفق</strong>: مجموعة من عُقد عامل التدفق المسؤولة عن جميع مهام معالجة البث، مثل إلحاق المحفظة واستعادة الحالة والاستعلام عن البيانات المتزايدة.</p></li>
-<li><p><strong>عميل التدفق</strong>: عميل Milvus مطور داخليًا يقوم بتغليف الوظائف الأساسية مثل اكتشاف الخدمة والتحقق من الجاهزية. يتم استخدامه لبدء عمليات مثل كتابة الرسائل والاشتراك.</p></li>
+<li><p><strong>Streaming Coordinator</strong>: A logical component in the coordinator node. It uses Etcd for service discovery to locate available streaming nodes and is responsible for binding WAL to the corresponding streaming nodes. It also registers service to expose the WAL distribution topology, allowing streaming clients to know the appropriate streaming node for a given WAL.</p></li>
+<li><p><strong>Streaming Node Cluster</strong>: A cluster of streaming worker nodes responsible for all streaming-processing tasks, such as wal appending, state recovering, growing data querying.</p></li>
+<li><p><strong>Streaming Client</strong>: An internally developed Milvus client that encapsulates basic functionalities such as service discovery and readiness checks. It is used to initiate operations such as message writing and subscription.</p></li>
 </ul>
-<h2 id="Message" class="common-anchor-header">الرسالة<button data-href="#Message" class="anchor-icon" translate="no">
+<h2 id="Message" class="common-anchor-header">Message<button data-href="#Message" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -45,17 +48,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>خدمة الدفق هي نظام تدفق يعتمد على السجلات، لذلك يتم تجريد جميع عمليات الكتابة في ميلفوس (مثل DML وDDL) <strong>كرسائل</strong>.</p>
+    </button></h2><p>The Streaming Service is a log-driven streaming system, so all write operations in Milvus (such as DML and DDL) are abstracted as <strong>Messages</strong>.</p>
 <ul>
-<li><p>يتم تعيين حقل <strong>Timestamp Oracle (TSO</strong> ) لكل رسالة من قبل خدمة الدفق، والذي يشير إلى ترتيب الرسالة في WAL. يحدد ترتيب الرسائل ترتيب عمليات الكتابة في ملفوس. وهذا يجعل من الممكن إعادة بناء أحدث حالة مجموعة من السجلات.</p></li>
-<li><p>تنتمي كل رسالة إلى قناة افتراضية <strong>VChannel</strong> (قناة افتراضية) محددة وتحتفظ بخصائص ثابتة معينة داخل تلك القناة لضمان اتساق العملية. على سبيل المثال، يجب أن تحدث عملية "إدراج" دائمًا قبل عملية "إسقاط مجموعة" على نفس القناة.</p></li>
+<li><p>Every Message is assigned a <strong>Timestamp Oracle (TSO)</strong> field by the Streaming Service, which indicates the message’s order in the WAL. The ordering of messages determines the order of write operations in Milvus. This makes it possible to reconstruct the latest cluster state from the logs.</p></li>
+<li><p>Each Message belongs to a specific <strong>VChannel</strong> (Virtual Channel) and maintains certain invariant properties within that channel to ensure operation consistency. For example, an Insert operation must always occur before a DropCollection operation on the same channel.</p></li>
 </ul>
-<p>قد يشبه ترتيب الرسائل في ميلفوس ما يلي:</p>
+<p>The message order in Milvus may resemble the following:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/message_order.png" alt="Message Order" class="doc-image" id="message-order" />
-   </span> <span class="img-wrapper"> <span>ترتيب الرسائل</span> </span></p>
-<h2 id="WAL-Component" class="common-anchor-header">مكون WAL<button data-href="#WAL-Component" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/message_order.png" alt="Message Order" class="doc-image" id="message-order" />
+    <span>Message Order</span>
+  </span>
+</p>
+<h2 id="WAL-Component" class="common-anchor-header">WAL Component<button data-href="#WAL-Component" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,16 +75,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لدعم قابلية التوسع الأفقي على نطاق واسع، فإن WAL في Milvus ليس ملف سجل واحد، بل هو مركب من سجلات متعددة. يمكن لكل سجل أن يدعم بشكل مستقل وظيفة التدفق لعدة قنوات VChannels V بشكل مستقل. في أي وقت معين، يُسمح لمكون WAL بالعمل على <strong>عقدة دفق واحدة</strong> فقط، وهذا القيد موعود من قبل كل من آلية التسييج للتخزين الأساسي ومنسق التدفق.</p>
-<p>تتضمن الميزات الإضافية لمكون WAL ما يلي:</p>
+    </button></h2><p>To support large-scale horizontal scalability, Milvus’s WAL is not a single log file, but a composite of multiple logs. Each log can independently support streaming functionality for multiple VChannels. At any given time, a WAL component is allowed to operate on <strong>exactly one streaming node</strong>, these constraint is promised by both a fencing mechanism of underlying wal storage and the streaming coordinator.</p>
+<p>Additional features of the WAL component include:</p>
 <ul>
-<li><p><strong>إدارة دورة حياة المقطع</strong>: استنادًا إلى السياسة مثل ظروف الذاكرة/حجم المقطع/وقت خمول المقطع، يدير WAL دورة حياة كل مقطع.</p></li>
-<li><p><strong>دعم المعاملات الأساسية</strong>: نظرًا لأن كل رسالة لها حد للحجم، يدعم مكوّن WAL مستوى المعاملات البسيط للوعود بالكتابة الذرية على مستوى قناة VChannel.</p></li>
-<li><p><strong>كتابة السجل عن بُعد عالية التردد</strong>: يدعم Milvus قوائم انتظار الرسائل عن بعد التابعة لجهة خارجية كمخزن WAL. وللتخفيف من زمن انتقال الرحلة ذهابًا وإيابًا (RTT) بين عقدة التدفق وتخزين WAL عن بُعد لتحسين إنتاجية الكتابة، تدعم خدمة التدفق عمليات كتابة السجل المتزامنة. يحافظ على ترتيب الرسائل من خلال مزامنة TSO و TSO، وتتم قراءة الرسائل في WAL بترتيب TSO.</p></li>
-<li><p><strong>مخزن الكتابة المسبق</strong>: بعد أن تتم كتابة الرسائل إلى WAL، يتم تخزينها مؤقتًا في مخزن مؤقت للكتابة المسبقة. يتيح هذا إمكانية قراءة السجلات الخلفية للسجلات دون جلب الرسائل من مخزن WAL البعيد.</p></li>
-<li><p><strong>يدعم تخزين WAL المتعدد</strong>: نقار الخشب ونقار الخشب وبولسار وكافكا. باستخدام نقار الخشب مع وضع القرص الصفري، يمكننا إزالة تبعية تخزين WAL عن بعد.</p></li>
+<li><p><strong>Segment Lifecycle Management</strong>: Based on the policy such as memory conditions/ segment size/ segment idle time, the WAL manages the lifecycle of every segments.</p></li>
+<li><p><strong>Basic Transaction Support</strong>: Since each message has a size limit, the WAL component supports simple transaction-level to promise atomic writes at the VChannel level.</p></li>
+<li><p><strong>High-Concurrency Remote Log Writing</strong>: Milvus supports third-party remote message queues as WAL storage. For mitigating the round-trip latency (RTT) between streaming node and remote WAL storage to improve write throughput, the streaming service supports concurrent log writes. It maintains message order by TSO and TSO synchronization, and the messages in WAL are read in TSO order.</p></li>
+<li><p><strong>Write-Ahead Buffer</strong>: After messages are written to the WAL, they are temporarily stored in a Write-Ahead Buffer. This enables tail reads of logs without fetching messages from remote WAL storage.</p></li>
+<li><p><strong>Multiple WAL Storage supports</strong>: Woodpecker, Pulsar, Kafka. Use woodpecker with zero-disk mode, we can remove the remote WAL storage dependency.</p></li>
 </ul>
-<h2 id="Recovery-Storage" class="common-anchor-header">تخزين الاسترداد<button data-href="#Recovery-Storage" class="anchor-icon" translate="no">
+<h2 id="Recovery-Storage" class="common-anchor-header">Recovery Storage<button data-href="#Recovery-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -94,16 +99,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يعمل مكوِّن تخزين <strong>الاسترداد</strong> دائمًا على عقدة التدفق التي يوجد بها مكوِّن WAL المقابل.</p>
+    </button></h2><p>The <strong>Recovery Storage</strong> component always runs on the streaming node that corresponding WAL component located.</p>
 <ul>
-<li><p>وهو مسؤول عن تحويل البيانات المتدفقة إلى بيانات تاريخية ثابتة وتخزينها في تخزين الكائنات.</p></li>
-<li><p>كما أنه يعالج استرداد الحالة في الذاكرة لمكون WAL على عقدة التدفق.</p></li>
+<li><p>It is responsible for converting streaming data into persisted historical data and storing it in object storage.</p></li>
+<li><p>It also handles in-memory state recovery for the WAL component on the streaming node.</p></li>
 </ul>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/recovery_storage.png" alt="Recovery Storage" class="doc-image" id="recovery-storage" />
-   </span> <span class="img-wrapper"> <span>مخزن الاسترداد</span> </span></p>
-<h2 id="Query-Delegator" class="common-anchor-header">مفوض الاستعلام<button data-href="#Query-Delegator" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/recovery_storage.png" alt="Recovery Storage" class="doc-image" id="recovery-storage" />
+    <span>Recovery Storage</span>
+  </span>
+</p>
+<h2 id="Query-Delegator" class="common-anchor-header">Query Delegator<button data-href="#Query-Delegator" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -118,10 +125,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يعمل "مفوض <strong>الاستعلام</strong> " على كل عقدة تدفق وهو مسؤول عن تنفيذ <strong>الاستعلامات الإضافية</strong> على جزء واحد. حيث يقوم بإنشاء خطط الاستعلام وإرسالها إلى عقد الاستعلام ذات الصلة وتجميع النتائج.</p>
-<p>بالإضافة إلى ذلك، يكون مفوض الاستعلام مسؤولاً عن بث <strong>عمليات الحذف</strong> إلى عقد الاستعلام الأخرى.</p>
-<p>يتعايش مفوض الاستعلام دائمًا مع مكون WAL على نفس عقدة البث. ولكن إذا تم تكوين المجموعة مع تعدد النسخ، فسيتم نشر <strong>N-1</strong> المفوضين على عقد التدفق الأخرى.</p>
-<h2 id="WAL-Lifetime-and-Wait-for-Ready" class="common-anchor-header">عمر WAL وانتظار الاستعداد<button data-href="#WAL-Lifetime-and-Wait-for-Ready" class="anchor-icon" translate="no">
+    </button></h2><p>The <strong>Query Delegator</strong> runs on each streaming node and is responsible for executing <strong>incremental queries</strong> on a single shard. It generates query plans, forwards them to the relevant Query Nodes, and aggregates the results.</p>
+<p>In addition, the Query Delegator is responsible for broadcasting <strong>Delete operations</strong> to other Query Nodes.</p>
+<p>The Query Delegator always coexists with the WAL component on the same streaming node. But if the collection is configured with multi-replica, then <strong>N-1</strong> Delegators will be deployed on the other streaming nodes.</p>
+<h2 id="WAL-Lifetime-and-Wait-for-Ready" class="common-anchor-header">WAL Lifetime and Wait for Ready<button data-href="#WAL-Lifetime-and-Wait-for-Ready" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -136,12 +143,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>من خلال فصل عقد الحوسبة عن التخزين، يمكن لـ Milvus نقل WAL بسهولة من عقدة تدفق إلى أخرى، مما يحقق توافرًا عاليًا في خدمة التدفق.</p>
+    </button></h2><p>By separating computing nodes from storage, Milvus can easily transfer WAL from one streaming node to another, achieving high availability in streaming service.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/wal_lifetime.png" alt="wal lifetime" class="doc-image" id="wal-lifetime" />
-   </span> <span class="img-wrapper"> <span>عمر WAL</span> </span></p>
-<h2 id="Wait-for-Ready" class="common-anchor-header">انتظار الاستعداد<button data-href="#Wait-for-Ready" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/wal_lifetime.png" alt="wal lifetime" class="doc-image" id="wal-lifetime" />
+    <span>wal lifetime</span>
+  </span>
+</p>
+<h2 id="Wait-for-Ready" class="common-anchor-header">Wait for Ready<button data-href="#Wait-for-Ready" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -156,8 +165,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>عندما يتم نقل WAL إلى عقدة تدفق جديدة، سيجد العميل أن عقدة التدفق القديمة ترفض بعض الطلبات. في هذه الأثناء، سيتم استرداد WAL في عقدة البث الجديدة، وسينتظر العميل أن تكون المحفظة على عقدة البث الجديدة جاهزة للخدمة.</p>
+    </button></h2><p>When wal is going to move to new streaming node, the client will find that old streaming node reject some requests. Meanwhile, the WAL will be recovered at new streaming node, the client will wait for the wal on new streaming node ready to serve.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/streaming_wait_for_ready.png" alt="wait for ready" class="doc-image" id="wait-for-ready" />
-   </span> <span class="img-wrapper"> <span>انتظار الجاهزية</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/streaming_wait_for_ready.png" alt="wait for ready" class="doc-image" id="wait-for-ready" />
+    <span>wait for ready</span>
+  </span>
+</p>

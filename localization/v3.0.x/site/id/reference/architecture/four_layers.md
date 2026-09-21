@@ -1,9 +1,9 @@
 ---
 id: four_layers.md
-summary: Struktur pemilahan penyimpanan/komputasi di Milvus.
-title: Pemilahan Penyimpanan/Komputasi
+summary: Storage/computing disaggregation structure in Milvus.
+title: Storage/Computing Disaggregation
 ---
-<h1 id="StorageComputing-Disaggregation" class="common-anchor-header">Pemilahan Penyimpanan/Komputasi<button data-href="#StorageComputing-Disaggregation" class="anchor-icon" translate="no">
+<h1 id="StorageComputing-Disaggregation" class="common-anchor-header">Storage/Computing Disaggregation<button data-href="#StorageComputing-Disaggregation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +18,8 @@ title: Pemilahan Penyimpanan/Komputasi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Mengikuti prinsip disagregasi bidang data dan bidang kontrol, Milvus terdiri dari empat lapisan yang saling independen dalam hal skalabilitas dan pemulihan bencana.</p>
-<h2 id="Access-layer" class="common-anchor-header">Lapisan akses<button data-href="#Access-layer" class="anchor-icon" translate="no">
+    </button></h1><p>Following the principle of data plane and control plane disaggregation, Milvus comprises four layers that are mutually independent in terms of scalability and disaster recovery.</p>
+<h2 id="Access-layer" class="common-anchor-header">Access layer<button data-href="#Access-layer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,12 +34,12 @@ title: Pemilahan Penyimpanan/Komputasi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Terdiri dari sekelompok proksi tanpa kewarganegaraan, lapisan akses adalah lapisan depan sistem dan titik akhir bagi pengguna. Lapisan ini memvalidasi permintaan klien dan mengurangi hasil yang dikembalikan:</p>
+    </button></h2><p>Composed of a group of stateless proxies, the access layer is the front layer of the system and endpoint to users. It validates client requests and reduces the returned results:</p>
 <ul>
-<li>Proxy dengan sendirinya tidak memiliki kewarganegaraan. Ia menyediakan alamat layanan terpadu menggunakan komponen penyeimbang beban seperti Nginx, Kubernetes Ingress, NodePort, dan LVS.</li>
-<li>Karena Milvus menggunakan arsitektur pemrosesan paralel masif (MPP), proksi mengumpulkan dan memproses hasil antara sebelum mengembalikan hasil akhir ke klien.</li>
+<li>Proxy is in itself stateless. It provides a unified service address using load balancing components such as Nginx, Kubernetes Ingress, NodePort, and LVS.</li>
+<li>As Milvus employs a massively parallel processing (MPP) architecture, the proxy aggregates and post-process the intermediate results before returning the final results to the client.</li>
 </ul>
-<h2 id="Coordinator" class="common-anchor-header">Koordinator<button data-href="#Coordinator" class="anchor-icon" translate="no">
+<h2 id="Coordinator" class="common-anchor-header">Coordinator<button data-href="#Coordinator" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -54,15 +54,15 @@ title: Pemilahan Penyimpanan/Komputasi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>Koordinator</strong> berfungsi sebagai otak Milvus. Setiap saat, ada satu Koordinator yang aktif di seluruh cluster, yang bertanggung jawab untuk menjaga topologi cluster, menjadwalkan semua jenis tugas, dan menjanjikan konsistensi tingkat cluster.</p>
-<p>Berikut ini adalah beberapa tugas yang ditangani oleh <strong>Koordinator</strong>:</p>
+    </button></h2><p>The <strong>Coordinator</strong> serves as the brain of Milvus. At any moment, exactly one Coordinator is active across the entire cluster, responsible for maintaining the cluster topology, scheduling all task types, and promising cluster-level consistency.</p>
+<p>The following are some of the tasks handled by the <strong>Coordinator</strong>:</p>
 <ul>
-<li><strong>Manajemen DDL/DCL/TSO</strong>: Menangani permintaan bahasa definisi data (DDL) dan bahasa kontrol data (DCL), seperti membuat atau menghapus koleksi, partisi, atau indeks, serta mengelola cap waktu Oracle (TSO) dan penerbitan penanda waktu.</li>
-<li><strong>Manajemen Layanan Streaming</strong>: Mengikat Write-Ahead Log (WAL) dengan Streaming Node dan menyediakan penemuan layanan untuk layanan streaming.</li>
-<li><strong>Manajemen Kueri</strong>: Mengelola topologi dan penyeimbangan beban untuk Query Node, serta menyediakan dan mengelola tampilan kueri yang disajikan untuk memandu perutean kueri.</li>
-<li><strong>Manajemen Data Historis</strong>: Mendistribusikan tugas-tugas offline seperti pemadatan dan pembuatan indeks ke Node Data, dan mengelola topologi segmen dan tampilan data.</li>
+<li><strong>DDL/DCL/TSO Management</strong>: Handles data definition language (DDL) and data control language (DCL) requests, such as creating or deleting collections, partitions, or indexes, as well as managing timestamp Oracle (TSO) and time ticker issuing.</li>
+<li><strong>Streaming Service Management</strong>: Binds the Write-Ahead Log (WAL) with Streaming Nodes and provides service discovery for the streaming service.</li>
+<li><strong>Query Management</strong>: Manages topology and load balancing for the Query Nodes, and provides and manages the serving query views to guide the query routing.</li>
+<li><strong>Historical Data Management</strong>: Distributes offline tasks such as compaction and index-building to Data Nodes, and manages the topology of segments and data views.</li>
 </ul>
-<h2 id="Worker-nodes" class="common-anchor-header">Simpul pekerja<button data-href="#Worker-nodes" class="anchor-icon" translate="no">
+<h2 id="Worker-nodes" class="common-anchor-header">Worker nodes<button data-href="#Worker-nodes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -77,8 +77,8 @@ title: Pemilahan Penyimpanan/Komputasi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Lengan dan kaki. Simpul pekerja adalah eksekutor bodoh yang mengikuti instruksi dari koordinator. Node pekerja tidak memiliki kewarganegaraan berkat pemisahan penyimpanan dan komputasi, dan dapat memfasilitasi peningkatan skala sistem dan pemulihan bencana saat digunakan di Kubernetes. Ada tiga jenis simpul pekerja:</p>
-<h3 id="Streaming-node" class="common-anchor-header">Node streaming<button data-href="#Streaming-node" class="anchor-icon" translate="no">
+    </button></h2><p>The arms and legs. Worker nodes are dumb executors that follow instructions from the coordinator. Worker nodes are stateless thanks to separation of storage and computation, and can facilitate system scale-out and disaster recovery when deployed on Kubernetes. There are three types of worker nodes:</p>
+<h3 id="Streaming-node" class="common-anchor-header">Streaming node<button data-href="#Streaming-node" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,8 +93,8 @@ title: Pemilahan Penyimpanan/Komputasi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Streaming node berfungsi sebagai "otak mini" tingkat pecahan, memberikan jaminan konsistensi tingkat pecahan dan pemulihan kesalahan berdasarkan WAL Storage yang mendasarinya. Sementara itu, Streaming Node juga bertanggung jawab untuk mengembangkan kueri data dan menghasilkan rencana kueri. Selain itu, node ini juga menangani konversi data yang terus bertambah menjadi data yang tersegel (historis).</p>
-<h3 id="Query-node" class="common-anchor-header">Node kueri<button data-href="#Query-node" class="anchor-icon" translate="no">
+    </button></h3><p>Streaming node serves as the shard-level "mini-brain", providing shard-level consistency guarantees and fault recovery based on underlying WAL Storage. Meanwhile, Streaming Node is also responsible for growing data querying and generating query plans. Additionally, it also handles the conversion of growing data into sealed(historical) data.</p>
+<h3 id="Query-node" class="common-anchor-header">Query node<button data-href="#Query-node" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -109,8 +109,8 @@ title: Pemilahan Penyimpanan/Komputasi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Query node memuat data historis dari penyimpanan objek, dan menyediakan kueri data historis.</p>
-<h3 id="Data-node" class="common-anchor-header">Simpul data<button data-href="#Data-node" class="anchor-icon" translate="no">
+    </button></h3><p>Query node loads the historical data from object storage, and provides the Historical data querying.</p>
+<h3 id="Data-node" class="common-anchor-header">Data node<button data-href="#Data-node" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -125,8 +125,8 @@ title: Pemilahan Penyimpanan/Komputasi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Simpul data bertanggung jawab untuk pemrosesan data historis secara offline, seperti pemadatan dan pembuatan indeks.</p>
-<h2 id="Storage" class="common-anchor-header">Penyimpanan<button data-href="#Storage" class="anchor-icon" translate="no">
+    </button></h3><p>Data node is responsible for offline processing of historical data, such as compaction and index building.</p>
+<h2 id="Storage" class="common-anchor-header">Storage<button data-href="#Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -141,8 +141,8 @@ title: Pemilahan Penyimpanan/Komputasi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Penyimpanan adalah tulang dari sistem, yang bertanggung jawab atas persistensi data. Ini terdiri dari penyimpanan meta, perantara log, dan penyimpanan objek.</p>
-<h3 id="Meta-storage" class="common-anchor-header">Penyimpanan meta<button data-href="#Meta-storage" class="anchor-icon" translate="no">
+    </button></h2><p>Storage is the bone of the system, responsible for data persistence. It comprises meta storage, log broker, and object storage.</p>
+<h3 id="Meta-storage" class="common-anchor-header">Meta storage<button data-href="#Meta-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,8 +157,8 @@ title: Pemilahan Penyimpanan/Komputasi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Penyimpanan meta menyimpan snapshot dari metadata seperti skema koleksi, dan pos pemeriksaan konsumsi pesan. Menyimpan metadata menuntut ketersediaan yang sangat tinggi, konsistensi yang kuat, dan dukungan transaksi, sehingga Milvus memilih etcd untuk meta store. Milvus juga menggunakan etcd untuk registrasi layanan dan pemeriksaan kesehatan.</p>
-<h3 id="Object-storage" class="common-anchor-header">Penyimpanan objek<button data-href="#Object-storage" class="anchor-icon" translate="no">
+    </button></h3><p>Meta storage stores snapshots of metadata such as collection schema, and message consumption checkpoints. Storing metadata demands extremely high availability, strong consistency, and transaction support, so Milvus chose etcd for meta store. Milvus also uses etcd for service registration and health check.</p>
+<h3 id="Object-storage" class="common-anchor-header">Object storage<button data-href="#Object-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -173,8 +173,8 @@ title: Pemilahan Penyimpanan/Komputasi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Penyimpanan objek menyimpan file snapshot dari log, file indeks untuk data skalar dan vektor, dan hasil kueri menengah. Milvus menggunakan MinIO sebagai penyimpanan objek dan dapat dengan mudah digunakan di AWS S3 dan Azure Blob, dua layanan penyimpanan yang paling populer dan hemat biaya di dunia. Namun, penyimpanan objek memiliki latensi akses yang tinggi dan biaya berdasarkan jumlah permintaan. Untuk meningkatkan kinerjanya dan menurunkan biaya, Milvus berencana untuk menerapkan pemisahan data dingin-panas pada cache pool berbasis memori atau SSD.</p>
-<h3 id="WAL-storage" class="common-anchor-header">Penyimpanan WAL<button data-href="#WAL-storage" class="anchor-icon" translate="no">
+    </button></h3><p>Object storage stores snapshot files of logs, index files for scalar and vector data, and intermediate query results. Milvus uses MinIO as object storage and can be readily deployed on AWS S3 and Azure Blob, two of the world’s most popular, cost-effective storage services. However, object storage has high access latency and charges by the number of queries. To improve its performance and lower the costs, Milvus plans to implement cold-hot data separation on a memory- or SSD-based cache pool.</p>
+<h3 id="WAL-storage" class="common-anchor-header">WAL storage<button data-href="#WAL-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -189,10 +189,10 @@ title: Pemilahan Penyimpanan/Komputasi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Penyimpanan Write-Ahead Log (WAL) adalah fondasi ketahanan dan konsistensi data dalam sistem terdistribusi. Sebelum perubahan apa pun dilakukan, perubahan tersebut terlebih dahulu dicatat dalam log-memastikan bahwa, jika terjadi kegagalan, Anda dapat memulihkan tepat di tempat yang Anda tinggalkan.</p>
-<p>Implementasi WAL yang umum termasuk Kafka, Pulsar, dan Woodpecker. Tidak seperti solusi berbasis disk tradisional, Woodpecker mengadopsi desain cloud-native, tanpa disk yang menulis langsung ke penyimpanan objek. Pendekatan ini dapat disesuaikan dengan kebutuhan Anda dengan mudah dan menyederhanakan operasi dengan menghilangkan biaya tambahan untuk mengelola disk lokal.</p>
-<p>Dengan mencatat setiap operasi penulisan sebelumnya, lapisan WAL menjamin mekanisme pemulihan dan konsistensi di seluruh sistem yang andal dan dapat diandalkan - tidak peduli seberapa rumitnya lingkungan terdistribusi Anda.</p>
-<h2 id="Whats-next" class="common-anchor-header">Apa selanjutnya<button data-href="#Whats-next" class="anchor-icon" translate="no">
+    </button></h3><p>Write-Ahead Log (WAL) storage is the foundation of data durability and consistency in distributed systems. Before any change is committed, it’s first recorded in a log—ensuring that, in the event of a failure, you can recover exactly where you left off.</p>
+<p>Common WAL implementations include Kafka, Pulsar, and Woodpecker. Unlike traditional disk-based solutions, Woodpecker adopts a cloud-native, zero-disk design that writes directly to object storage. This approach scales effortlessly with your needs and simplifies operations by removing the overhead of managing local disks.</p>
+<p>By logging every write operation ahead of time, the WAL layer guarantees a reliable, system-wide mechanism for recovery and consistency—no matter how complex your distributed environment grows.</p>
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -208,5 +208,5 @@ title: Pemilahan Penyimpanan/Komputasi
         ></path>
       </svg>
     </button></h2><ul>
-<li>Baca <a href="/docs/id/main_components.md">Komponen Utama</a> untuk detail lebih lanjut tentang arsitektur Milvus.</li>
+<li>Read <a href="/docs/id/main_components.md">Main Components</a> for more details about the Milvus architecture.</li>
 </ul>

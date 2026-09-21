@@ -1,10 +1,14 @@
 ---
 id: add-fields-to-an-existing-collection.md
-title: 添加欄位到現有的集合Compatible with Milvus 2.6.x
-summary: Milvus 允許您動態新增欄位到現有的集合，讓您可以輕鬆地隨著應用程式需求的改變而演進您的資料模式。本指南使用實例向您展示如何在不同的情況下添加欄位。
+title: Add Fields to an Existing CollectionCompatible with Milvus 2.6.x
+summary: >-
+  Milvus allows you to dynamically add new fields to existing collections,
+  making it easy to evolve your data schema as your application needs change.
+  This guide shows you how to add fields in different scenarios using practical
+  examples.
 beta: Milvus 2.6.x
 ---
-<h1 id="Add-Fields-to-an-Existing-Collection" class="common-anchor-header">添加欄位到現有的集合<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Add-Fields-to-an-Existing-Collection" class="anchor-icon" translate="no">
+<h1 id="Add-Fields-to-an-Existing-Collection" class="common-anchor-header">Add Fields to an Existing Collection<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Add-Fields-to-an-Existing-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +23,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 允許您動態地添加新的欄位到現有的集合，使您可以輕鬆地隨著應用程式需求的變化而演進您的資料模式。本指南使用實例向您展示如何在不同情況下添加欄位。</p>
-<h2 id="Considerations" class="common-anchor-header">注意事項<button data-href="#Considerations" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus allows you to dynamically add new fields to existing collections, making it easy to evolve your data schema as your application needs change. This guide shows you how to add fields in different scenarios using practical examples.</p>
+<h2 id="Considerations" class="common-anchor-header">Considerations<button data-href="#Considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,16 +39,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在新增欄位到您的集合之前，請牢記以下幾個要點：</p>
+    </button></h2><p>Before adding fields to your collection, keep these important points in mind:</p>
 <ul>
-<li><p>您可以新增標量欄位 (<code translate="no">INT64</code>,<code translate="no">VARCHAR</code>,<code translate="no">FLOAT</code>,<code translate="no">DOUBLE</code> 等)。向量欄位無法新增至現有的集合。</p></li>
-<li><p>新欄位必須是 nullable (nullable=True)，以容納沒有新欄位值的現有實體。</p></li>
-<li><p>將欄位加入已載入的集合會增加記憶體使用量。</p></li>
-<li><p>每個集合的欄位總數有最大限制。詳情請參閱<a href="/docs/zh-hant/v2.6.x/limitations.md#Number-of-resources-in-a-collection">Milvus Limits</a>。</p></li>
-<li><p>在靜態欄位中，欄位名稱必須是唯一的。</p></li>
-<li><p>您無法新增<code translate="no">$meta</code> 欄位，以啟用原本未使用<code translate="no">enable_dynamic_field=True</code> 建立的集合的動態欄位功能。</p></li>
+<li><p>You can add scalar fields (<code translate="no">INT64</code>, <code translate="no">VARCHAR</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, etc.). Vector fields cannot be added to existing collections.</p></li>
+<li><p>New fields must be nullable (nullable=True) to accommodate existing entities that don’t have values for the new field.</p></li>
+<li><p>Adding fields to loaded collections increases memory usage.</p></li>
+<li><p>There’s a maximum limit on total fields per collection. For details, refer to <a href="/docs/zh-hant/v2.6.x/limitations.md#Number-of-resources-in-a-collection">Milvus Limits</a>.</p></li>
+<li><p>Field names must be unique among static fields.</p></li>
+<li><p>You cannot add a <code translate="no">$meta</code> field to enable dynamic field functionality for collections that weren’t originally created with <code translate="no">enable_dynamic_field=True</code>.</p></li>
 </ul>
-<h2 id="Prerequisites" class="common-anchor-header">先決條件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,16 +63,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>本指南假設您有</p>
+    </button></h2><p>This guide assumes you have:</p>
 <ul>
-<li><p>運行中的 Milvus 實例</p></li>
-<li><p>已安裝 Milvus SDK</p></li>
-<li><p>現有的集合</p></li>
+<li><p>A running Milvus instance</p></li>
+<li><p>Milvus SDK installed</p></li>
+<li><p>An existing collection</p></li>
 </ul>
 <div class="alert note">
-<p>請參考我們的「<a href="/docs/zh-hant/v2.6.x/create-collection.md">建立</a>集合」以建立集合和基本操作。</p>
+<p>Refer to our <a href="/docs/zh-hant/v2.6.x/create-collection.md">Create Collection</a> for collection creation and basic operations.</p>
 </div>
-<h2 id="Basic-usage" class="common-anchor-header">基本用法<button data-href="#Basic-usage" class="anchor-icon" translate="no">
+<h2 id="Basic-usage" class="common-anchor-header">Basic usage<button data-href="#Basic-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,7 +88,12 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -111,7 +120,7 @@ client = MilvusClient(
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <span class="hljs-built_in">export</span> CLUSTER_ENDPOINT=<span class="hljs-string">&quot;localhost:19530&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Scenario-1-Quickly-add-nullable-fields" class="common-anchor-header">情況 1：快速新增 nullable 欄位<button data-href="#Scenario-1-Quickly-add-nullable-fields" class="anchor-icon" translate="no">
+<h2 id="Scenario-1-Quickly-add-nullable-fields" class="common-anchor-header">Scenario 1: Quickly add nullable fields<button data-href="#Scenario-1-Quickly-add-nullable-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -126,9 +135,14 @@ client = MilvusClient(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>擴充集合的最簡單方式就是新增可空欄位。當您需要快速為資料新增新的屬性時，這是最完美的方式。</p>
+    </button></h2><p>The simplest way to extend your collection is by adding nullable fields. This is perfect when you need to quickly add new attributes to your data.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Add a nullable field to an existing collection</span>
 <span class="hljs-comment"># This operation:</span>
 <span class="hljs-comment"># - Returns almost immediately (non-blocking)</span>
@@ -176,15 +190,20 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     }
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>預期行為：</p>
+<p>Expected behavior:</p>
 <ul>
-<li><p><strong>現有實體的</strong>新欄位將會是 NULL</p></li>
-<li><p><strong>新的實體</strong>可以有 NULL 或實際值</p></li>
-<li><p>由於內部模式同步，<strong>欄位可用性</strong>幾乎立即發生，延遲極少</p></li>
-<li><p>在短暫的同步期間之後，<strong>可立即進行查詢</strong></p></li>
+<li><p><strong>Existing entities</strong> will have NULL for the new field</p></li>
+<li><p><strong>New entities</strong> can have either NULL or actual values</p></li>
+<li><p><strong>Field availability</strong> occurs almost immediately with minimal delay due to internal schema synchronization</p></li>
+<li><p><strong>Queryable immediately</strong> after the brief synchronization period</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Example query result</span>
 {
     <span class="hljs-string">&#x27;id&#x27;</span>: <span class="hljs-number">1</span>, 
@@ -208,7 +227,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
   <span class="hljs-string">&quot;cost&quot;</span>: 0
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Scenario-2-Add-fields-with-default-values" class="common-anchor-header">方案 2：添加具有預設值的欄位<button data-href="#Scenario-2-Add-fields-with-default-values" class="anchor-icon" translate="no">
+<h2 id="Scenario-2-Add-fields-with-default-values" class="common-anchor-header">Scenario 2: Add fields with default values<button data-href="#Scenario-2-Add-fields-with-default-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -223,9 +242,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>當您希望現有的實體有一個有意義的初始值而不是 NULL 時，請指定預設值。</p>
+    </button></h2><p>When you want existing entities to have a meaningful initial value instead of NULL, specify default values.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Add a field with default value</span>
 <span class="hljs-comment"># This operation:</span>
 <span class="hljs-comment"># - Sets the default value for all existing entities</span>
@@ -279,15 +303,20 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     }
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>預期行為：</p>
+<p>Expected behavior:</p>
 <ul>
-<li><p><strong>現有的實體</strong>將會有新加入欄位的預設值 (<code translate="no">&quot;standard&quot;</code>)</p></li>
-<li><p><strong>新的實體</strong>可以覆寫預設值，或者在沒有提供預設值的情況下使用預設值</p></li>
-<li><p><strong>欄位可用性</strong>幾乎立即發生，延遲極短</p></li>
-<li><p>在短暫的同步期間之後，<strong>可立即進行查詢</strong></p></li>
+<li><p><strong>Existing entities</strong> will have the default value (<code translate="no">&quot;standard&quot;</code>) for the newly added field</p></li>
+<li><p><strong>New entities</strong> can override the default value or use it if no value is provided</p></li>
+<li><p><strong>Field availability</strong> occurs almost immediately with minimal delay</p></li>
+<li><p><strong>Queryable immediately</strong> after the brief synchronization period</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Example query result</span>
 {
     <span class="hljs-string">&#x27;id&#x27;</span>: <span class="hljs-number">1</span>,
@@ -309,7 +338,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     <span class="hljs-string">&#x27;priority_level&#x27;</span>: <span class="hljs-string">&#x27;standard&#x27;</span>  <span class="hljs-comment"># Shows default value for existing entities</span>
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="FAQ" class="common-anchor-header">常見問題<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -324,7 +353,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Can-I-enable-dynamic-schema-functionality-by-adding-a-meta-field" class="common-anchor-header">我可以透過新增<code translate="no">$meta</code> 欄位來啟用動態模式功能嗎？<button data-href="#Can-I-enable-dynamic-schema-functionality-by-adding-a-meta-field" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Can-I-enable-dynamic-schema-functionality-by-adding-a-meta-field" class="common-anchor-header">Can I enable dynamic schema functionality by adding a <code translate="no">$meta</code> field?<button data-href="#Can-I-enable-dynamic-schema-functionality-by-adding-a-meta-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -339,9 +368,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>不可以，您不能使用<code translate="no">add_collection_field</code> 新增<code translate="no">$meta</code> 欄位來啟用動態欄位功能。例如，以下程式碼將無法運作：</p>
+    </button></h3><p>No, you cannot use <code translate="no">add_collection_field</code> to add a <code translate="no">$meta</code> field to enable dynamic field functionality. For example, the code below will not work:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># ❌ This is NOT supported</span>
 client.add_collection_field(
     collection_name=<span class="hljs-string">&quot;existing_collection&quot;</span>,
@@ -382,12 +416,12 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     }
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>要啟用動態模式功能：</p>
+<p>To enable dynamic schema functionality:</p>
 <ul>
-<li><p><strong>新增集合</strong>：建立集合時，將<code translate="no">enable_dynamic_field</code> 設為 True。如需詳細資訊，請參閱<a href="/docs/zh-hant/v2.6.x/create-collection.md#Create-Schema">建立集合</a></p></li>
-<li><p><strong>現有的集合</strong>：將集合層級屬性<code translate="no">dynamicfield.enabled</code> 設為 True。如需詳細資訊，請參閱<a href="/docs/zh-hant/v2.6.x/modify-collection.md#Example-4-Enable-dynamic-field">修改集合</a>。</p></li>
+<li><p><strong>New collection</strong>: Set <code translate="no">enable_dynamic_field</code> to True when creating the collection. For details, refer to <a href="/docs/zh-hant/v2.6.x/create-collection.md#Create-Schema">Create Collection</a></p></li>
+<li><p><strong>Existing collection</strong>: Set the collection-level property <code translate="no">dynamicfield.enabled</code> to True. For details, refer to <a href="/docs/zh-hant/v2.6.x/modify-collection.md#Example-4-Enable-dynamic-field">Modify Collection</a>.</p></li>
 </ul>
-<h3 id="What-happens-when-I-add-a-field-with-the-same-name-as-a-dynamic-field-key" class="common-anchor-header">當我新增與動態欄位關鍵字同名的欄位時，會發生什麼情況？<button data-href="#What-happens-when-I-add-a-field-with-the-same-name-as-a-dynamic-field-key" class="anchor-icon" translate="no">
+<h3 id="What-happens-when-I-add-a-field-with-the-same-name-as-a-dynamic-field-key" class="common-anchor-header">What happens when I add a field with the same name as a dynamic field key?<button data-href="#What-happens-when-I-add-a-field-with-the-same-name-as-a-dynamic-field-key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -402,11 +436,16 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>當您的集合已啟用動態欄位 (<code translate="no">$meta</code> exists)，您可以新增與現有動態欄位鍵同名的靜態欄位。新的靜態欄位會遮蔽動態欄位鍵，但原始的動態資料會保留。</p>
-<p>為了避免欄位名稱可能產生的衝突，在實際新增之前，請參考現有的欄位和動態欄位鍵來考慮要新增的欄位名稱。</p>
-<p><strong>範例情況：</strong></p>
+    </button></h3><p>When your collection has dynamic field enabled (<code translate="no">$meta</code> exists), you can add static fields that have the same name as existing dynamic field keys. The new static field will mask the dynamic field key, but the original dynamic data is preserved.</p>
+<p>To avoid possible conflicts in field names, consider the name for the field to add by referring to existing fields and dynamic field keys before actually adding it.</p>
+<p><strong>Example scenario:</strong></p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Original collection with dynamic field enabled</span>
 <span class="hljs-comment"># Insert data with dynamic field keys</span>
 data = [{
@@ -555,16 +594,21 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     }]
   }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>預期行為：</p>
+<p>Expected behavior:</p>
 <ul>
-<li><p><strong>現有的實體</strong>將為新的靜態欄位設定 NULL<code translate="no">extra_info</code></p></li>
-<li><p><strong>新的實體</strong>必須使用靜態欄位的資料類型 (<code translate="no">INT64</code>)</p></li>
-<li><p><strong>原始的動態欄位關鍵值</strong>被保留，並可透過<code translate="no">$meta</code> 語法存取</p></li>
-<li><p>在正常查詢中<strong>，靜態欄位會遮蔽動態欄位的關鍵值</strong></p></li>
+<li><p><strong>Existing entities</strong> will have NULL for the new static field <code translate="no">extra_info</code></p></li>
+<li><p><strong>New entities</strong> must use the static field’s data type (<code translate="no">INT64</code>)</p></li>
+<li><p><strong>Original dynamic field key values</strong> are preserved and accessible via <code translate="no">$meta</code> syntax</p></li>
+<li><p><strong>The static field masks the dynamic field key</strong> in normal queries</p></li>
 </ul>
-<p><strong>同時存取靜態和動態值：</strong></p>
+<p><strong>Accessing both static and dynamic values:</strong></p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 1. Query static field only (dynamic field key is masked)</span>
 results = client.query(
     collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>,
@@ -665,7 +709,7 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     \&quot;outputFields\&quot;: [\&quot;extra_info\&quot;]
   }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="How-long-does-it-take-for-a-new-field-to-become-available" class="common-anchor-header">新欄位需要多久才會可用？<button data-href="#How-long-does-it-take-for-a-new-field-to-become-available" class="anchor-icon" translate="no">
+<h3 id="How-long-does-it-take-for-a-new-field-to-become-available" class="common-anchor-header">How long does it take for a new field to become available?<button data-href="#How-long-does-it-take-for-a-new-field-to-become-available" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -680,4 +724,4 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>新增的欄位幾乎立即可用，但可能會有短暫的延遲，這是由於整個 Milvus 集群的內部模式變更廣播。這種同步確保在處理涉及新欄位的查詢之前，所有節點都知道模式更新。</p>
+    </button></h3><p>Added fields become available almost immediately, but there may be a brief delay due to internal schema change broadcasting across the Milvus cluster. This synchronization ensures all nodes are aware of the schema update before processing queries involving the new field.</p>

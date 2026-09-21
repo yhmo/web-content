@@ -1,12 +1,12 @@
 ---
 id: text.md
-title: Campo di testoCompatible with Milvus 3.0.x
+title: Text FieldCompatible with Milvus 3.0.x
 summary: >-
-  TEXT è un tipo di campo scalare utilizzato per memorizzare il testo dei
-  documenti, i brani e altri contenuti testuali di grandi dimensioni in Milvus.
+  TEXT is a scalar field type for storing document text, passages, and other
+  long text content in Milvus.
 beta: Milvus 3.0.x
 ---
-<h1 id="Text-Field" class="common-anchor-header">Campo di testo<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Text-Field" class="anchor-icon" translate="no">
+<h1 id="Text-Field" class="common-anchor-header">Text Field<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Text-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,23 +21,23 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Nelle applicazioni di ricerca basate sull'intelligenza artificiale, la ricerca vettoriale consente di individuare entità semanticamente simili, ma spesso l'applicazione necessita anche del testo originale alla base di ciascuna corrispondenza. Un modello di linguaggio di grandi dimensioni (LLM) o un agente può utilizzare tale testo come contesto per leggere, citare, riassumere o includere il risultato in un prompt.</p>
-<p>Milvus fornisce il tipo di campo scalare ` <code translate="no">TEXT</code> ` per memorizzare testi di origine di grandi dimensioni direttamente insieme alle entità. I valori tipici includono brani, documenti lunghi, corpi di articoli, ticket e log. A differenza di ` <code translate="no">VARCHAR</code>`, che richiede una lunghezza massima in byte ( <code translate="no">max_length</code>) fissa, ` <code translate="no">TEXT</code> ` non richiede di impostare una lunghezza massima in byte nello schema della collezione.</p>
-<p>Per definire un campo « <code translate="no">TEXT</code> », impostare « <code translate="no">datatype</code> » su « <code translate="no">DataType.TEXT</code> ».</p>
+    </button></h1><p>In AI search applications, vector search helps you find semantically similar entities, but the application often also needs the original source text behind each match. An LLM or agent can use that text as context to read, cite, summarize, or include the result in a prompt.</p>
+<p>Milvus provides the <code translate="no">TEXT</code> scalar field type for storing long source text directly with entities. Typical values include passages, long documents, article bodies, tickets, and logs. Unlike <code translate="no">VARCHAR</code>, which requires a fixed <code translate="no">max_length</code>, <code translate="no">TEXT</code> does not require you to set a maximum byte length in the collection schema.</p>
+<p>To define a <code translate="no">TEXT</code> field, set <code translate="no">datatype</code> to <code translate="no">DataType.TEXT</code>.</p>
 <div class="alert note">
-<p>Questa funzionalità richiede Storage V3. Per le istruzioni di abilitazione e le considerazioni sulla compatibilità, consultare <a href="/docs/it/storage-v3.md">Storage V3</a>.</p>
+<p>This feature requires Storage V3. For enablement instructions and compatibility considerations, see <a href="/docs/it/storage-v3.md">Storage V3</a>.</p>
 </div>
-<p><a href="/docs/it/configure_common.md#commonstorageuseLoonFFI"><code translate="no">common.storage.useLoonFFI</code></a> Il valore predefinito è ` <code translate="no">false</code>`, il che significa che Storage V3 è disabilitato per impostazione predefinita. Prima di creare una collezione che contenga un campo ` <code translate="no">TEXT</code> `, impostare questo parametro su ` <code translate="no">true</code>`; in caso contrario, Milvus rifiuterà lo schema della collezione.</p>
+<p><a href="/docs/it/configure_common.md#commonstorageuseLoonFFI"><code translate="no">common.storage.useLoonFFI</code></a> defaults to <code translate="no">false</code>, which means Storage V3 is disabled by default. Before creating a collection that contains a <code translate="no">TEXT</code> field, set this parameter to <code translate="no">true</code>; otherwise, Milvus rejects the collection schema.</p>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;content&quot;</span>,
 <span class="highlighted-wrapper-line">    datatype=DataType.TEXT,</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Una volta definito il campo, ogni entità può includere un valore stringa in quel campo. I valori di tipo ` <code translate="no">TEXT</code> ` si inseriscono come gli altri campi scalari e vengono restituiti dai risultati delle query o delle ricerche elencando il campo in ` <code translate="no">output_fields</code>`.</p>
+<p>After the field is defined, each entity can include a string value in that field. You insert <code translate="no">TEXT</code> values like other scalar fields and return them from query or search results by listing the field in <code translate="no">output_fields</code>.</p>
 <div class="alert note">
-<p><code translate="no">TEXT</code> I campi supportano i valori nulli. Per abilitare questa funzionalità, impostare ` <code translate="no">nullable</code> ` su ` <code translate="no">True</code>`. Per ulteriori dettagli, consultare la sezione <a href="/docs/it/nullable-and-default.md">"Campo nullable</a>".</p>
+<p><code translate="no">TEXT</code> fields support null values. To enable this feature, set <code translate="no">nullable</code> to <code translate="no">True</code>. For details, refer to <a href="/docs/it/nullable-and-default.md">Nullable Field</a>.</p>
 </div>
-<h2 id="Limits" class="common-anchor-header">Limiti<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,16 +53,16 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><ul>
-<li>Un campo <code translate="no">TEXT</code> non può essere un campo primario, una chiave di partizione o una chiave di clustering.</li>
-<li><code translate="no">TEXT</code> non può essere utilizzato come tipo di elemento di un campo " <code translate="no">ARRAY</code> ", incluso un sottocampo scalare in un " <code translate="no">StructArray</code>".</li>
-<li>In Milvus 3.0.0, i campi " <code translate="no">TEXT</code> " non supportano i valori predefiniti.</li>
-<li>In Milvus 3.0.0, i campi <code translate="no">TEXT</code> non sono supportati nelle collezioni esterne.</li>
-<li>Gli utenti non possono creare un indice scalare su un campo " <code translate="no">TEXT</code> ". Quando si utilizza " <code translate="no">enable_match=True</code>", Milvus crea un indice di testo gestito dal sistema per la corrispondenza del testo. Questo indice interno non è un indice scalare creato dall'utente.</li>
-<li>Gli operatori di filtro scalare generici non possono essere applicati direttamente a un campo <code translate="no">TEXT</code>. Tra questi figurano operatori di confronto quali <code translate="no">==</code> e <code translate="no">!=</code>, operatori di intervallo quali <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;</code> e <code translate="no">&lt;=</code>, nonché <code translate="no">IN</code>, <code translate="no">LIKE</code>, operatori regex (<code translate="no">=~</code> e <code translate="no">!~</code>) e <code translate="no">IS NULL</code> o <code translate="no">IS NOT NULL</code>. Per filtrare in base ai termini analizzati, definire il campo con <code translate="no">enable_analyzer=True</code> e <code translate="no">enable_match=True</code>, quindi utilizzare <a href="/docs/it/keyword-match.md"><code translate="no">TEXT_MATCH</code> o <code translate="no">TEXT_MATCH_FUZZY</code></a>. Per il recupero full-text ordinato per rilevanza, utilizzare BM25.</li>
-<li>In Milvus 3.0.0, una funzione BM25 o MinHash che utilizza un campo <code translate="no">TEXT</code> come input deve essere definita al momento della creazione della collezione. Non può essere aggiunta in un secondo momento tramite <code translate="no">add_function_field</code> o <code translate="no">AlterCollectionSchema</code>, anche se la collezione esistente è vuota, poiché Milvus non è in grado di reintegrare l’output della funzione a partire dai valori <code translate="no">TEXT</code> memorizzati. Per aggiungere una funzione di questo tipo a una raccolta esistente, utilizzare un campo di input <code translate="no">VARCHAR</code> oppure ricreare la raccolta includendo la funzione nel suo schema. Per ulteriori dettagli sull’aggiunta di una funzione e del campo vettoriale da essa generato, consultare <a href="/docs/it/add-fields-to-an-existing-collection.md#add-a-function-and-its-generated-vector-field--milvus-30x">la sezione Modifica dello schema della raccolta</a>.</li>
-<li>Anche le funzioni di embedding testuale devono essere definite al momento della creazione della collezione. Milvus 3.0.0 non supporta l’aggiunta di tali funzioni in fase di esecuzione.</li>
+<li>A <code translate="no">TEXT</code> field cannot be a primary field, partition key, or clustering key.</li>
+<li><code translate="no">TEXT</code> cannot be used as the element type of an <code translate="no">ARRAY</code> field, including a scalar subfield in a <code translate="no">StructArray</code>.</li>
+<li>In Milvus 3.0.0, <code translate="no">TEXT</code> fields do not support default values.</li>
+<li>In Milvus 3.0.0, <code translate="no">TEXT</code> fields are not supported in external collections.</li>
+<li>Users cannot create a scalar index on a <code translate="no">TEXT</code> field. When <code translate="no">enable_match=True</code>, Milvus builds a system-managed text index for text matching. This internal index is not a user-created scalar index.</li>
+<li>General scalar filter operators cannot be applied directly to a <code translate="no">TEXT</code> field. These include comparison operators such as <code translate="no">==</code> and <code translate="no">!=</code>, range operators such as <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;</code>, and <code translate="no">&lt;=</code>, as well as <code translate="no">IN</code>, <code translate="no">LIKE</code>, regex operators (<code translate="no">=~</code> and <code translate="no">!~</code>), and <code translate="no">IS NULL</code> or <code translate="no">IS NOT NULL</code>. To filter by analyzed terms, define the field with <code translate="no">enable_analyzer=True</code> and <code translate="no">enable_match=True</code>, and use <a href="/docs/it/keyword-match.md"><code translate="no">TEXT_MATCH</code> or <code translate="no">TEXT_MATCH_FUZZY</code></a>. For relevance-ranked full-text retrieval, use BM25.</li>
+<li>In Milvus 3.0.0, a BM25 or MinHash Function that uses a <code translate="no">TEXT</code> field as input must be defined when the collection is created. It cannot be added later through <code translate="no">add_function_field</code> or <code translate="no">AlterCollectionSchema</code>, even if the existing collection is empty, because Milvus cannot backfill the Function output from stored <code translate="no">TEXT</code> values. To add such a Function to an existing collection, use a <code translate="no">VARCHAR</code> input field, or recreate the collection with the Function included in its schema. For details about adding a Function and its generated vector field, refer to <a href="/docs/it/add-fields-to-an-existing-collection.md#add-a-function-and-its-generated-vector-field--milvus-30x">Alter Collection Schema</a>.</li>
+<li>Text Embedding Functions also must be defined when the collection is created. Milvus 3.0.0 does not support adding them at runtime.</li>
 </ul>
-<h2 id="Choose-TEXT-or-VARCHAR" class="common-anchor-header">Scegliere TEXT o VARCHAR<button data-href="#Choose-TEXT-or-VARCHAR" class="anchor-icon" translate="no">
+<h2 id="Choose-TEXT-or-VARCHAR" class="common-anchor-header">Choose TEXT or VARCHAR<button data-href="#Choose-TEXT-or-VARCHAR" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -77,21 +77,21 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">TEXT</code> e " <code translate="no">VARCHAR</code> " memorizzano entrambi valori di stringa, ma soddisfano esigenze applicative diverse. Utilizzare " <code translate="no">VARCHAR</code> " per metadati brevi e circoscritti che identificano, categorizzano o filtrano le entità. Utilizzare " <code translate="no">TEXT</code> " per contenuti sorgente più lunghi che forniscono a un LLM o a un agente un contesto sufficiente per leggere, citare, riassumere o costruire un prompt.</p>
+    </button></h2><p><code translate="no">TEXT</code> and <code translate="no">VARCHAR</code> both store string values, but they support different application needs. Use <code translate="no">VARCHAR</code> for short, bounded metadata that identifies, categorizes, or filters entities. Use <code translate="no">TEXT</code> for longer source content that gives an LLM or agent enough context to read, cite, summarize, or build a prompt.</p>
 <table>
 <thead>
-<tr><th>Aspetto</th><th><code translate="no">VARCHAR</code></th><th><code translate="no">TEXT</code></th></tr>
+<tr><th>Aspect</th><th><code translate="no">VARCHAR</code></th><th><code translate="no">TEXT</code></th></tr>
 </thead>
 <tbody>
-<tr><td>Ideale per</td><td>Metadati brevi utilizzati per identificare, classificare o filtrare entità, come <code translate="no">title</code>, <code translate="no">tag</code>, <code translate="no">category</code> o <code translate="no">external_id</code>.</td><td>Contenuti di origine più lunghi utilizzati dai flussi di lavoro LLM o dagli agenti, come <code translate="no">content</code>, <code translate="no">passage</code>, <code translate="no">article_body</code> o <code translate="no">log_message</code>.</td></tr>
-<tr><td>Impostazione della lunghezza</td><td>Richiede <code translate="no">max_length</code>, che definisce il numero massimo di byte che il campo può memorizzare. Il valore massimo è <code translate="no">65,535</code> byte. Se un valore potrebbe superare questo limite, utilizzare <code translate="no">TEXT</code>.</td><td>Non richiede <code translate="no">max_length</code>, pertanto lo schema non necessita di un limite fisso in byte per il valore del testo.</td></tr>
-<tr><td>Comportamento di archiviazione</td><td>Ogni valore viene memorizzato entro il limite di byte configurato per il campo ( <code translate="no">max_length</code>).</td><td>Utilizza la selezione automatica dello spazio di archiviazione per i valori di testo più grandi. Per i dettagli, consultare <a href="#how-milvus-stores-large-text-values">Come Milvus archivia i valori TEXT di grandi dimensioni</a>.</td></tr>
-<tr><td>Supporto come campo primario</td><td>Può essere utilizzato come campo primario.</td><td>Non può essere utilizzato come campo primario.</td></tr>
-<tr><td>Filtraggio</td><td>Da utilizzare per metadati costituiti da stringhe brevi che devono comparire nelle espressioni di filtro, come <code translate="no">category == &quot;news&quot;</code> o <code translate="no">tag in [&quot;ai&quot;, &quot;database&quot;]</code>.</td><td>Non supporta gli operatori di filtro scalari generici. Utilizzare operatori di testo con funzione di corrispondenza per il filtraggio dei termini analizzati oppure BM25 per il recupero full-text con ordinamento per rilevanza.</td></tr>
+<tr><td>Best for</td><td>Short metadata used to identify, categorize, or filter entities, such as <code translate="no">title</code>, <code translate="no">tag</code>, <code translate="no">category</code>, or <code translate="no">external_id</code>.</td><td>Longer source content used by LLM or agent workflows, such as <code translate="no">content</code>, <code translate="no">passage</code>, <code translate="no">article_body</code>, or <code translate="no">log_message</code>.</td></tr>
+<tr><td>Length setting</td><td>Requires <code translate="no">max_length</code>, which defines the maximum number of bytes the field can store. The maximum value is <code translate="no">65,535</code> bytes. If a value may exceed this limit, use <code translate="no">TEXT</code>.</td><td>Does not require <code translate="no">max_length</code>, so the schema does not need a fixed byte limit for the text value.</td></tr>
+<tr><td>Storage behavior</td><td>Stores each value within the field’s configured <code translate="no">max_length</code>.</td><td>Uses automatic storage selection for larger text values. For details, see <a href="#how-milvus-stores-large-text-values">How Milvus stores large TEXT values</a>.</td></tr>
+<tr><td>Primary field support</td><td>Can be used as a primary field.</td><td>Cannot be used as a primary field.</td></tr>
+<tr><td>Filtering</td><td>Use for short string metadata that needs to appear in filter expressions, such as <code translate="no">category == &quot;news&quot;</code> or <code translate="no">tag in [&quot;ai&quot;, &quot;database&quot;]</code>.</td><td>Does not support general scalar filter operators. Use match-enabled text operators for analyzed-term filtering, or BM25 for relevance-ranked full-text retrieval.</td></tr>
 </tbody>
 </table>
-<p>Per i dettagli sui campi di tipo <code translate="no">VARCHAR</code>, consultare il <a href="/docs/it/string.md">campo VarChar</a>.</p>
-<h2 id="How-Milvus-stores-large-TEXT-values" class="common-anchor-header">Come Milvus memorizza i valori TEXT di grandi dimensioni<button data-href="#How-Milvus-stores-large-TEXT-values" class="anchor-icon" translate="no">
+<p>For details about <code translate="no">VARCHAR</code> fields, refer to <a href="/docs/it/string.md">VarChar Field</a>.</p>
+<h2 id="How-Milvus-stores-large-TEXT-values" class="common-anchor-header">How Milvus stores large TEXT values<button data-href="#How-Milvus-stores-large-TEXT-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,23 +107,23 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><p><details></p>
-<p><summary>Espandi per vedere come funziona</summary></p>
-<p>Quando si inserisce un'entità, la stringa fornita per un campo " <code translate="no">TEXT</code> " costituisce il valore " <code translate="no">TEXT</code> ". Milvus confronta la dimensione di tale valore con <a href="/docs/it/configure_datanode.md#dataNodetextinlineThreshold">"dataNode.text.inlineThreshold</a>", che per impostazione predefinita è pari a <code translate="no">65,536</code> byte, quindi sceglie uno dei due percorsi di archiviazione interni.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/text-large-storage-flow.png" alt="Large text storage" class="doc-image" id="large-text-storage" /> 
-   <span>Archiviazione di testi di grandi dimensioni</span>
-  
- </span></p>
+<p><summary>Expand to see how it works</summary></p>
+<p>When you insert an entity, the string you provide for a <code translate="no">TEXT</code> field is the <code translate="no">TEXT</code> value. Milvus compares the size of that value with <a href="/docs/it/configure_datanode.md#dataNodetextinlineThreshold">dataNode.text.inlineThreshold</a>, which is <code translate="no">65,536</code> bytes by default, and then chooses one of two internal storage paths.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/text-large-storage-flow.png" alt="Large text storage" class="doc-image" id="large-text-storage" />
+    <span>Large text storage</span>
+  </span>
+</p>
 <ul>
-<li><strong>Archiviazione in linea</strong>: se il valore di ` <code translate="no">TEXT</code> ` è inferiore a ` <code translate="no">dataNode.text.inlineThreshold</code>`, Milvus memorizza il valore di testo originale direttamente nei dati del campo ` <code translate="no">TEXT</code> `.</li>
-<li><strong>Archiviazione LOB</strong>: se un valore di ` <code translate="no">TEXT</code> ` è maggiore o uguale a ` <code translate="no">dataNode.text.inlineThreshold</code>`, Milvus tratta il valore come un oggetto di grandi dimensioni e archivia il testo originale separatamente in un sistema di archiviazione oggetti, come MinIO. Il campo ` <code translate="no">TEXT</code> ` memorizza un riferimento interno al testo archiviato separatamente. Quando il campo ` <code translate="no">TEXT</code> ` viene richiesto nei risultati di una query o di una ricerca, Milvus utilizza il riferimento per recuperare e restituire il testo originale.</li>
+<li><strong>Inline storage</strong>: If a <code translate="no">TEXT</code> value is smaller than <code translate="no">dataNode.text.inlineThreshold</code>, Milvus stores the original text value directly in the <code translate="no">TEXT</code> field data.</li>
+<li><strong>LOB storage</strong>: If a <code translate="no">TEXT</code> value is greater than or equal to <code translate="no">dataNode.text.inlineThreshold</code>, Milvus treats the value as a large object and stores the original text separately in object storage, such as MinIO. The <code translate="no">TEXT</code> field data stores an internal reference to the separately stored text. When the <code translate="no">TEXT</code> field is requested in query or search results, Milvus uses the reference to retrieve and return the original text.</li>
 </ul>
-<p>Questa scelta di archiviazione è interna. L’inserimento, l’interrogazione e la ricerca nel campo ` <code translate="no">TEXT</code> ` avvengono allo stesso modo, indipendentemente dal percorso di archiviazione utilizzato da Milvus. Per ottimizzare la soglia o il comportamento relativo all’archiviazione, alla compattazione e alla garbage collection, consultare <a href="/docs/it/configure_datanode.md">le configurazioni relative a `dataNode`</a> e <a href="/docs/it/configure_datacoord.md">quelle relative a `dataCoord`</a>.</p>
-<p>Se la propria distribuzione utilizza l’archiviazione a oggetti, valori elevati di ` <code translate="no">TEXT</code> ` potrebbero apparire come oggetti gestiti da Milvus in percorsi quali <code translate="no">lobs/...</code>. Questi oggetti sono dettagli di implementazione e non devono essere spostati, copiati o eliminati manualmente. Dopo aver eliminato entità, rimosso partizioni o compattato i dati, l’utilizzo dello storage a oggetti potrebbe diminuire solo dopo che la garbage collection di Milvus avrà rimosso i dati di oggetti di grandi dimensioni non più referenziati, al termine della relativa finestra di sicurezza.</p>
+<p>This storage selection is internal. You insert, query, and search the <code translate="no">TEXT</code> field in the same way regardless of which storage path Milvus uses. To tune the threshold or related storage, compaction, and garbage-collection behavior, refer to <a href="/docs/it/configure_datanode.md">dataNode-related Configurations</a> and <a href="/docs/it/configure_datacoord.md">dataCoord-related Configurations</a>.</p>
+<p>If your deployment uses object storage, large <code translate="no">TEXT</code> values may appear as Milvus-managed objects under paths such as <code translate="no">lobs/...</code>. These objects are implementation details and should not be moved, copied, or deleted manually. After you delete entities, drop partitions, or compact data, object storage usage may decrease only after Milvus garbage collection removes unreferenced large-object data after its safety window.</p>
 <p></details></p>
-<p>Un uso comune di <code translate="no">TEXT</code> è la ricerca full-text con BM25. In questo modello, il campo <code translate="no">TEXT</code> memorizza il contenuto originale della fonte, mentre BM25 analizza il testo e genera vettori sparsi per classificare le corrispondenze basate sulle parole chiave. I risultati della ricerca possono quindi restituire il valore <code translate="no">TEXT</code> corrispondente come contesto per i flussi di lavoro LLM o degli agenti. L’esempio seguente illustra come utilizzare un campo <code translate="no">TEXT</code> come campo di input per BM25. Per ulteriori informazioni sui concetti e sulle opzioni di query della ricerca full-text, consultare <a href="/docs/it/full-text-search.md">Ricerca full-text</a>.</p>
-<h2 id="Step-1-Create-a-collection-with-a-TEXT-field" class="common-anchor-header">Passaggio 1: Creare una raccolta con un campo TEXT<button data-href="#Step-1-Create-a-collection-with-a-TEXT-field" class="anchor-icon" translate="no">
+<p>A common use of <code translate="no">TEXT</code> is Full Text Search with BM25. In this pattern, the <code translate="no">TEXT</code> field stores the original source content, and BM25 analyzes the text and generates sparse vectors for ranking keyword-based matches. Search results can then return the matched <code translate="no">TEXT</code> value as context for LLM or agent workflows. The following example shows how to use a <code translate="no">TEXT</code> field as the input field for BM25. To learn about Full Text Search concepts and query options, refer to <a href="/docs/it/full-text-search.md">Full Text Search</a>.</p>
+<h2 id="Step-1-Create-a-collection-with-a-TEXT-field" class="common-anchor-header">Step 1: Create a collection with a TEXT field<button data-href="#Step-1-Create-a-collection-with-a-TEXT-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -138,8 +138,8 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>L'esempio seguente crea una raccolta con un campo <code translate="no">TEXT</code> per il contenuto di origine e un campo vettore sparso per i vettori sparsi generati da BM25. La funzione BM25 converte il testo tokenizzato da <code translate="no">content</code> in vettori sparsi memorizzati in <code translate="no">sparse</code>.</p>
-<p>Per la ricerca full-text con BM25, il campo di input « <code translate="no">TEXT</code> » deve essere impostato su <code translate="no">enable_analyzer=True</code>.</p>
+    </button></h2><p>The following example creates a collection with a <code translate="no">TEXT</code> field for source content and a sparse vector field for BM25-generated sparse vectors. The BM25 function converts the tokenized text from <code translate="no">content</code> into sparse vectors stored in <code translate="no">sparse</code>.</p>
+<p>For BM25 full text search, the input <code translate="no">TEXT</code> field must set <code translate="no">enable_analyzer=True</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, Function, FunctionType, MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -165,7 +165,7 @@ schema.add_field(field_name=<span class="hljs-string">&quot;sparse&quot;</span>,
 <span class="highlighted-comment-line">)</span>
 <span class="highlighted-comment-line">schema.add_function(bm25_function)</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-2-Create-a-sparse-vector-index" class="common-anchor-header">Passaggio 2: Creare un indice di vettori sparsi<button data-href="#Step-2-Create-a-sparse-vector-index" class="anchor-icon" translate="no">
+<h2 id="Step-2-Create-a-sparse-vector-index" class="common-anchor-header">Step 2: Create a sparse vector index<button data-href="#Step-2-Create-a-sparse-vector-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -180,7 +180,7 @@ schema.add_field(field_name=<span class="hljs-string">&quot;sparse&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Creare un indice sul campo vettoriale sparso generato dalla funzione BM25. Il tipo di metrica deve essere impostato su <code translate="no">BM25</code>.</p>
+    </button></h2><p>Create an index on the sparse vector field generated by the BM25 function. The metric type must be set to <code translate="no">BM25</code>.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 <span class="highlighted-comment-line">index_params.add_index(</span>
 <span class="highlighted-comment-line">    field_name=<span class="hljs-string">&quot;sparse&quot;</span>,</span>
@@ -199,7 +199,7 @@ client.create_collection(
     index_params=index_params,
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-3-Insert-TEXT-data" class="common-anchor-header">Passaggio 3: Inserire i dati TEXT<button data-href="#Step-3-Insert-TEXT-data" class="anchor-icon" translate="no">
+<h2 id="Step-3-Insert-TEXT-data" class="common-anchor-header">Step 3: Insert TEXT data<button data-href="#Step-3-Insert-TEXT-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,7 +214,7 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Inserire il testo direttamente nel campo ` <code translate="no">TEXT</code> `. Non specificare valori per il campo ` <code translate="no">sparse</code> `. Milvus genera internamente i vettori sparsi applicando la funzione BM25 a ` <code translate="no">content</code>`.</p>
+    </button></h2><p>Insert text directly into the <code translate="no">TEXT</code> field. Do not provide values for the <code translate="no">sparse</code> field. Milvus generates the sparse vectors internally by applying the BM25 function to <code translate="no">content</code>.</p>
 <pre><code translate="no" class="language-python">data = [
     {
         <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>,
@@ -233,7 +233,7 @@ client.create_collection(
 client.insert(collection_name=COLLECTION_NAME, data=data)
 client.load_collection(collection_name=COLLECTION_NAME)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-4-Perform-BM25-full-text-search" class="common-anchor-header">Passaggio 4: Eseguire la ricerca full-text con BM25<button data-href="#Step-4-Perform-BM25-full-text-search" class="anchor-icon" translate="no">
+<h2 id="Step-4-Perform-BM25-full-text-search" class="common-anchor-header">Step 4: Perform BM25 full text search<button data-href="#Step-4-Perform-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -248,7 +248,7 @@ client.load_collection(collection_name=COLLECTION_NAME)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilizzare il testo grezzo della query come dati di ricerca ed eseguire la ricerca nel campo del vettore sparso. Milvus converte il testo della query in un vettore sparso, ordina i risultati con BM25 e restituisce il campo <code translate="no">TEXT</code> richiesto in <code translate="no">output_fields</code>.</p>
+    </button></h2><p>Use raw query text as the search data and search against the sparse vector field. Milvus converts the query text into a sparse vector, ranks matches with BM25, and returns the requested <code translate="no">TEXT</code> field in <code translate="no">output_fields</code>.</p>
 <pre><code translate="no" class="language-python">results = client.search(
     collection_name=COLLECTION_NAME,
 <span class="highlighted-comment-line">    data=[<span class="hljs-string">&quot;how does Milvus store source text for retrieval&quot;</span>],</span>
@@ -257,7 +257,7 @@ client.load_collection(collection_name=COLLECTION_NAME)
 <span class="highlighted-comment-line">    output_fields=[<span class="hljs-string">&quot;content&quot;</span>],</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-5-Read-the-returned-TEXT-values" class="common-anchor-header">Passaggio 5: Leggere i valori TEXT restituiti<button data-href="#Step-5-Read-the-returned-TEXT-values" class="anchor-icon" translate="no">
+<h2 id="Step-5-Read-the-returned-TEXT-values" class="common-anchor-header">Step 5: Read the returned TEXT values<button data-href="#Step-5-Read-the-returned-TEXT-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -272,9 +272,9 @@ client.load_collection(collection_name=COLLECTION_NAME)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ogni risultato della ricerca include il punteggio BM25 e il valore originale di <code translate="no">TEXT</code>.</p>
+    </button></h2><p>Each search hit includes the BM25 score and the original <code translate="no">TEXT</code> value.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> results[<span class="hljs-number">0</span>]:
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;id: <span class="hljs-subst">{hit[<span class="hljs-string">&#x27;id&#x27;</span>]}</span>, score: <span class="hljs-subst">{hit[<span class="hljs-string">&#x27;distance&#x27;</span>]}</span>&quot;</span>)
     <span class="hljs-built_in">print</span>(hit[<span class="hljs-string">&quot;entity&quot;</span>][<span class="hljs-string">&quot;content&quot;</span>])
 <button class="copy-code-btn"></button></code></pre>
-<p>Per ulteriori informazioni sulle funzioni BM25, sugli indici a vettori sparsi e sulla sintassi delle query per la ricerca full-text, consultare <a href="/docs/it/full-text-search.md">Ricerca full-text</a>.</p>
+<p>For more information about BM25 functions, sparse vector indexes, and query syntax for full text search, refer to <a href="/docs/it/full-text-search.md">Full Text Search</a>.</p>

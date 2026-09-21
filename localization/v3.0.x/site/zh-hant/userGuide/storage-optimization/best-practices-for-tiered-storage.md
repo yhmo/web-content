@@ -1,12 +1,14 @@
 ---
 id: best-practices-for-tiered-storage.md
-title: 分層儲存的最佳實務Compatible with Milvus 2.6.4+
+title: Best Practices for Tiered StorageCompatible with Milvus 2.6.4+
 summary: >-
-  Milvus
-  提供分層儲存，協助您有效率地處理大型資料，同時平衡查詢延遲、容量和資源使用。本指南總結了針對典型工作負載的建議配置，並解釋每個調整策略背後的原因。
+  Milvus provides Tiered Storage to help you efficiently handle large-scale data
+  while balancing query latency, capacity, and resource usage. This guide
+  summarizes recommended configurations for typical workloads and explains the
+  reasoning behind each tuning strategy.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Best-Practices-for-Tiered-Storage" class="common-anchor-header">分層儲存的最佳實務<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Best-Practices-for-Tiered-Storage" class="anchor-icon" translate="no">
+<h1 id="Best-Practices-for-Tiered-Storage" class="common-anchor-header">Best Practices for Tiered Storage<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Best-Practices-for-Tiered-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +23,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 提供分層儲存，協助您有效率地處理大型資料，同時平衡查詢延遲、容量和資源使用。本指南總結了針對典型工作負載的建議配置，並解釋每個調整策略背後的原因。</p>
-<h2 id="Before-you-start" class="common-anchor-header">開始之前<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus provides Tiered Storage to help you efficiently handle large-scale data while balancing query latency, capacity, and resource usage. This guide summarizes recommended configurations for typical workloads and explains the reasoning behind each tuning strategy.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,10 +40,10 @@ beta: Milvus 2.6.4+
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Milvus v2.6.4 或更新版本</p></li>
-<li><p>QueryNodes 必須有專用的本機資源 (記憶體和磁碟)。共用環境可能會扭曲快取預估，並導致驅逐錯誤判斷。</p></li>
+<li><p>Milvus v2.6.4 or later</p></li>
+<li><p>QueryNodes must have dedicated local resources (memory and disk). Shared environments may distort cache estimation and lead to eviction misjudgment.</p></li>
 </ul>
-<h2 id="Choose-the-right-strategy" class="common-anchor-header">選擇正確的策略<button data-href="#Choose-the-right-strategy" class="anchor-icon" translate="no">
+<h2 id="Choose-the-right-strategy" class="common-anchor-header">Choose the right strategy<button data-href="#Choose-the-right-strategy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,35 +58,35 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>分層儲存提供彈性的載入與快取策略，可以結合使用以符合您的工作負載。</p>
+    </button></h2><p>Tiered Storage offers flexible loading and caching strategies that can be combined to fit your workload.</p>
 <table>
    <tr>
-     <th><p>目標</p></th>
-     <th><p>建議重點</p></th>
-     <th><p>關鍵機制</p></th>
+     <th><p>Goal</p></th>
+     <th><p>Recommended focus</p></th>
+     <th><p>Key mechanism</p></th>
    </tr>
    <tr>
-     <td><p>最小化首次查詢延遲</p></td>
-     <td><p>預先載入關鍵欄位</p></td>
-     <td><p>預熱</p></td>
+     <td><p>Minimize first-query latency</p></td>
+     <td><p>Preload critical fields</p></td>
+     <td><p>Warm Up</p></td>
    </tr>
    <tr>
-     <td><p>有效率地處理大型資料</p></td>
-     <td><p>按需載入</p></td>
-     <td><p>懶惰載入 + 部分載入</p></td>
+     <td><p>Handle large-scale data efficiently</p></td>
+     <td><p>Load on demand</p></td>
+     <td><p>Lazy Load + Partial Load</p></td>
    </tr>
    <tr>
-     <td><p>保持長期穩定</p></td>
-     <td><p>防止快取記憶體溢出</p></td>
-     <td><p>驅逐</p></td>
+     <td><p>Maintain long-term stability</p></td>
+     <td><p>Prevent cache overflow</p></td>
+     <td><p>Eviction</p></td>
    </tr>
    <tr>
-     <td><p>平衡效能與容量</p></td>
-     <td><p>結合預先載入與動態快取</p></td>
-     <td><p>混合配置</p></td>
+     <td><p>Balance performance and capacity</p></td>
+     <td><p>Combine preload and dynamic caching</p></td>
+     <td><p>Hybrid configuration</p></td>
    </tr>
 </table>
-<h2 id="Scenario-1-real-time-low-latency-retrieval" class="common-anchor-header">情況 1：即時、低延遲檢索<button data-href="#Scenario-1-real-time-low-latency-retrieval" class="anchor-icon" translate="no">
+<h2 id="Scenario-1-real-time-low-latency-retrieval" class="common-anchor-header">Scenario 1: real-time, low latency retrieval<button data-href="#Scenario-1-real-time-low-latency-retrieval" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,13 +101,13 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>何時使用</strong></p>
+    </button></h2><p><strong>When to use</strong></p>
 <ul>
-<li><p>查詢延遲非常重要（例如即時推薦或搜尋排名）</p></li>
-<li><p>經常存取核心向量索引和標量篩選器</p></li>
-<li><p>穩定的效能比啟動速度更重要</p></li>
+<li><p>Query latency is critical (e.g., real-time recommendation or search ranking)</p></li>
+<li><p>Core vector indexes and scalar filters are accessed frequently</p></li>
+<li><p>Consistent performance matters more than startup speed</p></li>
 </ul>
-<p><strong>建議配置</strong></p>
+<p><strong>Recommended configuration</strong></p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
@@ -129,13 +131,13 @@ beta: Milvus 2.6.4+
       <span class="hljs-comment"># no expiration time, which avoids frequent reloading</span>
       <span class="hljs-attr">cacheTtl:</span> <span class="hljs-number">0</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>理由</strong></p>
+<p><strong>Rationale</strong></p>
 <ul>
-<li><p>暖機可消除高頻率標量表和向量索引的首次延遲。</p></li>
-<li><p>背景驅逐可維持穩定的快取記憶體壓力，而不會阻塞查詢。</p></li>
-<li><p>停用快取 TTL 可避免熱資料不必要的重新載入。</p></li>
+<li><p>Warmup eliminates first-hit latency for high-frequency scalar and vector indexes.</p></li>
+<li><p>Background eviction maintains stable cache pressure without blocking queries.</p></li>
+<li><p>Disabling cache TTL avoids unnecessary reloads for hot data.</p></li>
 </ul>
-<h2 id="Scenario-2-offline-batch-analysis" class="common-anchor-header">情況 2：離線、批次分析<button data-href="#Scenario-2-offline-batch-analysis" class="anchor-icon" translate="no">
+<h2 id="Scenario-2-offline-batch-analysis" class="common-anchor-header">Scenario 2: offline, batch analysis<button data-href="#Scenario-2-offline-batch-analysis" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -150,13 +152,13 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>何時使用</strong></p>
+    </button></h2><p><strong>When to use</strong></p>
 <ul>
-<li><p>查詢延遲容忍度高</p></li>
-<li><p>工作負載涉及大量資料集或許多區段</p></li>
-<li><p>容量和吞吐量優先於反應速度</p></li>
+<li><p>Query latency tolerance is high</p></li>
+<li><p>Workloads involve massive datasets or many segments</p></li>
+<li><p>Capacity and throughput are prioritized over responsiveness</p></li>
 </ul>
-<p><strong>建議配置</strong></p>
+<p><strong>Recommended configuration</strong></p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
@@ -180,13 +182,13 @@ beta: Milvus 2.6.4+
       <span class="hljs-comment"># use 1 day expiration to clean unused cache</span>
       <span class="hljs-attr">cacheTtl:</span> <span class="hljs-number">86400</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>理由</strong></p>
+<p><strong>Rationale</strong></p>
 <ul>
-<li><p>初始化許多區段時，停用暖機可加速啟動。</p></li>
-<li><p>較高的水印可讓快取記憶體使用更密集，提高總負載容量。</p></li>
-<li><p>快取記憶體 TTL 會自動清除未使用的資料，以釋放本機空間。</p></li>
+<li><p>Disabling warm-up accelerates startup when initializing many segments.</p></li>
+<li><p>Higher watermarks allow denser cache usage, improving total load capacity.</p></li>
+<li><p>Cache TTL automatically cleans unused data to free local space.</p></li>
 </ul>
-<h2 id="Scenario-3-hybrid-deployment-mixed-online-+-offline" class="common-anchor-header">情況 3：混合部署 (混合線上 + 離線)<button data-href="#Scenario-3-hybrid-deployment-mixed-online-+-offline" class="anchor-icon" translate="no">
+<h2 id="Scenario-3-hybrid-deployment-mixed-online-+-offline" class="common-anchor-header">Scenario 3: hybrid deployment (mixed online + offline)<button data-href="#Scenario-3-hybrid-deployment-mixed-online-+-offline" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -201,21 +203,21 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>何時使用</strong></p>
+    </button></h2><p><strong>When to use</strong></p>
 <ul>
-<li><p>單一叢集同時服務線上與分析工作負載</p></li>
-<li><p>某些資料集需要低延遲，其他資料集則以容量為優先</p></li>
+<li><p>A single cluster serves both online and analytical workloads</p></li>
+<li><p>Some collections require low latency, others prioritize capacity</p></li>
 </ul>
-<p><strong>建議策略</strong></p>
+<p><strong>Recommended strategy</strong></p>
 <ul>
-<li><p>對延遲敏感的資料集應用<strong>即時組態</strong></p></li>
-<li><p><strong>將離線配置</strong>套用於分析或歸檔資料集</p></li>
-<li><p>針對每種工作負載類型獨立調整 evictableMemoryCacheRatio、cacheTtl 和 watermark 比率</p></li>
+<li><p>Apply <strong>real-time configuration</strong> to latency-sensitive collections</p></li>
+<li><p>Apply <strong>offline configuration</strong> to analytical or archival collections</p></li>
+<li><p>Adjust evictableMemoryCacheRatio, cacheTtl, and watermark ratios independently for each workload type</p></li>
 </ul>
-<p><strong>理由</strong></p>
-<p>結合組態可精細控制資源分配。</p>
-<p>關鍵資料集可維持低延遲保證，而次級資料集則可處理更多區段和資料量。</p>
-<h2 id="Additional-tuning-tips" class="common-anchor-header">其他調整提示<button data-href="#Additional-tuning-tips" class="anchor-icon" translate="no">
+<p><strong>Rationale</strong></p>
+<p>Combining configurations allows fine-grained control of resource allocation.</p>
+<p>Critical collections maintain low-latency guarantees, while secondary collections can handle more segments and data volume.</p>
+<h2 id="Additional-tuning-tips" class="common-anchor-header">Additional tuning tips<button data-href="#Additional-tuning-tips" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -232,33 +234,33 @@ beta: Milvus 2.6.4+
       </svg>
     </button></h2><table>
    <tr>
-     <th><p>面向</p></th>
-     <th><p>建議</p></th>
-     <th><p>說明</p></th>
+     <th><p>Aspect</p></th>
+     <th><p>Recommendation</p></th>
+     <th><p>Explanation</p></th>
    </tr>
    <tr>
-     <td><p><strong>預熱範圍</strong></p></td>
-     <td><p>只預先載入查詢頻率高的欄位或索引。</p></td>
-     <td><p>不必要的預載會增加載入時間和資源使用。</p></td>
+     <td><p><strong>Warm Up scope</strong></p></td>
+     <td><p>Only preload fields or indexes with high query frequency.</p></td>
+     <td><p>Unnecessary preloading increases load time and resource use.</p></td>
    </tr>
    <tr>
-     <td><p><strong>驅逐調整</strong></p></td>
-     <td><p>從預設水印 (75-80%) 開始，逐步調整。</p></td>
-     <td><p>間隙太小會造成頻繁驅逐；間隙太大則會延遲資源釋放。</p></td>
+     <td><p><strong>Eviction tuning</strong></p></td>
+     <td><p>Start with default watermarks (75–80%) and adjust gradually.</p></td>
+     <td><p>A small gap causes frequent eviction; a large gap delays resource release.</p></td>
    </tr>
    <tr>
-     <td><p><strong>快取 TTL</strong></p></td>
-     <td><p>對於穩定的熱資料集，請停用；對於動態資料，請啟用 (例如 1-3 天)。</p></td>
-     <td><p>防止陳舊快取記憶體累積，同時平衡清理開銷。</p></td>
+     <td><p><strong>Cache TTL</strong></p></td>
+     <td><p>Disable for stable hot datasets; enable (e.g., 1–3 days) for dynamic data.</p></td>
+     <td><p>Prevents stale cache buildup while balancing cleanup overhead.</p></td>
    </tr>
    <tr>
-     <td><p><strong>超量承擔比率</strong></p></td>
-     <td><p>除非資源空間很大，否則避免使用 &gt; 0.7 的值。</p></td>
-     <td><p>過度的超量提交可能會導致快取記憶體震動和不穩定的延遲。</p></td>
+     <td><p><strong>Overcommit ratio</strong></p></td>
+     <td><p>Avoid values &gt; 0.7 unless resource headroom is large.</p></td>
+     <td><p>Excessive overcommit may cause cache thrashing and unstable latency.</p></td>
    </tr>
    <tr>
-     <td><p><strong>監控</strong></p></td>
-     <td><p>追蹤快取點擊率、資源利用率和驅逐頻率。</p></td>
-     <td><p>頻繁的冷負載可能表示需要調整暖機或水印。</p></td>
+     <td><p><strong>Monitoring</strong></p></td>
+     <td><p>Track cache hit ratio, resource utilization, and eviction frequency.</p></td>
+     <td><p>Frequent cold loads may indicate that warm-up or watermarks need adjustment.</p></td>
    </tr>
 </table>

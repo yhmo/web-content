@@ -1,9 +1,11 @@
 ---
 id: alter-collection-field.md
-title: 變更集合欄位
-summary: 您可以變更集合欄位的屬性，以修改欄位限制或實施更嚴格的資料完整性規則。
+title: Alter Collection Field
+summary: >-
+  You can alter the properties of a collection field to change column
+  constraints or enforce stricter data integrity rules.
 ---
-<h1 id="Alter-Collection-Field" class="common-anchor-header">變更集合欄位<button data-href="#Alter-Collection-Field" class="anchor-icon" translate="no">
+<h1 id="Alter-Collection-Field" class="common-anchor-header">Alter Collection Field<button data-href="#Alter-Collection-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,15 +20,15 @@ summary: 您可以變更集合欄位的屬性，以修改欄位限制或實施�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>您可以變更集合欄位的屬性，以修改欄位限制或實施更嚴格的資料完整性規則。</p>
-<p>本頁面說明的是欄位屬性的變更，而非新增或刪除欄位等資料結構變更。若要從現有集合中新增標量欄位或刪除欄位，請參閱「<a href="/docs/zh-hant/add-fields-to-an-existing-collection.md">變更集合資料結構</a>」。</p>
+    </button></h1><p>You can alter the properties of a collection field to change column constraints or enforce stricter data integrity rules.</p>
+<p>This page covers field property changes, not schema-shape changes such as adding or dropping fields. To add scalar fields or drop fields from an existing collection, refer to <a href="/docs/zh-hant/add-fields-to-an-existing-collection.md">Alter Collection Schema</a>.</p>
 <div class="alert note">
 <ul>
-<li><p>每個集合僅包含一個主欄位。主欄位在建立集合時設定後，即無法變更或修改其屬性。</p></li>
-<li><p>每個集合僅能擁有一個分區鍵。一旦在建立集合時設定，便無法變更該分區鍵。</p></li>
+<li><p>Each collection consists of only one primary field. Once set during collection creation, you cannot change the primary field or alter its properties.</p></li>
+<li><p>Each collection can have only one partition key. Once set during collection creation, you cannot change the partition key.</p></li>
 </ul>
 </div>
-<h2 id="Alter-VarChar-field" class="common-anchor-header">變更 VarChar 欄位<button data-href="#Alter-VarChar-field" class="anchor-icon" translate="no">
+<h2 id="Alter-VarChar-field" class="common-anchor-header">Alter VarChar field<button data-href="#Alter-VarChar-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,11 +43,11 @@ summary: 您可以變更集合欄位的屬性，以修改欄位限制或實施�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>VarChar 欄位具有一個名為 `<code translate="no">max_length</code>` 的屬性，該屬性會限制欄位值所能包含的最大字元數。您可以變更 `<code translate="no">max_length</code> ` 屬性。</p>
-<p>以下範例假設該集合有一個名為<code translate="no">varchar</code> 的 VarChar 欄位，並設定其<code translate="no">max_length</code> 屬性。</p>
+    </button></h2><p>A VarChar field has a property named <code translate="no">max_length</code>, which constrains the maximum number of characters the field values can contain. You can change the <code translate="no">max_length</code> property.</p>
+<p>The following example assumes the collection has a VarChar field named <code translate="no">varchar</code> and sets its <code translate="no">max_length</code> property.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -79,9 +81,9 @@ client.alterCollectionField(AlterCollectionFieldReq.builder()
         .build());
 <button class="copy-code-btn"></button></code></pre>
 <div class="multipleCode">
-   <a href="#javascript">NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-javascript"><span class="hljs-keyword">await</span> client.<span class="hljs-title function_">alterCollectionFieldProperties</span>({
   <span class="hljs-attr">collection_name</span>: <span class="hljs-variable constant_">LOAD_COLLECTION_NAME</span>,
@@ -132,7 +134,7 @@ curl --request POST \
     }
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Alter-ARRAY-field" class="common-anchor-header">變更 ARRAY 欄位<button data-href="#Alter-ARRAY-field" class="anchor-icon" translate="no">
+<h2 id="Alter-ARRAY-field" class="common-anchor-header">Alter ARRAY field<button data-href="#Alter-ARRAY-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -147,14 +149,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>陣列欄位有兩個屬性，分別是<code translate="no">element_type</code> 和<code translate="no">max_capacity</code> 。前者決定陣列中元素的資料類型，後者則限制陣列中元素的最大數量。您只能變更<code translate="no">max_capacity</code> 屬性。</p>
-<p>以下範例假設該集合具有一個名為<code translate="no">array</code> 的陣列欄位，並設定其<code translate="no">max_capacity</code> 屬性。</p>
+    </button></h2><p>An array field has two properties, namely <code translate="no">element_type</code> and <code translate="no">max_capacity</code>. The former determines the data type of the elements in an array, while the latter constrains the maximum number of elements in the array. You can change the <code translate="no">max_capacity</code> property only.</p>
+<p>The following example assumes the collection has an array field named <code translate="no">array</code> and sets its <code translate="no">max_capacity</code> property.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.alter_collection_field(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -198,7 +200,7 @@ curl --request POST \
     }
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Alter-field-level-mmap-settings" class="common-anchor-header">變更字段層級的 mmap 設定<button data-href="#Alter-field-level-mmap-settings" class="anchor-icon" translate="no">
+<h2 id="Alter-field-level-mmap-settings" class="common-anchor-header">Alter field-level mmap settings<button data-href="#Alter-field-level-mmap-settings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -213,14 +215,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>記憶體映射（Mmap）可實現對磁碟上大型檔案的直接記憶體存取，讓 Milvus 能同時將索引和資料儲存於記憶體與硬碟中。此方法有助於根據存取頻率優化資料配置策略，在不影響搜尋效能的前提下，擴展集合的儲存容量。</p>
-<p>以下範例假設該集合有一個名為<code translate="no">doc_chunk</code> 的欄位，並設定其<code translate="no">mmap_enabled</code> 屬性。</p>
+    </button></h2><p>Memory mapping (Mmap) enables direct memory access to large files on disk, allowing Milvus to store indexes and data in both memory and hard drives. This approach helps optimize data placement policy based on access frequency, expanding storage capacity for collections without impacting search performance.</p>
+<p>The following example assumes the collection has a field named <code translate="no">doc_chunk</code> and sets its <code translate="no">mmap_enabled</code> property.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.alter_collection_field(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,

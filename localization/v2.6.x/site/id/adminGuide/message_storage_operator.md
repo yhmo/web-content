@@ -1,10 +1,10 @@
 ---
 id: message_storage_operator.md
-title: Mengonfigurasi Penyimpanan Pesan dengan Milvus Operator
+title: Configure Message Storage with Milvus Operator
 related_key: 'minio, s3, storage, etcd, pulsar'
-summary: Pelajari cara mengonfigurasi penyimpanan pesan menggunakan Milvus Operator.
+summary: Learn how to configure message storage with Milvus Operator.
 ---
-<h1 id="Configure-Message-Storage-with-Milvus-Operator" class="common-anchor-header">Mengonfigurasi Penyimpanan Pesan dengan Milvus Operator<button data-href="#Configure-Message-Storage-with-Milvus-Operator" class="anchor-icon" translate="no">
+<h1 id="Configure-Message-Storage-with-Milvus-Operator" class="common-anchor-header">Configure Message Storage with Milvus Operator<button data-href="#Configure-Message-Storage-with-Milvus-Operator" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,14 +19,14 @@ summary: Pelajari cara mengonfigurasi penyimpanan pesan menggunakan Milvus Opera
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus menggunakan RocksMQ, Pulsar, atau Kafka untuk mengelola log perubahan terbaru, mengeluarkan log aliran, dan menyediakan langganan log. Topik ini menjelaskan cara mengonfigurasi dependensi penyimpanan pesan saat Anda menginstal Milvus dengan Milvus Operator. Untuk detail lebih lanjut, lihat " <a href="https://github.com/zilliztech/milvus-operator/blob/main/docs/administration/manage-dependencies/message-storage.md">Mengonfigurasi Penyimpanan Pesan dengan Milvus Operator</a> " di repositori Milvus Operator.</p>
-<p>Topik ini mengasumsikan bahwa Anda telah menerapkan Milvus Operator.</p>
-<div class="alert note">Lihat " <a href="https://milvus.io/docs/v2.2.x/install_cluster-milvusoperator.md">Mendepoy Milvus Operator</a> " untuk informasi lebih lanjut. </div>
-<p>Anda perlu menentukan berkas konfigurasi untuk menggunakan Milvus Operator guna memulai kluster Milvus.</p>
+    </button></h1><p>Milvus uses RocksMQ, Pulsar or Kafka for managing logs of recent changes, outputting stream logs, and providing log subscriptions. This topic introduces how to configure message storage dependencies when you install Milvus with Milvus Operator. For more details, refer to <a href="https://github.com/zilliztech/milvus-operator/blob/main/docs/administration/manage-dependencies/message-storage.md">Configure Message Storage with Milvus Operator</a> in the Milvus Operator repository.</p>
+<p>This topic assumes that you have deployed Milvus Operator.</p>
+<div class="alert note">See <a href="https://milvus.io/docs/v2.2.x/install_cluster-milvusoperator.md">Deploy Milvus Operator</a> for more information. </div>
+<p>You need to specify a configuration file for using Milvus Operator to start a Milvus cluster.</p>
 <pre><code translate="no" class="language-YAML"><span class="hljs-string">kubectl</span> <span class="hljs-string">apply</span> <span class="hljs-string">-f</span> <span class="hljs-string">https://raw.githubusercontent.com/zilliztech/milvus-operator/main/config/samples/milvus_cluster_default.yaml</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Anda hanya perlu mengedit templat kode di ` <code translate="no">milvus_cluster_default.yaml</code> ` untuk mengonfigurasi ketergantungan pihak ketiga. Bagian-bagian berikut menjelaskan cara mengonfigurasi penyimpanan objek, etcd, dan Pulsar masing-masing.</p>
-<h2 id="Before-you-begin" class="common-anchor-header">Sebelum Anda mulai<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+<p>You only need to edit the code template in <code translate="no">milvus_cluster_default.yaml</code> to configure third-party dependencies. The following sections introduce how to configure object storage, etcd, and Pulsar respectively.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,28 +41,28 @@ summary: Pelajari cara mengonfigurasi penyimpanan pesan menggunakan Milvus Opera
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Tabel di bawah ini menunjukkan apakah RocksMQ, Pulsar, Kafka, dan Woodpecker didukung dalam mode standalone dan cluster Milvus.</p>
+    </button></h2><p>The table below shows whether RocksMQ, Pulsar, Kafka, and Woodpecker are supported in Milvus standalone and cluster mode.</p>
 <table>
 <thead>
 <tr><th style="text-align:center"></th><th style="text-align:center">RocksMQ</th><th style="text-align:center">Pulsar</th><th style="text-align:center">Kafka</th><th style="text-align:center">Woodpecker</th></tr>
 </thead>
 <tbody>
-<tr><td style="text-align:center">Mode standalone</td><td style="text-align:center">✔️</td><td style="text-align:center">✔️</td><td style="text-align:center">✔️</td><td style="text-align:center">✔️</td></tr>
-<tr><td style="text-align:center">Mode kluster</td><td style="text-align:center">✖️</td><td style="text-align:center">✔️</td><td style="text-align:center">✔️</td><td style="text-align:center">✔️</td></tr>
+<tr><td style="text-align:center">Standalone mode</td><td style="text-align:center">✔️</td><td style="text-align:center">✔️</td><td style="text-align:center">✔️</td><td style="text-align:center">✔️</td></tr>
+<tr><td style="text-align:center">Cluster mode</td><td style="text-align:center">✖️</td><td style="text-align:center">✔️</td><td style="text-align:center">✔️</td><td style="text-align:center">✔️</td></tr>
 </tbody>
 </table>
-<p>Ada juga batasan lain dalam menentukan penyimpanan pesan:</p>
+<p>There are also other limitations for specifying the message storage:</p>
 <ul>
-<li>Hanya satu penyimpanan pesan yang didukung untuk satu instance Milvus. Namun, kami masih mendukung kompatibilitas mundur dengan pengaturan beberapa penyimpanan pesan untuk satu instance. Prioritasnya adalah sebagai berikut:
+<li>Only one message storage for one Milvus instance is supported. However we still have backward compatibility with multiple message storages set for one instance. The priority is as follows:
 <ul>
-<li>mode mandiri: RocksMQ (default) &gt; Pulsar &gt; Kafka</li>
-<li>mode cluster: Pulsar (default) &gt; Kafka</li>
+<li>standalone mode:  RocksMQ (default) > Pulsar > Kafka</li>
+<li>cluster mode: Pulsar (default) > Kafka</li>
 </ul></li>
-<li>Penyimpanan pesan tidak dapat diubah saat sistem Milvus sedang berjalan.</li>
-<li>Hanya versi Kafka 2.x atau 3.x yang didukung.</li>
-<li><strong>Batasan peningkatan versi</strong>: <strong>Batasan Antrian Pesan</strong>: Saat meningkatkan ke Milvus v2.6.23, Anda harus mempertahankan pilihan antrian pesan Anda saat ini. Beralih di antara sistem antrian pesan yang berbeda selama peningkatan versi tidak didukung. Dukungan untuk mengubah sistem antrian pesan akan tersedia di versi mendatang.</li>
+<li>The message storage cannot be changed while the Milvus system is running.</li>
+<li>Only Kafka 2.x or 3.x verison is supported.</li>
+<li><strong>Upgrade limitations</strong>: <strong>Message Queue limitations</strong>: When upgrading to Milvus v2.6.24, you must maintain your current message queue choice. Switching between different message queue systems during the upgrade is not supported. Support for changing message queue systems will be available in future versions.</li>
 </ul>
-<h2 id="Configure-RocksMQ" class="common-anchor-header">Konfigurasi RocksMQ<button data-href="#Configure-RocksMQ" class="anchor-icon" translate="no">
+<h2 id="Configure-RocksMQ" class="common-anchor-header">Configure RocksMQ<button data-href="#Configure-RocksMQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -77,11 +77,11 @@ summary: Pelajari cara mengonfigurasi penyimpanan pesan menggunakan Milvus Opera
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>RocksMQ adalah penyimpanan pesan default di Milvus standalone.</p>
+    </button></h2><p>RocksMQ is the default message storage in Milvus standalone.</p>
 <div class="alert note">
-<p>Saat ini, Anda hanya dapat mengonfigurasi RocksMQ sebagai penyimpanan pesan untuk Milvus standalone menggunakan Milvus Operator.</p>
+<p>Currently, you can only configure RocksMQ as the message storage for Milvus standalone with Milvus Operator.</p>
 </div>
-<h4 id="Example" class="common-anchor-header">Contoh</h4><p>Contoh berikut mengonfigurasi layanan RocksMQ.</p>
+<h4 id="Example" class="common-anchor-header">Example</h4><p>The following example configures a RocksMQ service.</p>
 <pre><code translate="no" class="language-YAML"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">milvus.io/v1beta1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Milvus</span>
 <span class="hljs-attr">metadata:</span>
@@ -104,16 +104,16 @@ summary: Pelajari cara mengonfigurasi penyimpanan pesan menggunakan Milvus Opera
   <span class="hljs-attr">components:</span> {}
   <span class="hljs-attr">config:</span> {}
 <button class="copy-code-btn"></button></code></pre>
-<h5 id="Key-configuration-options" class="common-anchor-header">Opsi konfigurasi utama:</h5><ul>
-<li><code translate="no">msgStreamType</code>: rocksmq: Secara eksplisit menetapkan RocksMQ sebagai antrian pesan</li>
-<li><code translate="no">persistence.enabled</code>: Mengaktifkan penyimpanan persisten untuk data RocksMQ</li>
-<li><code translate="no">persistence.pvcDeletion</code>: Jika bernilai true, PVC akan dihapus saat instance Milvus dihapus</li>
-<li><code translate="no">persistentVolumeClaim.spec</code>: Spesifikasi PVC Kubernetes standar</li>
-<li><code translate="no">accessModes</code>: Biasanya ` <code translate="no">ReadWriteOnce</code> ` untuk penyimpanan blok</li>
-<li><code translate="no">storageClassName</code>: Kelas penyimpanan pada klaster Anda</li>
-<li><code translate="no">storage</code>: Ukuran volume persisten</li>
+<h5 id="Key-configuration-options" class="common-anchor-header">Key configuration options:</h5><ul>
+<li><code translate="no">msgStreamType</code>: rocksmq: Explicitly sets RocksMQ as the message queue</li>
+<li><code translate="no">persistence.enabled</code>: Enables persistent storage for RocksMQ data</li>
+<li><code translate="no">persistence.pvcDeletion</code>: When true, the PVC will be deleted when the Milvus instance is deleted</li>
+<li><code translate="no">persistentVolumeClaim.spec</code>: Standard Kubernetes PVC specification</li>
+<li><code translate="no">accessModes</code>: Typically <code translate="no">ReadWriteOnce</code> for block storage</li>
+<li><code translate="no">storageClassName</code>: Your cluster’s storage class</li>
+<li><code translate="no">storage</code>: Size of the persistent volume</li>
 </ul>
-<h2 id="Configure-Woodpecker" class="common-anchor-header">Konfigurasi Woodpecker<button data-href="#Configure-Woodpecker" class="anchor-icon" translate="no">
+<h2 id="Configure-Woodpecker" class="common-anchor-header">Configure Woodpecker<button data-href="#Configure-Woodpecker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -128,8 +128,8 @@ summary: Pelajari cara mengonfigurasi penyimpanan pesan menggunakan Milvus Opera
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Woodpecker adalah Write-Ahead Log (WAL) berbasis cloud yang dirancang untuk penyimpanan objek. Layanan ini menawarkan throughput tinggi, beban operasional rendah, dan skalabilitas yang mulus. Untuk detail lebih lanjut, lihat <a href="/docs/id/v2.6.x/use-woodpecker.md">Menggunakan Woodpecker</a>.</p>
-<h2 id="Configure-Pulsar" class="common-anchor-header">Konfigurasi Pulsar<button data-href="#Configure-Pulsar" class="anchor-icon" translate="no">
+    </button></h2><p>Woodpecker is a cloud-native Write-Ahead Log (WAL) designed for object storage. It offers high throughput, low operational overhead, and seamless scalability. For more details, see <a href="/docs/id/v2.6.x/use-woodpecker.md">Use Woodpecker</a>.</p>
+<h2 id="Configure-Pulsar" class="common-anchor-header">Configure Pulsar<button data-href="#Configure-Pulsar" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,9 +144,9 @@ summary: Pelajari cara mengonfigurasi penyimpanan pesan menggunakan Milvus Opera
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pulsar mengelola log perubahan terbaru, menghasilkan log streaming, dan menyediakan langganan log. Konfigurasi Pulsar sebagai penyimpanan pesan didukung baik di Milvus standalone maupun Milvus cluster. Namun, dengan Milvus Operator, Anda hanya dapat mengonfigurasi Pulsar sebagai penyimpanan pesan untuk Milvus cluster. Tambahkan bidang yang diperlukan di bawah " <code translate="no">spec.dependencies.pulsar</code> " untuk mengonfigurasi Pulsar.</p>
-<p><code translate="no">pulsar</code> mendukung <code translate="no">external</code> dan <code translate="no">inCluster</code>.</p>
-<h3 id="External-Pulsar" class="common-anchor-header">Pulsar Eksternal<button data-href="#External-Pulsar" class="anchor-icon" translate="no">
+    </button></h2><p>Pulsar manages logs of recent changes, outputs stream logs, and provides log subscriptions. Configuring Pulsar for message storage is supported in both Milvus standalone and Milvus cluster. However, with Milvus Operator, you can only configure Pulsar as message storage for Milvus cluster. Add required fields under <code translate="no">spec.dependencies.pulsar</code> to configure Pulsar.</p>
+<p><code translate="no">pulsar</code> supports <code translate="no">external</code> and <code translate="no">inCluster</code>.</p>
+<h3 id="External-Pulsar" class="common-anchor-header">External Pulsar<button data-href="#External-Pulsar" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -161,13 +161,13 @@ summary: Pelajari cara mengonfigurasi penyimpanan pesan menggunakan Milvus Opera
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">external</code> menandakan penggunaan layanan Pulsar eksternal.
-Bidang yang digunakan untuk mengonfigurasi layanan Pulsar eksternal meliputi:</p>
+    </button></h3><p><code translate="no">external</code> indicates using an external Pulsar service.
+Fields used to configure an external Pulsar service include:</p>
 <ul>
-<li><code translate="no">external</code>:  Nilai " <code translate="no">true</code> " menunjukkan bahwa Milvus menggunakan layanan Pulsar eksternal.</li>
-<li><code translate="no">endpoints</code>: Titik akhir (endpoint) Pulsar.</li>
+<li><code translate="no">external</code>:  A <code translate="no">true</code> value indicates that Milvus uses an external Pulsar service.</li>
+<li><code translate="no">endpoints</code>: The endpoints of Pulsar.</li>
 </ul>
-<h4 id="Example" class="common-anchor-header">Contoh</h4><p>Contoh berikut mengonfigurasi layanan Pulsar eksternal.</p>
+<h4 id="Example" class="common-anchor-header">Example</h4><p>The following example configures an external Pulsar service.</p>
 <pre><code translate="no" class="language-YAML"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">milvus.io/v1alpha1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Milvus</span>
 <span class="hljs-attr">metadata:</span>
@@ -186,7 +186,7 @@ Bidang yang digunakan untuk mengonfigurasi layanan Pulsar eksternal meliputi:</p
   <span class="hljs-attr">components:</span> {}
   <span class="hljs-attr">config:</span> {}           
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Internal-Pulsar" class="common-anchor-header">Pulsar Internal<button data-href="#Internal-Pulsar" class="anchor-icon" translate="no">
+<h3 id="Internal-Pulsar" class="common-anchor-header">Internal Pulsar<button data-href="#Internal-Pulsar" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -201,8 +201,8 @@ Bidang yang digunakan untuk mengonfigurasi layanan Pulsar eksternal meliputi:</p
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">inCluster</code> menunjukkan bahwa saat kluster Milvus dimulai, layanan Pulsar akan dimulai secara otomatis di dalam kluster tersebut.</p>
-<h4 id="Example" class="common-anchor-header">Contoh</h4><p>Contoh berikut mengonfigurasi layanan Pulsar internal.</p>
+    </button></h3><p><code translate="no">inCluster</code> indicates when a Milvus cluster starts, a Pulsar service starts automatically in the cluster.</p>
+<h4 id="Example" class="common-anchor-header">Example</h4><p>The following example configures an internal Pulsar service.</p>
 <pre><code translate="no" class="language-YAML"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">milvus.io/v1alpha1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Milvus</span>
 <span class="hljs-attr">metadata:</span>
@@ -241,12 +241,12 @@ Bidang yang digunakan untuk mengonfigurasi layanan Pulsar eksternal meliputi:</p
   <span class="hljs-attr">components:</span> {}
   <span class="hljs-attr">config:</span> {}            
 <button class="copy-code-btn"></button></code></pre>
-<div class="alert note">Contoh ini menentukan jumlah replika dari setiap komponen Pulsar, sumber daya komputasi Pulsar BookKeeper, dan konfigurasi lainnya.</div>
-<div class="alert note">Temukan item konfigurasi lengkap untuk mengonfigurasi layanan Pulsar internal di <a href="https://artifacthub.io/packages/helm/apache/pulsar/2.7.8?modal=values">values.yaml</a>. Tambahkan item konfigurasi sesuai kebutuhan di bawah ` <code translate="no">pulsar.inCluster.values</code> ` seperti yang ditunjukkan pada contoh sebelumnya.</div>
-<p>Dengan asumsi bahwa berkas konfigurasi bernama ` <code translate="no">milvuscluster.yaml</code>`, jalankan perintah berikut untuk menerapkan konfigurasi.</p>
+<div class="alert note">This example specifies the numbers of replicas of each component of Pulsar, the compute resources of Pulsar BookKeeper, and other configurations.</div>
+<div class="alert note">Find the complete configuration items to configure an internal Pulsar service in <a href="https://artifacthub.io/packages/helm/apache/pulsar/2.7.8?modal=values">values.yaml</a>. Add configuration items as needed under <code translate="no">pulsar.inCluster.values</code> as shown in the preceding example.</div>
+<p>Assuming that the configuration file is named <code translate="no">milvuscluster.yaml</code>, run the following command to apply the configuration.</p>
 <pre><code translate="no" class="language-Shell">kubectl apply -f milvuscluster.yaml
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Configure-Kafka" class="common-anchor-header">Konfigurasi Kafka<button data-href="#Configure-Kafka" class="anchor-icon" translate="no">
+<h2 id="Configure-Kafka" class="common-anchor-header">Configure Kafka<button data-href="#Configure-Kafka" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -261,9 +261,9 @@ Bidang yang digunakan untuk mengonfigurasi layanan Pulsar eksternal meliputi:</p
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pulsar adalah penyimpanan pesan default dalam kluster Milvus. Jika Anda ingin menggunakan Kafka, tambahkan bidang opsional ` <code translate="no">msgStreamType</code> ` untuk mengonfigurasi Kafka.</p>
-<p><code translate="no">kafka</code> mendukung <code translate="no">external</code> dan <code translate="no">inCluster</code>.</p>
-<h3 id="External-Kafka" class="common-anchor-header">Kafka Eksternal<button data-href="#External-Kafka" class="anchor-icon" translate="no">
+    </button></h2><p>Pulsar is the default message storage in a Milvus cluster. If you want to use Kafka, add the optional field <code translate="no">msgStreamType</code> to configure Kafka.</p>
+<p><code translate="no">kafka</code> supports <code translate="no">external</code> and <code translate="no">inCluster</code>.</p>
+<h3 id="External-Kafka" class="common-anchor-header">External Kafka<button data-href="#External-Kafka" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -278,13 +278,13 @@ Bidang yang digunakan untuk mengonfigurasi layanan Pulsar eksternal meliputi:</p
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">external</code> menandakan penggunaan layanan Kafka eksternal.</p>
-<p>Bidang yang digunakan untuk mengonfigurasi layanan Kafka eksternal meliputi:</p>
+    </button></h3><p><code translate="no">external</code> indicates using an external Kafka service.</p>
+<p>Fields used to configure an external Kafka service include:</p>
 <ul>
-<li><code translate="no">external</code>: Nilai ` <code translate="no">true</code> ` menunjukkan bahwa Milvus menggunakan layanan Kafka eksternal.</li>
-<li><code translate="no">brokerList</code>: Daftar broker yang akan menerima pesan.</li>
+<li><code translate="no">external</code>: A <code translate="no">true</code> value indicates that Milvus uses an external Kafka service.</li>
+<li><code translate="no">brokerList</code>: The list of brokers to send the messages to.</li>
 </ul>
-<h4 id="Example" class="common-anchor-header">Contoh</h4><p>Contoh berikut mengonfigurasi layanan Kafka eksternal.</p>
+<h4 id="Example" class="common-anchor-header">Example</h4><p>The following example configures an external Kafka service.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">milvus.io/v1alpha1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Milvus</span>
 <span class="hljs-attr">metadata:</span>
@@ -312,9 +312,9 @@ Bidang yang digunakan untuk mengonfigurasi layanan Pulsar eksternal meliputi:</p
         <span class="hljs-comment"># ...</span>
 <button class="copy-code-btn"></button></code></pre>
 <blockquote>
-<p>Konfigurasi SASL didukung pada versi operator v0.8.5 atau yang lebih baru.</p>
+<p>SASL configurations are supported in operator v0.8.5 or higher version.</p>
 </blockquote>
-<h3 id="Internal-Kafka" class="common-anchor-header">Kafka Internal<button data-href="#Internal-Kafka" class="anchor-icon" translate="no">
+<h3 id="Internal-Kafka" class="common-anchor-header">Internal Kafka<button data-href="#Internal-Kafka" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -329,8 +329,8 @@ Bidang yang digunakan untuk mengonfigurasi layanan Pulsar eksternal meliputi:</p
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">inCluster</code> menunjukkan bahwa saat kluster Milvus dimulai, layanan Kafka akan dimulai secara otomatis di dalam kluster tersebut.</p>
-<h4 id="Example" class="common-anchor-header">Contoh</h4><p>Contoh berikut ini mengonfigurasi layanan Kafka internal.</p>
+    </button></h3><p><code translate="no">inCluster</code> indicates when a Milvus cluster starts, a Kafka service starts automatically in the cluster.</p>
+<h4 id="Example" class="common-anchor-header">Example</h4><p>The following example configures an internal Kafka service.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">milvus.io/v1alpha1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Milvus</span>
 <span class="hljs-attr">metadata:</span>
@@ -346,11 +346,11 @@ Bidang yang digunakan untuk mengonfigurasi layanan Pulsar eksternal meliputi:</p
   <span class="hljs-attr">components:</span> {}
   <span class="hljs-attr">config:</span> {}
 <button class="copy-code-btn"></button></code></pre>
-<p>Temukan item konfigurasi lengkap untuk mengonfigurasi layanan Kafka internal <a href="https://artifacthub.io/packages/helm/bitnami/kafka">di sini</a>. Tambahkan item konfigurasi sesuai kebutuhan di bawah ` <code translate="no">kafka.inCluster.values</code>`.</p>
-<p>Dengan asumsi bahwa berkas konfigurasi bernama ` <code translate="no">milvuscluster.yaml</code>`, jalankan perintah berikut untuk menerapkan konfigurasi.</p>
+<p>Find the complete configuration items to configure an internal Kafka service <a href="https://artifacthub.io/packages/helm/bitnami/kafka">here</a>. Add configuration items as needed under <code translate="no">kafka.inCluster.values</code>.</p>
+<p>Assuming that the configuration file is named <code translate="no">milvuscluster.yaml</code>, run the following command to apply the configuration.</p>
 <pre><code translate="no"><span class="hljs-attribute">kubectl</span> apply -f milvuscluster.yaml
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Whats-next" class="common-anchor-header">Langkah selanjutnya<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -365,8 +365,8 @@ Bidang yang digunakan untuk mengonfigurasi layanan Pulsar eksternal meliputi:</p
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pelajari cara mengonfigurasi dependensi Milvus lainnya dengan Milvus Operator:</p>
+    </button></h2><p>Learn how to configure other Milvus dependencies with Milvus Operator:</p>
 <ul>
-<li><a href="/docs/id/v2.6.x/object_storage_operator.md">Konfigurasikan Penyimpanan Objek dengan Milvus Operator</a></li>
-<li><a href="/docs/id/v2.6.x/meta_storage_operator.md">Konfigurasikan Meta Storage dengan Milvus Operator</a></li>
+<li><a href="/docs/id/v2.6.x/object_storage_operator.md">Configure Object Storage with Milvus Operator</a></li>
+<li><a href="/docs/id/v2.6.x/meta_storage_operator.md">Configure Meta Storage with Milvus Operator</a></li>
 </ul>

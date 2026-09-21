@@ -1,10 +1,12 @@
 ---
 id: minhash-function.md
-title: MinHash 函数Compatible with Milvus 3.0.x
-summary: 使用 MinHash 将文本转换为二进制向量，用于基于雅卡德（Jaccard）的相似度搜索和近重复内容检测。
+title: MinHash FunctionCompatible with Milvus 3.0.x
+summary: >-
+  Use MinHash to convert text into binary vectors for Jaccard-based similarity
+  search and near-duplicate detection.
 beta: Milvus 3.0.x
 ---
-<h1 id="MinHash-Function" class="common-anchor-header">MinHash 函数<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#MinHash-Function" class="anchor-icon" translate="no">
+<h1 id="MinHash-Function" class="common-anchor-header">MinHash Function<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#MinHash-Function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +21,9 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><strong>MinHash 函数</strong>将原始文本转换为<strong>二进制向量</strong>，这些向量可近似表示文档之间的<a href="https://en.wikipedia.org/wiki/Jaccard_index">雅卡德相似度</a>。该函数通过文本分块和多种哈希函数，生成固定长度的签名向量，从而实现快速近似重复检测和大规模文档去重。</p>
-<p>作为内置函数，MinHash 在 Milvus 内部运行，无需外部模型推理或预处理。您只需输入原始文本，Milvus 便会自动生成 MinHash 签名向量。</p>
-<h2 id="Limits" class="common-anchor-header">限制<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>The <strong>MinHash function</strong> converts raw text into <strong>binary vectors</strong> that approximate <a href="https://en.wikipedia.org/wiki/Jaccard_index">Jaccard similarity</a> between documents. It applies text shingling and multiple hash functions to produce fixed-length signature vectors, enabling fast near-duplicate detection and document deduplication at scale.</p>
+<p>As a built-in function, MinHash runs within Milvus and does not require external model inference or preprocessing. You insert raw text, and Milvus generates the MinHash signature vectors automatically.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,11 +39,11 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>输出字段必须为<code translate="no">BINARY_VECTOR</code> ，且其维度需满足<code translate="no">dim % 32 == 0</code> ，因为每个MinHash签名都是一个32位哈希值。</p></li>
-<li><p>二进制向量字段的<code translate="no">dim</code> 必须等于<code translate="no">32 * num_hashes</code> 。若不匹配，将引发错误。</p></li>
-<li><p>当使用<code translate="no">MINHASH_LSH</code> 索引与MinHash函数的输出时，<code translate="no">mh_element_bit_width</code> 必须设置为<code translate="no">32</code> 。</p></li>
+<li><p>The output field must be a <code translate="no">BINARY_VECTOR</code> with a dimension that satisfies <code translate="no">dim % 32 == 0</code>, because each MinHash signature is a 32-bit hash value.</p></li>
+<li><p>The <code translate="no">dim</code> of the binary vector field must equal <code translate="no">32 * num_hashes</code>. A mismatch causes an error.</p></li>
+<li><p>When using <code translate="no">MINHASH_LSH</code> index with MinHash function output, <code translate="no">mh_element_bit_width</code> must be set to <code translate="no">32</code>.</p></li>
 </ul>
-<h2 id="How-MinHash-works" class="common-anchor-header">MinHash的工作原理<button data-href="#How-MinHash-works" class="anchor-icon" translate="no">
+<h2 id="How-MinHash-works" class="common-anchor-header">How MinHash works<button data-href="#How-MinHash-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,16 +59,16 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><p><details></p>
-<p><summary>展开以查看其工作原理</summary></p>
-<p><a href="https://en.wikipedia.org/wiki/MinHash">MinHash</a>是一种局部敏感哈希技术，用于估算集合之间的<a href="https://en.wikipedia.org/wiki/Jaccard_index">雅卡德相似度</a>。在 Milvus 中，MinHash 函数遵循以下处理流程：您提供原始文本作为输入，Milvus 生成二进制向量作为输出——所有中间步骤均由系统内部处理。</p>
-<p>整体工作流由文档摄入和查询处理<strong>共用的文本处理管道</strong>组成，随后是针对存储和检索阶段的特定操作。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/minhash-function.png" alt="Iaqkbfeh8oqggsx6nsocfosondo" class="doc-image" id="iaqkbfeh8oqggsx6nsocfosondo" /> 
-   <span>Iaqkbfeh8oqggsx6nsocfosondo</span>
-  
- </span></p>
-<h3 id="Shared-text-processing-pipeline" class="common-anchor-header">共享文本处理管道<button data-href="#Shared-text-processing-pipeline" class="anchor-icon" translate="no">
+<p><summary>Expand to see how it works</summary></p>
+<p><a href="https://en.wikipedia.org/wiki/MinHash">MinHash</a> is a locality-sensitive hashing technique that estimates <a href="https://en.wikipedia.org/wiki/Jaccard_index">Jaccard similarity</a> between sets. In Milvus, the MinHash function follows this pipeline: you provide raw text as input, and Milvus produces a binary vector as output — handling all intermediate steps internally.</p>
+<p>The overall workflow consists of a <strong>shared text processing pipeline</strong> used by both document ingestion and query processing, followed by phase-specific operations for storage and retrieval.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/minhash-function.png" alt="Iaqkbfeh8oqggsx6nsocfosondo" class="doc-image" id="iaqkbfeh8oqggsx6nsocfosondo" />
+    <span>Iaqkbfeh8oqggsx6nsocfosondo</span>
+  </span>
+</p>
+<h3 id="Shared-text-processing-pipeline" class="common-anchor-header">Shared text processing pipeline<button data-href="#Shared-text-processing-pipeline" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,14 +83,14 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>无论是文档摄入还是查询处理，都会将原始文本经过相同的四阶段转换：</p>
+    </button></h3><p>Both document ingestion and query processing pass raw text through the same four-stage transformation:</p>
 <ol>
-<li><p><strong>文本分析</strong>：文本由<a href="/docs/zh/analyzer-overview.md">分析器</a>处理（当<code translate="no">token_level</code> 为<code translate="no">&quot;word&quot;</code> 时），或直接使用（当<code translate="no">token_level</code> 为<code translate="no">&quot;char&quot;</code> 时）。词级分词会应用在输入字段上配置的分析器，将文本分割为术语——例如，<code translate="no">&quot;milvus is vector db&quot;</code> 将变为<code translate="no">[&quot;milvus&quot;, &quot;is&quot;, &quot;vector&quot;, &quot;db&quot;]</code> 。</p></li>
-<li><p><strong>分片</strong>：将分词结果拆分为大小为<code translate="no">shingle_size</code> 的重叠 n-gram（分片）。例如，在词级使用 3-gram 时，分词结果<code translate="no">[&quot;information&quot;, &quot;retrieval&quot;, &quot;is&quot;, &quot;a&quot;, &quot;field&quot;]</code> 将被拆分为类似<code translate="no">[&quot;information retrieval is&quot;, &quot;retrieval is a&quot;, &quot;is a field&quot;]</code> 的分片。</p></li>
-<li><p><strong>MinHash签名生成</strong>：对瓦片集应用多个哈希函数（H1、H2、…、Hn，其中n =<code translate="no">num_hashes</code> ）。 对于每个哈希函数，选取所有片段中的最小哈希值。这些最小值的 Collection 构成了 MinHash 签名——一种固定长度的表示形式，近似反映了原始文档的雅卡德相似度。</p></li>
-<li><p><strong>二进制向量编码</strong>：每个签名值是一个 32 位哈希值，完整的签名被打包到一个维度为<code translate="no">32 * num_hashes</code> 的<code translate="no">BINARY_VECTOR</code> 中。</p></li>
+<li><p><strong>Text analysis</strong>: The text is processed by an <a href="/docs/zh/analyzer-overview.md">analyzer</a> (when <code translate="no">token_level</code> is <code translate="no">&quot;word&quot;</code>) or used directly (when <code translate="no">token_level</code> is <code translate="no">&quot;char&quot;</code>). Word-level tokenization applies the analyzer configured on the input field to segment text into terms — for example, <code translate="no">&quot;milvus is vector db&quot;</code> becomes <code translate="no">[&quot;milvus&quot;, &quot;is&quot;, &quot;vector&quot;, &quot;db&quot;]</code>.</p></li>
+<li><p><strong>Shingling</strong>: The tokens are split into overlapping n-grams (shingles) of size <code translate="no">shingle_size</code>. For example, with 3-grams at word level, the tokens <code translate="no">[&quot;information&quot;, &quot;retrieval&quot;, &quot;is&quot;, &quot;a&quot;, &quot;field&quot;]</code> become shingles like <code translate="no">[&quot;information retrieval is&quot;, &quot;retrieval is a&quot;, &quot;is a field&quot;]</code>.</p></li>
+<li><p><strong>MinHash signature generation</strong>: Multiple hash functions (H1, H2, …, Hn, where n = <code translate="no">num_hashes</code>) are applied to the shingle set. For each hash function, the minimum hash value across all shingles is selected. The collection of these minimum values forms the MinHash signature — a fixed-length representation that approximates the Jaccard similarity of the original document.</p></li>
+<li><p><strong>Binary vector encoding</strong>: Each signature value is a 32-bit hash, and the full signature is packed into a <code translate="no">BINARY_VECTOR</code> of dimension <code translate="no">32 * num_hashes</code>.</p></li>
 </ol>
-<h3 id="Document-ingestion" class="common-anchor-header">文档摄入<button data-href="#Document-ingestion" class="anchor-icon" translate="no">
+<h3 id="Document-ingestion" class="common-anchor-header">Document ingestion<button data-href="#Document-ingestion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,8 +105,8 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在插入过程中，由共享管道生成的二进制向量会被存储在<code translate="no">MINHASH_LSH</code> 索引中。该索引维护着一个LSH（局部敏感哈希）表，将相似的签名分组到相同的桶中，从而在查询时能够快速检索候选结果。</p>
-<h3 id="Query-processing" class="common-anchor-header">查询处理<button data-href="#Query-processing" class="anchor-icon" translate="no">
+    </button></h3><p>During insertion, the binary vector produced by the shared pipeline is stored in the <code translate="no">MINHASH_LSH</code> index. The index maintains an LSH (Locality-Sensitive Hashing) table that groups similar signatures into the same buckets, enabling fast candidate retrieval at query time.</p>
+<h3 id="Query-processing" class="common-anchor-header">Query processing<button data-href="#Query-processing" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -119,10 +121,10 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在搜索过程中，查询文本会经过相同的共享管道以生成二进制向量。该向量用于在<code translate="no">MINHASH_LSH</code> 索引中执行LSH查找，从而快速识别出可能相似的候选对。若未启用Jaccard精化，Milvus返回的LSH候选结果不会按估计的Jaccard相似度进行排序。 当启用雅卡德（Jaccard）精化时，Milvus 会利用存储的原始 MinHash 签名，根据估计的雅卡德相似度对候选结果进行排序，并返回前 K 个结果。</p>
-<p>由于这两种路径共享相同的转换逻辑，内容高度重叠的两份文档会产生相似的 MinHash 签名。这使得该功能即使在文档的词序、格式或细微措辞存在差异时，也能有效查找近似重复文档。</p>
+    </button></h3><p>During search, the query text goes through the same shared pipeline to produce a binary vector. This vector is used to perform an LSH lookup in the <code translate="no">MINHASH_LSH</code> index, which quickly identifies candidate pairs that are likely similar. Without Jaccard refinement, Milvus returns LSH candidates that are not ranked by estimated Jaccard similarity. When Jaccard refinement is enabled, Milvus uses the stored raw MinHash signatures to rank the candidates by estimated Jaccard similarity and return the top-K results.</p>
+<p>Because both paths share the same transformation logic, two documents with highly overlapping content produce similar MinHash signatures. This makes the function effective for finding near-duplicates even when documents differ in word order, formatting, or minor phrasing.</p>
 <p></details></p>
-<h2 id="Before-you-start" class="common-anchor-header">开始之前<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -137,16 +139,16 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在使用 MinHash 功能之前，请规划您的 Collection Schema，确保包含以下内容：</p>
+    </button></h2><p>Before using the MinHash function, plan your collection schema to include the following:</p>
 <ul>
-<li><p><strong>用于存储原始内容的文本字段</strong></p>
-<p>您的Collection必须包含一个<code translate="no">VARCHAR</code> 字段来存储原始文本。该字段将作为MinHash函数的输入。</p></li>
-<li><p><strong>文本字段的分析器</strong>（当使用词级分词时）</p>
-<p>如果 `<code translate="no">token_level</code> ` 设置为 `<code translate="no">&quot;word&quot;</code> `（默认值），则文本字段必须启用分析器。分析器定义了在分片处理之前如何对文本进行分词。默认情况下，Milvus 使用 `<code translate="no">standard</code> ` 分析器。若要配置其他分析器，请参阅《<a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md">根据用例选择合适的分析器</a>》。</p></li>
-<li><p><strong>用于 MinHash 输出的二进制向量字段</strong></p>
-<p>您的Collection必须包含一个<code translate="no">BINARY_VECTOR</code> 字段，用于存储由MinHash函数生成的二进制向量。该维度的值必须等于<code translate="no">32 * num_hashes</code> 。</p></li>
+<li><p><strong>A text field for raw content</strong></p>
+<p>Your collection must include a <code translate="no">VARCHAR</code> field to store raw text. This field serves as the input to the MinHash function.</p></li>
+<li><p><strong>An analyzer for the text field</strong> (when using word-level tokenization)</p>
+<p>If <code translate="no">token_level</code> is set to <code translate="no">&quot;word&quot;</code> (default), the text field must have an analyzer enabled. The analyzer defines how text is tokenized before shingling. By default, Milvus uses the <code translate="no">standard</code> analyzer. To configure a different analyzer, refer to <a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md">Choose the Right Analyzer for Your Use Case</a>.</p></li>
+<li><p><strong>A binary vector field for MinHash output</strong></p>
+<p>Your collection must include a <code translate="no">BINARY_VECTOR</code> field to store the binary vectors generated by the MinHash function. The dimension must equal <code translate="no">32 * num_hashes</code>.</p></li>
 </ul>
-<h2 id="Step-1-Create-a-collection-with-a-MinHash-function" class="common-anchor-header">步骤 1：创建包含 MinHash 函数的 Collection<button data-href="#Step-1-Create-a-collection-with-a-MinHash-function" class="anchor-icon" translate="no">
+<h2 id="Step-1-Create-a-collection-with-a-MinHash-function" class="common-anchor-header">Step 1: Create a collection with a MinHash function<button data-href="#Step-1-Create-a-collection-with-a-MinHash-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -161,8 +163,8 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要使用 MinHash 函数，请在创建 Collection 时对其进行定义。该函数将成为 Collection Schema 的部分，并在数据插入和搜索过程中自动应用。</p>
-<h3 id="Define-schema-fields" class="common-anchor-header">定义Schema字段<button data-href="#Define-schema-fields" class="anchor-icon" translate="no">
+    </button></h2><p>To use the MinHash function, define it when creating the collection. The function becomes part of the collection schema and is applied automatically during data insertion and search.</p>
+<h3 id="Define-schema-fields" class="common-anchor-header">Define schema fields<button data-href="#Define-schema-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -177,18 +179,18 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>您的Collection Schema必须包含至少三个字段：</p>
+    </button></h3><p>Your collection schema must include at least three fields:</p>
 <ul>
-<li><p><strong>主字段</strong>：用于唯一标识Collection中的每个实体。</p></li>
-<li><p><strong>文本字段</strong>（<code translate="no">VARCHAR</code> ）：用于存储原始文本文档。请将<code translate="no">enable_analyzer=True</code> 设置为启用，以便 Milvus 能对文本进行处理以生成 MinHash 签名。默认情况下，Milvus 使用<code translate="no">standard</code> 分析器进行文本分析。若要配置其他分析器，请参阅《<a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md">根据用例选择合适的分析器</a>》。</p></li>
-<li><p><strong>二进制向量字段</strong>（<code translate="no">BINARY_VECTOR</code> ）：用于存储由 MinHash 函数自动生成的二进制向量。其维度必须与<code translate="no">32 * num_hashes</code> 相同。</p></li>
+<li><p><strong>Primary field</strong>: Uniquely identifies each entity in the collection.</p></li>
+<li><p><strong>Text field</strong> (<code translate="no">VARCHAR</code>): Stores raw text documents. Set <code translate="no">enable_analyzer=True</code> so Milvus can process the text for MinHash signature generation. By default, Milvus uses the <code translate="no">standard</code> analyzer for text analysis. To configure a different analyzer, refer to <a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md">Choose the Right Analyzer for Your Use Case</a>.</p></li>
+<li><p><strong>Binary vector field</strong> (<code translate="no">BINARY_VECTOR</code>): Stores binary vectors automatically generated by the MinHash function. The dimension must equal <code translate="no">32 * num_hashes</code>.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
@@ -208,7 +210,7 @@ schema.add_field(field_name=<span class="hljs-string">&quot;binary_vector&quot;<
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Define-the-MinHash-function" class="common-anchor-header">定义 MinHash 函数<button data-href="#Define-the-MinHash-function" class="anchor-icon" translate="no">
+<h3 id="Define-the-MinHash-function" class="common-anchor-header">Define the MinHash function<button data-href="#Define-the-MinHash-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -223,14 +225,14 @@ schema.add_field(field_name=<span class="hljs-string">&quot;binary_vector&quot;<
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>MinHash 函数将分析后的文本转换为二进制向量，这些向量可近似表示文档之间的雅卡德相似度。</p>
-<p>定义该函数并将其添加到您的Schema中：</p>
+    </button></h3><p>The MinHash function converts analyzed text into binary vectors that approximate Jaccard similarity between documents.</p>
+<p>Define the function and add it to your schema:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">minhash_function = Function(
     name=<span class="hljs-string">&quot;minhash_function&quot;</span>,
@@ -253,47 +255,47 @@ schema.add_function(minhash_function)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>配置选项</strong></p>
-<p>MinHash 函数的 `<code translate="no">params</code> ` 字典支持以下参数。所有参数名称均<strong>不区分大小写</strong>。</p>
+<p><strong>Configuration options</strong></p>
+<p>The <code translate="no">params</code> dictionary of the MinHash function accepts the following parameters. All parameter names are <strong>case-insensitive</strong>.</p>
 <table>
    <tr>
-     <th><p><strong>参数</strong></p></th>
-     <th><p><strong>类型</strong></p></th>
-     <th><p><strong>默认值</strong></p></th>
-     <th><p><strong>描述</strong></p></th>
+     <th><p><strong>Parameter</strong></p></th>
+     <th><p><strong>Type</strong></p></th>
+     <th><p><strong>Default</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">num_hashes</code></p></td>
      <td><p>int</p></td>
-     <td><p>源自<code translate="no">dim / 32</code></p></td>
-     <td><p>用于签名生成的哈希函数数量。输出二进制向量的维度等于<code translate="no">32 &ast; num_hashes</code> 。数值越大，相似度估计的方差越小，但计算量也会增加。推荐值：<code translate="no">256</code> （dim = 8192）。</p></td>
+     <td><p>Derived from <code translate="no">dim / 32</code></p></td>
+     <td><p>Number of hash functions for signature generation. The output binary vector dimension equals <code translate="no">32 &ast; num_hashes</code>. Higher values reduce variance in similarity estimation but increase computation. Recommended: <code translate="no">256</code> (dim = 8192).</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">shingle_size</code></p></td>
      <td><p>int</p></td>
      <td><p><code translate="no">3</code></p></td>
-     <td><p>用于分段处理的N-gram大小。词级：通常为1-3。字符级：通常为2-6。</p></td>
+     <td><p>N-gram size for shingling. Word-level: 1-3 is typical. Character-level: 2-6 is typical.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">hash_function</code></p></td>
      <td><p>str</p></td>
      <td><p><code translate="no">"xxhash"</code></p></td>
-     <td><p>要使用的哈希函数。选项： </p><ul><li><p><code translate="no">"xxhash"</code> (fast)</p></li><li><p><code translate="no">"sha1"</code> （速度较慢，抗碰撞能力更强）。</p></li></ul></td>
+     <td><p>Hash function to use. Options: </p><ul><li><p><code translate="no">"xxhash"</code> (fast)</p></li><li><p><code translate="no">"sha1"</code> (slower, higher collision resistance).</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">token_level</code></p></td>
      <td><p>str</p></td>
      <td><p><code translate="no">"word"</code></p></td>
-     <td><p>分词级别。选项：</p><ul><li><p><code translate="no">"word"</code>：使用字段的分析器进行分词，然后应用 n-gram 分段处理。</p></li><li><p><code translate="no">"char"</code> /<code translate="no">"character"</code>: 直接对原始字符应用 n-gram 分片（不使用分析器）。</p><p>词级提供更强的语义和更高的效率，但依赖于特定语言的分词。字符级与语言无关，但会产生高维度的分片，且语义较弱。</p></li></ul></td>
+     <td><p>Tokenization level. Options:</p><ul><li><p><code translate="no">"word"</code>: uses the field's analyzer for tokenization, then applies n-gram shingling.</p></li><li><p><code translate="no">"char"</code> / <code translate="no">"character"</code>: applies n-gram shingling directly on raw characters (no analyzer).</p><p>Word-level provides stronger semantics and higher efficiency but depends on language-specific tokenization. Character-level is language-agnostic but produces higher-dimensional shingles with weaker semantics.</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">seed</code></p></td>
      <td><p>int</p></td>
      <td><p><code translate="no">1234</code></p></td>
-     <td><p>用于初始化 MinHash 函数的随机种子。</p></td>
+     <td><p>Random seed for MinHash function initialization.</p></td>
    </tr>
 </table>
-<h3 id="Configure-the-index" class="common-anchor-header">配置索引<button data-href="#Configure-the-index" class="anchor-icon" translate="no">
+<h3 id="Configure-the-index" class="common-anchor-header">Configure the index<button data-href="#Configure-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -308,13 +310,13 @@ schema.add_function(minhash_function)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>MinHash 二进制向量的推荐索引类型为<code translate="no">MINHASH_LSH</code> ，度量类型为<code translate="no">MHJACCARD</code> 。</p>
+    </button></h3><p>The recommended index type for MinHash binary vectors is <code translate="no">MINHASH_LSH</code>, with metric type <code translate="no">MHJACCARD</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
@@ -337,8 +339,8 @@ index_params.add_index(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>如果搜索将使用雅卡德（Jaccard）精化，请将<code translate="no">with_raw_data</code> 设置为<code translate="no">True</code> 。计算LSH查找返回的候选项的估计雅卡德相似度时，需要原始的MinHash签名。</p>
-<h3 id="Create-the-collection" class="common-anchor-header">创建Collection<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
+<p>Set <code translate="no">with_raw_data</code> to <code translate="no">True</code> if searches will use Jaccard refinement. The raw MinHash signatures are required to calculate estimated Jaccard similarity for the candidates returned by the LSH lookup.</p>
+<h3 id="Create-the-collection" class="common-anchor-header">Create the collection<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -353,13 +355,13 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>使用上述定义的Schema和索引参数创建Collection：</p>
+    </button></h3><p>Create the collection using the schema and index parameters defined above:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;dedup_collection&quot;</span>,
@@ -375,7 +377,7 @@ index_params.add_index(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-2-Insert-documents" class="common-anchor-header">步骤 2：插入文档<button data-href="#Step-2-Insert-documents" class="anchor-icon" translate="no">
+<h2 id="Step-2-Insert-documents" class="common-anchor-header">Step 2: Insert documents<button data-href="#Step-2-Insert-documents" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -390,13 +392,13 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>设置好 Collection 后，插入文本数据。您只需提供原始文本——MinHash 函数会自动为每份文档生成二进制向量。</p>
+    </button></h2><p>After setting up your collection, insert text data. You only need to provide the raw text — the MinHash function automatically generates the binary vector for each document.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.insert(
     <span class="hljs-string">&quot;dedup_collection&quot;</span>,
@@ -415,7 +417,7 @@ index_params.add_index(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-3-Search-with-MinHash" class="common-anchor-header">步骤 3：使用 MinHash 进行搜索<button data-href="#Step-3-Search-with-MinHash" class="anchor-icon" translate="no">
+<h2 id="Step-3-Search-with-MinHash" class="common-anchor-header">Step 3: Search with MinHash<button data-href="#Step-3-Search-with-MinHash" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -430,13 +432,13 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>插入数据后，通过提供原始文本查询来搜索近似重复的文档。Milvus 会自动将每个查询转换为 MinHash 二进制向量。启用 Jaccard 精炼功能，即可根据估计的 Jaccard 相似度对 LSH 候选结果进行排序。</p>
+    </button></h2><p>Once you have inserted data, search for near-duplicate documents by providing raw text queries. Milvus automatically converts each query into a MinHash binary vector. Enable Jaccard refinement to rank the LSH candidates by estimated Jaccard similarity.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;metric_type&quot;</span>: <span class="hljs-string">&quot;MHJACCARD&quot;</span>,
@@ -468,8 +470,8 @@ results = client.search(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>将<code translate="no">mh_search_with_jaccard</code> 设置为<code translate="no">True</code> 以启用Jaccard精化。<code translate="no">refine_k</code> 控制用于精化的候选集容量。Milvus默认使用<code translate="no">max(refine_k, limit)</code> 作为容量，但如果LSH查找返回的匹配结果较少，则可能精化较少的候选项。增加<code translate="no">refine_k</code> 可以提高结果质量，但会增加计算开销。</p>
-<h2 id="Whats-next" class="common-anchor-header">下一步<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<p>Set <code translate="no">mh_search_with_jaccard</code> to <code translate="no">True</code> to enable Jaccard refinement. <code translate="no">refine_k</code> controls the candidate-pool capacity used for refinement. Milvus uses <code translate="no">max(refine_k, limit)</code> as the capacity, but may refine fewer candidates if the LSH lookup returns fewer matches. Increasing <code translate="no">refine_k</code> can improve result quality at the cost of additional computation.</p>
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -485,7 +487,7 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><a href="/docs/zh/full-text-search.md">全文搜索</a>：使用 BM25 进行词汇相关性排序，而非近似重复检测。</p></li>
-<li><p><a href="/docs/zh/analyzer-overview.md">分析器概述</a>：配置自定义分析器以进行文本分词。</p></li>
-<li><p><a href="/docs/zh/minhash-lsh.md">MINHASH_LSH 索引</a>：了解如何调整 LSH 参数以优化召回率和性能。</p></li>
+<li><p><a href="/docs/zh/full-text-search.md">Full Text Search</a>: Use BM25 for lexical relevance ranking instead of near-duplicate detection.</p></li>
+<li><p><a href="/docs/zh/analyzer-overview.md">Analyzer Overview</a>: Configure custom analyzers for text tokenization.</p></li>
+<li><p><a href="/docs/zh/minhash-lsh.md">MINHASH_LSH Index</a>: Learn about tuning LSH parameters for recall and performance.</p></li>
 </ul>

@@ -1,15 +1,13 @@
 ---
 id: keyword-match.md
-title: Совпадение текста
+title: Text Match
 summary: >-
-  Функция текстового сопоставления в Milvus позволяет осуществлять точный поиск
-  документов по конкретным терминам. Эта функция в первую очередь используется
-  для фильтрованного поиска, отвечающего определенным условиям, и может включать
-  скалярную фильтрацию для уточнения результатов запроса, что позволяет
-  осуществлять поиск по схожести среди векторов, соответствующих скалярным
-  критериям.
+  Text match in Milvus enables precise document retrieval based on specific
+  terms. This feature is primarily used for filtered search to satisfy specific
+  conditions and can incorporate scalar filtering to refine query results,
+  allowing similarity searches within vectors that meet scalar criteria.
 ---
-<h1 id="Text-Match" class="common-anchor-header">Совпадение текста<button data-href="#Text-Match" class="anchor-icon" translate="no">
+<h1 id="Text-Match" class="common-anchor-header">Text Match<button data-href="#Text-Match" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,11 +22,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Функция «Совпадение текста» в Milvus позволяет точно находить документы по конкретным терминам. Эта функция в основном используется для фильтрованного поиска по определенным условиям и может включать скалярную фильтрацию для уточнения результатов запроса, что позволяет выполнять поиск по схожести среди векторов, отвечающих скалярным критериям.</p>
+    </button></h1><p>Text match in Milvus enables precise document retrieval based on specific terms. This feature is primarily used for filtered search to satisfy specific conditions and can incorporate scalar filtering to refine query results, allowing similarity searches within vectors that meet scalar criteria.</p>
 <div class="alert note">
-<p><code translate="no">TEXT_MATCH</code> Находит точные проанализированные термины, тогда как поиск по фразам ( <code translate="no">TEXT_MATCH_FUZZY</code> ) допускает небольшое расстояние редактирования между токенами запроса и индексированными токенами. Обе операции являются булевыми фильтрами и не оценивают релевантность найденных документов. Если вы хотите найти наиболее релевантные документы на основе семантического значения и важности терминов запроса, мы рекомендуем использовать <a href="/docs/ru/full-text-search.md">полнотекстовый поиск</a>.</p>
+<p><code translate="no">TEXT_MATCH</code> finds exact analyzed terms, while <code translate="no">TEXT_MATCH_FUZZY</code> can tolerate a small edit distance between query tokens and indexed tokens. Both are Boolean filtering operations and do not score the relevance of matched documents. If you want to retrieve the most relevant documents based on the semantic meaning and importance of the query terms, we recommend you use <a href="/docs/ru/full-text-search.md">Full Text Search</a>.</p>
 </div>
-<h2 id="Overview" class="common-anchor-header">Обзор<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,19 +41,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus интегрирует <a href="https://github.com/quickwit-oss/tantivy">Tantivy</a> для обеспечения работы своего базового инвертированного индекса и текстового поиска по терминам. Каждый текстовый фрагмент Milvus индексирует следующим образом:</p>
+    </button></h2><p>Milvus integrates <a href="https://github.com/quickwit-oss/tantivy">Tantivy</a> to power its underlying inverted index and term-based text search. For each text entry, Milvus indexes it following the procedure:</p>
 <ol>
-<li><p><a href="/docs/ru/analyzer-overview.md">Анализатор</a>: Анализатор обрабатывает входной текст, разбивая его на отдельные слова (токены), а затем применяя необходимые фильтры. Это позволяет Milvus создавать индекс на основе этих токенов.</p></li>
-<li><p><a href="/docs/ru/index-explained.md">Индексирование</a>: после анализа текста Milvus создает инвертированный индекс, который сопоставляет каждый уникальный токен с документами, в которых он встречается.</p></li>
+<li><p><a href="/docs/ru/analyzer-overview.md">Analyzer</a>: The analyzer processes input text by tokenizing it into individual words, or tokens, and then applying filters as needed. This allows Milvus to build an index based on these tokens.</p></li>
+<li><p><a href="/docs/ru/index-explained.md">Indexing</a>: After text analysis, Milvus creates an inverted index that maps each unique token to the documents containing it.</p></li>
 </ol>
-<p>Когда пользователь выполняет поиск по тексту, инвертированный индекс используется для быстрого извлечения всех документов, содержащих эти термины. Это происходит гораздо быстрее, чем сканирование каждого документа по отдельности.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/keyword-match.png" alt="Keyword Match" class="doc-image" id="keyword-match" /> 
-   <span>Поиск по ключевым словам</span>
-  
- </span></p>
-<h2 id="Enable-text-match" class="common-anchor-header">Включение поиска по тексту<button data-href="#Enable-text-match" class="anchor-icon" translate="no">
+<p>When a user performs a text match, the inverted index is used to quickly retrieve all documents containing the terms. This is much faster than scanning through each document individually.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/keyword-match.png" alt="Keyword Match" class="doc-image" id="keyword-match" />
+    <span>Keyword Match</span>
+  </span>
+</p>
+<h2 id="Enable-text-match" class="common-anchor-header">Enable text match<button data-href="#Enable-text-match" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,8 +68,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Поиск по тексту работает с полями строк, для которых включена функция поиска. В примерах на этой странице используется <a href="/docs/ru/string.md"><code translate="no">VARCHAR</code></a>, который поддерживается во всех клиентских SDK. В Milvus 3.0.x <a href="/docs/ru/text.md"><code translate="no">TEXT</code></a> поля также поддерживают текстовое сопоставление, если включен Storage V3. Для любого из этих типов полей установите значения как для параметра ` <code translate="no">enable_analyzer</code> `, так и для ` <code translate="no">enable_match</code> ` равными ` <code translate="no">True</code>`, а затем, при необходимости, настройте <a href="/docs/ru/analyzer-overview.md">анализатор</a> при определении схемы коллекции.</p>
-<h3 id="Set-enableanalyzer-and-enablematch" class="common-anchor-header">Установите значения для параметров <code translate="no">enable_analyzer</code> и <code translate="no">enable_match</code><button data-href="#Set-enableanalyzer-and-enablematch" class="anchor-icon" translate="no">
+    </button></h2><p>Text match works on match-enabled string fields. The examples on this page use <a href="/docs/ru/string.md"><code translate="no">VARCHAR</code></a>, which is supported across client SDKs. In Milvus 3.0.x, <a href="/docs/ru/text.md"><code translate="no">TEXT</code></a> fields also support text match when Storage V3 is enabled. For either field type, set both <code translate="no">enable_analyzer</code> and <code translate="no">enable_match</code> to <code translate="no">True</code>, and then optionally configure an <a href="/docs/ru/analyzer-overview.md">analyzer</a> when defining your collection schema.</p>
+<h3 id="Set-enableanalyzer-and-enablematch" class="common-anchor-header">Set <code translate="no">enable_analyzer</code> and <code translate="no">enable_match</code><button data-href="#Set-enableanalyzer-and-enablematch" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -86,13 +84,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Чтобы включить текстовое сопоставление для конкретного поля типа « <code translate="no">VARCHAR</code> », при определении схемы поля установите для параметров « <code translate="no">enable_analyzer</code> » и « <code translate="no">enable_match</code> » значение « <code translate="no">True</code> ». Это указывает Milvus на необходимость токенизации текста и создания инвертированного индекса для указанного поля, что обеспечивает быстрое и эффективное текстовое сопоставление.</p>
+    </button></h3><p>To enable text match for a specific <code translate="no">VARCHAR</code> field, set both the <code translate="no">enable_analyzer</code> and <code translate="no">enable_match</code> parameters to <code translate="no">True</code> when defining the field schema. This instructs Milvus to tokenize text and create an inverted index for the specified field, allowing fast and efficient text matches.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -210,7 +209,13 @@ schema.WithField(entity.NewField().
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Optional-Configure-an-analyzer" class="common-anchor-header">Необязательно: настройте анализатор<button data-href="#Optional-Configure-an-analyzer" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp">milvus::CollectionSchemaPtr schema = std::<span class="hljs-built_in">make_shared</span>&lt;milvus::CollectionSchema&gt;();
+schema-&gt;<span class="hljs-built_in">SetEnableDynamicField</span>(<span class="hljs-literal">false</span>);
+schema-&gt;<span class="hljs-built_in">AddField</span>({<span class="hljs-string">&quot;id&quot;</span>, milvus::DataType::INT64, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>});
+schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs-built_in">FieldSchema</span>(<span class="hljs-string">&quot;text&quot;</span>, milvus::DataType::VARCHAR).<span class="hljs-built_in">WithMaxLength</span>(<span class="hljs-number">1000</span>).<span class="hljs-built_in">EnableAnalyzer</span>(<span class="hljs-literal">true</span>).<span class="hljs-built_in">EnableMatch</span>(<span class="hljs-literal">true</span>));
+schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs-built_in">FieldSchema</span>(<span class="hljs-string">&quot;embeddings&quot;</span>, milvus::DataType::FLOAT_VECTOR).<span class="hljs-built_in">WithDimension</span>(<span class="hljs-number">5</span>));
+<button class="copy-code-btn"></button></code></pre>
+<h3 id="Optional-Configure-an-analyzer" class="common-anchor-header">Optional: Configure an analyzer<button data-href="#Optional-Configure-an-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -225,15 +230,16 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Производительность и точность сопоставления по ключевым словам зависят от выбранного анализатора. Различные анализаторы адаптированы к разным языкам и структурам текста, поэтому выбор подходящего анализатора может существенно повлиять на результаты поиска в вашем конкретном случае использования.</p>
-<p>По умолчанию Milvus использует анализатор « <code translate="no">standard</code> », который разбивает текст на токены на основе пробелов и знаков препинания, удаляет токены длиной более 40 символов и преобразует текст в нижний регистр. Для применения этой настройки по умолчанию не требуется никаких дополнительных параметров. Дополнительную информацию см. в <a href="/docs/ru/standard-analyzer.md">разделе «Стандарт</a>».</p>
-<p>Если требуется другой анализатор, его можно настроить с помощью параметра ` <code translate="no">analyzer_params</code> `. Например, чтобы применить анализатор ` <code translate="no">english</code> ` для обработки текста на английском языке:</p>
+    </button></h3><p>The performance and accuracy of keyword matching depend on the selected analyzer. Different analyzers are tailored to various languages and text structures, so choosing the right one can significantly impact search results for your specific use case.</p>
+<p>By default, Milvus uses the <code translate="no">standard</code> analyzer, which tokenizes text based on whitespace and punctuation, removes tokens longer than 40 characters, and converts text to lowercase. No additional parameters are needed to apply this default setting. For more information, refer to <a href="/docs/ru/standard-analyzer.md">Standard</a>.</p>
+<p>In cases where a different analyzer is required, you can configure one using the <code translate="no">analyzer_params</code> parameter. For example, to apply the <code translate="no">english</code> analyzer for processing English text:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;english&quot;</span>
@@ -318,8 +324,11 @@ schema.WithField(entity.NewField().
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus также предоставляет различные другие анализаторы, подходящие для разных языков и сценариев. Подробнее см. в разделе <a href="/docs/ru/analyzer-overview.md">«Обзор анализаторов</a>».</p>
-<h2 id="Use-text-match" class="common-anchor-header">Использование сопоставления текста<button data-href="#Use-text-match" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp">nlohmann::json analyzer_params = {{<span class="hljs-string">&quot;type&quot;</span>, <span class="hljs-string">&quot;english&quot;</span>}};
+schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs-built_in">FieldSchema</span>(<span class="hljs-string">&quot;text&quot;</span>, milvus::DataType::VARCHAR).<span class="hljs-built_in">WithMaxLength</span>(<span class="hljs-number">200</span>).<span class="hljs-built_in">EnableAnalyzer</span>(<span class="hljs-literal">true</span>).<span class="hljs-built_in">WithAnalyzerParams</span>(analyzer_params).<span class="hljs-built_in">EnableMatch</span>(<span class="hljs-literal">true</span>));
+<button class="copy-code-btn"></button></code></pre>
+<p>Milvus also provides various other analyzers suited to different languages and scenarios. For more details, refer to <a href="/docs/ru/analyzer-overview.md">Analyzer Overview</a>.</p>
+<h2 id="Use-text-match" class="common-anchor-header">Use text match<button data-href="#Use-text-match" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -334,8 +343,8 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>После включения текстового сопоставления для поля <code translate="no">VARCHAR</code> или <code translate="no">TEXT</code> в схеме коллекции можно выполнять текстовое сопоставление с помощью выражения <code translate="no">TEXT_MATCH</code>.</p>
-<h3 id="TEXTMATCH-expression-syntax" class="common-anchor-header">Синтаксис выражения TEXT_MATCH<button data-href="#TEXTMATCH-expression-syntax" class="anchor-icon" translate="no">
+    </button></h2><p>Once you have enabled text match for a <code translate="no">VARCHAR</code> or <code translate="no">TEXT</code> field in your collection schema, you can perform text matches using the <code translate="no">TEXT_MATCH</code> expression.</p>
+<h3 id="TEXTMATCH-expression-syntax" class="common-anchor-header">TEXT_MATCH expression syntax<button data-href="#TEXTMATCH-expression-syntax" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -350,20 +359,25 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Выражение <code translate="no">TEXT_MATCH</code> используется для указания поля и терминов, по которым будет выполняться поиск. Его синтаксис следующий:</p>
+    </button></h3><p>The <code translate="no">TEXT_MATCH</code> expression is used to specify the field and the terms to search for. Its syntax is as follows:</p>
 <pre><code translate="no" class="language-python">TEXT_MATCH(field_name, text)
 <button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">&quot;TEXT_MATCH(field_name, text)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> filter=<span class="hljs-string">&quot;\&quot;TEXT_MATCH(field_name, text)\&quot;&quot;</span>
+<button class="copy-code-btn"></button></code></pre>
 <ul>
-<li><p><code translate="no">field_name</code>: Имя поля <code translate="no">VARCHAR</code> или <code translate="no">TEXT</code> с поддержкой сопоставления, в котором будет выполняться поиск.</p></li>
-<li><p><code translate="no">text</code>: Термины для поиска. Несколько терминов можно разделять пробелами или другими подходящими разделителями в зависимости от языка и настроенного анализатора.</p></li>
+<li><p><code translate="no">field_name</code>: The name of the match-enabled <code translate="no">VARCHAR</code> or <code translate="no">TEXT</code> field to search for.</p></li>
+<li><p><code translate="no">text</code>: The terms to search for. Multiple terms can be separated by spaces or other appropriate delimiters based on the language and configured analyzer.</p></li>
 </ul>
-<p>По умолчанию поле « <code translate="no">TEXT_MATCH</code> » использует логику сопоставления <strong>«ИЛИ»</strong>, то есть будет возвращать документы, содержащие любой из указанных терминов. Например, чтобы найти документы, содержащие термин « <code translate="no">machine</code> » или « <code translate="no">deep</code> » в поле « <code translate="no">text</code> », используйте следующее выражение:</p>
+<p>By default, <code translate="no">TEXT_MATCH</code> uses the <strong>OR</strong> matching logic, meaning it will return documents that contain any of the specified terms. For example, to search for documents containing the term <code translate="no">machine</code> or <code translate="no">deep</code> in the <code translate="no">text</code> field, use the following expression:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;TEXT_MATCH(text, &#x27;machine deep&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -375,15 +389,18 @@ schema.WithField(entity.NewField().
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> filter=<span class="hljs-string">&quot;\&quot;TEXT_MATCH(text, &#x27;machine deep&#x27;)\&quot;&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Вы также можете комбинировать несколько выражений <code translate="no">TEXT_MATCH</code> с помощью логических операторов для выполнения сопоставления <strong>по оператору AND</strong>.</p>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">&quot;TEXT_MATCH(text, &#x27;machine deep&#x27;)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p>You can also combine multiple <code translate="no">TEXT_MATCH</code> expressions using logical operators to perform <strong>AND</strong> matching.</p>
 <ul>
-<li><p>Чтобы найти документы, содержащие как <code translate="no">machine</code>, так и <code translate="no">deep</code> в поле <code translate="no">text</code>, используйте следующее выражение:</p>
+<li><p>To search for documents containing both <code translate="no">machine</code> and <code translate="no">deep</code> in the <code translate="no">text</code> field, use the following expression:</p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
 <a href="#go">Go</a>
 <a href="#javascript">NodeJS</a>
 <a href="#bash">cURL</a>
+<a href="#cpp">C++</a>
 </div></p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;TEXT_MATCH(text, &#x27;machine&#x27;) and TEXT_MATCH(text, &#x27;deep&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -394,14 +411,17 @@ schema.WithField(entity.NewField().
 <pre><code translate="no" class="language-javascript"><span class="hljs-keyword">const</span> filter = <span class="hljs-string">&quot;TEXT_MATCH(text, &#x27;machine&#x27;) and TEXT_MATCH(text, &#x27;deep&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> filter=<span class="hljs-string">&quot;\&quot;TEXT_MATCH(text, &#x27;machine&#x27;) and TEXT_MATCH(text, &#x27;deep&#x27;)\&quot;&quot;</span>
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">&quot;TEXT_MATCH(text, &#x27;machine&#x27;) and TEXT_MATCH(text, &#x27;deep&#x27;)&quot;</span>;
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Чтобы найти документы, содержащие одновременно <code translate="no">machine</code> и <code translate="no">learning</code>, но не содержащие <code translate="no">deep</code> в поле <code translate="no">text</code>, используйте следующие выражения:</p>
+<li><p>To search for documents containing both <code translate="no">machine</code> and <code translate="no">learning</code> but without <code translate="no">deep</code> in the <code translate="no">text</code> field, use the following expressions:</p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
 <a href="#go">Go</a>
 <a href="#javascript">NodeJS</a>
 <a href="#bash">cURL</a>
+<a href="#cpp">C++</a>
 </div></p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;not TEXT_MATCH(text, &#x27;deep&#x27;) and TEXT_MATCH(text, &#x27;machine&#x27;) and TEXT_MATCH(text, &#x27;learning&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -412,9 +432,11 @@ schema.WithField(entity.NewField().
 <pre><code translate="no" class="language-javascript"><span class="hljs-keyword">const</span> filter = <span class="hljs-string">&quot;not TEXT_MATCH(text, &#x27;deep&#x27;) and TEXT_MATCH(text, &#x27;machine&#x27;) and TEXT_MATCH(text, &#x27;learning&#x27;)&quot;</span>;
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> filter=<span class="hljs-string">&quot;\&quot;not TEXT_MATCH(text, &#x27;deep&#x27;) and TEXT_MATCH(text, &#x27;machine&#x27;) and TEXT_MATCH(text, &#x27;learning&#x27;)\&quot;&quot;</span>
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">&quot;not TEXT_MATCH(text, &#x27;deep&#x27;) and TEXT_MATCH(text, &#x27;machine&#x27;) and TEXT_MATCH(text, &#x27;learning&#x27;)&quot;</span>;
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h3 id="TEXTMATCHFUZZY-expression-syntax--Milvus-300+" class="common-anchor-header">Синтаксис выражения TEXT_MATCH_FUZZY<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#TEXTMATCHFUZZY-expression-syntax--Milvus-300+" class="anchor-icon" translate="no">
+<h3 id="TEXTMATCHFUZZY-expression-syntax" class="common-anchor-header">TEXT_MATCH_FUZZY expression syntax<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#TEXTMATCHFUZZY-expression-syntax" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -429,22 +451,27 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Используйте <code translate="no">TEXT_MATCH_FUZZY</code>, чтобы учитывать различия в написании между токенами запроса и индексированными токенами. Milvus анализирует текст запроса с помощью анализатора поля и применяет неточное сопоставление к каждому полученному токену. Если запрос генерирует несколько токенов, выражение сопоставляется с сущностью, когда любой токен удовлетворяет настроенному расстоянию редактирования.</p>
-<p>Синтаксис следующий:</p>
+    </button></h3><p>Use <code translate="no">TEXT_MATCH_FUZZY</code> to tolerate spelling differences between query tokens and indexed tokens. Milvus analyzes the query text with the field’s analyzer and applies fuzzy matching to each resulting token. If the query produces multiple tokens, the expression matches an entity when any token satisfies the configured edit distance.</p>
+<p>The syntax is as follows:</p>
 <pre><code translate="no" class="language-python">TEXT_MATCH_FUZZY(field_name, text, max_edit_distance = <span class="hljs-number">1</span>)
 <button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">&quot;TEXT_MATCH_FUZZY(field_name, text, max_edit_distance = 1)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> filter=<span class="hljs-string">&quot;\&quot;TEXT_MATCH_FUZZY(field_name, text, max_edit_distance = 1)\&quot;&quot;</span>
+<button class="copy-code-btn"></button></code></pre>
 <ul>
-<li><p><code translate="no">field_name</code>: Название поля с поддержкой сопоставления ( <code translate="no">VARCHAR</code> или <code translate="no">TEXT</code> ), в котором будет выполняться поиск.</p></li>
-<li><p><code translate="no">text</code>: Текст запроса, который необходимо проанализировать и сопоставить с индексированными токенами.</p></li>
-<li><p><code translate="no">max_edit_distance</code>: Максимальное допустимое расстояние редактирования для каждого токена запроса. Имя параметра должно быть именно <code translate="no">max_edit_distance</code>, а его значением должно быть <code translate="no">0</code>, <code translate="no">1</code> или <code translate="no">2</code>. Значение <code translate="no">0</code> выполняет точное сопоставление токенов, что эквивалентно <code translate="no">TEXT_MATCH</code>.</p></li>
+<li><p><code translate="no">field_name</code>: The name of the match-enabled <code translate="no">VARCHAR</code> or <code translate="no">TEXT</code> field to search for.</p></li>
+<li><p><code translate="no">text</code>: The query text to analyze and match against indexed tokens.</p></li>
+<li><p><code translate="no">max_edit_distance</code>: The maximum edit distance allowed for each query token. The option name must be exactly <code translate="no">max_edit_distance</code>, and its value must be <code translate="no">0</code>, <code translate="no">1</code>, or <code translate="no">2</code>. A value of <code translate="no">0</code> performs exact token matching, equivalent to <code translate="no">TEXT_MATCH</code>.</p></li>
 </ul>
-<p>Например, следующее выражение находит токены, отличающиеся не более чем на одну символьную замену от <code translate="no">machne</code>, включая <code translate="no">machine</code>:</p>
+<p>For example, the following expression matches tokens within one edit of <code translate="no">machne</code>, including <code translate="no">machine</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;TEXT_MATCH_FUZZY(text, &#x27;machne&#x27;, max_edit_distance = 1)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -456,8 +483,10 @@ schema.WithField(entity.NewField().
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> filter=<span class="hljs-string">&quot;\&quot;TEXT_MATCH_FUZZY(text, &#x27;machne&#x27;, max_edit_distance = 1)\&quot;&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">TEXT_MATCH_FUZZY</code> является частью синтаксиса фильтрующих выражений, поэтому клиентским SDK не требуется отдельный метод неточного сопоставления. Передайте выражение через тот же параметр <code translate="no">filter</code>, который используется для <code translate="no">TEXT_MATCH</code> в операциях поиска или запроса.</p>
-<h3 id="Search-with-text-match" class="common-anchor-header">Поиск с текстовым сопоставлением<button data-href="#Search-with-text-match" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">&quot;TEXT_MATCH_FUZZY(text, &#x27;machne&#x27;, max_edit_distance = 1)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p><code translate="no">TEXT_MATCH_FUZZY</code> is part of the filter-expression syntax, so client SDKs do not require a dedicated fuzzy-match method. Pass the expression through the same <code translate="no">filter</code> parameter used for <code translate="no">TEXT_MATCH</code> in search or query operations.</p>
+<h3 id="Search-with-text-match" class="common-anchor-header">Search with text match<button data-href="#Search-with-text-match" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -472,17 +501,18 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Совпадение по тексту можно использовать в сочетании с векторным поиском по схожести, чтобы сузить область поиска и повысить производительность поиска. Фильтруя коллекцию с помощью совпадения по тексту перед векторным поиском по схожести, вы можете уменьшить количество документов, которые необходимо просматривать, что приведет к сокращению времени выполнения запроса.</p>
-<p>В этом примере выражение <code translate="no">filter</code> фильтрует результаты поиска, оставляя только те документы, которые содержат указанные термины <code translate="no">keyword1</code> или <code translate="no">keyword2</code>. Затем поиск по векторному сходству выполняется по этому отфильтрованному подмножеству документов.</p>
+    </button></h3><p>Text match can be used in combination with vector similarity search to narrow the search scope and improve search performance. By filtering the collection using text match before vector similarity search, you can reduce the number of documents that need to be searched, resulting in faster query times.</p>
+<p>In this example, the <code translate="no">filter</code> expression filters the search results to only include documents that match the specified term <code translate="no">keyword1</code> or <code translate="no">keyword2</code>. The vector similarity search is then performed on this filtered subset of documents.</p>
 <div class="alert note">
-<p>Вы можете выделять совпадающие термины в результатах поиска, настроив подсветку текста. Подробности см. в разделе <a href="/docs/ru/text-highlighter.md">«Подсветка текста</a> ».</p>
+<p>You can highlight the matched terms in search results by configuring a text highlighter. See <a href="/docs/ru/text-highlighter.md">Text Highlighter</a> for details.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match entities with `keyword1` or `keyword2`</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;TEXT_MATCH(text, &#x27;keyword1 keyword2&#x27;)&quot;</span>
@@ -561,7 +591,27 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;text&quot;,&quot;id&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Query-with-text-match" class="common-anchor-header">Запрос с текстовым сопоставлением<button data-href="#Query-with-text-match" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp"><span class="hljs-comment">// Match entities with `keyword1` or `keyword2`</span>
+std::string filter = <span class="hljs-string">&quot;TEXT_MATCH(text, &#x27;keyword1 keyword2&#x27;)&quot;</span>;
+
+<span class="hljs-comment">// Assuming &#x27;embeddings&#x27; is the vector field and &#x27;text&#x27; is the VARCHAR field</span>
+<span class="hljs-keyword">auto</span> request = milvus::<span class="hljs-built_in">SearchRequest</span>()
+                   .<span class="hljs-built_in">WithCollectionName</span>(<span class="hljs-string">&quot;my_collection&quot;</span>)
+                   .<span class="hljs-built_in">WithAnnsField</span>(<span class="hljs-string">&quot;embeddings&quot;</span>)
+                   .<span class="hljs-built_in">AddFloatVector</span>(query_vector)
+<span class="highlighted-wrapper-line">                   .<span class="hljs-built_in">WithFilter</span>(filter)</span>
+                   .<span class="hljs-built_in">AddExtraParam</span>(<span class="hljs-string">&quot;nprobe&quot;</span>, <span class="hljs-string">&quot;10&quot;</span>)
+                   .<span class="hljs-built_in">WithLimit</span>(<span class="hljs-number">10</span>)
+                   .<span class="hljs-built_in">AddOutputField</span>(<span class="hljs-string">&quot;id&quot;</span>)
+                   .<span class="hljs-built_in">AddOutputField</span>(<span class="hljs-string">&quot;text&quot;</span>);
+
+milvus::SearchResponse response;
+<span class="hljs-keyword">auto</span> status = client-&gt;<span class="hljs-built_in">Search</span>(request, response);
+<span class="hljs-keyword">if</span> (!status.<span class="hljs-built_in">IsOk</span>()) {
+    std::cout &lt;&lt; status.<span class="hljs-built_in">Message</span>() &lt;&lt; std::endl;
+}
+<button class="copy-code-btn"></button></code></pre>
+<h3 id="Query-with-text-match" class="common-anchor-header">Query with text match<button data-href="#Query-with-text-match" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -576,14 +626,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Совпадение текста также можно использовать для скалярной фильтрации в операциях запроса. Указав выражение <code translate="no">TEXT_MATCH</code> в параметре <code translate="no">expr</code> метода <code translate="no">query()</code>, вы можете получить документы, соответствующие заданным терминам.</p>
-<p>В приведенном ниже примере извлекаются документы, в поле <code translate="no">text</code> которых содержатся оба термина: <code translate="no">keyword1</code> и <code translate="no">keyword2</code>.</p>
+    </button></h3><p>Text match can also be used for scalar filtering in query operations. By specifying a <code translate="no">TEXT_MATCH</code> expression in the <code translate="no">expr</code> parameter of the <code translate="no">query()</code> method, you can retrieve documents that match the given terms.</p>
+<p>The example below retrieves documents where the <code translate="no">text</code> field contains both terms <code translate="no">keyword1</code> and <code translate="no">keyword2</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match entities with both `keyword1` and `keyword2`</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;TEXT_MATCH(text, &#x27;keyword1&#x27;) and TEXT_MATCH(text, &#x27;keyword2&#x27;)&quot;</span>
@@ -638,7 +689,22 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;id&quot;, &quot;text&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Considerations" class="common-anchor-header">Рекомендации<button data-href="#Considerations" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp"><span class="hljs-comment">// Match entities with both `keyword1` and `keyword2`</span>
+std::string filter = <span class="hljs-string">&quot;TEXT_MATCH(text, &#x27;keyword1&#x27;) and TEXT_MATCH(text, &#x27;keyword2&#x27;)&quot;</span>;
+
+<span class="hljs-keyword">auto</span> request = milvus::<span class="hljs-built_in">QueryRequest</span>()
+                   .<span class="hljs-built_in">WithCollectionName</span>(<span class="hljs-string">&quot;my_collection&quot;</span>)
+<span class="highlighted-wrapper-line">                   .<span class="hljs-built_in">WithFilter</span>(filter)</span>
+                   .<span class="hljs-built_in">AddOutputField</span>(<span class="hljs-string">&quot;id&quot;</span>)
+                   .<span class="hljs-built_in">AddOutputField</span>(<span class="hljs-string">&quot;text&quot;</span>);
+
+milvus::QueryResponse response;
+<span class="hljs-keyword">auto</span> status = client-&gt;<span class="hljs-built_in">Query</span>(request, response);
+<span class="hljs-keyword">if</span> (!status.<span class="hljs-built_in">IsOk</span>()) {
+    std::cout &lt;&lt; status.<span class="hljs-built_in">Message</span>() &lt;&lt; std::endl;
+}
+<button class="copy-code-btn"></button></code></pre>
+<h2 id="Considerations" class="common-anchor-header">Considerations<button data-href="#Considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -654,12 +720,12 @@ curl --request POST \
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Включение сопоставления терминов для поля приводит к созданию инвертированного индекса, что требует ресурсов хранения. При принятии решения о включении этой функции учитывайте влияние на хранилище, так как оно зависит от размера текста, количества уникальных токенов и используемого анализатора.</p></li>
-<li><p>После определения анализатора в схеме его настройки становятся постоянными для данной коллекции. Если вы решите, что другой анализатор лучше соответствует вашим потребностям, можно удалить существующую коллекцию и создать новую с нужной конфигурацией анализатора.</p></li>
-<li><p>Правила экранирования в выражениях <code translate="no">filter</code>:</p>
+<li><p>Enabling term matching for a field triggers the creation of an inverted index, which consumes storage resources. Consider storage impact when deciding to enable this feature, as it varies based on text size, unique tokens, and the analyzer used.</p></li>
+<li><p>Once you’ve defined an analyzer in your schema, its settings become permanent for that collection. If you decide that a different analyzer would better suit your needs, you may consider dropping the existing collection and creating a new one with the desired analyzer configuration.</p></li>
+<li><p>Escape rules in <code translate="no">filter</code> expressions:</p>
 <ul>
-<li><p>Символы, заключённые в двойные или одинарные кавычки внутри выражений, интерпретируются как строковые константы. Если строковая константа содержит символы экранирования, эти символы должны быть представлены с помощью экранирующих последовательностей. Например, используйте <code translate="no">\\</code> для представления <code translate="no">\</code>, <code translate="no">\\t</code> для представления табуляции <code translate="no">\t</code> и <code translate="no">\\n</code> для представления символа новой строки.</p></li>
-<li><p>Если строковая константа заключена в одинарные кавычки, одинарная кавычка внутри константы должна представляться как <code translate="no">\\'</code>, тогда как двойная кавычка может представляться либо как <code translate="no">&quot;</code>, либо как <code translate="no">\\&quot;</code>. Пример: <code translate="no">'It\\'s milvus'</code>.</p></li>
-<li><p>Если строковая константа заключена в двойные кавычки, двойная кавычка внутри константы должна быть представлена как <code translate="no">\\&quot;</code>, а одинарная кавычка может быть представлена либо как <code translate="no">'</code>, либо как <code translate="no">\\'</code>. Пример: <code translate="no">&quot;He said \\&quot;Hi\\&quot;&quot;</code>.</p></li>
+<li><p>Characters enclosed in double quotes or single quotes within expressions are interpreted as string constants. If the string constant includes escape characters, the escape characters must be represented with escape sequence. For example, use <code translate="no">\\</code> to represent <code translate="no">\</code>, <code translate="no">\\t</code> to represent a tab <code translate="no">\t</code>, and <code translate="no">\\n</code> to represent a newline.</p></li>
+<li><p>If a string constant is enclosed by single quotes, a single quote within the constant should be represented as <code translate="no">\\'</code> while a double quote can be represented as either <code translate="no">&quot;</code> or <code translate="no">\\&quot;</code>. Example: <code translate="no">'It\\'s milvus'</code>.</p></li>
+<li><p>If a string constant is enclosed by double quotes, a double quote within the constant should be represented as <code translate="no">\\&quot;</code> while a single quote can be represented as either <code translate="no">'</code> or <code translate="no">\\'</code>. Example: <code translate="no">&quot;He said \\&quot;Hi\\&quot;&quot;</code>.</p></li>
 </ul></li>
 </ul>

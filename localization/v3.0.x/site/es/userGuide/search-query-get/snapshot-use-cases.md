@@ -1,10 +1,10 @@
 ---
 id: snapshot-use-cases.md
-title: Casos de uso de instantáneasCompatible with Milvus 3.0.x
-summary: En esta guía encontrarás ejemplos habituales de uso de instantáneas.
+title: Snapshot Use CasesCompatible with Milvus 3.0.x
+summary: 'In this guide, you will find common use cases for snapshots.'
 beta: Milvus 3.0.x
 ---
-<h1 id="Snapshot-Use-Cases" class="common-anchor-header">Casos de uso de instantáneas<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Snapshot-Use-Cases" class="anchor-icon" translate="no">
+<h1 id="Snapshot-Use-Cases" class="common-anchor-header">Snapshot Use Cases<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Snapshot-Use-Cases" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +19,8 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>En esta guía encontrarás casos de uso habituales de las instantáneas.</p>
-<h2 id="Data-backup-and-restoration" class="common-anchor-header">Copia de seguridad y restauración de datos<button data-href="#Data-backup-and-restoration" class="anchor-icon" translate="no">
+    </button></h1><p>In this guide, you will find common use cases for snapshots.</p>
+<h2 id="Data-backup-and-restoration" class="common-anchor-header">Data backup and restoration<button data-href="#Data-backup-and-restoration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,38 +35,38 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Las instantáneas son imágenes rápidas de los datos en un momento determinado, adecuadas para reversiones rápidas o pruebas (de días a semanas). Por su parte, las copias de seguridad son copias independientes y completas que se almacenan por separado para la recuperación ante desastres a largo plazo (de semanas a años) y para una mayor protección frente a un fallo total del almacenamiento.</p>
-<p>La siguiente tabla compara las instantáneas y las copias de seguridad.</p>
+    </button></h2><p>Snapshots are quick, point-in-time images of data, suitable for fast rollbacks or testing (days to weeks). At the same time, backups are independent, complete copies stored separately for long-term disaster recovery (weeks to years) and for better protection against total storage failure.</p>
+<p>The following table compares snapshots and backups.</p>
 <table>
    <tr>
      <th></th>
-     <th><p>Copia de seguridad</p></th>
-     <th><p>Instantánea</p></th>
+     <th><p>Backup</p></th>
+     <th><p>Snapshot</p></th>
    </tr>
    <tr>
-     <td><p>Creación de la copia de seguridad</p></td>
-     <td><p>Copia todos los archivos de datos (proceso que requiere mucho tiempo)</p></td>
-     <td><p>Solo crea metadatos (en milisegundos)</p></td>
+     <td><p>Backup creation</p></td>
+     <td><p>Copies all data files (time-consuming)</p></td>
+     <td><p>Creates metadata only (in milliseconds)</p></td>
    </tr>
    <tr>
-     <td><p>Restauración</p></td>
-     <td><p>Importa los datos y reconstruye los índices</p></td>
-     <td><p>Solo copia los archivos de datos e índices existentes</p></td>
+     <td><p>Restoration</p></td>
+     <td><p>Imports data and rebuilds indexes</p></td>
+     <td><p>Copies existing data and index files only</p></td>
    </tr>
    <tr>
-     <td><p>Rendimiento</p></td>
-     <td><p>Lento y con gran consumo de recursos</p></td>
-     <td><p>Rápido y ligero (en segundos o minutos)</p></td>
+     <td><p>Performance</p></td>
+     <td><p>Slow and resource-intensive</p></td>
+     <td><p>Fast and lightweight (in seconds to minutes)</p></td>
    </tr>
    <tr>
-     <td><p>Impacto en el sistema</p></td>
-     <td><p>Alto uso de E/S y de la CPU</p></td>
-     <td><p>Impacto mínimo</p></td>
+     <td><p>System impact</p></td>
+     <td><p>High I/O and CPU usage</p></td>
+     <td><p>Minimal impact</p></td>
    </tr>
 </table>
-<p>La creación de una instantánea suele tardar milisegundos, y su restauración, entre segundos y minutos, dependiendo del volumen de datos.</p>
-<p>Para obtener más detalles sobre los límites y restricciones de las instantáneas, así como su impacto en el sistema, consulta <a href="/docs/es/snapshots.md">Instantáneas</a>.</p>
-<h2 id="Data-processing-with-external-collections" class="common-anchor-header">Procesamiento de datos con colecciones externas<button data-href="#Data-processing-with-external-collections" class="anchor-icon" translate="no">
+<p>Creating a snapshot usually takes milliseconds, and restoring it takes seconds to minutes, depending on the data volume.</p>
+<p>For more details on snapshot limits, restrictions, and their system impacts, refer to <a href="/docs/es/snapshots.md">Snapshots</a>.</p>
+<h2 id="Data-processing-with-external-collections" class="common-anchor-header">Data processing with external collections<button data-href="#Data-processing-with-external-collections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,9 +81,9 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Las instantáneas pueden proporcionar fuentes estables y puntuales para cargas de trabajo analíticas o de validación. Para las instantáneas de Milvus, utiliza el formato de colección externa « <code translate="no">milvus-table</code> » en lugar de leer los archivos de instantánea directamente como entrada genérica de Spark. Una instantánea de Milvus almacena metadatos de la colección, manifiestos de segmentos, registros de eliminación y estadísticas de claves primarias, por lo que Milvus necesita el JSON de metadatos de la instantánea y el lector <code translate="no">milvus-table</code> para conservar el esquema correcto y la semántica de eliminación.</p>
-<p>Este flujo de trabajo crea una colección externa consultable a partir de los datos de la instantánea. Los datos de la columna principal siguen referenciándose desde la fuente de la instantánea, y la actualización asigna los manifiestos de StorageV3 de origen a los segmentos externos de destino.</p>
-<h3 id="Step-1-Get-the-snapshot-metadata-path" class="common-anchor-header">Paso 1: Obtener la ruta de los metadatos de la instantánea<button data-href="#Step-1-Get-the-snapshot-metadata-path" class="anchor-icon" translate="no">
+    </button></h2><p>Snapshots can provide stable, point-in-time sources for analytical or validation workloads. For Milvus snapshots, use the <code translate="no">milvus-table</code> external collection format instead of reading snapshot files directly as generic Spark input. A Milvus snapshot stores collection metadata, segment manifests, delete logs, and primary-key statistics, so Milvus needs the snapshot metadata JSON and the <code translate="no">milvus-table</code> reader to preserve the correct schema and delete semantics.</p>
+<p>This workflow creates a queryable external collection over the snapshot data. The main column data remains referenced from the snapshot source, and refresh maps the source StorageV3 manifests into target external segments.</p>
+<h3 id="Step-1-Get-the-snapshot-metadata-path" class="common-anchor-header">Step 1: Get the snapshot metadata path<button data-href="#Step-1-Get-the-snapshot-metadata-path" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,7 +98,7 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Crea o selecciona una instantánea de una colección normal de Milvus y, a continuación, descríbela para obtener su ubicación en el almacenamiento de objetos.</p>
+    </button></h3><p>Create or choose a snapshot from a normal Milvus collection, and then describe it to get its object-storage location.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
 
 client = MilvusClient(
@@ -114,7 +114,7 @@ snapshot_info = client.describe_snapshot(
 
 external_source = <span class="hljs-string">f&quot;s3://bucket/<span class="hljs-subst">{snapshot_info.s3_location}</span>&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Create-and-refresh-a-milvus-table-external-collection" class="common-anchor-header">Paso 2: Crear y actualizar una colección externa de « <code translate="no">milvus-table</code> »<button data-href="#Step-2-Create-and-refresh-a-milvus-table-external-collection" class="anchor-icon" translate="no">
+<h3 id="Step-2-Create-and-refresh-a-milvus-table-external-collection" class="common-anchor-header">Step 2: Create and refresh a <code translate="no">milvus-table</code> external collection<button data-href="#Step-2-Create-and-refresh-a-milvus-table-external-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,7 +129,7 @@ external_source = <span class="hljs-string">f&quot;s3://bucket/<span class="hljs
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Crea una colección externa cuyo esquema coincida con el de la colección de origen de la instantánea. Establece « <code translate="no">external_spec.format</code> » en « <code translate="no">&quot;milvus-table&quot;</code> » y configura el campo « <code translate="no">external_field</code> » de cada campo de datos de destino con el nombre del campo de origen correspondiente.</p>
+    </button></h3><p>Create an external collection whose schema matches the snapshot source collection. Set <code translate="no">external_spec.format</code> to <code translate="no">&quot;milvus-table&quot;</code>, and set each target data field’s <code translate="no">external_field</code> to the corresponding source field name.</p>
 <pre><code translate="no" class="language-python">schema = client.create_schema(
     external_source=external_source,
     external_spec=<span class="hljs-string">&quot;&quot;&quot;{
@@ -165,4 +165,4 @@ job_id = client.refresh_external_collection(
     collection_name=<span class="hljs-string">&quot;snapshot_external_collection&quot;</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Una vez completada la actualización, puede crear índices, cargar la colección externa y ejecutar operaciones de búsqueda o consulta en la vista respaldada por la instantánea.</p>
+<p>After refresh completes, you can create indexes, load the external collection, and run search or query operations against the snapshot-backed view.</p>

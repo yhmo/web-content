@@ -2,10 +2,10 @@
 id: sparse-inverted-index.md
 title: SPARSE_INVERTED_INDEX
 summary: >-
-  Индекс SPARSE_INVERTED_INDEX - это тип индекса, используемый Milvus для
-  эффективного хранения и поиска разреженных векторов. Этот тип индекса
-  использует принципы инвертированного индексирования для создания
-  высокоэффективной структуры поиска для разреженных данных.
+  The SPARSE_INVERTED_INDEX index is an index type used by Milvus to efficiently
+  store and search sparse vectors. This index type leverages the principles of
+  inverted indexing to create a highly efficient search structure for sparse
+  data.
 ---
 <h1 id="SPARSEINVERTEDINDEX" class="common-anchor-header">SPARSE_INVERTED_INDEX<button data-href="#SPARSEINVERTEDINDEX" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -22,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Индекс <code translate="no">SPARSE_INVERTED_INDEX</code> - это тип индекса, используемый Milvus для эффективного хранения и поиска разреженных векторов. Этот тип индекса использует принципы инвертированного индексирования для создания высокоэффективной структуры поиска для разреженных данных. Для получения дополнительной информации см. раздел <a href="/docs/ru/inverted.md">ИНВЕРТИРОВАННЫЙ</a>.</p>
-<h2 id="Build-index" class="common-anchor-header">Построение индекса<button data-href="#Build-index" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">SPARSE_INVERTED_INDEX</code> index is an index type used by Milvus to efficiently store and search sparse vectors. This index type leverages the principles of inverted indexing to create a highly efficient search structure for sparse data. For more information, refer to <a href="/docs/ru/v2.6.x/inverted.md">INVERTED</a>.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,7 +38,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Чтобы построить индекс <code translate="no">SPARSE_INVERTED_INDEX</code> на разреженном векторном поле в Milvus, используйте метод <code translate="no">add_index()</code>, указав <code translate="no">index_type</code>, <code translate="no">metric_type</code> и дополнительные параметры для индекса.</p>
+    </button></h2><p>To build a <code translate="no">SPARSE_INVERTED_INDEX</code> index on a sparse vector field in Milvus, use the <code translate="no">add_index()</code> method, specifying the <code translate="no">index_type</code>, <code translate="no">metric_type</code>, and additional parameters for the index.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -52,25 +52,25 @@ index_params.add_index(
     params={<span class="hljs-string">&quot;inverted_index_algo&quot;</span>: <span class="hljs-string">&quot;DAAT_MAXSCORE&quot;</span>}, <span class="hljs-comment"># Algorithm used for building and querying the index</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>В данной конфигурации:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: Тип индекса, который будет построен. В этом примере задайте значение <code translate="no">SPARSE_INVERTED_INDEX</code>.</p></li>
-<li><p><code translate="no">metric_type</code>: Метрика, используемая для расчета сходства между разреженными векторами. Допустимые значения:</p>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">SPARSE_INVERTED_INDEX</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The metric used to calculate similarity between sparse vectors. Valid Values:</p>
 <ul>
-<li><p><code translate="no">IP</code> (Внутреннее произведение): Измеряет сходство с помощью точечного произведения.</p></li>
-<li><p><code translate="no">BM25</code>: Обычно используется для полнотекстового поиска, фокусируясь на текстовом сходстве.</p>
-<p>Более подробную информацию см. в разделе <a href="/docs/ru/metric.md">Типы метрик</a> и <a href="/docs/ru/full-text-search.md">полнотекстовый поиск</a>.</p></li>
+<li><p><code translate="no">IP</code> (Inner Product): Measures similarity using dot product.</p></li>
+<li><p><code translate="no">BM25</code>: Typically used for full-text search, focusing on textual similarity.</p>
+<p>For further details, refer to <a href="/docs/ru/v2.6.x/metric.md">Metric Types</a> and <a href="/docs/ru/v2.6.x/full-text-search.md">Full Text Search</a>.</p></li>
 </ul></li>
-<li><p><code translate="no">params.inverted_index_algo</code>: Алгоритм, используемый для построения и запроса индекса. Допустимые значения:</p>
+<li><p><code translate="no">params.inverted_index_algo</code>: The algorithm used for building and querying the index. Valid values:</p>
 <ul>
-<li><p><code translate="no">&quot;DAAT_MAXSCORE&quot;</code> (по умолчанию): Оптимизированная обработка запросов Document-at-a-Time (DAAT) с использованием алгоритма MaxScore. MaxScore обеспечивает лучшую производительность при больших значениях <em>k</em> или запросах с большим количеством терминов, пропуская термины и документы, которые, вероятно, будут иметь минимальное влияние. Это достигается путем разделения терминов на существенные и несущественные группы на основе их максимальных баллов влияния, фокусируясь на терминах, которые могут внести вклад в результаты top-k.</p></li>
-<li><p><code translate="no">&quot;DAAT_WAND&quot;</code>: Оптимизированная обработка запросов DAAT с помощью алгоритма WAND. WAND оценивает меньше документов, попавших в запрос, за счет использования максимальных баллов влияния для пропуска неконкурентных документов, но при этом имеет более высокие накладные расходы на каждый запрос. Это делает WAND более эффективным для запросов с небольшими значениями <em>k</em> или коротких запросов, где пропуск документов более целесообразен.</p></li>
-<li><p><code translate="no">&quot;TAAT_NAIVE&quot;</code>: Обработка запросов с использованием базового термина (TAAT). Хотя он медленнее, чем <code translate="no">DAAT_MAXSCORE</code> и <code translate="no">DAAT_WAND</code>, <code translate="no">TAAT_NAIVE</code> обладает уникальным преимуществом. В отличие от алгоритмов DAAT, использующих кэшированные оценки максимального воздействия, которые остаются статичными независимо от изменений глобального параметра коллекции (avgdl), <code translate="no">TAAT_NAIVE</code> динамически адаптируется к таким изменениям.</p></li>
+<li><p><code translate="no">&quot;DAAT_MAXSCORE&quot;</code> (default): Optimized Document-at-a-Time (DAAT) query processing using the MaxScore algorithm. MaxScore provides better performance for high <em>k</em> values or queries with many terms by skipping terms and documents likely to have minimal impact. It achieves this by partitioning terms into essential and non-essential groups based on their maximum impact scores, focusing on terms that can contribute to the top-k results.</p></li>
+<li><p><code translate="no">&quot;DAAT_WAND&quot;</code>: Optimized DAAT query processing using the WAND algorithm. WAND evaluates fewer hit documents by leveraging maximum impact scores to skip non-competitive documents, but it has a higher per-hit overhead. This makes WAND more efficient for queries with small <em>k</em> values or short queries, where skipping is more feasible.</p></li>
+<li><p><code translate="no">&quot;TAAT_NAIVE&quot;</code>: Basic Term-at-a-Time (TAAT) query processing. While it is slower compared to <code translate="no">DAAT_MAXSCORE</code> and <code translate="no">DAAT_WAND</code>, <code translate="no">TAAT_NAIVE</code> offers a unique advantage. Unlike DAAT algorithms, which use cached maximum impact scores that remain static regardless of changes to the global collection parameter (avgdl), <code translate="no">TAAT_NAIVE</code> dynamically adapts to such changes.</p></li>
 </ul>
-<p>Чтобы узнать больше о параметрах построения, доступных для индекса <code translate="no">SPARSE_INVERTED_INDEX</code>, обратитесь к разделу <a href="/docs/ru/sparse-inverted-index.md#Index-building-params">Параметры построения индекса</a>.</p></li>
+<p>To learn more building parameters available for the <code translate="no">SPARSE_INVERTED_INDEX</code> index, refer to <a href="/docs/ru/v2.6.x/sparse-inverted-index.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>После настройки параметров индекса вы можете создать индекс, используя метод <code translate="no">create_index()</code> напрямую или передавая параметры индекса в метод <code translate="no">create_collection</code>. Подробности см. в разделе <a href="/docs/ru/create-collection.md">Создание коллекции</a>.</p>
-<h2 id="Search-on-index" class="common-anchor-header">Поиск по индексу<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>Once the index parameters are configured, you can create the index by using the <code translate="no">create_index()</code> method directly or passing the index params in the <code translate="no">create_collection</code> method. For details, refer to <a href="/docs/ru/v2.6.x/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -85,7 +85,7 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>После создания индекса и вставки сущностей можно выполнять поиск по сходству в индексе.</p>
+    </button></h2><p>Once the index is built and entities are inserted, you can perform similarity searches on the index.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Prepare the query vector</span>
 query_vector = [{<span class="hljs-number">1</span>: <span class="hljs-number">0.2</span>, <span class="hljs-number">50</span>: <span class="hljs-number">0.4</span>, <span class="hljs-number">1000</span>: <span class="hljs-number">0.7</span>}]
 
@@ -96,8 +96,8 @@ res = MilvusClient.search(
     limit=<span class="hljs-number">3</span>,  <span class="hljs-comment"># TopK results to return</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Чтобы узнать о параметрах поиска, доступных для индекса <code translate="no">SPARSE_INVERTED_INDEX</code>, обратитесь к разделу <a href="/docs/ru/ivf-flat.md#share-KDWodFEx6oCm2yxgEUAcXaUDnwg">Параметры поиска по индексу</a>.</p>
-<h2 id="Index-params" class="common-anchor-header">Параметры индекса<button data-href="#Index-params" class="anchor-icon" translate="no">
+<p>To learn more search parameters available for the <code translate="no">SPARSE_INVERTED_INDEX</code> index, refer to <a href="/docs/ru/v2.6.x/ivf-flat.md#share-KDWodFEx6oCm2yxgEUAcXaUDnwg">Index-specific search params</a>.</p>
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,8 +112,8 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В этом разделе представлен обзор параметров, используемых для построения индекса и выполнения поиска по индексу.</p>
-<h3 id="Index-building-params" class="common-anchor-header">Параметры построения индекса<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>This section provides an overview of the parameters used for building an index and performing searches on the index.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -128,22 +128,22 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>В следующей таблице перечислены параметры, которые могут быть настроены в <code translate="no">params</code> при <a href="/docs/ru/sparse-inverted-index.md#Build-index">построении индекса</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/ru/v2.6.x/sparse-inverted-index.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
-     <th><p>Параметр</p></th>
-     <th><p>Описание</p></th>
-     <th><p>Диапазон значений</p></th>
-     <th><p>Предложение по настройке</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">inverted_index_algo</code></p></td>
-     <td><p>Алгоритм, используемый при построении индекса и запросов к нему. Он определяет, как индекс обрабатывает запросы.</p></td>
-     <td><p><code translate="no">"DAAT_MAXSCORE"</code> (по умолчанию), <code translate="no">"DAAT_WAND"</code>, <code translate="no">"TAAT_NAIVE"</code></p></td>
-     <td><p>Используйте <code translate="no">"DAAT_MAXSCORE"</code> для сценариев с большими значениями k или запросов с большим количеством терминов, которые могут выиграть от пропуска неконкурентных документов. </p><p>Выберите <code translate="no">"DAAT_WAND"</code> для запросов с небольшими значениями k или коротких запросов, чтобы использовать более эффективный пропуск документов.</p><p>Используйте <code translate="no">"TAAT_NAIVE"</code>, если требуется динамическая подстройка к изменениям коллекции (например, avgdl).</p></td>
+     <td><p>The algorithm used for building and querying the index. It determines how the index processes queries.</p></td>
+     <td><p><code translate="no">"DAAT_MAXSCORE"</code> (default), <code translate="no">"DAAT_WAND"</code>, <code translate="no">"TAAT_NAIVE"</code></p></td>
+     <td><p>Use <code translate="no">"DAAT_MAXSCORE"</code> for scenarios with high k values or queries with many terms, which can benefit from skipping non-competitive documents. </p><p>Choose <code translate="no">"DAAT_WAND"</code> for queries with small k values or short queries to leverage more efficient skipping.</p><p>Use <code translate="no">"TAAT_NAIVE"</code> if dynamic adjustment to collection changes (e.g., avgdl) is required.</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">Специфические для индекса параметры поиска<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -158,18 +158,18 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>В следующей таблице перечислены параметры, которые могут быть настроены в <code translate="no">search_params.params</code> при <a href="/docs/ru/sparse-inverted-index.md#Search-on-index">поиске по индексу</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/ru/v2.6.x/sparse-inverted-index.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
-     <th><p>Параметр</p></th>
-     <th><p>Описание</p></th>
-     <th><p>Диапазон значений</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
      <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">drop_ratio_search</code></p></td>
-     <td><p>Доля наименьших значений, которые следует игнорировать при поиске, что помогает уменьшить шум.</p></td>
-     <td><p>Фракция от 0,0 до 1,0 (например, 0,2 игнорирует 20 % наименьших значений).</p></td>
-     <td><p>Настройте этот параметр в зависимости от разреженности и уровня шума векторов запроса.</p><p>Этот параметр управляет долей значений малой величины, отбрасываемых при поиске. Увеличение этого значения (например, до <code translate="no">0.2</code>) может уменьшить шум и сфокусировать поиск на более значимых компонентах, что может повысить точность и эффективность. Однако отбрасывание большего количества значений может также снизить запоминаемость за счет исключения потенциально значимых сигналов. Выберите значение, которое сбалансирует запоминание и точность для вашей рабочей нагрузки.</p></td>
+     <td><p>The proportion of the smallest values to ignore during search, helping to reduce noise.</p></td>
+     <td><p>Fraction between 0.0 and 1.0 (e.g., 0.2 ignores the smallest 20% of values)</p></td>
+     <td><p>Tune this parameter based on the sparsity and noise level of your query vectors.</p><p>This parameter controls the proportion of low-magnitude values dropped during search. Increasing this value (for example, to <code translate="no">0.2</code>) can reduce noise and focus the search on more significant components, which may improve precision and efficiency. However, dropping more values can also reduce recall by excluding potentially relevant signals. Choose a value that balances recall and accuracy for your workload.</p></td>
    </tr>
 </table>

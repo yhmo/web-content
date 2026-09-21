@@ -1,7 +1,9 @@
 ---
 id: jieba-tokenizer.md
 title: Jieba
-summary: jieba 토큰화기는 중국어 텍스트를 구성 단어로 분해하여 처리합니다.
+summary: >-
+  The jieba tokenizer processes Chinese text by breaking it down into its
+  component words.
 ---
 <h1 id="Jieba" class="common-anchor-header">Jieba<button data-href="#Jieba" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -18,11 +20,11 @@ summary: jieba 토큰화기는 중국어 텍스트를 구성 단어로 분해하
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">jieba</code> 토큰화 도구는 중국어 텍스트를 구성 단어로 분해하여 처리합니다.</p>
+    </button></h1><p>The <code translate="no">jieba</code> tokenizer processes Chinese text by breaking it down into its component words.</p>
 <div class="alert note">
-<p><code translate="no">jieba</code> 토큰화 도구는 출력에서 구두점을 별도의 토큰으로 보존합니다. 예를 들어 <code translate="no">&quot;你好！世界。&quot;</code> 은 <code translate="no">[&quot;你好&quot;, &quot;！&quot;, &quot;世界&quot;, &quot;。&quot;]</code> 이 됩니다. 이러한 독립형 구두점 토큰을 제거하려면 <a href="/docs/ko/removepunct-filter.md"><code translate="no">removepunct</code></a> 필터를 사용합니다.</p>
+<p>The <code translate="no">jieba</code> tokenizer preserves punctuation marks as separate tokens in the output. For example, <code translate="no">&quot;你好！世界。&quot;</code> becomes <code translate="no">[&quot;你好&quot;, &quot;！&quot;, &quot;世界&quot;, &quot;。&quot;]</code>. To remove these standalone punctuation tokens, use the <a href="/docs/ko/removepunct-filter.md"><code translate="no">removepunct</code></a> filter.</p>
 </div>
-<h2 id="Configuration" class="common-anchor-header">구성<button data-href="#Configuration" class="anchor-icon" translate="no">
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,8 +39,8 @@ summary: jieba 토큰화기는 중국어 텍스트를 구성 단어로 분해하
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus는 <code translate="no">jieba</code> 토큰화기에 대해 단순 구성과 사용자 정의 구성이라는 두 가지 구성 방식을 지원합니다.</p>
-<h3 id="Simple-configuration" class="common-anchor-header">단순 구성<button data-href="#Simple-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus supports two configuration approaches for the <code translate="no">jieba</code> tokenizer: a simple configuration and a custom configuration.</p>
+<h3 id="Simple-configuration" class="common-anchor-header">Simple configuration<button data-href="#Simple-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,9 +55,14 @@ summary: jieba 토큰화기는 중국어 텍스트를 구성 단어로 분해하
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>단순 구성의 경우 토큰화기를 <code translate="no">&quot;jieba&quot;</code> 로 설정하기만 하면 됩니다. 예를 들어</p>
+    </button></h3><p>With the simple configuration, you only need to set the tokenizer to <code translate="no">&quot;jieba&quot;</code>. For example:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Simple configuration: only specifying the tokenizer name</span>
 analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,  <span class="hljs-comment"># Use the default settings: dict=[&quot;_default_&quot;], mode=&quot;search&quot;, hmm=True</span>
@@ -75,9 +82,14 @@ analyzerParams=<span class="hljs-string">&#x27;{
   &quot;tokenizer&quot;: &quot;jieba&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>이 간단한 구성은 다음 사용자 지정 구성과 동일합니다:</p>
+<p>This simple configuration is equivalent to the following custom configuration:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Custom configuration equivalent to the simple configuration above</span>
 analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,          <span class="hljs-comment"># Tokenizer type, fixed as &quot;jieba&quot;</span>
@@ -98,8 +110,8 @@ analyzerParams.put(<span class="hljs-string">&quot;hmm&quot;</span>, <span class
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>매개변수에 대한 자세한 내용은 <a href="/docs/ko/jieba-tokenizer.md#Custom-configuration">사용자 지정 구성을</a> 참조하세요.</p>
-<h3 id="Custom-configuration" class="common-anchor-header">사용자 지정 구성<button data-href="#Custom-configuration" class="anchor-icon" translate="no">
+<p>For details on parameters, refer to <a href="/docs/ko/jieba-tokenizer.md#Custom-configuration">Custom configuration</a>.</p>
+<h3 id="Custom-configuration" class="common-anchor-header">Custom configuration<button data-href="#Custom-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -114,9 +126,14 @@ analyzerParams.put(<span class="hljs-string">&quot;hmm&quot;</span>, <span class
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>더 많은 제어를 위해 사용자 지정 사전을 지정하고, 세분화 모드를 선택하고, 숨겨진 마르코프 모델(HMM)을 활성화 또는 비활성화할 수 있는 사용자 지정 구성을 제공할 수 있습니다. 예를 들어</p>
+    </button></h3><p>For more control, you can provide a custom configuration that allows you to specify a custom dictionary, select the segmentation mode, and enable or disable the Hidden Markov Model (HMM). For example:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Custom configuration with user-defined settings</span>
 analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
@@ -151,34 +168,34 @@ analyzerParams.put(<span class="hljs-string">&quot;tokenizer&quot;</span>, <span
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>파라미터</p></th>
-     <th><p>설명</p></th>
-     <th><p>기본값</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Default Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">type</code></p></td>
-     <td><p>토큰화기의 유형입니다. <code translate="no">"jieba"</code> 로 고정되어 있습니다.</p></td>
+     <td><p>The type of tokenizer. This is fixed to <code translate="no">"jieba"</code>.</p></td>
      <td><p><code translate="no">"jieba"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">dict</code></p></td>
-     <td><p>분석기가 어휘 소스로 로드할 사전 목록입니다. 기본 제공 옵션:</p><ul><li><p><code translate="no">"_default_"</code>: 엔진에 내장된 중국어 간체 사전을 로드합니다. 자세한 내용은 <a href="https://github.com/messense/jieba-rs/blob/v0.6.8/src/data/dict.txt">dict.txt를</a> 참조하세요.</p></li><li><p><code translate="no">"_extend_default_"</code>: <code translate="no">"_default_"</code> 의 모든 항목과 추가 중국어 번체 보충 자료를 로드합니다. 자세한 내용은 <a href="https://github.com/milvus-io/milvus/blob/v2.5.11/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/data/jieba/dict.txt.big">dict.txt.big을</a> 참조하세요.</p><p>기본 제공 사전과 사용자 지정 사전을 얼마든지 혼합할 수도 있습니다. 예: <code translate="no">["_default_", "结巴分词器"]</code>.</p></li></ul></td>
+     <td><p>A list of dictionaries that the analyzer will load as its vocabulary source. Built-in options:</p><ul><li><p><code translate="no">"_default_"</code>: Loads the engine's built‑in Simplified‑Chinese dictionary. For details, refer to <a href="https://github.com/messense/jieba-rs/blob/v0.6.8/src/data/dict.txt">dict.txt</a>.</p></li><li><p><code translate="no">"_extend_default_"</code>: Loads everything in <code translate="no">"_default_"</code> plus an additional Traditional‑Chinese supplement. For details, refer to <a href="https://github.com/milvus-io/milvus/blob/v2.5.11/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/data/jieba/dict.txt.big">dict.txt.big</a>.</p><p>You can also mix the built‑in dictionary with any number of custom dictionaries. Example: <code translate="no">["_default_", "结巴分词器"]</code>.</p></li></ul></td>
      <td><p><code translate="no">["_default_"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">mode</code></p></td>
-     <td><p>세분화 모드. 사용 가능한 값</p><ul><li><p><code translate="no">"exact"</code>: 가장 정확한 방식으로 문장을 세분화하여 텍스트 분석에 이상적입니다.</p></li><li><p><code translate="no">"search"</code>: 정확한 모드를 기반으로 긴 단어를 더 세분화하여 기억력을 향상시켜 검색 엔진 토큰화에 적합합니다.</p><p>자세한 내용은 <a href="https://github.com/fxsjy/jieba">Jieba 깃허브 프로젝트를</a> 참조하세요.</p></li></ul></td>
+     <td><p>The segmentation mode. Possible values:</p><ul><li><p><code translate="no">"exact"</code>: Tries to segment the sentence in the most precise manner, making it ideal for text analysis.</p></li><li><p><code translate="no">"search"</code>: Builds on exact mode by further breaking down long words to improve recall, making it suitable for search engine tokenization.</p><p>For more information, refer to <a href="https://github.com/fxsjy/jieba">Jieba GitHub Project</a>.</p></li></ul></td>
      <td><p><code translate="no">"search"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">hmm</code></p></td>
-     <td><p>사전에서 찾을 수 없는 단어의 확률적 세분화를 위해 숨겨진 마르코프 모델(HMM)을 활성화할지 여부를 나타내는 부울 플래그입니다.</p></td>
+     <td><p>A boolean flag indicating whether to enable the Hidden Markov Model (HMM) for probabilistic segmentation of words not found in the dictionary.</p></td>
      <td><p><code translate="no">true</code></p></td>
    </tr>
 </table>
-<p><code translate="no">dict</code> 을 통해 인라이닝하는 대신 외부 파일에서 대용량 사용자 정의 어휘를 로드하려면 아래의 <a href="/docs/ko/jieba-tokenizer.md#Custom-configuration-with-a-dictionary-file">사전 파일을 사용한 사용자 정의 구성을</a> 참조하세요.</p>
-<p><code translate="no">analyzer_params</code> 을 정의한 후 컬렉션 스키마를 정의할 때 <code translate="no">VARCHAR</code> 필드에 적용할 수 있습니다. 이렇게 하면 Milvus가 효율적인 토큰화 및 필터링을 위해 지정된 분석기를 사용하여 해당 필드의 텍스트를 처리할 수 있습니다. 자세한 내용은 <a href="/docs/ko/analyzer-overview.md#Example-use">사용 예시를</a> 참조하세요.</p>
-<h3 id="Custom-configuration-with-a-dictionary-file--Milvus-30x" class="common-anchor-header">사전 파일을 사용한 사용자 지정 구성<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Custom-configuration-with-a-dictionary-file--Milvus-30x" class="anchor-icon" translate="no">
+<p>To load a large custom vocabulary from an external file instead of inlining it via <code translate="no">dict</code>, see <a href="/docs/ko/jieba-tokenizer.md#Custom-configuration-with-a-dictionary-file">Custom configuration with a dictionary file</a> below.</p>
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/ko/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h3 id="Custom-configuration-with-a-dictionary-file" class="common-anchor-header">Custom configuration with a dictionary file<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Custom-configuration-with-a-dictionary-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -193,14 +210,19 @@ analyzerParams.put(<span class="hljs-string">&quot;tokenizer&quot;</span>, <span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>도메인 용어집, 제품 용어집 또는 고유 명사 목록과 같은 대규모 사용자 정의 어휘의 경우, 단어를 파일에 저장하고 파일을 원격 파일 리소스로 등록한 다음 <code translate="no">extra_dict_file</code> 매개 변수를 통해 토큰화기에서 해당 파일을 참조하세요. 분석기는 이러한 단어를 기본 제공 사전 위에 있는 어휘집에 로드합니다.</p>
-<p>파일은 한 줄에 하나의 용어가 포함된 일반 UTF-8 텍스트입니다. 예를 들어</p>
+    </button></h3><p>For large custom vocabularies — domain glossaries, product terminology, or proper-noun lists — store the words in a file and register the file as a remote file resource, then reference it from the tokenizer via the <code translate="no">extra_dict_file</code> parameter. The analyzer loads these words into its vocabulary on top of the built-in dictionary.</p>
+<p>The file is plain UTF‑8 text with one term per line. For example:</p>
 <pre><code translate="no" class="language-plaintext">结巴分词器
 向量数据库
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus 클러스터가 사용하도록 구성된 개체 저장소에 파일을 업로드한 다음 등록합니다:</p>
+<p>Upload the file to the object store that your Milvus cluster is configured to use, then register it:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -219,9 +241,14 @@ client.add_file_resource(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">extra_dict_file</code> 을 통해 토큰화기에서 등록된 리소스를 참조합니다:</p>
+<p>Reference the registered resource in the tokenizer via <code translate="no">extra_dict_file</code>:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">노드JS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
         <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
@@ -247,27 +274,27 @@ client.run_analyzer([<span class="hljs-string">&quot;milvus结巴分词器中文
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">extra_dict_file</code> 파라미터는 다음과 같은 필드를 가진 객체를 허용합니다:</p>
+<p>The <code translate="no">extra_dict_file</code> parameter accepts an object with the following fields:</p>
 <table>
    <tr>
-     <th><p>필드</p></th>
-     <th><p>설명</p></th>
+     <th><p>Field</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">type</code></p></td>
-     <td><p>리소스 유형. <code translate="no">add_file_resource</code> 을 통해 등록된 파일의 경우 <code translate="no">"remote"</code> 을 사용합니다. 자체 호스팅 배포에 사용되는 <code translate="no">"local"</code> 변형에 대해서는 <a href="/docs/ko/manage-file-resources.md">파일 리소스 관리를</a> 참조하세요.</p></td>
+     <td><p>The resource type. Use <code translate="no">"remote"</code> for a file registered via <code translate="no">add_file_resource</code>. For the <code translate="no">"local"</code> variant used in self-hosted deployments, refer to <a href="/docs/ko/manage-file-resources.md">Manage File Resources</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">resource_name</code></p></td>
-     <td><p>파일이 <code translate="no">add_file_resource</code> 에 등록될 때 사용된 이름입니다.</p></td>
+     <td><p>The name used when the file was registered with <code translate="no">add_file_resource</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">file_name</code></p></td>
-     <td><p>등록된 리소스의 객체 저장소 경로 중 파일 이름 부분(예: 리소스가 <code translate="no">path="file/zh_terms.txt"</code> 에 등록된 경우 <code translate="no">"zh_terms.txt"</code> )입니다.</p></td>
+     <td><p>The filename portion of the registered resource's object-store path (for example, <code translate="no">"zh_terms.txt"</code> if the resource was registered with <code translate="no">path="file/zh_terms.txt"</code>).</p></td>
    </tr>
 </table>
-<p><code translate="no">extra_dict_file</code> 을 통해 추가된 단어는 기본 제공 사전과 병합되므로 jieba의 세분화 알고리즘은 기존 항목과 함께 해당 단어를 보게 됩니다. 특정 용어가 독립형 토큰으로 표시되는지 여부는 jieba의 확률 가중치 DAG 선택에 따라 달라집니다. <code translate="no">向量数据库</code> 같은 긴 사용자 정의 용어는 기본 제공 사전에서 더 짧은 항목의 빈도가 더 높은 경우 <code translate="no">向量</code> + <code translate="no">数据库</code> 로 분할될 수 있습니다.</p>
-<h2 id="Examples" class="common-anchor-header">예제<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>Words added via <code translate="no">extra_dict_file</code> are merged with the built-in dictionary, so jieba’s segmentation algorithm sees them alongside existing entries. Whether any specific term surfaces as a standalone token depends on jieba’s probability-weighted DAG selection — a long custom term such as <code translate="no">向量数据库</code> may still be split into <code translate="no">向量</code> + <code translate="no">数据库</code> if those shorter entries have higher frequencies in the built-in dictionary.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -282,8 +309,8 @@ client.run_analyzer([<span class="hljs-string">&quot;milvus结巴分词器中文
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>분석기 구성을 컬렉션 스키마에 적용하기 전에 <code translate="no">run_analyzer</code> 메서드를 사용하여 그 동작을 확인하세요.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">분석기 구성<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -299,7 +326,12 @@ client.run_analyzer([<span class="hljs-string">&quot;milvus结巴分词器中文
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
         <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
@@ -330,7 +362,7 @@ analyzerParams.put(<span class="hljs-string">&quot;tokenizer&quot;</span>, <span
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">다음을 사용하여 확인 <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -346,7 +378,12 @@ analyzerParams.put(<span class="hljs-string">&quot;tokenizer&quot;</span>, <span
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
 )
@@ -415,7 +452,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">예상 출력<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

@@ -2,8 +2,8 @@
 id: faiss.md
 title: FAISSCompatible with Milvus 3.0.0+
 summary: >-
-  Gunakan fitur "FAISS index passthrough" untuk menyediakan string indeks FAISS
-  dan parameter pencarian khusus pabrik di Milvus 3.0.
+  Use FAISS index passthrough to supply Faiss index-factory strings and
+  factory-specific search parameters in Milvus 3.0.
 beta: Milvus 3.0.0+
 ---
 <h1 id="FAISS" class="common-anchor-header">FAISS<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#FAISS" class="anchor-icon" translate="no">
@@ -21,12 +21,12 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Tipe indeks ` <code translate="no">FAISS</code> ` adalah fitur tingkat ahli yang tersedia di Milvus 3.0.0 dan versi selanjutnya. Fitur ini memungkinkan Anda untuk menyediakan <a href="https://github.com/facebookresearch/faiss/wiki/The-index-factory">string pembuat indeks Faiss</a> sebagai pengganti pemilihan tipe indeks Milvus yang tetap.</p>
-<p>Gunakan " <code translate="no">FAISS</code> " jika Anda sudah memiliki resep Faiss yang teruji dan memerlukan kendali langsung atas komposisinya. Untuk resep umum yang memiliki tipe indeks Milvus khusus, disarankan untuk menggunakan tipe khusus tersebut karena memiliki kontrak parameter yang stabil dan terdokumentasi.</p>
+    </button></h1><p>The <code translate="no">FAISS</code> index type is an expert-level passthrough available in Milvus 3.0.0 and later. It lets you supply a <a href="https://github.com/facebookresearch/faiss/wiki/The-index-factory">Faiss index-factory string</a> instead of selecting a fixed Milvus index type.</p>
+<p>Use <code translate="no">FAISS</code> when you already have a tested Faiss recipe and need direct control over its composition. For common recipes with a dedicated Milvus index type, prefer the dedicated type because it has a stable, documented parameter contract.</p>
 <div class="alert note">
-<p>String pabrik yang diterima oleh Faiss hulu tidak secara otomatis didukung oleh Milvus. Kompatibilitas bergantung pada tipe bidang vektor, metrik, dimensi, modul Faiss yang dikompilasi ke dalam gambar Milvus, dan apakah indeks yang dihasilkan mendukung operasi yang dibutuhkan Milvus.</p>
+<p>A factory string accepted by upstream Faiss is not automatically supported by Milvus. Compatibility depends on the vector field type, metric, dimension, Faiss modules compiled into the Milvus image, and whether the resulting index supports the operations that Milvus requires.</p>
 </div>
-<h2 id="Limits" class="common-anchor-header">Batasan<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,18 +42,18 @@ beta: Milvus 3.0.0+
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><code translate="no">FAISS</code> mendukung bidang <code translate="no">FLOAT_VECTOR</code> dan <code translate="no">BINARY_VECTOR</code>. Milvus tidak mendukung bidang <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">INT8_VECTOR</code>, atau <code translate="no">SPARSE_FLOAT_VECTOR</code>.</p></li>
-<li><p>Adaptor generik <code translate="no">FAISS</code> berjalan di CPU. Ini bukan jenis indeks Faiss GPU.</p></li>
-<li><p>Parameter build ` <code translate="no">faiss_index_name</code> ` wajib diisi. Milvus meneruskan nilainya ke Faiss tanpa mengubah resep menjadi tipe indeks Milvus khusus.</p></li>
-<li><p>Parameter build dan pencarian bersifat spesifik per pabrik. Parameter yang didukung oleh satu pabrik dapat ditolak oleh pabrik lainnya.</p></li>
-<li><p>Penyaringan skalar memerlukan indeks Faiss yang mendasarinya untuk mendukung pemilih ID. Pengujian Milvus 3.0.0 mencakup pencarian yang disaring dengan pabrik float <code translate="no">Flat</code>, <code translate="no">IVF64,Flat</code>, dan <code translate="no">HNSW16,Flat</code>. Jangan berasumsi bahwa setiap pabrik mendukung filter atau bahwa indeks biner <code translate="no">FAISS</code> mendukung penyaringan skalar.</p></li>
-<li><p>Iterator pencarian tidak didukung.</p></li>
-<li><p>Adaptor ini tidak menyediakan pengambilan vektor mentah.</p></li>
-<li><p>Dukungan pencarian rentang bergantung pada pabrik. Float <code translate="no">Flat</code> memiliki cakupan rilis. Jangan gunakan pencarian rentang dengan indeks biner <code translate="no">FAISS</code>.</p></li>
-<li><p>Sebuah factory dapat dibangun dengan sukses tetapi tetap menolak beberapa operasi pencarian Milvus. Misalnya, standalone <code translate="no">PQ8x4</code> menolak selektor yang digunakan oleh pencarian yang difilter skalar. Validasi penggunaan tanpa filter secara terpisah.</p></li>
-<li><p>Di Milvus 3.0.0, validasi skor <code translate="no">COSINE</code> dan ambang batas pencarian rentang setelah pemuatan ulang indeks. Knowhere v3.0.6 tidak memulihkan status normalisasi kosinus adaptor <code translate="no">FAISS</code> selama deserialisasi.</p></li>
+<li><p><code translate="no">FAISS</code> supports <code translate="no">FLOAT_VECTOR</code> and <code translate="no">BINARY_VECTOR</code> fields. It does not support <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">INT8_VECTOR</code>, or <code translate="no">SPARSE_FLOAT_VECTOR</code> fields.</p></li>
+<li><p>The generic <code translate="no">FAISS</code> adapter runs on CPU. It is not a Faiss GPU index type.</p></li>
+<li><p>The <code translate="no">faiss_index_name</code> build parameter is required. Milvus passes its value to Faiss without converting the recipe to a dedicated Milvus index type.</p></li>
+<li><p>Build and search parameters are factory-specific. A parameter supported by one factory can be rejected by another.</p></li>
+<li><p>Scalar filtering requires the underlying Faiss index to support an ID selector. Milvus 3.0.0 tests cover filtered search with the float factories <code translate="no">Flat</code>, <code translate="no">IVF64,Flat</code>, and <code translate="no">HNSW16,Flat</code>. Do not assume that every factory supports filters or that binary <code translate="no">FAISS</code> indexes support scalar filtering.</p></li>
+<li><p>Search iterators are not supported.</p></li>
+<li><p>The adapter does not provide raw-vector retrieval.</p></li>
+<li><p>Range-search support depends on the factory. Float <code translate="no">Flat</code> has release coverage. Do not use range search with binary <code translate="no">FAISS</code> indexes.</p></li>
+<li><p>A factory can build successfully but still reject some Milvus search operations. For example, standalone <code translate="no">PQ8x4</code> rejects the selector used by scalar-filtered search. Validate unfiltered use separately.</p></li>
+<li><p>In Milvus 3.0.0, validate <code translate="no">COSINE</code> scores and range-search thresholds after an index reload. Knowhere v3.0.6 does not restore the <code translate="no">FAISS</code> adapter’s cosine-normalization state during deserialization.</p></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">Cara kerjanya<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,15 +68,15 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/faiss-index-flow.png" alt="FAISS index passthrough workflow" class="doc-image" id="faiss-index-passthrough-workflow" /> 
-   <span>Alur kerja passthrough indeks FAISS</span>
-  
- </span></p>
-<p>Untuk pembuatan indeks, Milvus meneruskan ` <code translate="no">faiss_index_name</code>`, tipe bidang vektor, metrik, dan parameter pembuatan lainnya ke adaptor Knowhere FAISS. Adaptor tersebut memanggil ` <code translate="no">faiss::index_factory()</code> ` untuk bidang ` <code translate="no">FLOAT_VECTOR</code> ` atau ` <code translate="no">faiss::index_binary_factory()</code> ` untuk bidang ` <code translate="no">BINARY_VECTOR</code> `. Objek yang dihasilkan adalah indeks Faiss asli yang dikelola melalui siklus hidup indeks Milvus yang normal.</p>
-<p>Untuk pencarian, adaptor mengonversi parameter khusus pabrik yang disediakan menjadi objek Faiss <code translate="no">SearchParameters</code> yang sesuai. Untuk pabrik float yang didukung, adaptor juga meneruskan bit set filter Milvus sebagai selektor Faiss. Dukungan selektor bergantung pada pabrik, dan tes yang dirilis tidak menetapkan penyaringan skalar untuk indeks biner <code translate="no">FAISS</code>. Inilah sebabnya mengapa suatu resep dapat valid di Faiss mandiri tetapi menolak operasi yang diperlukan oleh jalur pencarian Milvus.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Prasyarat<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h2><p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/faiss-index-flow.png" alt="FAISS index passthrough workflow" class="doc-image" id="faiss-index-passthrough-workflow" />
+    <span>FAISS index passthrough workflow</span>
+  </span>
+</p>
+<p>For index building, Milvus forwards <code translate="no">faiss_index_name</code>, the vector field type, the metric, and other build parameters to the Knowhere FAISS adapter. The adapter calls <code translate="no">faiss::index_factory()</code> for <code translate="no">FLOAT_VECTOR</code> fields or <code translate="no">faiss::index_binary_factory()</code> for <code translate="no">BINARY_VECTOR</code> fields. The resulting object is a native Faiss index managed through the normal Milvus index lifecycle.</p>
+<p>For search, the adapter converts the supplied factory-specific parameters into the matching Faiss <code translate="no">SearchParameters</code> object. For supported float factories, it also passes the Milvus filter bitset as a Faiss selector. Selector support is factory-specific, and the released tests do not establish scalar filtering for binary <code translate="no">FAISS</code> indexes. This is why a recipe can be valid in standalone Faiss but reject an operation required by the Milvus search path.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -92,12 +92,12 @@ beta: Milvus 3.0.0+
         ></path>
       </svg>
     </button></h2><ul>
-<li>Milvus 3.0.0 atau yang lebih baru</li>
-<li>PyMilvus 3.0.0 atau yang lebih baru</li>
-<li>Memahami sintaks pabrik indeks Faiss dan persyaratan pelatihan dari pabrik yang dipilih</li>
+<li>Milvus 3.0.0 or later</li>
+<li>PyMilvus 3.0.0 or later</li>
+<li>Familiarity with Faiss index-factory syntax and the training requirements of the selected factory</li>
 </ul>
-<p>Untuk petunjuk instalasi, lihat <a href="/docs/id/install-pymilvus.md">Instal PyMilvus</a>.</p>
-<h2 id="Choose-a-factory-string" class="common-anchor-header">Pilih string pabrik<button data-href="#Choose-a-factory-string" class="anchor-icon" translate="no">
+<p>For installation instructions, see <a href="/docs/id/install-pymilvus.md">Install PyMilvus</a>.</p>
+<h2 id="Choose-a-factory-string" class="common-anchor-header">Choose a factory string<button data-href="#Choose-a-factory-string" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,23 +112,23 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>String pabrik mendeskripsikan indeks Faiss sebagai urutan komponen. Contoh-contoh berikut telah diuji pada rilis uji coba Milvus 3.0.0. Daftar ini tidak lengkap.</p>
+    </button></h2><p>A factory string describes a Faiss index as a sequence of components. The following examples have Milvus 3.0.0 release-test coverage. This list is not exhaustive.</p>
 <table>
 <thead>
-<tr><th>String pabrik</th><th>Jenis bidang</th><th>Metrik yang diuji dalam pengujian rilis</th><th>Parameter pencarian</th><th>Catatan</th></tr>
+<tr><th>Factory string</th><th>Field type</th><th>Metrics exercised in release tests</th><th>Search parameters</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td>Tidak ada</td><td>Pencarian tepat.</td></tr>
-<tr><td><code translate="no">IVF64,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">nprobe</code></td><td>IVF dengan 64 daftar terbalik dan vektor yang tidak terkompresi.</td></tr>
-<tr><td><code translate="no">HNSW16,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">efSearch</code></td><td>Grafik HNSW dengan penyimpanan vektor datar.</td></tr>
-<tr><td><code translate="no">OPQ16,IVF64,PQ16x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>Khusus pabrik</td><td>Menggabungkan OPQ, IVF, dan PQ. Validasi ukuran pelatihan dan recall dengan data Anda.</td></tr>
-<tr><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td><code translate="no">nprobe</code>, <code translate="no">k_factor</code></td><td>Menggunakan penyaring datar setelah pengambilan kandidat PQ.</td></tr>
-<tr><td><code translate="no">PQ8x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>Tidak ada</td><td>Menyertakan tes rilis. Pencarian yang difilter skalar gagal karena indeks menolak selektor; validasi penggunaan tanpa filter secara terpisah.</td></tr>
-<tr><td><code translate="no">BFlat</code></td><td><code translate="no">BINARY_VECTOR</code></td><td><code translate="no">HAMMING</code></td><td>Tidak ada</td><td>Pencarian tepat untuk vektor biner.</td></tr>
+<tr><td><code translate="no">Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td>None</td><td>Exact search.</td></tr>
+<tr><td><code translate="no">IVF64,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">nprobe</code></td><td>IVF with 64 inverted lists and uncompressed vectors.</td></tr>
+<tr><td><code translate="no">HNSW16,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">efSearch</code></td><td>HNSW graph with flat vector storage.</td></tr>
+<tr><td><code translate="no">OPQ16,IVF64,PQ16x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>Factory-specific</td><td>Combines OPQ, IVF, and PQ. Validate training size and recall with your data.</td></tr>
+<tr><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td><code translate="no">nprobe</code>, <code translate="no">k_factor</code></td><td>Uses a flat refiner after PQ candidate retrieval.</td></tr>
+<tr><td><code translate="no">PQ8x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>None</td><td>Builds in release tests. Scalar-filtered search fails because the index rejects the selector; validate unfiltered use separately.</td></tr>
+<tr><td><code translate="no">BFlat</code></td><td><code translate="no">BINARY_VECTOR</code></td><td><code translate="no">HAMMING</code></td><td>None</td><td>Exact search for binary vectors.</td></tr>
 </tbody>
 </table>
-<p>Entri " <code translate="no">COSINE</code> " menunjukkan cakupan pengujian awal (build dan pencarian). Untuk Milvus 3.0.0, entri ini tidak menjamin keakuratan skor atau pencarian rentang setelah pemuatan ulang indeks. Lihat <a href="#limits">Batasan</a>.</p>
-<h2 id="Build-and-search-a-float-index" class="common-anchor-header">Membuat dan melakukan pencarian pada indeks float<button data-href="#Build-and-search-a-float-index" class="anchor-icon" translate="no">
+<p>The <code translate="no">COSINE</code> entries indicate build and search smoke coverage. For Milvus 3.0.0, they do not establish score or range-search correctness after an index reload. See <a href="#limits">Limits</a>.</p>
+<h2 id="Build-and-search-a-float-index" class="common-anchor-header">Build and search a float index<button data-href="#Build-and-search-a-float-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -143,9 +143,9 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Contoh berikut membuat 3.000 vektor berdimensi 128. Ini menyediakan data pelatihan yang cukup untuk resep " <code translate="no">IVF64,Flat</code> " yang digunakan dalam contoh ini. Perluas blok pengaturan dan jalankan sebelum membangun dan melakukan pencarian pada indeks.</p>
+    </button></h2><p>The following example creates 3,000 128-dimensional vectors. This provides enough training data for the <code translate="no">IVF64,Flat</code> recipe used in the example. Expand the setup block and run it before building and searching the index.</p>
 <p><details></p>
-<p><summary>Siapkan kumpulan vektor float</summary></p>
+<p><summary>Prepare the float-vector collection</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
@@ -179,7 +179,7 @@ client.insert(collection_name=collection_name, data=rows)
 client.flush(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Build-the-index" class="common-anchor-header">Buat indeks<button data-href="#Build-the-index" class="anchor-icon" translate="no">
+<h3 id="Build-the-index" class="common-anchor-header">Build the index<button data-href="#Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -194,7 +194,7 @@ client.flush(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Atur ` <code translate="no">index_type</code> ` ke ` <code translate="no">FAISS</code>`, dan gunakan ` <code translate="no">faiss_index_name</code> ` untuk memilih resep pabrik Faiss asli.</p>
+    </button></h3><p>Set <code translate="no">index_type</code> to <code translate="no">FAISS</code>, and use <code translate="no">faiss_index_name</code> to select the native Faiss factory recipe.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;vector&quot;</span>,
@@ -207,8 +207,8 @@ index_params.add_index(
 client.create_index(collection_name=collection_name, index_params=index_params)
 client.load_collection(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
-<p>String pabrik <code translate="no">IVF64,Flat</code> membuat indeks IVF dengan 64 daftar terbalik dan menyimpan vektor yang tidak terkompresi di setiap daftar.</p>
-<h3 id="Search-the-index" class="common-anchor-header">Cari di indeks<button data-href="#Search-the-index" class="anchor-icon" translate="no">
+<p>The factory string <code translate="no">IVF64,Flat</code> creates an IVF index with 64 inverted lists and stores uncompressed vectors in each list.</p>
+<h3 id="Search-the-index" class="common-anchor-header">Search the index<button data-href="#Search-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -223,7 +223,7 @@ client.load_collection(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Tentukan parameter pencarian khusus pabrik di dalam <code translate="no">search_params.params</code>. Untuk pabrik IVF, <code translate="no">nprobe</code> mengontrol berapa banyak daftar terbalik yang dicari oleh Faiss.</p>
+    </button></h3><p>Set factory-specific search parameters inside <code translate="no">search_params.params</code>. For an IVF factory, <code translate="no">nprobe</code> controls how many inverted lists Faiss searches.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">search_params = {</span>
 <span class="highlighted-comment-line">    <span class="hljs-string">&quot;params&quot;</span>: {<span class="hljs-string">&quot;nprobe&quot;</span>: <span class="hljs-number">8</span>},</span>
 <span class="highlighted-comment-line">}</span>
@@ -242,8 +242,8 @@ results = client.search(
     <span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> hits:
         <span class="hljs-built_in">print</span>(hit)
 <button class="copy-code-btn"></button></code></pre>
-<p>Kueri menggunakan ` <code translate="no">nprobe=8</code>`, sehingga Faiss mencari 8 dari 64 daftar terbalik. Filter membatasi hasil pada entitas yang nilai ` <code translate="no">category</code> `-nya adalah ` <code translate="no">reference</code>`.</p>
-<h2 id="Build-and-search-a-binary-index" class="common-anchor-header">Membuat dan mencari indeks biner<button data-href="#Build-and-search-a-binary-index" class="anchor-icon" translate="no">
+<p>The query uses <code translate="no">nprobe=8</code>, so Faiss searches 8 of the 64 inverted lists. The filter restricts results to entities whose <code translate="no">category</code> value is <code translate="no">reference</code>.</p>
+<h2 id="Build-and-search-a-binary-index" class="common-anchor-header">Build and search a binary index<button data-href="#Build-and-search-a-binary-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -258,9 +258,9 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Untuk bidang ` <code translate="no">BINARY_VECTOR</code> `, gunakan string pabrik biner seperti ` <code translate="no">BFlat</code> ` dan metrik biner yang kompatibel. Perluas blok pengaturan dan jalankan sebelum membuat dan mencari indeks.</p>
+    </button></h2><p>For <code translate="no">BINARY_VECTOR</code> fields, use a binary factory string such as <code translate="no">BFlat</code> and a compatible binary metric. Expand the setup block and run it before building and searching the index.</p>
 <p><details></p>
-<p><summary>Siapkan koleksi vektor biner</summary></p>
+<p><summary>Prepare the binary-vector collection</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
@@ -286,7 +286,7 @@ client.insert(
 client.flush(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Build-the-index" class="common-anchor-header">Buat indeks<button data-href="#Build-the-index" class="anchor-icon" translate="no">
+<h3 id="Build-the-index" class="common-anchor-header">Build the index<button data-href="#Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -301,7 +301,7 @@ client.flush(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Gunakan <code translate="no">BFlat</code> sebagai string pabrik dan <code translate="no">HAMMING</code> sebagai metrik untuk contoh vektor biner ini.</p>
+    </button></h3><p>Use <code translate="no">BFlat</code> as the factory string and <code translate="no">HAMMING</code> as the metric for this binary-vector example.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;binary_vector&quot;</span>,
@@ -314,7 +314,7 @@ index_params.add_index(
 client.create_index(collection_name=collection_name, index_params=index_params)
 client.load_collection(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Search-the-index" class="common-anchor-header">Cari indeks<button data-href="#Search-the-index" class="anchor-icon" translate="no">
+<h3 id="Search-the-index" class="common-anchor-header">Search the index<button data-href="#Search-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -329,7 +329,7 @@ client.load_collection(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">BFlat</code> tidak memiliki parameter pencarian khusus keluarga. Berikan pemetaan ` <code translate="no">params</code> ` yang kosong saat membuat permintaan pencarian.</p>
+    </button></h3><p><code translate="no">BFlat</code> has no family-specific search parameter. Pass an empty <code translate="no">params</code> mapping when constructing the search request.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">search_params = {<span class="hljs-string">&quot;params&quot;</span>: {}}</span>
 
 results = client.search(
@@ -344,8 +344,8 @@ results = client.search(
     <span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> hits:
         <span class="hljs-built_in">print</span>(hit)
 <button class="copy-code-btn"></button></code></pre>
-<p>Setiap vektor biner berdimensi 128 direpresentasikan oleh 16 byte. Untuk informasi lebih lanjut, lihat <a href="/docs/id/binary-vector.md">Vektor Biner</a>.</p>
-<h2 id="Configure-build-and-search-parameters" class="common-anchor-header">Konfigurasikan parameter build dan pencarian<button data-href="#Configure-build-and-search-parameters" class="anchor-icon" translate="no">
+<p>Each 128-dimensional binary vector is represented by 16 bytes. For more information, see <a href="/docs/id/binary-vector.md">Binary Vector</a>.</p>
+<h2 id="Configure-build-and-search-parameters" class="common-anchor-header">Configure build and search parameters<button data-href="#Configure-build-and-search-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -360,28 +360,28 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Tipe indeks <code translate="no">FAISS</code> memiliki satu parameter build passthrough yang wajib.</p>
+    </button></h2><p>The <code translate="no">FAISS</code> index type has one required passthrough build parameter.</p>
 <table>
 <thead>
-<tr><th>Parameter</th><th>Lokasi</th><th>Deskripsi</th></tr>
+<tr><th>Parameter</th><th>Location</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">faiss_index_name</code></td><td><code translate="no">params</code> in <code translate="no">add_index()</code></td><td>String pembuat indeks Faiss. Contohnya, <code translate="no">IVF64,Flat</code>.</td></tr>
+<tr><td><code translate="no">faiss_index_name</code></td><td><code translate="no">params</code> in <code translate="no">add_index()</code></td><td>The Faiss index-factory string. For example, <code translate="no">IVF64,Flat</code>.</td></tr>
 </tbody>
 </table>
-<p>Tentukan parameter pencarian khusus pabrik di dalam <code translate="no">search_params.params</code>. Tabel berikut mencantumkan contoh-contoh umum dan tidak mencakup semuanya.</p>
+<p>Set factory-specific search parameters inside <code translate="no">search_params.params</code>. The following table lists common examples and is not exhaustive.</p>
 <table>
 <thead>
-<tr><th>Parameter</th><th>Contoh pabrik</th><th>Deskripsi</th></tr>
+<tr><th>Parameter</th><th>Example factory</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">nprobe</code></td><td><code translate="no">IVF64,Flat</code></td><td>Jumlah daftar terbalik yang akan dicari.</td></tr>
-<tr><td><code translate="no">efSearch</code></td><td><code translate="no">HNSW16,Flat</code></td><td>Ukuran daftar kandidat pencarian HNSW.</td></tr>
-<tr><td><code translate="no">k_factor</code></td><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td>Jumlah kandidat yang disediakan ke refiner terkait dengan top-K yang diminta.</td></tr>
+<tr><td><code translate="no">nprobe</code></td><td><code translate="no">IVF64,Flat</code></td><td>Number of inverted lists to search.</td></tr>
+<tr><td><code translate="no">efSearch</code></td><td><code translate="no">HNSW16,Flat</code></td><td>Size of the HNSW search candidate list.</td></tr>
+<tr><td><code translate="no">k_factor</code></td><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td>Number of candidates supplied to the refiner relative to the requested top-K.</td></tr>
 </tbody>
 </table>
-<p>Milvus hanya meneruskan parameter tambahan yang dikenali oleh adaptor. Kunci build dan kunci pencarian yang tidak dikenal, yang tidak didukung oleh keluarga pabrik konkret, akan ditolak. Milvus tidak memelihara skema parameter universal untuk setiap pabrik yang mungkin. Periksa dokumentasi Faiss untuk pabrik yang dipilih, lalu validasi alur pembangunan dan pencarian secara menyeluruh terhadap versi dan gambar Milvus yang tepat yang akan Anda terapkan.</p>
-<h2 id="Handle-errors-and-unsupported-operations" class="common-anchor-header">Tangani kesalahan dan operasi yang tidak didukung<button data-href="#Handle-errors-and-unsupported-operations" class="anchor-icon" translate="no">
+<p>Milvus forwards only adapter-recognized additional parameters. Unknown build keys and search keys that the concrete factory family does not support are rejected. Milvus does not maintain a universal parameter schema for every possible factory. Check the Faiss documentation for the selected factory, then validate the complete build and search flow against the exact Milvus version and image that you plan to deploy.</p>
+<h2 id="Handle-errors-and-unsupported-operations" class="common-anchor-header">Handle errors and unsupported operations<button data-href="#Handle-errors-and-unsupported-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -397,13 +397,13 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Jika string pabrik tidak valid atau tidak tersedia dalam build Milvus, pembuatan indeks akan gagal. Periksa status indeks dan alasan kegagalan sebelum memuat koleksi.</p></li>
-<li><p>Jika tipe parameter salah, pencarian akan gagal. Misalnya, ` <code translate="no">nprobe=&quot;invalid&quot;</code> ` ditolak karena ` <code translate="no">nprobe</code> ` harus berupa angka.</p></li>
-<li><p>Jika suatu parameter tidak berlaku untuk factory yang dibangun, adaptor akan menolaknya karena tidak didukung.</p></li>
-<li><p>Jika sebuah factory tidak mendukung selektor Milvus, pencarian yang difilter dapat gagal meskipun factory yang sama dapat melakukan pencarian di Faiss standalone.</p></li>
-<li><p>Jangan gunakan <code translate="no">search_iterator()</code> dengan indeks <code translate="no">FAISS</code>.</p></li>
+<li><p>If the factory string is invalid or unavailable in the Milvus build, index building fails. Check the index state and failure reason before loading the collection.</p></li>
+<li><p>If a parameter has the wrong type, search fails. For example, <code translate="no">nprobe=&quot;invalid&quot;</code> is rejected because <code translate="no">nprobe</code> must be numeric.</p></li>
+<li><p>If a parameter does not apply to the built factory, the adapter rejects it as unsupported.</p></li>
+<li><p>If a factory does not support the Milvus selector, filtered search can fail even when the same factory can search in standalone Faiss.</p></li>
+<li><p>Do not use <code translate="no">search_iterator()</code> with a <code translate="no">FAISS</code> index.</p></li>
 </ul>
-<h2 id="Whats-next" class="common-anchor-header">Langkah Selanjutnya<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -419,7 +419,7 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li>Pelajari bagaimana indeks Milvus diorganisasikan di <a href="/docs/id/index-explained.md">Penjelasan Indeks</a>.</li>
-<li>Bandingkan jenis indeks khusus <a href="/docs/id/ivf-flat.md">IVF_FLAT</a> dan <a href="/docs/id/hnsw.md">HNSW</a>.</li>
-<li>Tinjau " <a href="/docs/id/metric.md">Jenis Metrik</a> " sebelum memilih metrik untuk pabrik.</li>
+<li>Learn how Milvus indexes are organized in <a href="/docs/id/index-explained.md">Index Explained</a>.</li>
+<li>Compare the dedicated <a href="/docs/id/ivf-flat.md">IVF_FLAT</a> and <a href="/docs/id/hnsw.md">HNSW</a> index types.</li>
+<li>Review <a href="/docs/id/metric.md">Metric Types</a> before choosing a metric for the factory.</li>
 </ul>

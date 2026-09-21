@@ -2,10 +2,9 @@
 id: woodpecker_architecture.md
 title: Woodpecker
 summary: >-
-  Woodpecker ist ein Cloud-natives WAL-System in Milvus 2.6. Mit einer
-  Zero-Disk-Architektur und zwei Bereitstellungsmodi bietet es einen hohen
-  Durchsatz, einen geringen betrieblichen Overhead und eine nahtlose
-  Skalierbarkeit auf Objektspeicher.
+  Woodpecker is a cloud-native WAL system in Milvus 2.6. With a zero-disk
+  architecture and two deployment modes, it delivers high throughput, low
+  operational overhead, and seamless scalability on object storage.
 ---
 <h1 id="Woodpecker" class="common-anchor-header">Woodpecker<button data-href="#Woodpecker" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -22,14 +21,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>In Milvus 2.6 ersetzt Woodpecker Kafka und Pulsar durch ein speziell entwickeltes, Cloud-natives Write-Ahead-Log-System (WAL). Woodpecker wurde für die Objektspeicherung entwickelt, vereinfacht die Abläufe, maximiert den Durchsatz und lässt sich mühelos skalieren.</p>
-<p>Die Entwicklungsziele von Woodpecker:</p>
+    </button></h1><p>In Milvus 2.6, Woodpecker replaces Kafka and Pulsar with a purpose-built, cloud-native write-ahead log (WAL) system. Engineered for object storage, Woodpecker simplifies operations, maximizes throughput, and scales effortlessly.</p>
+<p>Woodpecker’s design goals:</p>
 <ul>
-<li><p>Höchster Durchsatz in Cloud-Umgebungen</p></li>
-<li><p>Dauerhafte, nur anhängende Protokollierung für zuverlässige Wiederherstellung</p></li>
-<li><p>Minimaler betrieblicher Overhead ohne lokale Festplatten oder externe Makler</p></li>
+<li><p>Highest throughput in cloud environments</p></li>
+<li><p>Durable, append-only logging for reliable recovery</p></li>
+<li><p>Minimal operational overhead with no local disks or external brokers</p></li>
 </ul>
-<h2 id="Zero-disk-architecture" class="common-anchor-header">Null-Festplatten-Architektur<button data-href="#Zero-disk-architecture" class="anchor-icon" translate="no">
+<h2 id="Zero-disk-architecture" class="common-anchor-header">Zero-disk architecture<button data-href="#Zero-disk-architecture" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,17 +43,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Die zentrale Innovation von Woodpecker ist seine Zero-Disk-Architektur:</p>
+    </button></h2><p>Woodpecker’s core innovation is its zero-disk architecture:</p>
 <ul>
-<li>Alle Protokolldaten werden in einem Cloud-Objektspeicher (wie Amazon S3, Google Cloud Storage oder Alibaba OS) gespeichert.</li>
-<li>Metadaten werden über verteilte Key-Value-Stores wie <strong>etcd</strong> verwaltet</li>
-<li>Keine Abhängigkeiten von lokalen Festplatten für Kernoperationen</li>
+<li>All log data stored in cloud object storage (such as Amazon S3, Google Cloud Storage, or Alibaba OS)</li>
+<li>Metadata managed through distributed key-value stores like <strong>etcd</strong></li>
+<li>No local disk dependencies for core operations</li>
 </ul>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/woodpecker_layers.png" alt="woodpecker layers" class="doc-image" id="woodpecker-layers" />
-   </span> <span class="img-wrapper"> <span>Woodpecker-Schichten</span> </span></p>
-<h2 id="Architecture-components" class="common-anchor-header">Komponenten der Architektur<button data-href="#Architecture-components" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/woodpecker_layers.png" alt="woodpecker layers" class="doc-image" id="woodpecker-layers" />
+    <span>woodpecker layers</span>
+  </span>
+</p>
+<h2 id="Architecture-components" class="common-anchor-header">Architecture components<button data-href="#Architecture-components" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -69,14 +70,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ein Standard-Woodpecker-Einsatz umfasst die folgenden Komponenten:</p>
+    </button></h2><p>A standard Woodpecker deployment includes the following components:</p>
 <ul>
-<li><strong>Client</strong>: Schnittstellenschicht für die Ausgabe von Lese- und Schreibanfragen</li>
-<li><strong>LogStore</strong>: Verwaltet Hochgeschwindigkeits-Schreibpufferung, asynchrone Uploads in den Speicher und Protokollverdichtung</li>
-<li><strong>Speicher-Backend</strong>: Unterstützt skalierbare, kostengünstige Speicherdienste wie S3, GCS und Dateisysteme wie EFS</li>
-<li><strong>Etcd</strong>: Speichert Metadaten und koordiniert den Protokollstatus über verteilte Knoten hinweg</li>
+<li><strong>Client</strong>: Interface layer for issuing read and write requests</li>
+<li><strong>LogStore</strong>: Manages high-speed write buffering, asynchronous uploads to storage, and log compaction</li>
+<li><strong>Storage backend</strong>: Supports scalable, low-cost storage services such as S3, GCS, and file systems like EFS</li>
+<li><strong>Etcd</strong>: Stores metadata and coordinates log state across distributed nodes</li>
 </ul>
-<h2 id="Deployment-modes" class="common-anchor-header">Bereitstellungsmodi<button data-href="#Deployment-modes" class="anchor-icon" translate="no">
+<h2 id="Deployment-modes" class="common-anchor-header">Deployment modes<button data-href="#Deployment-modes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -91,8 +92,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Woodpecker bietet zwei Bereitstellungsmodi, um Ihren spezifischen Anforderungen gerecht zu werden:</p>
-<h3 id="MemoryBuffer---Lightweight-and-maintenance-free" class="common-anchor-header">MemoryBuffer - Leichtgewichtig und wartungsfrei<button data-href="#MemoryBuffer---Lightweight-and-maintenance-free" class="anchor-icon" translate="no">
+    </button></h2><p>Woodpecker offers two deployment modes to match your specific needs:</p>
+<h3 id="MemoryBuffer---Lightweight-and-maintenance-free" class="common-anchor-header">MemoryBuffer - Lightweight and maintenance-free<button data-href="#MemoryBuffer---Lightweight-and-maintenance-free" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,12 +108,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Der MemoryBuffer-Modus bietet eine einfache und leichtgewichtige Bereitstellungsoption, bei der der eingebettete Woodpecker-Client eingehende Schreibvorgänge vorübergehend im Speicher puffert und sie regelmäßig an einen Cloud-Objektspeicherdienst überträgt. In diesem Modus ist der Speicherpuffer direkt in den Client eingebettet, was ein effizientes Batching vor dem Flushing an S3 ermöglicht. Die Metadaten werden mit <strong>etcd</strong> verwaltet, um Konsistenz und Koordination zu gewährleisten. Dieser Modus eignet sich am besten für stapelintensive Arbeitslasten in kleineren Bereitstellungen oder Produktionsumgebungen, bei denen die Einfachheit Vorrang vor der Leistung hat, insbesondere wenn eine geringe Schreiblatenz nicht entscheidend ist. Die Schreiblatenz in diesem Modus liegt im Allgemeinen zwischen 200 und 500 ms.</p>
+    </button></h3><p>MemoryBuffer mode provides a simple and lightweight deployment option where Woodpecker’s embedded client temporarily buffers incoming writes in memory and periodically flushes them to a cloud object storage service. In this mode, the memory buffer is embedded directly into the client, enabling efficient batching before flushing to S3. Metadata is managed using <strong>etcd</strong> to ensure consistency and coordination. This mode is best suited for batch-heavy workloads in smaller-scale deployments or production environments that prioritize simplicity over performance, especially when low write latency is not critical. The write latency in this mode is generally between 200-500 ms.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/woodpecker_memorybuffer_mode_deployment.png" alt="woodpecker memory mode deployment" class="doc-image" id="woodpecker-memory-mode-deployment" />
-   </span> <span class="img-wrapper"> <span>Einsatz des Speckerspeichermodus</span> </span></p>
-<h3 id="QuorumBuffer---Optimized-for-low-latency-high-durability" class="common-anchor-header">QuorumBuffer - Optimiert für niedrige Latenzzeiten und hohe Langlebigkeit<button data-href="#QuorumBuffer---Optimized-for-low-latency-high-durability" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/woodpecker_memorybuffer_mode_deployment.png" alt="woodpecker memory mode deployment" class="doc-image" id="woodpecker-memory-mode-deployment" />
+    <span>woodpecker memory mode deployment</span>
+  </span>
+</p>
+<h3 id="QuorumBuffer---Optimized-for-low-latency-high-durability" class="common-anchor-header">QuorumBuffer - Optimized for low-latency, high-durability<button data-href="#QuorumBuffer---Optimized-for-low-latency-high-durability" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -127,14 +130,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Der QuorumBuffer-Modus wurde für latenzempfindliche, hochfrequente Lese-/Schreib-Workloads entwickelt, die sowohl Echtzeit-Reaktionsfähigkeit als auch hohe Fehlertoleranz erfordern. In diesem Modus interagiert der Woodpecker-Client mit einem Quorum-System mit drei Replikaten, um eine Hochgeschwindigkeits-Schreibpufferung zu gewährleisten, die durch verteilten Konsens eine starke Konsistenz und hohe Verfügbarkeit sicherstellt.</p>
-<p>Ein Schreibvorgang gilt als erfolgreich, wenn der Client die Daten erfolgreich an mindestens zwei der drei Quorum-Knoten repliziert, was in der Regel innerhalb eines einstelligen Millisekundenbereichs geschieht. Diese Architektur minimiert den Knotenstatus, macht große lokale Festplattenvolumina überflüssig und vermeidet komplexe Anti-Entropie-Reparaturen, die in herkömmlichen Quorum-basierten Systemen häufig erforderlich sind.</p>
-<p>Das Ergebnis ist eine schlanke, robuste WAL-Schicht, die sich ideal für geschäftskritische Produktionsumgebungen eignet, in denen Konsistenz, Verfügbarkeit und schnelle Wiederherstellung unerlässlich sind.</p>
+    </button></h3><p>QuorumBuffer mode is designed for latency-sensitive, high-frequency read/write workloads requiring both real-time responsiveness and strong fault tolerance. In this mode, Woodpecker’s client interacts with a three-replica quorum system to provide high-speed write buffering, ensuring strong consistency and high availability through distributed consensus.</p>
+<p>A write is considered successful once the client successfully replicates data to at least two of the three quorum nodes, typically completing within single-digit milliseconds, after which the data is asynchronously flushed to cloud object storage for long-term durability. This architecture minimizes on-node state, eliminates the need for large local disk volumes, and avoids complex anti-entropy repairs often required in traditional quorum-based systems.</p>
+<p>The result is a streamlined, robust WAL layer ideal for mission-critical production environments where consistency, availability, and fast recovery are essential.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/woodpecker_quorumbuffer_mode_deployment.png" alt="woodpecker quorum mode deployment" class="doc-image" id="woodpecker-quorum-mode-deployment" />
-   </span> <span class="img-wrapper"> <span>Einsatz des Woodpecker Quorum-Modus</span> </span></p>
-<h2 id="Performance-benchmarks" class="common-anchor-header">Leistungs-Benchmarks<button data-href="#Performance-benchmarks" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/woodpecker_quorumbuffer_mode_deployment.png" alt="woodpecker quorum mode deployment" class="doc-image" id="woodpecker-quorum-mode-deployment" />
+    <span>woodpecker quorum mode deployment</span>
+  </span>
+</p>
+<h2 id="Performance-benchmarks" class="common-anchor-header">Performance benchmarks<button data-href="#Performance-benchmarks" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -149,24 +154,24 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Wir haben umfassende Benchmarks durchgeführt, um die Leistung von Woodpecker in einem Single-Node, Single-Client, Single-Log-Stream Setup zu bewerten. Die Ergebnisse waren im Vergleich zu Kafka und Pulsar beeindruckend:</p>
+    </button></h2><p>We ran comprehensive benchmarks to evaluate Woodpecker’s performance in a single-node, single-client, single-log-stream setup. The results were impressive when compared to Kafka and Pulsar:</p>
 <table>
 <thead>
-<tr><th>System</th><th>Kafka</th><th>Pulsar</th><th>WP Minio</th><th>WP Lokal</th><th>WP S3</th></tr>
+<tr><th>System</th><th>Kafka</th><th>Pulsar</th><th>WP Minio</th><th>WP Local</th><th>WP S3</th></tr>
 </thead>
 <tbody>
-<tr><td>Durchsatz</td><td>129.96MB/s</td><td>107MB/s</td><td>71MB/s</td><td>450MB/s</td><td>750MB/s</td></tr>
-<tr><td>Latenzzeit</td><td>58ms</td><td>35 ms</td><td>184ms</td><td>1,8 ms</td><td>166ms</td></tr>
+<tr><td>Throughput</td><td>129.96MB/s</td><td>107MB/s</td><td>71MB/s</td><td>450MB/s</td><td>750MB/s</td></tr>
+<tr><td>latency</td><td>58ms</td><td>35ms</td><td>184ms</td><td>1.8ms</td><td>166ms</td></tr>
 </tbody>
 </table>
-<p>Zur Veranschaulichung haben wir die theoretischen Durchsatzgrenzen der verschiedenen Speicher-Backends auf unserem Testrechner gemessen:</p>
+<p>For context, we measured the theoretical throughput limits of different storage backends on our test machine:</p>
 <ul>
 <li>MinIO: ~110 MB/s</li>
-<li>Lokales Dateisystem: 600-750 MB/s</li>
-<li>Amazon S3 (einzelne EC2-Instanz): bis zu 1,1 GB/s</li>
+<li>Local file system: 600–750 MB/s</li>
+<li>Amazon S3 (single EC2 instance): up to 1.1 GB/s</li>
 </ul>
-<p>Bemerkenswerterweise erreichte Woodpecker durchgängig 60-80% des maximal möglichen Durchsatzes für jedes Backend - ein außergewöhnliches Effizienzniveau für Middleware.</p>
-<h3 id="Key-performance-insights" class="common-anchor-header">Wichtige Leistungsdaten<button data-href="#Key-performance-insights" class="anchor-icon" translate="no">
+<p>Remarkably, Woodpecker consistently achieved 60-80% of the maximum possible throughput for each backend—an exceptional efficiency level for middleware.</p>
+<h3 id="Key-performance-insights" class="common-anchor-header">Key performance insights<button data-href="#Key-performance-insights" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -182,12 +187,12 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li>Lokaler Dateisystem-Modus: Woodpecker erreichte 450 MB/s - 3,5 Mal schneller als Kafka und 4,2 Mal schneller als Pulsar - bei einer extrem niedrigen Latenz von nur 1,8 ms, was ihn ideal für hochleistungsfähige Single-Node-Implementierungen macht.</li>
-<li>Cloud-Speicher-Modus (S3): Beim direkten Schreiben auf S3 erreichte Woodpecker 750 MB/s (ca. 68 % der theoretischen Grenze von S3), 5,8× schneller als Kafka und 7× schneller als Pulsar. Obwohl die Latenzzeit höher ist (166 ms), bietet dieses Setup einen außergewöhnlichen Durchsatz für stapelorientierte Arbeitslasten.</li>
-<li>Objektspeicher-Modus (MinIO): Selbst mit MinIO erreichte Woodpecker 71 MB/s - etwa 65 % der Kapazität von MinIO. Diese Leistung ist vergleichbar mit der von Kafka und Pulsar, allerdings bei deutlich geringerem Ressourcenbedarf.</li>
+<li>Local File System Mode: Woodpecker achieved 450 MB/s—3.5× faster than Kafka and 4.2× faster than Pulsar—with ultra-low latency at just 1.8 ms, making it ideal for high-performance single-node deployments.</li>
+<li>Cloud Storage Mode (S3): When writing directly to S3, Woodpecker reached 750 MB/s (about 68% of S3’s theoretical limit), 5.8× higher than Kafka and 7× higher than Pulsar. While latency is higher (166 ms), this setup provides exceptional throughput for batch-oriented workloads.</li>
+<li>Object Storage Mode (MinIO): Even with MinIO, Woodpecker achieved 71 MB/s—around 65% of MinIO’s capacity. This performance is comparable to Kafka and Pulsar but with significantly lower resource requirements.</li>
 </ul>
-<p>Woodpecker ist besonders für gleichzeitige Schreibvorgänge mit hohem Volumen optimiert, bei denen die Aufrechterhaltung der Reihenfolge entscheidend ist. Und diese Ergebnisse spiegeln nur die frühen Stadien der Entwicklung wider - laufende Optimierungen bei der E/A-Zusammenführung, der intelligenten Pufferung und dem Prefetching werden die Leistung voraussichtlich noch näher an die theoretischen Grenzen bringen.</p>
-<h2 id="Operational-benefits" class="common-anchor-header">Betriebliche Vorteile<button data-href="#Operational-benefits" class="anchor-icon" translate="no">
+<p>Woodpecker is particularly optimized for concurrent, high-volume writes where maintaining order is critical. And these results only reflect the early stages of development—ongoing optimizations in I/O merging, intelligent buffering, and prefetching are expected to push performance even closer to theoretical limits.</p>
+<h2 id="Operational-benefits" class="common-anchor-header">Operational benefits<button data-href="#Operational-benefits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -202,13 +207,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Die Cloud-native Architektur von Woodpecker bietet erhebliche betriebliche Vorteile:</p>
+    </button></h2><p>Woodpecker’s cloud-native architecture delivers significant operational advantages:</p>
 <ul>
-<li><strong>Keine lokale Speicherverwaltung</strong>: Keine Festplattenverwaltung, keine RAID-Konfiguration, keine Hardware-Ausfälle</li>
-<li><strong>Automatische Skalierung</strong>: Speicher skaliert mit Cloud Object Storage ohne Kapazitätsplanung</li>
-<li><strong>Kosteneffizienz</strong>: Pay-as-you-go-Speicher mit automatischem Tiering und Komprimierung</li>
-<li><strong>Hohe Verfügbarkeit</strong>: Nutzt die 11-nines-Dauerhaftigkeit der Cloud-Anbieter mit schneller Wiederherstellung</li>
-<li><strong>Vereinfachte Bereitstellung</strong>: Zwei Bereitstellungsmodi (MemoryBuffer/QuorumBuffer) für unterschiedliche betriebliche Anforderungen</li>
-<li><strong>Entwicklerfreundlich</strong>: Schnellere Einrichtung der Umgebung und konsistente Architektur in allen Umgebungen</li>
+<li><strong>Zero local storage management</strong>: Eliminates disk volume management, RAID configuration, and hardware failures</li>
+<li><strong>Automatic scaling</strong>: Storage scales with cloud object storage without capacity planning</li>
+<li><strong>Cost efficiency</strong>: Pay-as-you-go storage with automatic tiering and compression</li>
+<li><strong>High availability</strong>: Leverages cloud providers’ 11-nines durability with fast recovery</li>
+<li><strong>Simplified deployment</strong>: Two deployment modes (MemoryBuffer/QuorumBuffer) match different operational needs</li>
+<li><strong>Developer-friendly</strong>: Faster environment setup and consistent architecture across all environments</li>
 </ul>
-<p>Diese Vorteile machen Woodpecker besonders wertvoll für unternehmenskritische RAG-, KI-Agenten- und Such-Workloads mit niedriger Latenz, bei denen die Einfachheit des Betriebs ebenso wichtig ist wie die Leistung.</p>
+<p>These advantages make Woodpecker particularly valuable for mission-critical RAG, AI agents, and low-latency search workloads where operational simplicity is as important as performance.</p>

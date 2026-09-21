@@ -1,11 +1,13 @@
 ---
 id: pattern-matching.md
-title: 模式匹配
+title: Pattern Matching
 summary: >-
-  Milvus 支持使用 LIKE 通配符模式和 RE2 正则表达式进行字符串模式匹配。可使用模式过滤器在 VARCHAR 字段、JSON 字符串路径或
-  ARRAY 元素中匹配前缀、后缀、子字符串、结构化代码、电子邮件域名、URL 路径及其他字符串模式。
+  Milvus supports string pattern matching with LIKE wildcard patterns and RE2
+  regular expressions. Use pattern filters to match prefixes, suffixes,
+  substrings, structured codes, email domains, URL paths, and other string
+  patterns in VARCHAR fields, JSON string paths, or ARRAY elements.
 ---
-<h1 id="Pattern-Matching" class="common-anchor-header">模式匹配<button data-href="#Pattern-Matching" class="anchor-icon" translate="no">
+<h1 id="Pattern-Matching" class="common-anchor-header">Pattern Matching<button data-href="#Pattern-Matching" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,18 +22,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在基于代理的搜索应用中，向量搜索和 grep 风格的模式匹配通常相辅相成。向量搜索可检索语义相关的实体，而模式匹配则通过精确的字符串结构（如错误代码、日志前缀、电子邮件域名、URL 路径或标识符）来缩小搜索结果范围。</p>
-<p>在 Milvus 中，您可以在标量过滤器中使用<code translate="no">LIKE</code> 进行简单的通配符匹配，或使用<code translate="no">=~</code> 或<code translate="no">!~</code> 进行<a href="https://github.com/google/re2/wiki/syntax">RE2</a>正则表达式匹配，来表达这些模式约束。您可以将这些过滤器与<code translate="no">query</code> 、<code translate="no">search</code> 或混合搜索相结合。</p>
+    </button></h1><p>In agentic search applications, vector search and grep-style pattern matching often complement each other. Vector search retrieves entities that are semantically relevant, while pattern matching narrows those results by exact string structures, such as error codes, log prefixes, email domains, URL paths, or identifiers.</p>
+<p>In Milvus, you can express these pattern constraints in scalar filters with <code translate="no">LIKE</code> for simple wildcard matching, and <code translate="no">=~</code> or <code translate="no">!~</code> for <a href="https://github.com/google/re2/wiki/syntax">RE2</a> regular expressions. You can combine these filters with <code translate="no">query</code>, <code translate="no">search</code>, or hybrid search.</p>
 <div class="alert note">
-<p>本页面介绍了<code translate="no">query</code> 、<code translate="no">search</code> 以及混合搜索所使用的标量过滤器表达式中的模式匹配。这些表达式用于评估字段值，不会更改分析器生成的令牌。若要在文本分析过程中过滤令牌，请参阅<a href="/docs/zh/regex-filter.md">“正则表达式分析器过滤器”</a>。</p>
+<p>This page describes pattern matching in scalar filter expressions used by <code translate="no">query</code>, <code translate="no">search</code>, and hybrid search. These expressions evaluate field values and do not change the tokens produced by an analyzer. To filter tokens during text analysis, refer to <a href="/docs/zh/regex-filter.md">Regex Analyzer Filter</a>.</p>
 </div>
-<p>模式匹配表达式写在<code translate="no">filter</code> 参数中。例如，以下查询可匹配包含<code translate="no">E1001</code> 等错误代码的日志消息：</p>
+<p>Pattern matching expressions are written in the <code translate="no">filter</code> parameter. For example, the following query matches log messages that contain an error code such as <code translate="no">E1001</code>:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -114,8 +117,31 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;message&quot;, &quot;severity&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>本页面的示例重点介绍分配给 `<code translate="no">filter</code>` 的表达式。在支持标量过滤器的 Milvus 操作（如 `<code translate="no">query</code>`、`<code translate="no">search</code>` 和混合搜索）中，您可以使用相同的过滤表达式语法。</p>
-<h2 id="Supported-field-types" class="common-anchor-header">支持的字段类型<button data-href="#Supported-field-types" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;milvus/MilvusClientV2.h&quot;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">auto</span> client = milvus::MilvusClientV2::<span class="hljs-built_in">Create</span>();
+
+milvus::ConnectParam connect_param{<span class="hljs-string">&quot;http://localhost:19530&quot;</span>, <span class="hljs-string">&quot;root:Milvus&quot;</span>};
+<span class="hljs-keyword">auto</span> status = client-&gt;<span class="hljs-built_in">Connect</span>(connect_param);
+<span class="hljs-keyword">if</span> (!status.<span class="hljs-built_in">IsOk</span>()) {
+    std::cout &lt;&lt; status.<span class="hljs-built_in">Message</span>() &lt;&lt; std::endl;
+}
+
+<span class="hljs-keyword">auto</span> request = milvus::<span class="hljs-built_in">QueryRequest</span>()
+                   .<span class="hljs-built_in">WithCollectionName</span>(<span class="hljs-string">&quot;log_events&quot;</span>)
+                   .<span class="hljs-built_in">WithFilter</span>(<span class="hljs-string">R&quot;(message =~ &quot;E[0-9]{4}&quot;)&quot;</span>)
+                   .<span class="hljs-built_in">AddOutputField</span>(<span class="hljs-string">&quot;message&quot;</span>)
+                   .<span class="hljs-built_in">AddOutputField</span>(<span class="hljs-string">&quot;severity&quot;</span>);
+
+milvus::QueryResponse response;
+status = client-&gt;<span class="hljs-built_in">Query</span>(request, response);
+<span class="hljs-keyword">if</span> (!status.<span class="hljs-built_in">IsOk</span>()) {
+    std::cout &lt;&lt; status.<span class="hljs-built_in">Message</span>() &lt;&lt; std::endl;
+}
+<button class="copy-code-btn"></button></code></pre>
+<p>The examples on this page focus on the expression assigned to <code translate="no">filter</code>. You can use the same filter expression syntax in Milvus operations that accept a scalar filter, such as <code translate="no">query</code>, <code translate="no">search</code>, and hybrid search.</p>
+<h2 id="Supported-field-types" class="common-anchor-header">Supported field types<button data-href="#Supported-field-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -130,19 +156,19 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>模式匹配适用于字符串值。</p>
+    </button></h2><p>Pattern matching is available for string values.</p>
 <table>
 <thead>
-<tr><th>目标</th><th><code translate="no">LIKE</code></th><th>正则表达式<code translate="no">=~</code> /<code translate="no">!~</code></th><th>注</th></tr>
+<tr><th>Target</th><th><code translate="no">LIKE</code></th><th>Regex <code translate="no">=~</code> / <code translate="no">!~</code></th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">VARCHAR</code> 字段</td><td>是</td><td>是</td><td>字符串字段模式匹配的典型目标。</td></tr>
-<tr><td><code translate="no">JSON</code> 路径，使用<code translate="no">VARCHAR</code> 类型转换</td><td>是</td><td>是</td><td>JSON 路径值必须为字符串才能匹配成功。若要在 JSON 路径上创建索引以提高性能，请设置 `<code translate="no">json_cast_type=&quot;varchar&quot;</code>`。</td></tr>
-<tr><td><code translate="no">ARRAY&lt;VARCHAR&gt;</code> element</td><td>是</td><td>是</td><td>按索引匹配特定元素，例如<code translate="no">tags[0]</code> 。模式匹配<strong>不会</strong>扫描所有元素；它仅适用于指定索引处的元素。</td></tr>
-<tr><td>数字、布尔值、向量、<code translate="no">TEXT</code> 或其他非<code translate="no">VARCHAR</code> 目标</td><td>否</td><td>否</td><td>模式匹配仅适用于<code translate="no">VARCHAR</code> 值、解析为字符串的JSON路径，或带索引的<code translate="no">ARRAY&lt;VARCHAR&gt;</code> 元素。</td></tr>
+<tr><td><code translate="no">VARCHAR</code> field</td><td>Yes</td><td>Yes</td><td>Typical target for pattern matching on string fields.</td></tr>
+<tr><td><code translate="no">JSON</code> path with <code translate="no">VARCHAR</code> cast type</td><td>Yes</td><td>Yes</td><td>The JSON path value must be a string for positive matches. If you create an index on the JSON path for acceleration, set <code translate="no">json_cast_type=&quot;varchar&quot;</code>.</td></tr>
+<tr><td><code translate="no">ARRAY&lt;VARCHAR&gt;</code> element</td><td>Yes</td><td>Yes</td><td>Match a specific element by index, such as <code translate="no">tags[0]</code>. Pattern matching does <strong>not</strong> scan all elements; it only applies to the element at the specified index.</td></tr>
+<tr><td>Numeric, Boolean, vector, <code translate="no">TEXT</code>, or other non-<code translate="no">VARCHAR</code> targets</td><td>No</td><td>No</td><td>Pattern matching is available only for <code translate="no">VARCHAR</code> values, JSON paths that resolve to strings, or indexed <code translate="no">ARRAY&lt;VARCHAR&gt;</code> elements.</td></tr>
 </tbody>
 </table>
-<h2 id="Choose-LIKE-or-regex" class="common-anchor-header">选择 LIKE 或正则表达式<button data-href="#Choose-LIKE-or-regex" class="anchor-icon" translate="no">
+<h2 id="Choose-LIKE-or-regex" class="common-anchor-header">Choose LIKE or regex<button data-href="#Choose-LIKE-or-regex" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,24 +183,24 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>请选择能表达所需模式的最简单操作符。</p>
-<p>如果您需要精确的字符串匹配，建议使用<code translate="no">==</code> 而非模式匹配。仅当筛选条件需要匹配特定模式时，才应使用<code translate="no">LIKE</code> 或regex。</p>
+    </button></h2><p>Choose the simplest operator that expresses the pattern you need.</p>
+<p>If you need an exact string match, we recommend you use <code translate="no">==</code> instead of pattern matching. Use <code translate="no">LIKE</code> or regex only when the filter needs to match a pattern.</p>
 <table>
 <thead>
-<tr><th>要求</th><th>推荐操作符</th><th>示例</th><th>说明</th></tr>
+<tr><th>Requirement</th><th>Recommended operator</th><th>Example</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>字符串精确相等</td><td><code translate="no">==</code></td><td><code translate="no">status == &quot;active&quot;</code></td><td>与字符串<code translate="no">active</code> 完全匹配。</td></tr>
-<tr><td>简单前缀匹配</td><td><code translate="no">LIKE</code></td><td><code translate="no">name LIKE &quot;Prod%&quot;</code></td><td>匹配以<code translate="no">Prod</code> 开头的字符串。</td></tr>
-<tr><td>简单后缀匹配</td><td><code translate="no">LIKE</code></td><td><code translate="no">filename LIKE &quot;%.json&quot;</code></td><td>匹配以<code translate="no">.json</code> 结尾的字符串。</td></tr>
-<tr><td>简单包含匹配</td><td><code translate="no">LIKE</code></td><td><code translate="no">description LIKE &quot;%vector database%&quot;</code></td><td>匹配字符串中任意位置包含<code translate="no">vector database</code> 的值。</td></tr>
-<tr><td>匹配结构化代码或固定长度模式</td><td><code translate="no">=~</code></td><td><code translate="no">code =~ &quot;E[0-9]{4}&quot;</code></td><td>匹配区分大小写且包含<code translate="no">E</code> 后面跟四个数字的字符串，例如<code translate="no">E1001</code> 。</td></tr>
-<tr><td>不区分大小写的模式匹配</td><td><code translate="no">=~</code> 使用<code translate="no">(?i)</code></td><td><code translate="no">message =~ &quot;(?i)error&quot;</code></td><td>匹配<code translate="no">error</code> 、<code translate="no">ERROR</code> 或其他大小写变体。</td></tr>
-<tr><td>排除匹配正则表达式模式的值</td><td><code translate="no">!~</code></td><td><code translate="no">message !~ &quot;^DEBUG&quot;</code></td><td>排除以<code translate="no">DEBUG</code> 开头的字符串。</td></tr>
+<tr><td>Exact string equality</td><td><code translate="no">==</code></td><td><code translate="no">status == &quot;active&quot;</code></td><td>Exact match of the string <code translate="no">active</code>.</td></tr>
+<tr><td>Simple prefix match</td><td><code translate="no">LIKE</code></td><td><code translate="no">name LIKE &quot;Prod%&quot;</code></td><td>Matches strings that start with <code translate="no">Prod</code>.</td></tr>
+<tr><td>Simple suffix match</td><td><code translate="no">LIKE</code></td><td><code translate="no">filename LIKE &quot;%.json&quot;</code></td><td>Matches strings that end with <code translate="no">.json</code>.</td></tr>
+<tr><td>Simple contains match</td><td><code translate="no">LIKE</code></td><td><code translate="no">description LIKE &quot;%vector database%&quot;</code></td><td>Matches values that contain <code translate="no">vector database</code> anywhere in the string.</td></tr>
+<tr><td>Match a structured code or fixed-length pattern</td><td><code translate="no">=~</code></td><td><code translate="no">code =~ &quot;E[0-9]{4}&quot;</code></td><td>Matches strings that case-sensitively contain <code translate="no">E</code> followed by four digits, such as <code translate="no">E1001</code>.</td></tr>
+<tr><td>Case-insensitive pattern matching</td><td><code translate="no">=~</code> with <code translate="no">(?i)</code></td><td><code translate="no">message =~ &quot;(?i)error&quot;</code></td><td>Matches <code translate="no">error</code>, <code translate="no">ERROR</code>, or other case variants.</td></tr>
+<tr><td>Exclude values that match a regex pattern</td><td><code translate="no">!~</code></td><td><code translate="no">message !~ &quot;^DEBUG&quot;</code></td><td>Excludes strings that start with <code translate="no">DEBUG</code>.</td></tr>
 </tbody>
 </table>
-<p>使用<code translate="no">LIKE</code> 进行简单的通配符匹配。当模式需要字符类、重复、交替（如<code translate="no">error|failed</code> ）、锚点或不区分大小写的匹配时，请使用正则表达式。</p>
-<h2 id="Use-LIKE" class="common-anchor-header">使用 LIKE<button data-href="#Use-LIKE" class="anchor-icon" translate="no">
+<p>Use <code translate="no">LIKE</code> for simple wildcard matching. Use regex when the pattern needs character classes, repetition, alternation such as <code translate="no">error|failed</code>, anchors, or case-insensitive matching.</p>
+<h2 id="Use-LIKE" class="common-anchor-header">Use LIKE<button data-href="#Use-LIKE" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -189,17 +215,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">LIKE</code> 操作符用于对字符串值进行简单的通配符匹配。它仅支持以下通配符：</p>
+    </button></h2><p>The <code translate="no">LIKE</code> operator is for simple wildcard matching on string values. It supports only the following wildcards:</p>
 <table>
 <thead>
-<tr><th>通配符</th><th>描述</th></tr>
+<tr><th>Wildcard</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">%</code></td><td>匹配零个或多个字符。</td></tr>
-<tr><td><code translate="no">_</code></td><td>匹配恰好一个字符。</td></tr>
+<tr><td><code translate="no">%</code></td><td>Matches zero or more characters.</td></tr>
+<tr><td><code translate="no">_</code></td><td>Matches exactly one character.</td></tr>
 </tbody>
 </table>
-<h3 id="Common-LIKE-patterns" class="common-anchor-header">常见的 LIKE 模式<button data-href="#Common-LIKE-patterns" class="anchor-icon" translate="no">
+<h3 id="Common-LIKE-patterns" class="common-anchor-header">Common LIKE patterns<button data-href="#Common-LIKE-patterns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,19 +240,19 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>使用<code translate="no">%</code> 和<code translate="no">_</code> 的位置来控制固定文本在匹配字符串中的出现位置。</p>
+    </button></h3><p>Use the position of <code translate="no">%</code> and <code translate="no">_</code> to control where the fixed text appears in the matched string.</p>
 <table>
 <thead>
-<tr><th>要求</th><th>模式</th><th>过滤示例</th></tr>
+<tr><th>Requirement</th><th>Pattern</th><th>Filter example</th></tr>
 </thead>
 <tbody>
-<tr><td>以前缀开头</td><td><code translate="no">Prod%</code></td><td><code translate="no">filter = 'name LIKE &quot;Prod%&quot;'</code></td></tr>
-<tr><td>以后缀结尾</td><td><code translate="no">%.json</code></td><td><code translate="no">filter = 'filename LIKE &quot;%.json&quot;'</code></td></tr>
-<tr><td>包含子字符串</td><td><code translate="no">%vector%</code></td><td><code translate="no">filter = 'description LIKE &quot;%vector%&quot;'</code></td></tr>
-<tr><td>匹配固定位置上的一个字符</td><td><code translate="no">AB_%</code></td><td><code translate="no">filter = 'code LIKE &quot;AB_%&quot;'</code></td></tr>
+<tr><td>Starts with a prefix</td><td><code translate="no">Prod%</code></td><td><code translate="no">filter = 'name LIKE &quot;Prod%&quot;'</code></td></tr>
+<tr><td>Ends with a suffix</td><td><code translate="no">%.json</code></td><td><code translate="no">filter = 'filename LIKE &quot;%.json&quot;'</code></td></tr>
+<tr><td>Contains a substring</td><td><code translate="no">%vector%</code></td><td><code translate="no">filter = 'description LIKE &quot;%vector%&quot;'</code></td></tr>
+<tr><td>Matches one character at a fixed position</td><td><code translate="no">AB_%</code></td><td><code translate="no">filter = 'code LIKE &quot;AB_%&quot;'</code></td></tr>
 </tbody>
 </table>
-<h3 id="LIKE-matching-behavior" class="common-anchor-header">LIKE 匹配行为<button data-href="#LIKE-matching-behavior" class="anchor-icon" translate="no">
+<h3 id="LIKE-matching-behavior" class="common-anchor-header">LIKE matching behavior<button data-href="#LIKE-matching-behavior" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -241,9 +267,9 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>使用<code translate="no">LIKE</code> 进行前缀、后缀、包含以及固定位置单字符匹配。<code translate="no">LIKE</code> 不支持字符类（如<code translate="no">[0-9]</code> ）、选择关系（如<code translate="no">error|failed</code> ）、重复计数（如<code translate="no">{4}</code> ）、锚点（如<code translate="no">^</code> 或<code translate="no">$</code> ），也不支持不区分大小写的标志（如<code translate="no">(?i)</code> ）。对于此类模式，请使用正则表达式。</p>
-<p>使用<code translate="no">==</code> 进行精确的全字符串相等比较。仅当过滤器需要通配符匹配时，才使用<code translate="no">LIKE</code> 。</p>
-<h3 id="Escaping-wildcards-in-a-LIKE-pattern" class="common-anchor-header">在 LIKE 模式中转义通配符<button data-href="#Escaping-wildcards-in-a-LIKE-pattern" class="anchor-icon" translate="no">
+    </button></h3><p>Use <code translate="no">LIKE</code> for prefix, suffix, contains, and fixed-position single-character matches. <code translate="no">LIKE</code> does not support character classes such as <code translate="no">[0-9]</code>, alternation such as <code translate="no">error|failed</code>, repeat counts such as <code translate="no">{4}</code>, anchors such as <code translate="no">^</code> or <code translate="no">$</code>, or case-insensitive flags such as <code translate="no">(?i)</code>. Use regex for those patterns.</p>
+<p>Use <code translate="no">==</code> for exact full-string equality. Use <code translate="no">LIKE</code> only when the filter needs wildcard matching.</p>
+<h3 id="Escaping-wildcards-in-a-LIKE-pattern" class="common-anchor-header">Escaping wildcards in a LIKE pattern<button data-href="#Escaping-wildcards-in-a-LIKE-pattern" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -258,14 +284,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在<code translate="no">LIKE</code> 模式中，<code translate="no">%</code> 匹配零个或多个字符，而<code translate="no">_</code> 匹配恰好一个字符。若要原样匹配<code translate="no">%</code> 、<code translate="no">_</code> 或<code translate="no">\</code> ，请使用反斜杠 (<code translate="no">\</code>) 对字符进行转义：</p>
+    </button></h3><p>In <code translate="no">LIKE</code> patterns, <code translate="no">%</code> matches zero or more characters and <code translate="no">_</code> matches exactly one character. To match <code translate="no">%</code>, <code translate="no">_</code>, or <code translate="no">\</code> literally, escape the character with a backslash (<code translate="no">\</code>):</p>
 <ul>
-<li><code translate="no">name LIKE r&quot;\%&quot;</code> 匹配字面值<code translate="no">%</code> 。</li>
-<li><code translate="no">name LIKE r&quot;\_%&quot;</code> 匹配以字面量<code translate="no">_</code> 开头的值。</li>
-<li><code translate="no">name LIKE r&quot;\\%&quot;</code> 匹配以字面量反斜杠开头的值。</li>
+<li><code translate="no">name LIKE r&quot;\%&quot;</code> matches the literal value <code translate="no">%</code>.</li>
+<li><code translate="no">name LIKE r&quot;\_%&quot;</code> matches values that start with a literal <code translate="no">_</code>.</li>
+<li><code translate="no">name LIKE r&quot;\\%&quot;</code> matches values that start with a literal backslash.</li>
 </ul>
-<p>原始字符串字面量（写法为<code translate="no">r&quot;...&quot;</code> 或<code translate="no">r'...'</code> ）在 Milvus 过滤器表达式中会原样保留反斜杠。建议在包含反斜杠的<code translate="no">LIKE</code> 和正则表达式模式中使用它们。如果不使用原始字符串，普通字符串字面量在评估模式之前仍会处理转义序列，因此可能需要添加更多的反斜杠。</p>
-<h2 id="Use-regex" class="common-anchor-header">使用正则表达式<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Use-regex" class="anchor-icon" translate="no">
+<p>Raw string literals, written as <code translate="no">r&quot;...&quot;</code> or <code translate="no">r'...'</code>, keep backslashes verbatim in Milvus filter expressions. They are recommended for <code translate="no">LIKE</code> and regex patterns that contain backslashes. Without a raw string, ordinary string literals still process escape sequences before the pattern is evaluated, so more backslashes may be required.</p>
+<h2 id="Use-regex" class="common-anchor-header">Use regex<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Use-regex" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -280,18 +306,18 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>当模式需要正则表达式功能（如字符类、重复、选择、锚点或不区分大小写的匹配）时，请使用正则表达式过滤器。Milvus 会对字符串值应用<a href="https://github.com/google/re2/wiki/syntax">RE2</a>正则表达式。</p>
-<p><code translate="no">=~</code> 或<code translate="no">!~</code> 的右侧必须是字符串字面量。</p>
+    </button></h2><p>Use regex filters when the pattern requires regular expression features such as character classes, repetition, alternation, anchors, or case-insensitive matching. Milvus applies an <a href="https://github.com/google/re2/wiki/syntax">RE2</a> regular expression to a string value.</p>
+<p>The right side of <code translate="no">=~</code> or <code translate="no">!~</code> must be a string literal.</p>
 <table>
 <thead>
-<tr><th>操作符</th><th>含义</th><th>示例</th></tr>
+<tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">=~</code></td><td>匹配满足正则表达式模式的值。</td><td><code translate="no">filter = 'message =~ &quot;E[0-9]{4}&quot;'</code></td></tr>
-<tr><td><code translate="no">!~</code></td><td>排除满足正则表达式模式的值。</td><td><code translate="no">filter = 'message !~ &quot;^DEBUG&quot;'</code></td></tr>
+<tr><td><code translate="no">=~</code></td><td>Matches values that satisfy the regex pattern.</td><td><code translate="no">filter = 'message =~ &quot;E[0-9]{4}&quot;'</code></td></tr>
+<tr><td><code translate="no">!~</code></td><td>Excludes values that satisfy the regex pattern.</td><td><code translate="no">filter = 'message !~ &quot;^DEBUG&quot;'</code></td></tr>
 </tbody>
 </table>
-<h3 id="Use-raw-string-literals" class="common-anchor-header">使用原始字符串字面量<button data-href="#Use-raw-string-literals" class="anchor-icon" translate="no">
+<h3 id="Use-raw-string-literals" class="common-anchor-header">Use raw string literals<button data-href="#Use-raw-string-literals" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -306,14 +332,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>对于包含反斜杠的正则表达式模式，建议使用原始字符串字面量。在以<code translate="no">r&quot;...&quot;</code> 或<code translate="no">r'...'</code> 形式书写的原始字符串中，反斜杠会原样传递给正则表达式引擎。这避免了普通字符串字面量所需的额外转义操作。</p>
-<p>例如：</p>
+    </button></h3><p>Raw string literals are recommended for regex patterns that contain backslashes. In a raw string, written as <code translate="no">r&quot;...&quot;</code> or <code translate="no">r'...'</code>, backslashes are passed to the regex engine verbatim. This avoids the extra escaping required by ordinary string literals.</p>
+<p>For example:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">r&#x27;filename =~ r&quot;\.json$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -325,9 +352,11 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;filename =~ r&quot;\.json$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>这将匹配以<code translate="no">.json</code> 结尾的字符串，例如<code translate="no">report.json</code> 。</p>
-<p>如果在 Milvus 过滤器表达式中未使用原始字符串，普通字符串字面量会在正则表达式模式被评估之前处理转义序列。因此，转义后的字面量字符可能需要在宿主语言的字符串中添加额外的反斜杠。</p>
-<h3 id="Common-regex-patterns" class="common-anchor-header">常见的正则表达式模式<button data-href="#Common-regex-patterns" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">R&quot;(filename =~ r&quot;\.json$&quot;)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p>This matches strings that end with <code translate="no">.json</code>, such as <code translate="no">report.json</code>.</p>
+<p>Without a raw string in the Milvus filter expression, ordinary string literals process escape sequences before the regex pattern is evaluated. Escaped literal characters may therefore require additional backslashes in the host-language string.</p>
+<h3 id="Common-regex-patterns" class="common-anchor-header">Common regex patterns<button data-href="#Common-regex-patterns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -342,29 +371,30 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下示例在 Milvus 过滤器表达式中使用了常见的 RE2 语法。有关完整的正则表达式语法，请参阅<a href="https://github.com/google/re2/wiki/syntax">RE2 语法</a>参考。</p>
+    </button></h3><p>The following examples use common RE2 syntax in Milvus filter expressions. For complete regex syntax, refer to the <a href="https://github.com/google/re2/wiki/syntax">RE2 syntax</a> reference.</p>
 <table>
 <thead>
-<tr><th>要求</th><th>模式</th><th>过滤示例</th></tr>
+<tr><th>Requirement</th><th>Pattern</th><th>Filter example</th></tr>
 </thead>
 <tbody>
-<tr><td>包含字面文本</td><td><code translate="no">error</code></td><td><code translate="no">filter = 'message =~ &quot;error&quot;'</code></td></tr>
-<tr><td>以前缀开头</td><td><code translate="no">^ERR</code></td><td><code translate="no">filter = 'code =~ &quot;^ERR&quot;'</code></td></tr>
-<tr><td>以后缀结尾</td><td><code translate="no">\.json$</code></td><td><code translate="no">filter = 'filename =~ &quot;\\.json$&quot;'</code></td></tr>
-<tr><td>匹配数字序列</td><td><code translate="no">[0-9]+</code></td><td><code translate="no">filter = 'message =~ &quot;[0-9]+&quot;'</code></td></tr>
-<tr><td>匹配固定数量的数字</td><td><code translate="no">[0-9]{4}</code></td><td><code translate="no">filter = 'code =~ &quot;[0-9]{4}&quot;'</code></td></tr>
-<tr><td>匹配电子邮件域名</td><td><code translate="no">@example\.com$</code></td><td><code translate="no">filter = 'email =~ &quot;@example\\.com$&quot;'</code></td></tr>
-<tr><td>不区分大小写</td><td><code translate="no">(?i)error</code></td><td><code translate="no">filter = 'message =~ &quot;(?i)error&quot;'</code></td></tr>
-<tr><td>匹配整个字符串</td><td><code translate="no">^prod-[0-9]+$</code></td><td><code translate="no">filter = 'name =~ &quot;^prod-[0-9]+$&quot;'</code></td></tr>
+<tr><td>Contains literal text</td><td><code translate="no">error</code></td><td><code translate="no">filter = 'message =~ &quot;error&quot;'</code></td></tr>
+<tr><td>Starts with a prefix</td><td><code translate="no">^ERR</code></td><td><code translate="no">filter = 'code =~ &quot;^ERR&quot;'</code></td></tr>
+<tr><td>Ends with a suffix</td><td><code translate="no">\.json$</code></td><td><code translate="no">filter = 'filename =~ &quot;\\.json$&quot;'</code></td></tr>
+<tr><td>Matches a digit sequence</td><td><code translate="no">[0-9]+</code></td><td><code translate="no">filter = 'message =~ &quot;[0-9]+&quot;'</code></td></tr>
+<tr><td>Matches a fixed number of digits</td><td><code translate="no">[0-9]{4}</code></td><td><code translate="no">filter = 'code =~ &quot;[0-9]{4}&quot;'</code></td></tr>
+<tr><td>Matches an email domain</td><td><code translate="no">@example\.com$</code></td><td><code translate="no">filter = 'email =~ &quot;@example\\.com$&quot;'</code></td></tr>
+<tr><td>Matches case-insensitively</td><td><code translate="no">(?i)error</code></td><td><code translate="no">filter = 'message =~ &quot;(?i)error&quot;'</code></td></tr>
+<tr><td>Matches the full string</td><td><code translate="no">^prod-[0-9]+$</code></td><td><code translate="no">filter = 'name =~ &quot;^prod-[0-9]+$&quot;'</code></td></tr>
 </tbody>
 </table>
-<p>若要匹配多个单词中的任意一个，请使用<code translate="no">|</code> 的交替匹配：</p>
+<p>To match one of several words, use alternation with <code translate="no">|</code>:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message =~ &quot;error|failed|timeout&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -376,13 +406,16 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message =~ &quot;error|failed|timeout&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>当需要匹配正则表达式中的字面元字符时，请在正则表达式模式中对其进行转义。例如，要匹配字面上的点（正则表达式中的 `<code translate="no">\.</code> `），请在 Python、Java、Go 或 Node.js 源字符串中写为 `<code translate="no">\\.</code> `：</p>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">R&quot;(message =~ &quot;error|failed|timeout&quot;)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p>When matching regex metacharacters literally, escape them in the regex pattern. For example, to match a literal dot (<code translate="no">\.</code> in regex), write <code translate="no">\\.</code> in a Python, Java, Go, or Node.js source string:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;email =~ &quot;@gmail\\.com$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -394,8 +427,10 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;email =~ &quot;@gmail\\.com$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>注意：Milvus 正则表达式过滤器遵循 RE2 语法。如果正则表达式模式使用了 RE2 不支持的语法，或存在其他无效情况，Milvus 将拒绝该过滤器表达式。有关正则表达式元字符、标志和匹配行为的详细信息，请参阅<a href="https://github.com/google/re2/wiki/syntax">RE2 语法</a>参考。</p>
-<h3 id="Matching-behavior" class="common-anchor-header">匹配行为<button data-href="#Matching-behavior" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">R&quot;(email =~ &quot;@gmail\\.com$&quot;)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p>Note: Milvus regex filters follow RE2 syntax. If a regex pattern uses syntax that RE2 does not support or is otherwise invalid, Milvus rejects the filter expression. For details about regex metacharacters, flags, and matching behavior, refer to the <a href="https://github.com/google/re2/wiki/syntax">RE2 syntax</a> reference.</p>
+<h3 id="Matching-behavior" class="common-anchor-header">Matching behavior<button data-href="#Matching-behavior" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -410,14 +445,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>子字符串匹配</strong></p>
-<p>Milvus 的正则表达式匹配采用子字符串语义。模式无需与整个字段值完全匹配。例如，以下过滤器既匹配<code translate="no">E1001</code> ，也匹配<code translate="no">failed with E1001 after retry</code> ：</p>
+    </button></h3><p><strong>Substring matching</strong></p>
+<p>Milvus regex matching uses substring semantics. The pattern does not need to match the entire field value. For example, the following filter matches both <code translate="no">E1001</code> and <code translate="no">failed with E1001 after retry</code>:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -429,13 +465,16 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>若要匹配整个字段值，请使用锚点<code translate="no">^</code> 和<code translate="no">$</code> ：</p>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">R&quot;(message =~ &quot;E[0-9]{4}&quot;)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p>To match the entire field value, use the <code translate="no">^</code> and <code translate="no">$</code> anchors:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match only values that are exactly E followed by four digits</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</span>
@@ -452,14 +491,17 @@ filter := <span class="hljs-string">`code =~ &quot;^E[0-9]{4}$&quot;`</span>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># Match only values that are exactly E followed by four digits</span>
 filter=<span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>可为空的 VARCHAR 字段</strong></p>
-<p>正则表达式过滤器不会匹配空值。这同时适用于<code translate="no">=~</code> 和<code translate="no">!~</code> 。若要排除某个正则表达式模式但保留空值，请显式添加<code translate="no">OR field IS NULL</code> ：</p>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">R&quot;(code =~ &quot;^E[0-9]{4}$&quot;)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p><strong>Nullable VARCHAR fields</strong></p>
+<p>Regex filters do not match null values. This applies to both <code translate="no">=~</code> and <code translate="no">!~</code>. If you want to exclude a regex pattern but keep null values, explicitly add <code translate="no">OR field IS NULL</code>:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot; OR message IS NULL&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -471,18 +513,20 @@ filter=<span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</sp
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot; OR message IS NULL&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>JSON 路径</strong></p>
-<p>对于 JSON 路径，当路径缺失、为 null 或解析为非字符串值时，正则表达式过滤器的行为会有所不同：</p>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">R&quot;(message !~ &quot;^DEBUG&quot; OR message IS NULL)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p><strong>JSON paths</strong></p>
+<p>For JSON paths, regex filters behave differently when the path is missing, null, or resolves to a non-string value:</p>
 <table>
 <thead>
-<tr><th>过滤器</th><th>是否包含缺失/null/非字符串值？</th><th>备注</th></tr>
+<tr><th>Filter</th><th>Includes missing/null/non-string values?</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">json_field[&quot;path&quot;] =~ &quot;pattern&quot;</code></td><td>否</td><td>仅匹配满足正则表达式模式的字符串值。</td></tr>
-<tr><td><code translate="no">json_field[&quot;path&quot;] !~ &quot;pattern&quot;</code></td><td>是</td><td>返回路径缺失、为空、非字符串，或字符串不匹配正则表达式模式的实体。</td></tr>
+<tr><td><code translate="no">json_field[&quot;path&quot;] =~ &quot;pattern&quot;</code></td><td>No</td><td>Matches only string values that satisfy the regex pattern.</td></tr>
+<tr><td><code translate="no">json_field[&quot;path&quot;] !~ &quot;pattern&quot;</code></td><td>Yes</td><td>Returns entities where the path is missing, null, non-string, or a string that does not match the regex pattern.</td></tr>
 </tbody>
 </table>
-<h2 id="Accelerate-pattern-matching-with-indexes" class="common-anchor-header">利用索引加速模式匹配<button data-href="#Accelerate-pattern-matching-with-indexes" class="anchor-icon" translate="no">
+<h2 id="Accelerate-pattern-matching-with-indexes" class="common-anchor-header">Accelerate pattern matching with indexes<button data-href="#Accelerate-pattern-matching-with-indexes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -497,16 +541,16 @@ filter=<span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</sp
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 支持多种字符串字段索引类型，这些索引可与<code translate="no">LIKE</code> 以及针对<code translate="no">VARCHAR</code> 字段或 JSON 字符串路径的正则表达式过滤器配合使用，例如<code translate="no">NGRAM</code> 、<code translate="no">STL_SORT</code> 、<code translate="no">INVERTED</code> 和<code translate="no">BITMAP</code> 。模式匹配可在不使用索引的情况下进行，但索引可提升大型数据集的性能。</p>
-<p>索引的有效性取决于模式表达式、Milvus 能否提取固定的字面量子字符串，以及目标字段的基数和分布情况。前缀式模式（例如<code translate="no">name LIKE &quot;Prod%&quot;</code> ）可能受益于与中缀或后缀模式（例如<code translate="no">description LIKE &quot;%vector%&quot;</code> 或<code translate="no">filename LIKE &quot;%.json&quot;</code> ）不同的索引策略。</p>
-<p>请将下表作为参考起点，然后根据您自己的工作负载进行基准测试：</p>
+    </button></h2><p>Milvus supports several index types on string fields that can be used together with <code translate="no">LIKE</code> and regex filters on <code translate="no">VARCHAR</code> fields or JSON string paths, such as <code translate="no">NGRAM</code>, <code translate="no">STL_SORT</code>, <code translate="no">INVERTED</code>, and <code translate="no">BITMAP</code>. Pattern matching can work without an index, but an index can improve performance on large datasets.</p>
+<p>Index effectiveness depends on the pattern expression, whether Milvus can extract fixed literal substrings, and the cardinality and distribution of the target field. Prefix-style patterns such as <code translate="no">name LIKE &quot;Prod%&quot;</code> may benefit from different index strategies than infix or suffix patterns such as <code translate="no">description LIKE &quot;%vector%&quot;</code> or <code translate="no">filename LIKE &quot;%.json&quot;</code>.</p>
+<p>Use the following table as a starting point, then benchmark with your own workload:</p>
 <table>
 <thead>
-<tr><th>模式或数据特征</th><th>应考虑的索引</th><th>备注</th></tr>
+<tr><th>Pattern or data characteristic</th><th>Index to consider</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td>包含固定的字面量子字符串，例如<code translate="no">message =~ &quot;error.*timeout&quot;</code> 或<code translate="no">message LIKE &quot;%database%&quot;</code></td><td><code translate="no">NGRAM</code></td><td>当 Milvus 能从模式中提取有意义的字面量子字符串时，此项会有所帮助。详情请参阅<a href="/docs/zh/ngram.md">NGRAM</a>。</td></tr>
-<tr><td>前缀、精确或等值类型的字符串过滤器，特别适用于基数较低至中等的字段</td><td><code translate="no">STL_SORT</code>、<code translate="no">INVERTED</code> 或<code translate="no">BITMAP</code></td><td>当字段包含重复值或过滤条件接近精确匹配时，此方法可能更有效。详情请参阅<a href="/docs/zh/stl-sort.md">STL_SORT</a>、<a href="/docs/zh/inverted.md">INVERTED</a> 和<a href="/docs/zh/bitmap.md">BITMAP</a>。</td></tr>
-<tr><td>不包含固定字符的正则表达式模式，或以字符类、短令牌或通配符为主的模式</td><td>在依赖索引加速之前请先进行基准测试</td><td>这些模式可能提供的索引选择性有限，并可能退化为更广泛的扫描。</td></tr>
+<tr><td>Contains fixed literal substrings, such as <code translate="no">message =~ &quot;error.*timeout&quot;</code> or <code translate="no">message LIKE &quot;%database%&quot;</code></td><td><code translate="no">NGRAM</code></td><td>Helps when Milvus can extract meaningful literal substrings from the pattern. For details, refer to <a href="/docs/zh/ngram.md">NGRAM</a>.</td></tr>
+<tr><td>Prefix, exact, or equality-like string filters, especially on fields with low to moderate cardinality</td><td><code translate="no">STL_SORT</code>, <code translate="no">INVERTED</code>, or <code translate="no">BITMAP</code></td><td>May be more effective when the field has repeated values or when the filter is close to exact matching. For details, refer to <a href="/docs/zh/stl-sort.md">STL_SORT</a>, <a href="/docs/zh/inverted.md">INVERTED</a>, and <a href="/docs/zh/bitmap.md">BITMAP</a>.</td></tr>
+<tr><td>Regex patterns without fixed literals, or patterns dominated by character classes, short tokens, or wildcards</td><td>Benchmark before relying on index acceleration</td><td>These patterns may provide limited index selectivity and can fall back to broader scans.</td></tr>
 </tbody>
 </table>

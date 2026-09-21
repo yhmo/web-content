@@ -1,9 +1,11 @@
 ---
 id: search_patterns.md
-title: 提示：Milvus 搜尋模式
-summary: 人工智能編碼助手在 Milvus 中執行搜尋、混合搜尋和全文搜尋的規則。
+title: 'Prompt: Milvus Search Patterns'
+summary: >-
+  Rules for AI coding assistants to implement search, hybrid search, and
+  full-text search in Milvus.
 ---
-<h1 id="Search-Patterns" class="common-anchor-header">搜尋模式<button data-href="#Search-Patterns" class="anchor-icon" translate="no">
+<h1 id="Search-Patterns" class="common-anchor-header">Search Patterns<button data-href="#Search-Patterns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: 人工智能編碼助手在 Milvus 中執行搜尋、混合搜尋和全
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在 Milvus 中實作相似性搜尋、混合搜尋、篩選搜尋及全文搜尋的規則，包括 AnnSearchRequest 約束及排名器的使用。將以下完整的提示複製到您的 AI 工具中，即可自動套用這些規則。如需所有提示的概覽，請參閱<a href="/docs/zh-hant/milvus_for_agents.md">AI 提示</a>。</p>
-<h2 id="How-to-use-this-prompt" class="common-anchor-header">如何使用此提示<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
+    </button></h1><p>Rules for implementing similarity search, hybrid search, filtered search, and full-text search in Milvus, including AnnSearchRequest constraints and ranker usage. Copy the full prompt below into your AI tool to apply these rules automatically. For an overview of all prompts, see <a href="/docs/zh-hant/milvus_for_agents.md">AI Prompts</a>.</p>
+<h2 id="How-to-use-this-prompt" class="common-anchor-header">How to use this prompt<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,12 +37,12 @@ summary: 人工智能編碼助手在 Milvus 中執行搜尋、混合搜尋和全
         ></path>
       </svg>
     </button></h2><ol>
-<li>從下面的完整提示部分<strong>複製</strong> <a href="#full-prompt">完整提示</a>。</li>
-<li>將它<strong>儲存</strong>到您的 AI 工具所期望的位置 - 詳細位置請參閱<a href="/docs/zh-hant/milvus_for_agents.md">環境表</a>。</li>
-<li>當產生或檢閱 Milvus 程式碼時，您的 AI 助手會自動套用這些規則。</li>
+<li><strong>Copy</strong> the full prompt from the <a href="#full-prompt">Full prompt</a> section below.</li>
+<li><strong>Save</strong> it to the location your AI tool expects — see the <a href="/docs/zh-hant/milvus_for_agents.md">environment table</a> for placement details.</li>
+<li>Your AI assistant will automatically apply these rules when generating or reviewing Milvus code.</li>
 </ol>
-<p>對於<strong>Cursor</strong>使用者：複製<a href="#full-prompt">完整</a>提示部分的提示，並將其儲存在專案中的<code translate="no">.cursor/rules/</code> 下。</p>
-<h2 id="Full-prompt" class="common-anchor-header">完整提示<button data-href="#Full-prompt" class="anchor-icon" translate="no">
+<p>For <strong>Cursor</strong> users: copy the prompt from the <a href="#full-prompt">Full prompt</a> section and save it under <code translate="no">.cursor/rules/</code> in your project.</p>
+<h2 id="Full-prompt" class="common-anchor-header">Full prompt<button data-href="#Full-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

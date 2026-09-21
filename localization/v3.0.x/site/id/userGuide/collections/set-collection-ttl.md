@@ -1,11 +1,11 @@
 ---
 id: set-collection-ttl.md
-title: Tetapkan TTL Koleksi
+title: Set Collection TTL
 summary: >-
-  Konfigurasikan kebijakan TTL tingkat koleksi atau tingkat entitas untuk
-  mengakhiri data yang sudah kedaluwarsa secara otomatis di Milvus.
+  Configure collection-level or entity-level TTL policies to expire stale data
+  automatically in Milvus.
 ---
-<h1 id="Set-Collection-TTL" class="common-anchor-header">Tetapkan TTL Koleksi<button data-href="#Set-Collection-TTL" class="anchor-icon" translate="no">
+<h1 id="Set-Collection-TTL" class="common-anchor-header">Set Collection TTL<button data-href="#Set-Collection-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,16 +20,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus dapat secara otomatis menghapus entitas melalui kebijakan <strong>Time-to-Live (TTL</strong> ). Entitas yang kedaluwarsa akan segera berhenti muncul di kueri dan hasil pencarian, dan secara fisik dihapus dari penyimpanan pada siklus pemadatan berikutnya - biasanya dalam waktu 24 jam.</p>
-<p>Ada dua mode TTL:</p>
+    </button></h1><p>Milvus can automatically expire entities through a <strong>Time-to-Live (TTL)</strong> policy. Expired entities stop appearing in query and search results immediately, and are physically removed from storage on the next compaction cycle — typically within 24 hours.</p>
+<p>There are two TTL modes:</p>
 <ul>
-<li><p><strong>TTL tingkat koleksi</strong> - satu jendela retensi yang digunakan bersama oleh setiap entitas, yang diatur melalui properti <code translate="no">collection.ttl.seconds</code>.</p></li>
-<li><p><strong>TTL tingkat entitas</strong> - setiap entitas memiliki waktu kedaluwarsa absolutnya sendiri di bidang khusus <code translate="no">TIMESTAMPTZ</code>, yang ditandai sebagai bidang TTL melalui properti <code translate="no">ttl_field</code>.</p></li>
+<li><p><strong>Collection-level TTL</strong> — one retention window shared by every entity, set through the <code translate="no">collection.ttl.seconds</code> property.</p></li>
+<li><p><strong>Entity-level TTL</strong> — each entity carries its own absolute expiration time in a dedicated <code translate="no">TIMESTAMPTZ</code> field, marked as the TTL field through the <code translate="no">ttl_field</code> property.</p></li>
 </ul>
 <div class="alert note">
-<p>Fitur ini hanya berlaku untuk koleksi yang dikelola.</p>
+<p>This feature applies only to managed collections.</p>
 </div>
-<h2 id="Limits" class="common-anchor-header">Batas<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -45,13 +45,13 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Kedua mode TTL tersebut saling eksklusif. Sebuah koleksi tidak dapat memiliki <code translate="no">collection.ttl.seconds</code> dan <code translate="no">ttl_field</code> yang diatur pada waktu yang sama. Untuk beralih, lihat Berpindah <a href="/docs/id/set-collection-ttl.md#Migrate-between-the-two-modes">di antara dua mode</a>.</p></li>
-<li><p>TTL tingkat koleksi menerapkan satu jendela ke seluruh koleksi. Jika satu baris membutuhkan masa berlaku yang berbeda, gunakan TTL tingkat entitas.</p></li>
-<li><p>Bidang untuk TTL tingkat entitas harus <code translate="no">TIMESTAMPTZ</code>. Jenis lain akan ditolak.</p></li>
-<li><p>Satu bidang TTL per koleksi. Skema dapat berisi beberapa bidang <code translate="no">TIMESTAMPTZ</code>, tetapi hanya satu yang dapat diberi nama di <code translate="no">ttl_field</code>.</p></li>
-<li><p>Menghapus <code translate="no">ttl_field</code> tidak akan memunculkan kembali entitas yang sudah kedaluwarsa. Untuk memulihkan entitas yang kedaluwarsa, pasang kembali dengan <code translate="no">NULL</code> atau stempel waktu kedaluwarsa yang akan datang.</p></li>
+<li><p>The two TTL modes are mutually exclusive. A collection cannot have both <code translate="no">collection.ttl.seconds</code> and <code translate="no">ttl_field</code> set at the same time. To switch, see <a href="/docs/id/set-collection-ttl.md#Migrate-between-the-two-modes">Migrate between the two modes</a>.</p></li>
+<li><p>Collection-level TTL applies one window to the whole collection. If a single row needs a different lifetime, use entity-level TTL.</p></li>
+<li><p>The field for entity-level TTL must be <code translate="no">TIMESTAMPTZ</code>. Other types are rejected.</p></li>
+<li><p>One TTL field per collection. The schema may contain multiple <code translate="no">TIMESTAMPTZ</code> fields, but only one can be named in <code translate="no">ttl_field</code>.</p></li>
+<li><p>Dropping <code translate="no">ttl_field</code> does not resurface expired entities. To restore an expired entity, upsert it with a <code translate="no">NULL</code> or future expiration timestamp.</p></li>
 </ul>
-<h2 id="Overview" class="common-anchor-header">Gambaran Umum<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,8 +67,8 @@ summary: >-
         ></path>
       </svg>
     </button></h2><p><details></p>
-<p><summary>Perluas</summary></p>
-<h3 id="When-to-use-TTL" class="common-anchor-header">Kapan menggunakan TTL<button data-href="#When-to-use-TTL" class="anchor-icon" translate="no">
+<p><summary>Expand</summary></p>
+<h3 id="When-to-use-TTL" class="common-anchor-header">When to use TTL<button data-href="#When-to-use-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -83,22 +83,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>TTL adalah alat yang tepat ketika retensi adalah <strong>kebijakan</strong> - Anda tahu sebelumnya bahwa entitas tertentu pada akhirnya akan hilang, dan Anda ingin cluster memberlakukannya tanpa Anda menulis pekerjaan cron.</p>
-<p>Skenario umum:</p>
+    </button></h3><p>TTL is the right tool when retention is a <strong>policy</strong> — you know ahead of time that certain entities should eventually go away, and you want the cluster to enforce it without you writing a cron job.</p>
+<p>Typical scenarios:</p>
 <ul>
-<li><p><strong>Kumpulan data berjendela waktu.</strong> Hanya menyimpan log, metrik, peristiwa, atau cache fitur yang berumur pendek selama N hari terakhir.</p></li>
-<li><p><strong>Koleksi multi-penyewa.</strong> Penyewa yang berbeda memiliki jendela retensi yang berbeda dalam koleksi yang sama.</p></li>
-<li><p><strong>Kebijakan retensi per-rekaman.</strong> Masa pakai per-dokumen dalam pipeline IoT, penyimpanan dokumen, atau penyimpanan fitur MLOps.</p></li>
-<li><p><strong>Campuran data panas / dingin.</strong> Entitas berumur pendek berdampingan dengan entitas berumur panjang dalam koleksi yang sama.</p></li>
-<li><p><strong>Kedaluwarsa yang didorong oleh kepatuhan.</strong> Minimalisasi data gaya GDPR di mana setiap catatan memiliki tanggal "hapus pada" sendiri.</p></li>
-<li><p><strong>Kadaluarsa waktu bisnis.</strong> Entitas mewakili catatan yang hanya berlaku hingga suatu saat tertentu (kampanye berakhir, sesi berakhir).</p></li>
+<li><p><strong>Time-windowed datasets.</strong> Keep only the last N days of logs, metrics, events, or short-lived feature caches.</p></li>
+<li><p><strong>Multi-tenant collections.</strong> Different tenants have different retention windows in the same collection.</p></li>
+<li><p><strong>Per-record retention policies.</strong> Per-document lifetime in IoT pipelines, document stores, or MLOps feature stores.</p></li>
+<li><p><strong>Hot / cold data mix.</strong> Short-lived entities coexist with long-term ones in the same collection.</p></li>
+<li><p><strong>Compliance-driven expiration.</strong> GDPR-style data minimization where each record carries its own “delete by” date.</p></li>
+<li><p><strong>Business-time expiration.</strong> An entity represents a record that is only valid until some absolute moment (a campaign ending, a session expiring).</p></li>
 </ul>
 <div class="alert note">
-<p>Entitas yang kedaluwarsa tidak akan muncul di hasil pencarian atau kueri apa pun. Namun, entitas tersebut dapat tetap berada di penyimpanan hingga pemadatan data berikutnya, yang harus dilakukan dalam 24 jam ke depan.</p>
-<p>Anda dapat mengontrol kapan waktu pemadatan data dengan mengatur item konfigurasi <code translate="no">dataCoord.compaction.expiry.tolerance</code> di file konfigurasi Milvus anda.</p>
-<p>Item konfigurasi ini secara default bernilai <code translate="no">-1</code>, yang mengindikasikan bahwa interval pemadatan data yang ada berlaku. Namun, ketika Anda mengubah nilainya menjadi bilangan bulat positif, seperti <code translate="no">12</code>, pemadatan data akan dipicu pada jumlah jam yang ditentukan setelah entitas apa pun menjadi kedaluwarsa.</p>
+<p>Expired entities will not appear in any search or query results. However, they may stay in the storage until the subsequent data compaction, which should be carried out within the next 24 hours.</p>
+<p>You can control when to trigger the data compaction by setting the <code translate="no">dataCoord.compaction.expiry.tolerance</code> configuration item in your Milvus configuration file.</p>
+<p>This configuration item defaults to <code translate="no">-1</code>, indicating that the existing data compaction interval applies. However, when you change its value to a positive integer, like <code translate="no">12</code>, data compaction will be triggered the specified number of hours after any entities become expired.</p>
 </div>
-<h3 id="TTL-modes" class="common-anchor-header">Mode TTL<button data-href="#TTL-modes" class="anchor-icon" translate="no">
+<h3 id="TTL-modes" class="common-anchor-header">TTL modes<button data-href="#TTL-modes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -113,49 +113,49 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Kedua mode ini menjawab pertanyaan retensi yang berbeda:</p>
+    </button></h3><p>The two modes answer different retention questions:</p>
 <ul>
-<li><p><strong>TTL tingkat koleksi</strong> menerapkan durasi retensi tunggal untuk setiap entitas. Setiap entitas kedaluwarsa di <code translate="no">insert_ts + ttl_seconds</code>.</p></li>
-<li><p><strong>TTL tingkat entitas</strong> memungkinkan setiap entitas menyimpan waktu kedaluwarsa absolutnya sendiri di bidang <code translate="no">TIMESTAMPTZ</code>. Sebuah <code translate="no">NULL</code> di bidang itu berarti entitas tidak pernah kedaluwarsa.</p></li>
+<li><p><strong>Collection-level TTL</strong> applies a single retention duration to every entity. Each entity expires at <code translate="no">insert_ts + ttl_seconds</code>.</p></li>
+<li><p><strong>Entity-level TTL</strong> lets every entity store its own absolute expiration time in a <code translate="no">TIMESTAMPTZ</code> field. A <code translate="no">NULL</code> in that field means the entity never expires.</p></li>
 </ul>
-<p>Sebuah koleksi menggunakan <strong>satu</strong> mode dalam satu waktu - keduanya tidak saling terpisah. Beralih di antara keduanya merupakan operasi multi-langkah; lihat Memindahkan di antara dua mode.</p>
-<p>Gunakan tabel ini untuk memilih mode:</p>
+<p>A collection uses <strong>one</strong> mode at a time — the two are mutually exclusive. Switching between them is a multi-step operation; see Migrate between the two modes.</p>
+<p>Use this table to pick a mode:</p>
 <table>
    <tr>
-     <th><p><strong>Jika situasi Anda adalah...</strong></p></th>
-     <th><p><strong>Gunakan</strong></p></th>
+     <th><p><strong>If your situation is…</strong></p></th>
+     <th><p><strong>Use</strong></p></th>
    </tr>
    <tr>
-     <td><p>Setiap entitas dalam koleksi harus mengikuti jendela retensi yang sama</p></td>
-     <td><p>TTL tingkat koleksi</p></td>
+     <td><p>Every entity in the collection should follow the same retention window</p></td>
+     <td><p>Collection-level TTL</p></td>
    </tr>
    <tr>
-     <td><p>Retensi adalah "dari saat penyisipan, simpan N detik"</p></td>
-     <td><p>TTL tingkat koleksi</p></td>
+     <td><p>Retention is "from the moment of insert, keep N seconds"</p></td>
+     <td><p>Collection-level TTL</p></td>
    </tr>
    <tr>
-     <td><p>Entitas yang berbeda membutuhkan masa simpan yang berbeda dalam koleksi yang sama (per-penyewa, panas/dingin, per-dokumen)</p></td>
-     <td><p>TTL tingkat entitas</p></td>
+     <td><p>Different entities need different lifetimes in the same collection (per-tenant, hot/cold, per-document)</p></td>
+     <td><p>Entity-level TTL</p></td>
    </tr>
    <tr>
-     <td><p>Retensi adalah waktu jam dinding absolut (misalnya, 2027-01-01T00:00:00Z)</p></td>
-     <td><p>TTL tingkat entitas</p></td>
+     <td><p>Retention is an absolute wall-clock time (for example, 2027-01-01T00:00:00Z)</p></td>
+     <td><p>Entity-level TTL</p></td>
    </tr>
    <tr>
-     <td><p>Retensi ditentukan oleh stempel waktu bisnis, bukan stempel waktu penyisipan</p></td>
-     <td><p>TTL tingkat entitas</p></td>
+     <td><p>Retention is driven by a business timestamp, not the insert timestamp</p></td>
+     <td><p>Entity-level TTL</p></td>
    </tr>
    <tr>
-     <td><p>Anda ingin menyegarkan atau memperpanjang masa hidup entitas setelah penyisipan</p></td>
-     <td><p>TTL tingkat entitas</p></td>
+     <td><p>You want to refresh or extend an entity's lifetime after insert</p></td>
+     <td><p>Entity-level TTL</p></td>
    </tr>
    <tr>
-     <td><p>Beberapa entitas tidak boleh kedaluwarsa, sementara entitas lainnya harus kedaluwarsa</p></td>
-     <td><p>TTL tingkat entitas (gunakan NULL untuk entitas yang abadi)</p></td>
+     <td><p>Some entities should never expire while others should</p></td>
+     <td><p>Entity-level TTL (use NULL for the immortal ones)</p></td>
    </tr>
 </table>
 <p></details></p>
-<h2 id="Set-collection-level-TTL" class="common-anchor-header">Tetapkan TTL tingkat koleksi<button data-href="#Set-collection-level-TTL" class="anchor-icon" translate="no">
+<h2 id="Set-collection-level-TTL" class="common-anchor-header">Set collection-level TTL<button data-href="#Set-collection-level-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -170,8 +170,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan TTL tingkat koleksi ketika setiap entitas dalam koleksi harus mengikuti jendela retensi yang sama.</p>
-<h3 id="Enable-on-a-new-collection" class="common-anchor-header">Mengaktifkan pada koleksi baru<button data-href="#Enable-on-a-new-collection" class="anchor-icon" translate="no">
+    </button></h2><p>Use collection-level TTL when every entity in the collection should follow the same retention window.</p>
+<h3 id="Enable-on-a-new-collection" class="common-anchor-header">Enable on a new collection<button data-href="#Enable-on-a-new-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -186,9 +186,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lewati <code translate="no">collection.ttl.seconds</code> (bilangan bulat, dalam detik) melalui peta <code translate="no">properties</code> pada waktu pembuatan.</p>
+    </button></h3><p>Pass <code translate="no">collection.ttl.seconds</code> (integer, in seconds) through the <code translate="no">properties</code> map at creation time.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -289,7 +294,7 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Enable-on-an-existing-collection" class="common-anchor-header">Mengaktifkan pada koleksi yang sudah ada<button data-href="#Enable-on-an-existing-collection" class="anchor-icon" translate="no">
+<h3 id="Enable-on-an-existing-collection" class="common-anchor-header">Enable on an existing collection<button data-href="#Enable-on-an-existing-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -304,9 +309,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Panggil <code translate="no">alter_collection_properties</code> dengan <code translate="no">collection.ttl.seconds</code> di dalam peta <code translate="no">properties</code> untuk menerapkan TTL pada koleksi yang sudah digunakan.</p>
+    </button></h3><p>Call <code translate="no">alter_collection_properties</code> with <code translate="no">collection.ttl.seconds</code> in the <code translate="no">properties</code> map to apply TTL to a collection that is already in use.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -383,7 +393,7 @@ index_params.add_index(
     }
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Drop-the-TTL-setting" class="common-anchor-header">Menghilangkan pengaturan TTL<button data-href="#Drop-the-TTL-setting" class="anchor-icon" translate="no">
+<h3 id="Drop-the-TTL-setting" class="common-anchor-header">Drop the TTL setting<button data-href="#Drop-the-TTL-setting" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -398,9 +408,14 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Jika Anda memutuskan untuk menyimpan data dalam sebuah koleksi tanpa batas waktu, Anda dapat dengan mudah menghapus pengaturan TTL dari koleksi tersebut.</p>
+    </button></h3><p>If you decide to keep the data in a collection indefinitely, you can simply drop the TTL setting from that collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -452,7 +467,7 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-entity-level-TTL--Milvus-30x" class="common-anchor-header">Mengatur TTL tingkat entitas<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Set-entity-level-TTL--Milvus-30x" class="anchor-icon" translate="no">
+<h2 id="Set-entity-level-TTL" class="common-anchor-header">Set entity-level TTL<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Set-entity-level-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -467,8 +482,8 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>TTL tingkat entitas memungkinkan setiap entitas memiliki waktu kedaluwarsa absolutnya sendiri. Waktu tersebut disimpan dalam kolom <code translate="no">TIMESTAMPTZ</code> khusus yang Anda deklarasikan di dalam skema, dan Anda menandai kolom tersebut sebagai bidang TTL melalui properti koleksi <code translate="no">ttl_field</code>.</p>
-<h3 id="Enable-on-a-new-collection" class="common-anchor-header">Mengaktifkan pada koleksi baru<button data-href="#Enable-on-a-new-collection" class="anchor-icon" translate="no">
+    </button></h2><p>Entity-level TTL lets each entity carry its own absolute expiration time. The time is stored in a dedicated <code translate="no">TIMESTAMPTZ</code> column that you declare in the schema, and you mark that column as the TTL field through the <code translate="no">ttl_field</code> collection property.</p>
+<h3 id="Enable-on-a-new-collection" class="common-anchor-header">Enable on a new collection<button data-href="#Enable-on-a-new-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -483,9 +498,14 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Mengaktifkan TTL tingkat entitas pada waktu pembuatan membutuhkan dua tambahan dalam pemanggilan <code translate="no">create_collection</code> yang sama: kolom <code translate="no">TIMESTAMPTZ</code> dalam skema, dan properti <code translate="no">ttl_field</code> yang menunjuk ke kolom tersebut.</p>
+    </button></h3><p>Enabling entity-level TTL at creation time takes two additions in the same <code translate="no">create_collection</code> call: a <code translate="no">TIMESTAMPTZ</code> field in the schema, and the <code translate="no">ttl_field</code> property pointing to that field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -564,9 +584,14 @@ client.createCollection(CreateCollectionReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Setelah koleksi ada, masukkan entitas dengan string stempel waktu <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>.</p>
+<p>Once the collection exists, insert entities with <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> timestamp strings.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -661,9 +686,14 @@ List&lt;Float&gt; vector = <span class="hljs-keyword">new</span> <span class="hl
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Pada setiap kueri dan pencarian vektor, server secara otomatis menyuntikkan filter TTL - Anda tidak pernah menulisnya sendiri, dan entitas yang kedaluwarsa tidak akan muncul di hasil:</p>
+<p>On every query and vector search, the server auto-injects the TTL filter — you never write one yourself, and expired entities never appear in the results:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -723,10 +753,15 @@ client.loadCollection(LoadCollectionReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Filter otomatis yang sama juga berlaku untuk <code translate="no">client.search()</code>.</p>
-<p>Untuk memperpanjang masa pakai entitas sebelum pemadatan menghapusnya secara fisik, tambahkan dengan stempel waktu kedaluwarsa yang lebih baru - atau <code translate="no">None</code> - untuk mengembalikan entitas ke kumpulan yang dapat ditanyakan.</p>
+<p>The same auto-filter applies to <code translate="no">client.search()</code>.</p>
+<p>To extend an entity’s lifetime before compaction physically removes it, upsert with a later expiration timestamp — or <code translate="no">None</code> — to return the entity to the queryable set.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -786,7 +821,7 @@ List&lt;Float&gt; vector = <span class="hljs-keyword">new</span> <span class="hl
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Enable-on-an-existing-collection" class="common-anchor-header">Mengaktifkan koleksi yang sudah ada<button data-href="#Enable-on-an-existing-collection" class="anchor-icon" translate="no">
+<h3 id="Enable-on-an-existing-collection" class="common-anchor-header">Enable on an existing collection<button data-href="#Enable-on-an-existing-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -801,9 +836,14 @@ List&lt;Float&gt; vector = <span class="hljs-keyword">new</span> <span class="hl
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Jika koleksi sudah ada dan tidak memiliki kumpulan <code translate="no">collection.ttl.seconds</code>, tambahkan kolom <code translate="no">TIMESTAMPTZ</code> dengan <code translate="no">add_collection_field</code>, lalu tandai sebagai bidang TTL dengan <code translate="no">alter_collection_properties</code>. Secara opsional, tambahkan baris historis untuk mengisi ulang stempel waktu kedaluwarsa mereka - baris yang tidak Anda isi ulang akan tetap menggunakan <code translate="no">NULL</code> dan tidak akan pernah kedaluwarsa.</p>
+    </button></h3><p>If the collection already exists and does not have <code translate="no">collection.ttl.seconds</code> set, add a <code translate="no">TIMESTAMPTZ</code> column with <code translate="no">add_collection_field</code>, then mark it as the TTL field with <code translate="no">alter_collection_properties</code>. Optionally upsert historical rows to backfill their expiration timestamps — rows you do not backfill keep <code translate="no">NULL</code> and never expire.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -913,7 +953,7 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Drop-the-TTL-setting" class="common-anchor-header">Hilangkan pengaturan TTL<button data-href="#Drop-the-TTL-setting" class="anchor-icon" translate="no">
+<h3 id="Drop-the-TTL-setting" class="common-anchor-header">Drop the TTL setting<button data-href="#Drop-the-TTL-setting" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -928,9 +968,14 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Panggil <code translate="no">drop_collection_properties</code> dengan <code translate="no">ttl_field</code> di <code translate="no">property_keys</code> untuk menghentikan kedaluwarsa per-entitas. Kolom <code translate="no">TIMESTAMPTZ</code> sendiri tetap ada di skema - Anda masih dapat melakukan kueri sebagai kolom biasa.</p>
+    </button></h3><p>Call <code translate="no">drop_collection_properties</code> with <code translate="no">ttl_field</code> in <code translate="no">property_keys</code> to stop per-entity expiration. The <code translate="no">TIMESTAMPTZ</code> column itself remains on the schema — you can still query on it as a regular field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -968,8 +1013,8 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Menghapus <code translate="no">ttl_field</code> akan menonaktifkan filter otomatis untuk kueri di masa mendatang, tetapi entitas yang sudah kedaluwarsa tidak secara otomatis muncul lagi. Untuk membuat entitas yang sudah kedaluwarsa terlihat, tambahkan dengan <code translate="no">None</code> atau stempel waktu kedaluwarsa di masa mendatang - itulah satu-satunya cara untuk memulihkan akses ke baris yang sudah kedaluwarsa dalam sesi pemuatan yang sama.</p>
-<h2 id="Migrate-between-the-two-modes" class="common-anchor-header">Bermigrasi di antara dua mode<button data-href="#Migrate-between-the-two-modes" class="anchor-icon" translate="no">
+<p>Dropping <code translate="no">ttl_field</code> disables the automatic filter for future queries, but entities that had already expired are not automatically surfaced again. To make a previously-expired entity visible, upsert it with a <code translate="no">None</code> or future expiration timestamp — that is the only way to restore access to expired rows within the same load session.</p>
+<h2 id="Migrate-between-the-two-modes" class="common-anchor-header">Migrate between the two modes<button data-href="#Migrate-between-the-two-modes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -984,8 +1029,8 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dua mode TTL saling terpisah, jadi beralih di antara keduanya merupakan operasi multi-langkah.</p>
-<h3 id="Switch-from-collection-level-to-entity-level-TTL" class="common-anchor-header">Beralih dari TTL tingkat koleksi ke tingkat entitas<button data-href="#Switch-from-collection-level-to-entity-level-TTL" class="anchor-icon" translate="no">
+    </button></h2><p>The two TTL modes are mutually exclusive, so switching between them is a multi-step operation.</p>
+<h3 id="Switch-from-collection-level-to-entity-level-TTL" class="common-anchor-header">Switch from collection-level to entity-level TTL<button data-href="#Switch-from-collection-level-to-entity-level-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1000,9 +1045,14 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Jika koleksi Anda dibuat dengan <code translate="no">collection.ttl.seconds</code> dan Anda ingin beralih ke kedaluwarsa per entitas, ikuti empat langkah berikut. Melewatkan Langkah 1 menyebabkan Langkah 3 gagal dengan <code translate="no">collection TTL is already set, cannot be set ttl field</code>.</p>
+    </button></h3><p>If your collection was created with <code translate="no">collection.ttl.seconds</code> and you want to switch to per-entity expiration, follow these four steps. Skipping Step 1 causes Step 3 to fail with <code translate="no">collection TTL is already set, cannot be set ttl field</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -1103,8 +1153,8 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Entitas historis yang tidak Anda isi ulang <code translate="no">expire_at</code> akan memiliki <code translate="no">NULL</code> di kolom tersebut, yang berarti entitas tersebut tidak pernah kedaluwarsa. Isi ulang hanya baris yang seharusnya memiliki masa hidup terbatas.</p>
-<h3 id="Switch-from-entity-level-to-collection-level-TTL" class="common-anchor-header">Beralih dari TTL tingkat entitas ke tingkat koleksi<button data-href="#Switch-from-entity-level-to-collection-level-TTL" class="anchor-icon" translate="no">
+<p>Historical entities for which you do not backfill <code translate="no">expire_at</code> will have <code translate="no">NULL</code> in that column, meaning they never expire. Backfill only the rows that should have a finite lifetime.</p>
+<h3 id="Switch-from-entity-level-to-collection-level-TTL" class="common-anchor-header">Switch from entity-level to collection-level TTL<button data-href="#Switch-from-entity-level-to-collection-level-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1119,9 +1169,14 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk berpindah ke arah lain, hapus <code translate="no">ttl_field</code> dan tetapkan <code translate="no">collection.ttl.seconds</code>:</p>
+    </button></h3><p>To move in the other direction, drop <code translate="no">ttl_field</code> and set <code translate="no">collection.ttl.seconds</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -1168,7 +1223,7 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="FAQs" class="common-anchor-header">Pertanyaan yang Sering Diajukan<button data-href="#FAQs" class="anchor-icon" translate="no">
+<h2 id="FAQs" class="common-anchor-header">FAQs<button data-href="#FAQs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1183,7 +1238,7 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="When-does-data-expire-due-to-TTL-settings" class="common-anchor-header">Kapan data kedaluwarsa karena pengaturan TTL?<button data-href="#When-does-data-expire-due-to-TTL-settings" class="anchor-icon" translate="no">
+    </button></h2><h3 id="When-does-data-expire-due-to-TTL-settings" class="common-anchor-header">When does data expire due to TTL settings?<button data-href="#When-does-data-expire-due-to-TTL-settings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1198,8 +1253,8 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Saat ini, data kedaluwarsa berdasarkan titik waktu saat data tersebut disisipkan atau diunggah. Data yang kedaluwarsa tidak akan ditampilkan dalam hasil pencarian. Untuk detailnya, lihat <a href="/docs/id/set-collection-ttl.md#Dyq9dQUmwoAk9WxwEuEcSDkPnoc">Contoh</a>.</p>
-<h3 id="When-will-the-expired-data-be-physically-deleted" class="common-anchor-header">Kapan data kedaluwarsa akan dihapus secara fisik?<button data-href="#When-will-the-expired-data-be-physically-deleted" class="anchor-icon" translate="no">
+    </button></h3><p>Currently, the data expires based on the time point at which it was inserted or upserted. Expired data will not be displayed in search results. For details, refer to <a href="/docs/id/set-collection-ttl.md#Dyq9dQUmwoAk9WxwEuEcSDkPnoc">Examples</a>.</p>
+<h3 id="When-will-the-expired-data-be-physically-deleted" class="common-anchor-header">When will the expired data be physically deleted?<button data-href="#When-will-the-expired-data-be-physically-deleted" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1214,4 +1269,4 @@ client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Setelah data kedaluwarsa, data tersebut tidak akan disertakan dalam hasil pencarian apa pun. Namun, data tersebut akan dihapus secara fisik hanya setelah pemadatan sistem berikutnya, sesuai dengan kebijakan pemadatan cluster Anda.</p>
+    </button></h3><p>Once the data expires, it will not be included in any search results. However, it will be physically deleted only after the subsequent system compaction, according to your cluster’s compaction policies.</p>

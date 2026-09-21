@@ -2,8 +2,8 @@
 id: dashscope-ranker.md
 title: DashScope RankerCompatible with Milvus 2.6.x
 summary: >-
-  このトピックでは、Milvus において、Qwen リランキングモデルなどの DashScope
-  リランキングモデルを設定および使用する方法について説明します。
+  This topic describes how to configure and use DashScope reranking models, such
+  as Qwen rerank models, in Milvus.
 beta: Milvus 2.6.x
 ---
 <h1 id="DashScope-Ranker" class="common-anchor-header">DashScope Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#DashScope-Ranker" class="anchor-icon" translate="no">
@@ -21,8 +21,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>DashScope Ranker を使用すると、Milvus は Alibaba Cloud DashScope の再ランク付けモデルを呼び出し、意味的な関連性に基づいて検索結果の順序を並べ替えることができます。</p>
-<h2 id="Prerequisites" class="common-anchor-header">前提条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>The DashScope Ranker lets Milvus call Alibaba Cloud DashScope reranking models to reorder search results by semantic relevance.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,14 +37,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>DashScope Ranker を使用する前に、以下の条件を満たしていることを確認してください。</p>
+    </button></h2><p>Before using the DashScope Ranker, ensure that you have:</p>
 <ul>
-<li><p>再ランク付け対象のテキストを含む「<code translate="no">VARCHAR</code> 」フィールドを持つMilvusコレクション。</p></li>
-<li><p>有効な DashScope API キー。</p></li>
-<li><p><code translate="no">gte-rerank-v2</code> などの DashScope 再ランク付けモデルへのアクセス権。</p></li>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field that contains the text to rerank.</p></li>
+<li><p>A valid DashScope API key.</p></li>
+<li><p>Access to a DashScope reranking model, such as <code translate="no">gte-rerank-v2</code>.</p></li>
 </ul>
-<p>利用可能な再ランク付けモデルおよび地域別エンドポイントについては、<a href="https://www.alibabacloud.com/help/en/model-studio/text-rerank-api">Alibaba Cloud Model StudioのText Rerank API</a>を参照してください。</p>
-<h2 id="Configure-credentials" class="common-anchor-header">認証情報の設定<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
+<p>For available rerank models and regional endpoints, refer to the <a href="https://www.alibabacloud.com/help/en/model-studio/text-rerank-api">Alibaba Cloud Model Studio Text Rerank API</a>.</p>
+<h2 id="Configure-credentials" class="common-anchor-header">Configure credentials<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,8 +59,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus が DashScope に再ランク付けをリクエストするには、DashScope API キーを指定する必要があります。API キーは、<code translate="no">milvus.yaml</code> または環境変数を通じて設定できます。</p>
-<h3 id="Option-1-Configuration-file" class="common-anchor-header">オプション 1: 設定ファイル<button data-href="#Option-1-Configuration-file" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus must know your DashScope API key before it can request reranking from DashScope. You can configure the API key in <code translate="no">milvus.yaml</code> or through an environment variable.</p>
+<h3 id="Option-1-Configuration-file" class="common-anchor-header">Option 1: Configuration file<button data-href="#Option-1-Configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,7 +75,7 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>API キーを<code translate="no">milvus.yaml</code> に保存し、DashScope リランクプロバイダーでその認証情報ラベルを指定します。</p>
+    </button></h3><p>Store your API key in <code translate="no">milvus.yaml</code> and point the DashScope rerank provider to the credential label.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">credential:</span>
   <span class="hljs-attr">dashscope_apikey:</span>
@@ -89,7 +89,7 @@ beta: Milvus 2.6.x
           <span class="hljs-attr">credential:</span> <span class="hljs-string">dashscope_apikey</span>
           <span class="hljs-comment"># url: https://dashscope.aliyuncs.com/api/v1/services/rerank/text-rerank/text-rerank</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Option-2-Environment-variable" class="common-anchor-header">オプション 2: 環境変数<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
+<h3 id="Option-2-Environment-variable" class="common-anchor-header">Option 2: Environment variable<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -104,20 +104,20 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">milvus.yaml</code> に一致する認証情報が設定されていない場合、Milvus は以下の環境変数から DashScope API キーを読み取ることができます:</p>
+    </button></h3><p>If no matching credential is configured in <code translate="no">milvus.yaml</code>, Milvus can read the DashScope API key from the following environment variable:</p>
 <table>
    <tr>
-     <th><p>変数</p></th>
-     <th><p>必須？</p></th>
-     <th><p>説明</p></th>
+     <th><p>Variable</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">MILVUS_DASHSCOPE_API_KEY</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>Milvus サービスが Alibaba Cloud DashScope を呼び出す際に使用する DashScope API キー。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>DashScope API key used by the Milvus service to call Alibaba Cloud DashScope.</p></td>
    </tr>
 </table>
-<h2 id="Create-a-DashScope-ranker-function" class="common-anchor-header">DashScope ランカー関数の作成<button data-href="#Create-a-DashScope-ranker-function" class="anchor-icon" translate="no">
+<h2 id="Create-a-DashScope-ranker-function" class="common-anchor-header">Create a DashScope ranker function<button data-href="#Create-a-DashScope-ranker-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,7 +132,7 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>DashScope ランカーを使用するには、DashScope 再ランク付けモデルとクエリテキストを指定する Function オブジェクトを作成します。DashScope の再ランク付けには、<code translate="no">provider: &quot;ali&quot;</code> を使用してください。</p>
+    </button></h2><p>To use the DashScope Ranker, create a Function object that specifies the DashScope reranking model and query text. Use <code translate="no">provider: &quot;ali&quot;</code> for DashScope reranking.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 
 dashscope_ranker = Function(
@@ -149,7 +149,7 @@ dashscope_ranker = Function(
     },
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="DashScope-ranker-specific-parameters" class="common-anchor-header">DashScope ランカー固有のパラメータ<button data-href="#DashScope-ranker-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="DashScope-ranker-specific-parameters" class="common-anchor-header">DashScope ranker-specific parameters<button data-href="#DashScope-ranker-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -166,52 +166,52 @@ dashscope_ranker = Function(
       </svg>
     </button></h3><table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>必須？</p></th>
-     <th><p>説明</p></th>
-     <th><p>値 / 例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value / Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reranker</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>モデルの再ランク付けを有効にするには、<code translate="no">"model"</code> に設定する必要があります。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>再ランク付けに使用するモデルサービスプロバイダー。DashScope の場合は、<code translate="no">"ali"</code> を使用してください。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking. For DashScope, use <code translate="no">"ali"</code>.</p></td>
      <td><p><code translate="no">"ali"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">model_name</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>使用するDashScopeの再ランク付けモデル。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The DashScope reranking model to use.</p></td>
      <td><p><code translate="no">"gte-rerank-v2"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queries</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>再ランク付けモデルが関連性スコアを計算するために使用するクエリ文字列のリスト。クエリ文字列の数は、検索リクエスト内のクエリ数と一致している必要があります。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the rerank model to calculate relevance scores. The number of query strings must match the number of queries in the search request.</p></td>
      <td><p><code translate="no">["renewable energy developments"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p>リクエストごとにモデルサービスへ送信するドキュメントの最大数。</p></td>
-     <td><p><code translate="no">128</code> (デフォルト)</p></td>
+     <td><p>No</p></td>
+     <td><p>Maximum number of documents to send to the model service per request.</p></td>
+     <td><p><code translate="no">128</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">credential</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p><code translate="no">milvus.yaml</code> の最上位セクションである<code translate="no">credential:</code> で定義されたクレデンシャルのラベル。</p></td>
+     <td><p>No</p></td>
+     <td><p>The label of a credential defined in the top-level <code translate="no">credential:</code> section of <code translate="no">milvus.yaml</code>.</p></td>
      <td><p><code translate="no">"dashscope_apikey"</code></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p><code translate="no">provider</code> や<code translate="no">queries</code> など、すべてのモデルランカーで共通する一般的なパラメータについては、「<a href="/docs/ja/model-ranker-overview.md#Create-a-model-ranker">モデルランカーの作成</a>」を参照してください。</p>
+<p>For general parameters shared across all model rankers, such as <code translate="no">provider</code> and <code translate="no">queries</code>, refer to <a href="/docs/ja/model-ranker-overview.md#Create-a-model-ranker">Create a model ranker</a>.</p>
 </div>
-<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">標準のベクトル検索への適用<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -226,7 +226,7 @@ dashscope_ranker = Function(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>DashScope Rankerを標準のベクトル検索に適用するには、<code translate="no">search()</code> にranker関数を渡します。</p>
+    </button></h2><p>To apply DashScope Ranker to a standard vector search, pass the ranker Function to <code translate="no">search()</code>.</p>
 <pre><code translate="no" class="language-python">results = client.search(
     collection_name=<span class="hljs-string">&quot;your_collection&quot;</span>,
     data=[your_query_vector],

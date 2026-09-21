@@ -1,10 +1,12 @@
 ---
 id: snapshots.md
-title: スナップショットCompatible with Milvus 3.0.x
-summary: スナップショットを使用して、ロールバック、バージョン管理、およびテストのために、特定の時点におけるコレクションの状態をキャプチャします。
+title: SnapshotsCompatible with Milvus 3.0.x
+summary: >-
+  Use snapshots to capture point-in-time collection states for rollback,
+  versioning, and testing.
 beta: Milvus 3.0.x
 ---
-<h1 id="Snapshots" class="common-anchor-header">スナップショット<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Snapshots" class="anchor-icon" translate="no">
+<h1 id="Snapshots" class="common-anchor-header">Snapshots<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Snapshots" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,10 +21,10 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>スナップショットとは、Milvusコレクションの特定の時点の状態を反映したイメージであり、迅速なロールバック、バージョン管理、およびテストに最適です。特定のタイムスタンプ時点でのコレクションの状態をキャプチャし、効率的な保存と復元のために、スキーマ、インデックス、ベクトルデータファイル（binlog）などのメタデータとマニフェストファイルのみを保存します。</p>
-<p>スナップショットは、データの特定の時点の状態を素早く取得したもので、迅速なロールバックやテスト（<strong>数日から数週間</strong>）に適しています。一方、バックアップは独立した完全なコピーであり、長期的な災害復旧（<strong>数週間から数年</strong>）や、ストレージ全体の障害に対するより強力な保護を目的として、別途保存されます。</p>
-<p>バックアップの作成方法については、「<a href="/docs/ja/milvus_backup_overview.md">Milvus Backup</a>」を参照してください。</p>
-<h2 id="Snapshot-anatomy" class="common-anchor-header">スナップショットの構造<button data-href="#Snapshot-anatomy" class="anchor-icon" translate="no">
+    </button></h1><p>A snapshot is a point-in-time image of a Milvus collection, ideal for quick rollbacks, versioning, and testing. It captures the collection’s state at a specific timestamp and stores only metadata and manifest files, such as the schema, indexes, and vector data files (binlogs), for efficient storage and restoration.</p>
+<p>Snapshots are quick, point-in-time images of data, suitable for fast rollbacks or testing (<strong>days to weeks</strong>). At the same time, backups are independent, complete copies stored separately for long-term disaster recovery (<strong>weeks to years</strong>) and for better protection against total storage failure.</p>
+<p>To create backups, refer to <a href="/docs/ja/milvus_backup_overview.md">Milvus Backup</a>.</p>
+<h2 id="Snapshot-anatomy" class="common-anchor-header">Snapshot anatomy<button data-href="#Snapshot-anatomy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,19 +39,19 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus は、実際のベクトルデータを複製することなく、データの特定の時点での取得、保存、復元を効率的に行うために、マニフェストベースのスナップショットアーキテクチャを実装しています。このアーキテクチャは、メタデータ管理と物理的なデータ保存を分離しており、オブジェクトストレージ内の既存のセグメントファイルを参照する軽量なスナップショットを実現します。</p>
-<p>コレクションのスナップショットを作成すると、Milvus は以下の情報を収集します：</p>
+    </button></h2><p>Milvus implements a manifest-based snapshot architecture for efficient point-in-time capture, storage, and restoration of data without duplicating the actual vector data. The architecture separates metadata management from physical data storage, enabling lightweight snapshots that reference existing segment files in object storage.</p>
+<p>When you create a snapshot for a collection, Milvus collects the following:</p>
 <ul>
-<li><p><strong>スナップショットのメタデータ</strong></p>
-<p>スナップショット名や説明、対象コレクション ID、スナップショット作成時点など、スナップショット作成に必要な基本情報を提供します。</p></li>
-<li><p><strong>コレクションの説明</strong></p>
-<p>対象コレクションの説明が含まれており、スキーマ定義、パーティション情報、プロパティなどが含まれます。</p></li>
-<li><p><strong>インデックス情報</strong></p>
-<p>インデックスのメタデータと、インデックスファイルへのパスが格納されます。</p></li>
-<li><p><strong>セグメントデータ</strong></p>
-<p>ベクトルデータファイル（binlog）、削除ログ（deltalog）、およびインデックスファイルを格納します。</p></li>
+<li><p><strong>Snapshot metadata</strong></p>
+<p>It provides basic information for creating the snapshot, including the snapshot name and description, the target collection ID, and the time point at which the snapshot is created.</p></li>
+<li><p><strong>Collection description</strong></p>
+<p>It contains the description of the target collection, including its schema definition, partition information, and properties.</p></li>
+<li><p><strong>Index information</strong></p>
+<p>It stores the index metadata and the paths to index files.</p></li>
+<li><p><strong>Segment data</strong></p>
+<p>It captures the vector data files (binlogs), deletion logs (deltalogs), and index files.</p></li>
 </ul>
-<p>上記の情報のうち、Milvus は各セグメントごとに Apache Avro マニフェストファイルを生成し、スナップショットのメタデータ、コレクションの説明、インデックス情報、およびマニフェストファイルへのパスを JSON ファイルに保存します。次の図は、スナップショットのフォルダ構造を示しています。</p>
+<p>Among the above information, Milvus generates an Apache Avro manifest file for each segment and stores the snapshot metadata, collection description, index information, and the paths to the manifest files in a JSON file. The following diagram illustrates the snapshot folder structure.</p>
 <pre><code translate="no" class="language-text">snapshots/{collection_id}/
 ├── metadata/
 │   └── {snapshot_id}.json         # Snapshot metadata (JSON format)
@@ -60,8 +62,8 @@ beta: Milvus 3.0.x
         ├── {segment_id_2}.avro
         └── ...
 <button class="copy-code-btn"></button></code></pre>
-<p>スナップショットの作成には通常数ミリ秒しかかかりませんが、復元にはデータ量に応じて数秒から数分かかります。</p>
-<h2 id="Storage-impacts-and-considerations" class="common-anchor-header">ストレージへの影響と考慮事項<button data-href="#Storage-impacts-and-considerations" class="anchor-icon" translate="no">
+<p>Creating a snapshot usually takes milliseconds, and restoring it takes seconds to minutes, depending on the data volume.</p>
+<h2 id="Storage-impacts-and-considerations" class="common-anchor-header">Storage impacts and considerations<button data-href="#Storage-impacts-and-considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,15 +78,15 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus がスナップショット内のセグメントまたはインデックスファイルを参照すると、スナップショットを削除しない限り、それらのファイルはガベージコレクションの対象にはなりません。スナップショットは、対象コレクションのサイズに比例してストレージを消費し、スナップショットの保持期間中はオブジェクトストレージのコストが発生します。極端な場合、1 つのスナップショットだけでオブジェクトストレージのコストが 2 倍になることもあります。以下のことをお勧めします。</p>
+    </button></h2><p>Once Milvus references a segment or index file in a snapshot, it does not garbage-collect those files unless you drop the snapshot. Snapshots consume storage proportional to the size of the target collections, and object storage costs apply to snapshot retention. In extreme cases, a single snapshot can even double your object storage costs. You are advised to</p>
 <ul>
-<li>ストレージを節約するために、古いスナップショットを定期的に削除することをお勧めします。</li>
-<li>将来参照できるよう、わかりやすい名前と説明を使用してください。</li>
-<li>スナップショットの作成および復元結果は、必ず確認してください。</li>
-<li>監視やトラブルシューティングのために、スナップショットの作成タイムスタンプとストレージ使用量を追跡してください。</li>
-<li>監視およびトラブルシューティングのために、復元ジョブの ID を保存してください。</li>
+<li>Remove old snapshots regularly to save storage.</li>
+<li>Use descriptive names and descriptions for future reference.</li>
+<li>Always verify snapshot creation and restoration results.</li>
+<li>Track snapshot creation timestamps and storage usage for monitoring and troubleshooting.</li>
+<li>Store restoration job IDs for monitoring and troubleshooting.</li>
 </ul>
-<h2 id="Limits-and-restrictions" class="common-anchor-header">制限事項<button data-href="#Limits-and-restrictions" class="anchor-icon" translate="no">
+<h2 id="Limits-and-restrictions" class="common-anchor-header">Limits and restrictions<button data-href="#Limits-and-restrictions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,13 +102,13 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><ul>
-<li>スナップショットは、作成後は変更できなくなります。</li>
-<li>スナップショットは、元のコレクションと同じクラスタ内の新しいコレクションにのみ復元できます。</li>
-<li>復元されたコレクションは、元のコレクションと同じスキーマ、シャード数、パーティション数を保持します。</li>
-<li>復元された履歴データは、TTL ポリシーと競合する可能性があります。スナップショットを作成する前に、TTL を無効にするか、TTL 設定を調整することをお勧めします。</li>
-<li>スナップショットを<code translate="no">milvus-table</code> の外部ソースとして使用するには、そのスナップショットが通常のStorageV3 Milvusコレクションに由来するものである必要があります。外部コレクションのスナップショットは、<code translate="no">milvus-table</code> のソースとしてサポートされていません。</li>
+<li>Snapshots become immutable after creation.</li>
+<li>You can restore a snapshot only to a new collection within the same cluster as the original.</li>
+<li>Restored collections retain the same schema, number of shards, and partition count.</li>
+<li>Restored historical data may conflict with TTL policies. You are advised to disable TTL or adjust TTL settings before creating snapshots.</li>
+<li>To use a snapshot as a <code translate="no">milvus-table</code> external source, the source snapshot must come from a normal StorageV3 Milvus collection. Snapshots of external collections are not supported as <code translate="no">milvus-table</code> sources.</li>
 </ul>
-<h2 id="Further-readings" class="common-anchor-header">関連情報<button data-href="#Further-readings" class="anchor-icon" translate="no">
+<h2 id="Further-readings" class="common-anchor-header">Further readings<button data-href="#Further-readings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,7 +124,7 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="/docs/ja/manage-snapshots.md">スナップショットの管理</a>— スナップショットの作成、一覧表示、説明、固定、復元、削除。</li>
-<li><a href="/docs/ja/snapshot-use-cases.md">スナップショットのユースケース</a>— 一般的なパターンとワークフロー。</li>
-<li><a href="/docs/ja/milvus_backup_overview.md">Milvus バックアップ</a>— クラスタ間の長期バックアップおよび復元。</li>
+<li><a href="/docs/ja/manage-snapshots.md">Manage Snapshots</a> — create, list, describe, pin, restore, and delete snapshots.</li>
+<li><a href="/docs/ja/snapshot-use-cases.md">Snapshot Use Cases</a> — common patterns and workflows.</li>
+<li><a href="/docs/ja/milvus_backup_overview.md">Milvus Backup</a> — long-term backup and restore across clusters.</li>
 </ul>

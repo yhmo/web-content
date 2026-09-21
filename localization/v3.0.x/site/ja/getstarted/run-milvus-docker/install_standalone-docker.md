@@ -2,10 +2,10 @@
 id: install_standalone-docker.md
 label: Docker
 related_key: Docker
-summary: Docker を使用して Milvus スタンドアロンをインストールする方法について学びましょう。
-title: Docker（Linux）でMilvusを実行する
+summary: Learn how to install Milvus standalone with Docker.
+title: Run Milvus in Docker (Linux)
 ---
-<h1 id="Run-Milvus-in-Docker-Linux" class="common-anchor-header">Docker（Linux）でMilvusを実行する<button data-href="#Run-Milvus-in-Docker-Linux" class="anchor-icon" translate="no">
+<h1 id="Run-Milvus-in-Docker-Linux" class="common-anchor-header">Run Milvus in Docker (Linux)<button data-href="#Run-Milvus-in-Docker-Linux" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: Docker（Linux）でMilvusを実行する
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>このページでは、Docker で Milvus インスタンスを起動する方法について説明します。</p>
-<h2 id="Prerequisites" class="common-anchor-header">前提条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This page illustrates how to launch a Milvus instance in Docker.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,10 +37,10 @@ title: Docker（Linux）でMilvusを実行する
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="https://docs.docker.com/get-docker/">Docker をインストールしてください</a>。</li>
-<li>インストール前に、<a href="/docs/ja/prerequisite-docker.md">ハードウェアおよびソフトウェアの要件を確認してください</a>。</li>
+<li><a href="https://docs.docker.com/get-docker/">Install Docker</a>.</li>
+<li><a href="/docs/ja/prerequisite-docker.md">Check the requirements for hardware and software</a> prior to your installation.</li>
 </ul>
-<h2 id="Install-Milvus-in-Docker" class="common-anchor-header">Docker での Milvus のインストール<button data-href="#Install-Milvus-in-Docker" class="anchor-icon" translate="no">
+<h2 id="Install-Milvus-in-Docker" class="common-anchor-header">Install Milvus in Docker<button data-href="#Install-Milvus-in-Docker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,7 +55,7 @@ title: Docker（Linux）でMilvusを実行する
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusには、Dockerコンテナとしてインストールするためのインストールスクリプトが用意されています。このスクリプトは<a href="https://raw.githubusercontent.com/milvus-io/milvus/master/scripts/standalone_embed.sh">Milvusのリポジトリ</a>から入手できます。DockerでMilvusをインストールするには、以下のコマンドを実行するだけです。</p>
+    </button></h2><p>Milvus provides an installation script to install it as a docker container. The script is available in the <a href="https://raw.githubusercontent.com/milvus-io/milvus/master/scripts/standalone_embed.sh">Milvus repository</a>. To install Milvus in Docker, just run</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Download the installation script</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">curl -sfL https://raw.githubusercontent.com/milvus-io/milvus/master/scripts/standalone_embed.sh -o standalone_embed.sh</span>
 <span class="hljs-meta prompt_">
@@ -63,25 +63,25 @@ title: Docker（Linux）でMilvusを実行する
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">bash standalone_embed.sh start</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><strong>v3.0.1の新機能：</strong></p>
+<p><strong>What’s new in v3.0.1:</strong></p>
 <ul>
-<li><strong>ストリーミングノード</strong>：データ処理機能の強化</li>
-<li><strong>Woodpecker MQ（デフォルト）</strong>：この Docker デプロイメントでは、Woodpecker をメッセージキューとして実行し、<strong>ローカルファイルシステム</strong>を WAL バックエンドとして使用するため、外部のメッセージキューサービスは不要です。<a href="/docs/ja/woodpecker.md">Woodpecker を</a>参照してください。</li>
-<li><strong>最適化されたアーキテクチャ</strong>：パフォーマンス向上のためのコンポーネントの統合</li>
+<li><strong>Streaming Node</strong>: Enhanced data processing capabilities</li>
+<li><strong>Woodpecker MQ (default)</strong>: This Docker deployment runs Woodpecker as the message queue with the <strong>local filesystem</strong> as its WAL backend, so no external message-queue service is required. See <a href="/docs/ja/woodpecker.md">Woodpecker</a>.</li>
+<li><strong>Optimized Architecture</strong>: Consolidated components for better performance</li>
 </ul>
-<p>常に最新のスクリプトをダウンロードし、最新の設定やアーキテクチャの改善を確実に適用してください。</p>
-<p><a href="https://milvus.io/docs/milvus_backup_overview.md">Backupを</a>スタンドアロン展開モードで使用する場合は、<a href="https://milvus.io/docs/install_standalone-docker-compose.md">Docker Composeによる</a>デプロイ方法の使用を推奨します。</p>
-<p>イメージの取得で問題が発生した場合は、問題の詳細を<a href="mailto:community@zilliz.com">community@zilliz.com</a>までご連絡ください。必要なサポートを提供いたします。</p>
+<p>Always download the latest script to ensure you get the most recent configurations and architecture improvements.</p>
+<p>If you want to use <a href="https://milvus.io/docs/milvus_backup_overview.md">Backup</a> in standalone deployment mode, it is recommended to use the <a href="https://milvus.io/docs/install_standalone-docker-compose.md">Docker Compose</a> deployment method.</p>
+<p>If you encounter any issues pulling the image, contact us at <a href="mailto:community@zilliz.com">community@zilliz.com</a> with details about the problem, and we’ll provide you with the necessary support.</p>
 </div>
-<p>インストールスクリプトの実行後：</p>
+<p>After running the installation script:</p>
 <ul>
-<li>「milvus-standalone」という名前の Docker コンテナがポート<strong>19530</strong> で起動しました。</li>
-<li>Milvus とともに、同じコンテナ内に embed etcd がインストールされ、ポート<strong>2379</strong> でサービスを提供しています。その設定ファイルは、現在のフォルダ内の `<strong>embedEtcd.yaml</strong>` にマッピングされています。</li>
-<li>Milvusのデフォルト設定を変更するには、現在のフォルダにある<strong>user.yamlファイル</strong>に設定を追加し、サービスを再起動してください。</li>
-<li>Milvusのデータボリュームは、現在のフォルダ内の<strong>volumes/milvus</strong>にマッピングされています。</li>
+<li>A docker container named milvus-standalone has been started at port <strong>19530</strong>.</li>
+<li>An embed etcd is installed along with Milvus in the same container and serves at port <strong>2379</strong>. Its configuration file is mapped to <strong>embedEtcd.yaml</strong> in the current folder.</li>
+<li>To change the default Milvus configuration, add your settings to the <strong>user.yaml</strong> file in the current folder and then restart the service.</li>
+<li>The Milvus data volume is mapped to <strong>volumes/milvus</strong> in the current folder.</li>
 </ul>
-<p><code translate="no">http://127.0.0.1:9091/webui/</code> から Milvus WebUI にアクセスし、お使いの Milvus インスタンスの詳細を確認できます。詳細については、<a href="/docs/ja/milvus-webui.md">Milvus WebUI</a> を参照してください。</p>
-<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">（オプション）Milvusの設定を更新する<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
+<p>You can access Milvus WebUI at <code translate="no">http://127.0.0.1:9091/webui/</code> to learn more about the your Milvus instance. For details, refer to <a href="/docs/ja/milvus-webui.md">Milvus WebUI</a>.</p>
+<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Optional) Update Milvus configurations<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,18 +96,18 @@ title: Docker（Linux）でMilvusを実行する
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>現在のフォルダにある<strong>user.yaml</strong>ファイルで Milvus の設定を変更できます。たとえば、<code translate="no">proxy.healthCheckTimeout</code> を<code translate="no">1000</code> ms に変更するには、ファイルを次のように変更します。</p>
+    </button></h2><p>You can modify the Milvus configurations in the <strong>user.yaml</strong> file in the current folder. For example, to change the <code translate="no">proxy.healthCheckTimeout</code> to <code translate="no">1000</code> ms, you can modify the file as follows:</p>
 <pre><code translate="no" class="language-shell">cat &lt;&lt; EOF &gt; user.yaml
 <span class="hljs-meta prompt_"># </span><span class="language-bash">Extra config to override default milvus.yaml</span>
 proxy:
   healthCheckTimeout: 1000 # ms, the interval that to do component healthy check
 EOF
 <button class="copy-code-btn"></button></code></pre>
-<p>その後、次のようにサービスを再起動します:</p>
+<p>Then restart the service as follows:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">bash standalone_embed.sh restart</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>適用可能な設定項目については、「<a href="/docs/ja/system_configuration.md">システム設定</a>」を参照してください。</p>
-<h2 id="Upgrade-Milvus" class="common-anchor-header">Milvusのアップグレード<button data-href="#Upgrade-Milvus" class="anchor-icon" translate="no">
+<p>For applicable configuration items, refer to <a href="/docs/ja/system_configuration.md">System Configuration</a>.</p>
+<h2 id="Upgrade-Milvus" class="common-anchor-header">Upgrade Milvus<button data-href="#Upgrade-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,21 +122,21 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>組み込みのアップグレードコマンドを使用して、Milvusを最新バージョンにアップグレードできます。これにより、最新の設定とMilvusイメージが自動的にダウンロードされます:</p>
+    </button></h2><p>You can upgrade to the latest version of Milvus using the built-in upgrade command. This automatically downloads the latest configuration and Milvus image:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Upgrade Milvus to the latest version</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">bash standalone_embed.sh upgrade</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>アップグレードコマンドは自動的に以下の処理を行います：</p>
+<p>The upgrade command automatically:</p>
 <ul>
-<li>更新された設定を含む最新のインストールスクリプトをダウンロードします</li>
-<li>最新のMilvus Dockerイメージを取得します</li>
-<li>新しいバージョンでコンテナを再起動します</li>
-<li>既存のデータと設定を保持します</li>
+<li>Downloads the latest installation script with updated configurations</li>
+<li>Pulls the latest Milvus Docker image</li>
+<li>Restarts the container with the new version</li>
+<li>Preserves your existing data and configurations</li>
 </ul>
-<p>これが、Milvusのスタンドアロン環境をアップグレードするための推奨方法です。</p>
+<p>This is the recommended way to upgrade your Milvus standalone deployment.</p>
 </div>
-<h2 id="Stop-and-delete-Milvus" class="common-anchor-header">Milvusを停止して削除する<button data-href="#Stop-and-delete-Milvus" class="anchor-icon" translate="no">
+<h2 id="Stop-and-delete-Milvus" class="common-anchor-header">Stop and delete Milvus<button data-href="#Stop-and-delete-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -151,14 +151,14 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下の手順で、このコンテナを停止および削除できます</p>
+    </button></h2><p>You can stop and delete this container as follows</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Stop Milvus</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">bash standalone_embed.sh stop</span>
 <span class="hljs-meta prompt_">
 # </span><span class="language-bash">Delete Milvus data</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">bash standalone_embed.sh delete</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Optional-dependencies" class="common-anchor-header">オプションの依存関係<button data-href="#Optional-dependencies" class="anchor-icon" translate="no">
+<h2 id="Optional-dependencies" class="common-anchor-header">Optional dependencies<button data-href="#Optional-dependencies" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -173,16 +173,16 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>デフォルトでは、このデプロイメントはメッセージキューとして<strong>Woodpecker</strong>（ローカルファイルシステム WAL）、メタデータ用に<strong>組み込みの etcd</strong>を実行します。他にインストールする必要はありません。別のメッセージキューを使用する場合や、外部のオブジェクトストレージ／メタデータに接続する場合は、以下を参照してください：</p>
+    </button></h2><p>By default this deployment runs <strong>Woodpecker</strong> (local-filesystem WAL) as the message queue and an <strong>embedded etcd</strong> for metadata — nothing else to install. To use a different message queue or connect external object storage / metadata, see:</p>
 <ul>
-<li>メッセージキュー：<a href="/docs/ja/woodpecker.md">Woodpecker</a>（デフォルト） ·<a href="/docs/ja/mq_pulsar.md">Pulsar</a>·<a href="/docs/ja/mq_kafka.md">Kafka</a>·<a href="/docs/ja/mq_rocksmq.md">RocksMQ</a></li>
-<li>オブジェクトストレージ:<a href="/docs/ja/deploy_s3.md">MinIO</a>(デフォルト) ·<a href="/docs/ja/deploy_s3.md">AWS S3</a>·<a href="/docs/ja/abs.md">Azure Blob</a>·<a href="/docs/ja/gcs.md">GCP Cloud Storage</a>·<a href="/docs/ja/deploy_s3.md">Aliyun OSS</a>·<a href="/docs/ja/deploy_s3.md">Tencent COS</a>·<a href="/docs/ja/deploy_s3.md">Huawei OBS</a>·<a href="/docs/ja/deploy_s3.md">S3互換</a></li>
-<li>メタデータ:<a href="/docs/ja/deploy_etcd.md">etcd</a></li>
+<li>Message queue: <a href="/docs/ja/woodpecker.md">Woodpecker</a> (default) · <a href="/docs/ja/mq_pulsar.md">Pulsar</a> · <a href="/docs/ja/mq_kafka.md">Kafka</a> · <a href="/docs/ja/mq_rocksmq.md">RocksMQ</a></li>
+<li>Object storage: <a href="/docs/ja/deploy_s3.md">MinIO</a> (default) · <a href="/docs/ja/deploy_s3.md">AWS S3</a> · <a href="/docs/ja/abs.md">Azure Blob</a> · <a href="/docs/ja/gcs.md">GCP Cloud Storage</a> · <a href="/docs/ja/deploy_s3.md">Aliyun OSS</a> · <a href="/docs/ja/deploy_s3.md">Tencent COS</a> · <a href="/docs/ja/deploy_s3.md">Huawei OBS</a> · <a href="/docs/ja/deploy_s3.md">S3-compatible</a></li>
+<li>Metadata: <a href="/docs/ja/deploy_etcd.md">etcd</a></li>
 </ul>
 <div class="alert note">
-<p>Storage V3はデフォルトで無効になっています。Storage V3に依存する機能を使用する前に、有効にしてください。要件および互換性に関する注意事項については、「<a href="/docs/ja/storage-v3.md">Storage V3</a>」を参照してください。</p>
+<p>Storage V3 is disabled by default. Enable it before using features that depend on it. For requirements and compatibility considerations, see <a href="/docs/ja/storage-v3.md">Storage V3</a>.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">次のステップ<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -197,29 +197,29 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Docker に Milvus をインストールしたら、次の操作が可能です:</p>
+    </button></h2><p>Having installed Milvus in Docker, you can:</p>
 <ul>
-<li><p><a href="/docs/ja/quickstart.md">「クイックスタート」を</a>参照して、Milvusの機能を確認してください。</p></li>
-<li><p>Milvusの基本的な操作について学びましょう：</p>
+<li><p>Check <a href="/docs/ja/quickstart.md">Quickstart</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/ja/manage_databases.md">データベースの管理</a></li>
-<li><a href="/docs/ja/manage-collections.md">コレクションの管理</a></li>
-<li><a href="/docs/ja/manage-partitions.md">パーティションの管理</a></li>
-<li><a href="/docs/ja/insert-update-delete.md">挿入、Upsert、削除</a></li>
-<li><a href="/docs/ja/single-vector-search.md">単一ベクトル検索</a></li>
-<li><a href="/docs/ja/multi-vector-search.md">ハイブリッド検索</a></li>
+<li><a href="/docs/ja/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/ja/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/ja/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/ja/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/ja/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/ja/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p><a href="/docs/ja/upgrade_milvus_cluster-helm.md">Helmチャートを使用したMilvusのアップグレード</a></p></li>
-<li><p><a href="/docs/ja/scaleout.md">Milvusクラスタのスケーリング</a></p></li>
-<li><p>クラウド上に Milvus クラスターをデプロイする:</p>
+<li><p><a href="/docs/ja/upgrade_milvus_cluster-helm.md">Upgrade Milvus Using Helm Chart</a>.</p></li>
+<li><p><a href="/docs/ja/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvu cluster on clouds:</p>
 <ul>
 <li><a href="/docs/ja/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/ja/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/ja/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>Milvusの可観測性と管理のための直感的なWebインターフェース「<a href="/docs/ja/milvus-webui.md">Milvus WebUI</a>」をご覧ください。</p></li>
-<li><p>Milvusデータのバックアップを行うオープンソースツール「<a href="/docs/ja/milvus_backup_overview.md">Milvus Backup</a>」をご覧ください。</p></li>
-<li><p>Milvusのデバッグや動的な構成更新を行うためのオープンソースツール「<a href="/docs/ja/birdwatcher_overview.md">Birdwatcher</a>」をご覧ください。</p></li>
-<li><p>Milvusを直感的に管理できるオープンソースのGUIツール「<a href="https://github.com/zilliztech/attu">Attu</a>」をご覧ください。</p></li>
-<li><p><a href="/docs/ja/monitor.md">Prometheus を使って Milvus を監視しましょう</a>。</p></li>
+<li><p>Explore <a href="/docs/ja/milvus-webui.md">Milvus WebUI</a>, an intuitive web interface for Milvus observability and management.</p></li>
+<li><p>Explore <a href="/docs/ja/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/ja/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/ja/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

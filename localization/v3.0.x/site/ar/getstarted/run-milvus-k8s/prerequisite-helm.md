@@ -2,10 +2,10 @@
 id: prerequisite-helm.md
 label: Install on Kubernetes
 related_key: Kubernetes
-summary: تعرف على الاستعدادات اللازمة قبل تثبيت Milvus باستخدام Helm.
-title: متطلبات تشغيل Milvus على Kubernetes
+summary: Learn the necessary preparations before installing Milvus with Helm.
+title: Requirements for running Milvus on Kubernetes
 ---
-<h1 id="Requirements-for-running-Milvus-on-Kubernetes" class="common-anchor-header">متطلبات تشغيل Milvus على Kubernetes<button data-href="#Requirements-for-running-Milvus-on-Kubernetes" class="anchor-icon" translate="no">
+<h1 id="Requirements-for-running-Milvus-on-Kubernetes" class="common-anchor-header">Requirements for running Milvus on Kubernetes<button data-href="#Requirements-for-running-Milvus-on-Kubernetes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: متطلبات تشغيل Milvus على Kubernetes
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>تسرد هذه الصفحة متطلبات الأجهزة والبرامج اللازمة لتشغيل Milvus.</p>
-<h2 id="Hardware-requirements" class="common-anchor-header">متطلبات الأجهزة<button data-href="#Hardware-requirements" class="anchor-icon" translate="no">
+    </button></h1><p>This page lists the hardware and software requirements to get Milvus up and running.</p>
+<h2 id="Hardware-requirements" class="common-anchor-header">Hardware requirements<button data-href="#Hardware-requirements" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,16 +38,16 @@ title: متطلبات تشغيل Milvus على Kubernetes
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>المكون</th><th>المتطلب</th><th>التوصية</th><th>ملاحظة</th></tr>
+<tr><th>Component</th><th>Requirement</th><th>Recommendation</th><th>Note</th></tr>
 </thead>
 <tbody>
-<tr><td>وحدة المعالجة المركزية</td><td><ul><li>معالج Intel Core من الجيل الثاني أو أحدث</li><li>Apple Silicon</li></ul></td><td><ul><li>مستقل: 4 نوى أو أكثر</li><li>المجموعة: 8 نوى أو أكثر</li></ul></td><td></td></tr>
-<tr><td>مجموعة تعليمات وحدة المعالجة المركزية</td><td><ul><li>SSE4.2</li><li>AVX</li><li>AVX2</li><li>AVX-512</li></ul></td><td><ul><li>SSE4.2</li><li>AVX</li><li>AVX2</li><li>AVX-512</li></ul></td><td>يتطلب البحث عن التشابه بين المتجهات وإنشاء الفهرس داخل Milvus دعم وحدة المعالجة المركزية (CPU) لمجموعات امتدادات التعليمات الفردية والبيانات المتعددة (SIMD). تأكد من أن وحدة المعالجة المركزية تدعم واحدًا على الأقل من امتدادات SIMD المذكورة. راجع <a href="https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX">وحدات المعالجة المركزية المزودة بـ AVX</a> لمزيد من المعلومات.</td></tr>
-<tr><td>ذاكرة الوصول العشوائي (RAM)</td><td><ul><li>نظام مستقل: 8G</li><li>المجموعة: 32G</li></ul></td><td><ul><li>جهاز مستقل: 16G</li><li>المجموعة: 128G</li></ul></td><td>يعتمد حجم ذاكرة الوصول العشوائي (RAM) على حجم البيانات.</td></tr>
-<tr><td>محرك الأقراص الثابتة</td><td>محرك أقراص SSD SATA 3.0 أو CloudStorage</td><td>محرك أقراص SSD من نوع NVMe أو أعلى</td><td>يعتمد حجم القرص الصلب على حجم البيانات.</td></tr>
+<tr><td>CPU</td><td><ul><li>Intel 2nd Gen Core CPU or higher</li><li>Apple Silicon</li></ul></td><td><ul><li>Standalone: 4 core or more</li><li>Cluster: 8 core or more</li></ul></td><td></td></tr>
+<tr><td>CPU instruction set</td><td><ul><li>SSE4.2</li><li>AVX</li><li>AVX2</li><li>AVX-512</li></ul></td><td><ul><li>SSE4.2</li><li>AVX</li><li>AVX2</li><li>AVX-512</li></ul></td><td>Vector similarity search and index building within Milvus require CPU’s support of single instruction, multiple data (SIMD) extension sets. Ensure that the CPU supports at least one of the SIMD extensions listed. See <a href="https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX">CPUs with AVX</a> for more information.</td></tr>
+<tr><td>RAM</td><td><ul><li>Standalone: 8G</li><li>Cluster: 32G</li></ul></td><td><ul><li>Standalone: 16G</li><li>Cluster: 128G</li></ul></td><td>The size of RAM depends on the data volume.</td></tr>
+<tr><td>Hard drive</td><td>SATA 3.0 SSD or CloudStorage</td><td>NVMe SSD or higher</td><td>The size of hard drive depends on the data volume.</td></tr>
 </tbody>
 </table>
-<h2 id="Software-requirements" class="common-anchor-header">متطلبات البرامج<button data-href="#Software-requirements" class="anchor-icon" translate="no">
+<h2 id="Software-requirements" class="common-anchor-header">Software requirements<button data-href="#Software-requirements" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,29 +62,29 @@ title: متطلبات تشغيل Milvus على Kubernetes
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يُنصح بتشغيل مجموعة Kubernetes على أنظمة تشغيل Linux.</p>
-<p>kubectl هي أداة سطر الأوامر الخاصة بـ Kubernetes. استخدم إصدار kubectl لا يختلف عن إصدار الكتلة إلا في إصدار فرعي واحد. يساعد استخدام أحدث إصدار من kubectl على تجنب المشكلات غير المتوقعة.</p>
-<p>minikube مطلوب عند تشغيل مجموعة Kubernetes محليًا. يتطلب minikube Docker كمتطلب. تأكد من تثبيت Docker قبل تثبيت Milvus باستخدام Helm. راجع <a href="https://docs.docker.com/get-docker">الحصول على Docker</a> لمزيد من المعلومات.</p>
+    </button></h2><p>It is recommended that you run the Kubernetes cluster on Linux platforms.</p>
+<p>kubectl is the command-line tool for Kubernetes. Use a kubectl version that is within one minor version difference of your cluster. Using the latest version of kubectl helps avoid unforeseen issues.</p>
+<p>minikube is required when running Kubernetes cluster locally. minikube requires Docker as a dependency. Ensure that you install Docker before installing Milvus using Helm. See <a href="https://docs.docker.com/get-docker">Get Docker</a> for more information.</p>
 <table>
 <thead>
-<tr><th>نظام التشغيل</th><th>البرامج</th><th>ملاحظة</th></tr>
+<tr><th>Operating system</th><th>Software</th><th>Note</th></tr>
 </thead>
 <tbody>
-<tr><td>أنظمة Linux</td><td><ul><li>Kubernetes 1.16 أو أحدث</li><li>kubectl</li><li>Helm 3.0.0 أو أحدث</li><li>minikube (لـ Milvus المستقل)</li><li>Docker 19.03 أو أحدث (لـ Milvus المستقل)</li></ul></td><td>انظر <a href="https://helm.sh/docs/">وثائق Helm</a> لمزيد من المعلومات.</td></tr>
+<tr><td>Linux platforms</td><td><ul><li>Kubernetes 1.16 or later</li><li>kubectl</li><li>Helm 3.0.0 or later</li><li>minikube (for Milvus standalone)</li><li>Docker 19.03 or later (for Milvus standalone)</li></ul></td><td>See <a href="https://helm.sh/docs/">Helm Docs</a> for more information.</td></tr>
 </tbody>
 </table>
 <table>
 <thead>
-<tr><th>البرامج</th><th>الإصدار</th><th>ملاحظة</th></tr>
+<tr><th>Software</th><th>Version</th><th>Note</th></tr>
 </thead>
 <tbody>
-<tr><td>etcd</td><td>3.5.0</td><td>انظر <a href="#Additional-disk-requirements">متطلبات القرص الإضافية</a>.</td></tr>
-<tr><td>MinIO</td><td>الإصدار 2024-12-18T13-15-44Z</td><td></td></tr>
-<tr><td>Woodpecker</td><td>مُضمّن مع Milvus (وضع الخدمة: <code translate="no">v0.1.37</code>+)</td><td>قائمة انتظار الرسائل الافتراضية. بالنسبة لعمليات النشر الموزعة، يمكن تشغيل Woodpecker <strong>كخدمة</strong> مخصصة؛ قم بتثبيت إصداره باستخدام <code translate="no">--set woodpecker.image.tag</code>. يتم دعم وضع الخدمة بدءًا من الإصدار <code translate="no">v0.1.37</code> من Woodpecker فصاعدًا.</td></tr>
-<tr><td>Pulsar</td><td>2.8.2</td><td>اختياري — فقط إذا قمت بتحويل قائمة انتظار الرسائل إلى Pulsar؛ غير مثبت بشكل افتراضي.</td></tr>
+<tr><td>etcd</td><td>3.5.0</td><td>See <a href="#Additional-disk-requirements">additional disk requirements</a>.</td></tr>
+<tr><td>MinIO</td><td>RELEASE.2024-12-18T13-15-44Z</td><td></td></tr>
+<tr><td>Woodpecker</td><td>Bundled with Milvus (service mode: <code translate="no">v0.1.37</code>+)</td><td>Default message queue. For distributed deployments, Woodpecker can run as a dedicated <strong>service</strong>; pin its version with <code translate="no">--set woodpecker.image.tag</code>. Service mode is supported from Woodpecker <code translate="no">v0.1.37</code> onward.</td></tr>
+<tr><td>Pulsar</td><td>2.8.2</td><td>Optional — only if you switch the message queue to Pulsar; not installed by default.</td></tr>
 </tbody>
 </table>
-<h3 id="Additional-disk-requirements" class="common-anchor-header">متطلبات القرص الإضافية<button data-href="#Additional-disk-requirements" class="anchor-icon" translate="no">
+<h3 id="Additional-disk-requirements" class="common-anchor-header">Additional disk requirements<button data-href="#Additional-disk-requirements" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,13 +99,13 @@ title: متطلبات تشغيل Milvus على Kubernetes
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يعد أداء القرص أمرًا بالغ الأهمية لـ etcd. يوصى بشدة باستخدام محركات أقراص SSD NVMe محلية. قد يؤدي بطء استجابة القرص إلى إجراء انتخابات متكررة للمجموعة، مما يؤدي في النهاية إلى تدهور خدمة etcd.</p>
-<p>لاختبار ما إذا كان القرص الخاص بك مؤهلاً، استخدم <a href="https://github.com/axboe/fio">fio</a>.</p>
+    </button></h3><p>Disk performance is critical to etcd. It is highly recommended that you use local NVMe SSDs. Slower disk reponse may cause frequent cluster elections that will eventually degrade the etcd service.</p>
+<p>To test if your disk is qualified, use <a href="https://github.com/axboe/fio">fio</a>.</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">mkdir</span> test-data
 fio --rw=write --ioengine=<span class="hljs-built_in">sync</span> --fdatasync=1 --directory=test-data --size=2200m --bs=2300 --name=mytest
 <button class="copy-code-btn"></button></code></pre>
-<p>من الناحية المثالية، يجب أن يصل القرص إلى أكثر من 500 IOPS وأن يكون زمن انتقال fsync في المئوية 99 أقل من 10 مللي ثانية. اقرأ <a href="https://etcd.io/docs/v3.5/op-guide/hardware/#disks">وثائق</a> etcd للحصول على متطلبات أكثر تفصيلاً.</p>
-<h2 id="FAQs" class="common-anchor-header">الأسئلة الشائعة<button data-href="#FAQs" class="anchor-icon" translate="no">
+<p>Ideally, your disk should reach over 500  IOPS and below 10ms for the 99th percentile fsync latency. Read the etcd <a href="https://etcd.io/docs/v3.5/op-guide/hardware/#disks">Docs</a> for more detailed requirements.</p>
+<h2 id="FAQs" class="common-anchor-header">FAQs<button data-href="#FAQs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -120,7 +120,7 @@ fio --rw=write --ioengine=<span class="hljs-built_in">sync</span> --fdatasync=1 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="How-can-I-start-a-K8s-cluster-locally-for-test-purposes" class="common-anchor-header">كيف يمكنني بدء تشغيل مجموعة K8s محليًا لأغراض الاختبار؟<button data-href="#How-can-I-start-a-K8s-cluster-locally-for-test-purposes" class="anchor-icon" translate="no">
+    </button></h2><h3 id="How-can-I-start-a-K8s-cluster-locally-for-test-purposes" class="common-anchor-header">How can I start a K8s cluster locally for test purposes?<button data-href="#How-can-I-start-a-K8s-cluster-locally-for-test-purposes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -135,26 +135,26 @@ fio --rw=write --ioengine=<span class="hljs-built_in">sync</span> --fdatasync=1 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يمكنك استخدام أدوات مثل <a href="https://minikube.sigs.k8s.io/docs/">minikube</a> و <a href="https://kind.sigs.k8s.io/">kind</a> و <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/">Kubeadm</a> لإعداد مجموعة Kubernetes محليًا بسرعة. يستخدم الإجراء التالي minikube كمثال.</p>
+    </button></h3><p>You can use tools like <a href="https://minikube.sigs.k8s.io/docs/">minikube</a>, <a href="https://kind.sigs.k8s.io/">kind</a>, and <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/">Kubeadm</a>, to quickly set up a Kubernetes cluster locally. The following procedure uses minikube as an example.</p>
 <ol>
-<li>تنزيل minikube</li>
+<li>Download minikube</li>
 </ol>
-<p>انتقل إلى صفحة <a href="https://minikube.sigs.k8s.io/docs/start/">«البدء</a> »، وتحقق مما إذا كنت تستوفي الشروط المذكورة في قسم <strong>«ما ستحتاج إليه</strong> »، وانقر على الأزرار التي تصف النظام الأساسي المستهدف، وانسخ الأوامر لتنزيل الملف الثنائي وتثبيته.</p>
+<p>Go to the <a href="https://minikube.sigs.k8s.io/docs/start/">Get Started</a> page, check whether you have met the conditions listed in the <strong>What you’ll need</strong> section, click on the buttons that describe your target platform, and copy the commands to download and install the binary.</p>
 <ol start="2">
-<li>بدء تشغيل مجموعة K8s باستخدام minikube</li>
+<li>Start a K8s cluster using minikube</li>
 </ol>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">minikube start</span>
 <button class="copy-code-btn"></button></code></pre>
 <ol start="3">
-<li>التحقق من حالة مجموعة K8s</li>
+<li>Check the status of the K8s cluster</li>
 </ol>
-<p>يمكنك التحقق من حالة مجموعة K8s المثبتة باستخدام الأمر التالي.</p>
+<p>You can check the status of the K8s cluster installed using the following command.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl cluster-info</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>تأكد من أنه يمكنك الوصول إلى مجموعة K8s عبر <code translate="no">kubectl</code>. إذا لم تكن قد قمت بتثبيت <code translate="no">kubectl</code> محليًا، فراجع <a href="https://minikube.sigs.k8s.io/docs/handbook/kubectl/">استخدام kubectl داخل minikube</a>.</p>
+<p>Ensure that you can access the K8s cluster via <code translate="no">kubectl</code>. If you have not installed <code translate="no">kubectl</code> locally, see <a href="https://minikube.sigs.k8s.io/docs/handbook/kubectl/">Use kubectl inside minikube</a>.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">الخطوة التالية<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -170,10 +170,10 @@ fio --rw=write --ioengine=<span class="hljs-built_in">sync</span> --fdatasync=1 
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>إذا كانت الأجهزة والبرامج لديك تستوفي المتطلبات، فيمكنك:</p>
+<li><p>If your hardware and software meet the requirements, you can:</p>
 <ul>
-<li><a href="/docs/ar/install_cluster-milvusoperator.md">تشغيل Milvus في Kubernetes باستخدام Milvus Operator</a></li>
-<li><a href="/docs/ar/install_cluster-helm.md">تشغيل Milvus في Kubernetes باستخدام Helm</a></li>
+<li><a href="/docs/ar/install_cluster-milvusoperator.md">Run Milvus in Kubernets with Milvus Operator</a></li>
+<li><a href="/docs/ar/install_cluster-helm.md">Run Milvus in Kubernetes with Helm</a></li>
 </ul></li>
-<li><p>راجع <a href="/docs/ar/system_configuration.md">«تكوين النظام</a> » للاطلاع على المعلمات التي يمكنك ضبطها أثناء تثبيت Milvus.</p></li>
+<li><p>See <a href="/docs/ar/system_configuration.md">System Configuration</a> for parameters you can set while installing Milvus.</p></li>
 </ul>

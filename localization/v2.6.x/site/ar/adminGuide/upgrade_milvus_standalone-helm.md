@@ -4,11 +4,11 @@ label: Helm
 order: 1
 group: upgrade_milvus_standalone-operator.md
 related_key: upgrade Milvus Standalone
-summary: تعرف على كيفية ترقية إصدار Milvus المستقل باستخدام Helm Chart.
-title: ترقية Milvus المستقل باستخدام Helm Chart
+summary: Learn how to upgrade Milvus standalone with Helm Chart.
+title: Upgrade Milvus Standalone with Helm Chart
 ---
-<div class="tab-wrapper"><a href="/docs/ar/v2.6.x/upgrade_milvus_standalone-operator.md" class=''>Milvus</a><a href="/docs/ar/v2.6.x/upgrade_milvus_standalone-docker.md" class=''>OperatorHelmDocker Compose</a></div>
-<h1 id="Upgrade-Milvus-Standalone-with-Helm-Chart" class="common-anchor-header">ترقية Milvus المستقل باستخدام Helm Chart<button data-href="#Upgrade-Milvus-Standalone-with-Helm-Chart" class="anchor-icon" translate="no">
+<div class="tab-wrapper"><a href="/docs/ar/v2.6.x/upgrade_milvus_standalone-operator.md" class=''>Milvus Operator</a><a href="/docs/ar/v2.6.x/upgrade_milvus_standalone-helm.md" class='active '>Helm</a><a href="/docs/ar/v2.6.x/upgrade_milvus_standalone-docker.md" class=''>Docker Compose</a></div>
+<h1 id="Upgrade-Milvus-Standalone-with-Helm-Chart" class="common-anchor-header">Upgrade Milvus Standalone with Helm Chart<button data-href="#Upgrade-Milvus-Standalone-with-Helm-Chart" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,8 +23,8 @@ title: ترقية Milvus المستقل باستخدام Helm Chart
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يصف هذا الدليل كيفية ترقية نشر Milvus المستقل من الإصدار v2.5.x إلى الإصدار v2.6.23 باستخدام مخطط Helm.</p>
-<h2 id="Before-you-start" class="common-anchor-header">قبل البدء<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+    </button></h1><p>This guide describes how to upgrade your Milvus standalone deployment from v2.5.x to v2.6.24 using Helm Chart.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,7 +39,7 @@ title: ترقية Milvus المستقل باستخدام Helm Chart
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Whats-new-in-v2623" class="common-anchor-header">ما الجديد في الإصدار v2.6.23<button data-href="#Whats-new-in-v2623" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Whats-new-in-v2624" class="common-anchor-header">What’s new in v2.6.24<button data-href="#Whats-new-in-v2624" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -54,14 +54,14 @@ title: ترقية Milvus المستقل باستخدام Helm Chart
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تتضمن الترقية من Milvus 2.5.x إلى 2.6.23 تغييرات كبيرة في البنية:</p>
+    </button></h3><p>Upgrading from Milvus 2.5.x to 2.6.24 involves significant architectural changes:</p>
 <ul>
-<li><strong>دمج المنسقين</strong>: تم دمج المنسقين المنفصلين القديمين (<code translate="no">dataCoord</code> ، <code translate="no">queryCoord</code> ، <code translate="no">indexCoord</code>) في منسق واحد <code translate="no">mixCoord</code></li>
-<li><strong>مكونات جديدة</strong>: إدخال «عقدة البث» (Streaming Node) لتحسين معالجة البيانات</li>
-<li><strong>إزالة المكونات</strong>: تمت إزالة <code translate="no">indexNode</code> ودمجها</li>
+<li><strong>Coordinator consolidation</strong>: Legacy separate coordinators (<code translate="no">dataCoord</code>, <code translate="no">queryCoord</code>, <code translate="no">indexCoord</code>) have been consolidated into a single <code translate="no">mixCoord</code></li>
+<li><strong>New components</strong>: Introduction of Streaming Node for enhanced data processing</li>
+<li><strong>Component removal</strong>: <code translate="no">indexNode</code> removed and consolidated</li>
 </ul>
-<p>تضمن عملية الترقية هذه الترحيل السليم إلى البنية الجديدة. لمزيد من المعلومات حول تغييرات البنية، راجع <a href="/docs/ar/v2.6.x/architecture_overview.md">نظرة عامة</a> على <a href="/docs/ar/v2.6.x/architecture_overview.md">بنية Milvus</a>.</p>
-<h3 id="Requirements" class="common-anchor-header">المتطلبات<button data-href="#Requirements" class="anchor-icon" translate="no">
+<p>This upgrade process ensures proper migration to the new architecture. For more information on architecture changes, refer to <a href="/docs/ar/v2.6.x/architecture_overview.md">Milvus Architecture Overview</a>.</p>
+<h3 id="Requirements" class="common-anchor-header">Requirements<button data-href="#Requirements" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,23 +76,23 @@ title: ترقية Milvus المستقل باستخدام Helm Chart
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>متطلبات النظام:</strong></p>
+    </button></h3><p><strong>System requirements:</strong></p>
 <ul>
-<li>إصدار Helm &gt;= 3.14.0</li>
-<li>إصدار Kubernetes &gt;= 1.20.0</li>
-<li>نظام Milvus المستقل الذي تم نشره عبر Helm Chart</li>
+<li>Helm version >= 3.14.0</li>
+<li>Kubernetes version >= 1.20.0</li>
+<li>Milvus standalone deployed via Helm Chart</li>
 </ul>
-<p><strong>متطلبات التوافق:</strong></p>
+<p><strong>Compatibility requirements:</strong></p>
 <ul>
-<li>Milvus v2.6.0-rc1 <strong>غير متوافق</strong> مع الإصدار v2.6.23. لا يتم دعم الترقيات المباشرة من الإصدارات التجريبية.</li>
-<li>إذا كنت تستخدم الإصدار v2.6.0-rc1 حاليًا وتحتاج إلى الحفاظ على بياناتك، فيرجى الرجوع إلى <a href="https://github.com/milvus-io/milvus/issues/43538#issuecomment-3112808997">دليل المجتمع هذا</a> للحصول على المساعدة في عملية الترحيل.</li>
-<li><strong>يجب</strong> عليك الترقية إلى الإصدار v2.5.16 أو أحدث قبل الترقية إلى الإصدار v2.6.23.</li>
+<li>Milvus v2.6.0-rc1 is <strong>not compatible</strong> with v2.6.24. Direct upgrades from release candidates are not supported.</li>
+<li>If you are currently running v2.6.0-rc1 and need to preserve your data, please refer to <a href="https://github.com/milvus-io/milvus/issues/43538#issuecomment-3112808997">this community guide</a> for migration assistance.</li>
+<li>You <strong>must</strong> upgrade to v2.5.16 or later before upgrading to v2.6.24.</li>
 </ul>
-<p><strong>قيود قائمة انتظار الرسائل</strong>: عند الترقية إلى Milvus v2.6.23، يجب الحفاظ على اختيارك الحالي لقائمة انتظار الرسائل. لا يُدعم التبديل بين أنظمة قوائم انتظار الرسائل المختلفة أثناء الترقية. سيتوفر دعم تغيير أنظمة قوائم انتظار الرسائل في الإصدارات المستقبلية.</p>
+<p><strong>Message Queue limitations</strong>: When upgrading to Milvus v2.6.24, you must maintain your current message queue choice. Switching between different message queue systems during the upgrade is not supported. Support for changing message queue systems will be available in future versions.</p>
 <div class="alert note">
-بدءًا من الإصدار 4.2.21 من مخطط Helm الخاص بـ Milvus، أدخلنا مخطط pulsar-v3.x كعنصر تابع. من أجل التوافق مع الإصدارات السابقة، يرجى ترقية Helm إلى الإصدار v3.14 أو أحدث، وتأكد من إضافة الخيار <code translate="no">--reset-then-reuse-values</code> كلما استخدمت <code translate="no">helm upgrade</code>.
+Since Milvus Helm chart version 4.2.21, we introduced pulsar-v3.x chart as dependency. For backward compatibility, please upgrade your Helm to v3.14 or later version, and be sure to add the <code translate="no">--reset-then-reuse-values</code> option whenever you use <code translate="no">helm upgrade</code>.
 </div>
-<h2 id="Upgrade-process" class="common-anchor-header">عملية الترقية<button data-href="#Upgrade-process" class="anchor-icon" translate="no">
+<h2 id="Upgrade-process" class="common-anchor-header">Upgrade process<button data-href="#Upgrade-process" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,7 +107,7 @@ title: ترقية Milvus المستقل باستخدام Helm Chart
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Upgrade-Helm-Chart" class="common-anchor-header">الخطوة 1: ترقية مخطط Helm<button data-href="#Step-1-Upgrade-Helm-Chart" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Upgrade-Helm-Chart" class="common-anchor-header">Step 1: Upgrade Helm Chart<button data-href="#Step-1-Upgrade-Helm-Chart" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,18 +122,18 @@ title: ترقية Milvus المستقل باستخدام Helm Chart
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>أولاً، قم بترقية مخطط Milvus Helm إلى الإصدار 5.0.22:</p>
+    </button></h3><p>First, upgrade your Milvus Helm chart to version 5.0.22:</p>
 <pre><code translate="no" class="language-bash">helm repo add zilliztech https://zilliztech.github.io/milvus-helm
 helm repo update zilliztech
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-تم أرشفة مستودع مخططات Helm الخاصة بـ Milvus الموجود على <code translate="no">https://milvus-io.github.io/milvus-helm/</code>. استخدم المستودع الجديد <code translate="no">https://zilliztech.github.io/milvus-helm/</code> لإصدارات المخططات 4.0.31 والإصدارات الأحدث.
+The Milvus Helm Charts repo at <code translate="no">https://milvus-io.github.io/milvus-helm/</code> has been archived. Use the new repo <code translate="no">https://zilliztech.github.io/milvus-helm/</code> for chart versions 4.0.31 and later.
 </div>
-<p>للتحقق من توافق إصدار مخطط Helm مع إصدارات Milvus:</p>
+<p>To check Helm chart version compatibility with Milvus versions:</p>
 <pre><code translate="no" class="language-bash">helm search repo zilliztech/milvus --versions
 <button class="copy-code-btn"></button></code></pre>
-<p>يفترض هذا الدليل أنك تقوم بتثبيت أحدث إصدار. إذا كنت بحاجة إلى تثبيت إصدار معين، فحدد المعلمة <code translate="no">--version</code> وفقًا لذلك.</p>
-<h3 id="Step-2-Upgrade-to-v2516" class="common-anchor-header">الخطوة 2: الترقية إلى الإصدار v2.5.16<button data-href="#Step-2-Upgrade-to-v2516" class="anchor-icon" translate="no">
+<p>This guide assumes you are installing the latest version. If you need to install a specific version, specify the <code translate="no">--version</code> parameter accordingly.</p>
+<h3 id="Step-2-Upgrade-to-v2516" class="common-anchor-header">Step 2: Upgrade to v2.5.16<button data-href="#Step-2-Upgrade-to-v2516" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -149,19 +149,19 @@ helm repo update zilliztech
         ></path>
       </svg>
     </button></h3><div class="alert-note">
-<p>تخط هذه الخطوة إذا كان النشر المستقل الخاص بك يعمل بالفعل بالإصدار v2.5.16 أو أعلى.</p>
+<p>Skip this step if your standalone deployment is already running v2.5.16 or higher.</p>
 </div>
-<p>قم بترقية Milvus المستقل إلى الإصدار v2.5.16:</p>
+<p>Upgrade your Milvus standalone to v2.5.16:</p>
 <pre><code translate="no" class="language-bash">helm upgrade my-release zilliztech/milvus \
   --<span class="hljs-built_in">set</span> image.all.tag=<span class="hljs-string">&quot;v2.5.16&quot;</span> \
   --reset-then-reuse-values \
   --version=4.2.58
 <button class="copy-code-btn"></button></code></pre>
-<p>انتظر حتى تكتمل عملية الترقية:</p>
+<p>Wait for the upgrade to complete:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># Verify all pods are ready</span>
 kubectl get pods
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Upgrade-to-v2623" class="common-anchor-header">الخطوة 3: الترقية إلى الإصدار v2.6.23<button data-href="#Step-3-Upgrade-to-v2623" class="anchor-icon" translate="no">
+<h3 id="Step-3-Upgrade-to-v2624" class="common-anchor-header">Step 3: Upgrade to v2.6.24<button data-href="#Step-3-Upgrade-to-v2624" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -176,13 +176,13 @@ kubectl get pods
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بمجرد تشغيل الإصدار v2.5.16 بنجاح، قم بالترقية إلى الإصدار v2.6.23:</p>
+    </button></h3><p>Once v2.5.16 is running successfully, upgrade to v2.6.24:</p>
 <pre><code translate="no" class="language-bash">helm upgrade my-release zilliztech/milvus \
-  --<span class="hljs-built_in">set</span> image.all.tag=<span class="hljs-string">&quot;v2.6.23&quot;</span> \
+  --<span class="hljs-built_in">set</span> image.all.tag=<span class="hljs-string">&quot;v2.6.24&quot;</span> \
   --reset-then-reuse-values \
   --version=5.0.22
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Verify-the-upgrade" class="common-anchor-header">تحقق من الترقية<button data-href="#Verify-the-upgrade" class="anchor-icon" translate="no">
+<h2 id="Verify-the-upgrade" class="common-anchor-header">Verify the upgrade<button data-href="#Verify-the-upgrade" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -197,8 +197,8 @@ kubectl get pods
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تأكد من أن النسخة المستقلة تعمل بالإصدار الجديد:</p>
+    </button></h2><p>Confirm your standalone deployment is running the new version:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># Check pod status</span>
 kubectl get pods
 <button class="copy-code-btn"></button></code></pre>
-<p>للحصول على دعم إضافي، راجع <a href="https://milvus.io/docs">وثائق Milvus</a> أو <a href="https://github.com/milvus-io/milvus/discussions">منتدى المجتمع</a>.</p>
+<p>For additional support, consult the <a href="https://milvus.io/docs">Milvus documentation</a> or <a href="https://github.com/milvus-io/milvus/discussions">community forum</a>.</p>

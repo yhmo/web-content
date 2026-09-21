@@ -1,13 +1,13 @@
 ---
 id: basic-vector-search-with-structarray.md
-title: البحث المتجهي الأساسي باستخدام StructArray
+title: Basic Vector Search with StructArray
 summary: >-
-  استخدم هذه الصفحة لإجراء بحث متجهي في الحقول الفرعية المتجهة داخل حقل
-  StructArray. يدعم StructArray وضعين أساسيين للبحث المتجهي: البحث في قائمة
-  التضمين (EmbeddingList)، الذي يقوم بتقييم قائمة التضمين المخزنة في كل كيان،
-  والبحث على مستوى العناصر، الذي يبحث في كل عنصر من عناصر Struct بشكل مستقل.
+  Use this page to run vector search on vector subfields inside a StructArray
+  field. StructArray supports two basic vector search modes: EmbeddingList
+  search, which scores an embedding list stored in each entity, and
+  element-level search, which searches each Struct element independently.
 ---
-<h1 id="Basic-Vector-Search-with-StructArray" class="common-anchor-header">البحث المتجهي الأساسي باستخدام StructArray<button data-href="#Basic-Vector-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Basic-Vector-Search-with-StructArray" class="common-anchor-header">Basic Vector Search with StructArray<button data-href="#Basic-Vector-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>استخدم هذه الصفحة لإجراء بحث متجهي على الحقول الفرعية المتجهة داخل حقل StructArray. يدعم StructArray وضعين أساسيين للبحث المتجهي: البحث في قائمة التضمين (EmbeddingList)، الذي يقوم بتقييم قائمة التضمين المخزنة في كل كيان، والبحث على مستوى العناصر، الذي يبحث في كل عنصر من عناصر Struct بشكل مستقل.</p>
-<p>تستخدم هذه الصفحة مجموعة « <code translate="no">tech_articles</code> » من <a href="/docs/ar/create-structarray-field.md">«إنشاء حقل StructArray</a>». تحتوي المجموعة على حقل StructArray باسم « <code translate="no">chunks</code> ». يحتوي كل جزء على نص وبيانات وصفية قياسية وحقل فرعي متجه باسم « <code translate="no">emb_list_vector</code> » مع فهرس للبحث في قائمة التضمين، وحقل فرعي متجه باسم « <code translate="no">emb</code> » مع فهرس للبحث على مستوى العناصر.</p>
-<h2 id="Before-you-begin" class="common-anchor-header">قبل البدء<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to run vector search on vector subfields inside a StructArray field. StructArray supports two basic vector search modes: EmbeddingList search, which scores an embedding list stored in each entity, and element-level search, which searches each Struct element independently.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/ar/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>. Each chunk contains text, scalar metadata, a vector subfield named <code translate="no">emb_list_vector</code> with an index for EmbeddingList search, and a vector subfield named <code translate="no">emb</code> with an index for element-level search.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,23 +39,23 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تأكد من أن مخطط المجموعة والبيانات والفهارس جاهزة بالفعل.</p>
+    </button></h2><p>Make sure the collection schema, data, and indexes are already prepared.</p>
 <table>
 <thead>
-<tr><th>المتطلبات</th><th>مكان الإعداد</th></tr>
+<tr><th>Requirement</th><th>Where to prepare it</th></tr>
 </thead>
 <tbody>
-<tr><td>قم بإنشاء حقل StructArray، مثل <code translate="no">chunks</code>.</td><td><a href="/docs/ar/create-structarray-field.md">إنشاء حقل StructArray</a></td></tr>
-<tr><td>أدخل الكيانات التي يحتوي حقل <code translate="no">chunks</code> الخاص بها على كائنات Struct.</td><td><a href="/docs/ar/insert-data-into-structarray-fields.md">إدراج البيانات في حقول StructArray</a></td></tr>
-<tr><td>قم بإنشاء فهرس <code translate="no">MAX_SIM*</code> على <code translate="no">chunks[emb_list_vector]</code> من أجل البحث في EmbeddingList.</td><td><a href="/docs/ar/index-structarray-fields.md">فهرسة حقول StructArray</a></td></tr>
-<tr><td>إنشاء فهرس متجهي قياسي على <code translate="no">chunks[emb]</code> للبحث على مستوى العناصر.</td><td><a href="/docs/ar/index-structarray-fields.md">فهرسة حقول StructArray</a></td></tr>
+<tr><td>Create a StructArray field, such as <code translate="no">chunks</code>.</td><td><a href="/docs/ar/create-structarray-field.md">Create a StructArray Field</a></td></tr>
+<tr><td>Insert entities whose <code translate="no">chunks</code> field contains Struct objects.</td><td><a href="/docs/ar/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a></td></tr>
+<tr><td>Create a <code translate="no">MAX_SIM*</code> index on <code translate="no">chunks[emb_list_vector]</code> for EmbeddingList search.</td><td><a href="/docs/ar/index-structarray-fields.md">Index StructArray Fields</a></td></tr>
+<tr><td>Create a regular vector-metric index on <code translate="no">chunks[emb]</code> for element-level search.</td><td><a href="/docs/ar/index-structarray-fields.md">Index StructArray Fields</a></td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>تحذير</p>
-<p>لا يقبل الحقل المتجه أو الحقل الفرعي المتجه سوى فهرس واحد. إذا كنت بحاجة إلى كل من البحث في EmbeddingList والبحث على مستوى العناصر، فأنشئ حقلين فرعيين متجهين منفصلين. في هذه الصفحة، يتم فهرسة <code translate="no">chunks[emb_list_vector]</code> للبحث في EmbeddingList، ويتم فهرسة <code translate="no">chunks[emb]</code> للبحث على مستوى العناصر.</p>
+<p>Warning</p>
+<p>A vector field or vector subfield accepts only one index. If you need both EmbeddingList search and element-level search, create two separate vector subfields. In this page, <code translate="no">chunks[emb_list_vector]</code> is indexed for EmbeddingList search, and <code translate="no">chunks[emb]</code> is indexed for element-level search.</p>
 </div>
-<h2 id="Choose-a-search-mode" class="common-anchor-header">اختر وضع البحث<button data-href="#Choose-a-search-mode" class="anchor-icon" translate="no">
+<h2 id="Choose-a-search-mode" class="common-anchor-header">Choose a search mode<button data-href="#Choose-a-search-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -72,19 +72,19 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>الجانب</th><th>البحث في EmbeddingList</th><th>البحث على مستوى العنصر</th></tr>
+<tr><th>Aspect</th><th>EmbeddingList search</th><th>Element-level search</th></tr>
 </thead>
 <tbody>
-<tr><td>الحقل الفرعي المستهدف</td><td><code translate="no">chunks[emb_list_vector]</code></td><td><code translate="no">chunks[emb]</code></td></tr>
-<tr><td>بيانات الاستعلام</td><td>قائمة تضمين تحتوي على متجه واحد أو أكثر.</td><td>متجه عادي.</td></tr>
-<tr><td>عائلة المقاييس</td><td><code translate="no">MAX_SIM*</code>، مثل <code translate="no">MAX_SIM_COSINE</code>.</td><td>مقاييس متجهات عادية، مثل <code translate="no">COSINE</code> أو <code translate="no">IP</code> أو <code translate="no">L2</code>.</td></tr>
-<tr><td>ما يمثله كل نتيجة</td><td>كيان مطابق يكون حقله الفرعي StructArray متشابهًا مع قائمة التضمين الخاصة بالاستعلام.</td><td>عنصر Struct مطابق داخل حقل StructArray.</td></tr>
-<tr><td>تفصيل النتائج</td><td>مستوى الكيان.</td><td>مستوى عنصر Struct.</td></tr>
-<tr><td>الإزاحة</td><td>غير قابل للتطبيق.</td><td>يحدد الموضع الذي يبدأ من الصفر لعنصر Struct المطابق عند إرجاعه.</td></tr>
-<tr><td>الاستخدام النموذجي</td><td>ColBERT و ColPali وأنماط الاسترجاع الأخرى ذات التفاعل المتأخر.</td><td>الاسترجاع على مستوى المقطع، أو مستوى الفقرة، أو مستوى المقتطف، أو مستوى الرقعة، أو مستوى الحقيقة.</td></tr>
+<tr><td>Target subfield</td><td><code translate="no">chunks[emb_list_vector]</code></td><td><code translate="no">chunks[emb]</code></td></tr>
+<tr><td>Query data</td><td>An embedding list that contains one or more vectors.</td><td>A regular vector.</td></tr>
+<tr><td>Metric family</td><td><code translate="no">MAX_SIM*</code>, such as <code translate="no">MAX_SIM_COSINE</code>.</td><td>Regular vector metrics, such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</td></tr>
+<tr><td>What one hit represents</td><td>A matched entity whose StructArray vector subfield is similar to the query embedding list.</td><td>A matched Struct element inside the StructArray field.</td></tr>
+<tr><td>Result granularity</td><td>Entity level.</td><td>Struct element level.</td></tr>
+<tr><td>Offset</td><td>Not applicable.</td><td>Identifies the zero-based position of the matched Struct element when returned.</td></tr>
+<tr><td>Typical use</td><td>ColBERT, ColPali, and other late-interaction retrieval patterns.</td><td>Chunk-level, passage-level, clip-level, patch-level, or fact-level retrieval.</td></tr>
 </tbody>
 </table>
-<h2 id="Run-EmbeddingList-search" class="common-anchor-header">تشغيل بحث EmbeddingList<button data-href="#Run-EmbeddingList-search" class="anchor-icon" translate="no">
+<h2 id="Run-EmbeddingList-search" class="common-anchor-header">Run EmbeddingList search<button data-href="#Run-EmbeddingList-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,7 +99,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم بحث EmbeddingList عندما يحتوي الاستعلام نفسه على متجهات متعددة ويتم فهرسة الحقل الفرعي للمتجه StructArray المستهدف باستخدام مقياس " <code translate="no">MAX_SIM*</code> ". والنتيجة هي مطابقة على مستوى الكيان.</p>
+    </button></h2><p>Use EmbeddingList search when the query itself contains multiple vectors and the target StructArray vector subfield is indexed with a <code translate="no">MAX_SIM*</code> metric. The result is an entity-level match.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">from</span> pymilvus.client.embedding_list <span class="hljs-keyword">import</span> EmbeddingList
 
@@ -130,11 +130,11 @@ results = client.search(
     <span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> hits:
         <span class="hljs-built_in">print</span>(hit[<span class="hljs-string">&quot;id&quot;</span>], hit[<span class="hljs-string">&quot;distance&quot;</span>], hit[<span class="hljs-string">&quot;entity&quot;</span>])
 <button class="copy-code-btn"></button></code></pre>
-<p>في وضع البحث هذا، يتحكم مقياس « <code translate="no">limit</code> » في عدد الكيانات التي يتم إرجاعها لكل استعلام. يمكن أن تتضمن النتيجة حقول فرعية لـ StructArray، لكن النتيجة نفسها تمثل الكيان الأصلي المطابق بدلاً من عنصر Struct واحد محدد.</p>
+<p>In this search mode, <code translate="no">limit</code> controls how many entities are returned for each query. The output can include StructArray subfields, but the hit itself represents the matched parent entity rather than one specific Struct element.</p>
 <div class="alert note">
-<p>للحصول على شرح تفصيلي كامل على غرار ColBERT أو ColPali، راجع <a href="/docs/ar/search-with-embedding-lists.md">«البحث باستخدام قوائم التضمين</a>». تغطي هذه الصفحة فقط سلوك البحث الأساسي في StructArray.</p>
+<p>For a full ColBERT or ColPali-style walkthrough, see <a href="/docs/ar/search-with-embedding-lists.md">Search with Embedding Lists</a>. This page only covers the basic StructArray search behavior.</p>
 </div>
-<h2 id="Run-element-level-search" class="common-anchor-header">تشغيل البحث على مستوى العناصر<button data-href="#Run-element-level-search" class="anchor-icon" translate="no">
+<h2 id="Run-element-level-search" class="common-anchor-header">Run element-level search<button data-href="#Run-element-level-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -149,7 +149,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم البحث على مستوى العناصر عندما يتعين أن يشارك كل عنصر من عناصر Struct في البحث المتجه بشكل مستقل. يكون الاستعلام متجهًا عاديًا، ويجب فهرسة الحقل الفرعي للمتجه الهدف باستخدام مقياس متجه عادي.</p>
+    </button></h2><p>Use element-level search when each Struct element should participate in vector search independently. The query is a regular vector, and the target vector subfield must be indexed with a regular vector metric.</p>
 <pre><code translate="no" class="language-python">query_vector = [<span class="hljs-number">0.19</span>, <span class="hljs-number">0.24</span>, <span class="hljs-number">0.30</span>, <span class="hljs-number">0.37</span>]
 
 results = client.search(
@@ -176,8 +176,8 @@ results = client.search(
             <span class="hljs-string">&quot;entity:&quot;</span>, hit[<span class="hljs-string">&quot;entity&quot;</span>],
         )
 <button class="copy-code-btn"></button></code></pre>
-<p>في البحث على مستوى العناصر، تمثل كل نتيجة عنصر Struct مطابق. قيمة « <code translate="no">offset</code> » هي الموضع الذي يبدأ من الصفر لهذا العنصر في حقل StructArray. يمكن أن تظهر الكيان نفسه أكثر من مرة إذا تطابق أكثر من عنصر Struct واحد مع الاستعلام. تنطبق قيمة « <code translate="no">limit</code> » على نتائج العناصر، وليس على الكيانات الأصلية الفريدة.</p>
-<h2 id="Interpret-results" class="common-anchor-header">تفسير النتائج<button data-href="#Interpret-results" class="anchor-icon" translate="no">
+<p>In element-level search, each hit represents a matched Struct element. The <code translate="no">offset</code> value is the zero-based position of that element in the StructArray field. The same entity can appear more than once if more than one Struct element matches the query. The <code translate="no">limit</code> value applies to element hits, not unique parent entities.</p>
+<h2 id="Interpret-results" class="common-anchor-header">Interpret results<button data-href="#Interpret-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -194,17 +194,17 @@ results = client.search(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>عنصر النتيجة</th><th>البحث في EmbeddingList</th><th>البحث على مستوى العناصر</th></tr>
+<tr><th>Result item</th><th>EmbeddingList search</th><th>Element-level search</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">id</code></td><td>المفتاح الأساسي للكيان المطابق.</td><td>المفتاح الأساسي للكيان الذي يحتوي على عنصر Struct المطابق.</td></tr>
-<tr><td><code translate="no">distance</code> أو النتيجة</td><td>النتيجة أو المسافة بين قائمة التضمين الخاصة بالاستعلام وقائمة التضمين المخزنة.</td><td>النتيجة أو المسافة بين متجه الاستعلام ومتجه عنصر Struct المطابق.</td></tr>
-<tr><td><code translate="no">offset</code></td><td>غير قابل للتطبيق.</td><td>الموضع الذي يبدأ من الصفر لعنصر Struct المطابق عند إرجاعه.</td></tr>
-<tr><td>المفاتيح الأساسية المتكررة</td><td>غير متوقع في الاستعلام الفردي لأن النتائج تكون على مستوى الكيان.</td><td>ممكن، لأن عناصر Struct متعددة في نفس الكيان يمكن أن تتطابق.</td></tr>
-<tr><td>حقول الإخراج المطلوبة لـ StructArray</td><td>يتم إرجاعها من الكيان المطابق.</td><td>يتم إرجاعها مع شكل النتائج على مستوى العنصر الذي تدعمه واجهة برمجة التطبيقات (API) ومجموعة أدوات تطوير البرامج (SDK) المستهدفة.</td></tr>
+<tr><td><code translate="no">id</code></td><td>Primary key of the matched entity.</td><td>Primary key of the entity that contains the matched Struct element.</td></tr>
+<tr><td><code translate="no">distance</code> or score</td><td>Score or distance between the query embedding list and the stored embedding list.</td><td>Score or distance between the query vector and the matched Struct element vector.</td></tr>
+<tr><td><code translate="no">offset</code></td><td>Not applicable.</td><td>Zero-based position of the matched Struct element when returned.</td></tr>
+<tr><td>Repeated primary keys</td><td>Not expected for a single query because results are entity-level.</td><td>Possible, because multiple Struct elements in the same entity can match.</td></tr>
+<tr><td>Requested StructArray output fields</td><td>Returned from the matched entity.</td><td>Returned with the element-level hit shape supported by the target API and SDK.</td></tr>
 </tbody>
 </table>
-<h2 id="Common-mistakes" class="common-anchor-header">الأخطاء الشائعة<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -220,14 +220,14 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>استخدام <code translate="no">chunks.emb</code> بدلاً من صيغة مسار الحقل الفرعي المطلوبة <code translate="no">chunks[emb]</code>.</p></li>
-<li><p>استخدام استعلام EmbeddingList على حقل فرعي متجه تم فهرسته باستخدام مقياس متجه عادي.</p></li>
-<li><p>استخدام استعلام متجه عادي على حقل فرعي متجه مفهرس باستخدام مقياس <code translate="no">MAX_SIM*</code>.</p></li>
-<li><p>توقع أن يعيد البحث على مستوى العنصر <code translate="no">limit</code> هذا العدد من الكيانات الأصلية الفريدة. فهو يعيد نتائج العناصر.</p></li>
-<li><p>توقع أن يعيد بحث EmbeddingList إزاحة عنصر واحد محدد. لكنه يعيد نتائج مطابقة على مستوى الكيان.</p></li>
-<li><p>إعادة استخدام حقل فرعي متجه واحد لكلا وضعي البحث. استخدم حقول فرعية متجهة منفصلة لأن كل حقل فرعي متجه لا يقبل سوى فهرس واحد.</p></li>
+<li><p>Using <code translate="no">chunks.emb</code> instead of the required subfield path syntax <code translate="no">chunks[emb]</code>.</p></li>
+<li><p>Using an EmbeddingList query against a vector subfield indexed with a regular vector metric.</p></li>
+<li><p>Using a regular vector query against a vector subfield indexed with a <code translate="no">MAX_SIM*</code> metric.</p></li>
+<li><p>Expecting element-level search <code translate="no">limit</code> to return that many unique parent entities. It returns element hits.</p></li>
+<li><p>Expecting EmbeddingList search to return one specific element offset. It returns entity-level matches.</p></li>
+<li><p>Reusing one vector subfield for both search modes. Use separate vector subfields because each vector subfield accepts only one index.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">الخطوات التالية<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -243,9 +243,9 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>لتقييد البحث على مستوى العناصر بشروط قياسية، اقرأ <a href="/docs/ar/filtered-search-with-structarray.md">البحث المُصفى باستخدام StructArray</a>.</p></li>
-<li><p>للبحث حسب حدود النتيجة أو المسافة، اقرأ " <a href="/docs/ar/range-search-with-structarray.md">البحث في النطاق باستخدام StructArray</a>".</p></li>
-<li><p>لإرجاع نتيجة واحدة على الأكثر لكل كيان أب بعد البحث على مستوى العنصر، اقرأ " <a href="/docs/ar/grouping-search-with-structarray.md">البحث المجمّع باستخدام StructArray</a>".</p></li>
-<li><p>لدمج البحث باستخدام StructArray مع عمليات بحث متجهة أخرى، اقرأ " <a href="/docs/ar/hybrid-search-with-structarray.md">البحث الهجين باستخدام StructArray</a>".</p></li>
-<li><p>لمراجعة أنواع البيانات المدعومة والمقاييس والمرشحات والحدود الخاصة بالإصدارات، اقرأ <a href="/docs/ar/structarray-limits.md">«حدود StructArray</a>».</p></li>
+<li><p>To restrict element-level search by scalar conditions, read <a href="/docs/ar/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
+<li><p>To search by score or distance boundaries, read <a href="/docs/ar/range-search-with-structarray.md">Range Search with StructArray</a>.</p></li>
+<li><p>To return at most one result per parent entity after element-level search, read <a href="/docs/ar/grouping-search-with-structarray.md">Grouping Search with StructArray</a>.</p></li>
+<li><p>To combine StructArray search with other vector searches, read <a href="/docs/ar/hybrid-search-with-structarray.md">Hybrid Search with StructArray</a>.</p></li>
+<li><p>To review supported data types, metrics, filters, and version-specific limits, read <a href="/docs/ar/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

@@ -4,11 +4,11 @@ label: Helm
 order: 1
 group: upgrade_milvus_cluster-operator.md
 related_key: upgrade Milvus Cluster
-summary: Descubre cómo actualizar un clúster de Milvus con Helm Chart.
-title: Actualizar el clúster de Milvus con Helm Chart
+summary: Learn how to upgrade Milvus cluster with Helm Chart.
+title: Upgrade Milvus Cluster with Helm Chart
 ---
-<div class="tab-wrapper"><a href="/docs/es/upgrade_milvus_cluster-operator.md" class=''>Milvus</a><a href="/docs/es/upgrade_milvus_cluster-helm.md" class='active '>OperatorHelm</a></div>
-<h1 id="Upgrade-Milvus-Cluster-with-Helm-Chart" class="common-anchor-header">Actualizar el clúster de Milvus con Helm Chart<button data-href="#Upgrade-Milvus-Cluster-with-Helm-Chart" class="anchor-icon" translate="no">
+<div class="tab-wrapper"><a href="/docs/es/upgrade_milvus_cluster-operator.md" class=''>Milvus Operator</a><a href="/docs/es/upgrade_milvus_cluster-helm.md" class='active '>Helm</a></div>
+<h1 id="Upgrade-Milvus-Cluster-with-Helm-Chart" class="common-anchor-header">Upgrade Milvus Cluster with Helm Chart<button data-href="#Upgrade-Milvus-Cluster-with-Helm-Chart" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,11 +23,11 @@ title: Actualizar el clúster de Milvus con Helm Chart
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Esta guía describe cómo actualizar tu clúster de Milvus 2.6.x a la versión 3.0.1 utilizando Helm.</p>
+    </button></h1><p>This guide describes how to upgrade your Milvus 2.6.x cluster to v3.0.1 using Helm.</p>
 <div class="alert note">
-<p>Este procedimiento se ha validado desde Milvus 2.6.20 hasta Milvus v3.0.1 con el Helm Chart de Milvus 5.0.22. Si utilizas otra versión de parche de Milvus 2.6.x u otra versión del Helm Chart, comprueba primero la actualización en un entorno que no sea de producción.</p>
+<p>This procedure has been validated from Milvus 2.6.20 to Milvus v3.0.1 with Milvus Helm Chart 5.0.22. If you use another Milvus 2.6.x patch release or Helm Chart version, validate the upgrade in a non-production environment first.</p>
 </div>
-<h2 id="Prerequisites" class="common-anchor-header">Requisitos previos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,17 +43,17 @@ title: Actualizar el clúster de Milvus con Helm Chart
         ></path>
       </svg>
     </button></h2><ul>
-<li>Helm 3.14.0 o posterior</li>
-<li>Una implementación existente de Milvus 2.6.x gestionada por Helm</li>
-<li>Los valores de Helm utilizados para la implementación existente</li>
-<li>Una copia de seguridad actualizada de los metadatos y los datos persistentes de Milvus</li>
+<li>Helm 3.14.0 or later</li>
+<li>An existing Milvus 2.6.x deployment managed by Helm</li>
+<li>The Helm values used for the existing deployment</li>
+<li>A current backup of Milvus metadata and persistent data</li>
 </ul>
-<p><strong>Limitaciones de la cola de mensajes</strong>: al actualizar a Milvus v3.0.1, debes mantener tu elección actual de cola de mensajes. No se admite el cambio entre diferentes sistemas de colas de mensajes durante la actualización. La compatibilidad con el cambio de sistemas de colas de mensajes estará disponible en futuras versiones.</p>
+<p><strong>Message Queue limitations</strong>: When upgrading to Milvus v3.0.1, you must maintain your current message queue choice. Switching between different message queue systems during the upgrade is not supported. Support for changing message queue systems will be available in future versions.</p>
 <div class="alert warning">
-<p>No modifique ni revierta la versión del Helm Chart como parte de este procedimiento. Mantenga la versión del Chart ya instalada para su release de Helm. La línea base probada conservó el Helm Chart 5.0.22 y solo cambió la etiqueta de la imagen de Milvus a <code translate="no">v3.0.1</code>.</p>
-<p>Este procedimiento no valida una degradación o una reversión mediante el cambio de la imagen de Milvus a la versión 2.6.x. Después de que la v3.0.1 escriba datos, una reversión que afecte únicamente a la imagen puede no leer correctamente el estado actualizado. Si la actualización falla, detén las escrituras y utiliza un plan de recuperación que restaure los metadatos previos a la actualización y las copias de seguridad de los datos persistentes. Valida primero el plan de recuperación en un entorno que no sea de producción.</p>
+<p>Do not change or downgrade the Helm Chart as part of this procedure. Keep the Chart version already installed for your Helm release. The tested baseline retained Helm Chart 5.0.22 and changed only the Milvus image tag to <code translate="no">v3.0.1</code>.</p>
+<p>This procedure does not validate a downgrade or rollback by changing the Milvus image back to 2.6.x. After v3.0.1 writes data, an image-only rollback can fail to read the updated state. If the upgrade fails, stop writes and use a recovery plan that restores the pre-upgrade metadata and persistent data backups. Validate the recovery plan in a non-production environment first.</p>
 </div>
-<h2 id="Upgrade-process" class="common-anchor-header">Proceso de actualización<button data-href="#Upgrade-process" class="anchor-icon" translate="no">
+<h2 id="Upgrade-process" class="common-anchor-header">Upgrade process<button data-href="#Upgrade-process" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,8 +68,8 @@ title: Actualizar el clúster de Milvus con Helm Chart
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>La implementación validada de Milvus 2.6.20 creada con Helm Chart 5.0.22 utilizaba MixCoord y StreamingNode, y no ejecutaba IndexNode. No es necesario realizar un paso de migración del coordinador por separado cuando la implementación utiliza la misma topología.</p>
-<h3 id="Step-1-Confirm-the-current-topology" class="common-anchor-header">Paso 1: Confirmar la topología actual<button data-href="#Step-1-Confirm-the-current-topology" class="anchor-icon" translate="no">
+    </button></h2><p>The validated Milvus 2.6.20 deployment created with Helm Chart 5.0.22 used MixCoord and StreamingNode and did not run IndexNode. You do not need a separate coordinator-migration step when your deployment uses the same topology.</p>
+<h3 id="Step-1-Confirm-the-current-topology" class="common-anchor-header">Step 1: Confirm the current topology<button data-href="#Step-1-Confirm-the-current-topology" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,15 +84,15 @@ title: Actualizar el clúster de Milvus con Helm Chart
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Guarda los valores completos de la versión actual y comprueba los pods en ejecución:</p>
+    </button></h3><p>Save the complete values of the current release and check the running Pods:</p>
 <pre><code translate="no" class="language-bash">helm get values &lt;release-name&gt; \
   --namespace &lt;namespace&gt; \
   --all &gt; milvus-values-before-upgrade.yaml
 
 kubectl get pods --namespace &lt;namespace&gt;
 <button class="copy-code-btn"></button></code></pre>
-<p>Confirma que el clúster utiliza MixCoord y StreamingNode y que no hay ningún pod de IndexNode en ejecución. El comando de actualización que aparece más adelante en esta guía conserva los valores de Helm existentes. Si tus valores actuales habilitan IndexNode o utilizan otra topología de componentes, no ejecutes esta actualización «solo de imagen». Reproduce la topología en un entorno que no sea de producción y obtén primero un plan de migración aprobado por el equipo de ingeniería.</p>
-<h3 id="Step-2-Update-the-Helm-repository" class="common-anchor-header">Paso 2: Actualizar el repositorio de Helm<button data-href="#Step-2-Update-the-Helm-repository" class="anchor-icon" translate="no">
+<p>Confirm that the cluster uses MixCoord and StreamingNode and that no IndexNode Pod is running. The upgrade command later in this guide preserves the existing Helm values. If your current values enable IndexNode or use another component topology, do not run this image-only upgrade. Reproduce the topology in a non-production environment and obtain an engineering-approved migration plan first.</p>
+<h3 id="Step-2-Update-the-Helm-repository" class="common-anchor-header">Step 2: Update the Helm repository<button data-href="#Step-2-Update-the-Helm-repository" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,14 +107,14 @@ kubectl get pods --namespace &lt;namespace&gt;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Añade o actualiza el repositorio Helm de Milvus:</p>
+    </button></h3><p>Add or update the Milvus Helm repository:</p>
 <pre><code translate="no" class="language-bash">helm repo add zilliztech https://zilliztech.github.io/milvus-helm --force-update
 helm repo update zilliztech
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-El repositorio de gráficos Helm de Milvus en <code translate="no">https://milvus-io.github.io/milvus-helm/</code> ha sido archivado. Utilice el nuevo repositorio <code translate="no">https://zilliztech.github.io/milvus-helm/</code> para las versiones 4.0.31 y posteriores de los gráficos.
+The Milvus Helm Charts repo at <code translate="no">https://milvus-io.github.io/milvus-helm/</code> has been archived. Use the new repo <code translate="no">https://zilliztech.github.io/milvus-helm/</code> for chart versions 4.0.31 and later.
 </div>
-<h3 id="Step-3-Upgrade-Milvus" class="common-anchor-header">Paso 3: Actualizar Milvus<button data-href="#Step-3-Upgrade-Milvus" class="anchor-icon" translate="no">
+<h3 id="Step-3-Upgrade-Milvus" class="common-anchor-header">Step 3: Upgrade Milvus<button data-href="#Step-3-Upgrade-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,10 +129,10 @@ El repositorio de gráficos Helm de Milvus en <code translate="no">https://milvu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Comprueba la versión del gráfico instalada para tu versión de Helm:</p>
+    </button></h3><p>Check the Chart version installed for your Helm release:</p>
 <pre><code translate="no" class="language-bash">helm list --namespace &lt;namespace&gt;
 <button class="copy-code-btn"></button></code></pre>
-<p>En la columna « <code translate="no">CHART</code> », elimina el prefijo « <code translate="no">milvus-</code> » del valor y utiliza la versión restante como « <code translate="no">&lt;current-chart-version&gt;</code> ». A continuación, ejecuta el comando de actualización:</p>
+<p>In the <code translate="no">CHART</code> column, remove the <code translate="no">milvus-</code> prefix from the value and use the remaining version as <code translate="no">&lt;current-chart-version&gt;</code>. Then run the upgrade command:</p>
 <pre><code translate="no" class="language-bash">helm upgrade &lt;release-name&gt; zilliztech/milvus \
   --namespace &lt;namespace&gt; \
   --version &lt;current-chart-version&gt; \
@@ -141,8 +141,8 @@ El repositorio de gráficos Helm de Milvus en <code translate="no">https://milvu
   --<span class="hljs-built_in">wait</span> \
   --<span class="hljs-built_in">timeout</span> 30m
 <button class="copy-code-btn"></button></code></pre>
-<p>La opción « <code translate="no">--reset-then-reuse-values</code> » conserva los valores de la versión anterior al tiempo que aplica la sustitución explícita de la imagen frente a los valores predeterminados del Chart seleccionado.</p>
-<h2 id="Verify-the-upgrade" class="common-anchor-header">Comprueba la actualización<button data-href="#Verify-the-upgrade" class="anchor-icon" translate="no">
+<p>The <code translate="no">--reset-then-reuse-values</code> option retains the values from the previous release while applying the explicit image override against the selected Chart defaults.</p>
+<h2 id="Verify-the-upgrade" class="common-anchor-header">Verify the upgrade<button data-href="#Verify-the-upgrade" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,7 +157,7 @@ El repositorio de gráficos Helm de Milvus en <code translate="no">https://milvu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Comprueba la revisión de Helm, el estado del pod y las imágenes de contenedor:</p>
+    </button></h2><p>Check the Helm revision, Pod status, and container images:</p>
 <pre><code translate="no" class="language-bash">helm <span class="hljs-built_in">history</span> &lt;release-name&gt; --namespace &lt;namespace&gt;
 
 kubectl get pods --namespace &lt;namespace&gt;
@@ -165,7 +165,7 @@ kubectl get pods --namespace &lt;namespace&gt;
 kubectl get pods --namespace &lt;namespace&gt; \
   -o jsonpath=<span class="hljs-string">&#x27;{range .items[*]}{.metadata.name}{&quot;\t&quot;}{range .spec.containers[*]}{.image}{&quot; &quot;}{end}{&quot;\n&quot;}{end}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Comprueba que todas las cargas de trabajo necesarias estén listas, que todos los componentes de Milvus utilicen « <code translate="no">v3.0.1</code> » y que tus colecciones existentes sigan siendo consultables y buscables. Realiza estas comprobaciones antes de habilitar cualquier función específica de la versión 3.0.1.</p>
+<p>Verify that all required workloads are ready, all Milvus components use <code translate="no">v3.0.1</code>, and your existing collections remain queryable and searchable. Complete these checks before you enable any v3.0.1-specific feature.</p>
 <div class="alert note">
-<p>La actualización a Milvus 3.0 no habilita Storage V3. Una vez verificada la actualización, revisa <a href="/docs/es/storage-v3.md">Storage V3</a> antes de habilitar funciones que dependan de él. Una vez que Milvus haya escrito datos en Storage V3, no se admite la vuelta a una versión anterior de Milvus que no pueda leer Storage V3.</p>
+<p>Upgrading to Milvus 3.0 does not enable Storage V3. After you verify the upgrade, review <a href="/docs/es/storage-v3.md">Storage V3</a> before enabling features that depend on it. Once Milvus writes Storage V3 data, downgrading to an older Milvus version that cannot read Storage V3 is not supported.</p>
 </div>

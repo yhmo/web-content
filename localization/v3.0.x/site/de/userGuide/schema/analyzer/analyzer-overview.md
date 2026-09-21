@@ -1,14 +1,14 @@
 ---
 id: analyzer-overview.md
-title: Übersicht über den Analysator
+title: Analyzer Overview
 summary: >-
-  In der Textverarbeitung ist ein Analysator eine entscheidende Komponente, die
-  Rohtext in ein strukturiertes, durchsuchbares Format umwandelt. Jeder
-  Analysator besteht in der Regel aus zwei Kernelementen: dem Tokenizer und dem
-  Filter. Gemeinsam wandeln sie den Eingabetext in Token um, verfeinern diese
-  Token und bereiten sie für eine effiziente Indizierung und Abfrage vor.
+  In text processing, an analyzer is a crucial component that converts raw text
+  into a structured, searchable format. Each analyzer typically consists of two
+  core elements: tokenizer and filter. Together, they transform input text into
+  tokens, refine these tokens, and prepare them for efficient indexing and
+  retrieval.
 ---
-<h1 id="Analyzer-Overview" class="common-anchor-header">Übersicht über den Analysator<button data-href="#Analyzer-Overview" class="anchor-icon" translate="no">
+<h1 id="Analyzer-Overview" class="common-anchor-header">Analyzer Overview<button data-href="#Analyzer-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,16 +23,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Bei der Textverarbeitung ist ein <strong>Analysator</strong> eine entscheidende Komponente, die Rohtext in ein strukturiertes, durchsuchbares Format umwandelt. Jeder Analysator besteht in der Regel aus zwei Kernelementen: <strong>einem Tokenizer</strong> und <strong>einem Filter</strong>. Gemeinsam wandeln sie den Eingabetext in Token um, verfeinern diese Token und bereiten sie für eine effiziente Indizierung und Abfrage vor.</p>
-<p>In Milvus werden Analysatoren bei der Erstellung einer Sammlung konfiguriert, wenn Sie „ <code translate="no">VARCHAR</code> “-Felder zum Schema der Sammlung hinzufügen. Die von einem Analysator erzeugten Token können zum Aufbau eines Indexes für die Stichwortübereinstimmung verwendet oder in spärliche Einbettungen für die Volltextsuche umgewandelt werden. Weitere Informationen finden Sie unter <a href="/docs/de/full-text-search.md">„Volltextsuche“</a>, <a href="/docs/de/phrase-match.md">„Phrasenübereinstimmung“</a> oder <a href="/docs/de/keyword-match.md">„Textübereinstimmung</a>“.</p>
+    </button></h1><p>In text processing, an <strong>analyzer</strong> is a crucial component that converts raw text into a structured, searchable format. Each analyzer typically consists of two core elements: <strong>tokenizer</strong> and <strong>filter</strong>. Together, they transform input text into tokens, refine these tokens, and prepare them for efficient indexing and retrieval.</p>
+<p>In Milvus, analyzers are configured during collection creation when you add <code translate="no">VARCHAR</code> fields to the collection schema. Tokens produced by an analyzer can be used to build an index for keyword matching or converted into sparse embeddings for full text search. For more information, refer to  <a href="/docs/de/full-text-search.md">Full Text Search</a>, <a href="/docs/de/phrase-match.md">Phrase Match</a>, or <a href="/docs/de/keyword-match.md">Text Match</a>.</p>
 <div class="alert note">
-<p>Die Verwendung von Analysatoren kann sich auf die Leistung auswirken:</p>
+<p>The use of analyzers may impact performance:</p>
 <ul>
-<li><p><strong>Volltextsuche:</strong> Bei der Volltextsuche verarbeiten <strong>DataNode-</strong> und <strong>QueryNode-Kanäle</strong> Daten langsamer, da sie auf den Abschluss der Tokenisierung warten müssen. Daher dauert es länger, bis neu eingelesene Daten für die Suche verfügbar sind.</p></li>
-<li><p><strong>Schlüsselwortabgleich:</strong> Auch beim Schlüsselwortabgleich erfolgt die Indexerstellung langsamer, da die Tokenisierung abgeschlossen sein muss, bevor ein Index erstellt werden kann.</p></li>
+<li><p><strong>Full text search:</strong> For full text search, <strong>DataNode</strong> and <strong>QueryNode</strong> channels consume data more slowly because they must wait for tokenization to complete. As a result, newly ingested data takes longer to become available for search.</p></li>
+<li><p><strong>Keyword match:</strong> For keyword matching, index creation is also slower since tokenization needs to finish before an index can be built.</p></li>
 </ul>
 </div>
-<h2 id="Anatomy-of-an-analyzer" class="common-anchor-header">Aufbau eines Analysators<button data-href="#Anatomy-of-an-analyzer" class="anchor-icon" translate="no">
+<h2 id="Anatomy-of-an-analyzer" class="common-anchor-header">Anatomy of an analyzer<button data-href="#Anatomy-of-an-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -47,22 +47,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ein Analysator in Milvus besteht aus genau einem <strong>Tokenizer</strong> und <strong>null oder mehr</strong> Filtern.</p>
+    </button></h2><p>An analyzer in Milvus consists of exactly one <strong>tokenizer</strong> and <strong>zero or more</strong> filters.</p>
 <ul>
-<li><p><strong>Tokenizer</strong>: Der Tokenizer zerlegt den Eingabetext in einzelne Einheiten, sogenannte Token. Diese Token können je nach Tokenizer-Typ Wörter oder Phrasen sein.</p></li>
-<li><p><strong>Filter</strong>: Auf Token können Filter angewendet werden, um sie weiter zu verfeinern, beispielsweise durch Umwandlung in Kleinbuchstaben oder das Entfernen von häufig vorkommenden Wörtern.</p></li>
+<li><p><strong>Tokenizer</strong>: The tokenizer breaks input text into discrete units called tokens. These tokens could be words or phrases, depending on the tokenizer type.</p></li>
+<li><p><strong>Filters</strong>: Filters can be applied to tokens to further refine them, for example, by making them lowercase or removing common words.</p></li>
 </ul>
 <div class="alert note">
-<p>Tokenizer unterstützen ausschließlich das UTF-8-Format. Die Unterstützung für andere Formate wird in zukünftigen Versionen hinzugefügt.</p>
+<p>Tokenizers support only UTF-8 format. Support for other formats will be added in future releases.</p>
 </div>
-<p>Der folgende Arbeitsablauf zeigt, wie ein Analysator Text verarbeitet.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/analyzer-process-workflow.png" alt="Analyzer Process Workflow" class="doc-image" id="analyzer-process-workflow" /> 
-   <span>Ablauf des Analysierprozesses</span>
-  
- </span></p>
-<h2 id="Analyzer-types" class="common-anchor-header">Analysator-Typen<button data-href="#Analyzer-types" class="anchor-icon" translate="no">
+<p>The workflow below shows how an analyzer processes text.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/analyzer-process-workflow.png" alt="Analyzer Process Workflow" class="doc-image" id="analyzer-process-workflow" />
+    <span>Analyzer Process Workflow</span>
+  </span>
+</p>
+<h2 id="Analyzer-types" class="common-anchor-header">Analyzer types<button data-href="#Analyzer-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -77,18 +77,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus bietet zwei Arten von Analysatoren, um unterschiedlichen Anforderungen an die Textverarbeitung gerecht zu werden:</p>
+    </button></h2><p>Milvus provides two types of analyzers to meet different text processing needs:</p>
 <ul>
-<li><p><strong>Integrierter Analysator</strong>: Hierbei handelt es sich um vordefinierte Konfigurationen, die gängige Textverarbeitungsaufgaben mit minimalem Einrichtungsaufwand abdecken. Integrierte Analysatoren eignen sich ideal für allgemeine Suchanfragen, da sie keine komplexe Konfiguration erfordern.</p></li>
-<li><p><strong>Benutzerdefinierter Analysator</strong>: Für anspruchsvollere Anforderungen ermöglichen benutzerdefinierte Analysatoren die Festlegung einer eigenen Konfiguration, indem sowohl der Tokenizer als auch null oder mehrere Filter angegeben werden. Dieser Grad an Anpassung ist besonders nützlich für spezielle Anwendungsfälle, bei denen eine präzise Steuerung der Textverarbeitung erforderlich ist.</p></li>
+<li><p><strong>Built-in analyzer</strong>: These are predefined configurations that cover common text processing tasks with minimal setup. Built-in analyzers are ideal for general-purpose searches, as they require no complex configuration.</p></li>
+<li><p><strong>Custom analyzer</strong>: For more advanced requirements, custom analyzers allow you to define your own configuration by specifying both the tokenizer and zero or more filters. This level of customization is especially useful for specialized use cases where precise control over text processing is needed.</p></li>
 </ul>
 <div class="alert note">
 <ul>
-<li>Wenn Sie bei der Erstellung einer Sammlung keine Analysator-Konfigurationen angeben, verwendet Milvus standardmäßig den Analysator „ <code translate="no">standard</code> “ für die gesamte Textverarbeitung. Weitere Informationen finden Sie unter <a href="/docs/de/standard-analyzer.md">„Standard-Analysator</a>“.</li>
-<li>Für eine optimale Such- und Abfrageleistung sollten Sie einen Analysator wählen, der zur Sprache Ihrer Textdaten passt. Der Analysator „ <code translate="no">standard</code> “ ist zwar vielseitig einsetzbar, stellt jedoch möglicherweise nicht die beste Wahl für Sprachen mit einzigartigen grammatikalischen Strukturen dar, wie beispielsweise Chinesisch, Arabisch, Thailändisch, Japanisch oder Koreanisch. In solchen Fällen empfiehlt sich die Verwendung eines sprachspezifischen Analysators wie <a href="/docs/de/chinese-analyzer.md"><code translate="no">chinese</code></a>, <a href="/docs/de/arabic-analyzer.md"><code translate="no">arabic</code></a>, oder <a href="/docs/de/thai-analyzer.md"><code translate="no">thai</code></a>oder benutzerdefinierte Analysatoren mit speziellen Tokenisierern (wie <a href="/docs/de/lindera-tokenizer.md"><code translate="no">lindera</code></a>, <a href="/docs/de/icu-tokenizer.md"><code translate="no">icu</code></a>) und Filtern dringend empfohlen, um eine genaue Tokenisierung und bessere Suchergebnisse zu gewährleisten.</li>
+<li>If you omit analyzer configurations during collection creation, Milvus uses the <code translate="no">standard</code> analyzer for all text processing by default. For details, refer to <a href="/docs/de/standard-analyzer.md">Standard Analyzer</a>.</li>
+<li>For optimal search and query performance, choose an analyzer that matches the language of your text data. For instance, while the <code translate="no">standard</code> analyzer is versatile, it may not be the best choice for languages with unique grammatical structures, such as Chinese, Arabic, Thai, Japanese, or Korean. In such cases, using a language-specific analyzer like <a href="/docs/de/chinese-analyzer.md"><code translate="no">chinese</code></a>, <a href="/docs/de/arabic-analyzer.md"><code translate="no">arabic</code></a>, or <a href="/docs/de/thai-analyzer.md"><code translate="no">thai</code></a>, or custom analyzers with specialized tokenizers (such as <a href="/docs/de/lindera-tokenizer.md"><code translate="no">lindera</code></a>, <a href="/docs/de/icu-tokenizer.md"><code translate="no">icu</code></a>) and filters is highly recommended to ensure accurate tokenization and better search results.</li>
 </ul>
 </div>
-<h3 id="Built-in-analyzer" class="common-anchor-header">Integrierter Analysator<button data-href="#Built-in-analyzer" class="anchor-icon" translate="no">
+<h3 id="Built-in-analyzer" class="common-anchor-header">Built-in analyzer<button data-href="#Built-in-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,14 +103,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Die integrierten Analysatoren in Milvus sind mit bestimmten Tokenizern und Filtern vorkonfiguriert, sodass Sie sie sofort nutzen können, ohne diese Komponenten selbst definieren zu müssen. Jeder integrierte Analysator dient als Vorlage, die einen voreingestellten Tokenizer und Filter enthält, mit optionalen Parametern zur Anpassung.</p>
-<p>Um beispielsweise den integrierten Analysator „ <code translate="no">standard</code> “ zu verwenden, geben Sie einfach dessen Namen „ <code translate="no">standard</code> “ als „ <code translate="no">type</code> “ an und fügen Sie optional zusätzliche, für diesen Analysatortyp spezifische Konfigurationen hinzu, wie z. B. „ <code translate="no">stop_words</code> “:</p>
+    </button></h3><p>Built-in analyzers in Milvus are pre-configured with specific tokenizers and filters, allowing you to use them immediately without needing to define these components yourself. Each built-in analyzer serves as a template that includes a preset tokenizer and filters, with optional parameters for customization.</p>
+<p>For example, to use the <code translate="no">standard</code> built-in analyzer, simply specify its name <code translate="no">standard</code> as the <code translate="no">type</code> and optionally include extra configurations specific to this analyzer type, such as <code translate="no">stop_words</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>, <span class="hljs-comment"># Uses the standard built-in analyzer</span>
@@ -133,13 +133,13 @@ analyzerParams.put(<span class="hljs-string">&quot;stop_words&quot;</span>, Arra
        &quot;stop_words&quot;: [&quot;a&quot;, &quot;an&quot;, &quot;for&quot;]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Um das Ausführungsergebnis eines Analysators zu überprüfen, verwenden Sie die Methode „ <code translate="no">run_analyzer</code> “:</p>
+<p>To check the execution result of an analyzer, use the <code translate="no">run_analyzer</code> method:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample text to analyze</span>
 text = <span class="hljs-string">&quot;An efficient system relies on a robust analyzer to correctly process text for various applications.&quot;</span>
@@ -192,17 +192,17 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Die Ausgabe lautet:</p>
+<p>The output will be:</p>
 <pre><code translate="no" class="language-plaintext">[&#x27;efficient&#x27;, &#x27;system&#x27;, &#x27;relies&#x27;, &#x27;on&#x27;, &#x27;robust&#x27;, &#x27;analyzer&#x27;, &#x27;to&#x27;, &#x27;correctly&#x27;, &#x27;process&#x27;, &#x27;text&#x27;, &#x27;various&#x27;, &#x27;applications&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<p>Dies zeigt, dass der Analysator den Eingabetext ordnungsgemäß tokenisiert, indem er die Stoppwörter „ <code translate="no">&quot;a&quot;</code> “, „ <code translate="no">&quot;an&quot;</code> “ und „ <code translate="no">&quot;for&quot;</code> “ herausfiltert und die verbleibenden aussagekräftigen Token zurückgibt.</p>
-<p>Die Konfiguration des oben genannten integrierten Analysators „ <code translate="no">standard</code> “ entspricht der Einrichtung eines <a href="/docs/de/analyzer-overview.md#Custom-analyzer">benutzerdefinierten Analysators</a> mit den folgenden Parametern, wobei die Optionen „ <code translate="no">tokenizer</code> “ und „ <code translate="no">filter</code> “ explizit definiert sind, um eine ähnliche Funktionalität zu erzielen:</p>
+<p>This demonstrates that the analyzer properly tokenizes the input text by filtering out the stop words <code translate="no">&quot;a&quot;</code>, <code translate="no">&quot;an&quot;</code>, and <code translate="no">&quot;for&quot;</code>, while returning the remaining meaningful tokens.</p>
+<p>The configuration of the <code translate="no">standard</code> built-in analyzer above is equivalent to setting up a <a href="/docs/de/analyzer-overview.md#Custom-analyzer">custom analyzer</a> with the following parameters, where <code translate="no">tokenizer</code> and <code translate="no">filter</code> options are explicitly defined to achieve similar functionality:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -252,15 +252,15 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
    ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus bietet die folgenden integrierten Analysatoren, die jeweils für spezifische Anforderungen der Textverarbeitung ausgelegt sind:</p>
+<p>Milvus offers the following built-in analyzers, each designed for specific text processing needs:</p>
 <ul>
-<li><p><code translate="no">standard</code>: Geeignet für die allgemeine Textverarbeitung mit Standard-Tokenisierung und Kleinbuchstabenfilterung.</p></li>
-<li><p><code translate="no">english</code>: Optimiert für englischsprachige Texte, mit Unterstützung für englische Stoppwörter.</p></li>
-<li><p><code translate="no">chinese</code>: Spezialisiert auf die Verarbeitung chinesischer Texte, einschließlich einer an die Strukturen der chinesischen Sprache angepassten Tokenisierung.</p></li>
-<li><p><code translate="no">arabic</code>: Speziell für arabische Texte, mit arabischer Normalisierung, Normalisierung von Dezimalziffern, arabischem Stemming und Entfernung arabischer Stoppwörter.</p></li>
-<li><p><code translate="no">thai</code>: Speziell für thailändische Texte, mit thailändischer Wortsegmentierung, Normalisierung von Dezimalziffern und Entfernung thailändischer Stoppwörter.</p></li>
+<li><p><code translate="no">standard</code>: Suitable for general-purpose text processing, applying standard tokenization and lowercase filtering.</p></li>
+<li><p><code translate="no">english</code>: Optimized for English-language text, with support for English stop words.</p></li>
+<li><p><code translate="no">chinese</code>: Specialized for processing Chinese text, including tokenization adapted for Chinese language structures.</p></li>
+<li><p><code translate="no">arabic</code>: Specialized for Arabic text, with Arabic normalization, decimal digit normalization, Arabic stemming, and Arabic stop-word removal.</p></li>
+<li><p><code translate="no">thai</code>: Specialized for Thai text, with Thai word segmentation, decimal digit normalization, and Thai stop-word removal.</p></li>
 </ul>
-<h3 id="Custom-analyzer" class="common-anchor-header">Benutzerdefinierter Analysator<button data-href="#Custom-analyzer" class="anchor-icon" translate="no">
+<h3 id="Custom-analyzer" class="common-anchor-header">Custom analyzer<button data-href="#Custom-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -275,18 +275,18 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Für eine fortgeschrittenere Textverarbeitung ermöglichen benutzerdefinierte Analysatoren in Milvus den Aufbau einer maßgeschneiderten Pipeline zur Textverarbeitung, indem sowohl ein <strong>Tokenizer</strong> als auch <strong>Filter</strong> festgelegt werden. Diese Konfiguration eignet sich ideal für spezielle Anwendungsfälle, in denen eine präzise Steuerung erforderlich ist.</p>
-<h4 id="Tokenizer" class="common-anchor-header">Tokenizer</h4><p>Der <strong>Tokenizer</strong> ist eine <strong>obligatorische</strong> Komponente eines benutzerdefinierten Analysators, der die Analysator-Pipeline initiiert, indem er den Eingabetext in einzelne Einheiten oder <strong>Token</strong> zerlegt. Die Tokenisierung folgt je nach Tokenizer-Typ bestimmten Regeln, wie beispielsweise der Trennung durch Leerzeichen oder Satzzeichen. Dieser Prozess ermöglicht eine präzisere und unabhängige Verarbeitung jedes einzelnen Wortes oder jeder Phrase.</p>
-<p>Beispielsweise würde ein Tokenizer den Text „ <code translate="no">&quot;Vector Database Built for Scale&quot;</code> “ in separate Token umwandeln:</p>
+    </button></h3><p>For more advanced text processing, custom analyzers in Milvus allow you to build a tailored text-handling pipeline by specifying both a <strong>tokenizer</strong> and <strong>filters</strong>. This setup is ideal for specialized use cases where precise control is required.</p>
+<h4 id="Tokenizer" class="common-anchor-header">Tokenizer</h4><p>The <strong>tokenizer</strong> is a <strong>mandatory</strong> component for a custom analyzer, which initiates the analyzer pipeline by breaking down input text into discrete units or <strong>tokens</strong>. Tokenization follows specific rules, such as splitting by whitespace or punctuation, depending on the tokenizer type. This process allows for more precise and independent handling of each word or phrase.</p>
+<p>For example, a tokenizer would convert text <code translate="no">&quot;Vector Database Built for Scale&quot;</code> into separate tokens:</p>
 <pre><code translate="no" class="language-plaintext">[&quot;Vector&quot;, &quot;Database&quot;, &quot;Built&quot;, &quot;for&quot;, &quot;Scale&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Beispiel für die Angabe eines Tokenizers</strong>:</p>
+<p><strong>Example of specifying a tokenizer</strong>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -305,21 +305,21 @@ analyzerParams.put(<span class="hljs-string">&quot;tokenizer&quot;</span>, <span
        &quot;type&quot;: &quot;whitespace&quot;
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Filter" class="common-anchor-header">Filter</h4><p><strong>Filter</strong> sind <strong>optionale</strong> Komponenten, die auf die vom Tokenizer erzeugten Token angewendet werden und diese nach Bedarf umwandeln oder verfeinern. Nach Anwendung eines „ <code translate="no">lowercase</code> “-Filters auf die tokenisierten Begriffe „ <code translate="no">[&quot;Vector&quot;, &quot;Database&quot;, &quot;Built&quot;, &quot;for&quot;, &quot;Scale&quot;]</code> “ könnte das Ergebnis beispielsweise wie folgt aussehen:</p>
+<h4 id="Filter" class="common-anchor-header">Filter</h4><p><strong>Filters</strong> are <strong>optional</strong> components working on the tokens produced by the tokenizer, transforming or refining them as needed. For example, after applying a <code translate="no">lowercase</code> filter to the tokenized terms <code translate="no">[&quot;Vector&quot;, &quot;Database&quot;, &quot;Built&quot;, &quot;for&quot;, &quot;Scale&quot;]</code>, the result might be:</p>
 <pre><code translate="no" class="language-sql">[&quot;vector&quot;, &quot;database&quot;, &quot;built&quot;, &quot;for&quot;, &quot;scale&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p>Filter in einem benutzerdefinierten Analysator können je nach Konfigurationsanforderungen entweder <strong>integriert</strong> oder <strong>benutzerdefiniert</strong> sein.</p>
+<p>Filters in a custom analyzer can be either <strong>built-in</strong> or <strong>custom</strong>, depending on configuration needs.</p>
 <ul>
-<li><p><strong>Integrierte Filter</strong>: Von Milvus vorkonfiguriert, erfordern nur minimale Einrichtung. Sie können diese Filter sofort verwenden, indem Sie ihre Namen angeben. Die folgenden Filter sind für die direkte Verwendung integriert:</p>
+<li><p><strong>Built-in filters</strong>: Pre-configured by Milvus, requiring minimal setup. You can use these filters out-of-the-box by specifying their names. The filters below are built-in for direct use:</p>
 <ul>
-<li><p><code translate="no">lowercase</code>: Wandelt Text in Kleinbuchstaben um und gewährleistet so eine groß-/kleinschreibungsunabhängige Übereinstimmung. Weitere Informationen finden Sie unter <a href="/docs/de/lowercase-filter.md">„Lowercase</a>“.</p></li>
-<li><p><code translate="no">asciifolding</code>: Wandelt Nicht-ASCII-Zeichen in ASCII-Äquivalente um und vereinfacht so die Verarbeitung mehrsprachiger Texte. Weitere Informationen finden Sie unter <a href="/docs/de/ascii-folding-filter.md">„ASCII-Folding</a>“.</p></li>
-<li><p><code translate="no">alphanumonly</code>: Behält nur alphanumerische Zeichen bei, indem alle anderen entfernt werden. Weitere Informationen finden Sie unter <a href="/docs/de/alphanumonly-filter.md">„Alphanumonly</a>“.</p></li>
-<li><p><code translate="no">cnalphanumonly</code>: Entfernt Token, die andere Zeichen als chinesische Schriftzeichen, englische Buchstaben oder Ziffern enthalten. Weitere Informationen finden Sie unter <a href="/docs/de/cnalphanumonly-filter.md">„Cnalphanumonly</a>“.</p></li>
-<li><p><code translate="no">cncharonly</code>: Entfernt Tokens, die nicht-chinesische Zeichen enthalten. Weitere Informationen finden Sie unter <a href="/docs/de/cncharonly-filter.md">„Cncharonly</a>“.</p></li>
-<li><p><code translate="no">pinyin</code>: Fügt chinesischen Tokens Pinyin-Formen hinzu und ermöglicht so eine Pinyin-basierte Übereinstimmungssuche für chinesischen Text. Weitere Informationen finden Sie unter <a href="/docs/de/pinyin-filter.md">„Pinyin</a>“.</p></li>
+<li><p><code translate="no">lowercase</code>: Converts text to lowercase, ensuring case-insensitive matching. For details, refer to <a href="/docs/de/lowercase-filter.md">Lowercase</a>.</p></li>
+<li><p><code translate="no">asciifolding</code>: Converts non-ASCII characters to ASCII equivalents, simplifying multilingual text handling. For details, refer to <a href="/docs/de/ascii-folding-filter.md">ASCII folding</a>.</p></li>
+<li><p><code translate="no">alphanumonly</code>: Retains only alphanumeric characters by removing others. For details, refer to <a href="/docs/de/alphanumonly-filter.md">Alphanumonly</a>.</p></li>
+<li><p><code translate="no">cnalphanumonly</code>: Removes tokens that contain any characters other than Chinese characters, English letters, or digits. For details, refer to <a href="/docs/de/cnalphanumonly-filter.md">Cnalphanumonly</a>.</p></li>
+<li><p><code translate="no">cncharonly</code>: Removes tokens that contain any non-Chinese characters. For details, refer to <a href="/docs/de/cncharonly-filter.md">Cncharonly</a>.</p></li>
+<li><p><code translate="no">pinyin</code>: Adds Pinyin token forms for Chinese tokens, enabling Pinyin-based matching for Chinese text. For details, refer to <a href="/docs/de/pinyin-filter.md">Pinyin</a>.</p></li>
 </ul>
-<p><strong>Beispiel für die Verwendung eines integrierten Filters:</strong></p>
+<p><strong>Example of using a built-in filter:</strong></p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
@@ -349,13 +349,13 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>, Collecti
        &quot;filter&quot;:  [&quot;lowercase&quot;]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Benutzerdefinierte Filter</strong>: Benutzerdefinierte Filter ermöglichen spezielle Konfigurationen. Sie können einen benutzerdefinierten Filter definieren, indem Sie einen gültigen Filtertyp (<code translate="no">filter.type</code>) auswählen und für jeden Filtertyp spezifische Einstellungen hinzufügen. Beispiele für Filtertypen, die eine Anpassung unterstützen:</p>
+<li><p><strong>Custom filters</strong>: Custom filters allow for specialized configurations. You can define a custom filter by choosing a valid filter type (<code translate="no">filter.type</code>) and adding specific settings for each filter type. Examples of filter types that support customization:</p>
 <ul>
-<li><p><code translate="no">stop</code>: Entfernt bestimmte häufig vorkommende Wörter durch Festlegen einer Liste von Stoppwörtern (z. B. <code translate="no">&quot;stop_words&quot;: [&quot;of&quot;, &quot;to&quot;]</code>). Weitere Informationen finden Sie unter <a href="/docs/de/stop-filter.md">„Stop</a>“.</p></li>
-<li><p><code translate="no">length</code>: Schließt Tokens anhand von Längenkriterien aus, z. B. durch Festlegen einer maximalen Tokenlänge. Weitere Informationen finden Sie unter <a href="/docs/de/length-filter.md">„Length</a>“.</p></li>
-<li><p><code translate="no">stemmer</code>: Reduziert Wörter auf ihre Stammformen, um eine flexiblere Übereinstimmung zu ermöglichen. Weitere Informationen finden Sie unter <a href="/docs/de/stemmer-filter.md">„Stemmer</a>“.</p></li>
+<li><p><code translate="no">stop</code>: Removes specified common words by setting a list of stop words (e.g., <code translate="no">&quot;stop_words&quot;: [&quot;of&quot;, &quot;to&quot;]</code>). For details, refer to <a href="/docs/de/stop-filter.md">Stop</a>.</p></li>
+<li><p><code translate="no">length</code>: Excludes tokens based on length criteria, such as setting a maximum token length. For details, refer to <a href="/docs/de/length-filter.md">Length</a>.</p></li>
+<li><p><code translate="no">stemmer</code>: Reduces words to their root forms for more flexible matching. For details, refer to <a href="/docs/de/stemmer-filter.md">Stemmer</a>.</p></li>
 </ul>
-<p><strong>Beispiel für die Konfiguration eines benutzerdefinierten Filters:</strong></p>
+<p><strong>Example of configuring a custom filter:</strong></p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
@@ -408,7 +408,7 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h2 id="Example-use" class="common-anchor-header">Anwendungsbeispiel<button data-href="#Example-use" class="anchor-icon" translate="no">
+<h2 id="Example-use" class="common-anchor-header">Example use<button data-href="#Example-use" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -423,17 +423,17 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>In diesem Beispiel erstellen Sie ein Sammlungsschema, das Folgendes umfasst:</p>
+    </button></h2><p>In this example, you will create a collection schema that includes:</p>
 <ul>
-<li><p>Ein Vektorfeld für Embeddings.</p></li>
-<li><p>Zwei „ <code translate="no">VARCHAR</code> “-Felder für die Textverarbeitung:</p>
+<li><p>A vector field for embeddings.</p></li>
+<li><p>Two <code translate="no">VARCHAR</code> fields for text processing:</p>
 <ul>
-<li><p>Ein Feld verwendet einen integrierten Analysator.</p></li>
-<li><p>Das andere verwendet einen benutzerdefinierten Analysator.</p></li>
+<li><p>One field uses a built-in analyzer.</p></li>
+<li><p>The other uses a custom analyzer.</p></li>
 </ul></li>
 </ul>
-<p>Bevor Sie diese Konfigurationen in Ihre Sammlung integrieren, überprüfen Sie jeden Analysator mithilfe der Methode „ <code translate="no">run_analyzer</code> “.</p>
-<h3 id="Step-1-Initialize-MilvusClient-and-create-schema" class="common-anchor-header">Schritt 1: MilvusClient initialisieren und Schema erstellen<button data-href="#Step-1-Initialize-MilvusClient-and-create-schema" class="anchor-icon" translate="no">
+<p>Before incorporating these configurations into your collection, you’ll verify each analyzer using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Step-1-Initialize-MilvusClient-and-create-schema" class="common-anchor-header">Step 1: Initialize MilvusClient and create schema<button data-href="#Step-1-Initialize-MilvusClient-and-create-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -448,13 +448,13 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Beginnen Sie damit, den Milvus-Client einzurichten und ein neues Schema zu erstellen.</p>
+    </button></h3><p>Begin by setting up the Milvus client and creating a new schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -513,7 +513,7 @@ schema := entity.NewSchema().WithAutoID(<span class="hljs-literal">true</span>).
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Define-and-verify-analyzer-configurations" class="common-anchor-header">Schritt 2: Analysator-Konfigurationen definieren und überprüfen<button data-href="#Step-2-Define-and-verify-analyzer-configurations" class="anchor-icon" translate="no">
+<h3 id="Step-2-Define-and-verify-analyzer-configurations" class="common-anchor-header">Step 2: Define and verify analyzer configurations<button data-href="#Step-2-Define-and-verify-analyzer-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -529,10 +529,10 @@ schema := entity.NewSchema().WithAutoID(<span class="hljs-literal">true</span>).
         ></path>
       </svg>
     </button></h3><ol>
-<li><p><strong>Konfigurieren und überprüfen Sie einen integrierten Analysator</strong> (<code translate="no">english</code>)<strong>:</strong></p>
+<li><p><strong>Configure and verify a built-in analyzer</strong> (<code translate="no">english</code>)<strong>:</strong></p>
 <ul>
-<li><p><strong>Konfiguration:</strong> Definieren Sie die Analysatorparameter für den integrierten englischen Analysator.</p></li>
-<li><p><strong>Überprüfung:</strong> Verwenden Sie <code translate="no">run_analyzer</code>, um zu überprüfen, ob die Konfiguration die erwartete Tokenisierung erzeugt.</p></li>
+<li><p><strong>Configuration:</strong> Define the analyzer parameters for the built-in English analyzer.</p></li>
+<li><p><strong>Verification:</strong> Use <code translate="no">run_analyzer</code> to check that the configuration produces the expected tokenization.</p></li>
 </ul>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
@@ -598,10 +598,10 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Konfigurieren und Überprüfen eines benutzerdefinierten Analysators:</strong></p>
+<li><p><strong>Configure and verify a custom analyzer:</strong></p>
 <ul>
-<li><p><strong>Konfiguration:</strong> Definieren Sie einen benutzerdefinierten Analysator, der einen Standard-Tokenizer zusammen mit einem integrierten Filter für Kleinbuchstaben sowie benutzerdefinierten Filtern für Tokenlänge und Stoppwörter verwendet.</p></li>
-<li><p><strong>Überprüfung:</strong> Verwenden Sie <code translate="no">run_analyzer</code>, um sicherzustellen, dass die benutzerdefinierte Konfiguration den Text wie beabsichtigt verarbeitet.</p></li>
+<li><p><strong>Configuration:</strong> Define a custom analyzer that uses a standard tokenizer along with a built-in lowercase filter and custom filters for token length and stop words.</p></li>
+<li><p><strong>Verification:</strong> Use <code translate="no">run_analyzer</code> to ensure the custom configuration processes text as intended.</p></li>
 </ul>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
@@ -705,7 +705,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># curl</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h3 id="Step-3-Add-fields-to-the-schema" class="common-anchor-header">Schritt 3: Felder zum Schema hinzufügen<button data-href="#Step-3-Add-fields-to-the-schema" class="anchor-icon" translate="no">
+<h3 id="Step-3-Add-fields-to-the-schema" class="common-anchor-header">Step 3: Add fields to the schema<button data-href="#Step-3-Add-fields-to-the-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -720,13 +720,13 @@ result, err := client.RunAnalyzer(ctx, option)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Nachdem Sie Ihre Analysator-Konfigurationen überprüft haben, fügen Sie diese zu Ihren Schema-Feldern hinzu:</p>
+    </button></h3><p>Now that you have verified your analyzer configurations, add them to your schema fields:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Add VARCHAR field &#x27;title_en&#x27; using the built-in analyzer configuration</span>
 schema.add_field(
@@ -830,7 +830,7 @@ schema.addField(AddFieldReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-4-Prepare-index-parameters-and-create-the-collection" class="common-anchor-header">Schritt 4: Indexparameter vorbereiten und die Sammlung erstellen<button data-href="#Step-4-Prepare-index-parameters-and-create-the-collection" class="anchor-icon" translate="no">
+<h3 id="Step-4-Prepare-index-parameters-and-create-the-collection" class="common-anchor-header">Step 4: Prepare index parameters and create the collection<button data-href="#Step-4-Prepare-index-parameters-and-create-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -846,11 +846,11 @@ schema.addField(AddFieldReq.builder()
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Set up index parameters for the vector field</span>
 index_params = client.prepare_index_params()
@@ -910,7 +910,7 @@ err = client.CreateCollection(ctx,
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Whats-next" class="common-anchor-header">Was kommt als Nächstes<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -925,9 +925,9 @@ err = client.CreateCollection(ctx,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Nachdem Sie einen Analysator konfiguriert haben, können Sie ihn in die von Milvus bereitgestellten Funktionen zur Textsuche integrieren. Weitere Informationen:</p>
+    </button></h2><p>After configuring an analyzer, you can integrate with text retrieval features provided by Milvus. For details:</p>
 <ul>
-<li><p><a href="/docs/de/full-text-search.md">Volltextsuche</a></p></li>
-<li><p><a href="/docs/de/keyword-match.md">Textabgleich</a></p></li>
-<li><p><a href="/docs/de/phrase-match.md">Phrasenabgleich</a></p></li>
+<li><p><a href="/docs/de/full-text-search.md">Full Text Search</a></p></li>
+<li><p><a href="/docs/de/keyword-match.md">Text Match</a></p></li>
+<li><p><a href="/docs/de/phrase-match.md">Phrase Match</a></p></li>
 </ul>

@@ -1,12 +1,12 @@
 ---
 id: create-collection.md
-title: Создать коллекцию
+title: Create Collection
 summary: >-
-  Вы можете создать коллекцию, определив ее схему, параметры индекса, тип
-  метрики и необходимость загрузки при создании. На этой странице описано, как
-  создать коллекцию с нуля.
+  You can create a collection by defining its schema, index parameters, metric
+  type, and whether to load it upon creation. This page introduces how to create
+  a collection from scratch.
 ---
-<h1 id="Create-Collection" class="common-anchor-header">Создать коллекцию<button data-href="#Create-Collection" class="anchor-icon" translate="no">
+<h1 id="Create-Collection" class="common-anchor-header">Create Collection<button data-href="#Create-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Вы можете создать коллекцию, определив ее схему, параметры индекса, тип метрики и необходимость загрузки при создании. На этой странице описано, как создать коллекцию с нуля.</p>
-<h2 id="Overview" class="common-anchor-header">Обзор<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>You can create a collection by defining its schema, index parameters, metric type, and whether to load it upon creation. This page introduces how to create a collection from scratch.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,15 +37,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Коллекция - это двумерная таблица с фиксированными столбцами и вариантами строк. Каждый столбец представляет поле, а каждая строка - сущность. Для реализации такого структурного управления данными необходима схема. Каждая вставляемая сущность должна соответствовать ограничениям, определенным в схеме.</p>
-<p>Вы можете определить каждый аспект коллекции, включая ее схему, параметры индекса, тип метрики и необходимость ее загрузки при создании, чтобы убедиться, что коллекция полностью соответствует вашим требованиям.</p>
-<p>Чтобы создать коллекцию, необходимо</p>
+    </button></h2><p>A collection is a two-dimensional table with fixed columns and variant rows. Each column represents a field, and each row represents an entity. A schema is required to implement such structural data management. Every entity to insert has to meet the constraints defined in the schema.</p>
+<p>You can determine every aspect of a collection, including its schema, index parameters, metric type, and whether to load it upon creation to ensure that the collection fully meets your requirements.</p>
+<p>To create a collection, you need to</p>
 <ul>
-<li><p><a href="/docs/ru/create-collection.md#Create-Schema">Создать схему</a></p></li>
-<li><p><a href="/docs/ru/create-collection.md#Optional-Set-Index-Parameters">Задать параметры индекса</a> (необязательно)</p></li>
-<li><p><a href="/docs/ru/create-collection.md#Create-a-Collection">Создать коллекцию</a></p></li>
+<li><p><a href="/docs/ru/create-collection.md#Create-Schema">Create schema</a></p></li>
+<li><p><a href="/docs/ru/create-collection.md#Optional-Set-Index-Parameters">Set index parameters</a> (Optional)</p></li>
+<li><p><a href="/docs/ru/create-collection.md#Create-a-Collection">Create collection</a></p></li>
 </ul>
-<h2 id="Create-Schema" class="common-anchor-header">Создать схему<button data-href="#Create-Schema" class="anchor-icon" translate="no">
+<h2 id="Create-Schema" class="common-anchor-header">Create Schema<button data-href="#Create-Schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -60,13 +60,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Схема определяет структуру данных коллекции. При создании коллекции необходимо разработать схему в соответствии с вашими требованиями. Для получения подробной информации см. раздел <a href="/docs/ru/schema.md">"Объяснение схемы"</a>.</p>
-<p>Следующие фрагменты кода создают схему с динамическим полем enabled и тремя обязательными полями <code translate="no">my_id</code>, <code translate="no">my_vector</code> и <code translate="no">my_varchar</code>.</p>
+    </button></h2><p>A schema defines the data structure of a collection. When creating a collection, you need to design the schema based on your requirements. For details, refer to <a href="/docs/ru/schema.md">Schema Explained</a>.</p>
+<p>The following code snippets create a schema with the enabled dynamic field and three mandatory fields named <code translate="no">my_id</code>, <code translate="no">my_vector</code>, and <code translate="no">my_varchar</code>.</p>
 <div class="alert note">
-<p>Вы можете установить значения по умолчанию для любого скалярного поля и сделать его нулевым. Подробнее см. в разделе <a href="/docs/ru/nullable-and-default.md">Nullable &amp; Default</a>.</p>
+<p>You can set default values for any scalar field and make it nullable. For details, refer to  <a href="/docs/ru/nullable-and-default.md">Nullable & Default</a>.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 3. Create a collection in customized setup mode</span>
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -208,7 +213,7 @@ schema := entity.NewSchema().WithDynamicFieldEnabled(<span class="hljs-literal">
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Optional-Set-Index-Parameters" class="common-anchor-header">(Необязательно) Установка параметров индекса<button data-href="#Optional-Set-Index-Parameters" class="anchor-icon" translate="no">
+<h2 id="Optional-Set-Index-Parameters" class="common-anchor-header">(Optional) Set Index Parameters<button data-href="#Optional-Set-Index-Parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -223,12 +228,17 @@ schema := entity.NewSchema().WithDynamicFieldEnabled(<span class="hljs-literal">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Создание индекса для определенного поля ускоряет поиск по этому полю. Индекс записывает порядок следования сущностей в коллекции. Как показано в следующих фрагментах кода, вы можете использовать <code translate="no">metric_type</code> и <code translate="no">index_type</code> для выбора подходящих способов индексации поля в Milvus и измерения сходства между векторными вкраплениями.</p>
-<p>В Milvus вы можете использовать <code translate="no">AUTOINDEX</code> в качестве типа индекса для всех векторных полей и один из <code translate="no">COSINE</code>, <code translate="no">L2</code> и <code translate="no">IP</code> в качестве типа метрики в зависимости от ваших потребностей.</p>
-<p>Как показано в приведенном выше фрагменте кода, для векторных полей необходимо задать как тип индекса, так и тип метрики, а для скалярных полей - только тип индекса. Индексы обязательны для векторных полей, и рекомендуется создавать индексы для скалярных полей, часто используемых в условиях фильтрации.</p>
-<p>Подробнее см. в разделах <a href="/docs/ru/index-vector-fields.md">Индексные векторные поля</a> и <a href="/docs/ru/index-scalar-fields.md">Индексные скалярные поля</a>.</p>
+    </button></h2><p>Creating an index on a specific field accelerates the search against this field. An index records the order of entities within a collection. As shown in the following code snippets, you can use <code translate="no">metric_type</code> and <code translate="no">index_type</code> to select appropriate ways for Milvus to index a field and measure similarities between vector embeddings.</p>
+<p>On Milvus, you can use <code translate="no">AUTOINDEX</code> as the index type for all vector fields, and one of <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code> as the metric type based on your needs.</p>
+<p>As demonstrated in the above code snippet, you need to set both the index type and metric type for vector fields and only the index type for the scalar fields. Indexes are mandatory for vector fields, and you are advised to create indexes on scalar fields frequently used in filtering conditions.</p>
+<p>For details, refer to <a href="/docs/ru/index-vector-fields.md">Index Vector Fields</a> and <a href="/docs/ru/index-scalar-fields.md">Index Scalar Fields</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 3.3. Prepare index parameters</span>
 index_params = client.prepare_index_params()
 
@@ -299,7 +309,7 @@ indexOptions := []milvusclient.CreateIndexOption{
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-a-Collection" class="common-anchor-header">Создание коллекции<button data-href="#Create-a-Collection" class="anchor-icon" translate="no">
+<h2 id="Create-a-Collection" class="common-anchor-header">Create a Collection<button data-href="#Create-a-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -314,10 +324,15 @@ indexOptions := []milvusclient.CreateIndexOption{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Если вы создали коллекцию с параметрами индекса, Milvus автоматически загружает коллекцию при ее создании. В этом случае индексируются все поля, указанные в индексных параметрах.</p>
-<p>В следующих фрагментах кода показано, как создать коллекцию с индексными параметрами и проверить состояние ее загрузки.</p>
+    </button></h2><p>If you have created a collection with index parameters, Milvus automatically loads the collection upon its creation. In this case, all fields mentioned in the index parameters are indexed.</p>
+<p>The following code snippets demonstrate how to create the collection with index parameters and check its load status.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 3.5. Create a collection with the index loaded simultaneously</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&quot;customized_setup_1&quot;</span>,
@@ -407,10 +422,15 @@ curl --request POST \
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Вы также можете создать коллекцию без индексных параметров и добавить их впоследствии. В этом случае Milvus не загружает коллекцию при ее создании. .</p>
-<p>Следующий фрагмент кода демонстрирует, как создать коллекцию без индекса, при этом статус загрузки коллекции при создании остается незагруженным.</p>
+<p>You can also create a collection without any index parameters and add them afterward. In this case, Milvus does not load the collection upon its creation. .</p>
+<p>The following code snippet demonstrates how to create a collection without an index, and the load status of the collection remains unloaded upon creation.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 3.6. Create a collection and index it separately</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&quot;customized_setup_2&quot;</span>,
@@ -507,7 +527,7 @@ curl --request POST \
     \&quot;collectionName\&quot;: \&quot;customized_setup_2\&quot;
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-Collection-Properties" class="common-anchor-header">Установка свойств коллекции<button data-href="#Set-Collection-Properties" class="anchor-icon" translate="no">
+<h2 id="Set-Collection-Properties" class="common-anchor-header">Set Collection Properties<button data-href="#Set-Collection-Properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -522,8 +542,8 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете задать свойства создаваемой коллекции, чтобы она вписалась в ваш сервис. Ниже перечислены применимые свойства.</p>
-<h3 id="Set-Shard-Number" class="common-anchor-header">Установить номер осколка<button data-href="#Set-Shard-Number" class="anchor-icon" translate="no">
+    </button></h2><p>You can set properties for the collection to create to make it fit into your service. The applicable properties are as follows.</p>
+<h3 id="Set-Shard-Number" class="common-anchor-header">Set Shard Number<button data-href="#Set-Shard-Number" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -538,15 +558,20 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Осколки - это горизонтальные срезы коллекции, и каждый осколок соответствует каналу ввода данных. По умолчанию каждая коллекция имеет один шард. При создании коллекции можно указать количество шардов, чтобы лучше соответствовать объему данных и рабочей нагрузке.</p>
-<p>В качестве общего руководства при задании количества осколков учитывайте следующее:</p>
+    </button></h3><p>Shards are horizontal slices of a collection, and each shard corresponds to a data input channel. By default, every collection has one shard. You can specify the number of shards when creating a collection to better suit your data volume and workload.</p>
+<p>As a general guideline, consider the following when setting the number of shards:</p>
 <ul>
-<li><strong>Размер данных:</strong> Общепринятой практикой является создание одного шарда на каждые 200 миллионов сущностей. Можно также оценить общий объем данных, например, добавить один шард на каждые 100 ГБ данных, которые вы планируете вставить.</li>
-<li><strong>Использование узлов потока:</strong> Если ваш экземпляр Milvus имеет несколько потоковых узлов, рекомендуется использовать несколько шардов. Это гарантирует, что рабочая нагрузка по вставке данных будет распределена между всеми доступными узлами потока, не позволяя одним из них простаивать, в то время как другие будут перегружены.</li>
+<li><strong>Data size:</strong> A common practice is to have one shard for every 200 million entities. You can also estimate based on the total data size, for example, adding one shard for every 100 GB of data you plan to insert.</li>
+<li><strong>Stream node utilization:</strong> If your Milvus instance has multiple stream nodes, using multiple shards is recommended. This ensures that the data insertion workload is distributed across all available stream nodes, preventing some from being idle while others are overloaded.</li>
 </ul>
-<p>Следующий фрагмент кода демонстрирует, как задать номер шарда при создании коллекции.</p>
+<p>The following code snippet demonstrates how to set the shard number when you create a collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># With shard number</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&quot;customized_setup_3&quot;</span>,
@@ -593,7 +618,7 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Enable-mmap" class="common-anchor-header">Включить mmap<button data-href="#Enable-mmap" class="anchor-icon" translate="no">
+<h3 id="Enable-mmap" class="common-anchor-header">Enable mmap<button data-href="#Enable-mmap" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -608,9 +633,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus по умолчанию включает mmap для всех коллекций, что позволяет Milvus отображать необработанные данные полей в память вместо их полной загрузки. Это уменьшает объем занимаемой памяти и увеличивает емкость коллекции. Подробнее о mmap читайте в разделе <a href="/docs/ru/mmap.md">Использование mmap</a>.</p>
+    </button></h3><p>Milvus enables mmap on all collections by default, allowing Milvus to map raw field data into memory instead of fully loading them. This reduces memory footprints and increases collection capacity. For details on mmap, refer to <a href="/docs/ru/mmap.md">Use mmap</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#plaintext">plaintext</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#plaintext">plaintext</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># With mmap</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&quot;customized_setup_4&quot;</span>,
@@ -662,7 +692,7 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Set-Collection-TTL" class="common-anchor-header">Установка TTL коллекции<button data-href="#Set-Collection-TTL" class="anchor-icon" translate="no">
+<h3 id="Set-Collection-TTL" class="common-anchor-header">Set Collection TTL<button data-href="#Set-Collection-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -677,10 +707,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Если данные в коллекции должны быть сброшены в течение определенного периода времени, подумайте о том, чтобы установить время жизни коллекции (TTL) в секундах. Как только TTL истечет, Milvus удалит сущности в коллекции. Удаление происходит асинхронно, что означает, что поиск и запросы все еще возможны до завершения удаления.</p>
-<p>Следующий фрагмент кода устанавливает TTL на один день (86400 секунд). Рекомендуется устанавливать TTL как минимум на пару дней.</p>
+    </button></h3><p>If the data in a collection needs to be dropped for a specific period, consider setting its Time-To-Live (TTL) in seconds. Once the TTL times out, Milvus deletes entities in the collection. The deletion is asynchronous, indicating that searches and queries are still possible before the deletion is complete.</p>
+<p>The following code snippet sets the TTL to one day (86400 seconds). You are advised to set the TTL to a couple of days at minimum.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># With TTL</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&quot;customized_setup_5&quot;</span>,
@@ -734,7 +769,7 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Set-Consistency-Level" class="common-anchor-header">Установка уровня согласованности<button data-href="#Set-Consistency-Level" class="anchor-icon" translate="no">
+<h3 id="Set-Consistency-Level" class="common-anchor-header">Set Consistency Level<button data-href="#Set-Consistency-Level" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -749,9 +784,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>При создании коллекции вы можете установить уровень согласованности для поисков и запросов в коллекции. Вы также можете изменить уровень согласованности коллекции во время определенного поиска или запроса.</p>
+    </button></h3><p>When creating a collection, you can set the consistency level for searches and queries in the collection. You can also change the consistency level of the collection during a specific search or query.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># With consistency level</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&quot;customized_setup_6&quot;</span>,
@@ -803,8 +843,8 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Подробнее об уровнях согласованности см. в разделе <a href="/docs/ru/tune_consistency.md">Уровень согласованности</a>.</p>
-<h3 id="Enable-Dynamic-Field" class="common-anchor-header">Включение динамического поля<button data-href="#Enable-Dynamic-Field" class="anchor-icon" translate="no">
+<p>For more on consistency levels, see <a href="/docs/ru/tune_consistency.md">Consistency Level</a>.</p>
+<h3 id="Enable-Dynamic-Field" class="common-anchor-header">Enable Dynamic Field<button data-href="#Enable-Dynamic-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -819,5 +859,5 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Динамическое поле в коллекции - это зарезервированное поле JavaScript Object Notation (JSON) с именем <strong>$meta</strong>. После включения этого поля Milvus сохраняет все не определенные схемой поля, содержащиеся в каждой сущности, и их значения в виде пар ключ-значение в зарезервированном поле.</p>
-<p>Подробнее о том, как использовать динамическое поле, читайте в разделе <a href="/docs/ru/enable-dynamic-field.md">Динамическое поле</a>.</p>
+    </button></h3><p>The dynamic field in a collection is a reserved JavaScript Object Notation (JSON) field named <strong>$meta</strong>. Once you have enabled this field, Milvus saves all non-schema-defined fields carried in each entity and their values as key-value pairs in the reserved field.</p>
+<p>For details on how to use the dynamic field, refer to <a href="/docs/ru/enable-dynamic-field.md">Dynamic Field</a>.</p>

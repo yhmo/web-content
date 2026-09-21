@@ -1,11 +1,11 @@
 ---
 id: cdc_switchover.md
 summary: >-
-  Saiba como efetuar uma mudança planeada entre clusters de Milvus primários e
-  em espera com o Milvus CDC.
-title: Comutação
+  Learn how to perform a planned switchover between primary and standby Milvus
+  clusters with Milvus CDC.
+title: Switchover
 ---
-<h1 id="Switchover" class="common-anchor-header">Comutação<button data-href="#Switchover" class="anchor-icon" translate="no">
+<h1 id="Switchover" class="common-anchor-header">Switchover<button data-href="#Switchover" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,14 +20,14 @@ title: Comutação
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>O Switchover altera a direção primária-em espera sem perda de dados. Utilize-o quando o cluster primário atual ainda estiver acessível ou quando precisar de mover o tráfego para manutenção.</p>
-<p>Este guia assume que a topologia atual é:</p>
+    </button></h1><p>Switchover changes the primary-standby direction without data loss. Use it when the current primary cluster is still reachable, or when you need to move traffic for maintenance.</p>
+<p>This guide assumes the current topology is:</p>
 <pre><code translate="no" class="language-text">cluster-a (primary)  -&gt;  cluster-b (standby)
 <button class="copy-code-btn"></button></code></pre>
-<p>Após o switchover, a topologia torna-se:</p>
+<p>After switchover, the topology becomes:</p>
 <pre><code translate="no" class="language-text">cluster-b (primary)  -&gt;  cluster-a (standby)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="When-to-Use-Switchover" class="common-anchor-header">Quando usar o switchover<button data-href="#When-to-Use-Switchover" class="anchor-icon" translate="no">
+<h2 id="When-to-Use-Switchover" class="common-anchor-header">When to Use Switchover<button data-href="#When-to-Use-Switchover" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,14 +42,14 @@ title: Comutação
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Use o switchover quando:</p>
+    </button></h2><p>Use switchover when:</p>
 <ul>
-<li>Você está fazendo manutenção no primário atual.</li>
-<li>O primário está parcialmente degradado, mas ainda pode responder às solicitações.</li>
-<li>É necessário RPO = 0 e não é possível aceitar a perda de dados.</li>
+<li>You are doing maintenance on the current primary.</li>
+<li>The primary is partially degraded but can still respond to requests.</li>
+<li>You need RPO = 0 and cannot accept data loss.</li>
 </ul>
-<p>Não utilize o switchover se o primário estiver completamente indisponível. Nesse caso, use o <a href="/docs/pt/v2.6.x/cdc_failover.md">Failover</a>.</p>
-<h2 id="Before-You-Begin" class="common-anchor-header">Antes de começar<button data-href="#Before-You-Begin" class="anchor-icon" translate="no">
+<p>Do not use switchover if the primary is completely unavailable. In that case, use <a href="/docs/pt/v2.6.x/cdc_failover.md">Failover</a>.</p>
+<h2 id="Before-You-Begin" class="common-anchor-header">Before You Begin<button data-href="#Before-You-Begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -64,16 +64,16 @@ title: Comutação
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Verifique o seguinte antes de começar:</p>
+    </button></h2><p>Check the following before starting:</p>
 <ul>
-<li>Ambos os clusters estão acessíveis.</li>
-<li>A replicação do CDC está íntegra.</li>
-<li>O atraso do CDC é baixo o suficiente para sua meta de tempo de recuperação.</li>
-<li>As gravações de aplicativos podem ser pausadas ou tentadas novamente durante a mudança de função.</li>
-<li>Você preparou a nova configuração de topologia.</li>
+<li>Both clusters are reachable.</li>
+<li>CDC replication is healthy.</li>
+<li>CDC lag is low enough for your recovery time target.</li>
+<li>Application writes can be paused or retried during the role change.</li>
+<li>You have prepared the new topology configuration.</li>
 </ul>
-<p>A alternância não garante perda de dados, mas o tempo de operação depende da quantidade de dados que ainda precisam ser replicados.</p>
-<h2 id="Build-the-New-Topology" class="common-anchor-header">Criar a nova topologia<button data-href="#Build-the-New-Topology" class="anchor-icon" translate="no">
+<p>Switchover guarantees no data loss, but the operation time depends on how much data remains to be replicated.</p>
+<h2 id="Build-the-New-Topology" class="common-anchor-header">Build the New Topology<button data-href="#Build-the-New-Topology" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -88,7 +88,7 @@ title: Comutação
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Crie uma configuração de substituição completa em que <code translate="no">cluster-b</code> se torna a origem e <code translate="no">cluster-a</code> se torna o destino.</p>
+    </button></h2><p>Create a full replacement configuration where <code translate="no">cluster-b</code> becomes the source and <code translate="no">cluster-a</code> becomes the target.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># If you followed Set Up CDC Replication, cluster A is the original source cluster,</span>
 <span class="hljs-comment"># and cluster B is the original target cluster.</span>
 cluster_a_id = source_cluster_id
@@ -130,7 +130,7 @@ switchover_config = {
     ],
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Apply-the-New-Topology" class="common-anchor-header">Aplicar a nova topologia<button data-href="#Apply-the-New-Topology" class="anchor-icon" translate="no">
+<h2 id="Apply-the-New-Topology" class="common-anchor-header">Apply the New Topology<button data-href="#Apply-the-New-Topology" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -145,7 +145,7 @@ switchover_config = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Aplique a mesma configuração aos dois clusters. Envie a solicitação para o primário atual primeiro e, em seguida, envie-a para o standby. Se, mais tarde, você voltar, inverta a ordem, pois <code translate="no">cluster-b</code> é o primário atual.</p>
+    </button></h2><p>Apply the same configuration to both clusters. Send the request to the current primary first, and then send it to the standby. If you later switch back, reverse the order because <code translate="no">cluster-b</code> is the current primary.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client_a = MilvusClient(uri=cluster_a_client_addr, token=cluster_a_token)
@@ -158,9 +158,9 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
     client_a.close()
     client_b.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>O primário antigo é despromovido a standby e rejeita novas gravações. O standby antigo aguarda os dados replicados restantes, promove-se a primário e, em seguida, aceita gravações.</p>
-<p>Se o pedido falhar devido a um erro transitório de rede ou de serviço, tente novamente com a mesma configuração.</p>
-<h2 id="Redirect-Application-Traffic" class="common-anchor-header">Redirecionar o tráfego de aplicações<button data-href="#Redirect-Application-Traffic" class="anchor-icon" translate="no">
+<p>The old primary demotes to standby and rejects new writes. The old standby waits for remaining replicated data, promotes itself to primary, and then accepts writes.</p>
+<p>If the request fails because of a transient network or service error, retry with the same configuration.</p>
+<h2 id="Redirect-Application-Traffic" class="common-anchor-header">Redirect Application Traffic<button data-href="#Redirect-Application-Traffic" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -175,14 +175,14 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Depois que <code translate="no">cluster-b</code> se tornar primário:</p>
+    </button></h2><p>After <code translate="no">cluster-b</code> becomes primary:</p>
 <ol>
-<li>Aponte o tráfego de gravação para <code translate="no">cluster-b</code>.</li>
-<li>Confirme se as leituras e gravações são bem-sucedidas em <code translate="no">cluster-b</code>.</li>
-<li>Confirme que <code translate="no">cluster-a</code> já não está a receber escritas de aplicações.</li>
-<li>Continue a monitorizar a replicação de <code translate="no">cluster-b</code> para <code translate="no">cluster-a</code>.</li>
+<li>Point write traffic to <code translate="no">cluster-b</code>.</li>
+<li>Confirm reads and writes succeed on <code translate="no">cluster-b</code>.</li>
+<li>Confirm <code translate="no">cluster-a</code> is no longer receiving application writes.</li>
+<li>Keep monitoring replication from <code translate="no">cluster-b</code> back to <code translate="no">cluster-a</code>.</li>
 </ol>
-<h2 id="Verify-the-Result" class="common-anchor-header">Verificar o resultado<button data-href="#Verify-the-Result" class="anchor-icon" translate="no">
+<h2 id="Verify-the-Result" class="common-anchor-header">Verify the Result<button data-href="#Verify-the-Result" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -197,14 +197,14 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Verifique se <code translate="no">cluster-b</code> está servindo como o novo primário e se os dados permanecem consistentes. As verificações comuns incluem:</p>
+    </button></h2><p>Verify that <code translate="no">cluster-b</code> is serving as the new primary and that data remains consistent. Common checks include:</p>
 <ul>
-<li>Comparar a contagem de linhas para coleções importantes.</li>
-<li>Consultar chaves primárias conhecidas de ambos os clusters.</li>
-<li>Executar uma pesquisa representativa no novo primário e no antigo standby.</li>
-<li>Executar uma pequena gravação em <code translate="no">cluster-b</code> e confirmar que ela é replicada para <code translate="no">cluster-a</code>.</li>
+<li>Compare row counts for important collections.</li>
+<li>Query known primary keys from both clusters.</li>
+<li>Run a representative search on the new primary and old standby.</li>
+<li>Run a small write on <code translate="no">cluster-b</code> and confirm it is replicated to <code translate="no">cluster-a</code>.</li>
 </ul>
-<h2 id="Switch-Back" class="common-anchor-header">Voltar atrás<button data-href="#Switch-Back" class="anchor-icon" translate="no">
+<h2 id="Switch-Back" class="common-anchor-header">Switch Back<button data-href="#Switch-Back" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -219,11 +219,11 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para voltar a alternar mais tarde, aplique a topologia original novamente:</p>
+    </button></h2><p>To switch back later, apply the original topology again:</p>
 <pre><code translate="no" class="language-text">cluster-a -&gt; cluster-b
 <button class="copy-code-btn"></button></code></pre>
-<p>Use o mesmo fluxo de comutação. Certifique-se de que o primário atual está acessível e que a replicação é saudável antes de voltar atrás.</p>
-<h2 id="FAQ" class="common-anchor-header">PERGUNTAS FREQUENTES<button data-href="#FAQ" class="anchor-icon" translate="no">
+<p>Use the same switchover flow. Make sure the current primary is reachable and replication is healthy before switching back.</p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -238,7 +238,7 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Does-switchover-lose-data" class="common-anchor-header">O switchover perde dados?<button data-href="#Does-switchover-lose-data" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Does-switchover-lose-data" class="common-anchor-header">Does switchover lose data?<button data-href="#Does-switchover-lose-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -253,8 +253,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Não. O switchover aguarda que os dados restantes sejam replicados antes que o standby se torne primário.</p>
-<h3 id="Do-I-need-to-stop-application-writes" class="common-anchor-header">Preciso de parar as gravações da aplicação?<button data-href="#Do-I-need-to-stop-application-writes" class="anchor-icon" translate="no">
+    </button></h3><p>No. Switchover waits for remaining data to be replicated before the standby becomes primary.</p>
+<h3 id="Do-I-need-to-stop-application-writes" class="common-anchor-header">Do I need to stop application writes?<button data-href="#Do-I-need-to-stop-application-writes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -269,8 +269,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Você deve pausar as gravações ou fazer com que elas possam ser tentadas novamente durante a mudança de função. As gravações enviadas para o antigo primário depois de este ser despromovido são rejeitadas.</p>
-<h3 id="Why-does-switchover-take-longer-than-expected" class="common-anchor-header">Por que é que a transição demora mais tempo do que o esperado?<button data-href="#Why-does-switchover-take-longer-than-expected" class="anchor-icon" translate="no">
+    </button></h3><p>You should pause writes or make writes retryable during the role change. Writes sent to the old primary after it demotes are rejected.</p>
+<h3 id="Why-does-switchover-take-longer-than-expected" class="common-anchor-header">Why does switchover take longer than expected?<button data-href="#Why-does-switchover-take-longer-than-expected" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -285,8 +285,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>A razão mais comum é o atraso do CDC. O novo primário deve receber os dados restantes antes de poder assumir o controlo com segurança com RPO = 0.</p>
-<h3 id="Can-I-retry-a-failed-switchover-request" class="common-anchor-header">Posso tentar novamente um pedido de comutação falhado?<button data-href="#Can-I-retry-a-failed-switchover-request" class="anchor-icon" translate="no">
+    </button></h3><p>The most common reason is CDC lag. The new primary must receive remaining data before it can safely take over with RPO = 0.</p>
+<h3 id="Can-I-retry-a-failed-switchover-request" class="common-anchor-header">Can I retry a failed switchover request?<button data-href="#Can-I-retry-a-failed-switchover-request" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -301,8 +301,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Sim. Tente novamente com a mesma topologia de destino.</p>
-<h3 id="What-happens-to-the-old-primary" class="common-anchor-header">O que acontece com o primário antigo?<button data-href="#What-happens-to-the-old-primary" class="anchor-icon" translate="no">
+    </button></h3><p>Yes. Retry with the same target topology.</p>
+<h3 id="What-happens-to-the-old-primary" class="common-anchor-header">What happens to the old primary?<button data-href="#What-happens-to-the-old-primary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -317,4 +317,4 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>O primário antigo torna-se um standby. Ele não deve mais receber gravações de aplicativos.</p>
+    </button></h3><p>The old primary becomes a standby. It should no longer receive application writes.</p>

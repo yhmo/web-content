@@ -2,9 +2,11 @@
 id: hnsw-sq.md
 title: HNSW_SQ
 summary: >-
-  HNSW_SQ는 계층적 탐색 가능한 작은 세계(HNSW) 그래프와 스칼라 양자화(SQ)를 결합하여 크기와 정확도 간의 균형을 제어할 수 있는
-  고급 벡터 인덱싱 방법을 생성합니다. 이 인덱스 유형은 표준 HNSW에 비해 쿼리 처리 속도가 빠른 반면 인덱스 구축 시간이 약간
-  증가합니다.
+  HNSW_SQ combines Hierarchical Navigable Small World (HNSW) graphs with Scalar
+  Quantization (SQ), creating an advanced vector indexing method that offers a
+  controllable size-versus-accuracy trade-off. Compared to standard HNSW, this
+  index type maintains high query processing speed while introducing a slight
+  increase in index construction time.
 ---
 <h1 id="HNSWSQ" class="common-anchor-header">HNSW_SQ<button data-href="#HNSWSQ" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -21,8 +23,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><strong>HNSW_SQ는</strong> 계층적 탐색 가능한 작은 세계(HNSW) 그래프와 스칼라 양자화(SQ)를 결합하여 크기와 정확도 간의 균형을 제어할 수 있는 고급 벡터 인덱싱 방법을 생성합니다. 이 인덱스 유형은 표준 <a href="/docs/ko/hnsw.md">HNSW에</a> 비해 쿼리 처리 속도가 빠른 반면 인덱스 구축 시간이 약간 증가합니다.</p>
-<h2 id="Overview" class="common-anchor-header">개요<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p><strong>HNSW_SQ</strong> combines Hierarchical Navigable Small World (HNSW) graphs with Scalar Quantization (SQ), creating an advanced vector indexing method that offers a controllable size-versus-accuracy trade-off. Compared to standard <a href="/docs/ko/hnsw.md">HNSW</a>, this index type maintains high query processing speed while introducing a slight increase in index construction time.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,7 +39,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>HNSW_SQ는 두 가지 인덱싱 기술을 결합합니다: 빠른 그래프 기반 탐색을 위한 <strong>HNSW와</strong> 효율적인 벡터 압축을 위한 <strong>SQ입니다</strong>.</p>
+    </button></h2><p>HNSW_SQ combines two indexing techniques: <strong>HNSW</strong> for fast graph-based navigation and <strong>SQ</strong> for efficient vector compression.</p>
 <h3 id="HNSW" class="common-anchor-header">HNSW<button data-href="#HNSW" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -53,8 +55,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>HNSW는 각 노드가 데이터 세트의 벡터에 해당하는 다층 그래프를 구성합니다. 이 그래프에서 노드는 유사성에 따라 연결되므로 데이터 공간을 빠르게 탐색할 수 있습니다. 계층적 구조를 통해 검색 알고리즘이 후보 이웃을 좁힐 수 있으므로 고차원 공간에서 검색 프로세스를 크게 가속화할 수 있습니다.</p>
-<p>자세한 내용은 <a href="/docs/ko/hnsw.md">HNSW를</a> 참조하세요.</p>
+    </button></h3><p>HNSW constructs a multi-layer graph where each node corresponds to a vector in the dataset. In this graph, nodes are connected based on their similarity, enabling rapid traversal through the data space. The hierarchical structure allows the search algorithm to narrow down the candidate neighbors, significantly accelerating the search process in high-dimensional spaces.</p>
+<p>For more information, refer to <a href="/docs/ko/hnsw.md">HNSW</a>.</p>
 <h3 id="SQ" class="common-anchor-header">SQ<button data-href="#SQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -70,17 +72,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>SQ는 벡터를 더 적은 비트로 표현하여 압축하는 방법입니다. 예를 들어:</p>
+    </button></h3><p>SQ is a method for compressing vectors by representing them with fewer bits. For instance:</p>
 <ul>
-<li><p><strong>SQ8은</strong> 8비트를 사용하여 값을 256레벨로 매핑합니다.  자세한 내용은 <a href="/docs/ko/ivf-sq8.md#SQ8">IVF_SQ8을</a> 참조하세요.</p></li>
-<li><p><strong>SQ6은</strong> 6비트를 사용하여 각 부동소수점 값을 나타내므로 64개의 개별 레벨이 생성됩니다.</p></li>
+<li><p><strong>SQ8</strong> uses 8 bits, mapping values into 256 levels.  For more information, refer to <a href="/docs/ko/ivf-sq8.md#SQ8">IVF_SQ8</a>.</p></li>
+<li><p><strong>SQ6</strong> uses 6 bits to represent each floating-point value, resulting in 64 discrete levels.</p></li>
 </ul>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hnsw-sq.png" alt="Hnsw Sq" class="doc-image" id="hnsw-sq" />
-   </span> <span class="img-wrapper"> <span>Hnsw Sq</span> </span></p>
-<p>이 정밀도 감소는 데이터의 필수 구조를 유지하면서 메모리 사용량을 크게 줄이고 계산 속도를 높입니다.</p>
-<h3 id="SQ4U--Milvus-268+" class="common-anchor-header">SQ4U<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#SQ4U--Milvus-268+" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/hnsw-sq.png" alt="Hnsw Sq" class="doc-image" id="hnsw-sq" />
+    <span>Hnsw Sq</span>
+  </span>
+</p>
+<p>This reduction in precision dramatically decreases the memory footprint and speeds up the computation while retaining the essential structure of the data.</p>
+<h3 id="SQ4U" class="common-anchor-header">SQ4U<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#SQ4U" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,20 +99,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>극한의 쿼리 속도와 최소한의 메모리 사용량이 요구되는 시나리오를 위해 Milvus는 4비트 균일 스칼라 양자화( <code translate="no">SQ4U</code> )를 도입했습니다. 이것은 각 차원의 부동 소수점 값을 <strong>4비트</strong> 부호 없는 정수로 압축하는 공격적인 형태의 스칼라 양자화입니다.</p>
-<p>SQ4U의 "U"는 Uniform을 의미합니다. 일반적으로 각 차원에 대해 최소값과 최대값을 독립적으로 계산하는 비균일 스칼라 양자화(차원별 양자화)와 달리, SQ4U는 <strong>전역 균일 양자화</strong> 전략을 적용합니다:</p>
+    </button></h3><p>For scenarios demanding extreme query speed and minimal memory usage, Milvus introduces <code translate="no">SQ4U</code> , a 4-bit Uniform Scalar Quantization. This is an aggressive form of scalar quantization that compresses each dimension’s floating-point value into a <strong>4-bit</strong> unsigned integer.</p>
+<p>The “U” in SQ4U stands for Uniform. Unlike non-uniform Scalar Quantization, which typically calculates minimum and maximum values independently for each dimension (Per-Dimension Quantization), SQ4U enforces a <strong>Global Uniform Quantization</strong> strategy:</p>
 <ol>
-<li><p><strong>글로벌 통계</strong>: 시스템은 벡터의 <strong>모든 차원</strong> (또는 전체 벡터 세그먼트)에 적용되는 <strong>단일</strong> 최소값( <code translate="no">vmin</code> )과 <strong>단일</strong> 값 범위( <code translate="no">vdiff</code> )를 계산합니다.</p></li>
-<li><p><strong>균일 매핑</strong>: 전역 값 범위는 16개의 동일한 간격으로 나뉩니다. 벡터의 모든 부동 소수점 값은 어떤 차원에 속해 있는지에 관계없이 이러한 공유 매개 변수를 사용하여 4비트 정수(0-15)로 매핑됩니다.</p></li>
+<li><p><strong>Global Statistics</strong>: The system calculates a <strong>single</strong> minimum value <code translate="no">vmin</code> and a <strong>single</strong> value range <code translate="no">vdiff</code> that applies to <strong>all dimensions</strong> of the vector (or the entire vector segment).</p></li>
+<li><p><strong>Uniform Mapping</strong>: The global value range is divided into 16 equal intervals. Every floating-point value in the vector, regardless of which dimension it belongs to, is mapped to a 4-bit integer (0–15) using these shared parameters.</p></li>
 </ol>
-<p><strong>성능 이점:</strong></p>
+<p><strong>Performance Advantages:</strong></p>
 <ul>
-<li><p><strong>8배 압축률:</strong> <code translate="no">FP32</code> 대비 8배, <code translate="no">SQ8</code> 대비 2배로 크기가 줄어들어 벡터 검색의 병목 현상인 메모리 대역폭 압박을 크게 낮춥니다.</p></li>
-<li><p><strong>SIMD 최적화:</strong> 컴팩트한 구조로 최신 CPU(AVX2/AVX-512)가 사이클당 더 많은 차원을 처리할 수 있습니다. 결정적으로, 글로벌 파라미터를 사용하면 거리 계산 중에 다양한 스케일/오프셋 값을 로드할 필요가 없으므로 명령 파이프라인을 완전히 포화 상태로 유지할 수 있습니다.</p></li>
-<li><p><strong>캐시 효율성:</strong> 벡터 크기가 작을수록 CPU 캐시에 더 많은 데이터를 저장할 수 있어 메모리 액세스로 인한 지연 시간이 줄어듭니다.</p></li>
+<li><p><strong>8x Compression Ratio:</strong> Reduces size by 8x compared to <code translate="no">FP32</code> and 2x compared to <code translate="no">SQ8</code>, significantly lowering memory bandwidth pressure—often the bottleneck in vector search.</p></li>
+<li><p><strong>SIMD Optimization:</strong> The compact structure allows modern CPUs (AVX2/AVX-512) to process more dimensions per cycle. Crucially, the use of global parameters eliminates the need to load varying scale/offset values during distance calculation, keeping the instruction pipeline fully saturated.</p></li>
+<li><p><strong>Cache Efficiency:</strong> Smaller vector sizes mean more data fits into the CPU cache, reducing latency caused by memory access.</p></li>
 </ul>
 <div class="alert note">
-<p>글로벌 매개변수 공유로 인해 SQ4U는 정규화된 데이터 또는 차원 간에 일관된 값 분포를 가진 데이터 세트에서 가장 우수한 성능을 발휘합니다.</p>
+<p>Due to its global parameter sharing, SQ4U performs best on normalized data or datasets with consistent value distributions across dimensions.</p>
 </div>
 <h3 id="HNSW-+-SQ" class="common-anchor-header">HNSW + SQ<button data-href="#HNSW-+-SQ" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -125,20 +129,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>HNSW_SQ는 HNSW와 SQ의 강점을 결합하여 효율적인 근사 최접 이웃 검색을 가능하게 합니다. 프로세스는 다음과 같이 작동합니다:</p>
+    </button></h3><p>HNSW_SQ combines the strengths of HNSW and SQ to enable efficient approximate nearest neighbor search. Here’s how the process works:</p>
 <ol>
-<li><p><strong>데이터 압축:</strong> SQ는 <code translate="no">sq_type</code> (예: SQ6 또는 SQ8)를 사용하여 벡터를 압축하여 메모리 사용량을 줄입니다. 이 압축은 정밀도를 낮출 수 있지만 시스템에서 더 큰 데이터 세트를 처리할 수 있게 해줍니다.</p></li>
-<li><p><strong>그래프 구성:</strong> 압축된 벡터는 HNSW 그래프를 구축하는 데 사용됩니다. 데이터가 압축되기 때문에 결과 그래프의 크기가 작아지고 검색 속도가 빨라집니다.</p></li>
-<li><p><strong>후보 검색:</strong> 쿼리 벡터가 제공되면 알고리즘은 압축된 데이터를 사용하여 HNSW 그래프에서 후보 이웃 풀을 빠르게 식별합니다.</p></li>
-<li><p><strong>(선택 사항) 결과 구체화:</strong> 다음 매개변수를 기반으로 초기 후보 결과를 세분화하여 정확도를 높일 수 있습니다:</p>
+<li><p><strong>Data Compression:</strong> SQ compresses the vectors using the <code translate="no">sq_type</code> (for example, SQ6 or SQ8), which reduces memory usage. This compression may lower precision, but it allows the system to handle larger datasets.</p></li>
+<li><p><strong>Graph Construction:</strong> The compressed vectors are used to build an HNSW graph. Because the data is compressed, the resulting graph is smaller and faster to search.</p></li>
+<li><p><strong>Candidate Retrieval:</strong> When a query vector is provided, the algorithm uses the compressed data to quickly identify a pool of candidate neighbors from the HNSW graph.</p></li>
+<li><p><strong>(Optional) Result Refinement:</strong> The initial candidate results can be refined for better accuracy, based on the following parameters:</p>
 <ul>
-<li><p><code translate="no">refine</code>: 이 세분화 단계의 활성화 여부를 제어합니다. <code translate="no">true</code> 로 설정하면 시스템은 더 정밀한 표현 또는 압축되지 않은 표현을 사용하여 거리를 다시 계산합니다.</p></li>
-<li><p><code translate="no">refine_type</code>: 세분화 중에 사용되는 데이터의 정밀도 수준을 지정합니다(예: SQ6, SQ8, BF16). <code translate="no">FP32</code> 와 같이 정밀도가 높을수록 더 정확한 결과를 얻을 수 있지만 더 많은 메모리가 필요합니다. 이는 원본 압축 데이터의 정밀도를 <code translate="no">sq_type</code>.</p></li>
-<li><p><code translate="no">refine_k</code>: 배율 인자로 작용합니다. 예를 들어 상위 <em>k가</em> 100이고 <code translate="no">refine_k</code> 이 2인 경우 시스템은 상위 200개 후보의 순위를 다시 매기고 가장 좋은 100개를 반환하여 전반적인 정확도를 높입니다.</p></li>
+<li><p><code translate="no">refine</code>: Controls whether this refinement step is activated. When set to <code translate="no">true</code>, the system recalculates distances using higher-precision or uncompressed representations.</p></li>
+<li><p><code translate="no">refine_type</code>: Specifies the precision level of data used during refinement (e.g., SQ6, SQ8, BF16). A higher-precision choice such as <code translate="no">FP32</code> can yield more accurate results but requires more memory. This must exceed the precision of the original compressed data set by <code translate="no">sq_type</code>.</p></li>
+<li><p><code translate="no">refine_k</code>: Acts as a magnification factor. For instance, if your top <em>k</em> is 100 and <code translate="no">refine_k</code> is 2, the system re-ranks the top 200 candidates and returns the best 100, enhancing overall accuracy.</p></li>
 </ul></li>
 </ol>
-<p>전체 매개변수 목록과 유효한 값은 <a href="/docs/ko/hnsw-sq.md#Index-params">색인</a> 매개변수를 참조하세요.</p>
-<h2 id="Build-index" class="common-anchor-header">색인 만들기<button data-href="#Build-index" class="anchor-icon" translate="no">
+<p>For a full list of parameters and valid values, refer to <a href="/docs/ko/hnsw-sq.md#Index-params">Index params</a>.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -153,7 +157,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus의 벡터 필드에 <code translate="no">HNSW_SQ</code> 인덱스를 구축하려면 <code translate="no">add_index()</code> 방법을 사용하여 <code translate="no">index_type</code>, <code translate="no">metric_type</code> 및 인덱스에 대한 추가 매개 변수를 지정합니다.</p>
+    </button></h2><p>To build an <code translate="no">HNSW_SQ</code> index on a vector field in Milvus, use the <code translate="no">add_index()</code> method, specifying the <code translate="no">index_type</code>, <code translate="no">metric_type</code>, and additional parameters for the index.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -173,14 +177,14 @@ index_params.add_index(
     } <span class="hljs-comment"># Index building params</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>이 구성에서는</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: 빌드할 인덱스 유형입니다. 이 예에서는 값을 <code translate="no">HNSW_SQ</code> 로 설정합니다.</p></li>
-<li><p><code translate="no">metric_type</code>: 벡터 간의 거리를 계산하는 데 사용되는 메서드입니다. 지원되는 값은 <code translate="no">COSINE</code>, <code translate="no">L2</code>, <code translate="no">IP</code> 입니다. 자세한 내용은 <a href="/docs/ko/metric.md">메트릭 유형을</a> 참조하세요.</p></li>
-<li><p><code translate="no">params</code>: 인덱스 구축을 위한 추가 구성 옵션입니다. 자세한 내용은 <a href="/docs/ko/hnsw-sq.md#Index-building-params">인덱스 구축 파라미터를</a> 참조하세요.</p></li>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">HNSW_SQ</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. Supported values include <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code>. For details, refer to <a href="/docs/ko/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index. For details, refer to <a href="/docs/ko/hnsw-sq.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>인덱스 파라미터가 구성되면 <code translate="no">create_index()</code> 메서드를 직접 사용하거나 <code translate="no">create_collection</code> 메서드에서 인덱스 파라미터를 전달하여 인덱스를 만들 수 있습니다. 자세한 내용은 <a href="/docs/ko/create-collection.md">컬렉션 만들기를</a> 참조하세요.</p>
-<h2 id="Search-on-index" class="common-anchor-header">인덱스에서 검색<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>Once the index parameters are configured, you can create the index by using the <code translate="no">create_index()</code> method directly or passing the index params in the <code translate="no">create_collection</code> method. For details, refer to <a href="/docs/ko/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -195,7 +199,7 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>인덱스가 구축되고 엔티티가 삽입되면 인덱스에서 유사도 검색을 수행할 수 있습니다.</p>
+    </button></h2><p>Once the index is built and entities are inserted, you can perform similarity searches on the index.</p>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {
         <span class="hljs-string">&quot;ef&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-comment"># Parameter controlling query time/accuracy trade-off</span>
@@ -211,11 +215,11 @@ res = MilvusClient.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>이 구성에서는</p>
+<p>In this configuration:</p>
 <ul>
-<li><code translate="no">params</code>: 인덱스에서 검색을 위한 추가 구성 옵션입니다. 자세한 내용은 <a href="/docs/ko/hnsw-sq.md#Index-specific-search-params">인덱스별 검색 매개변수를</a> 참조하세요.</li>
+<li><code translate="no">params</code>: Additional configuration options for searching on the index. For details, refer to <a href="/docs/ko/hnsw-sq.md#Index-specific-search-params">Index-specific search params</a>.</li>
 </ul>
-<h2 id="Index-params" class="common-anchor-header">색인 매개변수<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -230,8 +234,8 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이 섹션에서는 인덱스를 만들고 인덱스에서 검색을 수행하는 데 사용되는 매개변수에 대한 개요를 제공합니다.</p>
-<h3 id="Index-building-params" class="common-anchor-header">색인 작성 매개변수<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>This section provides an overview of the parameters used for building an index and performing searches on the index.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -246,52 +250,52 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>다음 표에는 <a href="/docs/ko/hnsw-sq.md#share-PRYPd4xBJonkoZxPpNWcdnebnNh">색인 작성</a> 시 <code translate="no">params</code> 에서 구성할 수 있는 매개변수가 나열되어 있습니다.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/ko/hnsw-sq.md#share-PRYPd4xBJonkoZxPpNWcdnebnNh">building an index</a>.</p>
 <table>
    <tr>
      <th></th>
-     <th><p>파라미터</p></th>
-     <th><p>설명</p></th>
-     <th><p>값 범위</p></th>
-     <th><p>조정 제안</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p>HNSW</p></td>
      <td><p><code translate="no">M</code></p></td>
-     <td><p>나가는 에지와 들어오는 에지를 모두 포함하여 각 노드가 그래프에서 가질 수 있는 최대 연결(또는 에지) 수입니다.</p><p>이 매개변수는 인덱스 구성과 검색 모두에 직접적인 영향을 줍니다.</p></td>
-     <td><p><strong>유형</strong>: 정수</p><p><strong>범위</strong>: [2, 2048]</p><p><strong>기본값</strong>: <code translate="no">30</code> (노드당 최대 30개의 나가는 에지와 30개의 들어오는 에지)</p></td>
-     <td><p><code translate="no">M</code> 값이 클수록 일반적으로 <strong>정확도는 높아지지만</strong> <strong>메모리 오버헤드가 증가하고</strong> <strong>인덱스 구축과 검색 속도가 느려집니다</strong>.</p><p>차원이 높은 데이터 세트나 높은 리콜이 중요한 경우 <code translate="no">M</code> 값을 늘리는 것을 고려하세요.</p><p>메모리 사용량과 검색 속도가 주요 관심사인 경우 <code translate="no">M</code> 을 낮추는 것이 좋습니다.</p><p>대부분의 경우, 이 범위 내에서 값을 설정하는 것이 좋습니다: [5, 100].</p></td>
+     <td><p>Maximum number of connections （or edges) each node can have in the graph, including both outgoing and incoming edges.</p><p>This parameter directly affects both index construction and search.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [2, 2048]</p><p><strong>Default value</strong>: <code translate="no">30</code> (up to 30 outgoing and 30 incoming edges per node)</p></td>
+     <td><p>A larger <code translate="no">M</code> generally leads to <strong>higher accuracy</strong> but <strong>increases memory overhead</strong> and <strong>slows down both index building and search</strong>.</p><p>Consider increasing <code translate="no">M</code> for datasets with high dimensionality or when high recall is crucial.</p><p>Consider decreasing <code translate="no">M</code> when memory usage and search speed are primary concerns.</p><p>In most cases, we recommend you set a value within this range: [5, 100].</p></td>
    </tr>
    <tr>
      <td></td>
      <td><p><code translate="no">efConstruction</code></p></td>
-     <td><p>인덱스 구성 중에 연결을 위해 고려되는 후보 이웃의 수입니다.</p><p>새 요소마다 더 많은 후보 풀이 평가되지만 실제로 설정되는 최대 연결 수는 여전히 <code translate="no">M</code> 으로 제한됩니다.</p></td>
-     <td><p><strong>유형</strong>: 유형: 정수</p><p><strong>범위</strong>: [1, <em>int_max</em>]</p><p><strong>기본값입니다</strong>: <code translate="no">360</code></p></td>
-     <td><p><code translate="no">efConstruction</code> 이 높을수록 일반적으로 더 많은 잠재적 연결이 탐색되므로 <strong>더 정확한 인덱스가</strong> 생성됩니다. 그러나 이 경우 <strong>인덱싱 시간이 길어지고</strong> 구성 중에 <strong>메모리 사용량이 증가합니다</strong>.</p><p>특히 인덱싱 시간이 덜 중요한 시나리오에서는 정확도를 높이려면 <code translate="no">efConstruction</code> 을 늘리는 것이 좋습니다.</p><p>리소스 제약이 우려되는 경우 인덱스 구축 속도를 높이려면 <code translate="no">efConstruction</code> 을 줄이는 것을 고려하세요.</p><p>대부분의 경우 이 범위 내에서 값을 설정하는 것이 좋습니다: [50, 500].</p></td>
+     <td><p>Number of candidate neighbors considered for connection during index construction.</p><p>A larger pool of candidates is evaluated for each new element, but the maximum number of connections actually established is still limited by <code translate="no">M</code>.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: <code translate="no">360</code></p></td>
+     <td><p>A higher <code translate="no">efConstruction</code> typically results in a <strong>more accurate index</strong>, as more potential connections are explored. However, this also leads to <strong>longer indexing time and increased memory usage</strong> during construction.</p><p>Consider increasing <code translate="no">efConstruction</code> for improved accuracy, especially in scenarios where indexing time is less critical.</p><p>Consider decreasing <code translate="no">efConstruction</code> to speed up index construction when resource constraints are a concern.</p><p>In most cases, we recommend you set a value within this range: [50, 500].</p></td>
    </tr>
    <tr>
      <td><p>SQ</p></td>
      <td><p><code translate="no">sq_type</code></p></td>
-     <td><p>벡터 압축을 위한 스칼라 양자화 방법을 지정합니다. 각 옵션은 압축과 정확도 간에 서로 다른 균형을 제공합니다:</p><ul><li><p><code translate="no">SQ4U</code>: 4비트 균일 양자화를 사용하여 벡터를 인코딩합니다. 이 모드는 가장 빠른 속도와 압축을 제공합니다.</p></li><li><p><code translate="no">SQ6</code>: 6비트 정수를 사용하여 벡터를 인코딩합니다.</p></li><li><p><code translate="no">SQ8</code>: 8비트 정수를 사용하여 벡터를 인코딩합니다.</p></li><li><p><code translate="no">BF16</code>: Bfloat16 형식을 사용합니다.</p></li><li><p><code translate="no">FP16</code>: 표준 16비트 부동 소수점 형식을 사용합니다.</p></li></ul></td>
-     <td><p><strong>유형</strong>: 문자열</p><p><strong>범위</strong>: [ <code translate="no">SQ4U</code>, <code translate="no">SQ6</code>, <code translate="no">SQ8</code>, <code translate="no">BF16</code>, <code translate="no">FP16</code> ]입니다.</p><p><strong>기본값입니다</strong>: <code translate="no">SQ8</code></p></td>
-     <td><p><code translate="no">sq_type</code> 선택은 특정 애플리케이션의 요구 사항에 따라 달라집니다. 속도와 메모리 효율을 극대화하려면 <code translate="no">SQ4U</code>, 균형 잡힌 성능을 원한다면 <code translate="no">SQ6</code> 또는 <code translate="no">SQ8</code> 이 적합할 수 있습니다. 반면 정확성이 가장 중요한 경우 <code translate="no">BF16</code> 또는 <code translate="no">FP16</code> 을 선호할 수 있습니다.</p></td>
+     <td><p>Specifies the scalar quantization method for compressing vectors. Each option offers a different balance between compression and accuracy:</p><ul><li><p><code translate="no">SQ4U</code>: Encodes vectors using 4-bit uniform quantization. This mode offers the highest speed and compression.</p></li><li><p><code translate="no">SQ6</code>: Encodes vectors using 6-bit integers.</p></li><li><p><code translate="no">SQ8</code>: Encodes vectors using 8-bit integers.</p></li><li><p><code translate="no">BF16</code>: Uses the Bfloat16 format.</p></li><li><p><code translate="no">FP16</code>: Uses the standard 16-bit floating-point format.</p></li></ul></td>
+     <td><p><strong>Type</strong>: String</p><p><strong>Range</strong>: [ <code translate="no">SQ4U</code>, <code translate="no">SQ6</code>, <code translate="no">SQ8</code>, <code translate="no">BF16</code>, <code translate="no">FP16</code> ]</p><p><strong>Default value</strong>: <code translate="no">SQ8</code></p></td>
+     <td><p>The choice of <code translate="no">sq_type</code> depends on the specific application's needs. <code translate="no">SQ4U</code> is chosen  for maximum speed and memory efficiency. <code translate="no">SQ6</code> or <code translate="no">SQ8</code> might be suitable for balanced performance. On the other hand, if accuracy is paramount, <code translate="no">BF16</code> or <code translate="no">FP16</code> could be preferred.</p></td>
    </tr>
    <tr>
      <td></td>
      <td><p><code translate="no">refine</code></p></td>
-     <td><p>검색 중에 구체화 단계를 적용할지 여부를 제어하는 부울 플래그입니다. 구체화에는 쿼리 벡터와 후보 간의 정확한 거리를 계산하여 초기 결과의 순위를 재조정하는 작업이 포함됩니다.</p></td>
-     <td><p><strong>Type</strong>: 부울</p><p><strong>범위</strong>: [<code translate="no">true</code>, <code translate="no">false</code>]</p><p><strong>기본값입니다</strong>: <code translate="no">false</code></p></td>
-     <td><p>높은 정확도가 필수적이고 검색 시간이 약간 느려지는 것을 용인할 수 있는 경우 <code translate="no">true</code> 로 설정합니다. 속도가 우선이고 약간의 정확도 저하를 감수할 수 있는 경우 <code translate="no">false</code> 을 사용합니다.</p></td>
+     <td><p>A boolean flag that controls whether a refinement step is applied during search. Refinement involves reranking the initial results by computing exact distances between the query vector and candidates.</p></td>
+     <td><p><strong>Type</strong>: Boolean</p><p><strong>Range</strong>: [<code translate="no">true</code>, <code translate="no">false</code>]</p><p><strong>Default value</strong>: <code translate="no">false</code></p></td>
+     <td><p>Set to <code translate="no">true</code> if high accuracy is essential and you can tolerate slightly slower search times. Use <code translate="no">false</code> if speed is a priority and a minor compromise in accuracy is acceptable.</p></td>
    </tr>
    <tr>
      <td></td>
      <td><p><code translate="no">refine_type</code></p></td>
-     <td><p>세분화에 사용되는 데이터의 정밀도를 결정합니다.</p><p>이 정밀도는 압축된 벡터의 정밀도( <code translate="no">sq_type</code>)보다 높아야 하며, 재랭크된 벡터의 정확도와 메모리 사용량에 영향을 미칩니다.</p></td>
-     <td><p><strong>유형</strong>: 문자열</p><p><strong>범위</strong>:[ <code translate="no">SQ6</code>, <code translate="no">SQ8</code>, <code translate="no">BF16</code>, <code translate="no">FP16</code>, <code translate="no">FP32</code> ]입니다.</p><p><strong>기본값입니다</strong>: None</p></td>
-     <td><p>더 높은 메모리 비용으로 정밀도를 극대화하려면 <code translate="no">FP32</code>, 더 나은 압축을 위해서는 <code translate="no">SQ6</code>/<code translate="no">SQ8</code> 을 사용하세요. <code translate="no">BF16</code> 과 <code translate="no">FP16</code> 은 균형 잡힌 대안을 제공합니다.</p></td>
+     <td><p>Determines the precision of the data used for refinement.</p><p>This precision must be higher than that of the compressed vectors (as set by <code translate="no">sq_type</code>), affecting both the accuracy of the re-ranked vectors and their memory footprint.</p></td>
+     <td><p><strong>Type</strong>: String</p><p><strong>Range</strong>:[ <code translate="no">SQ6</code>, <code translate="no">SQ8</code>, <code translate="no">BF16</code>, <code translate="no">FP16</code>, <code translate="no">FP32</code> ]</p><p><strong>Default value</strong>: None</p></td>
+     <td><p>Use <code translate="no">FP32</code> for maximum precision at a higher memory cost, or <code translate="no">SQ6</code>/<code translate="no">SQ8</code> for better compression. <code translate="no">BF16</code> and <code translate="no">FP16</code> offer a balanced alternative.</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">인덱스별 검색 매개변수<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -306,27 +310,27 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>다음 표에는 <a href="/docs/ko/hnsw-sq.md#share-DeFldzMQQoc2W4x2YiIcYUbqnne">색인에서 검색할</a> 때 <code translate="no">search_params.params</code> 에서 구성할 수 있는 매개변수가 나열되어 있습니다.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/ko/hnsw-sq.md#share-DeFldzMQQoc2W4x2YiIcYUbqnne">searching on the index</a>.</p>
 <table>
    <tr>
      <th></th>
-     <th><p>파라미터</p></th>
-     <th><p>설명</p></th>
-     <th><p>값 범위</p></th>
-     <th><p>조정 제안</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p>HNSW</p></td>
      <td><p><code translate="no">ef</code></p></td>
-     <td><p>가장 가까운 이웃을 검색하는 동안 검색 범위를 제어합니다. 얼마나 많은 노드를 방문하고 잠재적인 가장 가까운 이웃으로 평가할지 결정합니다. </p><p>이 매개변수는 검색 프로세스에만 영향을 미치며 그래프의 맨 아래 레이어에만 적용됩니다.</p></td>
-     <td><p><strong>유형</strong>: 정수</p><p><strong>범위</strong>: [1, <em>int_max</em>]</p><p><strong>기본값</strong>: <em>limit</em> (반환할 가장 가까운 이웃 TopK)</p></td>
-     <td><p><code translate="no">ef</code> 이 클수록 일반적으로 더 많은 잠재적 이웃을 고려하므로 <strong>검색 정확도가 높아</strong> 집니다. 하지만 <strong>검색 시간도 늘어</strong>납니다.</p><p>높은 회상률을 달성하는 것이 중요하고 검색 속도는 크게 신경 쓰지 않는 경우 <code translate="no">ef</code> 을 늘리는 것을 고려하세요.</p><p>특히 약간의 정확도 감소를 감수할 수 있는 시나리오에서는 <code translate="no">ef</code> 을 줄여 검색 속도를 우선시하는 것이 좋습니다.</p><p>대부분의 경우 이 범위 내에서 값을 설정하는 것이 좋습니다: [K, 10K].</p></td>
+     <td><p>Controls the breadth of search during nearest neighbor retrieval. It determines how many nodes are visited and evaluated as potential nearest neighbors. </p><p>This parameter affects only the search process and applies exclusively to the bottom layer of the graph.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: <em>limit</em> (TopK nearest neighbors to return)</p></td>
+     <td><p>A larger <code translate="no">ef</code> generally leads to <strong>higher search accuracy</strong> as more potential neighbors are considered. However, this also <strong>increases search time</strong>.</p><p>Consider increasing <code translate="no">ef</code> when achieving high recall is critical and search speed is less of a concern.</p><p>Consider decreasing <code translate="no">ef</code> to prioritize faster searches, especially in scenarios where a slight reduction in accuracy is acceptable.</p><p>In most cases, we recommend you set a value within this range: [K, 10K].</p></td>
    </tr>
    <tr>
      <td><p>SQ</p></td>
      <td><p><code translate="no">refine_k</code></p></td>
-     <td><p>요청된 상위 K 결과와 비교하여 정제 단계에서 얼마나 많은 추가 후보를 검토할지를 제어하는 배율 계수입니다.</p></td>
-     <td><p><strong>유형</strong>: 플로트</p><p><strong>범위</strong>: [1, <em>float_max</em>)</p><p><strong>기본값</strong>: 1</p></td>
-     <td><p><code translate="no">refine_k</code> 값이 클수록 검색 회수율과 정확도가 향상되지만 검색 시간과 리소스 사용량도 증가합니다. 값이 1이면 구체화 프로세스에서 초기 상위 K 결과만 고려합니다.</p></td>
+     <td><p>The magnification factor that controls how many extra candidates are examined during the refinement stage, relative to the requested top K results.</p></td>
+     <td><p><strong>Type</strong>: Float</p><p><strong>Range</strong>: [1, <em>float_max</em>)</p><p><strong>Default value</strong>: 1</p></td>
+     <td><p>Higher values of <code translate="no">refine_k</code> can improve recall and accuracy but will also increase search time and resource usage. A value of 1 means the refinement process considers only the initial top K results.</p></td>
    </tr>
 </table>

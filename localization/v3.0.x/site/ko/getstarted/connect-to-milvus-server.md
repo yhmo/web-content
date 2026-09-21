@@ -1,9 +1,11 @@
 ---
 id: connect-to-milvus-server.md
-title: Milvus 서버에 연결하기
-summary: 이 주제에서는 Milvus 서버에 대한 클라이언트 연결을 설정하고 일반적인 연결 옵션을 구성하는 방법에 대해 설명합니다.
+title: Connect to Milvus Server
+summary: >-
+  This topic describes how to establish a client connection to a Milvus server
+  and configure common connection options.
 ---
-<h1 id="Connect-to-Milvus-Server" class="common-anchor-header">Milvus 서버에 연결하기<button data-href="#Connect-to-Milvus-Server" class="anchor-icon" translate="no">
+<h1 id="Connect-to-Milvus-Server" class="common-anchor-header">Connect to Milvus Server<button data-href="#Connect-to-Milvus-Server" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: 이 주제에서는 Milvus 서버에 대한 클라이언트 연결을 �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>이 항목에서는 Milvus 서버에 대한 클라이언트 연결을 설정하고 일반적인 연결 옵션을 구성하는 방법에 대해 설명합니다.</p>
-<h2 id="Prerequisites" class="common-anchor-header">전제 조건<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This topic describes how to establish a client connection to a Milvus server and configure common connection options.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,11 +37,11 @@ summary: 이 주제에서는 Milvus 서버에 대한 클라이언트 연결을 �
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>사용 중인 언어의 SDK가 설치되어 있어야 합니다. 자세한 내용은 <a href="/docs/ko/install-pymilvus.md">Python SDK</a>, <a href="/docs/ko/install-java.md">Java SDK</a>, <a href="/docs/ko/install-go.md">Go SDK</a> 또는 <a href="/docs/ko/install-node.md">Nodejs SDK를</a> 참조하세요.</p></li>
-<li><p>Milvus 서버 주소(로컬 기본값: <code translate="no">http://localhost:19530</code>, 프록시 포트 <strong>19530</strong>).</p></li>
-<li><p><a href="/docs/ko/authenticate.md">인증이 활성화된</a> 경우 <strong>토큰</strong> 또는 <strong>사용자 아이디 + 비밀번호를</strong> 입력합니다. 토큰은 <code translate="no">username:password</code> (예: <code translate="no">root:Milvus</code>)일 수 있습니다. 자세한 내용은 <a href="/docs/ko/authenticate.md">사용자 액세스 인증</a> 및 <a href="/docs/ko/users_and_roles.md">사용자 및 역할 만들기를</a> 참조하세요.</p></li>
+<li><p>The SDK of your language installed. For details, refer to <a href="/docs/ko/install-pymilvus.md">Python SDK</a>, <a href="/docs/ko/install-java.md">Java SDK</a>, <a href="/docs/ko/install-go.md">Go SDK</a>, or <a href="/docs/ko/install-node.md">Nodejs SDK</a>.</p></li>
+<li><p>A Milvus server address (for local default: <code translate="no">http://localhost:19530</code>, proxy port <strong>19530</strong>).</p></li>
+<li><p>If <a href="/docs/ko/authenticate.md">authentication is enabled</a>, provide either a <strong>token</strong> or a <strong>username + password</strong>. A token can be <code translate="no">username:password</code> (e.g., <code translate="no">root:Milvus</code>). See <a href="/docs/ko/authenticate.md">Authenticate User Access</a> and <a href="/docs/ko/users_and_roles.md">Create Users & Roles</a> for details.</p></li>
 </ul>
-<h2 id="Connect-by-URI-authentication-disabled" class="common-anchor-header">URI로 연결(인증 비활성화)<button data-href="#Connect-by-URI-authentication-disabled" class="anchor-icon" translate="no">
+<h2 id="Connect-by-URI-authentication-disabled" class="common-anchor-header">Connect by URI (authentication disabled)<button data-href="#Connect-by-URI-authentication-disabled" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -54,9 +56,14 @@ summary: 이 주제에서는 Milvus 서버에 대한 클라이언트 연결을 �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 서버 주소(예: <code translate="no">http://localhost:19530</code>)를 사용하여 연결을 설정합니다.</p>
+    </button></h2><p>Use the Milvus server address (e.g. <code translate="no">http://localhost:19530</code>) to establish a connection.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -91,7 +98,7 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     -H <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
     -d <span class="hljs-string">&#x27;{}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Connect-with-credentials-authentication-enabled" class="common-anchor-header">자격 증명으로 연결(인증 사용)<button data-href="#Connect-with-credentials-authentication-enabled" class="anchor-icon" translate="no">
+<h2 id="Connect-with-credentials-authentication-enabled" class="common-anchor-header">Connect with credentials (authentication enabled)<button data-href="#Connect-with-credentials-authentication-enabled" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -106,9 +113,14 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">&quot;username:password&quot;</code> 형식의 <strong>토큰을</strong> 제공하거나 <code translate="no">user</code> 과 <code translate="no">password</code> 을 별도로 입력합니다. 기본 기본 제공 관리자는 <code translate="no">root:Milvus</code> 입니다(프로덕션에서는 변경).</p>
+    </button></h2><p>Provide either a <strong>token</strong> in the form <code translate="no">&quot;username:password&quot;</code> or separate <code translate="no">user</code> and <code translate="no">password</code>. The default built-in admin is <code translate="no">root:Milvus</code> (change this for production).</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Token form</span>
@@ -160,9 +172,9 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     -d <span class="hljs-string">&#x27;{}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>토큰 형식은 <code translate="no">&quot;&lt;username&gt;:&lt;password&gt;&quot;</code> 입니다. 문서에는 <code translate="no">root:Milvus</code> 이 기본 자격 증명으로 명시되어 있으며, <a href="/docs/ko/users_and_roles.md">사용자 및 역할 만들기</a> 가이드에서 사용자 관리에 대해 다루고 있습니다.</p>
+<p>Token format is <code translate="no">&quot;&lt;username&gt;:&lt;password&gt;&quot;</code>. The docs explicitly note <code translate="no">root:Milvus</code> as the default credential, and the <a href="/docs/ko/users_and_roles.md">Create Users & Roles</a> guide covers managing users.</p>
 </div>
-<h2 id="Configure-a-timeout" class="common-anchor-header">시간 제한 설정<button data-href="#Configure-a-timeout" class="anchor-icon" translate="no">
+<h2 id="Configure-a-timeout" class="common-anchor-header">Configure a timeout<button data-href="#Configure-a-timeout" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -177,9 +189,14 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>클라이언트 연결에 기본 시간 제한을 설정합니다:</p>
+    </button></h2><p>Set a default timeout on the client connection:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>, timeout=<span class="hljs-number">1000</span>) <span class="hljs-comment"># If not set, the timeout defaults to 10s</span>
@@ -227,11 +244,11 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
 <ul>
-<li><p>위에 나열된 SDK의 경우 이 시간 제한은 연결을 설정할 때만 사용되며 다른 API 작업의 기본 시간 제한으로 사용되지 않습니다.</p></li>
-<li><p>RESTful API의 경우 <code translate="no">Request-Timeout</code> 는 요청별 기한(초 단위)이므로(밀리초 단위인 Java의 <code translate="no">rpcDeadlineMs</code> 및 Node.js <code translate="no">timeout</code> 와 달리) 기한이 필요한 모든 호출에 이 값을 포함하세요.</p></li>
+<li><p>For the SDKs listed above, this timeout is used only when establishing connections and does not serve as a default timeout for other API operations.</p></li>
+<li><p>For the RESTful API, <code translate="no">Request-Timeout</code> is a per-request deadline in seconds (unlike Java’s <code translate="no">rpcDeadlineMs</code> and the Node.js <code translate="no">timeout</code>, which are in milliseconds), so include it on every call that needs a deadline.</p></li>
 </ul>
 </div>
-<h2 id="Connect-to-a-specific-database" class="common-anchor-header">특정 데이터베이스에 연결<button data-href="#Connect-to-a-specific-database" class="anchor-icon" translate="no">
+<h2 id="Connect-to-a-specific-database" class="common-anchor-header">Connect to a specific database<button data-href="#Connect-to-a-specific-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -246,9 +263,14 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">db_name</code> 으로 구축하는 동안 대상 데이터베이스를 선택하고 나중에 <code translate="no">using_database()</code> 을 사용하여 전환할 수도 있습니다.</p>
+    </button></h2><p>Choose the target database during construction with <code translate="no">db_name</code>. You can also switch later using <code translate="no">using_database()</code>.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Set the database when creating the client</span>
@@ -310,9 +332,9 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>데이터베이스를 만들고, 나열하고, 설명하는 방법과 광범위한 데이터베이스 관리 작업에 대해서는 <a href="/docs/ko/manage_databases.md">데이터베이스</a> 가이드를 참조하세요.</p>
+<p>See the <a href="/docs/ko/manage_databases.md">Database</a> guide for creating, listing, and describing databases, and for broader database management tasks.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">다음 단계<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -328,7 +350,7 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><a href="/docs/ko/create-collection.md">컬렉션 만들기</a></p></li>
-<li><p><a href="/docs/ko/insert-update-delete.md">엔티티 삽입</a></p></li>
-<li><p><a href="/docs/ko/single-vector-search.md">기본 벡터 검색</a></p></li>
+<li><p><a href="/docs/ko/create-collection.md">Create Collection</a></p></li>
+<li><p><a href="/docs/ko/insert-update-delete.md">Insert Entities</a></p></li>
+<li><p><a href="/docs/ko/single-vector-search.md">Basic Vector Search</a></p></li>
 </ul>

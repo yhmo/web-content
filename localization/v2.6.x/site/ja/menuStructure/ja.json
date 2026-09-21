@@ -1,12 +1,12 @@
 [
   {
-    "label": "Milvusについて",
+    "label": "About Milvus",
     "id": "about",
     "isMenu": true,
     "order": 0,
     "children": [
       {
-        "label": "Milvusとは",
+        "label": "What is Milvus",
         "id": "overview.md",
         "order": 0,
         "children": []
@@ -18,19 +18,19 @@
         "children": []
       },
       {
-        "label": "Milvusのロードマップ",
+        "label": "Milvus Roadmap",
         "id": "roadmap.md",
         "order": 2,
         "children": []
       },
       {
-        "label": "リリース情報",
+        "label": "Releases",
         "id": "release_notes.md",
         "order": 3,
         "children": []
       },
       {
-        "label": "比較",
+        "label": "Comparison",
         "id": "comparison.md",
         "order": 5,
         "children": []
@@ -38,43 +38,43 @@
     ]
   },
   {
-    "label": "はじめに",
+    "label": "Get Started",
     "id": "getstarted",
     "isMenu": true,
     "order": 1,
     "children": [
       {
-        "label": "クイックスタート",
+        "label": "Quickstart",
         "id": "quickstart.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Milvus をインストールする",
+        "label": "Install Milvus",
         "id": "install_milvus",
         "order": 1,
         "isMenu": true,
         "children": [
           {
-            "label": "概要",
+            "label": "Overview",
             "id": "install-overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Milvus Lite を実行する",
+            "label": "Run Milvus Lite",
             "id": "milvus_lite.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Milvusをスタンドアロンで実行する",
+            "label": "Run Milvus Standalone",
             "id": "run_milvus_docker",
             "order": 2,
             "isMenu": true,
             "children": [
               {
-                "label": "要件",
+                "label": "Requirements",
                 "id": "prerequisite-docker.md",
                 "order": 0,
                 "children": []
@@ -106,25 +106,25 @@
             ]
           },
           {
-            "label": "Milvus Distributed を実行する",
+            "label": "Run Milvus Distributed",
             "id": "run_milvus_k8s",
             "order": 3,
             "isMenu": true,
             "children": [
               {
-                "label": "要件",
+                "label": "Requirements",
                 "id": "prerequisite-helm.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Milvusオペレーター",
+                "label": "Milvus Operator",
                 "id": "install_cluster-milvusoperator.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "ヘルム・チャート",
+                "label": "Helm Chart",
                 "id": "install_cluster-helm.md",
                 "order": 2,
                 "children": []
@@ -132,19 +132,19 @@
             ]
           },
           {
-            "label": "GPUでMilvusを実行する",
+            "label": "Run Milvus with GPU",
             "id": "run_milvus_gpu",
             "order": 4,
             "isMenu": true,
             "children": [
               {
-                "label": "要件",
+                "label": "Requirements",
                 "id": "prerequisite-gpu.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "ヘルム・チャート",
+                "label": "Helm Chart",
                 "id": "install_cluster-helm-gpu.md",
                 "order": 1,
                 "children": []
@@ -160,7 +160,7 @@
         ]
       },
       {
-        "label": "SDKのインストール",
+        "label": "Install SDKs",
         "id": "install_sdks",
         "order": 2,
         "children": [
@@ -191,7 +191,7 @@
         ]
       },
       {
-        "label": "Milvusサーバーに接続する",
+        "label": "Connect to Milvus Server",
         "id": "connect-to-milvus-server.md",
         "order": 3,
         "children": []
@@ -199,49 +199,49 @@
     ]
   },
   {
-    "label": "概念",
+    "label": "Concepts",
     "id": "concepts",
     "isMenu": true,
     "order": 2,
     "children": [
       {
-        "label": "建築",
+        "label": "Architecture",
         "id": "architecture",
         "order": 0,
         "isMenu": true,
         "children": [
           {
-            "label": "概要",
+            "label": "Overview",
             "id": "architecture_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "主な構成要素",
+            "label": "Main Components",
             "id": "main_components.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "ストリーミングサービス",
+            "label": "Streaming Service",
             "id": "streaming_service.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "データ処理",
+            "label": "Data Processing",
             "id": "data_processing.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "キツツキ",
+            "label": "Woodpecker",
             "id": "woodpecker_architecture.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "ノウウェア",
+            "label": "Knowhere",
             "id": "knowhere.md",
             "order": 5,
             "children": []
@@ -249,43 +249,43 @@
         ]
       },
       {
-        "label": "ビットセット",
+        "label": "Bitset",
         "id": "bitset.md",
         "order": 1,
         "children": []
       },
       {
-        "label": "マルチテナント",
+        "label": "Multi-tenancy",
         "id": "multi_tenancy.md",
         "order": 3,
         "children": []
       },
       {
-        "label": "タイムスタンプ",
+        "label": "Timestamp",
         "id": "timestamp.md",
         "order": 4,
         "children": []
       },
       {
-        "label": "時刻同期",
+        "label": "Time Synchronization",
         "id": "time_sync.md",
         "order": 6,
         "children": []
       },
       {
-        "label": "メートル法の単位の種類",
+        "label": "Metric Types",
         "id": "metric.md",
         "order": 7,
         "children": []
       },
       {
-        "label": "インメモリ・レプリカ",
+        "label": "In-memory Replica",
         "id": "replica.md",
         "order": 8,
         "children": []
       },
       {
-        "label": "用語集",
+        "label": "Terminology",
         "id": "glossary.md",
         "order": 9,
         "children": []
@@ -293,78 +293,78 @@
     ]
   },
   {
-    "label": "ユーザーガイド",
+    "label": "User Guide",
     "id": "userguide",
     "isMenu": true,
     "order": 3,
     "children": [
       {
-        "label": "データベース",
+        "label": "Database",
         "id": "manage_databases.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "コレクション",
+        "label": "Collections",
         "id": "collections",
         "order": 1,
         "children": [
           {
-            "label": "コレクションについて",
+            "label": "Collection Explained",
             "id": "manage-collections.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "コレクションを作成する",
+            "label": "Create Collection",
             "id": "create-collection.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "コレクションを見る",
+            "label": "View Collections",
             "id": "view-collections.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "コレクションの変更",
+            "label": "Modify Collection",
             "id": "modify-collection.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "ロード＆リリース",
+            "label": "Load & Release",
             "id": "load-and-release.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "セットコレクションのTTL",
+            "label": "Set Collection TTL",
             "id": "set-collection-ttl.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "一貫性レベルの設定",
+            "label": "Set Consistency Level",
             "id": "tune_consistency.md",
             "order": 7,
             "children": []
           },
           {
-            "label": "パーティションの管理",
+            "label": "Manage Partitions",
             "id": "manage-partitions.md",
             "order": 8,
             "children": []
           },
           {
-            "label": "エイリアスの管理",
+            "label": "Manage Aliases",
             "id": "manage-aliases.md",
             "order": 9,
             "children": []
           },
           {
-            "label": "ドロップコレクション",
+            "label": "Drop Collection",
             "id": "drop-collection.md",
             "order": 10,
             "children": []
@@ -372,71 +372,71 @@
         ]
       },
       {
-        "label": "スキーマとデータフィールド",
+        "label": "Schema & Data Fields",
         "id": "schema",
         "order": 2,
         "children": [
           {
-            "label": "スキーマの解説",
+            "label": "Schema Explained",
             "id": "schema.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "主フィールドと自動ID",
+            "label": "Primary Field & AutoID",
             "id": "primary-field.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "密ベクトル",
+            "label": "Dense Vector",
             "id": "dense-vector.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "バイナリベクトル",
+            "label": "Binary Vector",
             "id": "binary-vector.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "疎ベクトル",
+            "label": "Sparse Vector",
             "id": "sparse_vector.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "文字列フィールド",
+            "label": "String Field",
             "id": "string.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "数値フィールド",
+            "label": "Number Field",
             "id": "number.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "JSONフィールド",
+            "label": "JSON Field",
             "id": "json-field",
             "order": 7,
             "children": [
               {
-                "label": "JSONフィールドの概要",
+                "label": "JSON Field Overview",
                 "id": "json-field-overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "JSONのインデックス作成",
+                "label": "JSON Indexing",
                 "id": "json-indexing.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "JSONの分解",
+                "label": "JSON Shredding",
                 "id": "json-shredding.md",
                 "order": 2,
                 "children": []
@@ -444,77 +444,77 @@
             ]
           },
           {
-            "label": "配列フィールド",
+            "label": "Array Field",
             "id": "array_data_type.md",
             "order": 8,
             "children": []
           },
           {
-            "label": "構造体の配列",
+            "label": "Array of Structs",
             "id": "array-of-structs.md",
             "order": 9,
             "children": []
           },
           {
-            "label": "幾何学分野",
+            "label": "Geometry Field",
             "id": "geometry-field.md",
             "order": 10,
             "children": []
           },
           {
-            "label": "TIMESTAMPTZ フィールド",
+            "label": "TIMESTAMPTZ Field",
             "id": "timestamptz-field.md",
             "order": 11,
             "children": []
           },
           {
-            "label": "動的フィールド",
+            "label": "Dynamic Field",
             "id": "enable-dynamic-field.md",
             "order": 12,
             "children": []
           },
           {
-            "label": "NULL許容フィールド",
+            "label": "Nullable Fields",
             "id": "nullable-and-default.md",
             "order": 13,
             "children": []
           },
           {
-            "label": "デフォルト値",
+            "label": "Default Values",
             "id": "default-values.md",
             "order": 14,
             "children": []
           },
           {
-            "label": "アナライザー",
+            "label": "Analyzer",
             "id": "analyzer",
             "order": 15,
             "children": [
               {
-                "label": "アナライザーの概要",
+                "label": "Analyzer Overview",
                 "id": "analyzer-overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "内蔵アナライザ",
+                "label": "Built-in Analyzers",
                 "id": "built-in-analyzers",
                 "order": 1,
                 "children": [
                   {
-                    "label": "標準",
+                    "label": "Standard",
                     "id": "standard-analyzer.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "英語",
+                    "label": "English",
                     "id": "english-analyzer.md",
                     "order": 1,
                     "children": []
                   },
                   {
-                    "label": "中国語",
+                    "label": "Chinese",
                     "id": "chinese-analyzer.md",
                     "order": 2,
                     "children": []
@@ -522,18 +522,18 @@
                 ]
               },
               {
-                "label": "トークナイザー",
+                "label": "Tokenizers",
                 "id": "tokenizers",
                 "order": 2,
                 "children": [
                   {
-                    "label": "標準",
+                    "label": "Standard",
                     "id": "standard-tokenizer.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "空白",
+                    "label": "Whitespace",
                     "id": "whitespace-tokenizer.md",
                     "order": 1,
                     "children": []
@@ -545,7 +545,7 @@
                     "children": []
                   },
                   {
-                    "label": "リンデラ",
+                    "label": "Lindera",
                     "id": "lindera-tokenizer.md",
                     "order": 3,
                     "children": []
@@ -557,7 +557,7 @@
                     "children": []
                   },
                   {
-                    "label": "言語識別子",
+                    "label": "Language Identifier",
                     "id": "language-identifier.md",
                     "order": 5,
                     "children": []
@@ -565,24 +565,24 @@
                 ]
               },
               {
-                "label": "フィルター",
+                "label": "Filters",
                 "id": "filters",
                 "order": 3,
                 "children": [
                   {
-                    "label": "小文字",
+                    "label": "Lowercase",
                     "id": "lowercase-filter.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "ASCII折り畳み",
+                    "label": "ASCII Folding",
                     "id": "ascii-folding-filter.md",
                     "order": 1,
                     "children": []
                   },
                   {
-                    "label": "英数字のみ",
+                    "label": "Alphanumonly",
                     "id": "alphanumonly-filter.md",
                     "order": 2,
                     "children": []
@@ -600,37 +600,37 @@
                     "children": []
                   },
                   {
-                    "label": "長さ",
+                    "label": "Length",
                     "id": "length-filter.md",
                     "order": 5,
                     "children": []
                   },
                   {
-                    "label": "停止",
+                    "label": "Stop",
                     "id": "stop-filter.md",
                     "order": 6,
                     "children": []
                   },
                   {
-                    "label": "デコンパウンダー",
+                    "label": "Decompounder",
                     "id": "decompounder-filter.md",
                     "order": 7,
                     "children": []
                   },
                   {
-                    "label": "ステマー",
+                    "label": "Stemmer",
                     "id": "stemmer-filter.md",
                     "order": 8,
                     "children": []
                   },
                   {
-                    "label": "ピントを解除",
+                    "label": "Remove Punct",
                     "id": "removepunct-filter.md",
                     "order": 9,
                     "children": []
                   },
                   {
-                    "label": "正規表現",
+                    "label": "Regex",
                     "id": "regex-filter.md",
                     "order": 10,
                     "children": []
@@ -638,13 +638,13 @@
                 ]
               },
               {
-                "label": "多言語アナライザ",
+                "label": "Multi-language Analyzers",
                 "id": "multi-language-analyzers.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "用途に合ったアナライザーを選ぶ",
+                "label": "Choose the Right Analyzer for Your Use Case",
                 "id": "choose-the-right-analyzer-for-your-use-case.md",
                 "order": 5,
                 "children": []
@@ -652,31 +652,31 @@
             ]
           },
           {
-            "label": "コレクションフィールドの変更",
+            "label": "Alter Collection Field",
             "id": "alter-collection-field.md",
             "order": 15,
             "children": []
           },
           {
-            "label": "既存のコレクションにフィールドを追加する",
+            "label": "Add Fields to an Existing Collection",
             "id": "add-fields-to-an-existing-collection.md",
             "order": 16,
             "children": []
           },
           {
-            "label": "ベストプラクティス",
+            "label": "Best Practices",
             "id": "best-practices",
             "isMenu": true,
             "order": 17,
             "children": [
               {
-                "label": "検索のためのデータモデル設計",
+                "label": "Data Model Design for Search",
                 "id": "schema-hands-on.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "構造体の配列を用いたデータモデルの設計",
+                "label": "Data Model Design with an Array of Structs",
                 "id": "best-practices-for-array-of-structs.md",
                 "order": 1,
                 "children": []
@@ -686,24 +686,24 @@
         ]
       },
       {
-        "label": "挿入と削除",
+        "label": "Insert & Delete",
         "id": "insert-and-delete",
         "order": 3,
         "children": [
           {
-            "label": "エンティティの挿入",
+            "label": "Insert Entities",
             "id": "insert-update-delete.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "アップサートされるエンティティ",
+            "label": "Upsert Entities",
             "id": "upsert-entities.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "エンティティの削除",
+            "label": "Delete Entities",
             "id": "delete-entities.md",
             "order": 2,
             "children": []
@@ -711,19 +711,19 @@
         ]
       },
       {
-        "label": "索引",
+        "label": "Indexes",
         "id": "manage_indexes",
         "order": 4,
         "isMenu": true,
         "children": [
           {
-            "label": "インデックスの解説",
+            "label": "Index Explained",
             "id": "index-explained.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "浮動小数点ベクトルインデックス",
+            "label": "Floating Vector Indexes",
             "id": "floating-vector-indexes",
             "order": 1,
             "isMenu": true,
@@ -803,7 +803,7 @@
             ]
           },
           {
-            "label": "バイナリベクトルインデックス",
+            "label": "Binary Vector Indexes",
             "id": "binary-vector-indexes",
             "order": 2,
             "isMenu": true,
@@ -829,7 +829,7 @@
             ]
           },
           {
-            "label": "疎ベクトルインデックス",
+            "label": "Sparse Vector Indexes",
             "id": "sparse-vector-indexes",
             "order": 3,
             "isMenu": true,
@@ -843,19 +843,19 @@
             ]
           },
           {
-            "label": "スカラーインデックス",
+            "label": "Scalar Indexes",
             "id": "scalar-indexes",
             "order": 4,
             "isMenu": true,
             "children": [
               {
-                "label": "ビットマップ",
+                "label": "BITMAP",
                 "id": "bitmap.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "反転",
+                "label": "INVERTED",
                 "id": "inverted.md",
                 "order": 1,
                 "children": []
@@ -881,12 +881,12 @@
             ]
           },
           {
-            "label": "GPU対応インデックス",
+            "label": "GPU-enabled Indexes",
             "id": "gpu-enabled-indexes",
             "order": 5,
             "children": [
               {
-                "label": "GPUインデックスの概要",
+                "label": "GPU Index Overview",
                 "id": "gpu-index-overview.md",
                 "order": 0,
                 "children": []
@@ -920,102 +920,102 @@
         ]
       },
       {
-        "label": "検索",
+        "label": "Search",
         "id": "search-rerank",
         "order": 5,
         "isMenu": true,
         "children": [
           {
-            "label": "基本的なANN検索",
+            "label": "Basic ANN Search",
             "id": "single-vector-search.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "絞り込み検索",
+            "label": "Filtered Search",
             "id": "filtered-search.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "範囲検索",
+            "label": "Range Search",
             "id": "range-search.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "検索のグループ化",
+            "label": "Grouping Search",
             "id": "grouping-search.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "主キーによる検索",
+            "label": "Primary-Key Search",
             "id": "primary-key-search.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "ハイブリッド検索",
+            "label": "Hybrid Search",
             "id": "multi-vector-search.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "クエリ",
+            "label": "Query",
             "id": "get-and-scalar-query.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "フィルタリング",
+            "label": "Filtering",
             "id": "filtering",
             "order": 7,
             "children": [
               {
-                "label": "フィルタリングの仕組み",
+                "label": "Filtering Explained",
                 "id": "boolean.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "基本的な演算子",
+                "label": "Basic Operators",
                 "id": "basic-operators.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "フィルタリングとテンプレート",
+                "label": "Filtering Templating",
                 "id": "filtering-templating.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "JSON演算子",
+                "label": "JSON Operators",
                 "id": "json-operators.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "配列演算子",
+                "label": "Array Operators",
                 "id": "array-operators.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "StructArray の演算子",
+                "label": "StructArray Operators",
                 "id": "struct-array-operators.md",
                 "order": 5,
                 "children": []
               },
               {
-                "label": "無作為抽出",
+                "label": "Random Sampling",
                 "id": "random-sampling.md",
                 "order": 6,
                 "children": []
               },
               {
-                "label": "幾何演算子",
+                "label": "Geometry Operators",
                 "id": "geometry-operators.md",
                 "order": 7,
                 "children": []
@@ -1023,49 +1023,49 @@
             ]
           },
           {
-            "label": "全文検索",
+            "label": "Full Text Search",
             "id": "full-text-search.md",
             "order": 8,
             "children": []
           },
           {
-            "label": "テキストの一致",
+            "label": "Text Match",
             "id": "keyword-match.md",
             "order": 9,
             "children": []
           },
           {
-            "label": "テキストハイライトツール",
+            "label": "Text Highlighter",
             "id": "text-highlighter.md",
             "order": 10,
             "children": []
           },
           {
-            "label": "フレーズ一致",
+            "label": "Phrase Match",
             "id": "phrase-match.md",
             "order": 11,
             "children": []
           },
           {
-            "label": "埋め込みリストを使った検索",
+            "label": "Search with Embedding Lists",
             "id": "search-with-embedding-lists.md",
             "order": 12,
             "children": []
           },
           {
-            "label": "Milvus への Elasticsearch クエリ",
+            "label": "Elasticsearch Queries to Milvus",
             "id": "elasticsearch-queries-to-milvus.md",
             "order": 13,
             "children": []
           },
           {
-            "label": "検索イテレータ",
+            "label": "Search Iterators",
             "id": "with-iterators.md",
             "order": 14,
             "children": []
           },
           {
-            "label": "パーティションキーを使用する",
+            "label": "Use Partition Key",
             "id": "use-partition-key.md",
             "order": 15,
             "children": []
@@ -1073,19 +1073,19 @@
         ]
       },
       {
-        "label": "埋め込みと再ランク付け",
+        "label": "Embeddings & Reranking",
         "id": "embeddings-reranking",
         "order": 6,
         "isMenu": true,
         "children": [
           {
-            "label": "埋め込み関数",
+            "label": "Embedding Function",
             "id": "embedding-function",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "埋め込み関数の概要",
+                "label": "Embedding Function Overview",
                 "id": "embedding-function-overview.md",
                 "order": 0,
                 "children": []
@@ -1109,7 +1109,7 @@
                 "children": []
               },
               {
-                "label": "基盤岩",
+                "label": "Bedrock",
                 "id": "bedrock.md",
                 "order": 4,
                 "children": []
@@ -1159,61 +1159,61 @@
             ]
           },
           {
-            "label": "再ランク付け関数",
+            "label": "Reranking Function",
             "id": "reranking",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "重み付きランカー",
+                "label": "Weighted Ranker",
                 "id": "weighted-ranker.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "RRFランカー",
+                "label": "RRF Ranker",
                 "id": "rrf-ranker.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "ブースト・ランカー",
+                "label": "Boost Ranker",
                 "id": "boost-ranker.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "デケイ・ランカー",
+                "label": "Decay Ranker",
                 "id": "decay-ranker",
                 "isMenu": true,
                 "order": 3,
                 "children": [
                   {
-                    "label": "「Decay Ranker」の概要",
+                    "label": "Decay Ranker Overview",
                     "id": "decay-ranker-overview.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "ガウス減衰",
+                    "label": "Gaussian Decay",
                     "id": "gaussian-decay.md",
                     "order": 1,
                     "children": []
                   },
                   {
-                    "label": "指数関数的減衰",
+                    "label": "Exponential Decay",
                     "id": "exponential-decay.md",
                     "order": 2,
                     "children": []
                   },
                   {
-                    "label": "線形減衰",
+                    "label": "Linear Decay",
                     "id": "linear-decay.md",
                     "order": 3,
                     "children": []
                   },
                   {
-                    "label": "チュートリアル：Milvusでの時間軸に基づくランキングの実装",
+                    "label": "Tutorial: Implement Time-based Ranking in Milvus",
                     "id": "tutorial-implement-a-time-based-ranking-in-milvus.md",
                     "order": 4,
                     "children": []
@@ -1221,25 +1221,25 @@
                 ]
               },
               {
-                "label": "モデル・ランカー",
+                "label": "Model Ranker",
                 "id": "model-ranker",
                 "order": 4,
                 "isMenu": true,
                 "children": [
                   {
-                    "label": "モデルランカーの概要",
+                    "label": "Model Ranker Overview",
                     "id": "model-ranker-overview.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "vLLMランカー",
+                    "label": "vLLM Ranker",
                     "id": "vllm-ranker.md",
                     "order": 1,
                     "children": []
                   },
                   {
-                    "label": "TEIランカー",
+                    "label": "TEI Ranker",
                     "id": "tei-ranker.md",
                     "order": 2,
                     "children": []
@@ -1251,19 +1251,19 @@
                     "children": []
                   },
                   {
-                    "label": "Voyage AI ランカー",
+                    "label": "Voyage AI Ranker",
                     "id": "voyage-ai-ranker.md",
                     "order": 4,
                     "children": []
                   },
                   {
-                    "label": "SiliconFlow ランカー",
+                    "label": "SiliconFlow Ranker",
                     "id": "siliconflow-ranker.md",
                     "order": 5,
                     "children": []
                   },
                   {
-                    "label": "Hugging Face ランカー",
+                    "label": "Hugging Face Ranker",
                     "id": "hugging-face-ranker.md",
                     "order": 6,
                     "children": []
@@ -1275,43 +1275,43 @@
         ]
       },
       {
-        "label": "ストレージの最適化",
+        "label": "Storage Optimization",
         "id": "storage_optimization",
         "order": 10,
         "isMenu": true,
         "children": [
           {
-            "label": "mmap を使用する",
+            "label": "Use mmap",
             "id": "mmap.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "クラスタリングによる圧縮",
+            "label": "Clustering Compaction",
             "id": "clustering-compaction.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "階層型ストレージ",
+            "label": "Tiered Storage",
             "id": "tiered_storage",
             "order": 2,
             "isMenu": true,
             "children": [
               {
-                "label": "階層型ストレージの概要",
+                "label": "Tiered Storage Overview",
                 "id": "tiered-storage-overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "ウォームアップ",
+                "label": "Warm Up",
                 "id": "warm-up.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "立ち退き",
+                "label": "Eviction",
                 "id": "eviction.md",
                 "order": 2,
                 "children": []
@@ -1323,19 +1323,19 @@
     ]
   },
   {
-    "label": "データのインポート",
+    "label": "Data Import",
     "id": "data_import",
     "order": 5,
     "isMenu": true,
     "children": [
       {
-        "label": "ソースデータの準備",
+        "label": "Prepare Source Data",
         "id": "prepare-source-data.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "データのインポート",
+        "label": "Import Data",
         "id": "import-data.md",
         "order": 1,
         "children": []
@@ -1343,25 +1343,25 @@
     ]
   },
   {
-    "label": "AIツール",
+    "label": "AI Tools",
     "id": "aiTools",
     "order": 4,
     "isMenu": true,
     "children": [
       {
-        "label": "AIエージェント向けMilvus",
+        "label": "Milvus for AI Agents",
         "id": "milvus_for_agents.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "AIプロンプト",
+        "label": "AI Prompts",
         "id": "ai_prompts",
         "isMenu": true,
         "order": 1,
         "children": [
           {
-            "label": "Milvus用 AGENTS.md",
+            "label": "AGENTS.md for Milvus",
             "id": "agents_overview.md",
             "order": 0,
             "children": []
@@ -1373,25 +1373,25 @@
             "children": []
           },
           {
-            "label": "スキーマ設計",
+            "label": "Schema Design",
             "id": "schema_design.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "検索パターン",
+            "label": "Search Patterns",
             "id": "search_patterns.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "インデックスの選択",
+            "label": "Index Selection",
             "id": "index_selection.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "RAGパイプライン",
+            "label": "RAG Pipeline",
             "id": "rag_pipeline.md",
             "order": 5,
             "children": []
@@ -1399,21 +1399,21 @@
         ]
       },
       {
-        "label": "Milvusのスキル",
+        "label": "Milvus Skill",
         "id": "milvus_skill",
         "order": 2,
         "externalLink": "https://github.com/zilliztech/milvus-skill",
         "children": []
       },
       {
-        "label": "Milvus MCP サーバー",
+        "label": "Milvus MCP Server",
         "id": "mcp_server_milvus",
         "order": 3,
         "externalLink": "https://github.com/zilliztech/mcp-server-milvus",
         "children": []
       },
       {
-        "label": "Claude Code用MCPサーバー",
+        "label": "MCP Server for Claude Code",
         "id": "mcp_claude_context",
         "order": 4,
         "externalLink": "https://github.com/zilliztech/claude-context",
@@ -1422,43 +1422,43 @@
     ]
   },
   {
-    "label": "管理ガイド",
+    "label": "Administration Guide",
     "id": "admin_guide",
     "isMenu": true,
     "order": 9,
     "children": [
       {
-        "label": "展開",
+        "label": "Deployment",
         "id": "deployment",
         "order": 0,
         "isMenu": true,
         "children": [
           {
-            "label": "オンプレミス",
+            "label": "On Premises",
             "id": "on_premises",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "Docker を使用する場合",
+                "label": "With Docker",
                 "id": "configure-docker.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Helm を使用する場合",
+                "label": "With Helm",
                 "id": "configure-helm.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Milvus Operator を使用する場合",
+                "label": "With Milvus Operator",
                 "id": "configure_operator.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "リソースを割り当てる",
+                "label": "Allocate Resources",
                 "id": "allocate.md",
                 "order": 3,
                 "children": []
@@ -1466,37 +1466,37 @@
             ]
           },
           {
-            "label": "『雲の上で』",
+            "label": "On Clouds",
             "id": "on_cloud",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "AWSへのデプロイ",
+                "label": "Deploy on AWS",
                 "id": "eks.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "GCPへのデプロイ",
+                "label": "Deploy on GCP",
                 "id": "gcp.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Azureへのデプロイ",
+                "label": "Deploy on Azure",
                 "id": "azure.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "OpenShiftへのデプロイ",
+                "label": "Deploy on OpenShift",
                 "id": "openshift.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "レイヤー7の負荷分散",
+                "label": "Layer-7 Load Balacing",
                 "id": "layer-7-lb",
                 "order": 5,
                 "isMenu": true,
@@ -1522,7 +1522,7 @@
                 ]
               },
               {
-                "label": "クラウドストレージ",
+                "label": "Cloud Storage",
                 "id": "cloud-storage",
                 "order": 6,
                 "isMenu": true,
@@ -1552,43 +1552,43 @@
         ]
       },
       {
-        "label": "設定",
+        "label": "Configuration",
         "id": "configuration",
         "order": 1,
         "isMenu": true,
         "children": [
           {
-            "label": "システム構成",
+            "label": "System Configurations",
             "id": "system_configuration.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "その場での対応",
+            "label": "On the Fly",
             "id": "dynamic_config.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "収集回数の制限",
+            "label": "Limit Collection Counts",
             "id": "limit_collection_counts.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "チャンクキャッシュの設定",
+            "label": "Configure Chunk Cache",
             "id": "chunk_cache.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "コーディネーター HA",
+            "label": "Coordinator HA",
             "id": "coordinator_ha.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "ローカルディスクを使用するQueryNode",
+            "label": "QueryNode Using Local Disk",
             "id": "configure-querynode-localdisk.md",
             "order": 5,
             "children": []
@@ -1596,31 +1596,31 @@
         ]
       },
       {
-        "label": "依存関係の管理",
+        "label": "Manage Dependencies",
         "id": "manage_dependencies",
         "order": 2,
         "isMenu": true,
         "children": [
           {
-            "label": "Docker または Helm を使用する場合",
+            "label": "With Docker or Helm",
             "id": "docker_helm_dependencies",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "オブジェクトストレージ",
+                "label": "Object Storage",
                 "id": "deploy_s3.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "メタストレージ",
+                "label": "Meta Storage",
                 "id": "deploy_etcd.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "メッセージの保存",
+                "label": "Message Storage",
                 "id": "deploy_pulsar.md",
                 "order": 2,
                 "children": []
@@ -1628,25 +1628,25 @@
             ]
           },
           {
-            "label": "Milvus Operator を使用する場合",
+            "label": "With Milvus Operator",
             "id": "milvus_operator_dependencies",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "オブジェクトストレージ",
+                "label": "Object Storage",
                 "id": "object_storage_operator.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "メタストレージ",
+                "label": "Meta Storage",
                 "id": "meta_storage_operator.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "メッセージの保存",
+                "label": "Message Storage",
                 "id": "message_storage_operator.md",
                 "order": 2,
                 "children": []
@@ -1654,19 +1654,19 @@
             ]
           },
           {
-            "label": "PulsarとMilvusを併用する",
+            "label": "Use Pulsar with Milvus",
             "id": "pulsar_dependencies",
             "order": 2,
             "isMenu": true,
             "children": [
               {
-                "label": "Pulsar v3 へのアップグレード",
+                "label": "Upgrade to Pulsar v3",
                 "id": "upgrade-pulsar-v3.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Pulsar v2を引き続きご利用ください",
+                "label": "Continue Using Pulsar v2",
                 "id": "use-pulsar-v2.md",
                 "order": 1,
                 "children": []
@@ -1676,31 +1676,31 @@
         ]
       },
       {
-        "label": "スケーリング",
+        "label": "Scaling",
         "id": "scaling",
         "order": 4,
         "isMenu": true,
         "children": [
           {
-            "label": "スケール・クラスター",
+            "label": "Scale Cluster",
             "id": "scaleout.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "スタンドアロン版",
+            "label": "Scale Standalone",
             "id": "scale-standalone.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "HPAを活用した拡張",
+            "label": "Scale with HPA",
             "id": "hpa.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "スケール依存関係",
+            "label": "Scale Dependencies",
             "id": "scale-dependencies.md",
             "order": 3,
             "children": []
@@ -1708,18 +1708,18 @@
         ]
       },
       {
-        "label": "アップグレード",
+        "label": "Upgrade",
         "id": "upgrade_milvus",
         "order": 7,
         "children": [
           {
-            "label": "Milvusクラスターのアップグレード",
+            "label": "Upgrade Milvus Cluster",
             "id": "upgrade_milvus_cluster-operator.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Milvus スタンドアロンのアップグレード",
+            "label": "Upgrade Milvus Standalone",
             "id": "upgrade_milvus_standalone-operator.md",
             "order": 1,
             "children": []
@@ -1727,37 +1727,37 @@
         ]
       },
       {
-        "label": "監視、アラート、およびログ",
+        "label": "Monitoring, Alerts & Logs",
         "id": "monitor_alert_log",
         "order": 8,
         "isMenu": true,
         "children": [
           {
-            "label": "モニタリング",
+            "label": "Monitoring",
             "id": "monitoring",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "建築",
+                "label": "Architecture",
                 "id": "monitor_overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "監視サービスの導入",
+                "label": "Deploy Monitoring Services",
                 "id": "monitor.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "指標の可視化",
+                "label": "Visualize Metrics",
                 "id": "visualize.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Milvus メトリクス ダッシュボード",
+                "label": "Milvus Metrics Dashboard",
                 "id": "metrics_dashboard.md",
                 "order": 3,
                 "children": []
@@ -1765,13 +1765,13 @@
             ]
           },
           {
-            "label": "アラート",
+            "label": "Alerts",
             "id": "alerts",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "アラートを作成する",
+                "label": "Create an Alert",
                 "id": "alert.md",
                 "order": 0,
                 "children": []
@@ -1779,19 +1779,19 @@
             ]
           },
           {
-            "label": "ログ",
+            "label": "Logs",
             "id": "logs",
             "order": 2,
             "isMenu": true,
             "children": [
               {
-                "label": "Grafana Loki の設定",
+                "label": "Configure Grafana Loki",
                 "id": "configure_grafana_loki.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "アクセスログの設定",
+                "label": "Configure Access Logs",
                 "id": "configure_access_logs.md",
                 "order": 1,
                 "children": []
@@ -1799,13 +1799,13 @@
             ]
           },
           {
-            "label": "トレース",
+            "label": "Trace",
             "id": "trace",
             "order": 3,
             "isMenu": true,
             "children": [
               {
-                "label": "イェーガー・トレーシング",
+                "label": "Jaeger Tracing",
                 "id": "config_jaeger_tracing.md",
                 "order": 0,
                 "children": []
@@ -1815,12 +1815,12 @@
         ]
       },
       {
-        "label": "リソースグループ",
+        "label": "Resource Groups",
         "id": "resource_groups",
         "order": 9,
         "children": [
           {
-            "label": "リソースグループの管理",
+            "label": "Manage Resource Groups",
             "id": "resource_group.md",
             "order": 0,
             "children": []
@@ -1828,55 +1828,55 @@
         ]
       },
       {
-        "label": "セキュリティ",
+        "label": "Security",
         "id": "security",
         "order": 11,
         "isMenu": true,
         "children": [
           {
-            "label": "認証を有効にする",
+            "label": "Enable Authentication",
             "id": "authenticate.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "RBACを有効にする",
+            "label": "Enable RBAC",
             "id": "rbac",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "RBACの概要",
+                "label": "RBAC Overview",
                 "id": "rbac.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "ユーザー、権限、およびロール",
+                "label": "Users, Privileges, and Roles",
                 "id": "users_and_roles.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "プリヴィレッジ・グループ",
+                "label": "Privilege Group",
                 "id": "privilege_group.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "権限の付与",
+                "label": "Grant Privileges",
                 "id": "grant_privileges.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "助成金の役割",
+                "label": "Grant Roles",
                 "id": "grant_roles.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "ユーザーとロールの削除",
+                "label": "Drop Users & Roles",
                 "id": "drop_users_roles.md",
                 "order": 5,
                 "children": []
@@ -1884,13 +1884,13 @@
             ]
           },
           {
-            "label": "転送中の暗号化",
+            "label": "Encryption in Transit",
             "id": "tls.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "SASL/SSL を使用して Kafka に接続する",
+            "label": "Connect to Kafka with SASL/SSL",
             "id": "connect_kafka_ssl.md",
             "order": 3,
             "children": []
@@ -1904,24 +1904,24 @@
         "children": []
       },
       {
-        "label": "キツツキ",
+        "label": "Woodpecker",
         "id": "use-woodpecker.md",
         "order": 13,
         "children": []
       },
       {
-        "label": "MQタイプの切り替え",
+        "label": "Switch MQ Type",
         "id": "switch_milvus_mq_type",
         "order": 14,
         "children": [
           {
-            "label": "Milvus クラスタースイッチ MQ タイプ",
+            "label": "Milvus Cluster switch MQ Type",
             "id": "switch_milvus_cluster_mq_type-operator.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Milvus スタンドアロンスイッチ MQ型",
+            "label": "Milvus Standalone switch MQ type",
             "id": "switch_milvus_standalone_mq_type-operator.md",
             "order": 1,
             "children": []
@@ -1931,13 +1931,13 @@
     ]
   },
   {
-    "label": "ツール",
+    "label": "Tools",
     "id": "tools",
     "isMenu": true,
     "order": 6,
     "children": [
       {
-        "label": "アットゥ（Milvus GUI）",
+        "label": "Attu (Milvus GUI)",
         "id": "milvus_attu",
         "order": 0,
         "externalLink": "https://github.com/zilliztech/attu",
@@ -1949,13 +1949,13 @@
         "order": 1,
         "children": [
           {
-            "label": "概要",
+            "label": "Overview",
             "id": "milvus_backup_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "コマンド",
+            "label": "Commands",
             "id": "milvus_backup_cli.md",
             "order": 1,
             "children": []
@@ -1967,31 +1967,31 @@
             "children": []
           },
           {
-            "label": "よくある事例",
+            "label": "Common Cases",
             "id": "common-cases",
             "order": 3,
             "isMenu": true,
             "children": [
               {
-                "label": "1つのインスタンスでのバックアップと復元",
+                "label": "Backup and Restore in One Instance",
                 "id": "single-instance-backup-and-restore.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "1つのバケット内のインスタンス間で移行する",
+                "label": "Migrate Between Instances in One Bucket",
                 "id": "shared-bucket-backup-and-restore.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "バケットをまたぐインスタンス間の移行",
+                "label": "Migrate Between Instances Across Buckets",
                 "id": "cross-bucket-backup-and-restore.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "S3環境間のインスタンス間での移行",
+                "label": "Migrate Between Instances Across S3 Environments",
                 "id": "multi-storage-backup-and-restore.md",
                 "order": 3,
                 "children": []
@@ -2001,24 +2001,24 @@
         ]
       },
       {
-        "label": "野鳥観察者",
+        "label": "Birdwatcher",
         "id": "birdwatcher",
         "order": 3,
         "children": [
           {
-            "label": "概要",
+            "label": "Overview",
             "id": "birdwatcher_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "インストールガイド",
+            "label": "Install Guides",
             "id": "birdwatcher_install_guides.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "利用ガイド",
+            "label": "Usage Guides",
             "id": "birdwatcher_usage_guides.md",
             "order": 2,
             "children": []
@@ -2031,25 +2031,25 @@
         "order": 2,
         "children": [
           {
-            "label": "概要",
+            "label": "Overview",
             "id": "milvus_cdc_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "CDCレプリケーションの設定",
+            "label": "Set Up CDC Replication",
             "id": "set_up_cdc_replication.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "切り替え",
+            "label": "Switchover",
             "id": "cdc_switchover.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "フェイルオーバー",
+            "label": "Failover",
             "id": "cdc_failover.md",
             "order": 3,
             "children": []
@@ -2063,19 +2063,19 @@
         "isMenu": true,
         "children": [
           {
-            "label": "概要",
+            "label": "Overview",
             "id": "cli_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "インストール",
+            "label": "Installation",
             "id": "install_cli.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "コマンド",
+            "label": "Commands",
             "id": "cli_commands.md",
             "order": 2,
             "children": []
@@ -2083,13 +2083,13 @@
         ]
       },
       {
-        "label": "Milvusコネクタ",
+        "label": "Milvus Connectors",
         "id": "milvus_connectors",
         "order": 5,
         "isMenu": true,
         "children": [
           {
-            "label": "スパーク",
+            "label": "Spark",
             "id": "integrate_with_spark.md",
             "order": 0,
             "children": []
@@ -2104,14 +2104,14 @@
         "children": []
       },
       {
-        "label": "Milvus サイズ選定ツール",
+        "label": "Milvus Sizing Tool",
         "id": "sizing",
         "order": 7,
         "externalLink": "https://milvus.io/tools/sizing/",
         "children": []
       },
       {
-        "label": "PowerShell Milvus クライアント",
+        "label": "Powershell Milvus Client",
         "id": "milvus_powershell",
         "order": 8,
         "externalLink": "https://github.com/rrg92/ps-milvus/blob/main/docs/integrate_powershell.md",
@@ -2125,19 +2125,19 @@
         "children": []
       },
       {
-        "label": "モデル",
+        "label": "Models",
         "id": "models",
         "isMenu": true,
         "order": 10,
         "children": [
           {
-            "label": "埋め込み",
+            "label": "Embeddings",
             "id": "embeddings",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "概要",
+                "label": "Overview",
                 "id": "embeddings.md",
                 "order": 0,
                 "children": []
@@ -2149,7 +2149,7 @@
                 "children": []
               },
               {
-                "label": "文変換モデル",
+                "label": "Sentence Transformers",
                 "id": "embed-with-sentence-transform.md",
                 "order": 2,
                 "children": []
@@ -2167,7 +2167,7 @@
                 "children": []
               },
               {
-                "label": "航海",
+                "label": "Voyage",
                 "id": "embed-with-voyage.md",
                 "order": 6,
                 "children": []
@@ -2185,13 +2185,13 @@
                 "children": []
               },
               {
-                "label": "講師",
+                "label": "Instructor",
                 "id": "embed-with-instructor.md",
                 "order": 9,
                 "children": []
               },
               {
-                "label": "ミストラルAI",
+                "label": "Mistral AI",
                 "id": "embed-with-mistral-ai.md",
                 "order": 10,
                 "children": []
@@ -2215,7 +2215,7 @@
                 "children": []
               },
               {
-                "label": "ジェミニ",
+                "label": "Gemini",
                 "id": "embed-with-gemini.md",
                 "order": 14,
                 "children": []
@@ -2223,13 +2223,13 @@
             ]
           },
           {
-            "label": "リランカー",
+            "label": "Rerankers",
             "id": "rerankers",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "概要",
+                "label": "Overview",
                 "id": "rerankers-overview.md",
                 "order": 0,
                 "children": []
@@ -2247,13 +2247,13 @@
                 "children": []
               },
               {
-                "label": "クロスエンコーダー",
+                "label": "Cross Encoder",
                 "id": "rerankers-cross-encoder.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "航海",
+                "label": "Voyage",
                 "id": "rerankers-voyage.md",
                 "order": 4,
                 "children": []
@@ -2269,7 +2269,7 @@
         ]
       },
       {
-        "label": "SDKコードヘルパー (MCP)",
+        "label": "SDK Code Helper (MCP)",
         "id": "milvus-sdk-helper-mcp.md",
         "order": 11,
         "children": []
@@ -2277,19 +2277,19 @@
     ]
   },
   {
-    "label": "連携機能",
+    "label": "Integrations",
     "id": "integrations",
     "isMenu": true,
     "order": 8,
     "children": [
       {
-        "label": "概要",
+        "label": "Overview",
         "id": "integrations_overview.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "オーケストレーション",
+        "label": "Orchestration",
         "id": "orchestrate-with-milvus",
         "order": 3,
         "children": [
@@ -2299,13 +2299,13 @@
             "order": 0,
             "children": [
               {
-                "label": "基本的な使い方",
+                "label": "Basic Usage",
                 "id": "basic_usage_langchain.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "テキスト埋め込み",
+                "label": "Text Embedding",
                 "id": "langchain_milvus_dido.md",
                 "order": 2,
                 "children": []
@@ -2317,25 +2317,25 @@
                 "children": []
               },
               {
-                "label": "ハイブリッド検索",
+                "label": "Hybrid Search",
                 "id": "milvus_hybrid_search_retriever.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "全文検索",
+                "label": "Full-text Search",
                 "id": "full_text_search_with_langchain.md",
                 "order": 5,
                 "children": []
               },
               {
-                "label": "非同期検索",
+                "label": "Asynchronous Search",
                 "id": "langchain_milvus_async.md",
                 "order": 6,
                 "children": []
               },
               {
-                "label": "エージェントRAG",
+                "label": "Agent RAG",
                 "id": "agentic_rag_with_milvus_and_langgraph.md",
                 "order": 7,
                 "children": []
@@ -2360,19 +2360,19 @@
                 "children": []
               },
               {
-                "label": "全文検索",
+                "label": "Full-text Search",
                 "id": "llamaindex_milvus_full_text_search.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "ハイブリッド検索",
+                "label": "Hybrid Search",
                 "id": "llamaindex_milvus_hybrid_search.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "メタデータのフィルタリング",
+                "label": "Metadata Filtering",
                 "id": "llamaindex_milvus_metadata_filter.md",
                 "order": 4,
                 "children": []
@@ -2403,7 +2403,7 @@
                 "children": []
               },
               {
-                "label": "全文検索",
+                "label": "Full-text Search",
                 "id": "full_text_search_with_milvus_and_haystack.md",
                 "order": 1,
                 "children": []
@@ -2411,7 +2411,7 @@
             ]
           },
           {
-            "label": "コタエモン",
+            "label": "Kotaemon",
             "id": "kotaemon_with_milvus.md",
             "order": 5,
             "children": []
@@ -2467,7 +2467,7 @@
         ]
       },
       {
-        "label": "エージェント",
+        "label": "Agents",
         "id": "integrate-agents",
         "order": 4,
         "children": [
@@ -2478,7 +2478,7 @@
             "children": []
           },
           {
-            "label": "キャメル",
+            "label": "Camel",
             "id": "integrate_with_camel.md",
             "order": 1,
             "children": []
@@ -2490,7 +2490,7 @@
             "children": []
           },
           {
-            "label": "アグノ",
+            "label": "Agno",
             "id": "integrate_with_agno.md",
             "order": 3,
             "children": []
@@ -2510,12 +2510,12 @@
         ]
       },
       {
-        "label": "評価と可観測性",
+        "label": "Evaluation & Observability",
         "id": "evaluation-observability",
         "order": 6,
         "children": [
           {
-            "label": "ラーガ",
+            "label": "Ragas",
             "id": "integrate_with_ragas.md",
             "order": 0,
             "children": []
@@ -2533,7 +2533,7 @@
             "children": []
           },
           {
-            "label": "アリゼ・フェニックス",
+            "label": "Arize Pheonix",
             "id": "evaluation_with_phoenix.md",
             "order": 3,
             "children": []
@@ -2553,7 +2553,7 @@
         ]
       },
       {
-        "label": "モデルの埋め込み",
+        "label": "Embedding Models",
         "id": "integrate-embeddings-models",
         "order": 1,
         "children": [
@@ -2600,7 +2600,7 @@
             "children": []
           },
           {
-            "label": "トゥエルブ・ラボズ",
+            "label": "Twelve Labs",
             "id": "video_search_with_twelvelabs_and_milvus.md",
             "order": 12,
             "children": []
@@ -2620,7 +2620,7 @@
         ]
       },
       {
-        "label": "LLM",
+        "label": "LLMs",
         "id": "integrate-llms",
         "order": 2,
         "children": [
@@ -2631,13 +2631,13 @@
             "children": []
           },
           {
-            "label": "ミストラルAI",
+            "label": "Mistral AI",
             "id": "llama_agents_metadata.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "花火",
+            "label": "Fireworks",
             "id": "build_RAG_with_milvus_and_fireworks.md",
             "order": 2,
             "children": []
@@ -2649,19 +2649,19 @@
             "children": []
           },
           {
-            "label": "サンバノヴァ",
+            "label": "SambaNova",
             "id": "use_milvus_with_sambanova.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "ジェミニ",
+            "label": "Gemini",
             "id": "build_RAG_with_milvus_and_gemini.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "オラマ",
+            "label": "Ollama",
             "id": "build_RAG_with_milvus_and_ollama.md",
             "order": 7,
             "children": []
@@ -2675,7 +2675,7 @@
         ]
       },
       {
-        "label": "ナレッジ・エンジニアリング",
+        "label": "Knowledge Engineering",
         "id": "knowledge-engineering",
         "order": 5,
         "children": [
@@ -2686,13 +2686,13 @@
             "children": []
           },
           {
-            "label": "ヴァンナ",
+            "label": "Vanna",
             "id": "integrate_with_vanna.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "知識表",
+            "label": "Knowledge Table",
             "id": "knowledge_table_with_milvus.md",
             "order": 2,
             "children": []
@@ -2712,7 +2712,7 @@
         ]
       },
       {
-        "label": "データソース",
+        "label": "Data Sources",
         "id": "data-sources",
         "order": 7,
         "children": [
@@ -2723,7 +2723,7 @@
             "children": []
           },
           {
-            "label": "カフカ",
+            "label": "Kafka",
             "id": "kafka-connect-milvus.md",
             "order": 1,
             "children": []
@@ -2735,19 +2735,19 @@
             "children": []
           },
           {
-            "label": "非構造化",
+            "label": "Unstructured",
             "id": "rag_with_milvus_and_unstructured.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "PII マスカー",
+            "label": "PII Masker",
             "id": "RAG_with_pii_and_milvus.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "ファイアクロール",
+            "label": "Firecrawl",
             "id": "build_RAG_with_milvus_and_firecrawl.md",
             "order": 5,
             "children": []
@@ -2771,13 +2771,13 @@
             "children": []
           },
           {
-            "label": "ごちそう",
+            "label": "Feast",
             "id": "build_RAG_with_milvus_and_feast.md",
             "order": 9,
             "children": []
           },
           {
-            "label": "ミストラル OCR",
+            "label": "Mistral OCR",
             "id": "mistral_ocr_with_milvus.md",
             "order": 10,
             "children": []
@@ -2809,18 +2809,18 @@
         ]
       },
       {
-        "label": "その他",
+        "label": "Others",
         "id": "other-integrations",
         "order": 8,
         "children": [
           {
-            "label": "スノーフレーク",
+            "label": "Snowflake",
             "id": "integrate_with_snowpark.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "アーム",
+            "label": "Arm",
             "id": "build_rag_on_arm.md",
             "order": 1,
             "children": []
@@ -2830,163 +2830,163 @@
     ]
   },
   {
-    "label": "チュートリアル",
+    "label": "Tutorials",
     "id": "tutorials",
     "isMenu": true,
     "order": 7,
     "children": [
       {
-        "label": "概要",
+        "label": "Overview",
         "id": "tutorials-overview.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Milvus を使って RAG を構築する",
+        "label": "Build RAG with Milvus",
         "id": "build-rag-with-milvus.md",
         "order": 1,
         "children": []
       },
       {
-        "label": "高度なRAG",
+        "label": "Advanced RAG",
         "id": "how_to_enhance_your_rag.md",
         "order": 2,
         "children": []
       },
       {
-        "label": "Milvus による全文検索",
+        "label": "Full-Text Search with Milvus",
         "id": "full_text_search_with_milvus.md",
         "order": 3,
         "children": []
       },
       {
-        "label": "Milvus を使ったハイブリッド検索",
+        "label": "Hybrid Search with Milvus",
         "id": "hybrid_search_with_milvus.md",
         "order": 4,
         "children": []
       },
       {
-        "label": "Milvusを使った画像検索",
+        "label": "Image Search with Milvus",
         "id": "image_similarity_search.md",
         "order": 5,
         "children": []
       },
       {
-        "label": "マルチモーダルRAG",
+        "label": "Multimodal RAG",
         "id": "multimodal_rag_with_milvus.md",
         "order": 6,
         "children": []
       },
       {
-        "label": "Milvus を使用したグラフ RAG",
+        "label": "Graph RAG with Milvus",
         "id": "graph_rag_with_milvus.md",
         "order": 7,
         "children": []
       },
       {
-        "label": "文脈に基づく検索",
+        "label": "Contextual Retrieval",
         "id": "contextual_retrieval_with_milvus.md",
         "order": 8,
         "children": []
       },
       {
-        "label": "HDBSCANクラスタリング",
+        "label": "HDBSCAN Clustering",
         "id": "hdbscan_clustering_with_milvus.md",
         "order": 9,
         "children": []
       },
       {
-        "label": "MilvusでColBERTとColPaliを使用する",
+        "label": "Use ColBERT and ColPali with Milvus",
         "id": "search-with-embedding-lists",
         "order": 10,
         "externalLink": "https://milvus.io/docs/search-with-embedding-lists.md",
         "children": []
       },
       {
-        "label": "ベクトルの可視化",
+        "label": "Vector Visualization",
         "id": "vector_visualization.md",
         "order": 11,
         "children": []
       },
       {
-        "label": "おすすめの映画",
+        "label": "Movie Recommendation",
         "id": "movie_recommendation_with_milvus.md",
         "order": 12,
         "children": []
       },
       {
-        "label": "マトリョーシカ・エンベディングを用いたファンネル検索",
+        "label": "Funnel Search with Matryoshka Embeddings",
         "id": "funnel_search_with_matryoshka.md",
         "order": 13,
         "children": []
       },
       {
-        "label": "Attuのクイックスタート",
+        "label": "Quickstart with Attu",
         "id": "quickstart_with_attu.md",
         "order": 14,
         "children": []
       },
       {
-        "label": "asyncio で AsyncMilvusClient を使用する",
+        "label": "Use AsyncMilvusClient with asyncio",
         "id": "use-async-milvus-client-with-asyncio.md",
         "order": 15,
         "children": []
       },
       {
-        "label": "Milvus を使ったテキストから画像への検索",
+        "label": "Text-to-Image Search with Milvus",
         "id": "text_image_search.md",
         "order": 16,
         "children": []
       },
       {
-        "label": "大規模言語モデルを用いたMilvusクエリフィルター式の生成",
+        "label": "Generating Milvus Query Filter Expressions with Large Language Models",
         "id": "generating_milvus_query_filter_expressions.md",
         "order": 17,
         "children": []
       },
       {
-        "label": "もっと詳しく見る",
+        "label": "Explore More",
         "id": "explore-more",
         "order": 99,
         "children": [
           {
-            "label": "質問応答システム",
+            "label": "Question Answering System",
             "id": "question_answering_system.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "レコメンデーションシステム",
+            "label": "Recommender System",
             "id": "recommendation_system.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "動画の類似性検索",
+            "label": "Video Similarity Search",
             "id": "video_similarity_search.md",
             "order": 7,
             "children": []
           },
           {
-            "label": "音声類似度検索",
+            "label": "Audio Similarity Search",
             "id": "audio_similarity_search.md",
             "order": 8,
             "children": []
           },
           {
-            "label": "DNA配列の分類",
+            "label": "DNA Sequence Classification",
             "id": "dna_sequence_classification.md",
             "order": 9,
             "children": []
           },
           {
-            "label": "テキスト検索エンジン",
+            "label": "Text Search Engine",
             "id": "text_search_engine.md",
             "order": 10,
             "children": []
           },
           {
-            "label": "画像重複排除システム",
+            "label": "Image Deduplication System",
             "id": "image_deduplication_system.md",
             "order": 12,
             "children": []
@@ -2996,37 +2996,37 @@
     ]
   },
   {
-    "label": "よくある質問",
+    "label": "FAQs",
     "id": "faq",
     "isMenu": true,
     "order": 9,
     "children": [
       {
-        "label": "パフォーマンスに関するよくある質問",
+        "label": "Performance FAQs",
         "id": "performance_faq.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "製品に関するよくある質問",
+        "label": "Product FAQs",
         "id": "product_faq.md",
         "order": 1,
         "children": []
       },
       {
-        "label": "運用に関するよくある質問",
+        "label": "Operational FAQs",
         "id": "operational_faq.md",
         "order": 2,
         "children": []
       },
       {
-        "label": "Milvus リミッツ",
+        "label": "Milvus Limits",
         "id": "limitations.md",
         "order": 3,
         "children": []
       },
       {
-        "label": "トラブルシューティング",
+        "label": "Troubleshooting",
         "id": "troubleshooting.md",
         "order": 4,
         "children": []

@@ -1,15 +1,17 @@
 ---
 id: language-identifier.md
-title: معرّف اللغةCompatible with Milvus v2.5.15+
+title: Language IdentifierCompatible with Milvus v2.5.15+
 summary: >-
-  مُعرّف_اللغة هو مُعرّف لغة متخصص مصمم لتعزيز قدرات البحث عن النص في ميلفوس من
-  خلال أتمتة عملية تحليل اللغة. وتتمثل وظيفته الأساسية في اكتشاف لغة الحقل النصي
-  ومن ثم تطبيق محلل تم تكوينه مسبقًا بشكل ديناميكي وهو الأكثر ملاءمة لتلك اللغة.
-  يعد هذا الأمر ذا قيمة خاصة للتطبيقات التي تتعامل مع مجموعة متنوعة من اللغات،
-  حيث إنه يلغي الحاجة إلى تعيين اللغة يدويًا على أساس كل مدخل.
+  The language_identifier is a specialized tokenizer designed to enhance the
+  text search capabilities of Milvus by automating the language analysis
+  process. Its primary function is to detect the language of a text field and
+  then dynamically apply a pre-configured analyzer that is most suitable for
+  that language. This is particularly valuable for applications that handle a
+  variety of languages, as it eliminates the need for manual language assignment
+  on a per-input basis.
 beta: Milvus v2.5.15+
 ---
-<h1 id="Language-Identifier" class="common-anchor-header">معرّف اللغة<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.5.15+</span><button data-href="#Language-Identifier" class="anchor-icon" translate="no">
+<h1 id="Language-Identifier" class="common-anchor-header">Language Identifier<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.5.15+</span><button data-href="#Language-Identifier" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,9 +26,9 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">language_identifier</code> هو مُعرّف لغة متخصص مصمم لتعزيز قدرات البحث عن النص في ميلفوس من خلال أتمتة عملية تحليل اللغة. وتتمثل وظيفته الأساسية في الكشف عن لغة حقل النص ثم تطبيق محلل تم تكوينه مسبقًا بشكل ديناميكي وهو الأكثر ملاءمة لتلك اللغة. يعد هذا الأمر ذا قيمة خاصة للتطبيقات التي تتعامل مع مجموعة متنوعة من اللغات، حيث أنه يلغي الحاجة إلى تعيين اللغة يدويًا على أساس كل مدخل.</p>
-<p>من خلال توجيه البيانات النصية بذكاء إلى خط أنابيب المعالجة المناسب، يعمل <code translate="no">language_identifier</code> على تبسيط عملية استيعاب البيانات متعددة اللغات ويضمن ترميزًا دقيقًا لعمليات البحث والاسترجاع اللاحقة.</p>
-<h2 id="Language-detection-workflow" class="common-anchor-header">سير عمل الكشف عن اللغة<button data-href="#Language-detection-workflow" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">language_identifier</code> is a specialized tokenizer designed to enhance the text search capabilities of Milvus by automating the language analysis process. Its primary function is to detect the language of a text field and then dynamically apply a pre-configured analyzer that is most suitable for that language. This is particularly valuable for applications that handle a variety of languages, as it eliminates the need for manual language assignment on a per-input basis.</p>
+<p>By intelligently routing text data to the appropriate processing pipeline, the <code translate="no">language_identifier</code> streamlines multilingual data ingestion and ensures accurate tokenization for subsequent search and retrieval operations.</p>
+<h2 id="Language-detection-workflow" class="common-anchor-header">Language detection workflow<button data-href="#Language-detection-workflow" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,22 +43,24 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقوم <code translate="no">language_identifier</code> بتنفيذ سلسلة من الخطوات لمعالجة سلسلة نصية، وهو سير عمل مهم للمستخدمين لفهم كيفية تكوينه بشكل صحيح.</p>
+    </button></h2><p>The <code translate="no">language_identifier</code> performs a series of steps to process a text string, a workflow that is critical for users to understand how to configure it correctly.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/language-detection-workflow.png" alt="Language Detection Workflow" class="doc-image" id="language-detection-workflow" />
-   </span> <span class="img-wrapper"> <span>سير عمل اكتشاف اللغة</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/language-detection-workflow.png" alt="Language Detection Workflow" class="doc-image" id="language-detection-workflow" />
+    <span>Language Detection Workflow</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>الإدخال:</strong> يبدأ سير العمل بسلسلة نصية كمدخلات.</p></li>
-<li><p><strong>اكتشاف اللغة:</strong> يتم تمرير هذه السلسلة أولاً إلى محرك اكتشاف اللغة، والذي يحاول تحديد اللغة. يدعم Milvus محركين: <strong>whatlang</strong> و <strong>lingua</strong>.</p></li>
-<li><p><strong>اختيار المحلّل:</strong></p>
+<li><p><strong>Input:</strong> The workflow begins with a text string as input.</p></li>
+<li><p><strong>Language detection:</strong> This string is first passed to a language detection engine, which attempts to identify the language. Milvus supports two engines: <strong>whatlang</strong> and <strong>lingua</strong>.</p></li>
+<li><p><strong>Analyzer selection:</strong></p>
 <ul>
-<li><p><strong>النجاح:</strong> إذا تم اكتشاف اللغة بنجاح، يتحقق النظام مما إذا كان اسم اللغة المكتشفة يحتوي على محلل مطابق تم تكوينه في قاموسك <code translate="no">analyzers</code>. إذا تم العثور على تطابق، يقوم النظام بتطبيق المحلل المحدد على النص المدخل. على سبيل المثال، سيتم توجيه النص المكتشف "لغة الماندرين" إلى محلل الرموز <code translate="no">jieba</code>.</p></li>
-<li><p><strong>احتياطي:</strong> إذا فشل الاكتشاف، أو إذا تم اكتشاف لغة ما بنجاح ولكنك لم تقدم محللًا محددًا لها، يقوم النظام بالتطبيق الافتراضي <strong>لمحلل افتراضي</strong> تم تكوينه مسبقًا. هذه نقطة مهمة للتوضيح؛ فالمحلل <code translate="no">default</code> هو محلل احتياطي لكل من فشل الكشف وعدم وجود محلل مطابق.</p></li>
+<li><p><strong>Success:</strong> If the language is successfully detected, the system checks if the detected language name has a corresponding analyzer configured in your <code translate="no">analyzers</code> dictionary. If a match is found, the system applies the specified analyzer to the input text. For example, a detected “Mandarin” text would be routed to a <code translate="no">jieba</code> tokenizer.</p></li>
+<li><p><strong>Fallback:</strong> If detection fails, or if a language is successfully detected but you have not provided a specific analyzer for it, the system defaults to a pre-configured <strong>default analyzer</strong>. This is a crucial point of clarification; the <code translate="no">default</code> analyzer is a fallback for both detection failure and an absence of a matching analyzer.</p></li>
 </ul></li>
 </ol>
-<p>بعد اختيار المحلّل المناسب، يتم ترميز النص ومعالجته، ليكتمل سير العمل.</p>
-<h2 id="Available-language-detection-engines" class="common-anchor-header">محركات الكشف اللغوي المتاحة<button data-href="#Available-language-detection-engines" class="anchor-icon" translate="no">
+<p>After the appropriate analyzer is chosen, the text is tokenized and processed, completing the workflow.</p>
+<h2 id="Available-language-detection-engines" class="common-anchor-header">Available language detection engines<button data-href="#Available-language-detection-engines" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -71,37 +75,37 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقدم ميلفوس الاختيار بين محركين للكشف عن اللغة:</p>
+    </button></h2><p>Milvus offers a choice between two language detection engines:</p>
 <ul>
 <li><p><a href="https://github.com/greyblake/whatlang-rs">whatlang</a></p></li>
 <li><p><a href="https://github.com/pemistahl/lingua">lingua</a></p></li>
 </ul>
-<p>يعتمد الاختيار على متطلبات الأداء والدقة المحددة لتطبيقك.</p>
+<p>The selection depends on the specific performance and accuracy requirements of your application.</p>
 <table>
    <tr>
-     <th><p>المحرك</p></th>
-     <th><p>السرعة</p></th>
-     <th><p>الدقة</p></th>
-     <th><p>تنسيق الإخراج</p></th>
-     <th><p>الأفضل ل</p></th>
+     <th><p>Engine</p></th>
+     <th><p>Speed</p></th>
+     <th><p>Accuracy</p></th>
+     <th><p>Output Format</p></th>
+     <th><p>Best For</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">whatlang</code></p></td>
-     <td><p>سريع</p></td>
-     <td><p>جيد لمعظم اللغات</p></td>
-     <td><p>أسماء اللغات (على سبيل المثال، <code translate="no">"English"</code> ، <code translate="no">"Mandarin"</code> ، ، <code translate="no">"Japanese"</code>)</p><p><strong>المرجع</strong> <a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">عمود اللغة في جدول اللغات المدعومة</a></p></td>
-     <td><p>تطبيقات الوقت الحقيقي حيث السرعة أمر بالغ الأهمية</p></td>
+     <td><p>Fast</p></td>
+     <td><p>Good for most languages</p></td>
+     <td><p>Language names (e.g., <code translate="no">"English"</code>,  <code translate="no">"Mandarin"</code>, <code translate="no">"Japanese"</code>)</p><p><strong>Reference:</strong> <a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">Language column in supported languages table</a></p></td>
+     <td><p>Real-time applications where speed is critical</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">lingua</code></p></td>
-     <td><p>أبطأ</p></td>
-     <td><p>دقة أعلى، خاصة للنصوص القصيرة</p></td>
-     <td><p>أسماء اللغات الإنجليزية (على سبيل المثال، <code translate="no">"English"</code> ، <code translate="no">"Chinese"</code> ، ، <code translate="no">"Japanese"</code>)</p><p><strong>مرجع:</strong> <a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">قائمة اللغات المدعومة</a></p></td>
-     <td><p>التطبيقات التي تكون فيها الدقة أكثر أهمية من السرعة</p></td>
+     <td><p>Slower</p></td>
+     <td><p>Higher precision, especially for short texts</p></td>
+     <td><p>English language names (e.g., <code translate="no">"English"</code>, <code translate="no">"Chinese"</code>, <code translate="no">"Japanese"</code>)</p><p><strong>Reference:</strong> <a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">Supported languages list</a></p></td>
+     <td><p>Applications where accuracy is more important than speed</p></td>
    </tr>
 </table>
-<p>هناك اعتبار حاسم هو اصطلاح التسمية الخاص بالمحرك. بينما يقوم كلا المحركين بإرجاع أسماء اللغات باللغة الإنجليزية، إلا أنهما يستخدمان مصطلحات مختلفة لبعض اللغات (على سبيل المثال، <code translate="no">whatlang</code> يُرجع <code translate="no">Mandarin</code> ، بينما <code translate="no">lingua</code> يُرجع <code translate="no">Chinese</code>). يجب أن يكون مفتاح المحلل مطابقًا تمامًا للاسم الذي يُرجعه محرك الكشف المختار.</p>
-<h2 id="Configuration" class="common-anchor-header">التكوين<button data-href="#Configuration" class="anchor-icon" translate="no">
+<p>A critical consideration is the engine’s naming convention. While both engines return language names in English, they use different terms for some languages (e.g., <code translate="no">whatlang</code> returns <code translate="no">Mandarin</code>, while <code translate="no">lingua</code> returns <code translate="no">Chinese</code>). The analyzer’s key must be an exact match to the name returned by the chosen detection engine.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -116,8 +120,8 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لاستخدام أداة الترميز <code translate="no">language_identifier</code> بشكل صحيح، يجب اتخاذ الخطوات التالية لتحديد تكوينها وتطبيقها.</p>
-<h3 id="Step-1-Choose-your-languages-and-analyzers" class="common-anchor-header">الخطوة 1: اختر لغاتك ومحللاتك<button data-href="#Step-1-Choose-your-languages-and-analyzers" class="anchor-icon" translate="no">
+    </button></h2><p>To correctly use the <code translate="no">language_identifier</code> tokenizer, the following steps must be taken to define and apply its configuration.</p>
+<h3 id="Step-1-Choose-your-languages-and-analyzers" class="common-anchor-header">Step 1: Choose your languages and analyzers<button data-href="#Step-1-Choose-your-languages-and-analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,43 +136,43 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>إن جوهر إعداد <code translate="no">language_identifier</code> هو تخصيص المحللات الخاصة بك للغات المحددة التي تخطط لدعمها. يعمل النظام من خلال مطابقة اللغة المكتشفة مع المحلل الصحيح، لذا فإن هذه الخطوة ضرورية لمعالجة النص بدقة.</p>
-<p>فيما يلي جدول موصى به لتعيين اللغات مع محللات ميلفوس المناسبة. يعمل هذا الجدول كجسر بين مخرجات محرك الكشف عن اللغة وأفضل أداة للمهمة.</p>
+    </button></h3><p>The core of setting up the <code translate="no">language_identifier</code> is tailoring your analyzers to the specific languages you plan to support. The system works by matching the detected language with the correct analyzer, so this step is crucial for accurate text processing.</p>
+<p>Below is a recommended mapping of languages to suitable Milvus analyzers. This table serves as a bridge between the output of the language detection engine and the best tool for the job.</p>
 <table>
    <tr>
-     <th><p>اللغة (مخرجات الكاشف)</p></th>
-     <th><p>المحلل الموصى به</p></th>
-     <th><p>الوصف</p></th>
+     <th><p>Language (Detector Output)</p></th>
+     <th><p>Recommended Analyzer</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">English</code></p></td>
      <td><p><code translate="no">type: english</code></p></td>
-     <td><p>ترميز قياسي للغة الإنجليزية مع تصفية الجذعية وكلمات التوقف.</p></td>
+     <td><p>Standard English tokenization with stemming and stop-word filtering.</p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">Mandarin</code> (عن طريق whatlang) أو <code translate="no">Chinese</code> (عن طريق lingua)</p></td>
+     <td><p><code translate="no">Mandarin</code> (via whatlang) or <code translate="no">Chinese</code> (via lingua)</p></td>
      <td><p><code translate="no">tokenizer: jieba</code></p></td>
-     <td><p>تجزئة الكلمات الصينية للنصوص غير المحدّدة المسافات.</p></td>
+     <td><p>Chinese word segmentation for non-space-delimited text.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">Japanese</code></p></td>
      <td><p><code translate="no">tokenizer: icu</code></p></td>
-     <td><p>أداة ترميز قوية للنصوص المعقدة، بما في ذلك اليابانية.</p></td>
+     <td><p>A robust tokenizer for complex scripts, including Japanese.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">French</code></p></td>
      <td><p><code translate="no">type: standard</code>, <code translate="no">filter: ["lowercase", "asciifolding"]</code></p></td>
-     <td><p>تكوين مخصص يتعامل مع اللكنات والأحرف الفرنسية.</p></td>
+     <td><p>A custom configuration that handles French accents and characters.</p></td>
    </tr>
 </table>
 <div class="alert note">
 <ul>
-<li><p><strong>المطابقة هي المفتاح:</strong> <strong>يجب أن يتطابق</strong> اسم المحلل الخاص بك <strong>تمامًا مع</strong> مخرجات اللغة لمحرك الكشف. على سبيل المثال، إذا كنت تستخدم <code translate="no">whatlang</code> ، يجب أن يكون مفتاح النص الصيني <code translate="no">Mandarin</code>.</p></li>
-<li><p><strong>أفضل الممارسات:</strong> يوفر الجدول أعلاه التكوينات الموصى بها لبعض اللغات الشائعة، ولكنها ليست قائمة شاملة. للحصول على دليل أكثر شمولاً حول اختيار أجهزة التحليل، راجع <a href="/docs/ar/choose-the-right-analyzer-for-your-use-case.md">اختيار المحلل المناسب لحالة الاستخدام الخاصة بك</a>.</p></li>
-<li><p><strong>مخرجات الكاشف</strong>: للحصول على قائمة كاملة بأسماء اللغات التي تُرجعها محركات الكشف، راجع <a href="https://github.com/greyblake/whatlang-rs">جدول اللغات المدعومة من Whatlang</a> <a href="https://github.com/pemistahl/lingua-rs">وقائمة اللغات المدعومة من Lingua</a>.</p></li>
+<li><p><strong>Matching is Key:</strong> The name of your analyzer <strong>must exactly match</strong> the language output of the detection engine. For instance, if you’re using <code translate="no">whatlang</code>, the key for Chinese text must be <code translate="no">Mandarin</code>.</p></li>
+<li><p><strong>Best practices:</strong> The table above provides recommended configurations for a few common languages, but it is not an exhaustive list. For a more comprehensive guide on choosing analyzers, refer to <a href="/docs/ar/v2.6.x/choose-the-right-analyzer-for-your-use-case.md">Choose the Right Analyzer for Your Use Case</a>.</p></li>
+<li><p><strong>Detector output</strong>: For a complete list of language names returned by the detection engines, refer to <a href="https://github.com/greyblake/whatlang-rs">Whatlang supported languages table</a> and the <a href="https://github.com/pemistahl/lingua-rs">Lingua supported languages list</a>.</p></li>
 </ul>
 </div>
-<h3 id="Step-2-Define-analyzerparams" class="common-anchor-header">الخطوة 2: تحديد analyzer_params<button data-href="#Step-2-Define-analyzerparams" class="anchor-icon" translate="no">
+<h3 id="Step-2-Define-analyzerparams" class="common-anchor-header">Step 2: Define analyzer_params<button data-href="#Step-2-Define-analyzerparams" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -183,30 +187,30 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لاستخدام أداة الترميز <code translate="no">language_identifier</code> في Milvus، قم بإنشاء قاموس يحتوي على هذه المكونات الرئيسية:</p>
-<p><strong>المكونات المطلوبة:</strong></p>
+    </button></h3><p>To use the <code translate="no">language_identifier</code> tokenizer in Milvus, create a dictionary containing these key components:</p>
+<p><strong>Required components:</strong></p>
 <ul>
-<li><p><code translate="no">analyzers</code> مجموعة التكوين - قاموس يحتوي على جميع تكوينات المحلل، والتي يجب أن تتضمن:</p>
+<li><p><code translate="no">analyzers</code> config set – A dictionary containing all analyzer configurations, which must include:</p>
 <ul>
-<li><p><code translate="no">default</code> - المحلل الاحتياطي المستخدم في حالة فشل اكتشاف اللغة أو عدم العثور على محلل مطابق</p></li>
-<li><p><strong>المحللات الخاصة باللغة</strong> - كل محلل<strong>خاص باللغة</strong> - يتم تعريف كل منها على أنه <code translate="no">&lt;analyzer_name&gt;: &lt;analyzer_config&gt;</code> ، حيث:</p>
+<li><p><code translate="no">default</code> – The fallback analyzer used when language detection fails or no matching analyzer is found</p></li>
+<li><p><strong>Language-specific analyzers</strong> – Each defined as <code translate="no">&lt;analyzer_name&gt;: &lt;analyzer_config&gt;</code>, where:</p>
 <ul>
-<li><p><code translate="no">analyzer_name</code> يطابق مخرجات محرك الكشف الذي اخترته (على سبيل المثال، <code translate="no">&quot;English&quot;</code> ، <code translate="no">&quot;Japanese&quot;</code>)</p></li>
-<li><p><code translate="no">analyzer_config</code> يتبع تنسيق معلمات المحلل القياسي (انظر <a href="/docs/ar/analyzer-overview.md#Analyzer-types">نظرة عامة على المحلل</a>)</p></li>
+<li><p><code translate="no">analyzer_name</code> matches your chosen detection engine’s output (e.g., <code translate="no">&quot;English&quot;</code>, <code translate="no">&quot;Japanese&quot;</code>)</p></li>
+<li><p><code translate="no">analyzer_config</code> follows standard analyzer parameter format (see <a href="/docs/ar/v2.6.x/analyzer-overview.md#Analyzer-types">Analyzer Overview</a>)</p></li>
 </ul></li>
 </ul></li>
 </ul>
-<p><strong>مكونات اختيارية:</strong></p>
+<p><strong>Optional components:</strong></p>
 <ul>
-<li><p><code translate="no">identifier</code> - يحدد محرك اكتشاف اللغة المراد استخدامه (<code translate="no">whatlang</code> أو <code translate="no">lingua</code>). افتراضي إلى <code translate="no">whatlang</code> إذا لم يتم تحديده</p></li>
-<li><p><code translate="no">mapping</code> - ينشئ أسماء مستعارة مخصصة لمحللاتك، مما يسمح لك باستخدام أسماء وصفية بدلاً من تنسيق الإخراج الدقيق لمحرك الكشف</p></li>
+<li><p><code translate="no">identifier</code> – Specifies which language detection engine to use (<code translate="no">whatlang</code> or <code translate="no">lingua</code>). Defaults to <code translate="no">whatlang</code> if not specified</p></li>
+<li><p><code translate="no">mapping</code> – Creates custom aliases for your analyzers, allowing you to use descriptive names instead of the detection engine’s exact output format</p></li>
 </ul>
-<p>يعمل الرمز المميز من خلال الكشف أولاً عن لغة النص المدخل، ثم تحديد المحلل المناسب من التكوين الخاص بك. إذا فشل الكشف أو لم يوجد محلل مطابق، فإنه يعود تلقائيًا إلى محلل <code translate="no">default</code> الخاص بك.</p>
-<h4 id="Recommended-Direct-name-matching" class="common-anchor-header">موصى به: مطابقة الاسم المباشر</h4><p>يجب أن تتطابق أسماء المحللات الخاصة بك تمامًا مع مخرجات محرك اكتشاف اللغة الذي اخترته. هذا النهج أبسط ويتجنب الالتباس المحتمل.</p>
-<p>بالنسبة لكل من <code translate="no">whatlang</code> و <code translate="no">lingua</code> ، استخدم أسماء اللغات كما هو موضح في الوثائق الخاصة بكل منهما:</p>
+<p>The tokenizer works by first detecting the language of input text, then selecting the appropriate analyzer from your configuration. If detection fails or no matching analyzer exists, it automatically falls back to your <code translate="no">default</code> analyzer.</p>
+<h4 id="Recommended-Direct-name-matching" class="common-anchor-header">Recommended: Direct name matching</h4><p>Your analyzer names should exactly match the output of your chosen language detection engine. This approach is simpler and avoids potential confusion.</p>
+<p>For both <code translate="no">whatlang</code> and <code translate="no">lingua</code>, use the language names as shown in their respective documentation:</p>
 <ul>
-<li><p><a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">اللغات المدعومة من whatlang</a> (استخدم عمود<strong>"اللغة</strong>")</p></li>
-<li><p><a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">اللغات المدعومة من lingua</a></p></li>
+<li><p><a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">whatlang supported languages</a> (use the "<strong>Language</strong>" column)</p></li>
+<li><p><a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">lingua supported languages</a></p></li>
 </ul>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
@@ -226,7 +230,7 @@ beta: Milvus v2.5.15+
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Alternative-approach-Custom-names-with-mapping" class="common-anchor-header">النهج البديل: الأسماء المخصصة مع التعيين</h4><p>إذا كنت تفضل استخدام أسماء المحللين المخصصة أو تحتاج إلى الحفاظ على التوافق مع التكوينات الحالية، يمكنك استخدام المعلمة <code translate="no">mapping</code>. يؤدي ذلك إلى إنشاء أسماء مستعارة لمحللاتك - ستعمل كل من أسماء محرك الكشف الأصلية وأسماءك المخصصة.</p>
+<h4 id="Alternative-approach-Custom-names-with-mapping" class="common-anchor-header">Alternative approach: Custom names with mapping</h4><p>If you prefer to use custom analyzer names or need to maintain compatibility with existing configurations, you can use the <code translate="no">mapping</code> parameter. This creates aliases for your analyzers—both the original detection engine names and your custom names will work.</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
         <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;language_identifier&quot;</span>,
@@ -249,8 +253,8 @@ beta: Milvus v2.5.15+
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>بعد تحديد <code translate="no">analyzer_params</code> ، يمكنك تطبيقها على حقل <code translate="no">VARCHAR</code> عند تحديد مخطط المجموعة. يسمح ذلك لميلفوس بمعالجة النص في ذلك الحقل باستخدام المحلل المحدد من أجل ترميز وتصفية فعالة. للحصول على التفاصيل، راجع <a href="/docs/ar/analyzer-overview.md#Example-use">أمثلة الاستخدام</a>.</p>
-<h2 id="Examples" class="common-anchor-header">أمثلة<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/ar/v2.6.x/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -265,8 +269,8 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>فيما يلي بعض التكوينات الجاهزة للاستخدام للسيناريوهات الشائعة. يتضمن كل مثال كلاً من التكوين ورمز التحقق حتى تتمكن من اختبار الإعداد على الفور.</p>
-<h3 id="English-and-Chinese-detection" class="common-anchor-header">الكشف عن اللغة الإنجليزية والصينية<button data-href="#English-and-Chinese-detection" class="anchor-icon" translate="no">
+    </button></h2><p>Here are some ready-to-use configurations for common scenarios. Each example includes both the configuration and verification code so you can test the setup immediately.</p>
+<h3 id="English-and-Chinese-detection" class="common-anchor-header">English and Chinese detection<button data-href="#English-and-Chinese-detection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -314,7 +318,7 @@ result_cn = client.run_analyzer(<span class="hljs-string">&quot;Milvus向量数�
 <span class="hljs-comment"># Output: </span>
 <span class="hljs-comment"># Chinese: [&#x27;Milvus&#x27;, &#x27;向量&#x27;, &#x27;数据&#x27;, &#x27;据库&#x27;, &#x27;数据库&#x27;, &#x27;专&#x27;, &#x27;为&#x27;, &#x27;大规&#x27;, &#x27;规模&#x27;, &#x27;大规模&#x27;, &#x27;应用&#x27;, &#x27;而&#x27;, &#x27;设计&#x27;]</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="European-languages-with-accent-normalization" class="common-anchor-header">اللغات الأوروبية مع تطبيع اللكنة<button data-href="#European-languages-with-accent-normalization" class="anchor-icon" translate="no">
+<h3 id="European-languages-with-accent-normalization" class="common-anchor-header">European languages with accent normalization<button data-href="#European-languages-with-accent-normalization" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -351,7 +355,7 @@ result_fr = client.run_analyzer(<span class="hljs-string">&quot;Café français 
 <span class="hljs-comment"># Output: </span>
 <span class="hljs-comment"># French: [&#x27;cafe&#x27;, &#x27;francais&#x27;, &#x27;tres&#x27;, &#x27;delicieux&#x27;]</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Usage-notes" class="common-anchor-header">ملاحظات الاستخدام<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<h2 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -367,7 +371,7 @@ result_fr = client.run_analyzer(<span class="hljs-string">&quot;Café français 
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>لغة واحدة لكل حقل:</strong> يعمل على الحقل كوحدة نصية واحدة متجانسة. وهو مصمم للتعامل مع لغات مختلفة عبر سجلات بيانات مختلفة، مثل أن يحتوي أحد السجلات على جملة إنجليزية ويحتوي السجل التالي على جملة فرنسية.</p></li>
-<li><p><strong>لا توجد سلاسل لغات مختلطة:</strong> <strong>لم</strong> يتم تصميمه للتعامل مع سلسلة واحدة تحتوي على نص من لغات متعددة. على سبيل المثال، سيتم معالجة حقل واحد <code translate="no">VARCHAR</code> يحتوي على جملة إنجليزية وعبارة يابانية مقتبسة كلغة واحدة.</p></li>
-<li><p><strong>معالجة اللغة السائدة:</strong> في سيناريوهات اللغات المختلطة، من المرجح أن يحدد محرك الكشف اللغة السائدة، وسيتم تطبيق المحلل المقابل على النص بأكمله. سيؤدي ذلك إلى ضعف أو عدم وجود ترميز للنص الأجنبي المضمّن.</p></li>
+<li><p><strong>Single-language per field:</strong> It operates on a field as a single, homogenous unit of text. It is designed to handle different languages across different data records, such as one record containing an English sentence and the next containing a French sentence.</p></li>
+<li><p><strong>No mixed-language strings:</strong> It is <strong>not</strong> designed to handle a single string that contains text from multiple languages. For example, a single <code translate="no">VARCHAR</code> field containing both an English sentence and a quoted Japanese phrase will be processed as a single language.</p></li>
+<li><p><strong>Dominant language processing:</strong> In mixed-language scenarios, the detection engine will likely identify the dominant language, and the corresponding analyzer will be applied to the entire text. This will result in poor or no tokenization for the embedded foreign text.</p></li>
 </ul>

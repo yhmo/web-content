@@ -1,11 +1,17 @@
 ---
 id: language-identifier.md
-title: 言語識別子Compatible with Milvus v2.5.15+
+title: Language IdentifierCompatible with Milvus v2.5.15+
 summary: >-
-  language_identifierは、言語解析プロセスを自動化することにより、Milvusのテキスト検索機能を強化するために設計された、特別なトークナイザーです。主な機能は、テキストフィールドの言語を検出し、その言語に最適な事前設定された解析器を動的に適用することです。これは、入力ごとに手動で言語を割り当てる必要がなくなるため、さまざまな言語を扱うアプリケーションで特に有用です。
+  The language_identifier is a specialized tokenizer designed to enhance the
+  text search capabilities of Milvus by automating the language analysis
+  process. Its primary function is to detect the language of a text field and
+  then dynamically apply a pre-configured analyzer that is most suitable for
+  that language. This is particularly valuable for applications that handle a
+  variety of languages, as it eliminates the need for manual language assignment
+  on a per-input basis.
 beta: Milvus v2.5.15+
 ---
-<h1 id="Language-Identifier" class="common-anchor-header">言語識別子<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.5.15+</span><button data-href="#Language-Identifier" class="anchor-icon" translate="no">
+<h1 id="Language-Identifier" class="common-anchor-header">Language Identifier<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.5.15+</span><button data-href="#Language-Identifier" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +26,9 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">language_identifier</code> は、言語解析プロセスを自動化することで、Milvusのテキスト検索機能を強化するために設計された専用のトークナイザーです。主な機能は、テキストフィールドの言語を検出し、その言語に最適な事前設定されたアナライザを動的に適用することです。これは、入力ごとに手動で言語を割り当てる必要がなくなるため、さまざまな言語を扱うアプリケーションで特に有用です。</p>
-<p>テキストデータを適切な処理パイプラインにインテリジェントにルーティングすることで、<code translate="no">language_identifier</code> は、多言語データの取り込みを合理化し、その後の検索および取得操作のための正確なトークン化を保証します。</p>
-<h2 id="Language-detection-workflow" class="common-anchor-header">言語検出ワークフロー<button data-href="#Language-detection-workflow" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">language_identifier</code> is a specialized tokenizer designed to enhance the text search capabilities of Milvus by automating the language analysis process. Its primary function is to detect the language of a text field and then dynamically apply a pre-configured analyzer that is most suitable for that language. This is particularly valuable for applications that handle a variety of languages, as it eliminates the need for manual language assignment on a per-input basis.</p>
+<p>By intelligently routing text data to the appropriate processing pipeline, the <code translate="no">language_identifier</code> streamlines multilingual data ingestion and ensures accurate tokenization for subsequent search and retrieval operations.</p>
+<h2 id="Language-detection-workflow" class="common-anchor-header">Language detection workflow<button data-href="#Language-detection-workflow" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,22 +43,24 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">language_identifier</code> は、テキスト文字列を処理するために一連のステップを実行します。このワークフローは、ユーザーが正しく設定する方法を理解する上で非常に重要です。</p>
+    </button></h2><p>The <code translate="no">language_identifier</code> performs a series of steps to process a text string, a workflow that is critical for users to understand how to configure it correctly.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/language-detection-workflow.png" alt="Language Detection Workflow" class="doc-image" id="language-detection-workflow" />
-   </span> <span class="img-wrapper"> <span>言語検出ワークフロー</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/language-detection-workflow.png" alt="Language Detection Workflow" class="doc-image" id="language-detection-workflow" />
+    <span>Language Detection Workflow</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>入力：</strong>ワークフローは、テキスト文字列を入力として開始する。</p></li>
-<li><p><strong>言語検出：</strong>この文字列はまず言語検出エンジンに渡され、言語の特定を試みる。milvusは<strong>whatlangと</strong> <strong>linguaの</strong>2つのエンジンをサポートしています。</p></li>
-<li><p><strong>アナライザーの選択：</strong></p>
+<li><p><strong>Input:</strong> The workflow begins with a text string as input.</p></li>
+<li><p><strong>Language detection:</strong> This string is first passed to a language detection engine, which attempts to identify the language. Milvus supports two engines: <strong>whatlang</strong> and <strong>lingua</strong>.</p></li>
+<li><p><strong>Analyzer selection:</strong></p>
 <ul>
-<li><p><strong>成功：</strong>言語の検出に成功すると、検出された言語名に対応するアナライザが<code translate="no">analyzers</code> 辞書に設定されているかどうかがチェックされます。一致するアナライザが見つかると、指定したアナライザが入力テキストに適用されます。たとえば、"Mandarin" というテキストが検出されると、<code translate="no">jieba</code> のトークナイザにルーティングされます。</p></li>
-<li><p><strong>フォールバック：</strong>検出が失敗した場合、または検出には成功したが特定のアナライザが指定されていない場合、システムは事前に設定された<strong>デフォルトのアナライザに</strong>デフォルト設定します。<code translate="no">default</code> アナライザーは、検出に失敗した場合にも、一致するアナライザーがない場合にも使用できます。</p></li>
+<li><p><strong>Success:</strong> If the language is successfully detected, the system checks if the detected language name has a corresponding analyzer configured in your <code translate="no">analyzers</code> dictionary. If a match is found, the system applies the specified analyzer to the input text. For example, a detected “Mandarin” text would be routed to a <code translate="no">jieba</code> tokenizer.</p></li>
+<li><p><strong>Fallback:</strong> If detection fails, or if a language is successfully detected but you have not provided a specific analyzer for it, the system defaults to a pre-configured <strong>default analyzer</strong>. This is a crucial point of clarification; the <code translate="no">default</code> analyzer is a fallback for both detection failure and an absence of a matching analyzer.</p></li>
 </ul></li>
 </ol>
-<p>適切な解析器が選択されると、テキストがトークン化されて処理され、ワークフローが完了します。</p>
-<h2 id="Available-language-detection-engines" class="common-anchor-header">利用可能な言語検出エンジン<button data-href="#Available-language-detection-engines" class="anchor-icon" translate="no">
+<p>After the appropriate analyzer is chosen, the text is tokenized and processed, completing the workflow.</p>
+<h2 id="Available-language-detection-engines" class="common-anchor-header">Available language detection engines<button data-href="#Available-language-detection-engines" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,37 +75,37 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusは2つの言語検出エンジンから選択することができます：</p>
+    </button></h2><p>Milvus offers a choice between two language detection engines:</p>
 <ul>
 <li><p><a href="https://github.com/greyblake/whatlang-rs">whatlang</a></p></li>
 <li><p><a href="https://github.com/pemistahl/lingua">lingua</a></p></li>
 </ul>
-<p>アプリケーションのパフォーマンスと精度の要件に応じて選択します。</p>
+<p>The selection depends on the specific performance and accuracy requirements of your application.</p>
 <table>
    <tr>
-     <th><p>エンジン</p></th>
-     <th><p>速度</p></th>
-     <th><p>精度</p></th>
-     <th><p>出力形式</p></th>
-     <th><p>最適</p></th>
+     <th><p>Engine</p></th>
+     <th><p>Speed</p></th>
+     <th><p>Accuracy</p></th>
+     <th><p>Output Format</p></th>
+     <th><p>Best For</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">whatlang</code></p></td>
-     <td><p>速い</p></td>
-     <td><p>ほとんどの言語に対応</p></td>
-     <td><p>言語名 (例:<code translate="no">"English"</code>,<code translate="no">"Mandarin"</code>,<code translate="no">"Japanese"</code>)</p><p><strong>参照</strong> <a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">対応言語表の言語欄</a></p></td>
-     <td><p>速度が重要なリアルタイム・アプリケーション</p></td>
+     <td><p>Fast</p></td>
+     <td><p>Good for most languages</p></td>
+     <td><p>Language names (e.g., <code translate="no">"English"</code>,  <code translate="no">"Mandarin"</code>, <code translate="no">"Japanese"</code>)</p><p><strong>Reference:</strong> <a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">Language column in supported languages table</a></p></td>
+     <td><p>Real-time applications where speed is critical</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">lingua</code></p></td>
-     <td><p>遅い</p></td>
-     <td><p>特に短いテキストでは高精度</p></td>
-     <td><p>英語名 (例:<code translate="no">"English"</code>,<code translate="no">"Chinese"</code>,<code translate="no">"Japanese"</code>)</p><p><strong>参照：</strong> <a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">サポート言語リスト</a></p></td>
-     <td><p>速度よりも精度が重視される用途</p></td>
+     <td><p>Slower</p></td>
+     <td><p>Higher precision, especially for short texts</p></td>
+     <td><p>English language names (e.g., <code translate="no">"English"</code>, <code translate="no">"Chinese"</code>, <code translate="no">"Japanese"</code>)</p><p><strong>Reference:</strong> <a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">Supported languages list</a></p></td>
+     <td><p>Applications where accuracy is more important than speed</p></td>
    </tr>
 </table>
-<p>重要な考慮点は、エンジンの命名規則です。どちらのエンジンも英語の言語名を返しますが、一部の言語では異なる用語を使用します（たとえば、<code translate="no">whatlang</code> は<code translate="no">Mandarin</code> を返し、<code translate="no">lingua</code> は<code translate="no">Chinese</code> を返します）。アナライザのキーは、選択した検出エンジンが返す名前と完全に一致する必要があります。</p>
-<h2 id="Configuration" class="common-anchor-header">構成<button data-href="#Configuration" class="anchor-icon" translate="no">
+<p>A critical consideration is the engine’s naming convention. While both engines return language names in English, they use different terms for some languages (e.g., <code translate="no">whatlang</code> returns <code translate="no">Mandarin</code>, while <code translate="no">lingua</code> returns <code translate="no">Chinese</code>). The analyzer’s key must be an exact match to the name returned by the chosen detection engine.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,8 +120,8 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">language_identifier</code> トークナイザを正しく使用するには、次の手順で設定を定義し、適用する必要があります。</p>
-<h3 id="Step-1-Choose-your-languages-and-analyzers" class="common-anchor-header">ステップ 1: 言語とアナライザの選択<button data-href="#Step-1-Choose-your-languages-and-analyzers" class="anchor-icon" translate="no">
+    </button></h2><p>To correctly use the <code translate="no">language_identifier</code> tokenizer, the following steps must be taken to define and apply its configuration.</p>
+<h3 id="Step-1-Choose-your-languages-and-analyzers" class="common-anchor-header">Step 1: Choose your languages and analyzers<button data-href="#Step-1-Choose-your-languages-and-analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -128,43 +136,43 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">language_identifier</code> の設定の核心は、サポートする予定の特定の言語に合わせてアナライザを調整することです。システムは、検出された言語と正しいアナライザをマッチングさせることで動作するため、このステップは正確なテキスト処理を行うために非常に重要です。</p>
-<p>以下に、推奨される言語とMilvusアナライザーの対応表を示します。この表は言語検出エンジンの出力と最適なツールとの橋渡しをします。</p>
+    </button></h3><p>The core of setting up the <code translate="no">language_identifier</code> is tailoring your analyzers to the specific languages you plan to support. The system works by matching the detected language with the correct analyzer, so this step is crucial for accurate text processing.</p>
+<p>Below is a recommended mapping of languages to suitable Milvus analyzers. This table serves as a bridge between the output of the language detection engine and the best tool for the job.</p>
 <table>
    <tr>
-     <th><p>言語（検出出力）</p></th>
-     <th><p>推奨アナライザー</p></th>
-     <th><p>説明</p></th>
+     <th><p>Language (Detector Output)</p></th>
+     <th><p>Recommended Analyzer</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">English</code></p></td>
      <td><p><code translate="no">type: english</code></p></td>
-     <td><p>ステミングとストップワードフィルタリングを含む標準的な英語のトークン化。</p></td>
+     <td><p>Standard English tokenization with stemming and stop-word filtering.</p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">Mandarin</code> (whatlang 経由) または<code translate="no">Chinese</code> (lingua 経由)</p></td>
+     <td><p><code translate="no">Mandarin</code> (via whatlang) or <code translate="no">Chinese</code> (via lingua)</p></td>
      <td><p><code translate="no">tokenizer: jieba</code></p></td>
-     <td><p>非スペース区切りのテキストに対する中国語の単語分割。</p></td>
+     <td><p>Chinese word segmentation for non-space-delimited text.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">Japanese</code></p></td>
      <td><p><code translate="no">tokenizer: icu</code></p></td>
-     <td><p>日本語を含む複雑なスクリプト用のロバストなトークナイザ。</p></td>
+     <td><p>A robust tokenizer for complex scripts, including Japanese.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">French</code></p></td>
-     <td><p><code translate="no">type: standard</code>,<code translate="no">filter: ["lowercase", "asciifolding"]</code></p></td>
-     <td><p>フランス語のアクセントや文字を処理するカスタム設定。</p></td>
+     <td><p><code translate="no">type: standard</code>, <code translate="no">filter: ["lowercase", "asciifolding"]</code></p></td>
+     <td><p>A custom configuration that handles French accents and characters.</p></td>
    </tr>
 </table>
 <div class="alert note">
 <ul>
-<li><p><strong>マッチングが鍵です：</strong>アナライザーの名前は、検出エンジンの言語出力と<strong>正確に一致する必要があります</strong>。たとえば、<code translate="no">whatlang</code> を使用する場合、中国語テキストのキーは<code translate="no">Mandarin</code> にする必要があります。</p></li>
-<li><p><strong>ベスト・プラクティス：</strong>上の表は、いくつかの一般的な言語に対する推奨設定を示していますが、網羅的なリストではあ りません。アナライザーの選択に関するより包括的なガイドについては、「<a href="/docs/ja/choose-the-right-analyzer-for-your-use-case.md">ユースケースに適したアナライザーを選択する</a>」を参照してください。</p></li>
-<li><p><strong>検出器の出力</strong>：検出エンジンが返す言語名の完全なリストは、<a href="https://github.com/greyblake/whatlang-rs">Whatlangサポート言語テーブルと</a> <a href="https://github.com/pemistahl/lingua-rs">Linguaサポート言語</a>リストを参照してください。</p></li>
+<li><p><strong>Matching is Key:</strong> The name of your analyzer <strong>must exactly match</strong> the language output of the detection engine. For instance, if you’re using <code translate="no">whatlang</code>, the key for Chinese text must be <code translate="no">Mandarin</code>.</p></li>
+<li><p><strong>Best practices:</strong> The table above provides recommended configurations for a few common languages, but it is not an exhaustive list. For a more comprehensive guide on choosing analyzers, refer to <a href="/docs/ja/choose-the-right-analyzer-for-your-use-case.md">Choose the Right Analyzer for Your Use Case</a>.</p></li>
+<li><p><strong>Detector output</strong>: For a complete list of language names returned by the detection engines, refer to <a href="https://github.com/greyblake/whatlang-rs">Whatlang supported languages table</a> and the <a href="https://github.com/pemistahl/lingua-rs">Lingua supported languages list</a>.</p></li>
 </ul>
 </div>
-<h3 id="Step-2-Define-analyzerparams" class="common-anchor-header">ステップ2： analyzer_paramsの定義<button data-href="#Step-2-Define-analyzerparams" class="anchor-icon" translate="no">
+<h3 id="Step-2-Define-analyzerparams" class="common-anchor-header">Step 2: Define analyzer_params<button data-href="#Step-2-Define-analyzerparams" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -179,30 +187,30 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvusで<code translate="no">language_identifier</code> トークナイザーを使用するには、以下の主要コンポーネントを含む辞書を作成してください：</p>
-<p><strong>必須コンポーネント</strong></p>
+    </button></h3><p>To use the <code translate="no">language_identifier</code> tokenizer in Milvus, create a dictionary containing these key components:</p>
+<p><strong>Required components:</strong></p>
 <ul>
-<li><p><code translate="no">analyzers</code> config セット - すべての解析器設定を含む辞書：</p>
+<li><p><code translate="no">analyzers</code> config set – A dictionary containing all analyzer configurations, which must include:</p>
 <ul>
-<li><p><code translate="no">default</code> - 言語検出に失敗した場合、または一致する解析器が見つからない場合に使用されるフォールバック解析器。</p></li>
-<li><p><strong>言語固有の解析器</strong>- それぞれ<code translate="no">&lt;analyzer_name&gt;: &lt;analyzer_config&gt;</code> として定義されます：</p>
+<li><p><code translate="no">default</code> – The fallback analyzer used when language detection fails or no matching analyzer is found</p></li>
+<li><p><strong>Language-specific analyzers</strong> – Each defined as <code translate="no">&lt;analyzer_name&gt;: &lt;analyzer_config&gt;</code>, where:</p>
 <ul>
-<li><p><code translate="no">analyzer_name</code> 選択した検出エンジンの出力と一致する (例:<code translate="no">&quot;English&quot;</code>,<code translate="no">&quot;Japanese&quot;</code>)</p></li>
-<li><p><code translate="no">analyzer_config</code> 標準的なアナライザー・パラメーター・フォーマットに従う（<a href="/docs/ja/analyzer-overview.md#Analyzer-types">アナライザーの概要を</a>参照）。</p></li>
+<li><p><code translate="no">analyzer_name</code> matches your chosen detection engine’s output (e.g., <code translate="no">&quot;English&quot;</code>, <code translate="no">&quot;Japanese&quot;</code>)</p></li>
+<li><p><code translate="no">analyzer_config</code> follows standard analyzer parameter format (see <a href="/docs/ja/analyzer-overview.md#Analyzer-types">Analyzer Overview</a>)</p></li>
 </ul></li>
 </ul></li>
 </ul>
-<p><strong>オプションのコンポーネント：</strong></p>
+<p><strong>Optional components:</strong></p>
 <ul>
-<li><p><code translate="no">identifier</code> - 使用する言語検出エンジンを指定します (<code translate="no">whatlang</code> または<code translate="no">lingua</code>)。指定しない場合のデフォルトは<code translate="no">whatlang</code> です。</p></li>
-<li><p><code translate="no">mapping</code> - アナライザ用のカスタムエイリアスを作成し、検出エンジンの正確な出力形式ではなく、説明的な名前を使用できるようにします。</p></li>
+<li><p><code translate="no">identifier</code> – Specifies which language detection engine to use (<code translate="no">whatlang</code> or <code translate="no">lingua</code>). Defaults to <code translate="no">whatlang</code> if not specified</p></li>
+<li><p><code translate="no">mapping</code> – Creates custom aliases for your analyzers, allowing you to use descriptive names instead of the detection engine’s exact output format</p></li>
 </ul>
-<p>トークナイザは、まず入力テキストの言語を検出し、次に設定から適切なアナライザを選択します。検出が失敗した場合、または一致するアナライザが存在しない場合は、自動的に<code translate="no">default</code> アナライザにフォールバックします。</p>
-<h4 id="Recommended-Direct-name-matching" class="common-anchor-header">推奨名前の直接一致</h4><p>アナライザ名は、選択した言語検出エンジンの出力と正確に一致させる。この方法の方がシンプルで、潜在的な混乱を避けることができます。</p>
-<p><code translate="no">whatlang</code> と<code translate="no">lingua</code> の両方について、それぞれのドキュメントに示されている言語名を使用してください：</p>
+<p>The tokenizer works by first detecting the language of input text, then selecting the appropriate analyzer from your configuration. If detection fails or no matching analyzer exists, it automatically falls back to your <code translate="no">default</code> analyzer.</p>
+<h4 id="Recommended-Direct-name-matching" class="common-anchor-header">Recommended: Direct name matching</h4><p>Your analyzer names should exactly match the output of your chosen language detection engine. This approach is simpler and avoids potential confusion.</p>
+<p>For both <code translate="no">whatlang</code> and <code translate="no">lingua</code>, use the language names as shown in their respective documentation:</p>
 <ul>
-<li><p><a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">whatlangがサポートしている言語</a>（<strong>"Language</strong>"列を使う）</p></li>
-<li><p><a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">linguaがサポートしている言語</a></p></li>
+<li><p><a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">whatlang supported languages</a> (use the "<strong>Language</strong>" column)</p></li>
+<li><p><a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">lingua supported languages</a></p></li>
 </ul>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
@@ -222,7 +230,7 @@ beta: Milvus v2.5.15+
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Alternative-approach-Custom-names-with-mapping" class="common-anchor-header">別のアプローチ：マッピングを使ったカスタム名</h4><p>カスタムの解析器名を使いたい場合や、既存の設定との互換性を保つ必要がある場合は、<code translate="no">mapping</code> 。このパラメータを使用すると、分析ツールのエイリアスが作成されます。</p>
+<h4 id="Alternative-approach-Custom-names-with-mapping" class="common-anchor-header">Alternative approach: Custom names with mapping</h4><p>If you prefer to use custom analyzer names or need to maintain compatibility with existing configurations, you can use the <code translate="no">mapping</code> parameter. This creates aliases for your analyzers—both the original detection engine names and your custom names will work.</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
         <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;language_identifier&quot;</span>,
@@ -245,8 +253,8 @@ beta: Milvus v2.5.15+
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">analyzer_params</code> を定義した後、コレクションスキーマを定義するときに、<code translate="no">VARCHAR</code> フィールドに適用できます。これにより、Milvusは指定した解析器を使用してフィールド内のテキストを処理し、効率的なトークン化とフィルタリングを行うことができます。詳細については、<a href="/docs/ja/analyzer-overview.md#Example-use">使用例を</a>参照してください。</p>
-<h2 id="Examples" class="common-anchor-header">使用例<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/ja/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -261,8 +269,8 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ここでは、一般的なシナリオですぐに使用できる設定をいくつか紹介します。各例には設定と検証コードの両方が含まれているため、設定をすぐにテストできます。</p>
-<h3 id="English-and-Chinese-detection" class="common-anchor-header">英語と中国語の検出<button data-href="#English-and-Chinese-detection" class="anchor-icon" translate="no">
+    </button></h2><p>Here are some ready-to-use configurations for common scenarios. Each example includes both the configuration and verification code so you can test the setup immediately.</p>
+<h3 id="English-and-Chinese-detection" class="common-anchor-header">English and Chinese detection<button data-href="#English-and-Chinese-detection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -310,7 +318,7 @@ result_cn = client.run_analyzer(<span class="hljs-string">&quot;Milvus向量数�
 <span class="hljs-comment"># Output: </span>
 <span class="hljs-comment"># Chinese: [&#x27;Milvus&#x27;, &#x27;向量&#x27;, &#x27;数据&#x27;, &#x27;据库&#x27;, &#x27;数据库&#x27;, &#x27;专&#x27;, &#x27;为&#x27;, &#x27;大规&#x27;, &#x27;规模&#x27;, &#x27;大规模&#x27;, &#x27;应用&#x27;, &#x27;而&#x27;, &#x27;设计&#x27;]</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="European-languages-with-accent-normalization" class="common-anchor-header">ヨーロッパ言語のアクセント正規化<button data-href="#European-languages-with-accent-normalization" class="anchor-icon" translate="no">
+<h3 id="European-languages-with-accent-normalization" class="common-anchor-header">European languages with accent normalization<button data-href="#European-languages-with-accent-normalization" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -347,7 +355,7 @@ result_fr = client.run_analyzer(<span class="hljs-string">&quot;Café français 
 <span class="hljs-comment"># Output: </span>
 <span class="hljs-comment"># French: [&#x27;cafe&#x27;, &#x27;francais&#x27;, &#x27;tres&#x27;, &#x27;delicieux&#x27;]</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Usage-notes" class="common-anchor-header">使用上の注意<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<h2 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -363,7 +371,7 @@ result_fr = client.run_analyzer(<span class="hljs-string">&quot;Café français 
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>フィールドごとに単一言語：</strong>フィールドを1つの均質なテキスト単位として操作します。あるレコードには英語の文章が含まれ、次のレコードにはフランス語の文章が含まれるなど、異なるデータレコード間で異なる言語を扱うように設計されています。</p></li>
-<li><p><strong>言語が混在した文字列は扱えない：</strong>複数の言語のテキストを含む単一の文字列を扱うようには設計されて<strong>いない</strong>。たとえば、英語の文章と引用符で囲まれた日本語のフレーズの両方を含む<code translate="no">VARCHAR</code> フィールドは、1 つの言語として処理されます。</p></li>
-<li><p><strong>優勢言語処理：</strong>言語が混在するシナリオでは、検出エンジンが優勢な言語を識別し、対応するアナライザがテキスト全体に適用される可能性が高い。その結果、埋め込まれた外国語テキストのトークン化がうまくいかないか、まったく行われないことになります。</p></li>
+<li><p><strong>Single-language per field:</strong> It operates on a field as a single, homogenous unit of text. It is designed to handle different languages across different data records, such as one record containing an English sentence and the next containing a French sentence.</p></li>
+<li><p><strong>No mixed-language strings:</strong> It is <strong>not</strong> designed to handle a single string that contains text from multiple languages. For example, a single <code translate="no">VARCHAR</code> field containing both an English sentence and a quoted Japanese phrase will be processed as a single language.</p></li>
+<li><p><strong>Dominant language processing:</strong> In mixed-language scenarios, the detection engine will likely identify the dominant language, and the corresponding analyzer will be applied to the entire text. This will result in poor or no tokenization for the embedded foreign text.</p></li>
 </ul>

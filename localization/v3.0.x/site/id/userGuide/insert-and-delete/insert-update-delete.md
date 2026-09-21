@@ -1,13 +1,12 @@
 ---
 id: insert-update-delete.md
-title: Menyisipkan Entitas
+title: Insert Entities
 summary: >-
-  Entitas dalam sebuah koleksi adalah catatan data yang memiliki kumpulan bidang
-  yang sama. Nilai-nilai bidang dalam setiap catatan data membentuk sebuah
-  entitas. Halaman ini menjelaskan cara menyisipkan entitas ke dalam sebuah
-  koleksi.
+  Entities in a collection are data records that share the same set of fields.
+  Field values in every data record form an entity. This page introduces how to
+  insert entities into a collection.
 ---
-<h1 id="Insert-Entities" class="common-anchor-header">Menyisipkan Entitas<button data-href="#Insert-Entities" class="anchor-icon" translate="no">
+<h1 id="Insert-Entities" class="common-anchor-header">Insert Entities<button data-href="#Insert-Entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,14 +21,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Entitas dalam sebuah koleksi adalah catatan data yang memiliki kumpulan bidang yang sama. Nilai bidang dalam setiap catatan data membentuk sebuah entitas. Halaman ini menjelaskan cara menyisipkan entitas ke dalam sebuah koleksi.</p>
+    </button></h1><p>Entities in a collection are data records that share the same set of fields. Field values in every data record form an entity. This page introduces how to insert entities into a collection.</p>
 <div class="alert note">
 <ul>
-<li><p><strong>Kolom yang ditambahkan setelah pembuatan koleksi</strong>: Jika Anda menambahkan kolom baru ke dalam koleksi setelah pembuatan dan tidak menentukan nilai saat penyisipan, Milvus secara otomatis mengisinya dengan nilai default yang telah ditentukan atau " <code translate="no">NULL</code> " jika tidak ada nilai default yang ditetapkan. Untuk detailnya, lihat <a href="/docs/id/add-fields-to-an-existing-collection.md">Alter Collection Schema</a>.</p></li>
-<li><p><strong>Penanganan duplikat</strong>: Operasi " <code translate="no">insert</code> " standar tidak memeriksa adanya duplikat kunci utama. Menyisipkan data dengan kunci utama yang sudah ada akan membuat entitas baru dengan kunci yang sama, yang mengakibatkan duplikasi data dan potensi masalah pada aplikasi. Untuk memperbarui entitas yang sudah ada atau menghindari duplikat, gunakan <strong><code translate="no">upsert</code></strong> . Untuk informasi lebih lanjut, lihat <a href="/docs/id/upsert-entities.md">Upsert Entities</a>.</p></li>
+<li><p><strong>Fields added after collection creation</strong>: If you add new fields to a collection after creation and do not specify values during insertion, Milvus automatically populates them with defined default values or <code translate="no">NULL</code> if no defaults are set. For details, refer to <a href="/docs/id/add-fields-to-an-existing-collection.md">Alter Collection Schema</a>.</p></li>
+<li><p><strong>Duplicate handling</strong>: The standard <code translate="no">insert</code> operation does not check for duplicate primary keys. Inserting data with an existing primary key creates a new entity with the same key, leading to data duplication and potential application issues. To update existing entities or avoid duplicates, use the <strong><code translate="no">upsert</code></strong> operation instead. For more information, refer to <a href="/docs/id/upsert-entities.md">Upsert Entities</a>.</p></li>
 </ul>
 </div>
-<h2 id="Overview" class="common-anchor-header">Gambaran Umum<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,10 +43,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Di Milvus, <strong>Entitas</strong> merujuk pada catatan data dalam sebuah <strong>Koleksi</strong> yang memiliki <strong>Skema</strong> yang sama, dengan data di setiap kolom baris membentuk sebuah Entitas. Oleh karena itu, Entitas dalam Koleksi yang sama memiliki atribut yang sama (seperti nama kolom, tipe data, dan batasan lainnya).</p>
-<p>Saat menyisipkan Entitas ke dalam Koleksi, Entitas yang akan disisipkan hanya dapat ditambahkan dengan sukses jika mengandung semua bidang yang didefinisikan dalam Skema. Entitas yang dimasukkan akan masuk ke Partisi bernama <strong>_default</strong> sesuai urutan penyisipan. Asalkan Partisi tertentu sudah ada, Anda juga dapat menyisipkan Entitas ke Partisi tersebut dengan menentukan nama Partisi dalam permintaan penyisipan.</p>
-<p>Milvus juga mendukung bidang dinamis untuk menjaga skalabilitas Koleksi. Saat bidang dinamis diaktifkan, Anda dapat menyisipkan bidang yang tidak didefinisikan dalam Skema ke dalam Koleksi. Bidang dan nilai-nilai ini akan disimpan sebagai pasangan kunci-nilai di bidang yang disediakan bernama <strong>$meta</strong>. Untuk informasi lebih lanjut tentang bidang dinamis, silakan lihat Bidang Dinamis.</p>
-<h2 id="Insert-Entities-into-a-Collection" class="common-anchor-header">Menyisipkan Entitas ke dalam Koleksi<button data-href="#Insert-Entities-into-a-Collection" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, an <strong>Entity</strong> refers to data records in a <strong>Collection</strong> that share the same <strong>Schema</strong>, with the data in each field of a row constituting an Entity. Therefore, the Entities within the same Collection have the same attributes (such as field names, data types, and other constraints).</p>
+<p>When inserting an Entity into a Collection, the Entity to be inserted can only be successfully added if it contains all the fields defined in the Schema. The inserted Entity will enter a Partition named <strong>_default</strong> in the order of insertion. Provided that a certain Partition exists, you can also insert Entities into that Partition by specifying the Partition name in the insertion request.</p>
+<p>Milvus also supports dynamic fields to maintain the scalability of the Collection. When the dynamic field is enabled, you can insert fields that are not defined in the Schema into the Collection. These fields and values will be stored as key-value pairs in a reserved field named <strong>$meta</strong>. For more information about dynamic fields, please refer to Dynamic Field.</p>
+<h2 id="Insert-Entities-into-a-Collection" class="common-anchor-header">Insert Entities into a Collection<button data-href="#Insert-Entities-into-a-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,14 +61,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sebelum menyisipkan data, Anda perlu mengatur data Anda ke dalam daftar kamus sesuai dengan Skema, di mana setiap kamus mewakili sebuah Entitas dan berisi semua bidang yang didefinisikan dalam Skema. Jika Koleksi memiliki bidang dinamis yang diaktifkan, setiap kamus juga dapat menyertakan bidang yang tidak didefinisikan dalam Skema.</p>
-<p>Pada bagian ini, Anda akan menyisipkan entitas ke dalam Koleksi yang dibuat dengan metode pengaturan cepat. Koleksi yang dibuat dengan cara ini hanya memiliki dua bidang, yaitu <strong>id</strong> dan <strong>vector</strong>. Selain itu, Koleksi ini mengaktifkan bidang dinamis, sehingga Entitas dalam kode contoh menyertakan bidang bernama <strong>color</strong> yang tidak didefinisikan dalam Skema.</p>
+    </button></h2><p>Before inserting data, you need to organize your data into a list of dictionaries according to the Schema, with each dictionary representing an Entity and containing all the fields defined in the Schema. If the Collection has the dynamic field enabled, each dictionary can also include fields that are not defined in the Schema.</p>
+<p>In this section, you will insert entities into a Collection created in the quick-setup manner. A Collection created in this manner has only two fields, named <strong>id</strong> and <strong>vector</strong>. Additionally, this Collection has the dynamic field enabled, so the Entities in the example code include a field called <strong>color</strong> that is not defined in the Schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -262,7 +261,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-Entities-into-a-Partition" class="common-anchor-header">Menyisipkan Entitas ke dalam Partisi<button data-href="#Insert-Entities-into-a-Partition" class="anchor-icon" translate="no">
+<h2 id="Insert-Entities-into-a-Partition" class="common-anchor-header">Insert Entities into a Partition<button data-href="#Insert-Entities-into-a-Partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -277,13 +276,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Anda juga dapat menyisipkan entitas ke dalam partisi tertentu. Potongan kode berikut mengasumsikan bahwa Anda memiliki partisi bernama <strong>PartitionA</strong> di dalam koleksi Anda.</p>
+    </button></h2><p>You can also insert entities into a specified partition. The following code snippets assume that you have a partition named <strong>PartitionA</strong> in your collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">data=[
     {<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-string">&quot;vector&quot;</span>: [<span class="hljs-number">0.3580376395471989</span>, -<span class="hljs-number">0.6023495712049978</span>, <span class="hljs-number">0.18414012509913835</span>, -<span class="hljs-number">0.26286205330961354</span>, <span class="hljs-number">0.9029438446296592</span>], <span class="hljs-string">&quot;color&quot;</span>: <span class="hljs-string">&quot;pink_8682&quot;</span>},

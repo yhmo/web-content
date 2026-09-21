@@ -1,16 +1,14 @@
 ---
 id: timestamptz-field.md
-title: Feld „TIMESTAMPTZ“Compatible with Milvus 2.6.6+
+title: TIMESTAMPTZ FieldCompatible with Milvus 2.6.6+
 summary: >-
-  Anwendungen, die Zeitdaten über verschiedene Regionen hinweg erfassen, wie
-  beispielsweise E-Commerce-Systeme, Tools für die Zusammenarbeit oder verteilte
-  Protokollierung, erfordern eine präzise Verarbeitung von Zeitstempeln unter
-  Berücksichtigung von Zeitzonen. Der Datentyp „TIMESTAMPTZ“ in Milvus bietet
-  diese Möglichkeit, indem er Zeitstempel zusammen mit der zugehörigen Zeitzone
-  speichert.
+  Applications that track time across regions, such as e-commerce systems,
+  collaboration tools, or distributed logging, need precise handling of
+  timestamps with time zones. The TIMESTAMPTZ data type in Milvus provides this
+  capability by storing timestamps with their associated time zone.
 beta: Milvus 2.6.6+
 ---
-<h1 id="TIMESTAMPTZ-Field" class="common-anchor-header">Feld „TIMESTAMPTZ“<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.6+</span><button data-href="#TIMESTAMPTZ-Field" class="anchor-icon" translate="no">
+<h1 id="TIMESTAMPTZ-Field" class="common-anchor-header">TIMESTAMPTZ Field<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.6+</span><button data-href="#TIMESTAMPTZ-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -25,8 +23,8 @@ beta: Milvus 2.6.6+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Anwendungen, die Zeitangaben über verschiedene Regionen hinweg erfassen, wie beispielsweise E-Commerce-Systeme, Tools für die Zusammenarbeit oder verteilte Protokollierung, erfordern eine präzise Verarbeitung von Zeitstempeln unter Berücksichtigung von Zeitzonen. Der Datentyp „ <code translate="no">TIMESTAMPTZ</code> “ in Milvus bietet diese Funktion, indem er Zeitstempel zusammen mit der zugehörigen Zeitzone speichert.</p>
-<h2 id="What-is-a-TIMESTAMPTZ-field" class="common-anchor-header">Was ist ein TIMESTAMPTZ-Feld?<button data-href="#What-is-a-TIMESTAMPTZ-field" class="anchor-icon" translate="no">
+    </button></h1><p>Applications that track time across regions, such as e-commerce systems, collaboration tools, or distributed logging, need precise handling of timestamps with time zones. The <code translate="no">TIMESTAMPTZ</code> data type in Milvus provides this capability by storing timestamps with their associated time zone.</p>
+<h2 id="What-is-a-TIMESTAMPTZ-field" class="common-anchor-header">What is a TIMESTAMPTZ field?<button data-href="#What-is-a-TIMESTAMPTZ-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,20 +39,20 @@ beta: Milvus 2.6.6+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ein „ <code translate="no">TIMESTAMPTZ</code> “-Feld ist ein schemadefinierter Datentyp (<code translate="no">DataType.TIMESTAMPTZ</code>) in Milvus, der zeitzonenbezogene Eingaben verarbeitet und alle Zeitpunkte intern als absolute UTC-Zeit speichert:</p>
+    </button></h2><p>A <code translate="no">TIMESTAMPTZ</code> field is a schema-defined data type (<code translate="no">DataType.TIMESTAMPTZ</code>) in Milvus that processes time zone-aware input and stores all time points internally as UTC absolute time:</p>
 <ul>
-<li><p><strong>Akzeptiertes Eingabeformat</strong>: <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO-8601-Zeichenfolgen</a> mit einem Zeitzonen-Offset (beispielsweise steht „ <code translate="no">&quot;2025-05-01T23:59:59+08:00&quot;</code> “ für 23:59:59 Uhr am 1. Mai 2025 (UTC+08:00)).</p></li>
-<li><p><strong>Interne Speicherung</strong>: Alle „ <code translate="no">TIMESTAMPTZ</code> “-Werte werden normalisiert und in <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">der koordinierten Weltzeit</a> (UTC) gespeichert.</p></li>
-<li><p><strong>Vergleich und Filterung</strong>: Alle Filter- und Sortiervorgänge werden in UTC durchgeführt, wodurch konsistente und vorhersehbare Ergebnisse über verschiedene Zeitzonen hinweg gewährleistet sind.</p></li>
+<li><p><strong>Accepted input format</strong>: <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> strings with a time-zone offset (for example, <code translate="no">&quot;2025-05-01T23:59:59+08:00&quot;</code> denotes 11:59:59 PM on May 1, 2025 (UTC+08:00)).</p></li>
+<li><p><strong>Internal storage</strong>: All <code translate="no">TIMESTAMPTZ</code> values are normalized and stored in <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">Coordinated Universal Time</a> (UTC).</p></li>
+<li><p><strong>Comparison and filtering</strong>: All filtering and ordering operations are performed in UTC, ensuring consistent and predictable results across different time zones.</p></li>
 </ul>
 <div class="alert note">
 <ul>
-<li><p>Sie können für „ <code translate="no">TIMESTAMPTZ</code> “-Felder unter „ <code translate="no">nullable=True</code> “ festlegen, dass fehlende Werte zulässig sind.</p></li>
-<li><p>Sie können mithilfe des Attributs „ <code translate="no">default_value</code> “ im <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO-8601-Format</a> einen Standardwert für den Zeitstempel festlegen.</p></li>
+<li><p>You can set <code translate="no">nullable=True</code> for <code translate="no">TIMESTAMPTZ</code> fields to allow missing values.</p></li>
+<li><p>You can specify a default timestamp value using the <code translate="no">default_value</code> attribute in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format.</p></li>
 </ul>
-<p>Weitere Informationen finden Sie unter <a href="/docs/de/nullable-and-default.md">„Nullable &amp; Default</a> “.</p>
+<p>See <a href="/docs/de/nullable-and-default.md">Nullable & Default</a> for details.</p>
 </div>
-<h2 id="Basic-operations" class="common-anchor-header">Grundlegende Vorgänge<button data-href="#Basic-operations" class="anchor-icon" translate="no">
+<h2 id="Basic-operations" class="common-anchor-header">Basic operations<button data-href="#Basic-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -69,8 +67,8 @@ beta: Milvus 2.6.6+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Der grundlegende Arbeitsablauf bei der Verwendung eines „ <code translate="no">TIMESTAMPTZ</code> “-Feldes entspricht dem anderer Skalarfelder in Milvus: Feld definieren → Daten einfügen → Abfrage/Filterung.</p>
-<h3 id="Step-1-Define-a-TIMESTAMPTZ-field" class="common-anchor-header">Schritt 1: Definieren eines TIMESTAMPTZ-Feldes<button data-href="#Step-1-Define-a-TIMESTAMPTZ-field" class="anchor-icon" translate="no">
+    </button></h2><p>The basic workflow of using a <code translate="no">TIMESTAMPTZ</code> field mirrors other scalar fields in Milvus: define the field → insert data → query/filter.</p>
+<h3 id="Step-1-Define-a-TIMESTAMPTZ-field" class="common-anchor-header">Step 1: Define a TIMESTAMPTZ field<button data-href="#Step-1-Define-a-TIMESTAMPTZ-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -85,13 +83,13 @@ beta: Milvus 2.6.6+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Um ein „ <code translate="no">TIMESTAMPTZ</code> “-Feld zu verwenden, definieren Sie es beim Erstellen der Sammlung explizit in Ihrem Sammlungsschema. Das folgende Beispiel zeigt, wie Sie eine Sammlung mit einem „ <code translate="no">tsz</code> “-Feld vom Typ „ <code translate="no">DataType.TIMESTAMPTZ</code> “ erstellen.</p>
+    </button></h3><p>To use a <code translate="no">TIMESTAMPTZ</code> field, explicitly define it in your collection schema when creating the collection. The following example demonstrates how to create a collection with a <code translate="no">tsz</code> field of type <code translate="no">DataType.TIMESTAMPTZ</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
@@ -125,7 +123,7 @@ client.create_collection(collection_name, schema=schema, consistency_level=<span
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Insert-data" class="common-anchor-header">Schritt 2: Daten einfügen<button data-href="#Step-2-Insert-data" class="anchor-icon" translate="no">
+<h3 id="Step-2-Insert-data" class="common-anchor-header">Step 2: Insert data<button data-href="#Step-2-Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -140,19 +138,19 @@ client.create_collection(collection_name, schema=schema, consistency_level=<span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Fügen Sie Entitäten ein, die ISO-8601-Zeichenfolgen mit Zeitzonen-Offsets enthalten.</p>
-<p>Das folgende Beispiel fügt 8.193 Zeilen mit Beispieldaten in die Sammlung ein. Jede Zeile enthält:</p>
+    </button></h3><p>Insert entities containing ISO 8601 strings with time zone offsets.</p>
+<p>The example below inserts 8,193 rows of sample data into the collection. Each row includes:</p>
 <ul>
-<li><p>eine eindeutige ID</p></li>
-<li><p>einen zeitzonenabhängigen Zeitstempel (Shanghai-Zeit)</p></li>
-<li><p>einen einfachen 4-dimensionalen Vektor</p></li>
+<li><p>a unique ID</p></li>
+<li><p>a timezone-aware timestamp (Shanghai time)</p></li>
+<li><p>a simple 4-dimensional vector</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">data_size = <span class="hljs-number">8193</span>
 
@@ -188,7 +186,7 @@ client.insert(collection_name, data)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Filtering-operations" class="common-anchor-header">Schritt 3: Filteroperationen<button data-href="#Step-3-Filtering-operations" class="anchor-icon" translate="no">
+<h3 id="Step-3-Filtering-operations" class="common-anchor-header">Step 3: Filtering operations<button data-href="#Step-3-Filtering-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -203,20 +201,20 @@ client.insert(collection_name, data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">TIMESTAMPTZ</code> unterstützt skalare Vergleiche, Intervallarithmetik und die Extraktion von Zeitkomponenten.</p>
-<p>Bevor Sie Filteroperationen auf „ <code translate="no">TIMESTAMPTZ</code> “-Feldern durchführen können, stellen Sie Folgendes sicher:</p>
+    </button></h3><p><code translate="no">TIMESTAMPTZ</code> supports scalar comparisons, interval arithmetic, and extraction of time components.</p>
+<p>Before you can perform filtering operations on <code translate="no">TIMESTAMPTZ</code> fields, make sure:</p>
 <ul>
-<li><p>Sie haben für jedes Vektorfeld einen Index angelegt.</p></li>
-<li><p>Die Sammlung ist in den Arbeitsspeicher geladen.</p></li>
+<li><p>You have created an index on each vector field.</p></li>
+<li><p>The collection is loaded into memory.</p></li>
 </ul>
 <p><details></p>
-<p><summary>Beispielcode anzeigen</summary></p>
+<p><summary>Show example code</summary></p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Create index on vector field</span>
 index_params = client.prepare_index_params()
@@ -242,14 +240,14 @@ client.load_collection(collection_name)
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h4 id="Query-with-timestamp-filtering" class="common-anchor-header">Abfrage mit Zeitstempel-Filterung</h4><p>Verwenden Sie arithmetische Operatoren wie „ <code translate="no">==</code> “, „ <code translate="no">!=</code> “, „ <code translate="no">&lt;</code> “, „ <code translate="no">&gt;</code> “, „ <code translate="no">&lt;=</code> “ und „ <code translate="no">&gt;=</code> “. Eine vollständige Liste der in Milvus verfügbaren arithmetischen Operatoren finden Sie unter <a href="/docs/de/basic-operators.md#Arithmetic-operators">„Arithmetische Operatoren</a>“.</p>
-<p>Das folgende Beispiel filtert Entitäten mit Zeitstempeln (<code translate="no">tsz</code>), die nicht dem Wert <strong>„2025-01-03T00:00:00+08:00</strong>“ entsprechen:</p>
+<h4 id="Query-with-timestamp-filtering" class="common-anchor-header">Query with timestamp filtering</h4><p>Use arithmetic operators like <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;=</code>, <code translate="no">&gt;=</code>. For a full list of arithmetic operators available in Milvus, refer to <a href="/docs/de/basic-operators.md#Arithmetic-operators">Arithmetic operators</a>.</p>
+<p>The example below filters entities with timestamps (<code translate="no">tsz</code>) that are not equal to <strong>2025-01-03T00:00:00+08:00</strong>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Query for entities where tsz is not equal to &#x27;2025-01-03T00:00:00+08:00&#x27;</span>
 <span class="highlighted-wrapper-line">expr = <span class="hljs-string">&quot;tsz != ISO &#x27;2025-01-03T00:00:00+08:00&#x27;&quot;</span></span>
@@ -274,20 +272,20 @@ results = client.query(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Im obigen Beispiel</p>
+<p>In the example above,</p>
 <ul>
-<li><p><code translate="no">tsz</code> ist „ <code translate="no">TIMESTAMPTZ</code> “ der im Schema definierte Feldname.</p></li>
-<li><p><code translate="no">ISO '2025-01-03T00:00:00+08:00'</code> ist ein Zeitstempel-Literal im <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a> -Format, einschließlich des Zeitzonen-Offsets.</p></li>
-<li><p><code translate="no">!=</code> vergleicht den Feldwert mit diesem Literal. Weitere unterstützte Operatoren sind „ <code translate="no">==</code> “, „ <code translate="no">&lt;</code> “, „ <code translate="no">&lt;=</code> “, „ <code translate="no">&gt;</code> “ und „ <code translate="no">&gt;=</code> “.</p></li>
+<li><p><code translate="no">tsz</code> is the <code translate="no">TIMESTAMPTZ</code> field name defined in the schema.</p></li>
+<li><p><code translate="no">ISO '2025-01-03T00:00:00+08:00'</code> is a timestamp literal in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format, including its time-zone offset.</p></li>
+<li><p><code translate="no">!=</code> compares the field value against that literal. Other supported operators include <code translate="no">==</code>, <code translate="no">&lt;</code>, <code translate="no">&lt;=</code>, <code translate="no">&gt;</code>, and <code translate="no">&gt;=</code>.</p></li>
 </ul>
-<h4 id="Interval-operations" class="common-anchor-header">Intervalloperationen</h4><p>Sie können arithmetische Operationen auf <code translate="no">TIMESTAMPTZ</code> -Feldern unter Verwendung von <strong>INTERVAL-</strong> Werten im <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601-Dauerformat</a> durchführen. Auf diese Weise können Sie beim Filtern von Daten Zeiträume wie Tage, Stunden oder Minuten zu einem Zeitstempel addieren oder von diesem subtrahieren.</p>
-<p>Die folgende Abfrage filtert beispielsweise Entitäten heraus, bei denen der Zeitstempel (<code translate="no">tsz</code>) plus null Tage <strong>nicht gleich</strong> <strong>2025-01-03T00:00:00+08:00</strong> ist:</p>
+<h4 id="Interval-operations" class="common-anchor-header">Interval operations</h4><p>You can perform arithmetic on <code translate="no">TIMESTAMPTZ</code> fields using <strong>INTERVAL</strong> values in the <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 duration format</a>. This allows you to add or subtract durations, such as days, hours, or minutes, from a timestamp when filtering data.</p>
+<p>For example, the following query filters entities where the timestamp (<code translate="no">tsz</code>) plus zero days is <strong>not equal</strong> to <strong>2025-01-03T00:00:00+08:00</strong>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="highlighted-wrapper-line">expr = <span class="hljs-string">&quot;tsz + INTERVAL &#x27;P0D&#x27; != ISO &#x27;2025-01-03T00:00:00+08:00&#x27;&quot;</span></span>
 
@@ -312,25 +310,25 @@ results = client.query(
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><code translate="no">INTERVAL</code> Die Werte folgen der <a href="https://www.w3.org/TR/xmlschema-2/#duration">ISO 8601-Syntax für Zeitangaben</a>. Beispiel:</p>
+<p><code translate="no">INTERVAL</code> values follow the <a href="https://www.w3.org/TR/xmlschema-2/#duration">ISO 8601 duration syntax</a>. For example:</p>
 <ul>
-<li><p><code translate="no">P1D</code> → 1 Tag</p></li>
-<li><p><code translate="no">PT3H</code> → 3 Stunden</p></li>
-<li><p><code translate="no">P2DT6H</code> → 2 Tage und 6 Stunden</p></li>
+<li><p><code translate="no">P1D</code> → 1 day</p></li>
+<li><p><code translate="no">PT3H</code> → 3 hours</p></li>
+<li><p><code translate="no">P2DT6H</code> → 2 days and 6 hours</p></li>
 </ul>
-<p>Sie können die Arithmetik von „ <code translate="no">INTERVAL</code> “ direkt in Filterausdrücken verwenden, zum Beispiel:</p>
+<p>You can use <code translate="no">INTERVAL</code> arithmetic directly in filter expressions, such as:</p>
 <ul>
-<li><p><code translate="no">tsz + INTERVAL 'P3D'</code> → Addiert 3 Tage</p></li>
-<li><p><code translate="no">tsz - INTERVAL 'PT2H'</code> → Zieht 2 Stunden ab</p></li>
+<li><p><code translate="no">tsz + INTERVAL 'P3D'</code> → Adds 3 days</p></li>
+<li><p><code translate="no">tsz - INTERVAL 'PT2H'</code> → Subtracts 2 hours</p></li>
 </ul>
 </div>
-<h4 id="Search-with-timestamp-filtering" class="common-anchor-header">Suche mit Zeitstempel-Filterung</h4><p>Sie können die Filterung nach „ <code translate="no">TIMESTAMPTZ</code> “ mit der Vektorähnlichkeitssuche kombinieren, um die Ergebnisse sowohl nach Zeit als auch nach Ähnlichkeit einzugrenzen.</p>
+<h4 id="Search-with-timestamp-filtering" class="common-anchor-header">Search with timestamp filtering</h4><p>You can combine <code translate="no">TIMESTAMPTZ</code> filtering with vector similarity search to narrow results by both time and similarity.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define a time-based filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;tsz &gt; ISO &#x27;2025-01-05T00:00:00+08:00&#x27;&quot;</span>
@@ -357,9 +355,9 @@ res = client.search(
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Wenn Ihre Sammlung über zwei oder mehr Vektorfelder verfügt, können Sie hybride Suchvorgänge mit Zeitstempel-Filterung durchführen. Weitere Informationen finden Sie unter <a href="/docs/de/multi-vector-search.md">„Multi-Vektor-Hybridsuche</a>“.</p>
+<p>If your collection has two or more vector fields, you can perform hybrid search operations with timestamp filtering. For details, refer to <a href="/docs/de/multi-vector-search.md">Multi-Vector Hybrid Search</a>.</p>
 </div>
-<h2 id="Advanced-usage" class="common-anchor-header">Erweiterte Verwendung<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
+<h2 id="Advanced-usage" class="common-anchor-header">Advanced usage<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -374,8 +372,8 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Für fortgeschrittene Anwendungen können Sie Zeitzonen auf verschiedenen Ebenen (z. B. Datenbank, Sammlung oder Abfrage) verwalten oder Abfragen auf „ <code translate="no">TIMESTAMPTZ</code> “-Feldern mithilfe von Indizes beschleunigen.</p>
-<h3 id="Manage-time-zones-at-different-levels" class="common-anchor-header">Zeitzonen auf verschiedenen Ebenen verwalten<button data-href="#Manage-time-zones-at-different-levels" class="anchor-icon" translate="no">
+    </button></h2><p>For advanced usage, you can manage time zones at different levels (e.g. database, collection, or query) or accelerate queries on <code translate="no">TIMESTAMPTZ</code> fields using indexes.</p>
+<h3 id="Manage-time-zones-at-different-levels" class="common-anchor-header">Manage time zones at different levels<button data-href="#Manage-time-zones-at-different-levels" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -390,42 +388,42 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Sie können die Zeitzone für „ <code translate="no">TIMESTAMPTZ</code> “-Felder auf <strong>Datenbank-</strong>, <strong>Kollektions-</strong> oder <strong>Abfrage-/Suchebene</strong> steuern.</p>
+    </button></h3><p>You can control the time zone for <code translate="no">TIMESTAMPTZ</code> fields at the <strong>database</strong>, <strong>collection</strong>, or <strong>query/search</strong> level.</p>
 <table>
    <tr>
-     <th><p>Ebene</p></th>
+     <th><p>Level</p></th>
      <th><p>Parameter</p></th>
-     <th><p>Gültigkeitsbereich</p></th>
-     <th><p>Priorität</p></th>
+     <th><p>Scope</p></th>
+     <th><p>Priority</p></th>
    </tr>
    <tr>
-     <td><p>Datenbank</p></td>
+     <td><p>Database</p></td>
      <td><p><code translate="no">timezone</code></p></td>
-     <td><p>Standard für alle Sammlungen in der Datenbank</p></td>
-     <td><p>Niedrigste</p></td>
+     <td><p>Default for all collections in the database</p></td>
+     <td><p>Lowest</p></td>
    </tr>
    <tr>
-     <td><p>Sammlung</p></td>
+     <td><p>Collection</p></td>
      <td><p><code translate="no">timezone</code></p></td>
-     <td><p>Überschreibt die standardmäßige Zeitzoneneinstellung der Datenbank für diese Sammlung</p></td>
-     <td><p>Mittel</p></td>
+     <td><p>Overrides the database default time zone setting for that collection</p></td>
+     <td><p>Medium</p></td>
    </tr>
    <tr>
-     <td><p>Abfrage/Suche/Hybridsuche</p></td>
+     <td><p>Query/search/hybrid search</p></td>
      <td><p><code translate="no">timezone</code></p></td>
-     <td><p>Temporäre Überschreibungen für einen bestimmten Vorgang</p></td>
-     <td><p>Höchste</p></td>
+     <td><p>Temporary overrides for one specific operation</p></td>
+     <td><p>Highest</p></td>
    </tr>
 </table>
-<p>Schritt-für-Schritt-Anleitungen und Code-Beispiele finden Sie auf den entsprechenden Seiten:</p>
+<p>For step-by-step instructions and code samples, refer to the dedicated pages:</p>
 <ul>
-<li><p><a href="/docs/de/modify-collection.md#Example-6-Set-collection-time-zone">Sammlung bearbeiten</a></p></li>
-<li><p><a href="/docs/de/manage_databases.md#Manage-database-properties">Datenbank</a></p></li>
-<li><p><a href="/docs/de/get-and-scalar-query.md#Temporarily-set-a-timezone-for-a-query">Abfrage</a></p></li>
-<li><p><a href="/docs/de/single-vector-search.md#Temporarily-set-a-timezone-for-a-search">Einfache Vektorsuche</a></p></li>
-<li><p><a href="/docs/de/multi-vector-search.md">Hybride Suche mit mehreren Vektoren</a></p></li>
+<li><p><a href="/docs/de/modify-collection.md#Example-6-Set-collection-time-zone">Modify Collection</a></p></li>
+<li><p><a href="/docs/de/manage_databases.md#Manage-database-properties">Database</a></p></li>
+<li><p><a href="/docs/de/get-and-scalar-query.md#Temporarily-set-a-timezone-for-a-query">Query</a></p></li>
+<li><p><a href="/docs/de/single-vector-search.md#Temporarily-set-a-timezone-for-a-search">Basic Vector Search</a></p></li>
+<li><p><a href="/docs/de/multi-vector-search.md">Multi-Vector Hybrid Search</a></p></li>
 </ul>
-<h3 id="Accelerate-queries" class="common-anchor-header">Abfragen beschleunigen<button data-href="#Accelerate-queries" class="anchor-icon" translate="no">
+<h3 id="Accelerate-queries" class="common-anchor-header">Accelerate queries<button data-href="#Accelerate-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -440,5 +438,5 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Standardmäßig führen Abfragen auf „ <code translate="no">TIMESTAMPTZ</code> “-Feldern ohne Index einen vollständigen Scan aller Zeilen durch, was bei großen Datensätzen langsam sein kann. Um Zeitstempel-Abfragen zu beschleunigen, erstellen Sie einen „ <code translate="no">STL_SORT</code> “-Index für Ihr „ <code translate="no">TIMESTAMPTZ</code> “-Feld.</p>
-<p>Weitere Informationen finden Sie unter <a href="/docs/de/stl-sort.md">STL_SORT</a>.</p>
+    </button></h3><p>By default, queries on <code translate="no">TIMESTAMPTZ</code> fields without an index will perform a full scan of all rows, which can be slow on large datasets. To accelerate timestamp queries, create an <code translate="no">STL_SORT</code> index on your <code translate="no">TIMESTAMPTZ</code> field.</p>
+<p>For details, refer to <a href="/docs/de/stl-sort.md">STL_SORT</a>.</p>

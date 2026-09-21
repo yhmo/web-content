@@ -2,15 +2,14 @@
 id: ngram.md
 title: NGRAM
 summary: >-
-  Indeks NGRAM di Milvus dibuat untuk mempercepat kueri LIKE pada bidang VARCHAR
-  atau jalur JSON tertentu di dalam bidang JSON. Sebelum membangun indeks,
-  Milvus membagi teks menjadi substring pendek yang saling tumpang tindih dengan
-  panjang tetap n, yang dikenal sebagai n-gram. Sebagai contoh, dengan n = 3,
-  kata "Milvus" dipecah menjadi 3-gram: "Mil", "ilv", "lvu", dan "vus". N-gram
-  ini kemudian disimpan dalam indeks terbalik yang memetakan setiap gram ke ID
-  dokumen tempat kata tersebut muncul. Pada waktu kueri, indeks ini memungkinkan
-  Milvus mempersempit pencarian dengan cepat menjadi sekumpulan kecil kandidat,
-  sehingga menghasilkan eksekusi kueri yang jauh lebih cepat.
+  The NGRAM index in Milvus is built to accelerate LIKE queries on VARCHAR
+  fields or specific JSON paths within JSON fields. Before building the index,
+  Milvus splits text into short, overlapping substrings of a fixed length n,
+  known as n-grams. For example, with n = 3, the word "Milvus" is split into
+  3-grams: "Mil", "ilv", "lvu", and "vus". These n-grams are then stored in an
+  inverted index that maps each gram to the document IDs in which it appears. At
+  query time, this index allows Milvus to quickly narrow the search to a small
+  set of candidates, resulting in much faster query execution.
 ---
 <h1 id="NGRAM" class="common-anchor-header">NGRAM<button data-href="#NGRAM" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -27,17 +26,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Indeks <code translate="no">NGRAM</code> di Milvus dibuat untuk mempercepat kueri <code translate="no">LIKE</code> pada bidang <code translate="no">VARCHAR</code> atau jalur JSON tertentu di dalam bidang <code translate="no">JSON</code>. Sebelum membuat indeks, Milvus membagi teks menjadi substring-substring pendek yang saling tumpang tindih dengan panjang tetap <em>n</em>, yang dikenal sebagai <em>n-gram</em>. Sebagai contoh, dengan <em>n = 3</em>, kata <em>"Milvus"</em> dipecah menjadi 3-gram: <em>"Mil",</em> <em>"ilv",</em> <em>"lvu"</em>, dan <em>"vus"</em>. N-gram ini kemudian disimpan dalam indeks terbalik yang memetakan setiap gram ke ID dokumen tempat kata tersebut muncul. Pada saat kueri, indeks ini memungkinkan Milvus mempersempit pencarian dengan cepat menjadi sekumpulan kecil kandidat, sehingga menghasilkan eksekusi kueri yang jauh lebih cepat.</p>
-<p>Gunakan ini ketika Anda membutuhkan pemfilteran awalan, akhiran, infiks, atau karakter pengganti yang cepat, seperti:</p>
+    </button></h1><p>The <code translate="no">NGRAM</code> index in Milvus is built to accelerate <code translate="no">LIKE</code> queries on <code translate="no">VARCHAR</code> fields or specific JSON paths within <code translate="no">JSON</code> fields. Before building the index, Milvus splits text into short, overlapping substrings of a fixed length <em>n</em>, known as <em>n-grams</em>. For example, with <em>n = 3</em>, the word <em>“Milvus”</em> is split into 3-grams: <em>“Mil”</em>, <em>“ilv”</em>, <em>“lvu”</em>, and <em>“vus”</em>. These n-grams are then stored in an inverted index that maps each gram to the document IDs in which it appears. At query time, this index allows Milvus to quickly narrow the search to a small set of candidates, resulting in much faster query execution.</p>
+<p>Use it when you need fast prefix, suffix, infix, or wildcard filtering such as:</p>
 <ul>
 <li><p><code translate="no">name LIKE &quot;data%&quot;</code></p></li>
 <li><p><code translate="no">title LIKE &quot;%vector%&quot;</code></p></li>
 <li><p><code translate="no">path LIKE &quot;%json&quot;</code></p></li>
 </ul>
 <div class="alert note">
-<p>Untuk detail tentang sintaks ekspresi penyaringan, lihat <a href="/docs/id/basic-operators.md#Range-operators">Operator Dasar</a>.</p>
+<p>For details on filter expression syntax, refer to <a href="/docs/id/v2.6.x/basic-operators.md#Range-operators">Basic Operators</a>.</p>
 </div>
-<h2 id="How-it-works" class="common-anchor-header">Bagaimana cara kerjanya<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -52,12 +51,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus mengimplementasikan indeks <code translate="no">NGRAM</code> dalam proses dua tahap:</p>
+    </button></h2><p>Milvus implements the <code translate="no">NGRAM</code> index in a two-phase process:</p>
 <ol>
-<li><p><strong>Membangun indeks</strong>: Menghasilkan n-gram untuk setiap dokumen dan membangun indeks terbalik selama proses ingest.</p></li>
-<li><p><strong>Mempercepat kueri</strong>: Gunakan indeks untuk memfilter ke kumpulan kandidat yang kecil, lalu verifikasi kecocokan yang tepat.</p></li>
+<li><p><strong>Build index</strong>: Generate n-grams for each document and build an inverted index during ingest.</p></li>
+<li><p><strong>Accelerate queries</strong> : Use the index to filter to a small candidate set, then verify exact matches.</p></li>
 </ol>
-<h3 id="Phase-1-Build-the-index" class="common-anchor-header">Tahap 1: Membangun indeks<button data-href="#Phase-1-Build-the-index" class="anchor-icon" translate="no">
+<h3 id="Phase-1-Build-the-index" class="common-anchor-header">Phase 1: Build the index<button data-href="#Phase-1-Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -72,19 +71,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Selama konsumsi data, Milvus membangun indeks NGRAM dengan melakukan dua langkah utama:</p>
+    </button></h3><p>During data ingestion, Milvus builds the NGRAM index by performing two main steps:</p>
 <ol>
-<li><p><strong>Menguraikan teks menjadi n-gram</strong>: Milvus menggeser jendela <em>n</em> di setiap string di bidang target dan mengekstrak substring yang tumpang tindih, atau <em>n-gram</em>. Panjang substring ini berada dalam rentang yang dapat dikonfigurasi, <code translate="no">[min_gram, max_gram]</code>.</p>
+<li><p><strong>Decompose text into n-grams</strong>: Milvus slides a window of <em>n</em> across each string in the target field and extracts overlapping substrings, or <em>n-grams</em>. The length of these substrings falls within a configurable range, <code translate="no">[min_gram, max_gram]</code>.</p>
 <ul>
-<li><p><code translate="no">min_gram</code>: N-gram terpendek yang akan dihasilkan. Ini juga mendefinisikan panjang substring kueri minimum yang dapat memanfaatkan indeks.</p></li>
-<li><p><code translate="no">max_gram</code>: N-gram terpanjang yang akan dihasilkan. Pada waktu kueri, ini juga digunakan sebagai ukuran jendela maksimum ketika memisahkan string kueri yang panjang.</p></li>
+<li><p><code translate="no">min_gram</code>: The shortest n-gram to generate. This also defines the minimum query substring length that can benefit from the index.</p></li>
+<li><p><code translate="no">max_gram</code>: The longest n-gram to generate. At query time, it is also used as the maximum window size when splitting long query strings.</p></li>
 </ul>
-<p>Sebagai contoh, dengan <code translate="no">min_gram=2</code> dan <code translate="no">max_gram=3</code>, string <code translate="no">&quot;AI database&quot;</code> dipecah sebagai berikut:</p></li>
+<p>For example, with <code translate="no">min_gram=2</code> and <code translate="no">max_gram=3</code>, the string <code translate="no">&quot;AI database&quot;</code> is broken down as follows:</p></li>
 </ol>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/build-ngram-index.png" alt="Build Ngram Index" class="doc-image" id="build-ngram-index" />
-   </span> <span class="img-wrapper"> <span>Membangun Indeks Ngram</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/build-ngram-index.png" alt="Build Ngram Index" class="doc-image" id="build-ngram-index" />
+    <span>Build Ngram Index</span>
+  </span>
+</p>
 <pre><code translate="no">- **2-grams:** `AI`, `I_`, `_d`, `da`, `at`, ...
 
 - **3-grams:** `AI_`, `I_d`, `_da`, `dat`, `ata`, ...
@@ -108,20 +109,22 @@ summary: >-
 &lt;/div&gt;
 </code></pre>
 <ol>
-<li><p><strong>Membangun indeks terbalik</strong>: <strong>Indeks terbalik</strong> dibuat yang memetakan setiap n-gram yang dihasilkan ke daftar ID dokumen yang mengandungnya.</p>
-<p>Misalnya, jika 2-gram <code translate="no">&quot;AI&quot;</code> muncul di dokumen dengan ID 1, 5, 6, 8, dan 9, indeks akan mencatat <code translate="no">{&quot;AI&quot;: [1, 5, 6, 8, 9]}</code>. Indeks ini kemudian digunakan pada waktu kueri untuk mempersempit cakupan pencarian dengan cepat.</p></li>
+<li><p><strong>Build an inverted index</strong>: An <strong>inverted index</strong> is created that maps each generated n-gram to a list of the document IDs containing it.</p>
+<p>For instance, if the 2-gram <code translate="no">&quot;AI&quot;</code> appears in documents with IDs 1, 5, 6, 8, and 9, the index records <code translate="no">{&quot;AI&quot;: [1, 5, 6, 8, 9]}</code>. This index is then used at query time to quickly narrow the search scope.</p></li>
 </ol>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/build-ngram-index-2.png" alt="Build Ngram Index 2" class="doc-image" id="build-ngram-index-2" />
-   </span> <span class="img-wrapper"> <span>Membangun Indeks Ngram 2</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/build-ngram-index-2.png" alt="Build Ngram Index 2" class="doc-image" id="build-ngram-index-2" />
+    <span>Build Ngram Index 2</span>
+  </span>
+</p>
 <pre><code translate="no">&lt;div class=&quot;alert note&quot;&gt;
 
 A wider `[min_gram, max_gram]` range creates more grams and larger mapping lists. If memory is tight, consider mmap mode for very large posting lists. For details, refer to [Use mmap](https://zilliverse.feishu.cn/wiki/P3wrwSMNNihy8Vkf9p6cTsWYnTb).
 
 &lt;/div&gt;
 </code></pre>
-<h3 id="Phase-2-Accelerate-queries" class="common-anchor-header">Tahap 2: Mempercepat kueri<button data-href="#Phase-2-Accelerate-queries" class="anchor-icon" translate="no">
+<h3 id="Phase-2-Accelerate-queries" class="common-anchor-header">Phase 2: Accelerate queries<button data-href="#Phase-2-Accelerate-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -136,24 +139,26 @@ A wider `[min_gram, max_gram]` range creates more grams and larger mapping lists
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ketika filter <code translate="no">LIKE</code> dijalankan, Milvus menggunakan indeks NGRAM untuk mempercepat kueri dengan langkah-langkah berikut:</p>
+    </button></h3><p>When a <code translate="no">LIKE</code> filter is executed, Milvus uses the NGRAM index to accelerate the query in the following steps:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/accelerate-queries.png" alt="Accelerate Queries" class="doc-image" id="accelerate-queries" />
-   </span> <span class="img-wrapper"> <span>Mempercepat Kueri</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/accelerate-queries.png" alt="Accelerate Queries" class="doc-image" id="accelerate-queries" />
+    <span>Accelerate Queries</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>Ekstrak istilah kueri:</strong> Substring yang bersebelahan tanpa karakter pengganti diekstrak dari ekspresi <code translate="no">LIKE</code> (misalnya, <code translate="no">&quot;%database%&quot;</code> menjadi <code translate="no">&quot;database&quot;</code>).</p></li>
-<li><p><strong>Menguraikan istilah kueri:</strong> Istilah kueri diuraikan menjadi <em>n-gram</em> berdasarkan panjangnya (<code translate="no">L</code>) dan pengaturan <code translate="no">min_gram</code> dan <code translate="no">max_gram</code>.</p>
+<li><p><strong>Extract the query term:</strong> The contiguous substring without wildcards is extracted from the <code translate="no">LIKE</code> expression (e.g., <code translate="no">&quot;%database%&quot;</code> becomes <code translate="no">&quot;database&quot;</code>).</p></li>
+<li><p><strong>Decompose the query term:</strong> The query term is decomposed into <em>n-grams</em> based on its length (<code translate="no">L</code>) and the <code translate="no">min_gram</code> and <code translate="no">max_gram</code> settings.</p>
 <ul>
-<li><p>Jika <code translate="no">L &lt; min_gram</code>, indeks tidak dapat digunakan, dan kueri kembali ke pemindaian penuh.</p></li>
-<li><p>Jika <code translate="no">min_gram ≤ L ≤ max_gram</code>, seluruh istilah kueri diperlakukan sebagai satu n-gram, dan tidak perlu dilakukan penguraian lebih lanjut.</p></li>
-<li><p>Jika <code translate="no">L &gt; max_gram</code>, istilah kueri dipecah menjadi beberapa gram yang tumpang tindih menggunakan ukuran jendela yang sama dengan <code translate="no">max_gram</code>.</p></li>
+<li><p>If <code translate="no">L &lt; min_gram</code>, the index cannot be used, and the query falls back to a full scan.</p></li>
+<li><p>If <code translate="no">min_gram ≤ L ≤ max_gram</code>, the entire query term is treated as a single n-gram, and no further decomposition is necessary.</p></li>
+<li><p>If <code translate="no">L &gt; max_gram</code>, the query term is broken down into overlapping grams using a window size equal to <code translate="no">max_gram</code>.</p></li>
 </ul>
-<p>Sebagai contoh, jika <code translate="no">max_gram</code> disetel ke <code translate="no">3</code> dan istilah kueri adalah <code translate="no">&quot;database&quot;</code>, yang memiliki panjang <strong>8</strong>, istilah tersebut diuraikan menjadi substring 3 gram seperti <code translate="no">&quot;dat&quot;</code>, <code translate="no">&quot;ata&quot;</code>, <code translate="no">&quot;tab&quot;</code>, dan seterusnya.</p></li>
-<li><p><strong>Cari setiap gram &amp; potong</strong>: Milvus mencari setiap gram kueri dalam indeks terbalik dan kemudian memotong daftar ID dokumen yang dihasilkan untuk menemukan sekumpulan kecil dokumen kandidat. Kandidat-kandidat ini berisi semua gram dari kueri.</p></li>
-<li><p><strong>Verifikasi dan kembalikan hasilnya:</strong> Filter <code translate="no">LIKE</code> asli kemudian diterapkan sebagai pemeriksaan akhir hanya pada kumpulan kandidat kecil untuk menemukan kecocokan yang tepat.</p></li>
+<p>For example, if the <code translate="no">max_gram</code> is set to <code translate="no">3</code> and the query term is <code translate="no">&quot;database&quot;</code>, which has a length of <strong>8</strong>, it is decomposed into 3-gram substrings like <code translate="no">&quot;dat&quot;</code>, <code translate="no">&quot;ata&quot;</code>, <code translate="no">&quot;tab&quot;</code>, and so on.</p></li>
+<li><p><strong>Look for each gram & intersect</strong>: Milvus looks up each of the query grams in the inverted index and then intersects the resulting document ID lists to find a small set of candidate documents. These candidates contain all the grams from the query.</p></li>
+<li><p><strong>Verify and return results:</strong> The original <code translate="no">LIKE</code> filter is then applied as a final check on only the small candidate set to find the exact matches.</p></li>
 </ol>
-<h2 id="Create-an-NGRAM-index" class="common-anchor-header">Membuat indeks NGRAM<button data-href="#Create-an-NGRAM-index" class="anchor-icon" translate="no">
+<h2 id="Create-an-NGRAM-index" class="common-anchor-header">Create an NGRAM index<button data-href="#Create-an-NGRAM-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -168,8 +173,8 @@ A wider `[min_gram, max_gram]` range creates more grams and larger mapping lists
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Anda dapat membuat indeks NGRAM pada bidang <code translate="no">VARCHAR</code> atau pada jalur tertentu di dalam bidang <code translate="no">JSON</code>.</p>
-<h3 id="Example-1-Create-on-a-VARCHAR-field" class="common-anchor-header">Contoh 1: Membuat pada bidang VARCHAR<button data-href="#Example-1-Create-on-a-VARCHAR-field" class="anchor-icon" translate="no">
+    </button></h2><p>You can create an NGRAM index on a <code translate="no">VARCHAR</code> field or on a specific path inside a <code translate="no">JSON</code> field.</p>
+<h3 id="Example-1-Create-on-a-VARCHAR-field" class="common-anchor-header">Example 1: Create on a VARCHAR field<button data-href="#Example-1-Create-on-a-VARCHAR-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -184,7 +189,7 @@ A wider `[min_gram, max_gram]` range creates more grams and larger mapping lists
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk bidang <code translate="no">VARCHAR</code>, Anda cukup menentukan <code translate="no">field_name</code> dan mengonfigurasi <code translate="no">min_gram</code> dan <code translate="no">max_gram</code>.</p>
+    </button></h3><p>For a <code translate="no">VARCHAR</code> field, you simply specify the <code translate="no">field_name</code> and configure <code translate="no">min_gram</code> and <code translate="no">max_gram</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your server address</span>
@@ -209,8 +214,8 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Konfigurasi ini menghasilkan 2-gram dan 3-gram untuk setiap string di <code translate="no">text</code> dan menyimpannya dalam indeks terbalik.</p>
-<h3 id="Example-2-Create-on-a-JSON-path" class="common-anchor-header">Contoh 2: Membuat pada jalur JSON<button data-href="#Example-2-Create-on-a-JSON-path" class="anchor-icon" translate="no">
+<p>This configuration generates 2-grams and 3-grams for each string in <code translate="no">text</code> and stores them in the inverted index.</p>
+<h3 id="Example-2-Create-on-a-JSON-path" class="common-anchor-header">Example 2: Create on a JSON path<button data-href="#Example-2-Create-on-a-JSON-path" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -225,10 +230,10 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk bidang <code translate="no">JSON</code>, selain pengaturan gram, Anda juga harus menentukan:</p>
+    </button></h3><p>For a <code translate="no">JSON</code> field, in addition to the gram settings, you must also specify:</p>
 <ul>
-<li><p><code translate="no">params.json_path</code> - jalur JSON yang mengarah ke nilai yang ingin diindeks.</p></li>
-<li><p><code translate="no">params.json_cast_type</code> - harus <code translate="no">&quot;varchar&quot;</code> (tidak peka huruf besar-kecil), karena pengindeksan NGRAM beroperasi pada string.</p></li>
+<li><p><code translate="no">params.json_path</code> – the JSON path that points to the value you want to index.</p></li>
+<li><p><code translate="no">params.json_cast_type</code> – must be <code translate="no">&quot;varchar&quot;</code> (case-insensitive), because NGRAM indexing operates on strings.</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Assume you have defined a JSON field named &quot;json_field&quot; in your collection schema, with a JSON path named &quot;body&quot;</span>
 
@@ -254,14 +259,14 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam contoh ini:</p>
+<p>In this example:</p>
 <ul>
-<li><p>Hanya nilai di <code translate="no">json_field[&quot;body&quot;]</code> yang diindeks.</p></li>
-<li><p>Nilai tersebut di-cast ke <code translate="no">VARCHAR</code> sebelum tokenisasi n-gram.</p></li>
-<li><p>Milvus menghasilkan substring dengan panjang 2 hingga 4 dan menyimpannya dalam indeks terbalik.</p></li>
+<li><p>Only the value at <code translate="no">json_field[&quot;body&quot;]</code> is indexed.</p></li>
+<li><p>The value is cast to <code translate="no">VARCHAR</code> before n-gram tokenization.</p></li>
+<li><p>Milvus generates substrings of length 2 to 4 and stores them in the inverted index.</p></li>
 </ul>
-<p>Untuk informasi lebih lanjut tentang cara mengindeks bidang JSON, lihat Pengindeksan <a href="/docs/id/json-indexing.md">JSON</a>.</p>
-<h2 id="Queries-accelerated-by-NGRAM" class="common-anchor-header">Kueri yang dipercepat oleh NGRAM<button data-href="#Queries-accelerated-by-NGRAM" class="anchor-icon" translate="no">
+<p>For more information on how to index a JSON field, refer to <a href="/docs/id/v2.6.x/json-indexing.md">JSON Indexing</a>.</p>
+<h2 id="Queries-accelerated-by-NGRAM" class="common-anchor-header">Queries accelerated by NGRAM<button data-href="#Queries-accelerated-by-NGRAM" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -276,36 +281,37 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Agar indeks NGRAM dapat diterapkan:</p>
+    </button></h2><p>For the NGRAM index to be applied:</p>
 <ul>
-<li><p>Kueri harus menargetkan bidang <code translate="no">VARCHAR</code> (atau jalur JSON) yang memiliki indeks <code translate="no">NGRAM</code>.</p></li>
-<li><p>Bagian literal dari pola <code translate="no">LIKE</code> harus memiliki panjang setidaknya <code translate="no">min_gram</code> karakter.<em>(Misalnya, jika istilah kueri terpendek yang Anda harapkan adalah 2 karakter, tetapkan min_gram = 2 saat membuat indeks).</em></p></li>
+<li><p>The query must target a <code translate="no">VARCHAR</code> field (or JSON path) that has an <code translate="no">NGRAM</code> index.</p></li>
+<li><p>The literal part of the <code translate="no">LIKE</code> pattern must be at least <code translate="no">min_gram</code> characters long.
+<em>(For example, if your shortest expected query term is 2 characters, set min_gram=2 when creating the index.)</em></p></li>
 </ul>
-<p>Jenis kueri yang didukung:</p>
+<p>Supported query types:</p>
 <ul>
-<li><p><strong>Pencocokan awalan</strong></p>
+<li><p><strong>Prefix match</strong></p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match any string that starts with the substring &quot;database&quot;</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text LIKE &quot;database%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Pencocokan akhiran</strong></p>
+<li><p><strong>Suffix match</strong></p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match any string that ends with the substring &quot;database&quot;</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text LIKE &quot;%database&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Pencocokan infiks</strong></p>
+<li><p><strong>Infix match</strong></p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match any string that contains the substring &quot;database&quot; anywhere</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text LIKE &quot;%database%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Pencocokan wildcard</strong></p>
-<p>Milvus mendukung <code translate="no">%</code> (nol karakter atau lebih) dan <code translate="no">_</code> (tepat satu karakter).</p>
+<li><p><strong>Wildcard match</strong></p>
+<p>Milvus supports both <code translate="no">%</code> (zero or more characters) and <code translate="no">_</code> (exactly one character).</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match any string where &quot;st&quot; appears first, and &quot;um&quot; appears later in the text </span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text LIKE &quot;%st%um%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Kueri jalur JSON</strong></p>
+<li><p><strong>JSON path queries</strong></p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;json_field[&quot;body&quot;] LIKE &quot;%database%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<p>Untuk informasi lebih lanjut tentang sintaks ekspresi filter, lihat <a href="/docs/id/basic-operators.md">Operator Dasar</a>.</p>
-<h2 id="Drop-an-index" class="common-anchor-header">Menghapus indeks<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<p>For more information on filter expression syntax, refer to <a href="/docs/id/v2.6.x/basic-operators.md">Basic Operators</a>.</p>
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -320,7 +326,7 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan metode <code translate="no">drop_index()</code> untuk menghapus indeks yang sudah ada dari koleksi.</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
@@ -328,7 +334,7 @@ client.create_index(
     index_name=<span class="hljs-string">&quot;ngram_index&quot;</span> <span class="hljs-comment"># Name of the index to drop</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Usage-notes" class="common-anchor-header">Catatan penggunaan<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<h2 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -344,12 +350,12 @@ client.create_index(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Jenis bidang</strong>: Didukung pada bidang <code translate="no">VARCHAR</code> dan <code translate="no">JSON</code>. Untuk JSON, sediakan <code translate="no">params.json_path</code> dan <code translate="no">params.json_cast_type=&quot;varchar&quot;</code>.</p></li>
-<li><p><strong>Unicode</strong>: Penguraian NGRAM berbasis karakter dan bahasa-agnostik serta menyertakan spasi dan tanda baca.</p></li>
-<li><p><strong>Pertukaran ruang-waktu</strong>: Rentang gram yang lebih luas <code translate="no">[min_gram, max_gram]</code> menghasilkan lebih banyak gram dan indeks yang lebih besar. Jika memori terbatas, pertimbangkan mode <code translate="no">mmap</code> untuk daftar posting yang besar. Untuk informasi lebih lanjut, lihat <a href="https://zilliverse.feishu.cn/wiki/P3wrwSMNNihy8Vkf9p6cTsWYnTb">Menggunakan mmap</a>.</p></li>
-<li><p><strong>Kekekalan</strong>: <code translate="no">min_gram</code> dan <code translate="no">max_gram</code> tidak dapat diubah di tempatnya-bangun kembali indeks untuk menyesuaikannya.</p></li>
+<li><p><strong>Field types</strong>: Supported on <code translate="no">VARCHAR</code> and <code translate="no">JSON</code> fields. For JSON, provide both <code translate="no">params.json_path</code> and <code translate="no">params.json_cast_type=&quot;varchar&quot;</code>.</p></li>
+<li><p><strong>Unicode</strong>: NGRAM decomposition is character-based and language-agnostic and includes whitespace and punctuation.</p></li>
+<li><p><strong>Space–time trade-off</strong>: Wider gram ranges <code translate="no">[min_gram, max_gram]</code> produce more grams and larger indexes. If memory is tight, consider <code translate="no">mmap</code> mode for large posting lists. For more information, refer to <a href="https://zilliverse.feishu.cn/wiki/P3wrwSMNNihy8Vkf9p6cTsWYnTb">Use mmap</a>.</p></li>
+<li><p><strong>Immutability</strong>: <code translate="no">min_gram</code> and <code translate="no">max_gram</code> cannot be changed in place—rebuild the index to adjust them.</p></li>
 </ul>
-<h2 id="Best-practices" class="common-anchor-header">Praktik terbaik<button data-href="#Best-practices" class="anchor-icon" translate="no">
+<h2 id="Best-practices" class="common-anchor-header">Best practices<button data-href="#Best-practices" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -365,14 +371,14 @@ client.create_index(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Pilih min_gram dan max_gram untuk mencocokkan perilaku pencarian</strong></p>
+<li><p><strong>Choose min_gram and max_gram to match search behavior</strong></p>
 <ul>
-<li><p>Mulai dengan <code translate="no">min_gram=2</code>, <code translate="no">max_gram=3</code>.</p></li>
-<li><p>Tetapkan <code translate="no">min_gram</code> ke literal terpendek yang Anda perkirakan akan diketik oleh pengguna.</p></li>
-<li><p>Tetapkan <code translate="no">max_gram</code> di dekat panjang khas substring yang bermakna; <code translate="no">max_gram</code> yang lebih besar meningkatkan penyaringan tetapi menambah ruang.</p></li>
+<li><p>Start with <code translate="no">min_gram=2</code>, <code translate="no">max_gram=3</code>.</p></li>
+<li><p>Set <code translate="no">min_gram</code> to the shortest literal you expect users to type.</p></li>
+<li><p>Set <code translate="no">max_gram</code> near the typical length of meaningful substrings; larger <code translate="no">max_gram</code> improves filtering but increases space.</p></li>
 </ul></li>
-<li><p><strong>Hindari gram dengan selektivitas rendah</strong></p>
-<p>Pola yang sangat berulang (misalnya, <code translate="no">&quot;aaaaaa&quot;</code>) memberikan penyaringan yang lemah dan mungkin menghasilkan keuntungan yang terbatas.</p></li>
-<li><p><strong>Lakukan normalisasi secara konsisten</strong></p>
-<p>Terapkan normalisasi yang sama pada teks yang dicerna dan literal kueri (misalnya, huruf kecil, pemangkasan) jika kasus penggunaan Anda membutuhkannya.</p></li>
+<li><p><strong>Avoid low-selectivity grams</strong></p>
+<p>Highly repetitive patterns (e.g., <code translate="no">&quot;aaaaaa&quot;</code>) provide weak filtering and may yield limited gains.</p></li>
+<li><p><strong>Normalize consistently</strong></p>
+<p>Apply the same normalization to ingested text and query literals (e.g., lowercasing, trimming) if your use case needs it.</p></li>
 </ul>

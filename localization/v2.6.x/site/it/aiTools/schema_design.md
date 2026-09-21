@@ -1,11 +1,9 @@
 ---
 id: schema_design.md
-title: 'Prompt: Schema di progettazione Milvus'
-summary: >-
-  Regole per gli assistenti di codifica AI per progettare schemi di raccolta
-  Milvus corretti.
+title: 'Prompt: Milvus Schema Design'
+summary: Rules for AI coding assistants to design correct Milvus collection schemas.
 ---
-<h1 id="Schema-Design" class="common-anchor-header">Progettazione degli schemi<button data-href="#Schema-Design" class="anchor-icon" translate="no">
+<h1 id="Schema-Design" class="common-anchor-header">Schema Design<button data-href="#Schema-Design" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +18,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Regole e guide decisionali per la progettazione di schemi di raccolta Milvus corretti, compresi i tipi di campo, le chiavi primarie, la configurazione di BM25 e i vincoli di immutabilità dello schema. Copiare il prompt completo qui sotto nello strumento AI per applicare automaticamente queste regole. Per una panoramica di tutti i prompt, vedere i <a href="/docs/it/milvus_for_agents.md">prompt dell'IA</a>.</p>
-<h2 id="How-to-use-this-prompt" class="common-anchor-header">Come utilizzare questo prompt<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
+    </button></h1><p>Rules and decision guides for designing correct Milvus collection schemas, including field types, primary keys, BM25 configuration, and schema immutability constraints. Copy the full prompt below into your AI tool to apply these rules automatically. For an overview of all prompts, see <a href="/docs/it/v2.6.x/milvus_for_agents.md">AI Prompts</a>.</p>
+<h2 id="How-to-use-this-prompt" class="common-anchor-header">How to use this prompt<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,12 +35,12 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ol>
-<li><strong>Copiare</strong> il prompt completo dalla sezione <a href="#full-prompt">prompt completo</a> qui sotto.</li>
-<li><strong>Salvarlo</strong> nella posizione prevista dallo strumento di IA (vedere la <a href="/docs/it/milvus_for_agents.md">tabella degli ambienti per</a> i dettagli sulla collocazione).</li>
-<li>L'assistente AI applicherà automaticamente queste regole durante la generazione o la revisione del codice Milvus.</li>
+<li><strong>Copy</strong> the full prompt from the <a href="#full-prompt">Full prompt</a> section below.</li>
+<li><strong>Save</strong> it to the location your AI tool expects — see the <a href="/docs/it/v2.6.x/milvus_for_agents.md">environment table</a> for placement details.</li>
+<li>Your AI assistant will automatically apply these rules when generating or reviewing Milvus code.</li>
 </ol>
-<p>Per gli utenti di <strong>Cursor</strong>: copiare il prompt dalla sezione <a href="#full-prompt">prompt completo</a> e salvarlo in <code translate="no">.cursor/rules/</code> nel progetto.</p>
-<h2 id="Full-prompt" class="common-anchor-header">Richiesta completa<button data-href="#Full-prompt" class="anchor-icon" translate="no">
+<p>For <strong>Cursor</strong> users: copy the prompt from the <a href="#full-prompt">Full prompt</a> section and save it under <code translate="no">.cursor/rules/</code> in your project.</p>
+<h2 id="Full-prompt" class="common-anchor-header">Full prompt<button data-href="#Full-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

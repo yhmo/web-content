@@ -1,11 +1,12 @@
 ---
 id: insert-update-delete.md
-title: 엔티티 삽입
+title: Insert Entities
 summary: >-
-  컬렉션에 포함된 엔티티는 동일한 필드 집합을 공유하는 데이터 레코드입니다. 각 데이터 레코드의 필드 값들이 모여 하나의 엔티티를 구성합니다.
-  이 페이지에서는 컬렉션에 엔티티를 삽입하는 방법을 설명합니다.
+  Entities in a collection are data records that share the same set of fields.
+  Field values in every data record form an entity. This page introduces how to
+  insert entities into a collection.
 ---
-<h1 id="Insert-Entities" class="common-anchor-header">엔티티 삽입<button data-href="#Insert-Entities" class="anchor-icon" translate="no">
+<h1 id="Insert-Entities" class="common-anchor-header">Insert Entities<button data-href="#Insert-Entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,14 +21,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>컬렉션 내의 엔티티는 동일한 필드 집합을 공유하는 데이터 레코드입니다. 각 데이터 레코드의 필드 값들이 모여 하나의 엔티티를 형성합니다. 이 페이지에서는 컬렉션에 엔티티를 삽입하는 방법을 설명합니다.</p>
+    </button></h1><p>Entities in a collection are data records that share the same set of fields. Field values in every data record form an entity. This page introduces how to insert entities into a collection.</p>
 <div class="alert note">
 <ul>
-<li><p><strong>컬렉션 생성 후 추가된 필드</strong>: 컬렉션 생성 후 새로운 필드를 추가하고 삽입 시 값을 지정하지 않으면, Milvus는 정의된 기본값으로 해당 필드를 자동으로 채우거나, 기본값이 설정되지 않은 경우 <code translate="no">NULL</code> 를 사용합니다. 자세한 내용은 <a href="/docs/ko/add-fields-to-an-existing-collection.md">‘컬렉션 스키마 변경’을</a> 참조하십시오.</p></li>
-<li><p><strong>중복 처리</strong>: 표준 <code translate="no">insert</code> 작업은 중복 기본 키를 확인하지 않습니다. 기존 기본 키와 동일한 키를 가진 데이터를 삽입하면 동일한 키를 가진 새로운 엔티티가 생성되어 데이터 중복 및 잠재적인 애플리케이션 문제가 발생할 수 있습니다. 기존 엔티티를 업데이트하거나 중복을 방지하려면 대신 <strong><code translate="no">upsert</code></strong> 연산을 대신 사용하십시오. 자세한 내용은 <a href="/docs/ko/upsert-entities.md">‘엔티티 업서트(Upsert Entities</a>)’를 참조하십시오.</p></li>
+<li><p><strong>Fields added after collection creation</strong>: If you add new fields to a collection after creation and do not specify values during insertion, Milvus automatically populates them with defined default values or <code translate="no">NULL</code> if no defaults are set. For details, refer to <a href="/docs/ko/add-fields-to-an-existing-collection.md">Alter Collection Schema</a>.</p></li>
+<li><p><strong>Duplicate handling</strong>: The standard <code translate="no">insert</code> operation does not check for duplicate primary keys. Inserting data with an existing primary key creates a new entity with the same key, leading to data duplication and potential application issues. To update existing entities or avoid duplicates, use the <strong><code translate="no">upsert</code></strong> operation instead. For more information, refer to <a href="/docs/ko/upsert-entities.md">Upsert Entities</a>.</p></li>
 </ul>
 </div>
-<h2 id="Overview" class="common-anchor-header">개요<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,10 +43,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus에서 <strong>엔티티(Entity</strong> )는 동일한 <strong>스키마를</strong> 공유하는 <strong>컬렉션</strong> 내의 데이터 레코드를 의미하며, 행의 각 필드에 포함된 데이터가 엔티티를 구성합니다. 따라서 동일한 컬렉션 내의 엔티티들은 동일한 속성(필드 이름, 데이터 유형 및 기타 제약 조건 등)을 갖습니다.</p>
-<p>컬렉션에 엔티티를 삽입할 때, 삽입할 엔티티는 스키마에 정의된 모든 필드를 포함해야만 성공적으로 추가될 수 있습니다. 삽입된 엔티티는 삽입 순서대로 <strong>_default라는</strong> 파티션에 들어갑니다. 특정 파티션이 존재하는 경우, 삽입 요청 시 파티션 이름을 지정하여 해당 파티션에 엔티티를 삽입할 수도 있습니다.</p>
-<p>Milvus는 컬렉션의 확장성을 유지하기 위해 동적 필드도 지원합니다. 동적 필드가 활성화된 경우, 스키마에 정의되지 않은 필드를 컬렉션에 삽입할 수 있습니다. 이러한 필드와 값은 <strong>$meta라는</strong> 예약된 필드에 키-값 쌍으로 저장됩니다. 동적 필드에 대한 자세한 내용은 동적 필드를 참조하십시오.</p>
-<h2 id="Insert-Entities-into-a-Collection" class="common-anchor-header">컬렉션에 엔티티 삽입<button data-href="#Insert-Entities-into-a-Collection" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, an <strong>Entity</strong> refers to data records in a <strong>Collection</strong> that share the same <strong>Schema</strong>, with the data in each field of a row constituting an Entity. Therefore, the Entities within the same Collection have the same attributes (such as field names, data types, and other constraints).</p>
+<p>When inserting an Entity into a Collection, the Entity to be inserted can only be successfully added if it contains all the fields defined in the Schema. The inserted Entity will enter a Partition named <strong>_default</strong> in the order of insertion. Provided that a certain Partition exists, you can also insert Entities into that Partition by specifying the Partition name in the insertion request.</p>
+<p>Milvus also supports dynamic fields to maintain the scalability of the Collection. When the dynamic field is enabled, you can insert fields that are not defined in the Schema into the Collection. These fields and values will be stored as key-value pairs in a reserved field named <strong>$meta</strong>. For more information about dynamic fields, please refer to Dynamic Field.</p>
+<h2 id="Insert-Entities-into-a-Collection" class="common-anchor-header">Insert Entities into a Collection<button data-href="#Insert-Entities-into-a-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -60,14 +61,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>데이터를 삽입하기 전에, 스키마에 따라 데이터를 사전 목록으로 구성해야 합니다. 각 사전은 하나의 엔티티를 나타내며, 스키마에 정의된 모든 필드를 포함해야 합니다. 컬렉션에서 동적 필드가 활성화된 경우, 각 사전에는 스키마에 정의되지 않은 필드도 포함될 수 있습니다.</p>
-<p>이 섹션에서는 빠른 설정 방식으로 생성된 컬렉션에 엔티티를 삽입해 보겠습니다. 이 방식으로 생성된 컬렉션에는 <strong>id와</strong> <strong>vector라는</strong> 두 개의 필드만 있습니다. 또한, 이 컬렉션은 동적 필드가 활성화되어 있으므로 예제 코드의 엔티티에는 스키마에 정의되지 않은 <strong>color라는</strong> 필드가 포함되어 있습니다.</p>
+    </button></h2><p>Before inserting data, you need to organize your data into a list of dictionaries according to the Schema, with each dictionary representing an Entity and containing all the fields defined in the Schema. If the Collection has the dynamic field enabled, each dictionary can also include fields that are not defined in the Schema.</p>
+<p>In this section, you will insert entities into a Collection created in the quick-setup manner. A Collection created in this manner has only two fields, named <strong>id</strong> and <strong>vector</strong>. Additionally, this Collection has the dynamic field enabled, so the Entities in the example code include a field called <strong>color</strong> that is not defined in the Schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -260,7 +261,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-Entities-into-a-Partition" class="common-anchor-header">파티션에 엔티티 삽입<button data-href="#Insert-Entities-into-a-Partition" class="anchor-icon" translate="no">
+<h2 id="Insert-Entities-into-a-Partition" class="common-anchor-header">Insert Entities into a Partition<button data-href="#Insert-Entities-into-a-Partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -275,13 +276,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>지정된 파티션에 엔티티를 삽입할 수도 있습니다. 다음 코드 예제는 컬렉션에 <strong>PartitionA라는</strong> 파티션이 있다고 가정합니다.</p>
+    </button></h2><p>You can also insert entities into a specified partition. The following code snippets assume that you have a partition named <strong>PartitionA</strong> in your collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">data=[
     {<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-string">&quot;vector&quot;</span>: [<span class="hljs-number">0.3580376395471989</span>, -<span class="hljs-number">0.6023495712049978</span>, <span class="hljs-number">0.18414012509913835</span>, -<span class="hljs-number">0.26286205330961354</span>, <span class="hljs-number">0.9029438446296592</span>], <span class="hljs-string">&quot;color&quot;</span>: <span class="hljs-string">&quot;pink_8682&quot;</span>},

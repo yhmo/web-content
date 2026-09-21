@@ -1,11 +1,13 @@
 ---
 id: insert-data-into-structarray-fields.md
-title: 將資料插入 StructArray 欄位
+title: Insert Data into StructArray Fields
 summary: >-
-  當每個實體包含一個有序的結構化元素清單時，請將資料插入 StructArray 欄位中。在插入載荷中，StructArray
-  欄位以物件陣列的形式呈現。每個物件代表一個 Struct 元素，並使用集合架構中定義的 Struct 子欄位名稱。
+  Insert data into a StructArray field when each entity contains an ordered list
+  of structured elements. In the insert payload, a StructArray field is
+  represented as an array of objects. Each object represents one Struct element
+  and uses the Struct subfield names defined in the collection schema.
 ---
-<h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">將資料插入 StructArray 欄位<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
+<h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">Insert Data into StructArray Fields<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>當每個實體包含一個有序的結構化元素清單時，請將資料插入 StructArray 欄位中。在插入載荷中，StructArray 欄位以物件陣列的形式呈現。每個物件代表一個 Struct 元素，並使用集合架構中定義的 Struct 子欄位名稱。</p>
-<p>本頁使用《<a href="/docs/zh-hant/create-structarray-field.md">建立 StructArray 欄位</a>》中的<code translate="no">tech_articles</code> 集合。每個實體皆為一篇技術文章，而<code translate="no">chunks</code> 欄位則將文章片段儲存為 Struct 元素。</p>
-<h2 id="Before-you-begin" class="common-anchor-header">開始之前<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+    </button></h1><p>Insert data into a StructArray field when each entity contains an ordered list of structured elements. In the insert payload, a StructArray field is represented as an array of objects. Each object represents one Struct element and uses the Struct subfield names defined in the collection schema.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/zh-hant/create-structarray-field.md">Create a StructArray Field</a>. Each entity is a technical article, and the <code translate="no">chunks</code> field stores article chunks as Struct elements.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,38 +39,38 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>請確認集合架構中已包含<code translate="no">chunks</code> StructArray欄位。</p>
+    </button></h2><p>Make sure the collection schema already contains the <code translate="no">chunks</code> StructArray field.</p>
 <table>
 <thead>
-<tr><th>欄位</th><th>類型</th><th>插入值</th></tr>
+<tr><th>Field</th><th>Type</th><th>Insert value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">doc_id</code></td><td><code translate="no">INT64</code></td><td>文章 ID。</td></tr>
-<tr><td><code translate="no">title</code></td><td><code translate="no">VARCHAR</code></td><td>文章標題。</td></tr>
-<tr><td><code translate="no">category</code></td><td><code translate="no">VARCHAR</code></td><td>文章類別。</td></tr>
-<tr><td><code translate="no">title_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>文章層級嵌入。</td></tr>
-<tr><td><code translate="no">chunks</code></td><td><code translate="no">ARRAY</code></td><td>一段落物件清單。</td></tr>
+<tr><td><code translate="no">doc_id</code></td><td><code translate="no">INT64</code></td><td>Article ID.</td></tr>
+<tr><td><code translate="no">title</code></td><td><code translate="no">VARCHAR</code></td><td>Article title.</td></tr>
+<tr><td><code translate="no">category</code></td><td><code translate="no">VARCHAR</code></td><td>Article category.</td></tr>
+<tr><td><code translate="no">title_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Article-level embedding.</td></tr>
+<tr><td><code translate="no">chunks</code></td><td><code translate="no">ARRAY</code></td><td>A list of chunk objects.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">chunks</code> 中的每個物件都必須遵循 Struct 結構。</p>
+<p>Each object in <code translate="no">chunks</code> must follow the Struct schema.</p>
 <table>
 <thead>
-<tr><th>子欄位</th><th>類型</th><th>插入值</th></tr>
+<tr><th>Subfield</th><th>Type</th><th>Insert value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">text</code></td><td><code translate="no">VARCHAR</code></td><td>區塊文字。</td></tr>
-<tr><td><code translate="no">section</code></td><td><code translate="no">VARCHAR</code></td><td>區段名稱，例如<code translate="no">index</code> 、<code translate="no">search</code> 或<code translate="no">filter</code> 。</td></tr>
-<tr><td><code translate="no">page</code></td><td><code translate="no">INT64</code></td><td>頁碼或邏輯位置。</td></tr>
-<tr><td><code translate="no">quality_score</code></td><td><code translate="no">FLOAT</code></td><td>區塊層級的評分。</td></tr>
-<tr><td><code translate="no">has_code</code></td><td><code translate="no">BOOL</code></td><td>該區塊是否包含程式碼。</td></tr>
-<tr><td><code translate="no">emb_list_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>為 EmbeddingList 搜尋所編寫的向量。</td></tr>
-<tr><td><code translate="no">emb</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>為元素層級搜尋所撰寫的向量。</td></tr>
+<tr><td><code translate="no">text</code></td><td><code translate="no">VARCHAR</code></td><td>Chunk text.</td></tr>
+<tr><td><code translate="no">section</code></td><td><code translate="no">VARCHAR</code></td><td>Section name, such as <code translate="no">index</code>, <code translate="no">search</code>, or <code translate="no">filter</code>.</td></tr>
+<tr><td><code translate="no">page</code></td><td><code translate="no">INT64</code></td><td>Page number or logical position.</td></tr>
+<tr><td><code translate="no">quality_score</code></td><td><code translate="no">FLOAT</code></td><td>Chunk-level score.</td></tr>
+<tr><td><code translate="no">has_code</code></td><td><code translate="no">BOOL</code></td><td>Whether the chunk contains code.</td></tr>
+<tr><td><code translate="no">emb_list_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vector written for EmbeddingList search.</td></tr>
+<tr><td><code translate="no">emb</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vector written for element-level search.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>在插入式有效載荷中，<code translate="no">chunks</code> 是一個常規欄位，其值為 Struct 物件的陣列。在每個物件內部，請使用<code translate="no">text</code> 和<code translate="no">emb</code> 等子欄位名稱。僅在插入完成後，當您建立索引、執行搜尋、建立篩選器或指定輸出欄位時，才使用路徑語法，例如<code translate="no">chunks[text]</code> 或<code translate="no">chunks[emb]</code> 。</p>
+<p>In an insert payload, <code translate="no">chunks</code> is a regular field whose value is an array of Struct objects. Inside each object, use subfield names such as <code translate="no">text</code> and <code translate="no">emb</code>. Use path syntax, such as <code translate="no">chunks[text]</code> or <code translate="no">chunks[emb]</code>, only after insertion when you create indexes, run searches, build filters, or specify output fields.</p>
 </div>
-<h2 id="Understand-the-insert-payload-shape" class="common-anchor-header">了解插入資料的結構<button data-href="#Understand-the-insert-payload-shape" class="anchor-icon" translate="no">
+<h2 id="Understand-the-insert-payload-shape" class="common-anchor-header">Understand the insert payload shape<button data-href="#Understand-the-insert-payload-shape" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -83,7 +85,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">chunks</code> 的值是一個由 Struct 元素組成的陣列。每個元素皆為一個物件，其鍵為子欄位名稱。</p>
+    </button></h2><p>The <code translate="no">chunks</code> value is an array of Struct elements. Each element is an object whose keys are subfield names.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;doc_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;StructArray indexing patterns&quot;</span><span class="hljs-punctuation">,</span>
@@ -111,8 +113,8 @@ summary: >-
   <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">emb_list_vector</code> 和<code translate="no">emb</code> 是獨立的向量子欄位，因為它們支援不同的搜尋模式。EmbeddingList 搜尋會將 StructArray 欄位中的所有向量視為一個嵌入清單，並返回包含<code translate="no">MAX_SIM*</code> 指標的實體層級結果。元素層級搜尋則會獨立搜尋每個 Struct 元素，並可返回匹配元素的偏移量。為簡化說明，此範例在兩個欄位中儲存相同的向量值。 在生產環境的應用程式中，當兩種搜尋模式使用相同的區塊嵌入時，可將相同的嵌入向量儲存於兩個子欄位中；若兩種搜尋模式使用不同的表示法，則可儲存不同的嵌入向量。</p>
-<h2 id="Insert-rows" class="common-anchor-header">插入資料列<button data-href="#Insert-rows" class="anchor-icon" translate="no">
+<p><code translate="no">emb_list_vector</code> and <code translate="no">emb</code> are separate vector subfields because they support different search modes. EmbeddingList search treats all vectors in a StructArray field as one embedding list and returns entity-level results with <code translate="no">MAX_SIM*</code> metrics. Element-level search searches each Struct element independently and can return the matched element offset. This example stores the same vector values in both fields for simplicity. In a production application, you can store the same embeddings in both subfields when both search modes use the same chunk embedding, or store different embeddings when the two search modes use different representations.</p>
+<h2 id="Insert-rows" class="common-anchor-header">Insert rows<button data-href="#Insert-rows" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -127,7 +129,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>請使用 `<code translate="no">client.insert()</code> ` 來插入包含 StructArray 值的資料列。</p>
+    </button></h2><p>Use <code translate="no">client.insert()</code> to insert rows that contain StructArray values.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -214,7 +216,7 @@ result = client.insert(
 
 <span class="hljs-built_in">print</span>(result)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-into-nullable-StructArray-fields" class="common-anchor-header">插入可為空的 StructArray 欄位<button data-href="#Insert-into-nullable-StructArray-fields" class="anchor-icon" translate="no">
+<h2 id="Insert-into-nullable-StructArray-fields" class="common-anchor-header">Insert into nullable StructArray fields<button data-href="#Insert-into-nullable-StructArray-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -229,7 +231,7 @@ result = client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若 `<code translate="no">chunks</code> ` 欄位為可為空類型，實體可將整個 `<code translate="no">chunks</code> ` 欄位設為 null。在 Python 中，請使用 `<code translate="no">None</code> ` 來表示 null 值。</p>
+    </button></h2><p>If the <code translate="no">chunks</code> field is nullable, an entity can set the entire <code translate="no">chunks</code> field to null. In Python, use <code translate="no">None</code> to represent a null value.</p>
 <pre><code translate="no" class="language-python">client.insert(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
     data=[
@@ -243,12 +245,12 @@ result = client.insert(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>當可為空的 StructArray 欄位包含有效的 StructArray 值時，該值中的所有子欄位應皆為 null 或具有有效值。若插入的實體中，部分子欄位設定為 null 而其他子欄位設定為有效值，將會導致錯誤。</p>
+<p>When a nullable StructArray field contains a valid StructArray value, all subfields in that value should either be null or have valid values. Inserting an entity with some subfields set to null and others set to valid values results in an error.</p>
 <div class="alert note">
-<p>警告
-可為空的 StructArray 欄位僅在 Milvus v3.0.x 中提供。若您要動態將 StructArray 欄位新增至現有集合中，新增的欄位必須為可為空，且現有實體針對該新欄位的所有子欄位均會傳回 `<code translate="no">null</code> `。</p>
+<p>Warning
+Nullable StructArray fields are available only in Milvus v3.0.x. If you dynamically add a StructArray field to an existing collection, the added field must be nullable, and existing entities return <code translate="no">null</code> for the new field across all its subfields.</p>
 </div>
-<h2 id="Validate-inserted-data" class="common-anchor-header">驗證插入的資料<button data-href="#Validate-inserted-data" class="anchor-icon" translate="no">
+<h2 id="Validate-inserted-data" class="common-anchor-header">Validate inserted data<button data-href="#Validate-inserted-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -263,7 +265,7 @@ result = client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您可以查詢集合並返回 StructArray 欄位或選定的子欄位。</p>
+    </button></h2><p>You can query the collection and return the StructArray field or selected subfields.</p>
 <pre><code translate="no" class="language-python">rows = client.query(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
     <span class="hljs-built_in">filter</span>=<span class="hljs-string">&quot;doc_id in [1, 2, 3]&quot;</span>,
@@ -279,8 +281,8 @@ result = client.insert(
 <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> rows:
     <span class="hljs-built_in">print</span>(row)
 <button class="copy-code-btn"></button></code></pre>
-<p>僅在查詢、搜尋、篩選或建立索引時，才應使用 StructArray 欄位路徑（例如<code translate="no">chunks[text]</code> ）。插入資料時，仍應使用位於<code translate="no">chunks</code> 下的嵌套物件。</p>
-<h2 id="Insert-rules" class="common-anchor-header">插入規則<button data-href="#Insert-rules" class="anchor-icon" translate="no">
+<p>Use StructArray field paths, such as <code translate="no">chunks[text]</code>, only when you query, search, filter, or create indexes. Insert payloads should still use nested objects under <code translate="no">chunks</code>.</p>
+<h2 id="Insert-rules" class="common-anchor-header">Insert rules<button data-href="#Insert-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -297,19 +299,19 @@ result = client.insert(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>規則</th><th>說明</th></tr>
+<tr><th>Rule</th><th>Explanation</th></tr>
 </thead>
 <tbody>
-<tr><td>請對 StructArray 欄位使用物件陣列。</td><td><code translate="no">chunks</code> 的值是一個清單，而清單中的每個項目皆為一個 Struct 元素。</td></tr>
-<tr><td>在每個 Struct 元素內使用子欄位名稱。</td><td>請將 `<code translate="no">{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}</code> ` 插入 `<code translate="no">chunks</code>` 中，而非 `<code translate="no">{&quot;chunks[text]&quot;: &quot;...&quot;}</code>`。</td></tr>
-<tr><td>請符合 Struct 架構規範。</td><td>每個 Struct 元素必須使用 Struct 模式中定義的子欄位。</td></tr>
-<tr><td>向量維數必須與結構體模式相符。</td><td>向量值必須與其向量子欄位所設定的<code translate="no">dim</code> 相符。</td></tr>
-<tr><td>須遵守<code translate="no">max_capacity</code> 。</td><td>單一實體中的 Struct 元素數量不得超過 StructArray 欄位的<code translate="no">max_capacity</code> 。</td></tr>
-<tr><td>針對不同的搜尋模式，請使用獨立的向量子欄位。</td><td>如果同時需要 EmbeddingList 搜尋和元素層級搜尋，請將向量值寫入兩個向量子欄位中。</td></tr>
-<tr><td>僅當欄位可為空時，才使用<code translate="no">null</code> 。</td><td>不可為空的 StructArray 欄位需要有效的 StructArray 值。</td></tr>
+<tr><td>Use an array of objects for a StructArray field.</td><td>The value of <code translate="no">chunks</code> is a list, and each item in the list is a Struct element.</td></tr>
+<tr><td>Use subfield names inside each Struct element.</td><td>Insert <code translate="no">{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}</code> inside <code translate="no">chunks</code>, not <code translate="no">{&quot;chunks[text]&quot;: &quot;...&quot;}</code>.</td></tr>
+<tr><td>Match the Struct schema.</td><td>Each Struct element must use the subfields defined in the Struct schema.</td></tr>
+<tr><td>Match vector dimensions.</td><td>Vector values must match the <code translate="no">dim</code> configured for their vector subfields.</td></tr>
+<tr><td>Respect <code translate="no">max_capacity</code>.</td><td>The number of Struct elements in one entity must not exceed the <code translate="no">max_capacity</code> of the StructArray field.</td></tr>
+<tr><td>Use separate vector subfields for separate search modes.</td><td>If both EmbeddingList search and element-level search are required, write vector values to both vector subfields.</td></tr>
+<tr><td>Use <code translate="no">null</code> only when the field is nullable.</td><td>Non-nullable StructArray fields require valid StructArray values.</td></tr>
 </tbody>
 </table>
-<h2 id="Common-mistakes" class="common-anchor-header">常見錯誤<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -325,15 +327,15 @@ result = client.insert(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>在插入有效載荷中使用如 `<code translate="no">chunks[text]</code> ` 這樣的欄位路徑。</p></li>
-<li><p>從 Struct 元素中省略必填子欄位。</p></li>
-<li><p>插入維數錯誤的向量。</p></li>
-<li><p>插入的 Struct 元素數量超過<code translate="no">max_capacity</code> 所允許的數量。</p></li>
-<li><p>僅將一個子欄位設定為<code translate="no">null</code> ，而同一 StructArray 值中的其他子欄位卻是有效的。</p></li>
-<li><p>僅將向量寫入 `<code translate="no">emb_list_vector</code> `，隨後卻嘗試在 `<code translate="no">chunks[emb]</code>` 上執行元素層級搜尋。</p></li>
-<li><p>僅將向量寫入 `<code translate="no">emb</code> `，隨後嘗試在 `<code translate="no">chunks[emb_list_vector]</code>` 上執行 `EmbeddingList` 搜尋。</p></li>
+<li><p>Using field paths such as <code translate="no">chunks[text]</code> in insert payloads.</p></li>
+<li><p>Omitting required subfields from a Struct element.</p></li>
+<li><p>Inserting vectors with the wrong dimension.</p></li>
+<li><p>Inserting more Struct elements than <code translate="no">max_capacity</code> allows.</p></li>
+<li><p>Setting only one subfield to <code translate="no">null</code> while other subfields in the same StructArray value are valid.</p></li>
+<li><p>Writing vectors only to <code translate="no">emb_list_vector</code> and then trying to run element-level search on <code translate="no">chunks[emb]</code>.</p></li>
+<li><p>Writing vectors only to <code translate="no">emb</code> and then trying to run EmbeddingList search on <code translate="no">chunks[emb_list_vector]</code>.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">後續步驟<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -349,7 +351,7 @@ result = client.insert(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>若要為<code translate="no">chunks[emb_list_vector]</code> 、<code translate="no">chunks[emb]</code> 及標量子欄位建立索引，請參閱《<a href="/docs/zh-hant/index-structarray-fields.md">索引 StructArray 欄位</a>》。</p></li>
-<li><p>若要搜尋 StructArray 向量子欄位，請參閱《<a href="/docs/zh-hant/basic-vector-search-with-structarray.md">使用 StructArray 進行基本向量搜尋</a>》。</p></li>
-<li><p>若要檢視可為空的行為及特定版本的限制，請參閱《<a href="/docs/zh-hant/structarray-limits.md">StructArray 限制</a>》。</p></li>
+<li><p>To create indexes for <code translate="no">chunks[emb_list_vector]</code>, <code translate="no">chunks[emb]</code>, and scalar subfields, read <a href="/docs/zh-hant/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To search StructArray vector subfields, read <a href="/docs/zh-hant/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To review nullable behavior and version-specific limitations, read <a href="/docs/zh-hant/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

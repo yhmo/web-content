@@ -1,15 +1,14 @@
 ---
 id: analyzer-overview.md
-title: Gambaran Umum Penganalisis
+title: Analyzer Overview
 summary: >-
-  Dalam pemrosesan teks, penganalisis merupakan komponen penting yang mengubah
-  teks mentah menjadi format yang terstruktur dan dapat dicari. Setiap
-  penganalisis biasanya terdiri dari dua elemen inti: tokenizer dan filter.
-  Bersama-sama, keduanya mengubah teks masukan menjadi token, menyempurnakan
-  token-token tersebut, dan mempersiapkannya untuk proses pengindeksan dan
-  pencarian yang efisien.
+  In text processing, an analyzer is a crucial component that converts raw text
+  into a structured, searchable format. Each analyzer typically consists of two
+  core elements: tokenizer and filter. Together, they transform input text into
+  tokens, refine these tokens, and prepare them for efficient indexing and
+  retrieval.
 ---
-<h1 id="Analyzer-Overview" class="common-anchor-header">Gambaran Umum Penganalisis<button data-href="#Analyzer-Overview" class="anchor-icon" translate="no">
+<h1 id="Analyzer-Overview" class="common-anchor-header">Analyzer Overview<button data-href="#Analyzer-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,16 +23,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Dalam pemrosesan teks, <strong>penganalisis</strong> merupakan komponen penting yang mengubah teks mentah menjadi format yang terstruktur dan dapat dicari. Setiap penganalisis biasanya terdiri dari dua elemen inti: <strong>tokenizer</strong> dan <strong>filter</strong>. Bersama-sama, keduanya mengubah teks masukan menjadi token, menyempurnakan token tersebut, dan mempersiapkannya untuk pengindeksan serta pencarian yang efisien.</p>
-<p>Di Milvus, penganalisis dikonfigurasi selama pembuatan koleksi saat Anda menambahkan bidang <code translate="no">VARCHAR</code> ke skema koleksi. Token yang dihasilkan oleh penganalisis dapat digunakan untuk membangun indeks untuk pencocokan kata kunci atau dikonversi menjadi embedding jarang untuk pencarian teks lengkap. Untuk informasi lebih lanjut, lihat <a href="/docs/id/full-text-search.md"> Pencarian Teks Lengkap</a>, <a href="/docs/id/phrase-match.md">Pencocokan Frasa</a>, atau <a href="/docs/id/keyword-match.md">Pencocokan Teks</a>.</p>
+    </button></h1><p>In text processing, an <strong>analyzer</strong> is a crucial component that converts raw text into a structured, searchable format. Each analyzer typically consists of two core elements: <strong>tokenizer</strong> and <strong>filter</strong>. Together, they transform input text into tokens, refine these tokens, and prepare them for efficient indexing and retrieval.</p>
+<p>In Milvus, analyzers are configured during collection creation when you add <code translate="no">VARCHAR</code> fields to the collection schema. Tokens produced by an analyzer can be used to build an index for keyword matching or converted into sparse embeddings for full text search. For more information, refer to  <a href="/docs/id/full-text-search.md">Full Text Search</a>, <a href="/docs/id/phrase-match.md">Phrase Match</a>, or <a href="/docs/id/keyword-match.md">Text Match</a>.</p>
 <div class="alert note">
-<p>Penggunaan penganalisis dapat memengaruhi kinerja:</p>
+<p>The use of analyzers may impact performance:</p>
 <ul>
-<li><p><strong>Pencarian teks lengkap:</strong> Untuk pencarian teks lengkap, saluran <strong>DataNode</strong> dan <strong>QueryNode</strong> memproses data lebih lambat karena harus menunggu proses tokenisasi selesai. Akibatnya, data yang baru dimasukkan membutuhkan waktu lebih lama untuk tersedia untuk pencarian.</p></li>
-<li><p><strong>Pencocokan kata kunci:</strong> Untuk pencocokan kata kunci, pembuatan indeks juga lebih lambat karena tokenisasi harus selesai terlebih dahulu sebelum indeks dapat dibuat.</p></li>
+<li><p><strong>Full text search:</strong> For full text search, <strong>DataNode</strong> and <strong>QueryNode</strong> channels consume data more slowly because they must wait for tokenization to complete. As a result, newly ingested data takes longer to become available for search.</p></li>
+<li><p><strong>Keyword match:</strong> For keyword matching, index creation is also slower since tokenization needs to finish before an index can be built.</p></li>
 </ul>
 </div>
-<h2 id="Anatomy-of-an-analyzer" class="common-anchor-header">Anatomi sebuah penganalisis<button data-href="#Anatomy-of-an-analyzer" class="anchor-icon" translate="no">
+<h2 id="Anatomy-of-an-analyzer" class="common-anchor-header">Anatomy of an analyzer<button data-href="#Anatomy-of-an-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -48,22 +47,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sebuah penganalisis di Milvus terdiri dari tepat satu <strong>tokenizer</strong> dan <strong>nol atau lebih</strong> filter.</p>
+    </button></h2><p>An analyzer in Milvus consists of exactly one <strong>tokenizer</strong> and <strong>zero or more</strong> filters.</p>
 <ul>
-<li><p><strong>Tokenizer</strong>: Tokenizer memecah teks masukan menjadi unit-unit terpisah yang disebut token. Token-token ini bisa berupa kata atau frasa, tergantung pada jenis tokenizer.</p></li>
-<li><p><strong>Filter</strong>: Filter dapat diterapkan pada token untuk menyempurnakannya lebih lanjut, misalnya dengan mengubahnya menjadi huruf kecil atau menghapus kata-kata umum.</p></li>
+<li><p><strong>Tokenizer</strong>: The tokenizer breaks input text into discrete units called tokens. These tokens could be words or phrases, depending on the tokenizer type.</p></li>
+<li><p><strong>Filters</strong>: Filters can be applied to tokens to further refine them, for example, by making them lowercase or removing common words.</p></li>
 </ul>
 <div class="alert note">
-<p>Tokenizer hanya mendukung format UTF-8. Dukungan untuk format lain akan ditambahkan pada rilis mendatang.</p>
+<p>Tokenizers support only UTF-8 format. Support for other formats will be added in future releases.</p>
 </div>
-<p>Alur kerja di bawah ini menunjukkan bagaimana penganalisis memproses teks.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/analyzer-process-workflow.png" alt="Analyzer Process Workflow" class="doc-image" id="analyzer-process-workflow" /> 
-   <span>Alur Kerja Proses Penganalisis</span>
-  
- </span></p>
-<h2 id="Analyzer-types" class="common-anchor-header">Jenis-jenis Analyzer<button data-href="#Analyzer-types" class="anchor-icon" translate="no">
+<p>The workflow below shows how an analyzer processes text.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/analyzer-process-workflow.png" alt="Analyzer Process Workflow" class="doc-image" id="analyzer-process-workflow" />
+    <span>Analyzer Process Workflow</span>
+  </span>
+</p>
+<h2 id="Analyzer-types" class="common-anchor-header">Analyzer types<button data-href="#Analyzer-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,18 +77,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus menyediakan dua jenis penganalisis untuk memenuhi berbagai kebutuhan pemrosesan teks:</p>
+    </button></h2><p>Milvus provides two types of analyzers to meet different text processing needs:</p>
 <ul>
-<li><p><strong>Penganalisis bawaan</strong>: Ini adalah konfigurasi yang telah ditentukan sebelumnya yang mencakup tugas-tugas pemrosesan teks umum dengan pengaturan minimal. Penganalisis bawaan sangat ideal untuk pencarian tujuan umum, karena tidak memerlukan konfigurasi yang rumit.</p></li>
-<li><p><strong>Penganalisis khusus</strong>: Untuk kebutuhan yang lebih canggih, penganalisis khusus memungkinkan Anda menentukan konfigurasi sendiri dengan menentukan tokenizer dan nol atau lebih filter. Tingkat penyesuaian ini sangat berguna untuk kasus penggunaan khusus yang memerlukan kontrol yang tepat atas pemrosesan teks.</p></li>
+<li><p><strong>Built-in analyzer</strong>: These are predefined configurations that cover common text processing tasks with minimal setup. Built-in analyzers are ideal for general-purpose searches, as they require no complex configuration.</p></li>
+<li><p><strong>Custom analyzer</strong>: For more advanced requirements, custom analyzers allow you to define your own configuration by specifying both the tokenizer and zero or more filters. This level of customization is especially useful for specialized use cases where precise control over text processing is needed.</p></li>
 </ul>
 <div class="alert note">
 <ul>
-<li>Jika Anda tidak menentukan konfigurasi penganalisis saat membuat koleksi, Milvus secara default akan menggunakan penganalisis " <code translate="no">standard</code> " untuk semua pemrosesan teks. Untuk detailnya, lihat <a href="/docs/id/standard-analyzer.md">Penganalisis Standar</a>.</li>
-<li>Untuk kinerja pencarian dan kueri yang optimal, pilih penganalisis yang sesuai dengan bahasa data teks Anda. Misalnya, meskipun penganalisis " <code translate="no">standard</code> " bersifat serbaguna, penganalisis ini mungkin bukan pilihan terbaik untuk bahasa dengan struktur tata bahasa yang unik, seperti bahasa Mandarin, Arab, Thailand, Jepang, atau Korea. Dalam kasus seperti itu, gunakan penganalisis khusus bahasa seperti <a href="/docs/id/chinese-analyzer.md"><code translate="no">chinese</code></a>, <a href="/docs/id/arabic-analyzer.md"><code translate="no">arabic</code></a>, atau <a href="/docs/id/thai-analyzer.md"><code translate="no">thai</code></a>, atau penganalisis khusus dengan tokenizer khusus (seperti <a href="/docs/id/lindera-tokenizer.md"><code translate="no">lindera</code></a>, <a href="/docs/id/icu-tokenizer.md"><code translate="no">icu</code></a>) dan filter sangat disarankan untuk memastikan tokenisasi yang akurat dan hasil pencarian yang lebih baik.</li>
+<li>If you omit analyzer configurations during collection creation, Milvus uses the <code translate="no">standard</code> analyzer for all text processing by default. For details, refer to <a href="/docs/id/standard-analyzer.md">Standard Analyzer</a>.</li>
+<li>For optimal search and query performance, choose an analyzer that matches the language of your text data. For instance, while the <code translate="no">standard</code> analyzer is versatile, it may not be the best choice for languages with unique grammatical structures, such as Chinese, Arabic, Thai, Japanese, or Korean. In such cases, using a language-specific analyzer like <a href="/docs/id/chinese-analyzer.md"><code translate="no">chinese</code></a>, <a href="/docs/id/arabic-analyzer.md"><code translate="no">arabic</code></a>, or <a href="/docs/id/thai-analyzer.md"><code translate="no">thai</code></a>, or custom analyzers with specialized tokenizers (such as <a href="/docs/id/lindera-tokenizer.md"><code translate="no">lindera</code></a>, <a href="/docs/id/icu-tokenizer.md"><code translate="no">icu</code></a>) and filters is highly recommended to ensure accurate tokenization and better search results.</li>
 </ul>
 </div>
-<h3 id="Built-in-analyzer" class="common-anchor-header">Penganalisis bawaan<button data-href="#Built-in-analyzer" class="anchor-icon" translate="no">
+<h3 id="Built-in-analyzer" class="common-anchor-header">Built-in analyzer<button data-href="#Built-in-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -104,14 +103,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Penganalisis bawaan di Milvus telah dikonfigurasi sebelumnya dengan tokenizer dan filter tertentu, sehingga Anda dapat langsung menggunakannya tanpa perlu mendefinisikan komponen-komponen ini sendiri. Setiap penganalisis bawaan berfungsi sebagai templat yang mencakup tokenizer dan filter yang telah ditetapkan sebelumnya, dengan parameter opsional untuk penyesuaian.</p>
-<p>Misalnya, untuk menggunakan penganalisis bawaan ` <code translate="no">standard</code> `, cukup tentukan namanya ` <code translate="no">standard</code> ` sebagai ` <code translate="no">type</code> ` dan secara opsional sertakan konfigurasi tambahan yang spesifik untuk jenis penganalisis ini, seperti ` <code translate="no">stop_words</code>`:</p>
+    </button></h3><p>Built-in analyzers in Milvus are pre-configured with specific tokenizers and filters, allowing you to use them immediately without needing to define these components yourself. Each built-in analyzer serves as a template that includes a preset tokenizer and filters, with optional parameters for customization.</p>
+<p>For example, to use the <code translate="no">standard</code> built-in analyzer, simply specify its name <code translate="no">standard</code> as the <code translate="no">type</code> and optionally include extra configurations specific to this analyzer type, such as <code translate="no">stop_words</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>, <span class="hljs-comment"># Uses the standard built-in analyzer</span>
@@ -134,13 +133,13 @@ analyzerParams.put(<span class="hljs-string">&quot;stop_words&quot;</span>, Arra
        &quot;stop_words&quot;: [&quot;a&quot;, &quot;an&quot;, &quot;for&quot;]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Untuk memeriksa hasil eksekusi penganalisis, gunakan metode ` <code translate="no">run_analyzer</code> `:</p>
+<p>To check the execution result of an analyzer, use the <code translate="no">run_analyzer</code> method:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample text to analyze</span>
 text = <span class="hljs-string">&quot;An efficient system relies on a robust analyzer to correctly process text for various applications.&quot;</span>
@@ -193,17 +192,17 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Hasilnya akan menjadi:</p>
+<p>The output will be:</p>
 <pre><code translate="no" class="language-plaintext">[&#x27;efficient&#x27;, &#x27;system&#x27;, &#x27;relies&#x27;, &#x27;on&#x27;, &#x27;robust&#x27;, &#x27;analyzer&#x27;, &#x27;to&#x27;, &#x27;correctly&#x27;, &#x27;process&#x27;, &#x27;text&#x27;, &#x27;various&#x27;, &#x27;applications&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<p>Ini menunjukkan bahwa penganalisis tersebut berhasil menokenisasi teks masukan dengan menyaring kata-kata penghalang (stop words) <code translate="no">&quot;a&quot;</code>, <code translate="no">&quot;an&quot;</code>, dan <code translate="no">&quot;for&quot;</code>, sekaligus mengembalikan token-token bermakna yang tersisa.</p>
-<p>Konfigurasi penganalisis bawaan <code translate="no">standard</code> di atas setara dengan menyiapkan <a href="/docs/id/analyzer-overview.md#Custom-analyzer">penganalisis khusus</a> dengan parameter berikut, di mana opsi <code translate="no">tokenizer</code> dan <code translate="no">filter</code> didefinisikan secara eksplisit untuk mencapai fungsionalitas serupa:</p>
+<p>This demonstrates that the analyzer properly tokenizes the input text by filtering out the stop words <code translate="no">&quot;a&quot;</code>, <code translate="no">&quot;an&quot;</code>, and <code translate="no">&quot;for&quot;</code>, while returning the remaining meaningful tokens.</p>
+<p>The configuration of the <code translate="no">standard</code> built-in analyzer above is equivalent to setting up a <a href="/docs/id/analyzer-overview.md#Custom-analyzer">custom analyzer</a> with the following parameters, where <code translate="no">tokenizer</code> and <code translate="no">filter</code> options are explicitly defined to achieve similar functionality:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -253,15 +252,15 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
    ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus menyediakan penganalisis bawaan berikut ini, yang masing-masing dirancang untuk kebutuhan pemrosesan teks tertentu:</p>
+<p>Milvus offers the following built-in analyzers, each designed for specific text processing needs:</p>
 <ul>
-<li><p><code translate="no">standard</code>: Cocok untuk pemrosesan teks umum, menerapkan tokenisasi standar dan penyaringan huruf kecil.</p></li>
-<li><p><code translate="no">english</code>: Dioptimalkan untuk teks berbahasa Inggris, dengan dukungan untuk kata-kata pengisi (stop words) dalam bahasa Inggris.</p></li>
-<li><p><code translate="no">chinese</code>: Khusus untuk pemrosesan teks bahasa Mandarin, termasuk tokenisasi yang disesuaikan dengan struktur bahasa Mandarin.</p></li>
-<li><p><code translate="no">arabic</code>: Didesain khusus untuk teks bahasa Arab, dengan normalisasi bahasa Arab, normalisasi angka desimal, stemming bahasa Arab, dan penghapusan kata-kata pengisi bahasa Arab.</p></li>
-<li><p><code translate="no">thai</code>: Dikhususkan untuk teks bahasa Thailand, dengan segmentasi kata bahasa Thailand, normalisasi angka desimal, dan penghapusan kata penghubung bahasa Thailand.</p></li>
+<li><p><code translate="no">standard</code>: Suitable for general-purpose text processing, applying standard tokenization and lowercase filtering.</p></li>
+<li><p><code translate="no">english</code>: Optimized for English-language text, with support for English stop words.</p></li>
+<li><p><code translate="no">chinese</code>: Specialized for processing Chinese text, including tokenization adapted for Chinese language structures.</p></li>
+<li><p><code translate="no">arabic</code>: Specialized for Arabic text, with Arabic normalization, decimal digit normalization, Arabic stemming, and Arabic stop-word removal.</p></li>
+<li><p><code translate="no">thai</code>: Specialized for Thai text, with Thai word segmentation, decimal digit normalization, and Thai stop-word removal.</p></li>
 </ul>
-<h3 id="Custom-analyzer" class="common-anchor-header">Penganalisis khusus<button data-href="#Custom-analyzer" class="anchor-icon" translate="no">
+<h3 id="Custom-analyzer" class="common-anchor-header">Custom analyzer<button data-href="#Custom-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -276,18 +275,18 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk pemrosesan teks yang lebih canggih, penganalisis khusus di Milvus memungkinkan Anda membangun alur kerja penanganan teks yang disesuaikan dengan menentukan <strong>tokenizer</strong> dan <strong>filter</strong>. Pengaturan ini ideal untuk kasus penggunaan khusus yang memerlukan kontrol yang tepat.</p>
-<h4 id="Tokenizer" class="common-anchor-header">Tokenizer</h4><p><strong>Tokenizer</strong> adalah komponen <strong>wajib</strong> untuk penganalisis khusus, yang memulai alur kerja penganalisis dengan memecah teks masukan menjadi unit-unit terpisah atau <strong>token</strong>. Tokenisasi mengikuti aturan tertentu, seperti pemisahan berdasarkan spasi kosong atau tanda baca, tergantung pada jenis tokenizer. Proses ini memungkinkan penanganan yang lebih tepat dan independen terhadap setiap kata atau frasa.</p>
-<p>Misalnya, tokenizer akan mengubah teks <code translate="no">&quot;Vector Database Built for Scale&quot;</code> menjadi token-token terpisah:</p>
+    </button></h3><p>For more advanced text processing, custom analyzers in Milvus allow you to build a tailored text-handling pipeline by specifying both a <strong>tokenizer</strong> and <strong>filters</strong>. This setup is ideal for specialized use cases where precise control is required.</p>
+<h4 id="Tokenizer" class="common-anchor-header">Tokenizer</h4><p>The <strong>tokenizer</strong> is a <strong>mandatory</strong> component for a custom analyzer, which initiates the analyzer pipeline by breaking down input text into discrete units or <strong>tokens</strong>. Tokenization follows specific rules, such as splitting by whitespace or punctuation, depending on the tokenizer type. This process allows for more precise and independent handling of each word or phrase.</p>
+<p>For example, a tokenizer would convert text <code translate="no">&quot;Vector Database Built for Scale&quot;</code> into separate tokens:</p>
 <pre><code translate="no" class="language-plaintext">[&quot;Vector&quot;, &quot;Database&quot;, &quot;Built&quot;, &quot;for&quot;, &quot;Scale&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Contoh penentuan tokenizer</strong>:</p>
+<p><strong>Example of specifying a tokenizer</strong>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -306,21 +305,21 @@ analyzerParams.put(<span class="hljs-string">&quot;tokenizer&quot;</span>, <span
        &quot;type&quot;: &quot;whitespace&quot;
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Filter" class="common-anchor-header">Filter</h4><p><strong>Filter</strong> adalah komponen <strong>opsional</strong> yang bekerja pada token yang dihasilkan oleh tokenizer, mengubah atau menyempurnakannya sesuai kebutuhan. Misalnya, setelah menerapkan filter " <code translate="no">lowercase</code> " pada istilah yang telah ditokenisasi " <code translate="no">[&quot;Vector&quot;, &quot;Database&quot;, &quot;Built&quot;, &quot;for&quot;, &quot;Scale&quot;]</code>", hasilnya mungkin adalah:</p>
+<h4 id="Filter" class="common-anchor-header">Filter</h4><p><strong>Filters</strong> are <strong>optional</strong> components working on the tokens produced by the tokenizer, transforming or refining them as needed. For example, after applying a <code translate="no">lowercase</code> filter to the tokenized terms <code translate="no">[&quot;Vector&quot;, &quot;Database&quot;, &quot;Built&quot;, &quot;for&quot;, &quot;Scale&quot;]</code>, the result might be:</p>
 <pre><code translate="no" class="language-sql">[&quot;vector&quot;, &quot;database&quot;, &quot;built&quot;, &quot;for&quot;, &quot;scale&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p>Filter dalam penganalisis khusus dapat berupa <strong>filter bawaan</strong> atau <strong>khusus</strong>, tergantung pada kebutuhan konfigurasi.</p>
+<p>Filters in a custom analyzer can be either <strong>built-in</strong> or <strong>custom</strong>, depending on configuration needs.</p>
 <ul>
-<li><p><strong>Filter bawaan</strong>: Telah dikonfigurasi sebelumnya oleh Milvus, sehingga hanya memerlukan pengaturan minimal. Anda dapat menggunakan filter ini secara langsung dengan menentukan namanya. Filter di bawah ini sudah terintegrasi dan siap digunakan:</p>
+<li><p><strong>Built-in filters</strong>: Pre-configured by Milvus, requiring minimal setup. You can use these filters out-of-the-box by specifying their names. The filters below are built-in for direct use:</p>
 <ul>
-<li><p><code translate="no">lowercase</code>: Mengubah teks menjadi huruf kecil, memastikan pencocokan yang tidak peka huruf besar-kecil. Untuk detailnya, lihat <a href="/docs/id/lowercase-filter.md">Lowercase</a>.</p></li>
-<li><p><code translate="no">asciifolding</code>: Mengubah karakter non-ASCII menjadi setara ASCII, sehingga memudahkan penanganan teks multibahasa. Untuk detailnya, lihat <a href="/docs/id/ascii-folding-filter.md">ASCII folding</a>.</p></li>
-<li><p><code translate="no">alphanumonly</code>: Hanya mempertahankan karakter alfanumerik dengan menghapus karakter lainnya. Untuk detailnya, lihat <a href="/docs/id/alphanumonly-filter.md">Alphanumonly</a>.</p></li>
-<li><p><code translate="no">cnalphanumonly</code>: Menghapus token yang mengandung karakter apa pun selain karakter Tionghoa, huruf Inggris, atau angka. Untuk detailnya, lihat <a href="/docs/id/cnalphanumonly-filter.md">Cnalphanumonly</a>.</p></li>
-<li><p><code translate="no">cncharonly</code>: Menghapus token yang mengandung karakter apa pun selain karakter Tionghoa. Untuk detailnya, lihat <a href="/docs/id/cncharonly-filter.md">Cncharonly</a>.</p></li>
-<li><p><code translate="no">pinyin</code>: Menambahkan bentuk token Pinyin untuk token bahasa Tionghoa, sehingga memungkinkan pencocokan berbasis Pinyin untuk teks bahasa Tionghoa. Untuk detailnya, lihat <a href="/docs/id/pinyin-filter.md">Pinyin</a>.</p></li>
+<li><p><code translate="no">lowercase</code>: Converts text to lowercase, ensuring case-insensitive matching. For details, refer to <a href="/docs/id/lowercase-filter.md">Lowercase</a>.</p></li>
+<li><p><code translate="no">asciifolding</code>: Converts non-ASCII characters to ASCII equivalents, simplifying multilingual text handling. For details, refer to <a href="/docs/id/ascii-folding-filter.md">ASCII folding</a>.</p></li>
+<li><p><code translate="no">alphanumonly</code>: Retains only alphanumeric characters by removing others. For details, refer to <a href="/docs/id/alphanumonly-filter.md">Alphanumonly</a>.</p></li>
+<li><p><code translate="no">cnalphanumonly</code>: Removes tokens that contain any characters other than Chinese characters, English letters, or digits. For details, refer to <a href="/docs/id/cnalphanumonly-filter.md">Cnalphanumonly</a>.</p></li>
+<li><p><code translate="no">cncharonly</code>: Removes tokens that contain any non-Chinese characters. For details, refer to <a href="/docs/id/cncharonly-filter.md">Cncharonly</a>.</p></li>
+<li><p><code translate="no">pinyin</code>: Adds Pinyin token forms for Chinese tokens, enabling Pinyin-based matching for Chinese text. For details, refer to <a href="/docs/id/pinyin-filter.md">Pinyin</a>.</p></li>
 </ul>
-<p><strong>Contoh penggunaan filter bawaan:</strong></p>
+<p><strong>Example of using a built-in filter:</strong></p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
@@ -350,13 +349,13 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>, Collecti
        &quot;filter&quot;:  [&quot;lowercase&quot;]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Filter khusus</strong>: Filter khusus memungkinkan konfigurasi yang lebih spesifik. Anda dapat mendefinisikan filter khusus dengan memilih jenis filter yang valid (<code translate="no">filter.type</code>) dan menambahkan pengaturan khusus untuk setiap jenis filter. Contoh jenis filter yang mendukung penyesuaian:</p>
+<li><p><strong>Custom filters</strong>: Custom filters allow for specialized configurations. You can define a custom filter by choosing a valid filter type (<code translate="no">filter.type</code>) and adding specific settings for each filter type. Examples of filter types that support customization:</p>
 <ul>
-<li><p><code translate="no">stop</code>: Menghapus kata-kata umum yang ditentukan dengan menetapkan daftar kata penghalang (misalnya, <code translate="no">&quot;stop_words&quot;: [&quot;of&quot;, &quot;to&quot;]</code>). Untuk detailnya, lihat <a href="/docs/id/stop-filter.md">Stop</a>.</p></li>
-<li><p><code translate="no">length</code>: Mengecualikan token berdasarkan kriteria panjang, seperti menetapkan panjang token maksimum. Untuk detailnya, lihat <a href="/docs/id/length-filter.md">Length</a>.</p></li>
-<li><p><code translate="no">stemmer</code>: Mengubah kata menjadi bentuk akarnya untuk pencocokan yang lebih fleksibel. Untuk detailnya, lihat <a href="/docs/id/stemmer-filter.md">Stemmer</a>.</p></li>
+<li><p><code translate="no">stop</code>: Removes specified common words by setting a list of stop words (e.g., <code translate="no">&quot;stop_words&quot;: [&quot;of&quot;, &quot;to&quot;]</code>). For details, refer to <a href="/docs/id/stop-filter.md">Stop</a>.</p></li>
+<li><p><code translate="no">length</code>: Excludes tokens based on length criteria, such as setting a maximum token length. For details, refer to <a href="/docs/id/length-filter.md">Length</a>.</p></li>
+<li><p><code translate="no">stemmer</code>: Reduces words to their root forms for more flexible matching. For details, refer to <a href="/docs/id/stemmer-filter.md">Stemmer</a>.</p></li>
 </ul>
-<p><strong>Contoh konfigurasi filter khusus:</strong></p>
+<p><strong>Example of configuring a custom filter:</strong></p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
@@ -409,7 +408,7 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h2 id="Example-use" class="common-anchor-header">Contoh penggunaan<button data-href="#Example-use" class="anchor-icon" translate="no">
+<h2 id="Example-use" class="common-anchor-header">Example use<button data-href="#Example-use" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -424,17 +423,17 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dalam contoh ini, Anda akan membuat skema koleksi yang mencakup:</p>
+    </button></h2><p>In this example, you will create a collection schema that includes:</p>
 <ul>
-<li><p>Sebuah bidang vektor untuk embedding.</p></li>
-<li><p>Dua bidang " <code translate="no">VARCHAR</code> " untuk pemrosesan teks:</p>
+<li><p>A vector field for embeddings.</p></li>
+<li><p>Two <code translate="no">VARCHAR</code> fields for text processing:</p>
 <ul>
-<li><p>Satu bidang menggunakan penganalisis bawaan.</p></li>
-<li><p>Yang lainnya menggunakan penganalisis khusus.</p></li>
+<li><p>One field uses a built-in analyzer.</p></li>
+<li><p>The other uses a custom analyzer.</p></li>
 </ul></li>
 </ul>
-<p>Sebelum memasukkan konfigurasi ini ke dalam koleksi Anda, Anda akan memverifikasi setiap penganalisis menggunakan metode ` <code translate="no">run_analyzer</code> `.</p>
-<h3 id="Step-1-Initialize-MilvusClient-and-create-schema" class="common-anchor-header">Langkah 1: Inisialisasi MilvusClient dan buat skema<button data-href="#Step-1-Initialize-MilvusClient-and-create-schema" class="anchor-icon" translate="no">
+<p>Before incorporating these configurations into your collection, you’ll verify each analyzer using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Step-1-Initialize-MilvusClient-and-create-schema" class="common-anchor-header">Step 1: Initialize MilvusClient and create schema<button data-href="#Step-1-Initialize-MilvusClient-and-create-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -449,13 +448,13 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Mulailah dengan menyiapkan klien Milvus dan membuat skema baru.</p>
+    </button></h3><p>Begin by setting up the Milvus client and creating a new schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -514,7 +513,7 @@ schema := entity.NewSchema().WithAutoID(<span class="hljs-literal">true</span>).
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Define-and-verify-analyzer-configurations" class="common-anchor-header">Langkah 2: Menentukan dan memverifikasi konfigurasi penganalisis<button data-href="#Step-2-Define-and-verify-analyzer-configurations" class="anchor-icon" translate="no">
+<h3 id="Step-2-Define-and-verify-analyzer-configurations" class="common-anchor-header">Step 2: Define and verify analyzer configurations<button data-href="#Step-2-Define-and-verify-analyzer-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -530,10 +529,10 @@ schema := entity.NewSchema().WithAutoID(<span class="hljs-literal">true</span>).
         ></path>
       </svg>
     </button></h3><ol>
-<li><p><strong>Konfigurasikan dan verifikasi penganalisis bawaan</strong> (<code translate="no">english</code>)<strong>:</strong></p>
+<li><p><strong>Configure and verify a built-in analyzer</strong> (<code translate="no">english</code>)<strong>:</strong></p>
 <ul>
-<li><p><strong>Konfigurasi:</strong> Tentukan parameter penganalisis untuk penganalisis bahasa Inggris bawaan.</p></li>
-<li><p><strong>Verifikasi:</strong> Gunakan <code translate="no">run_analyzer</code> untuk memeriksa apakah konfigurasi tersebut menghasilkan tokenisasi yang diharapkan.</p></li>
+<li><p><strong>Configuration:</strong> Define the analyzer parameters for the built-in English analyzer.</p></li>
+<li><p><strong>Verification:</strong> Use <code translate="no">run_analyzer</code> to check that the configuration produces the expected tokenization.</p></li>
 </ul>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
@@ -599,10 +598,10 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Konfigurasikan dan verifikasi penganalisis khusus:</strong></p>
+<li><p><strong>Configure and verify a custom analyzer:</strong></p>
 <ul>
-<li><p><strong>Konfigurasi:</strong> Tentukan penganalisis khusus yang menggunakan tokenizer standar bersama dengan filter huruf kecil bawaan serta filter khusus untuk panjang token dan kata-kata penghubung.</p></li>
-<li><p><strong>Verifikasi:</strong> Gunakan <code translate="no">run_analyzer</code> untuk memastikan konfigurasi kustom tersebut memproses teks sesuai yang diharapkan.</p></li>
+<li><p><strong>Configuration:</strong> Define a custom analyzer that uses a standard tokenizer along with a built-in lowercase filter and custom filters for token length and stop words.</p></li>
+<li><p><strong>Verification:</strong> Use <code translate="no">run_analyzer</code> to ensure the custom configuration processes text as intended.</p></li>
 </ul>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
@@ -706,7 +705,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># curl</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h3 id="Step-3-Add-fields-to-the-schema" class="common-anchor-header">Langkah 3: Tambahkan bidang ke skema<button data-href="#Step-3-Add-fields-to-the-schema" class="anchor-icon" translate="no">
+<h3 id="Step-3-Add-fields-to-the-schema" class="common-anchor-header">Step 3: Add fields to the schema<button data-href="#Step-3-Add-fields-to-the-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -721,13 +720,13 @@ result, err := client.RunAnalyzer(ctx, option)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Setelah Anda memverifikasi konfigurasi penganalisis, tambahkan ke bidang skema Anda:</p>
+    </button></h3><p>Now that you have verified your analyzer configurations, add them to your schema fields:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Add VARCHAR field &#x27;title_en&#x27; using the built-in analyzer configuration</span>
 schema.add_field(
@@ -831,7 +830,7 @@ schema.addField(AddFieldReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-4-Prepare-index-parameters-and-create-the-collection" class="common-anchor-header">Langkah 4: Siapkan parameter indeks dan buat koleksi<button data-href="#Step-4-Prepare-index-parameters-and-create-the-collection" class="anchor-icon" translate="no">
+<h3 id="Step-4-Prepare-index-parameters-and-create-the-collection" class="common-anchor-header">Step 4: Prepare index parameters and create the collection<button data-href="#Step-4-Prepare-index-parameters-and-create-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -847,11 +846,11 @@ schema.addField(AddFieldReq.builder()
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Set up index parameters for the vector field</span>
 index_params = client.prepare_index_params()
@@ -911,7 +910,7 @@ err = client.CreateCollection(ctx,
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Whats-next" class="common-anchor-header">Langkah selanjutnya<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -926,9 +925,9 @@ err = client.CreateCollection(ctx,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Setelah mengonfigurasi penganalisis, Anda dapat mengintegrasikannya dengan fitur pencarian teks yang disediakan oleh Milvus. Untuk detailnya:</p>
+    </button></h2><p>After configuring an analyzer, you can integrate with text retrieval features provided by Milvus. For details:</p>
 <ul>
-<li><p><a href="/docs/id/full-text-search.md">Pencarian Teks Lengkap</a></p></li>
-<li><p><a href="/docs/id/keyword-match.md">Pencocokan Teks</a></p></li>
-<li><p><a href="/docs/id/phrase-match.md">Pencocokan Frasa</a></p></li>
+<li><p><a href="/docs/id/full-text-search.md">Full Text Search</a></p></li>
+<li><p><a href="/docs/id/keyword-match.md">Text Match</a></p></li>
+<li><p><a href="/docs/id/phrase-match.md">Phrase Match</a></p></li>
 </ul>

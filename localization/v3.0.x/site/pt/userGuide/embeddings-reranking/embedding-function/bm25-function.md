@@ -1,14 +1,13 @@
 ---
 id: bm25-function.md
-title: Função BM25
+title: BM25 Function
 summary: >-
-  A função BM25 permite a pesquisa de texto completo, transformando o texto em
-  bruto em vectores esparsos e pontuando os documentos com base na relevância
-  lexical. Aplica a correspondência baseada em termos e a ponderação sensível à
-  frequência para suportar a recuperação eficiente de documentos de texto que
-  correspondem aos termos da consulta.
+  The BM25 function enables full text search by transforming raw text into
+  sparse vectors and scoring documents based on lexical relevance. It applies
+  term-based matching and frequency-aware weighting to support efficient
+  retrieval of text documents that closely match query terms.
 ---
-<h1 id="BM25-Function" class="common-anchor-header">Função BM25<button data-href="#BM25-Function" class="anchor-icon" translate="no">
+<h1 id="BM25-Function" class="common-anchor-header">BM25 Function<button data-href="#BM25-Function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>A <strong>função BM25</strong> permite <a href="/docs/pt/full-text-search.md">a pesquisa de texto completo</a>, transformando o texto em bruto em <strong>vectores esparsos</strong> e pontuando os documentos com base na relevância lexical. Aplica a correspondência baseada em termos e a ponderação sensível à frequência para apoiar a recuperação eficiente de documentos de texto que correspondem aos termos da consulta.</p>
-<p>Como uma função de texto local, a função BM25 é executada no Milvus e não requer inferência de modelos ou integrações externas. Fornece um mecanismo de recuperação determinístico e transparente para cenários de pesquisa baseados em texto.</p>
-<h2 id="How-BM25-works" class="common-anchor-header">Como funciona o BM25<button data-href="#How-BM25-works" class="anchor-icon" translate="no">
+    </button></h1><p>The <strong>BM25 function</strong> enables <a href="/docs/pt/full-text-search.md">full text search</a> by transforming raw text into <strong>sparse vectors</strong> and scoring documents based on lexical relevance. It applies term-based matching and frequency-aware weighting to support efficient retrieval of text documents that closely match query terms.</p>
+<p>As a local text function, the BM25 function runs within Milvus and does not require model inference or external integrations. It provides a deterministic and transparent retrieval mechanism for text-based search scenarios.</p>
+<h2 id="How-BM25-works" class="common-anchor-header">How BM25 works<button data-href="#How-BM25-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,9 +39,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>O algoritmo <a href="https://en.wikipedia.org/wiki/Okapi_BM25">BM25</a> é um algoritmo de pontuação de relevância baseado em termos, amplamente utilizado na recuperação de textos completos. Em Milvus, o BM25 é implementado como um pipeline de recuperação esparso que converte o texto em representações de peso de termo e recupera os <em>K</em> documentos principais usando índices esparsos distribuídos.</p>
-<p>O fluxo de trabalho global consiste em dois caminhos simétricos: <strong>ingestão de documentos</strong> e <strong>processamento de texto de consulta</strong>, que partilham a mesma lógica de análise de texto.</p>
-<h3 id="Document-ingestion-From-text-to-sparse-representation" class="common-anchor-header">Ingestão de documentos: Do texto à representação esparsa<button data-href="#Document-ingestion-From-text-to-sparse-representation" class="anchor-icon" translate="no">
+    </button></h2><p>The <a href="https://en.wikipedia.org/wiki/Okapi_BM25">BM25</a> algorithm is a term-based relevance scoring algorithm widely used in full text retrieval. In Milvus, BM25 is implemented as a sparse retrieval pipeline that converts text into term-weight representations and retrieves top <em>K</em> documents using distributed sparse indexes.</p>
+<p>The overall workflow consists of two symmetric paths: <strong>document ingestion</strong> and <strong>query text processing</strong>, which share the same text analysis logic.</p>
+<h3 id="Document-ingestion-From-text-to-sparse-representation" class="common-anchor-header">Document ingestion: From text to sparse representation<button data-href="#Document-ingestion-From-text-to-sparse-representation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,28 +56,28 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Quando um documento é inserido, o seu texto em bruto é primeiro processado por um <strong><a href="/docs/pt/analyzer-overview.md">analisador</a></strong>, que o converte em termos individuais.</p>
-<p>Por exemplo, o documento:</p>
+    </button></h3><p>When a document is inserted, its raw text is first processed by an <strong><a href="/docs/pt/analyzer-overview.md">analyzer</a></strong>, which tokenizes the text into individual terms.</p>
+<p>For example, the document:</p>
 <pre><code translate="no" class="language-plaintext">&quot;We are loving Milvus!&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>pode ser analisado nos seguintes termos:</p>
+<p>can be analyzed into the following terms:</p>
 <pre><code translate="no" class="language-plaintext">[&quot;we&quot;, &quot;love&quot;, &quot;milvus&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p>Cada documento é então representado como uma representação de frequência de termos (TF), que regista o número de vezes que cada termo aparece no documento. Por exemplo:</p>
+<p>Each document is then represented as a term frequency (TF) representation, which records how many times each term appears in the document. For example:</p>
 <pre><code translate="no" class="language-plaintext">{
   &quot;we&quot;: 1,
   &quot;love&quot;: 1,
   &quot;milvus&quot;: 1
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Ao mesmo tempo, o Milvus actualiza as estatísticas ao nível do corpus, incluindo:</p>
+<p>At the same time, Milvus updates corpus-level statistics, including:</p>
 <ul>
-<li><p>a frequência de documentos (DF) de cada termo</p></li>
-<li><p>o comprimento médio do documento</p></li>
-<li><p>listas de lançamento que mapeiam cada termo para os documentos que o contêm</p></li>
+<li><p>the document frequency (DF) of each term</p></li>
+<li><p>the average document length</p></li>
+<li><p>posting lists that map each term to the documents containing it</p></li>
 </ul>
-<p>A representação TF do documento é inserida em <strong>embeddings esparsos</strong>, onde os lançamentos de termos são particionados entre nós para uma recuperação escalável.</p>
-<h3 id="Query-text-process-Apply-IDF-weighting" class="common-anchor-header">Processo de texto de consulta: Aplicar a ponderação IDF<button data-href="#Query-text-process-Apply-IDF-weighting" class="anchor-icon" translate="no">
+<p>The document’s TF representation is inserted into <strong>sparse embeddings</strong>, where term postings are partitioned across nodes for scalable retrieval.</p>
+<h3 id="Query-text-process-Apply-IDF-weighting" class="common-anchor-header">Query text process: Apply IDF weighting<button data-href="#Query-text-process-Apply-IDF-weighting" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,22 +92,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Quando é emitida uma consulta baseada em texto, esta é processada pelo <strong>mesmo analisador</strong> utilizado durante a <a href="/docs/pt/bm25-function.md#Document-ingestion-From-text-to-sparse-representation">ingestão de documentos</a>, garantindo uma segmentação consistente dos termos.</p>
-<p>Por exemplo, a consulta:</p>
+    </button></h3><p>When a text-based query is issued, it is processed by the <strong>same analyzer</strong> used during <a href="/docs/pt/bm25-function.md#Document-ingestion-From-text-to-sparse-representation">document ingestion</a>, ensuring consistent term segmentation.</p>
+<p>For example, the query:</p>
 <pre><code translate="no" class="language-plaintext">&quot;who loves Milvus?&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>pode ser analisada em:</p>
+<p>can be analyzed into:</p>
 <pre><code translate="no" class="language-plaintext">[&quot;who&quot;, &quot;love&quot;, &quot;milvus&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p>Para cada termo da consulta, o Milvus procura a sua <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">frequência inversa de documentos</a> (IDF) nas estatísticas do corpus. A IDF reflecte o grau de informação de um termo em todo o conjunto de dados: os termos mais raros recebem pesos mais elevados, enquanto os termos comuns recebem pesos mais baixos.</p>
-<p>Conceptualmente, isto produz um conjunto de termos de consulta ponderados por IDF, tais como:</p>
+<p>For each query term, Milvus looks up its <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">inverse document frequency</a> (IDF) from corpus statistics. IDF reflects how informative a term is across the entire dataset: rarer terms receive higher weights, while common terms receive lower weights.</p>
+<p>Conceptually, this produces a set of IDF-weighted query terms, such as:</p>
 <pre><code translate="no" class="language-plaintext">{
   &quot;who&quot;: 0.1,
   &quot;love&quot;: 0.5,
   &quot;milvus&quot;: 1.2
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="BM25-scoring-and-top-K-retrieval" class="common-anchor-header">Pontuação BM25 e recuperação do top K<button data-href="#BM25-scoring-and-top-K-retrieval" class="anchor-icon" translate="no">
+<h3 id="BM25-scoring-and-top-K-retrieval" class="common-anchor-header">BM25 scoring and top K retrieval<button data-href="#BM25-scoring-and-top-K-retrieval" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -123,27 +122,27 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>O BM25 classifica os documentos calculando uma pontuação de relevância com base nos termos de consulta correspondentes. A pontuação é efectuada ao <strong>nível</strong> do <strong>termo</strong> e agregada ao <strong>nível do documento</strong>.</p>
-<p><strong>Pontuação ao nível do termo</strong></p>
-<p>Para cada termo de consulta que aparece num documento, o BM25 calcula uma pontuação ao nível do termo:</p>
+    </button></h3><p>BM25 ranks documents by computing a relevance score based on matched query terms. Scoring is performed at the <strong>term level</strong> and aggregated at the <strong>document level</strong>.</p>
+<p><strong>Term-level scoring</strong></p>
+<p>For each query term that appears in a document, BM25 computes a term-level score:</p>
 <pre><code translate="no" class="language-plaintext">term_score =
   IDF(term) ×
   TF_boost(term, document, k1) ×
   length_normalization(document, b)
 <button class="copy-code-btn"></button></code></pre>
-<p>Onde:</p>
+<p>Where:</p>
 <ul>
-<li><p><strong>IDF(termo)</strong> reflecte a raridade do termo na coleção</p></li>
-<li><p><strong>TF_boost(..., k1)</strong> aumenta com a frequência do termo mas satura à medida que a frequência aumenta</p></li>
-<li><p><strong>length_normalization(..., b)</strong> ajusta a pontuação com base no comprimento do documento</p></li>
+<li><p><strong>IDF(term)</strong> reflects how rare the term is in the collection</p></li>
+<li><p><strong>TF_boost(…, k1)</strong> increases with term frequency but saturates as frequency grows</p></li>
+<li><p><strong>length_normalization(…, b)</strong> adjusts the score based on document length</p></li>
 </ul>
-<p><strong>Pontuação ao nível do documento e recuperação Top-K</strong></p>
-<p>A pontuação final do documento é a soma das pontuações ao nível do termo para todos os termos da consulta correspondentes:</p>
+<p><strong>Document-level scoring and Top-K retrieval</strong></p>
+<p>The final document score is the sum of term-level scores for all matched query terms:</p>
 <pre><code translate="no" class="language-plaintext">document_score =
   sum of term_score over all matched query terms
 <button class="copy-code-btn"></button></code></pre>
-<p>Os documentos são classificados por suas pontuações finais e os K documentos com as pontuações mais altas são retornados.</p>
-<h2 id="Before-you-start" class="common-anchor-header">Antes de começar<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+<p>Documents are ranked by their final scores, and the top-K highest-scoring documents are returned.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -158,18 +157,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Antes de utilizar a função BM25, planeie o esquema da coleção para garantir que suporta a pesquisa lexical de texto integral:</p>
+    </button></h2><p>Before using the BM25 function, plan your collection schema to ensure it supports lexical full text search:</p>
 <ul>
-<li><p><strong>Um campo de texto para conteúdo em bruto</strong></p>
-<p>A sua coleção deve incluir um campo <code translate="no">VARCHAR</code> para armazenar texto em bruto. Este campo é a fonte do texto que será processado para a pesquisa de texto integral.</p></li>
-<li><p><strong>Um analisador para o campo de texto</strong></p>
-<p>O campo de texto tem de ter um analisador ativado. O analisador define a forma como o texto é tokenizado e normalizado antes de a relevância lexical ser calculada pela função BM25.</p>
-<p>Por predefinição, o Milvus fornece um analisador incorporado que tokeniza o texto com base no espaço em branco e na pontuação. Se a sua aplicação requer um comportamento personalizado de tokenização ou normalização, pode definir um analisador personalizado. Consulte <a href="/docs/pt/choose-the-right-analyzer-for-your-use-case.md">Escolha o analisador certo para seu caso de uso</a> para obter detalhes.</p></li>
-<li><p><strong>Um vetor esparso para a saída do BM25</strong></p>
-<p>Sua coleção deve incluir um campo <code translate="no">SPARSE_FLOAT_VECTOR</code> para armazenar as representações esparsas geradas pela função BM25. Esse campo é usado para indexação e recuperação durante a pesquisa de texto completo.</p></li>
+<li><p><strong>A text field for raw content</strong></p>
+<p>Your collection must include a <code translate="no">VARCHAR</code> field to store raw text. This field is the source of text that will be processed for full text search.</p></li>
+<li><p><strong>An analyzer for the text field</strong></p>
+<p>The text field must have an analyzer enabled. The analyzer defines how text is tokenized and normalized before lexical relevance is computed by the BM25 function.</p>
+<p>By default, Milvus provides a built-in analyzer that tokenizes text based on whitespace and punctuation. If your application requires custom tokenization or normalization behavior, you can define a custom analyzer. See <a href="/docs/pt/choose-the-right-analyzer-for-your-use-case.md">Choose the Right Analyzer for Your Use Case</a> for details.</p></li>
+<li><p><strong>A sparse vector for BM25 output</strong></p>
+<p>Your collection must include a <code translate="no">SPARSE_FLOAT_VECTOR</code> field to store the sparse representations generated by the BM25 function. This field is used for indexing and retrieval during full text search.</p></li>
 </ul>
-<p>Após estas considerações ao nível do esquema terem sido definidas, proceda à criação da coleção e utilize a função BM25.</p>
-<h2 id="Step-1-Create-a-collection-with-a-BM25-function" class="common-anchor-header">Passo 1: Criar uma coleção com uma função BM25<button data-href="#Step-1-Create-a-collection-with-a-BM25-function" class="anchor-icon" translate="no">
+<p>After these schema-level considerations are figured out, proceed to create the collection and use the BM25 function.</p>
+<h2 id="Step-1-Create-a-collection-with-a-BM25-function" class="common-anchor-header">Step 1: Create a collection with a BM25 function<button data-href="#Step-1-Create-a-collection-with-a-BM25-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -184,15 +183,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para utilizar a função BM25, tem de a definir ao criar a coleção. A função torna-se parte do esquema da coleção e é aplicada automaticamente durante a inserção e pesquisa de dados.</p>
-<h4 id="Define-schema-fields" class="common-anchor-header">Definir campos de esquema</h4><p>O esquema da coleção deve incluir pelo menos três campos obrigatórios:</p>
+    </button></h2><p>To use the BM25 function, you must define it when creating the collection. The function becomes part of the collection schema and is applied automatically during data insertion and search.</p>
+<h4 id="Define-schema-fields" class="common-anchor-header">Define schema fields</h4><p>Your collection schema must include at least three required fields:</p>
 <ul>
-<li><p><strong>Campo primário</strong>: Identifica de forma única cada entidade na coleção.</p></li>
-<li><p><strong>Campo de texto</strong> (<code translate="no">VARCHAR</code>): Armazena documentos de texto em bruto. Deve definir <code translate="no">enable_analyzer=True</code> para que o Milvus possa processar o texto para a classificação de relevância BM25. Por defeito, o Milvus utiliza o <a href="/docs/pt/standard-analyzer.md"><code translate="no">standard</code></a> para a análise de texto. Para configurar um analisador diferente, consulte <a href="/docs/pt/analyzer-overview.md">Visão geral do analisador</a>.</p></li>
-<li><p><strong>Campo de vetor esparso</strong> (<code translate="no">SPARSE_FLOAT_VECTOR</code>): Armazena embeddings esparsos gerados automaticamente pela função BM25.</p></li>
+<li><p><strong>Primary field</strong>: Uniquely identifies each entity in the collection.</p></li>
+<li><p><strong>Text field</strong> (<code translate="no">VARCHAR</code>): Stores raw text documents. Must set <code translate="no">enable_analyzer=True</code> so Milvus can process the text for BM25 relevance ranking. By default, Milvus uses the <a href="/docs/pt/standard-analyzer.md"><code translate="no">standard</code></a><a href="/docs/pt/standard-analyzer.md"> analyzer</a> for text analysis. To configure a different analyzer, refer to <a href="/docs/pt/analyzer-overview.md">Analyzer Overview</a>.</p></li>
+<li><p><strong>Sparse vector field</strong> (<code translate="no">SPARSE_FLOAT_VECTOR</code>): Stores sparse embeddings automatically generated by the BM25 function.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
 client = MilvusClient(
@@ -321,8 +325,8 @@ schema.WithField(entity.NewField().
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Define-the-BM25-function" class="common-anchor-header">Definir a função BM25</h4><p>A função BM25 converte texto tokenizado em vetores esparsos que suportam a pontuação BM25.</p>
-<p>Defina a função e adicione-a ao seu esquema:</p>
+<h4 id="Define-the-BM25-function" class="common-anchor-header">Define the BM25 function</h4><p>The BM25 function converts tokenized text into sparse vectors that support BM25 scoring.</p>
+<p>Define the function and add it to your schema:</p>
 <pre><code translate="no" class="language-python">bm25_function = Function(
     name=<span class="hljs-string">&quot;text_bm25_emb&quot;</span>, <span class="hljs-comment"># Function name</span>
     input_field_names=[<span class="hljs-string">&quot;text&quot;</span>], <span class="hljs-comment"># Name of the VARCHAR field containing raw text data</span>
@@ -395,7 +399,7 @@ schema.WithFunction(function)
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Configure-the-index" class="common-anchor-header">Configurar o índice</h4><p>Depois de definir o esquema com os campos necessários e a função incorporada, configure o índice para a sua coleção.</p>
+<h4 id="Configure-the-index" class="common-anchor-header">Configure the index</h4><p>After defining the schema with necessary fields and the built-in function, set up the index for your collection.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
 index_params.add_index(
@@ -458,7 +462,7 @@ indexes.add(IndexParam.builder()
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Create-the-collection" class="common-anchor-header">Criar a coleção</h4><p>Crie agora a coleção utilizando o esquema e os parâmetros de índice definidos:</p>
+<h4 id="Create-the-collection" class="common-anchor-header">Create the collection</h4><p>Now create the collection using the schema and index parameters defined:</p>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>,
     schema=schema,
@@ -503,8 +507,8 @@ curl --request POST \
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Uma vez criada a coleção com uma função BM25, pode inserir texto e efetuar pesquisas lexicais com base na consulta de texto.</p>
-<h2 id="Step-2-Insert-text-data-into-the-collection" class="common-anchor-header">Passo 2: Inserir dados de texto na coleção<button data-href="#Step-2-Insert-text-data-into-the-collection" class="anchor-icon" translate="no">
+<p>Once the collection with a BM25 function is created, you can insert text and perform lexical searches based on text query.</p>
+<h2 id="Step-2-Insert-text-data-into-the-collection" class="common-anchor-header">Step 2: Insert text data into the collection<button data-href="#Step-2-Insert-text-data-into-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -519,7 +523,7 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Depois de configurar a coleção e o índice, está pronto para inserir dados de texto. Neste processo, só precisa de fornecer o texto em bruto. A função BM25 que definimos anteriormente gera automaticamente o vetor esparso para cada entrada de texto.</p>
+    </button></h2><p>After setting up your collection and index, you’re ready to insert text data. In this process, you need only to provide the raw text. The BM25 function we defined earlier automatically generates the sparse vector for each text entry.</p>
 <pre><code translate="no" class="language-python">client.insert(<span class="hljs-string">&#x27;my_collection&#x27;</span>, [
     {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval is a field of study.&#x27;</span>},
     {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval focuses on finding relevant information in large datasets.&#x27;</span>},
@@ -568,7 +572,7 @@ client.insert(InsertReq.builder()
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-3-Search-with-text-query" class="common-anchor-header">Passo 3: Pesquisar com consulta de texto<button data-href="#Step-3-Search-with-text-query" class="anchor-icon" translate="no">
+<h2 id="Step-3-Search-with-text-query" class="common-anchor-header">Step 3: Search with text query<button data-href="#Step-3-Search-with-text-query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -583,7 +587,7 @@ client.insert(InsertReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Uma vez inseridos os dados na sua coleção, pode efetuar pesquisas de texto completo utilizando consultas de texto em bruto. Milvus converte automaticamente a sua consulta num vetor esparso e classifica os resultados de pesquisa correspondentes utilizando o algoritmo BM25, e depois devolve os resultados topK (<code translate="no">limit</code>).</p>
+    </button></h2><p>Once you’ve inserted data into your collection, you can perform full text searches using raw text queries. Milvus automatically converts your query into a sparse vector and ranks the matched search results using the BM25 algorithm, and then returns the topK (<code translate="no">limit</code>) results.</p>
 <pre><code translate="no" class="language-python">search_params = {
 
 }

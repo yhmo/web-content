@@ -1,9 +1,11 @@
 ---
 id: manage_databases.md
-title: データベース
-summary: Milvusはコレクションの上にデータベースレイヤーを導入し、マルチテナンシーをサポートしながら、データをより効率的に管理・整理する方法を提供します。
+title: Database
+summary: >-
+  Milvus introduces a database layer above collections, providing a more
+  efficient way to manage and organize your data while supporting multi-tenancy.
 ---
-<h1 id="Database" class="common-anchor-header">データベース<button data-href="#Database" class="anchor-icon" translate="no">
+<h1 id="Database" class="common-anchor-header">Database<button data-href="#Database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: Milvusはコレクションの上にデータベースレイヤーを�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvusはコレクションの上に<strong>データベースレイヤーを</strong>導入し、マルチテナンシーをサポートしながら、より効率的なデータの管理・整理方法を提供します。</p>
-<h2 id="What-is-a-database" class="common-anchor-header">データベースとは<button data-href="#What-is-a-database" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus introduces a <strong>database</strong> layer above collections, providing a more efficient way to manage and organize your data while supporting multi-tenancy.</p>
+<h2 id="What-is-a-database" class="common-anchor-header">What is a database<button data-href="#What-is-a-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,8 +36,8 @@ summary: Milvusはコレクションの上にデータベースレイヤーを�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusでは、データベースはデータを整理・管理するための論理的な単位として機能します。データのセキュリティを強化し、マルチテナントを実現するために、複数のデータベースを作成し、アプリケーションやテナントごとにデータを論理的に分離することができます。たとえば、ユーザー A のデータを格納するデータベースと、ユーザー B のデータを格納する別のデータベースを作成します。</p>
-<h2 id="Create-database" class="common-anchor-header">データベースの作成<button data-href="#Create-database" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, a database serves as a logical unit for organizing and managing data. To enhance data security and achieve multi-tenancy, you can create multiple databases to logically isolate data for different applications or tenants. For example, you create a database to store the data of user A and another database for user B.</p>
+<h2 id="Create-database" class="common-anchor-header">Create database<button data-href="#Create-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -50,9 +52,14 @@ summary: Milvusはコレクションの上にデータベースレイヤーを�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus RESTful APIまたはSDKを使用して、プログラムでデータを作成することができます。</p>
+    </button></h2><p>You can use the Milvus RESTful API or SDKs to create data programmatically.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -115,9 +122,14 @@ curl --request POST \
     &quot;dbName&quot;: &quot;my_database_1&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>データベースを作成する際に、データベースのプロパティを設定することもできます。以下の例では、データベースのレプリカ数を設定しています。</p>
+<p>You can also set properties for the database when you create it. The following example sets the number of replicas of the database.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.create_database(
     db_name=<span class="hljs-string">&quot;my_database_2&quot;</span>,
     properties={
@@ -160,7 +172,7 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="View-databases" class="common-anchor-header">データベースの表示<button data-href="#View-databases" class="anchor-icon" translate="no">
+<h2 id="View-databases" class="common-anchor-header">View databases<button data-href="#View-databases" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -175,9 +187,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus RESTful APIまたはSDKを使用して、既存のすべてのデータベースを一覧表示し、その詳細を表示することができます。</p>
+    </button></h2><p>You can use the Milvus RESTful API or SDKs to list all existing databases and view their details.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># List all existing databases</span>
 client.list_databases()
 
@@ -229,7 +246,7 @@ curl --request POST \
     &quot;dbName&quot;: &quot;default&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Manage-database-properties" class="common-anchor-header">データベースプロパティの管理<button data-href="#Manage-database-properties" class="anchor-icon" translate="no">
+<h2 id="Manage-database-properties" class="common-anchor-header">Manage database properties<button data-href="#Manage-database-properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -244,51 +261,51 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>データベースの<a href="/docs/ja/v2.6.x/manage_databases.md#Create-database">作成で</a>説明されているように、データベースを作成するときにデータベースのプロパティを設定したり、既存のデータベースのプロパティを変更および削除したりすることができます。</p>
-<p>以下の表は、設定可能なデータベース・プロパティの一覧です。</p>
+    </button></h2><p>Each database has its own properties, you can set the properties of a database when you create the database as described in <a href="/docs/ja/v2.6.x/manage_databases.md#Create-database">Create database</a> or you can alter and drop the properties of any existing database.</p>
+<p>The following table lists possible database properties.</p>
 <table>
    <tr>
-     <th><p>プロパティ名</p></th>
-     <th><p>タイプ</p></th>
-     <th><p>プロパティ 説明</p></th>
+     <th><p>Property Name</p></th>
+     <th><p>Type</p></th>
+     <th><p>Property Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">database.replica.number</code></p></td>
-     <td><p>整数</p></td>
-     <td><p>指定したデータベースのレプリカ数。</p></td>
+     <td><p>integer</p></td>
+     <td><p>The number of replicas for the specified database.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.resource_groups</code></p></td>
      <td><p>string</p></td>
-     <td><p>指定したデータベースに関連付けられているリソースグループの名前（カンマ区切り）。</p></td>
+     <td><p>The names of the resource groups associated with the specified database in a comma-separated list.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.diskQuota.mb</code></p></td>
      <td><p>integer</p></td>
-     <td><p>指定したデータベースのディスク容量の最大サイズ。</p></td>
+     <td><p>The maximum size of the disk space for the specified database, in megabytes (MB).</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.max.collections</code></p></td>
-     <td><p>整数</p></td>
-     <td><p>指定したデータベースで許可されるコレクションの最大数。</p></td>
+     <td><p>integer</p></td>
+     <td><p>The maximum number of collections allowed in the specified database.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.force.deny.writing</code></p></td>
      <td><p>boolean</p></td>
-     <td><p>指定したデータベースに書き込み操作を拒否させるかどうか。</p></td>
+     <td><p>Whether to force the specified database to deny writing operations.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.force.deny.reading</code></p></td>
      <td><p>boolean</p></td>
-     <td><p>指定したデータベースに読み取り操作を拒否させるかどうか。</p></td>
+     <td><p>Whether to force the specified database to deny reading operations.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">timezone</code></p></td>
-     <td><p>文字列</p></td>
-     <td><p>データベース内の時間に敏感な操作、特に<code translate="no">TIMESTAMPTZ</code> フィールドに適用されるデフォルトのタイムゾーンを指定します。コレクション・レベルのタイムゾーンが設定されていない限り、コレクションはデータベースのタイムゾーンを継承します。クエリレベルのtimezoneパラメータは、データベースとコレクションの両方のデフォルトを一時的に上書きすることができます。値は有効な<a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANAタイムゾーン識別子</a>でなければなりません（例えば、<strong>Asia/Shanghai</strong>、<strong>America/Chicago</strong>、または<strong>UTC</strong>）。<code translate="no">TIMESTAMPTZ</code> フィールドの使用方法の詳細は、<a href="/docs/ja/v2.6.x/timestamptz-field.md">TIMESTAMPTZ フィールドを</a>参照してください。</p></td>
+     <td><p>string</p></td>
+     <td><p>Specifies the default timezone applied to time-sensitive operations within the database, particularly for <code translate="no">TIMESTAMPTZ</code> fields. Collections inherit the database timezone unless a collection-level timezone is set. A query-level timezone parameter can temporarily override both database and collection defaults. The value must be a valid <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANA time zone identifier</a> (for example, <strong>Asia/Shanghai</strong>, <strong>America/Chicago</strong>, or <strong>UTC</strong>). For details on how to use a <code translate="no">TIMESTAMPTZ</code> field, refer to <a href="/docs/ja/v2.6.x/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p></td>
    </tr>
 </table>
-<h3 id="Alter-database-properties" class="common-anchor-header">データベース・プロパティの変更<button data-href="#Alter-database-properties" class="anchor-icon" translate="no">
+<h3 id="Alter-database-properties" class="common-anchor-header">Alter database properties<button data-href="#Alter-database-properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -303,9 +320,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>既存のデータベースのプロパティを以下のように変更できます。以下の例では、データベースで作成できるコレクションの数を制限しています。</p>
+    </button></h3><p>You can alter the properties of an existing database as follows. The following example limits the number of collections you can create in the database.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.alter_database_properties(
     db_name=<span class="hljs-string">&quot;my_database_1&quot;</span>,
     properties={
@@ -344,7 +366,7 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Drop-database-properties" class="common-anchor-header">データベースのプロパティの削除<button data-href="#Drop-database-properties" class="anchor-icon" translate="no">
+<h3 id="Drop-database-properties" class="common-anchor-header">Drop database properties<button data-href="#Drop-database-properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -359,9 +381,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下のように、データベースのプロパティを削除してリセットすることもできます。以下の例では、データベースで作成できるコレクション数の制限を削除しています。</p>
+    </button></h3><p>You can also reset a database property by dropping it as follows. The following example removes the limit on the number of collections you can create in the database.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.drop_database_properties(
     db_name=<span class="hljs-string">&quot;my_database_1&quot;</span>,
     property_keys=[
@@ -399,7 +426,7 @@ curl --request POST \
     ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Use-database" class="common-anchor-header">データベースの使用<button data-href="#Use-database" class="anchor-icon" translate="no">
+<h2 id="Use-database" class="common-anchor-header">Use database<button data-href="#Use-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -414,12 +441,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusから切断することなく、データベースを切り替えることができます。</p>
+    </button></h2><p>You can switch from one database to another without disconnecting from Milvus.</p>
 <div class="alert note">
-<p>RESTful APIはこの操作をサポートしていません。</p>
+<p>RESTful API does not support this operation.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.use_database(
     db_name=<span class="hljs-string">&quot;my_database_2&quot;</span>
 )
@@ -438,7 +470,7 @@ curl --request POST \
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># This operation is unsupported because RESTful does not provide a persistent connection.</span>
 <span class="hljs-comment"># As a workaround, initiate the required request again with the target database.</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-database" class="common-anchor-header">データベースの削除<button data-href="#Drop-database" class="anchor-icon" translate="no">
+<h2 id="Drop-database" class="common-anchor-header">Drop database<button data-href="#Drop-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -453,14 +485,19 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>データベースが不要になったら、そのデータベースを削除することができます。以下の点に注意してください：</p>
+    </button></h2><p>Once a database is no longer needed, you can drop the database. Note that:</p>
 <ul>
-<li><p>デフォルトのデータベースは削除できません。</p></li>
-<li><p>データベースを削除する前に、まずデータベース内のすべてのコレクションを削除する必要があります。</p></li>
+<li><p>Default databases cannot be dropped.</p></li>
+<li><p>Before dropping a database, you need to drop all collections in the database first.</p></li>
 </ul>
-<p>Milvus RESTful APIまたはSDKを使用して、プログラムでデータを作成することができます。</p>
+<p>You can use the Milvus RESTful API or SDKs to create data programmatically.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.drop_database(
     db_name=<span class="hljs-string">&quot;my_database_2&quot;</span>
 )
@@ -490,7 +527,7 @@ curl --request POST \
     &quot;dbName&quot;: &quot;my_database&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="FAQ" class="common-anchor-header">よくある質問<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -505,7 +542,7 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="How-do-I-manage-permissions-for-a-database" class="common-anchor-header">データベースの権限はどのように管理するのですか?<button data-href="#How-do-I-manage-permissions-for-a-database" class="anchor-icon" translate="no">
+    </button></h2><h3 id="How-do-I-manage-permissions-for-a-database" class="common-anchor-header">How do I manage permissions for a database?<button data-href="#How-do-I-manage-permissions-for-a-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -520,8 +557,8 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvusはロールベースアクセスコントロール(RBAC)を使用して権限を管理します。特定の権限を持つロールを作成し、ユーザに割り当てることで、異なるデータベースへのアクセスを制御することができます。詳細については、<a href="/docs/ja/v2.6.x/rbac.md">RBAC のドキュメントを</a>参照してください。</p>
-<h3 id="Are-there-any-quota-limitations-for-a-database" class="common-anchor-header">データベースのクォータ制限はありますか？<button data-href="#Are-there-any-quota-limitations-for-a-database" class="anchor-icon" translate="no">
+    </button></h3><p>Milvus uses Role-Based Access Control (RBAC) to manage permissions. You can create roles with specific privileges and assign them to users, thus controlling their access to different databases. For more details, refer to the <a href="/docs/ja/v2.6.x/rbac.md">RBAC documentation</a>.</p>
+<h3 id="Are-there-any-quota-limitations-for-a-database" class="common-anchor-header">Are there any quota limitations for a database?<button data-href="#Are-there-any-quota-limitations-for-a-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -536,4 +573,4 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvusでは、最大コレクション数など、データベースのクォータ制限を設定することができます。制限の包括的なリストについては、<a href="/docs/ja/v2.6.x/limitations.md">Milvus Limits ドキュメントを</a>参照してください。</p>
+    </button></h3><p>Yes, Milvus allows you to set quota limitations for a database, such as the maximum number of collections. For a comprehensive list of limitations, please refer to the <a href="/docs/ja/v2.6.x/limitations.md">Milvus Limits documentation</a>.</p>

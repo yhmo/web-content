@@ -1,13 +1,15 @@
 ---
 id: tiered-storage-overview.md
-title: 分层存储概述Compatible with Milvus 2.6.4+
+title: Tiered Storage OverviewCompatible with Milvus 2.6.4+
 summary: >-
-  在 Milvus
-  中，传统的满载模式要求每个查询节点在初始化时加载段的所有数据字段和索引，即使是可能永远不会被访问的数据。这虽然确保了数据的即时可用性，但往往会造成资源浪费，包括内存使用率高、磁盘活动频繁以及
-  I/O 开销大，尤其是在处理大规模数据集时。
+  In Milvus, the traditional full-load mode requires each QueryNode to load all
+  data fields and indexes of a segment at initialization, even data that may
+  never be accessed. This ensures immediate data availability but often leads to
+  wasted resources, including high memory usage, heavy disk activity, and
+  significant I/O overhead, especially when handling large-scale datasets.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Tiered-Storage-Overview" class="common-anchor-header">分层存储概述<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Tiered-Storage-Overview" class="anchor-icon" translate="no">
+<h1 id="Tiered-Storage-Overview" class="common-anchor-header">Tiered Storage Overview<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Tiered-Storage-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,21 +24,21 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在 Milvus 中，传统的<em>满载</em>模式要求每个查询节点在初始化时加载<a href="/docs/zh/glossary.md#Segment">段</a>的所有数据字段和索引，甚至包括可能永远不会被访问的数据。这可确保数据的即时可用性，但往往会导致资源浪费，包括内存使用率高、磁盘活动频繁以及 I/O 开销大，尤其是在处理大规模数据集时。</p>
-<p><em>分层存储</em>通过将数据<em>缓存</em>与分段加载解耦来应对这一挑战。现在，QueryNode 不再一次性加载所有数据，而是最初只加载轻量级<em>元</em>数据，并根据需求动态提取或驱逐 Field 数据。这大大缩短了加载时间，优化了本地资源利用率，并使查询节点能够处理远远超出其物理内存或磁盘容量的数据集。</p>
-<p>在以下情况下，请考虑启用分层存储：</p>
+    </button></h1><p>In Milvus, the traditional <em>full-load</em> mode requires each QueryNode to load all data fields and indexes of a <a href="/docs/zh/v2.6.x/glossary.md#Segment">segment</a> at initialization, even data that may never be accessed. This ensures immediate data availability but often leads to wasted resources, including high memory usage, heavy disk activity, and significant I/O overhead, especially when handling large-scale datasets.</p>
+<p><em>Tiered Storage</em> addresses this challenge by decoupling data caching from segment loading. Instead of loading all data at once, the QueryNode now loads only lightweight <em>metadata</em> initially and dynamically pulls or evicts field data on demand. This significantly reduces load time, optimizes local resource utilization, and enables QueryNodes to process datasets that far exceed their physical memory or disk capacity.</p>
+<p>Consider enabling Tiered Storage in scenarios such as:</p>
 <ul>
-<li><p>超过单个 QueryNode 可用内存或 NVMe 容量的集合</p></li>
-<li><p>加载速度比首次查询延迟更重要的分析或批处理工作负载</p></li>
-<li><p>对于访问频率较低的数据，可容忍偶尔缓存缺失的混合工作负载</p></li>
+<li><p>Collections that exceed the available memory or NVMe capacity of a single QueryNode</p></li>
+<li><p>Analytical or batch workloads where faster loading is more important than the first-query latency</p></li>
+<li><p>Mixed workloads that can tolerate occasional cache misses for less frequently accessed data</p></li>
 </ul>
 <div class="alert note">
 <ul>
-<li><p><em>元数据</em>包括 Schema、索引定义、块映射、行计数和远程对象引用。这类数据较小，始终处于缓存状态，且永不被驱逐。</p></li>
-<li><p>有关段和块的更多详情，请参阅<a href="/docs/zh/glossary.md#Segment">段</a>。</p></li>
+<li><p><em>Metadata</em> includes schema, index definitions, chunk maps, row counts, and references to remote objects. This type of data is small, always cached, and never evicted.</p></li>
+<li><p>For more details on segments and chunks, refer to <a href="/docs/zh/v2.6.x/glossary.md#Segment">Segment</a>.</p></li>
 </ul>
 </div>
-<h2 id="How-it-works" class="common-anchor-header">如何工作<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,8 +53,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>分层存储改变了 QueryNode 管理段数据的方式。QueryNode 现在不再在加载时缓存每个字段和索引，而是只加载元数据，并使用缓存层动态获取和驱逐数据。</p>
-<h3 id="Full-load-mode-vs-Tiered-Storage-mode" class="common-anchor-header">满载模式与分层存储模式的比较<button data-href="#Full-load-mode-vs-Tiered-Storage-mode" class="anchor-icon" translate="no">
+    </button></h2><p>Tiered Storage changes how QueryNode manages segment data. Instead of caching every field and index at load time, QueryNode now loads metadata only and uses a caching layer to fetch and evict data dynamically.</p>
+<h3 id="Full-load-mode-vs-Tiered-Storage-mode" class="common-anchor-header">Full-load mode vs. Tiered Storage mode<button data-href="#Full-load-mode-vs-Tiered-Storage-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,17 +69,19 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>虽然满载模式和分层存储模式处理的数据相同，但它们在 QueryNode 缓存这些组件的<em>时间</em>和<em>方式</em>上有所不同。</p>
+    </button></h3><p>While both full-load and Tiered Storage modes handle the same data, they differ in <em>when</em> and <em>how</em> QueryNode caches these components.</p>
 <ul>
-<li><p><strong>满载模式</strong>：在加载时，QueryNode 从对象存储中缓存完整的 Collections 数据，包括元数据、字段数据和索引。</p></li>
-<li><p><strong>分层存储模式</strong>：加载时，QueryNode 只缓存元数据。字段数据以块为粒度按需提取。索引文件保持远程状态，直到第一次查询需要它们；然后获取并缓存整个分段索引。</p></li>
+<li><p><strong>Full-load mode</strong>: At load time, QueryNode caches full collection data, including metadata, field data, and indexes, from object storage.</p></li>
+<li><p><strong>Tiered Storage mode</strong>: At load time, QueryNode caches metadata only. Field data is pulled on demand at chunk granularity. Index files remain remote until the first query needs them; then the entire per-segment index is fetched and cached.</p></li>
 </ul>
-<p>下图显示了这些差异。</p>
+<p>The diagram below shows these differences.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/full-load-mode-vs-tiered-storage-mode.png" alt="Full Load Mode Vs Tiered Storage Mode" class="doc-image" id="full-load-mode-vs-tiered-storage-mode" />
-   </span> <span class="img-wrapper"> <span>全加载模式与分层存储模式</span> </span></p>
-<h3 id="QueryNode-loading-workflow" class="common-anchor-header">查询节点加载工作流程<button data-href="#QueryNode-loading-workflow" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/full-load-mode-vs-tiered-storage-mode.png" alt="Full Load Mode Vs Tiered Storage Mode" class="doc-image" id="full-load-mode-vs-tiered-storage-mode" />
+    <span>Full Load Mode Vs Tiered Storage Mode</span>
+  </span>
+</p>
+<h3 id="QueryNode-loading-workflow" class="common-anchor-header">QueryNode loading workflow<button data-href="#QueryNode-loading-workflow" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -92,44 +96,46 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在分层存储模式下，分层存储的工作流程分为以下几个阶段：</p>
+    </button></h3><p>Under Tiered Storage, the workflow of Tiered Storage has these phases:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/querynode-load-workflow.png" alt="Querynode Load Workflow" class="doc-image" id="querynode-load-workflow" />
-   </span> <span class="img-wrapper"> <span>查询节点加载工作流程</span> </span></p>
-<h4 id="Phase-1-Lazy-load" class="common-anchor-header">阶段 1：懒加载</h4><p>初始化时，Milvus 执行懒加载，只缓存段级元数据，如 Schema 定义、索引信息和块映射。</p>
-<p>在此阶段不会缓存实际字段数据或索引文件。这样，Collections 几乎可以在启动后立即开始查询，同时将内存和磁盘消耗降到最低。</p>
-<p>由于字段数据和索引文件在首次访问前一直保存在远程存储中，因此<em>首次查询</em>可能会出现额外的延迟，因为必须按需获取所需的数据。为减轻关键字段或索引的这种影响，可以使用<a href="/docs/zh/tiered-storage-overview.md#Phase-2-Warm-up">预热</a>策略，在段可查询前主动预加载它们。</p>
-<p><strong>配置</strong></p>
-<p>启用分层存储时自动应用。无需手动设置。</p>
-<h4 id="Phase-2-Warm-up" class="common-anchor-header">第 2 阶段：预热</h4><p>为减少<a href="/docs/zh/tiered-storage-overview.md#Phase-1-Lazy-load">懒加载</a>带来的首次命中延迟，Milvus 提供了<em>预热</em>机制。</p>
-<p>在段可查询之前，Milvus 可以主动从对象存储中获取并缓存特定字段或索引，确保首次查询直接命中缓存数据，而不是触发按需加载。</p>
-<p>预热期间，字段将在块级别预加载，而索引将在段级别预加载。</p>
-<p><strong>配置</strong></p>
-<p>预热可在三个级别进行配置：</p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/querynode-load-workflow.png" alt="Querynode Load Workflow" class="doc-image" id="querynode-load-workflow" />
+    <span>Querynode Load Workflow</span>
+  </span>
+</p>
+<h4 id="Phase-1-Lazy-load" class="common-anchor-header">Phase 1: Lazy load</h4><p>At initialization, Milvus performs a lazy load, caching only segment-level metadata such as schema definitions, index information, and chunk mappings.</p>
+<p>No actual field data or index files are cached at this stage. This allows collections to become queryable almost immediately after startup while keeping memory and disk consumption minimal.</p>
+<p>Because field data and index files remain in remote storage until first accessed, the <em>first query</em> may experience additional latency as required data must be fetched on demand. To mitigate this effect for critical fields or indexes, you can use the <a href="/docs/zh/v2.6.x/tiered-storage-overview.md#Phase-2-Warm-up">Warm Up</a> strategy to proactively preload them before the segment becomes queryable.</p>
+<p><strong>Configuration</strong></p>
+<p>Automatically applied when Tiered Storage is enabled. No manual setting is required.</p>
+<h4 id="Phase-2-Warm-up" class="common-anchor-header">Phase 2: Warm up</h4><p>To reduce the first-hit latency introduced by <a href="/docs/zh/v2.6.x/tiered-storage-overview.md#Phase-1-Lazy-load">lazy load</a>, Milvus provides a <em>Warm Up</em> mechanism.</p>
+<p>Before a segment becomes queryable, Milvus can proactively fetch and cache specific fields or indexes from object storage, ensuring that the first query directly hits cached data instead of triggering on-demand loading.</p>
+<p>During warmup, fields will be preloaded at the chunk level, while indexes will be preloaded at the segment level.</p>
+<p><strong>Configuration</strong></p>
+<p>Warmup can be configured at three levels:</p>
 <ul>
-<li><p><strong>群集级</strong>：在<code translate="no">milvus.yaml</code> 中定义适用于所有 Collections 的默认值。</p></li>
-<li><p><strong>Collections 级别</strong>：使用 SDK 方法（<code translate="no">create_collection</code>,<code translate="no">alter_collection_properties</code> ）覆盖特定 Collection 的集群默认值。</p></li>
-<li><p><strong>字段/索引级别</strong>：使用 SDK 方法微调单个字段或索引 (<code translate="no">add_field</code>,<code translate="no">alter_collection_field</code>,<code translate="no">add_index</code>,<code translate="no">alter_index_properties</code>)。</p></li>
+<li><p><strong>Cluster level</strong>: Define defaults in <code translate="no">milvus.yaml</code> that apply to all collections.</p></li>
+<li><p><strong>Collection level</strong>: Override cluster defaults for a specific collection using SDK methods (<code translate="no">create_collection</code>, <code translate="no">alter_collection_properties</code>).</p></li>
+<li><p><strong>Field/Index level</strong>: Fine-tune individual fields or indexes using SDK methods (<code translate="no">add_field</code>, <code translate="no">alter_collection_field</code>, <code translate="no">add_index</code>, <code translate="no">alter_index_properties</code>).</p></li>
 </ul>
-<p>高级设置覆盖低级设置（字段/索引 &gt; Collections &gt; 群集）。有关详细配置，请参见<a href="/docs/zh/warm-up.md">预热</a>。</p>
-<h4 id="Phase-3-Partial-load" class="common-anchor-header">第 3 阶段：部分加载</h4><p>一旦开始查询或搜索，查询节点就会执行<em>部分加载</em>，只从对象存储中获取所需的数据块或索引文件。</p>
+<p>Higher-level settings override lower-level ones (Field/Index > Collection > Cluster). See <a href="/docs/zh/v2.6.x/warm-up.md">Warm Up</a> for detailed configurations.</p>
+<h4 id="Phase-3-Partial-load" class="common-anchor-header">Phase 3: Partial load</h4><p>Once queries or searches begin, the QueryNode performs a <em>partial load</em>, fetching only the required data chunks or index files from object storage.</p>
 <ul>
-<li><p><strong>字段</strong>：按需加载数据<strong>块</strong>。只获取符合当前查询条件的数据块，从而最大限度地减少 I/O 和内存使用。</p></li>
-<li><p><strong>索引</strong>：在<strong>段级别</strong>按需加载。索引文件必须作为完整单元获取，不能分割成块。</p></li>
+<li><p><strong>Fields</strong>: Loaded on demand at the <strong>chunk level</strong>. Only data chunks that match the current query conditions are fetched, minimizing I/O and memory use.</p></li>
+<li><p><strong>Indexes</strong>: Loaded on demand at the <strong>segment level</strong>. Index files must be fetched as complete units and cannot be split across chunks.</p></li>
 </ul>
-<p><strong>配置</strong></p>
-<p>启用分层存储时，会自动应用部分加载。无需手动设置。要尽量减少关键数据的首次命中延迟，请与<a href="/docs/zh/warm-up.md">预热</a>结合使用。</p>
-<h4 id="Phase-4-Eviction" class="common-anchor-header">第 4 阶段：驱逐</h4><p>为保持健康的资源使用，当达到特定阈值时，Milvus 会自动释放未使用的缓存数据。</p>
-<p>驱逐遵循 "<a href="https://en.wikipedia.org/wiki/Cache_replacement_policies">最近最少使用"（LRU）</a>策略，确保不常访问的数据首先被删除，而活动数据仍保留在缓存中。</p>
-<p>驱逐受以下可配置项的制约：</p>
+<p><strong>Configuration</strong></p>
+<p>Partial load is automatically applied when Tiered Storage is enabled. No manual setting is required. To minimize first-hit latency for critical data, combine with <a href="/docs/zh/v2.6.x/warm-up.md">Warm Up</a>.</p>
+<h4 id="Phase-4-Eviction" class="common-anchor-header">Phase 4: Eviction</h4><p>To maintain healthy resource usage, Milvus automatically releases unused cached data when specific thresholds are reached.</p>
+<p>Eviction follows a <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies">Least Recently Used (LRU)</a> policy, ensuring that infrequently accessed data is removed first while active data remains in cache.</p>
+<p>Eviction is governed by the following configurable items:</p>
 <ul>
-<li><p><strong>水印</strong>：定义触发和停止驱逐的内存或磁盘阈值。</p></li>
-<li><p><strong>缓存 TTL</strong>：在规定的不活动时间后删除过时的缓存数据。</p></li>
+<li><p><strong>Watermarks</strong>: Define memory or disk thresholds that trigger and stop eviction.</p></li>
+<li><p><strong>Cache TTL</strong>: Removes stale cached data after a defined duration of inactivity.</p></li>
 </ul>
-<p><strong>配置</strong></p>
-<p>在<strong>Milvus.yaml</strong> 中启用和调整驱逐参数。有关详细配置，请参阅 "<a href="/docs/zh/eviction.md">驱逐</a>"。</p>
-<h2 id="Getting-started" class="common-anchor-header">开始使用<button data-href="#Getting-started" class="anchor-icon" translate="no">
+<p><strong>Configuration</strong></p>
+<p>Enable and tune eviction parameters in <strong>milvus.yaml</strong>. See <a href="/docs/zh/v2.6.x/eviction.md">Eviction</a> for detailed configuration.</p>
+<h2 id="Getting-started" class="common-anchor-header">Getting started<button data-href="#Getting-started" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,7 +150,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Prerequisites" class="common-anchor-header">先决条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,14 +166,14 @@ beta: Milvus 2.6.4+
         ></path>
       </svg>
     </button></h3><ul>
-<li><p>Milvus 2.6.4 及以上版本</p></li>
-<li><p>具有专用内存和磁盘资源的查询节点</p></li>
-<li><p>对象存储后端（S3、MinIO 等）</p></li>
+<li><p>Milvus 2.6.4+</p></li>
+<li><p>QueryNodes with dedicated memory and disk resources</p></li>
+<li><p>Object storage backend (S3, MinIO, etc.)</p></li>
 </ul>
 <div class="alert warning">
-<p>QueryNode 资源不应与其他工作负载共享。共享资源会导致 Tiered Storage 错误判断可用容量，从而导致崩溃。</p>
+<p>QueryNode resources should not be shared with other workloads. Shared resources can cause Tiered Storage to misjudge available capacity, leading to crashes.</p>
 </div>
-<h3 id="Basic-configuration-template" class="common-anchor-header">基本配置模板<button data-href="#Basic-configuration-template" class="anchor-icon" translate="no">
+<h3 id="Basic-configuration-template" class="common-anchor-header">Basic configuration template<button data-href="#Basic-configuration-template" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -182,7 +188,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>编辑 Milvus 配置文件 (<code translate="no">milvus.yaml</code>) 配置群集级 Tiered Storage 设置：</p>
+    </button></h3><p>Edit the Milvus configuration file (<code translate="no">milvus.yaml</code>) to configure cluster-level Tiered Storage settings:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
@@ -210,9 +216,9 @@ beta: Milvus 2.6.4+
       <span class="hljs-attr">cacheTtl:</span> <span class="hljs-number">604800</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>此模板定义群集级默认设置。您可以使用 SDK 覆盖特定 Collections 或单个字段/索引的预热设置。有关详细信息，请参阅<a href="/docs/zh/warm-up.md">预热</a>。</p>
+<p>This template defines cluster-level defaults. You can override warmup settings for specific collections or individual fields/indexes using the SDK. See <a href="/docs/zh/v2.6.x/warm-up.md">Warm Up</a> for details.</p>
 </div>
-<h3 id="Next-steps" class="common-anchor-header">下一步<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h3 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -228,12 +234,12 @@ beta: Milvus 2.6.4+
         ></path>
       </svg>
     </button></h3><ol>
-<li><p><strong>配置</strong>预热 - 针对访问模式优化预加载。请参阅<a href="/docs/zh/warm-up.md">预热</a>。</p></li>
-<li><p><strong>调整驱逐</strong>- 针对资源限制设置适当的水印和 TTL。请参阅 "<a href="/docs/zh/eviction.md">驱逐</a>"。</p></li>
-<li><p><strong>监控性能</strong>- 跟踪缓存命中率、驱逐频率和查询延迟模式。</p></li>
-<li><p><strong>迭代配置</strong>- 根据观察到的工作负载特征调整设置。</p></li>
+<li><p><strong>Configure Warm Up</strong> - Optimize preloading for your access patterns. See <a href="/docs/zh/v2.6.x/warm-up.md">Warm Up</a>.</p></li>
+<li><p><strong>Tune Eviction</strong> - Set appropriate watermarks and TTL for your resource constraints. See <a href="/docs/zh/v2.6.x/eviction.md">Eviction</a>.</p></li>
+<li><p><strong>Monitor Performance</strong> - Track cache hit rates, eviction frequency, and query latency patterns.</p></li>
+<li><p><strong>Iterate Configuration</strong> - Adjust settings based on observed workload characteristics.</p></li>
 </ol>
-<h2 id="FAQ" class="common-anchor-header">常见问题<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -248,7 +254,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Can-I-change-Tiered-Storage-parameters-at-runtime" class="common-anchor-header">能否在运行时更改分层存储参数？<button data-href="#Can-I-change-Tiered-Storage-parameters-at-runtime" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Can-I-change-Tiered-Storage-parameters-at-runtime" class="common-anchor-header">Can I change Tiered Storage parameters at runtime?<button data-href="#Can-I-change-Tiered-Storage-parameters-at-runtime" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -263,12 +269,12 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>这取决于参数类型：</p>
+    </button></h3><p>It depends on the parameter type:</p>
 <ul>
-<li><p><strong>预热设置</strong>：可以在加载 Collections 之前通过 SDK 配置 Collection 级和字段/索引级预热。一旦加载了 Collections，必须先释放它，更改设置，然后重新加载。</p></li>
-<li><p><strong>驱逐和水印设置</strong>：这些必须在启动 Milvus 之前在<code translate="no">milvus.yaml</code> 中设置。更改需要重新启动才能生效。</p></li>
+<li><p><strong>Warmup settings</strong>: Collection-level and field/index-level warmup can be configured via SDK before loading the collection. Once the collection is loaded, you must release it first, alter the settings, then reload.</p></li>
+<li><p><strong>Eviction and watermark settings</strong>: These must be set in <code translate="no">milvus.yaml</code> before starting Milvus. Changes require a restart to take effect.</p></li>
 </ul>
-<h3 id="Does-Tiered-Storage-affect-data-durability" class="common-anchor-header">分层存储会影响数据持久性吗？<button data-href="#Does-Tiered-Storage-affect-data-durability" class="anchor-icon" translate="no">
+<h3 id="Does-Tiered-Storage-affect-data-durability" class="common-anchor-header">Does Tiered Storage affect data durability?<button data-href="#Does-Tiered-Storage-affect-data-durability" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -283,8 +289,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>不会。数据持久性仍由远程对象存储处理。分层存储只管理查询节点上的缓存。</p>
-<h3 id="Will-queries-always-be-faster-with-Tiered-Storage" class="common-anchor-header">使用分层存储后，查询速度是否总是更快？<button data-href="#Will-queries-always-be-faster-with-Tiered-Storage" class="anchor-icon" translate="no">
+    </button></h3><p>No. Data persistence is still handled by remote object storage. Tiered Storage only manages caching on QueryNodes.</p>
+<h3 id="Will-queries-always-be-faster-with-Tiered-Storage" class="common-anchor-header">Will queries always be faster with Tiered Storage?<button data-href="#Will-queries-always-be-faster-with-Tiered-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -299,8 +305,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>不一定。分层存储缩短了加载时间并减少了资源使用量，但接触未缓存（冷）数据的查询可能会出现更高的延迟。对于对延迟敏感的工作负载，建议使用满载模式。</p>
-<h3 id="Why-does-a-QueryNode-still-run-out-of-resources-even-with-Tiered-Storage-enabled" class="common-anchor-header">为什么即使启用了分层存储，查询节点仍然会出现资源耗尽的情况？<button data-href="#Why-does-a-QueryNode-still-run-out-of-resources-even-with-Tiered-Storage-enabled" class="anchor-icon" translate="no">
+    </button></h3><p>Not necessarily. Tiered Storage reduces load time and resource usage, but queries that touch uncached (cold) data may see higher latency. For latency-sensitive workloads, full-load mode is recommended.</p>
+<h3 id="Why-does-a-QueryNode-still-run-out-of-resources-even-with-Tiered-Storage-enabled" class="common-anchor-header">Why does a QueryNode still run out of resources even with Tiered Storage enabled?<button data-href="#Why-does-a-QueryNode-still-run-out-of-resources-even-with-Tiered-Storage-enabled" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -315,13 +321,13 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>两种常见原因：</p>
+    </button></h3><p>Two common causes:</p>
 <ul>
-<li><p>查询节点配置的资源太少。水印是相对于可用资源而言的，因此配置不足会扩大误判。</p></li>
-<li><p>QueryNode 资源与其他工作负载共享，因此分层存储无法正确评估实际可用容量。</p></li>
+<li><p>The QueryNode was configured with too few resources. Watermarks are relative to available resources, so under-provisioning amplifies misjudgment.</p></li>
+<li><p>QueryNode resources are shared with other workloads, so Tiered Storage cannot correctly assess actual available capacity.</p></li>
 </ul>
-<p>要解决这个问题，我们建议您为查询节点分配专用资源。</p>
-<h3 id="Why-do-some-queries-fail-under-high-concurrency" class="common-anchor-header">为什么有些查询在高并发情况下会失败？<button data-href="#Why-do-some-queries-fail-under-high-concurrency" class="anchor-icon" translate="no">
+<p>To resolve this, we recommend you allocate dedicated resources for QueryNodes.</p>
+<h3 id="Why-do-some-queries-fail-under-high-concurrency" class="common-anchor-header">Why do some queries fail under high concurrency?<button data-href="#Why-do-some-queries-fail-under-high-concurrency" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -336,8 +342,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>如果有太多查询同时访问热数据，查询节点资源限制仍可能会被超出。一些线程可能会因资源预留超时而失败。在负载减少后重试或分配更多资源可以解决这个问题。</p>
-<h3 id="Why-does-searchquery-latency-increase-after-enabling-Tiered-Storage" class="common-anchor-header">启用分层存储后，为什么搜索/查询延迟会增加？<button data-href="#Why-does-searchquery-latency-increase-after-enabling-Tiered-Storage" class="anchor-icon" translate="no">
+    </button></h3><p>If too many queries hit hot data at the same time, QueryNode resource limits may still be exceeded. Some threads may fail due to resource reservation timeouts. Retrying after the load decreases, or allocating more resources, can resolve this.</p>
+<h3 id="Why-does-searchquery-latency-increase-after-enabling-Tiered-Storage" class="common-anchor-header">Why does search/query latency increase after enabling Tiered Storage?<button data-href="#Why-does-searchquery-latency-increase-after-enabling-Tiered-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -352,8 +358,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>可能的原因包括</p>
+    </button></h3><p>Possible causes include:</p>
 <ul>
-<li><p>频繁查询冷数据，而冷数据必须从存储中获取。</p></li>
-<li><p>水印设置得太近，导致频繁同步驱逐。</p></li>
+<li><p>Frequent queries to cold data, which must be fetched from storage.</p></li>
+<li><p>Watermarks set too close together, causing frequent synchronous eviction.</p></li>
 </ul>

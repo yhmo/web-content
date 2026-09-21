@@ -1,14 +1,13 @@
 ---
 id: insert-data-into-structarray-fields.md
-title: Вставка данных в поля StructArray
+title: Insert Data into StructArray Fields
 summary: >-
-  Вставьте данные в поле StructArray, если каждая сущность содержит
-  упорядоченный список структурированных элементов. В полезной нагрузке вставки
-  поле StructArray представляется в виде массива объектов. Каждый объект
-  представляет один элемент Struct и использует имена подполей Struct,
-  определённые в схеме коллекции.
+  Insert data into a StructArray field when each entity contains an ordered list
+  of structured elements. In the insert payload, a StructArray field is
+  represented as an array of objects. Each object represents one Struct element
+  and uses the Struct subfield names defined in the collection schema.
 ---
-<h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">Вставка данных в поля StructArray<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
+<h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">Insert Data into StructArray Fields<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Вставьте данные в поле StructArray, если каждая сущность содержит упорядоченный список структурированных элементов. В полезной нагрузке вставки поле StructArray представлено в виде массива объектов. Каждый объект представляет один элемент Struct и использует имена подполей Struct, определенные в схеме коллекции.</p>
-<p>На этой странице используется коллекция « <code translate="no">tech_articles</code> » из раздела <a href="/docs/ru/create-structarray-field.md">«Создание поля StructArray</a>». Каждая сущность представляет собой техническую статью, а поле « <code translate="no">chunks</code> » хранит фрагменты статьи в виде элементов Struct.</p>
-<h2 id="Before-you-begin" class="common-anchor-header">Перед началом<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+    </button></h1><p>Insert data into a StructArray field when each entity contains an ordered list of structured elements. In the insert payload, a StructArray field is represented as an array of objects. Each object represents one Struct element and uses the Struct subfield names defined in the collection schema.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/ru/create-structarray-field.md">Create a StructArray Field</a>. Each entity is a technical article, and the <code translate="no">chunks</code> field stores article chunks as Struct elements.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,38 +39,38 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Убедитесь, что схема коллекции уже содержит поле StructArray « <code translate="no">chunks</code> ».</p>
+    </button></h2><p>Make sure the collection schema already contains the <code translate="no">chunks</code> StructArray field.</p>
 <table>
 <thead>
-<tr><th>Поле</th><th>Тип</th><th>Значение при вставке</th></tr>
+<tr><th>Field</th><th>Type</th><th>Insert value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">doc_id</code></td><td><code translate="no">INT64</code></td><td>Идентификатор статьи.</td></tr>
-<tr><td><code translate="no">title</code></td><td><code translate="no">VARCHAR</code></td><td>Название статьи.</td></tr>
-<tr><td><code translate="no">category</code></td><td><code translate="no">VARCHAR</code></td><td>Категория статьи.</td></tr>
-<tr><td><code translate="no">title_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Встраивание на уровне статьи.</td></tr>
-<tr><td><code translate="no">chunks</code></td><td><code translate="no">ARRAY</code></td><td>Список объектов фрагментов.</td></tr>
+<tr><td><code translate="no">doc_id</code></td><td><code translate="no">INT64</code></td><td>Article ID.</td></tr>
+<tr><td><code translate="no">title</code></td><td><code translate="no">VARCHAR</code></td><td>Article title.</td></tr>
+<tr><td><code translate="no">category</code></td><td><code translate="no">VARCHAR</code></td><td>Article category.</td></tr>
+<tr><td><code translate="no">title_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Article-level embedding.</td></tr>
+<tr><td><code translate="no">chunks</code></td><td><code translate="no">ARRAY</code></td><td>A list of chunk objects.</td></tr>
 </tbody>
 </table>
-<p>Каждый объект в « <code translate="no">chunks</code> » должен соответствовать схеме Struct.</p>
+<p>Each object in <code translate="no">chunks</code> must follow the Struct schema.</p>
 <table>
 <thead>
-<tr><th>Поле</th><th>Тип</th><th>Значение</th></tr>
+<tr><th>Subfield</th><th>Type</th><th>Insert value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">text</code></td><td><code translate="no">VARCHAR</code></td><td>Текст фрагмента.</td></tr>
-<tr><td><code translate="no">section</code></td><td><code translate="no">VARCHAR</code></td><td>Название раздела, например <code translate="no">index</code>, <code translate="no">search</code> или <code translate="no">filter</code>.</td></tr>
-<tr><td><code translate="no">page</code></td><td><code translate="no">INT64</code></td><td>Номер страницы или логическое положение.</td></tr>
-<tr><td><code translate="no">quality_score</code></td><td><code translate="no">FLOAT</code></td><td>Оценка на уровне фрагмента.</td></tr>
-<tr><td><code translate="no">has_code</code></td><td><code translate="no">BOOL</code></td><td>Содержит ли фрагмент код.</td></tr>
-<tr><td><code translate="no">emb_list_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Вектор, написанный для поиска по EmbeddingList.</td></tr>
-<tr><td><code translate="no">emb</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Вектор, записанный для поиска на уровне элементов.</td></tr>
+<tr><td><code translate="no">text</code></td><td><code translate="no">VARCHAR</code></td><td>Chunk text.</td></tr>
+<tr><td><code translate="no">section</code></td><td><code translate="no">VARCHAR</code></td><td>Section name, such as <code translate="no">index</code>, <code translate="no">search</code>, or <code translate="no">filter</code>.</td></tr>
+<tr><td><code translate="no">page</code></td><td><code translate="no">INT64</code></td><td>Page number or logical position.</td></tr>
+<tr><td><code translate="no">quality_score</code></td><td><code translate="no">FLOAT</code></td><td>Chunk-level score.</td></tr>
+<tr><td><code translate="no">has_code</code></td><td><code translate="no">BOOL</code></td><td>Whether the chunk contains code.</td></tr>
+<tr><td><code translate="no">emb_list_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vector written for EmbeddingList search.</td></tr>
+<tr><td><code translate="no">emb</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vector written for element-level search.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>В полезной нагрузке вставки поле « <code translate="no">chunks</code> » является обычным полем, значение которого представляет собой массив объектов Struct. Внутри каждого объекта используйте имена подполей, такие как « <code translate="no">text</code> » и « <code translate="no">emb</code> ». Используйте синтаксис пути, например « <code translate="no">chunks[text]</code> » или « <code translate="no">chunks[emb]</code> », только после вставки при создании индексов, выполнении поиска, построении фильтров или указании полей вывода.</p>
+<p>In an insert payload, <code translate="no">chunks</code> is a regular field whose value is an array of Struct objects. Inside each object, use subfield names such as <code translate="no">text</code> and <code translate="no">emb</code>. Use path syntax, such as <code translate="no">chunks[text]</code> or <code translate="no">chunks[emb]</code>, only after insertion when you create indexes, run searches, build filters, or specify output fields.</p>
 </div>
-<h2 id="Understand-the-insert-payload-shape" class="common-anchor-header">Понимание структуры данных вставки<button data-href="#Understand-the-insert-payload-shape" class="anchor-icon" translate="no">
+<h2 id="Understand-the-insert-payload-shape" class="common-anchor-header">Understand the insert payload shape<button data-href="#Understand-the-insert-payload-shape" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -86,7 +85,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Значение <code translate="no">chunks</code> представляет собой массив элементов Struct. Каждый элемент — это объект, ключи которого являются именами подполей.</p>
+    </button></h2><p>The <code translate="no">chunks</code> value is an array of Struct elements. Each element is an object whose keys are subfield names.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;doc_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;StructArray indexing patterns&quot;</span><span class="hljs-punctuation">,</span>
@@ -114,8 +113,8 @@ summary: >-
   <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">emb_list_vector</code> и <code translate="no">emb</code> являются отдельными подполями векторного типа, поскольку поддерживают разные режимы поиска. Поиск по EmbeddingList рассматривает все векторы в поле StructArray как один список вложений и возвращает результаты на уровне сущностей с метриками <code translate="no">MAX_SIM*</code>. Поиск на уровне элементов выполняет поиск по каждому элементу Struct независимо и может возвращать смещение найденного элемента. В данном примере для простоты в обоих полях хранятся одинаковые векторные значения. В производственном приложении можно хранить одинаковые вложения в обоих подполях, если оба режима поиска используют одно и то же вложение блоков, или хранить разные вложения, если эти два режима поиска используют разные представления.</p>
-<h2 id="Insert-rows" class="common-anchor-header">Вставка строк<button data-href="#Insert-rows" class="anchor-icon" translate="no">
+<p><code translate="no">emb_list_vector</code> and <code translate="no">emb</code> are separate vector subfields because they support different search modes. EmbeddingList search treats all vectors in a StructArray field as one embedding list and returns entity-level results with <code translate="no">MAX_SIM*</code> metrics. Element-level search searches each Struct element independently and can return the matched element offset. This example stores the same vector values in both fields for simplicity. In a production application, you can store the same embeddings in both subfields when both search modes use the same chunk embedding, or store different embeddings when the two search modes use different representations.</p>
+<h2 id="Insert-rows" class="common-anchor-header">Insert rows<button data-href="#Insert-rows" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -130,7 +129,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Используйте оператор ` <code translate="no">client.insert()</code> ` для вставки строк, содержащих значения StructArray.</p>
+    </button></h2><p>Use <code translate="no">client.insert()</code> to insert rows that contain StructArray values.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -217,7 +216,7 @@ result = client.insert(
 
 <span class="hljs-built_in">print</span>(result)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-into-nullable-StructArray-fields" class="common-anchor-header">Вставка в поля StructArray, допускающие значение null<button data-href="#Insert-into-nullable-StructArray-fields" class="anchor-icon" translate="no">
+<h2 id="Insert-into-nullable-StructArray-fields" class="common-anchor-header">Insert into nullable StructArray fields<button data-href="#Insert-into-nullable-StructArray-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -232,7 +231,7 @@ result = client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Если поле ` <code translate="no">chunks</code> ` допускает значение `null`, сущность может установить для всего поля ` <code translate="no">chunks</code> ` значение `null`. В Python для представления нулевого значения используйте ` <code translate="no">None</code> `.</p>
+    </button></h2><p>If the <code translate="no">chunks</code> field is nullable, an entity can set the entire <code translate="no">chunks</code> field to null. In Python, use <code translate="no">None</code> to represent a null value.</p>
 <pre><code translate="no" class="language-python">client.insert(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
     data=[
@@ -246,12 +245,12 @@ result = client.insert(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Если поле StructArray, допускающее значение null, содержит допустимое значение StructArray, все подполя в этом значении должны либо быть равны null, либо иметь допустимые значения. Вставка сущности, в которой некоторые подполя установлены в null, а другие — в допустимые значения, приводит к ошибке.</p>
+<p>When a nullable StructArray field contains a valid StructArray value, all subfields in that value should either be null or have valid values. Inserting an entity with some subfields set to null and others set to valid values results in an error.</p>
 <div class="alert note">
-<p>Предупреждение
-Поля StructArray, допускающие значение null, доступны только в Milvus v3.0.x. Если вы динамически добавляете поле StructArray в существующую коллекцию, добавляемое поле должно допускать значение null, а существующие сущности должны возвращать значение « <code translate="no">null</code> » для нового поля по всем его подполям.</p>
+<p>Warning
+Nullable StructArray fields are available only in Milvus v3.0.x. If you dynamically add a StructArray field to an existing collection, the added field must be nullable, and existing entities return <code translate="no">null</code> for the new field across all its subfields.</p>
 </div>
-<h2 id="Validate-inserted-data" class="common-anchor-header">Проверка вставленных данных<button data-href="#Validate-inserted-data" class="anchor-icon" translate="no">
+<h2 id="Validate-inserted-data" class="common-anchor-header">Validate inserted data<button data-href="#Validate-inserted-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -266,7 +265,7 @@ result = client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете выполнить запрос к коллекции и получить поле StructArray или выбранные подполя.</p>
+    </button></h2><p>You can query the collection and return the StructArray field or selected subfields.</p>
 <pre><code translate="no" class="language-python">rows = client.query(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
     <span class="hljs-built_in">filter</span>=<span class="hljs-string">&quot;doc_id in [1, 2, 3]&quot;</span>,
@@ -282,8 +281,8 @@ result = client.insert(
 <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> rows:
     <span class="hljs-built_in">print</span>(row)
 <button class="copy-code-btn"></button></code></pre>
-<p>Используйте пути к полям StructArray, например <code translate="no">chunks[text]</code>, только при запросах, поиске, фильтрации или создании индексов. В данных для вставки по-прежнему следует использовать вложенные объекты в формате <code translate="no">chunks</code>.</p>
-<h2 id="Insert-rules" class="common-anchor-header">Правила вставки<button data-href="#Insert-rules" class="anchor-icon" translate="no">
+<p>Use StructArray field paths, such as <code translate="no">chunks[text]</code>, only when you query, search, filter, or create indexes. Insert payloads should still use nested objects under <code translate="no">chunks</code>.</p>
+<h2 id="Insert-rules" class="common-anchor-header">Insert rules<button data-href="#Insert-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -300,19 +299,19 @@ result = client.insert(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Правило</th><th>Объяснение</th></tr>
+<tr><th>Rule</th><th>Explanation</th></tr>
 </thead>
 <tbody>
-<tr><td>Используйте массив объектов для поля StructArray.</td><td>Значение <code translate="no">chunks</code> представляет собой список, и каждый элемент в этом списке является элементом Struct.</td></tr>
-<tr><td>Используйте имена подполей внутри каждого элемента Struct.</td><td>Вставьте ` <code translate="no">{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}</code> ` внутрь ` <code translate="no">chunks</code>`, а не ` <code translate="no">{&quot;chunks[text]&quot;: &quot;...&quot;}</code>`.</td></tr>
-<tr><td>Соблюдайте схему Struct.</td><td>Каждый элемент Struct должен использовать подполя, определенные в схеме Struct.</td></tr>
-<tr><td>Размеры векторов должны совпадать.</td><td>Значения векторов должны соответствовать параметрам « <code translate="no">dim</code> », настроенным для их подполей вектора.</td></tr>
-<tr><td>Соблюдайте ограничения на размеры ( <code translate="no">max_capacity</code>).</td><td>Количество элементов Struct в одной сущности не должно превышать значение параметра « <code translate="no">max_capacity</code> » поля StructArray.</td></tr>
-<tr><td>Используйте отдельные подполя вектора для отдельных режимов поиска.</td><td>Если требуется как поиск по EmbeddingList, так и поиск на уровне элементов, записывайте значения вектора в оба подполя вектора.</td></tr>
-<tr><td>Используйте <code translate="no">null</code> только в том случае, если поле допускает нулевые значения.</td><td>Поля StructArray, не допускающие нулевых значений, требуют действительных значений StructArray.</td></tr>
+<tr><td>Use an array of objects for a StructArray field.</td><td>The value of <code translate="no">chunks</code> is a list, and each item in the list is a Struct element.</td></tr>
+<tr><td>Use subfield names inside each Struct element.</td><td>Insert <code translate="no">{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}</code> inside <code translate="no">chunks</code>, not <code translate="no">{&quot;chunks[text]&quot;: &quot;...&quot;}</code>.</td></tr>
+<tr><td>Match the Struct schema.</td><td>Each Struct element must use the subfields defined in the Struct schema.</td></tr>
+<tr><td>Match vector dimensions.</td><td>Vector values must match the <code translate="no">dim</code> configured for their vector subfields.</td></tr>
+<tr><td>Respect <code translate="no">max_capacity</code>.</td><td>The number of Struct elements in one entity must not exceed the <code translate="no">max_capacity</code> of the StructArray field.</td></tr>
+<tr><td>Use separate vector subfields for separate search modes.</td><td>If both EmbeddingList search and element-level search are required, write vector values to both vector subfields.</td></tr>
+<tr><td>Use <code translate="no">null</code> only when the field is nullable.</td><td>Non-nullable StructArray fields require valid StructArray values.</td></tr>
 </tbody>
 </table>
-<h2 id="Common-mistakes" class="common-anchor-header">Распространенные ошибки<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -328,15 +327,15 @@ result = client.insert(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Использование путей к полям, таких как <code translate="no">chunks[text]</code>, в данных вставки.</p></li>
-<li><p>Пропуск обязательных подполей в элементе Struct.</p></li>
-<li><p>Вставка векторов с неправильным размером.</p></li>
-<li><p>Вставка большего количества элементов Struct, чем допускает <code translate="no">max_capacity</code>.</p></li>
-<li><p>Установка значения <code translate="no">null</code> только для одного подполя, в то время как другие подполя в том же значении StructArray являются допустимыми.</p></li>
-<li><p>Запись векторов только в <code translate="no">emb_list_vector</code>, а затем попытка запустить поиск на уровне элементов в <code translate="no">chunks[emb]</code>.</p></li>
-<li><p>Запись векторов только в поле « <code translate="no">emb</code> », а затем попытка выполнить поиск по EmbeddingList в поле « <code translate="no">chunks[emb_list_vector]</code> ».</p></li>
+<li><p>Using field paths such as <code translate="no">chunks[text]</code> in insert payloads.</p></li>
+<li><p>Omitting required subfields from a Struct element.</p></li>
+<li><p>Inserting vectors with the wrong dimension.</p></li>
+<li><p>Inserting more Struct elements than <code translate="no">max_capacity</code> allows.</p></li>
+<li><p>Setting only one subfield to <code translate="no">null</code> while other subfields in the same StructArray value are valid.</p></li>
+<li><p>Writing vectors only to <code translate="no">emb_list_vector</code> and then trying to run element-level search on <code translate="no">chunks[emb]</code>.</p></li>
+<li><p>Writing vectors only to <code translate="no">emb</code> and then trying to run EmbeddingList search on <code translate="no">chunks[emb_list_vector]</code>.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">Следующие шаги<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -352,7 +351,7 @@ result = client.insert(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Чтобы создать индексы для полей <code translate="no">chunks[emb_list_vector]</code>, <code translate="no">chunks[emb]</code> и скалярных подполей, ознакомьтесь с разделом <a href="/docs/ru/index-structarray-fields.md">«Индексирование полей StructArray</a>».</p></li>
-<li><p>Чтобы выполнить поиск по векторным подполям StructArray, ознакомьтесь с разделом <a href="/docs/ru/basic-vector-search-with-structarray.md">«Базовый поиск по векторам с помощью StructArray</a>».</p></li>
-<li><p>Чтобы ознакомиться с поведением при наличии значений null и ограничениями, связанными с конкретными версиями, ознакомьтесь с разделом <a href="/docs/ru/structarray-limits.md">«Ограничения StructArray</a>».</p></li>
+<li><p>To create indexes for <code translate="no">chunks[emb_list_vector]</code>, <code translate="no">chunks[emb]</code>, and scalar subfields, read <a href="/docs/ru/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To search StructArray vector subfields, read <a href="/docs/ru/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To review nullable behavior and version-specific limitations, read <a href="/docs/ru/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

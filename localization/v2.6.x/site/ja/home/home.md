@@ -3,19 +3,22 @@ id: home.md
 ---
 <div class="doc-h1-wrapper">
 <p><h1 class="title">
-Milvusドキュメントへようこそ！</h1></p>
+Welcome to Milvus Docs!
+</h1></p>
 <p><h2 class="sub-title">
-ここでは、Milvusとは何か、Milvusをどのようにインストールし、どのように使用し、どのようにデプロイし、どのようにビジネスニーズに合ったアプリケーションを構築するかについて学びます。</h2></p>
+Here you will learn about what Milvus is, and how to install, use, and deploy Milvus to build an application according to your business need.
+</h2></p>
 </div>
 <div class="doc-home-promotion-wrapper">
   <div class="promotion-content">
-    <h2 class="promotion-title">マネージドMilvusを無料でお試しください！</h2>
-    <p class="promotion-desc">Zillizクラウドは手間がかからず、Milvusを搭載し、10倍高速です。</p>
+    <h2 class="promotion-title">Try Managed Milvus For Free!</h2>
+    <p class="promotion-desc">Zilliz Cloud is hassle-free, powered by Milvus and 10x faster.</p>
   </div>
   <div class="cta-wrapper">
-   <a class="cta-global" href="https://cloud.zilliz.com/signup?utm_source=partner&utm_medium=referral&utm_campaign=2025-02-24_doc_home_milvus.io">Zillizクラウド</a></div>
+    <a class="cta-global" href="https://cloud.zilliz.com/signup?utm_source=partner&utm_medium=referral&utm_campaign=2025-02-24_doc_home_milvus.io">Zilliz Cloud</a>
+  </div>
 </div>
-<h2 id="Get-Started" class="common-anchor-header">始める<button data-href="#Get-Started" class="anchor-icon" translate="no">
+<h2 id="Get-Started" class="common-anchor-header">Get Started<button data-href="#Get-Started" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -32,23 +35,30 @@ Milvusドキュメントへようこそ！</h1></p>
       </svg>
     </button></h2><div class="card-wrapper">
 <div class="start_card_container">
-  
-   <a href="/docs/ja/install_standalone-docker.md"> <img translate="no" src="/docs/v2.6.x/assets/home_install.svg" alt="icon" />
-   </a> <a href="/docs/ja/install_standalone-docker.md"> <p class="link-btn">Milvusのインストール</p> </a><p>Docker ComposeまたはKubernetesを使用してMilvusをインストールする方法をご紹介します。</p>
+  <a href="/docs/ja/v2.6.x/install_standalone-docker.md">
+    <img translate="no" src="/docs/v2.6.x/assets/home_install.svg" alt="icon" />
+    <p class="link-btn">Install Milvus</p>
+  </a>
+  <p>Learn how to install Milvus using either Docker Compose or on Kubernetes.</p>
 </div>
 <div class="start_card_container">
-  
-   <a href="/docs/ja/quickstart.md"> <img translate="no" src="/docs/v2.6.x/assets/home_quick_start.svg" alt="icon" />
-   </a> <a href="/docs/ja/quickstart.md"> <p class="link-btn">クイックスタート</p> </a><p>サンプルコードを使ってMilvusを素早く実行する方法をご紹介します。</p>
+  <a href="/docs/ja/v2.6.x/quickstart.md">
+    <img translate="no" src="/docs/v2.6.x/assets/home_quick_start.svg" alt="icon" />
+    <p class="link-btn">Quick Start</p>
+  </a>
+  <p>Learn how to quickly run Milvus with sample code.</p>
 </div>
 <div class="start_card_container">
-  
-   <a href="/bootcamp"> <img translate="no" src="/docs/v2.6.x/assets/home_bootcamp.svg" alt="icon" />
-   </a> <a href="/bootcamp"> <p class="link-btn">ブートキャンプ</p> </a><p>
-  Milvusでベクトル類似検索アプリケーションを構築する方法を学びます。  </p>
+  <a href="/bootcamp">
+    <img translate="no" src="/docs/v2.6.x/assets/home_bootcamp.svg" alt="icon" />
+    <p class="link-btn">Bootcamp</p>
+  </a>
+  <p>
+  Learn how to build vector similarity search applications with Milvus.
+  </p>
 </div>
 </div>
-<h2 id="Recommended-articles" class="common-anchor-header">おすすめ記事<button data-href="#Recommended-articles" class="anchor-icon" translate="no">
+<h2 id="Recommended-articles" class="common-anchor-header">Recommended articles<button data-href="#Recommended-articles" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -65,39 +75,39 @@ Milvusドキュメントへようこそ！</h1></p>
       </svg>
     </button></h2><div class="doc-home-recommend-section">
 <div class="recomment-item">
-  <p>使用方法</p>
+  <p>Use</p>
 <ul>
-<li><a href="/docs/ja/manage-collections.md">コレクションの管理</a></li>
-<li><a href="/docs/ja/insert-update-delete.md">挿入、アップサート、削除</a></li>
-<li><a href="/docs/ja/single-vector-search.md">単一ベクトル検索</a></li>
-<li><a href="/docs/ja/multi-vector-search.md">ハイブリッド検索</a></li>
-<li><a href="/docs/ja/get-and-scalar-query.md">取得とスカラークエリ</a></li>
-<li><a href="/docs/ja/milvus_for_agents.md">AIエージェントのためのMilvus</a></li>
+<li><a href="/docs/ja/v2.6.x/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/ja/v2.6.x/insert-update-delete.md">Insert, Upsert, and Delete</a></li>
+<li><a href="/docs/ja/v2.6.x/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/ja/v2.6.x/multi-vector-search.md">Hybrid Search</a></li>
+<li><a href="/docs/ja/v2.6.x/get-and-scalar-query.md">Get & Scalar Query</a></li>
+<li><a href="/docs/ja/v2.6.x/milvus_for_agents.md">Milvus for AI Agents</a></li>
 </ul>
 </div>
 <div class="recomment-item">
-  <p>デプロイ</p>
+  <p>Deploy</p>
 <ul>
-<li><a href="/docs/ja/configure-docker.md">Milvusの設定</a></li>
-<li><a href="/docs/ja/deploy_s3.md">依存関係の管理</a></li>
-<li><a href="/docs/ja/eks.md">クラウドへのデプロイ</a></li>
-<li><a href="/docs/ja/scaleout.md">Milvusクラスターのスケール</a></li>
-<li><a href="/docs/ja/monitor_overview.md">監視とアラート</a></li>
+<li><a href="/docs/ja/v2.6.x/configure-docker.md">Configure Milvus</a></li>
+<li><a href="/docs/ja/v2.6.x/deploy_s3.md">Manage Dependencies</a></li>
+<li><a href="/docs/ja/v2.6.x/eks.md">Deploy on Clouds</a></li>
+<li><a href="/docs/ja/v2.6.x/scaleout.md">Scale a Milvus Cluster</a></li>
+<li><a href="/docs/ja/v2.6.x/monitor_overview.md">Monitor and Alert</a></li>
 </ul>
 </div>
 <div class="recomment-item">
-  <p>学ぶ</p>
+  <p>Learn</p>
 <ul>
-<li><a href="/docs/ja/system_configuration.md">システム構成</a></li>
-<li><a href="/docs/ja/architecture_overview.md">アーキテクチャの概要</a></li>
-<li><a href="/docs/ja/index-explained.md">インデックスの説明</a></li>
-<li><a href="/docs/ja/metric.md">類似性メトリクス</a></li>
-<li><a href="/docs/ja/glossary.md">用語集</a></li>
+<li><a href="/docs/ja/v2.6.x/system_configuration.md">System Configuration</a></li>
+<li><a href="/docs/ja/v2.6.x/architecture_overview.md">Architecture Overview</a></li>
+<li><a href="/docs/ja/v2.6.x/index-explained.md">Index Explained</a></li>
+<li><a href="/docs/ja/v2.6.x/metric.md">Similarity Metrics</a></li>
+<li><a href="/docs/ja/v2.6.x/glossary.md">Glossary</a></li>
 </ul>
 </div>
 </div>
 <div class="doc-home-what-is-new">
-<h2 id="Whats-new-in-docs" class="common-anchor-header">新着情報<button data-href="#Whats-new-in-docs" class="anchor-icon" translate="no">
+<h2 id="Whats-new-in-docs" class="common-anchor-header">What’s new in docs<button data-href="#Whats-new-in-docs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,12 +122,12 @@ Milvusドキュメントへようこそ！</h1></p>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><em>2026年3月 - Milvus 2.6.xアップデート</em></p>
+    </button></h2><p><em>March 2026 - Milvus 2.6.x updates</em></p>
 <ul>
-<li>プロンプトガイドを含む<a href="/docs/ja/milvus_for_agents.md">Milvus for AI Agents</a>セクションを追加。</li>
-<li><a href="/docs/ja/google-gemini.md">Geminiエンベッディング機能の</a>使用方法を追加。</li>
-<li><a href="/docs/ja/primary-key-search.md">主キーによる検索</a>方法のガイダンスを追加。</li>
-<li>検索結果の<a href="/docs/ja/text-highlighter.md">テキストハイライトの</a>使用方法に関するガイダンスを追加。</li>
-<li><a href="/docs/ja/geometry-field.md">geometryフィールド</a>、<a href="/docs/ja/timestamptz-field.md">timestamptzフィールド</a>、<a href="/docs/ja/tiered-storage-overview.md">階層型ストレージ</a>、<a href="/docs/ja/array-of-structs.md">構造体の配列についての</a>説明を追加。</li>
+<li>Added <a href="/docs/ja/v2.6.x/milvus_for_agents.md">Milvus for AI Agents</a> section with prompt guides.</li>
+<li>Added guidance on how to use <a href="/docs/ja/v2.6.x/google-gemini.md">Gemini embedding function</a>.</li>
+<li>Added guidance on how to <a href="/docs/ja/v2.6.x/primary-key-search.md">search by primary keys</a>.</li>
+<li>Added guidance on how to use <a href="/docs/ja/v2.6.x/text-highlighter.md">text highlighter</a> in search results.</li>
+<li>Added descriptions of <a href="/docs/ja/v2.6.x/geometry-field.md">geometry field</a>, <a href="/docs/ja/v2.6.x/timestamptz-field.md">timestamptz field</a>, <a href="/docs/ja/v2.6.x/tiered-storage-overview.md">tiered storage</a>, and <a href="/docs/ja/v2.6.x/array-of-structs.md">array of structs</a>.</li>
 </ul>
 </div>

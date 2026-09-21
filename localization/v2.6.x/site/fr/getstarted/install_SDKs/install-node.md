@@ -2,10 +2,10 @@
 id: install-node.md
 label: Install Node.js SDK
 related_key: SDK
-summary: Découvrez comment installer le SDK Node.js de Milvus.
-title: Installer le SDK Milvus pour Node.js
+summary: Learn how to install the Node.js SDK of Milvus.
+title: Install Milvus Nodejs SDK
 ---
-<h1 id="Install-Milvus-Nodejs-SDK" class="common-anchor-header">Installer le SDK Milvus pour Node.js<button data-href="#Install-Milvus-Nodejs-SDK" class="anchor-icon" translate="no">
+<h1 id="Install-Milvus-Nodejs-SDK" class="common-anchor-header">Install Milvus Nodejs SDK<button data-href="#Install-Milvus-Nodejs-SDK" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: Installer le SDK Milvus pour Node.js
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Cette rubrique explique comment installer le SDK Milvus pour Node.js.</p>
-<h2 id="Compatibility" class="common-anchor-header">Compatibilité<button data-href="#Compatibility" class="anchor-icon" translate="no">
+    </button></h1><p>This topic describes how to install Milvus Node.js SDK for Milvus.</p>
+<h2 id="Compatibility" class="common-anchor-header">Compatibility<button data-href="#Compatibility" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,13 +36,13 @@ title: Installer le SDK Milvus pour Node.js
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Le tableau suivant répertorie les versions de Milvus et les versions recommandées de @zilliz/milvus2-sdk-node :</p>
+    </button></h2><p>The following collection shows Milvus versions and recommended @zilliz/milvus2-sdk-node versions:</p>
 <table>
 <thead>
-<tr><th style="text-align:center">Version de Milvus</th><th style="text-align:center">Version recommandée de @zilliz/milvus2-sdk-node</th></tr>
+<tr><th style="text-align:center">Milvus version</th><th style="text-align:center">Recommended @zilliz/milvus2-sdk-node version</th></tr>
 </thead>
 <tbody>
-<tr><td style="text-align:center">2.5.x</td><td style="text-align:center">dernière</td></tr>
+<tr><td style="text-align:center">2.5.x</td><td style="text-align:center">latest</td></tr>
 <tr><td style="text-align:center">2.4.x</td><td style="text-align:center">2.4.10</td></tr>
 <tr><td style="text-align:center">2.3.x</td><td style="text-align:center">2.3.5</td></tr>
 <tr><td style="text-align:center">2.2.x</td><td style="text-align:center">2.2.x</td></tr>
@@ -51,7 +51,7 @@ title: Installer le SDK Milvus pour Node.js
 <tr><td style="text-align:center">2.0.0</td><td style="text-align:center">2.0.0</td></tr>
 </tbody>
 </table>
-<h2 id="Requirement" class="common-anchor-header">Configuration requise<button data-href="#Requirement" class="anchor-icon" translate="no">
+<h2 id="Requirement" class="common-anchor-header">Requirement<button data-href="#Requirement" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -82,13 +82,13 @@ title: Installer le SDK Milvus pour Node.js
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pour commencer à utiliser le client Node.js de Milvus, il est recommandé d’utiliser npm (gestionnaire de paquets Node) afin d’installer la dépendance dans votre projet.</p>
+    </button></h2><p>The recommended way to get started using the Milvus node.js client is by using npm (Node package manager) to install the dependency in your project.</p>
 <pre><code translate="no" class="language-javascript">npm install @zilliz/milvus2-sdk-node
 # or ...
 yarn add @zilliz/milvus2-sdk-node
 <button class="copy-code-btn"></button></code></pre>
-<p>Cela permettra de télécharger le SDK Node.js de Milvus et d’ajouter une entrée de dépendance dans votre fichier package.json.</p>
-<h2 id="Whats-next" class="common-anchor-header">Étapes suivantes<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<p>This will download the Milvus node.js sdk and add a dependency entry in your package.json file.</p>
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,16 +103,16 @@ yarn add @zilliz/milvus2-sdk-node
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Une fois le SDK Milvus pour Node.js installé, vous pouvez :</p>
+    </button></h2><p>Having installed Milvus Node.js SDK, you can:</p>
 <ul>
-<li><p>Consulter le guide <a href="https://github.com/milvus-io/milvus-sdk-node">de démarrage rapide du SDK Node.js de Milvus</a></p></li>
-<li><p>Découvrir les opérations de base de Milvus :</p>
+<li><p>View <a href="https://github.com/milvus-io/milvus-sdk-node">quick start of milvus node.js sdk</a></p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/fr/v2.6.x/manage-collections.md">Gérer les collections</a></li>
-<li><a href="/docs/fr/v2.6.x/manage-partitions.md">Gérer les partitions</a></li>
-<li><a href="/docs/fr/v2.6.x/insert-update-delete.md">Insérer, mettre à jour ou supprimer</a></li>
-<li><a href="/docs/fr/v2.6.x/single-vector-search.md">Recherche sur un seul vecteur</a></li>
-<li><a href="/docs/fr/v2.6.x/multi-vector-search.md">Recherche hybride</a></li>
+<li><a href="/docs/fr/v2.6.x/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/fr/v2.6.x/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/fr/v2.6.x/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/fr/v2.6.x/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/fr/v2.6.x/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p>Découvrez <a href="/api-reference/node/v2.6.x/About.md">la documentation de référence de l'API Milvus Node.js</a></p></li>
+<li><p>Explore <a href="/api-reference/node/v2.6.x/About.md">Milvus Node.js API reference</a></p></li>
 </ul>

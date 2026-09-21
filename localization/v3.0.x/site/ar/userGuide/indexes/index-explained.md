@@ -1,16 +1,16 @@
 ---
 id: index-explained.md
-title: شرح الفهرس
+title: Index Explained
 summary: >-
-  الفهرس هو بنية إضافية تُبنى فوق البيانات. ويعتمد هيكله الداخلي على خوارزمية
-  البحث عن أقرب الجيران التقريبية المستخدمة. يعمل الفهرس على تسريع عملية البحث،
-  لكنه يستهلك وقتًا إضافيًا في المعالجة المسبقة، ومساحة تخزين، وذاكرة الوصول
-  العشوائي (RAM) أثناء البحث. علاوة على ذلك، يؤدي استخدام الفهرس عادةً إلى
-  انخفاض معدل الاسترجاع (ورغم أن التأثير ضئيل، إلا أنه لا يزال مهمًا). لذلك،
-  تشرح هذه المقالة كيفية تقليل تكاليف استخدام الفهرس إلى الحد الأدنى مع تعظيم
-  فوائده.
+  An index is an additional structure built on top of data. Its internal
+  structure depends on the approximate nearest neighbor search algorithm in use.
+  An index speeds up the search, but incurs additional preprocessing time,
+  space, and RAM during the search. Moreover, using an index typically lowers
+  the recall rate (though the effect is negligible, it still matters).
+  Therefore, this article explains how to minimize the costs of using an index
+  while maximizing the benefits.
 ---
-<h1 id="Index-Explained" class="common-anchor-header">شرح الفهرس<button data-href="#Index-Explained" class="anchor-icon" translate="no">
+<h1 id="Index-Explained" class="common-anchor-header">Index Explained<button data-href="#Index-Explained" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -25,8 +25,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>الفهرس هو بنية إضافية تُبنى فوق البيانات. وتعتمد بنيته الداخلية على خوارزمية البحث عن أقرب جار تقريبي المستخدمة. يعمل الفهرس على تسريع عملية البحث، ولكنه يستهلك وقتًا إضافيًا في المعالجة المسبقة، ومساحة تخزين، وذاكرة وصول عشوائي (RAM) أثناء البحث. علاوة على ذلك، يؤدي استخدام الفهرس عادةً إلى انخفاض معدل الاسترجاع (على الرغم من أن التأثير ضئيل، إلا أنه لا يزال مهمًا). لذلك، تشرح هذه المقالة كيفية تقليل تكاليف استخدام الفهرس إلى الحد الأدنى مع تعظيم فوائده.</p>
-<h2 id="Overview" class="common-anchor-header">نظرة عامة<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>An index is an additional structure built on top of data. Its internal structure depends on the approximate nearest neighbor search algorithm in use. An index speeds up the search, but incurs additional preprocessing time, space, and RAM during the search. Moreover, using an index typically lowers the recall rate (though the effect is negligible, it still matters). Therefore, this article explains how to minimize the costs of using an index while maximizing the benefits.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,12 +41,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في Milvus، تكون الفهارس خاصة بالحقول، وتختلف أنواع الفهارس القابلة للتطبيق وفقًا لأنواع بيانات الحقول المستهدفة. بصفته قاعدة بيانات متجهة احترافية، يركز Milvus على تحسين أداء عمليات البحث المتجهة والتصفية القياسية، ولهذا السبب يقدم أنواعًا متنوعة من الفهارس.</p>
-<p>يسرد الجدول التالي علاقة التوافق بين أنواع بيانات الحقول وأنواع الفهارس القابلة للتطبيق.</p>
+    </button></h2><p>In Milvus, indexes are specific to fields, and the applicable index types vary according to the data types of the target fields. As a professional vector database, Milvus focuses on enhancing both the performance of vector searches and scalar filtering, which is why it offers various index types.</p>
+<p>The following table lists the mapping relationship between field data types and applicable index types.</p>
 <table>
    <tr>
-     <th><p>نوع بيانات الحقل</p></th>
-     <th><p>أنواع الفهارس القابلة للتطبيق</p></th>
+     <th><p>Field Data Type</p></th>
+     <th><p>Applicable Index Types</p></th>
    </tr>
    <tr>
      <td><p>FLOAT_VECTOR</p></td>
@@ -66,36 +66,36 @@ summary: >-
    </tr>
    <tr>
      <td><p>VARCHAR</p></td>
-     <td><ul><li><p>معكوس (موصى به)</p></li><li><p>BITMAP</p></li><li><p>Trie</p></li></ul></td>
+     <td><ul><li><p>INVERTED (Recommended)</p></li><li><p>BITMAP</p></li><li><p>Trie</p></li></ul></td>
    </tr>
    <tr>
      <td><p>BOOL</p></td>
-     <td><ul><li><p>BITMAP (موصى به)</p></li><li><p>معكوس</p></li></ul></td>
+     <td><ul><li><p>BITMAP (Recommended)</p></li><li><p>INVERTED</p></li></ul></td>
    </tr>
    <tr>
      <td><ul><li><p>INT8</p></li><li><p>INT16</p></li><li><p>INT32</p></li><li><p>INT64</p></li></ul></td>
-     <td><ul><li><p>معكوس</p></li><li><p>STL_SORT</p></li></ul></td>
+     <td><ul><li><p>INVERTED</p></li><li><p>STL_SORT</p></li></ul></td>
    </tr>
    <tr>
-     <td><ul><li><p>FLOAT</p></li><li><p>مزدوج</p></li></ul></td>
-     <td><p>معكوس</p></td>
+     <td><ul><li><p>FLOAT</p></li><li><p>DOUBLE</p></li></ul></td>
+     <td><p>INVERTED</p></td>
    </tr>
    <tr>
-     <td><p>مصفوفة <sup>(عناصر من أنواع BOOL و INT8/16/32/64 و VARCHAR)</sup></p></td>
-     <td><p>BITMAP (موصى به)</p></td>
+     <td><p>ARRAY <sup>(elements of the BOOL, INT8/16/32/64, and VARCHAR types)</sup></p></td>
+     <td><p>BITMAP (Recommended)</p></td>
    </tr>
    <tr>
-     <td><p>مصفوفة <sup>(عناصر من أنواع BOOL و INT8/16/32/64 و FLOAT و DOUBLE و VARCHAR)</sup></p></td>
-     <td><p>معكوس</p></td>
+     <td><p>ARRAY <sup>(elements of the BOOL, INT8/16/32/64, FLOAT, DOUBLE, and VARCHAR types)</sup></p></td>
+     <td><p>INVERTED</p></td>
    </tr>
    <tr>
      <td><p>JSON</p></td>
-     <td><p>معكوس</p></td>
+     <td><p>INVERTED</p></td>
    </tr>
 </table>
-<p>تركز هذه المقالة على كيفية اختيار الفهارس المتجهة المناسبة. بالنسبة للحقول القياسية، يمكنك دائمًا استخدام نوع الفهرس الموصى به.</p>
-<p>يمكن أن يؤثر اختيار نوع الفهرس المناسب للبحث المتجه بشكل كبير على الأداء واستخدام الموارد. عند اختيار نوع الفهرس لحقل متجه، من الضروري مراعاة عوامل مختلفة، بما في ذلك بنية البيانات الأساسية واستخدام الذاكرة ومتطلبات الأداء.</p>
-<h2 id="Vector-Index-anatomy" class="common-anchor-header">تركيب الفهرس المتجهي<button data-href="#Vector-Index-anatomy" class="anchor-icon" translate="no">
+<p>This article focuses on how to select appropriate vector indexes. For scalar fields, you can always use the recommended index type.</p>
+<p>Selecting an appropriate index type for a vector search can significantly impact performance and resource usage. When choosing an index type for a vector field, it is essential to consider various factors, including the underlying data structure, memory usage, and performance requirements.</p>
+<h2 id="Vector-Index-anatomy" class="common-anchor-header">Vector Index anatomy<button data-href="#Vector-Index-anatomy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -110,15 +110,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>كما هو موضح في الرسم التخطيطي أدناه، يتكون نوع الفهرس في Milvus من ثلاثة مكونات أساسية، وهي <strong>بنية البيانات</strong>، <strong>والتكمية،</strong> <strong>والمصفي</strong>. تعتبر التكمية والمصفي اختياريين، ولكنهما يستخدمان على نطاق واسع بسبب التوازن الكبير بين المكاسب والتكاليف.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/vector-index-anatomy.png" alt="Vector Index Anatomy" class="doc-image" id="vector-index-anatomy" /> 
-   <span>تركيب الفهرس المتجهي</span>
-  
- </span></p>
-<p>أثناء إنشاء الفهرس، يجمع Milvus بين بنية البيانات المختارة وطريقة التكمية لتحديد <strong>معدل التوسع</strong> الأمثل. عند إجراء الاستعلام، يسترد النظام <code translate="no">topK × expansion rate</code> المتجهات المرشحة، ويطبق أداة التحسين لإعادة حساب المسافات بدقة أعلى، وأخيرًا يعرض النتائج الأكثر دقة <code translate="no">topK</code>. يحقق هذا النهج الهجين التوازن بين السرعة والدقة من خلال قصر عملية التحسين التي تستهلك موارد كثيرة على مجموعة فرعية مفلترة من المتجهات المرشحة.</p>
-<h3 id="Data-structure" class="common-anchor-header">بنية البيانات<button data-href="#Data-structure" class="anchor-icon" translate="no">
+    </button></h2><p>As demonstrated in the diagram below, an index type in Milvus consists of three core components, namely <strong>data structure</strong>, <strong>quantization</strong>, and <strong>refiner</strong>. Quantization and refiner are optional, but are widely used because of a significant gains-better-than-costs balance.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/vector-index-anatomy.png" alt="Vector Index Anatomy" class="doc-image" id="vector-index-anatomy" />
+    <span>Vector Index Anatomy</span>
+  </span>
+</p>
+<p>During index creation, Milvus combines the chosen data structure and quantization method to determine an optimal <strong>expansion rate</strong>. At query time, the system retrieves <code translate="no">topK × expansion rate</code> candidate vectors, applies the refiner to recalculate distances with higher precision, and finally returns the most accurate <code translate="no">topK</code> results. This hybrid approach balances speed and accuracy by restricting resource-intensive refinement to a filtered subset of candidates.</p>
+<h3 id="Data-structure" class="common-anchor-header">Data structure<button data-href="#Data-structure" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -133,16 +133,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تشكل بنية البيانات الطبقة الأساسية للفهرس. وتشمل الأنواع الشائعة ما يلي:</p>
+    </button></h3><p>The data structure forms the foundational layer of the index. Common types include:</p>
 <ul>
-<li><p><strong>الملف المقلوب (IVF)</strong></p>
-<p>تسمح أنواع الفهارس من سلسلة IVF لـ Milvus بتجميع المتجهات في مجموعات من خلال التقسيم القائم على المركز. من الآمن عمومًا افتراض أن جميع المتجهات في المجموعة من المرجح أن تكون قريبة من متجه الاستعلام إذا كان مركز المجموعة قريبًا من متجه الاستعلام. بناءً على هذه الفرضية، يقوم Milvus بمسح تضمينات المتجهات فقط في تلك المجموعات التي تكون فيها مراكز التجميع قريبة من متجه الاستعلام، بدلاً من فحص مجموعة البيانات بأكملها. تقلل هذه الاستراتيجية من التكاليف الحسابية مع الحفاظ على دقة مقبولة.</p>
-<p>يُعد هذا النوع من بنية بيانات الفهرس مثاليًّا لمجموعات البيانات واسعة النطاق التي تتطلب إنتاجية سريعة.</p></li>
-<li><p><strong>البنية القائمة على الرسم البياني</strong></p>
-<p>تقوم بنية البيانات القائمة على الرسم البياني للبحث المتجهي، مثل Hierarchical Navigable Small World (<a href="https://arxiv.org/abs/1603.09320">HNSW</a>)، بإنشاء رسم بياني متعدد الطبقات حيث يتصل كل متجه بأقرب جيرانه. تتنقل الاستعلامات عبر هذا التسلسل الهرمي، بدءًا من الطبقات العليا العامة ثم الانتقال إلى الطبقات السفلية، مما يتيح تعقيد بحث فعال في وقت لوغاريتمي.</p>
-<p>يتفوق هذا النوع من بنية بيانات الفهرس في المساحات عالية الأبعاد والسيناريوهات التي تتطلب استعلامات ذات زمن انتقال منخفض.</p></li>
+<li><p><strong>Inverted File (IVF)</strong></p>
+<p>IVF-series index types allow Milvus to cluster vectors into buckets through centroid-based partitioning. It is generally safe to assume that all vectors in a bucket are likely to be close to the query vector if the bucket centroid is close to the query vector. Based on this premise, Milvus scans only the vector embeddings in those buckets where the centroids are near the query vector, rather than examining the entire dataset. This strategy reduces computational costs while maintaining acceptable accuracy.</p>
+<p>This type of index data structure is ideal for large-scale datasets requiring fast throughput.</p></li>
+<li><p><strong>Graph-based structure</strong></p>
+<p>A graph-based data structure for vector search, such as Hierarchical Navigable Small World (<a href="https://arxiv.org/abs/1603.09320">HNSW</a>), constructs a layered graph where each vector connects to its nearest neighbors. Queries navigate this hierarchy, starting from coarse upper layers and switching through lower layers, enabling efficient logarithmic-time search complexity.</p>
+<p>This type of index data structure excels in high-dimensional spaces and scenarios demanding low-latency queries.</p></li>
 </ul>
-<h3 id="Quantization" class="common-anchor-header">التكمية<button data-href="#Quantization" class="anchor-icon" translate="no">
+<h3 id="Quantization" class="common-anchor-header">Quantization<button data-href="#Quantization" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,12 +157,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يقلل التكمية من استهلاك الذاكرة وتكاليف الحوسبة من خلال تمثيل أكثر تقريبًا:</p>
+    </button></h3><p>Quantization reduces memory footprint and computational costs through a coarser representation:</p>
 <ul>
-<li><p>يتيح<strong>التكمية القياسية</strong> (مثل <strong>SQ8</strong>) لـ Milvus ضغط كل بُعد من أبعاد المتجهات إلى بايت واحد (8 بت)، مما يقلل من استخدام الذاكرة بنسبة 75٪ مقارنةً بالأرقام العائمة ذات 32 بت مع الحفاظ على دقة معقولة.</p></li>
-<li><p>يتيح<strong>التكمية المنتجية</strong> (<strong>PQ</strong>) لـ Milvus تقسيم المتجهات إلى متجهات فرعية وترميزها باستخدام التجميع القائم على دفتر الترميز. ويحقق ذلك نسب ضغط أعلى (على سبيل المثال، 4-32x) على حساب انخفاض طفيف في معدل الاسترجاع، مما يجعله مناسبًا للبيئات ذات الذاكرة المحدودة.</p></li>
+<li><p><strong>Scalar Quantization</strong> (e.g. <strong>SQ8</strong>) enables Milvus to compress each vector dimension into a single byte (8-bit), reducing memory usage by 75% compared to 32-bit floats while preserving reasonable accuracy.</p></li>
+<li><p><strong>Product Quantization</strong> (<strong>PQ</strong>) enables Milvus to split vectors into subvectors and encode them using codebook-based clustering. This achieves higher compression ratios (e.g., 4-32x) at the cost of marginally reduced recall, making it suitable for memory-constrained environments.</p></li>
 </ul>
-<h3 id="Refiner" class="common-anchor-header">أداة التحسين<button data-href="#Refiner" class="anchor-icon" translate="no">
+<h3 id="Refiner" class="common-anchor-header">Refiner<button data-href="#Refiner" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -177,10 +177,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>التكمية بطبيعتها تنطوي على فقدان للبيانات. للحفاظ على معدل الاسترجاع، تنتج التكمية باستمرار عددًا من المرشحين من فئة «أفضل K» أكبر من اللازم، مما يسمح لأدوات التحسين باستخدام دقة أعلى لاختيار نتائج «أفضل K» من بين هؤلاء المرشحين، وبالتالي تحسين معدل الاسترجاع.</p>
-<p>على سبيل المثال، يعمل مُحسّن FP32 على المرشحين لنتائج البحث التي تُرجعها عملية التكمية عن طريق إعادة حساب المسافات باستخدام دقة FP32 بدلاً من القيم المُكمّاة.</p>
-<p>ويعد هذا أمرًا بالغ الأهمية للتطبيقات التي تتطلب تحقيق توازن بين كفاءة البحث والدقة، مثل البحث الدلالي أو أنظمة التوصيات، حيث تؤثر التباينات الطفيفة في المسافات بشكل كبير على جودة النتائج.</p>
-<h3 id="Summary" class="common-anchor-header">ملخص<button data-href="#Summary" class="anchor-icon" translate="no">
+    </button></h3><p>Quantization is inherently lossy. To maintain the recall rate, quantization consistently produces more top-K candidates than necessary, allowing refiners to use higher precision to further select the top-K results from these candidates, enhancing the recall rate.</p>
+<p>For instance, the FP32 refiner operates on the search result candidates returned by quantization by recalculating distances using FP32 precision rather than the quantized values.</p>
+<p>This is critical for applications requiring a tradeoff between search efficiency and precision, such as semantic search or recommendation systems, where minor distance variations significantly impact result quality.</p>
+<h3 id="Summary" class="common-anchor-header">Summary<button data-href="#Summary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -195,8 +195,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تسمح هذه البنية المتدرجة — التي تتألف من التصفية الأولية عبر هياكل البيانات، والحساب الفعال من خلال التكمية، وضبط الدقة عبر التحسين — لـ Milvus بتحسين التوازن بين الدقة والأداء بشكل تكيفي.</p>
-<h2 id="Performance-trade-offs" class="common-anchor-header">المفاضلات في الأداء<button data-href="#Performance-trade-offs" class="anchor-icon" translate="no">
+    </button></h3><p>This tiered architecture – coarse filtering via data structures, efficient computation through quantization, and precision tuning via refinement – allows Milvus to optimize the accuracy-performance tradeoff adaptively.</p>
+<h2 id="Performance-trade-offs" class="common-anchor-header">Performance trade-offs<button data-href="#Performance-trade-offs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -211,14 +211,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>عند تقييم الأداء، من الضروري تحقيق التوازن بين <strong>وقت الإنشاء،</strong> <strong>وعدد الاستعلامات في الثانية (QPS)</strong>، <strong>ومعدل الاسترجاع</strong>. القواعد العامة هي كما يلي:</p>
+    </button></h2><p>When evaluating performance, it is crucial to balance <strong>build time</strong>, <strong>query per second (QPS)</strong>, and <strong>recall rate</strong>. The general rules are as follows:</p>
 <ul>
-<li><p>عادةً ما تتفوق<strong>أنواع الفهارس القائمة على الرسوم البيانية</strong> على <strong>متغيرات IVF</strong> من حيث عدد الاستعلامات في الثانية ( <strong>QPS</strong>).</p></li>
-<li><p>تناسب<strong>متغيرات IVF</strong> بشكل خاص السيناريوهات التي تحتوي <strong>على topK كبير (على سبيل المثال، أكثر من 2,000)</strong>.</p></li>
-<li><p>عادةً ما يوفر<strong>PQ</strong> معدل استرجاع أفضل عند معدلات ضغط مماثلة مقارنةً بـ <strong>SQ،</strong> على الرغم من أن هذا الأخير يوفر أداءً أسرع.</p></li>
-<li><p>يساعد استخدام محركات الأقراص الثابتة لجزء من الفهرس (كما في <strong>DiskANN</strong>) في إدارة مجموعات البيانات الكبيرة، ولكنه يؤدي أيضًا إلى ظهور اختناقات محتملة في IOPS.</p></li>
+<li><p><strong>Graph-based index types</strong> usually outperform <strong>IVF variants</strong> in terms of <strong>QPS</strong>.</p></li>
+<li><p><strong>IVF variants</strong> particularly fit in the scenarios with <strong>a large topK (for example, over 2,000)</strong>.</p></li>
+<li><p><strong>PQ</strong> typically offers a better recall rate at similar compression rates when compared to <strong>SQ</strong>, though the latter provides faster performance.</p></li>
+<li><p>Using hard drives for part of the index (as in <strong>DiskANN</strong>) helps manage large datasets, but it also introduces potential IOPS bottlenecks.</p></li>
 </ul>
-<h3 id="Capacity" class="common-anchor-header">السعة<button data-href="#Capacity" class="anchor-icon" translate="no">
+<h3 id="Capacity" class="common-anchor-header">Capacity<button data-href="#Capacity" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -233,40 +233,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>عادةً ما تتضمن السعة العلاقة بين حجم البيانات وذاكرة الوصول العشوائي (RAM) المتاحة. عند التعامل مع السعة، ضع في اعتبارك ما يلي:</p>
+    </button></h3><p>Capacity usually involves the relationship between data size and available RAM. When dealing with capacity, consider the following:</p>
 <ul>
-<li><p>إذا كان ربع بياناتك الأولية يتسع في الذاكرة، ففكر في استخدام DiskANN نظرًا لزمن الوصول المستقر الذي يوفره.</p></li>
-<li><p>إذا كانت جميع بياناتك الأولية تتسع في الذاكرة، ففكر في أنواع الفهارس القائمة على الذاكرة و mmap.</p></li>
-<li><p>يمكنك استخدام أنواع الفهرس التي تطبق التكمية و mmap لتبادل الدقة مقابل السعة القصوى.</p></li>
-</ul>
-<div class="alert note">
-<p>لا يُعد mmap الحل دائمًا. عندما تكون معظم بياناتك موجودة على القرص، يوفر DiskANN زمن انتقال أفضل.</p>
-</div>
-<h3 id="Recall" class="common-anchor-header">الاسترجاع<button data-href="#Recall" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h3><p>عادةً ما يتضمن الاسترجاع نسبة التصفية، والتي تشير إلى البيانات التي يتم تصفيةها قبل عمليات البحث. عند التعامل مع الاسترجاع، ضع في اعتبارك ما يلي:</p>
-<ul>
-<li><p>إذا كانت نسبة التصفية أقل من 85٪، فإن أنواع الفهارس القائمة على الرسوم البيانية تتفوق في الأداء على متغيرات IVF.</p></li>
-<li><p>إذا كانت نسبة التصفية بين 85% و95%، فاستخدم متغيرات IVF.</p></li>
-<li><p>إذا كانت نسبة التصفية تزيد عن 98٪، فاستخدم Brute-Force (FLAT) للحصول على نتائج بحث أكثر دقة.</p></li>
+<li><p>If a quarter of your raw data fits into memory, consider DiskANN for its stable latency.</p></li>
+<li><p>If all your raw data fits into memory, consider memory-based index types and mmap.</p></li>
+<li><p>You can use the quantization-applied index types and mmap to trade accuracy for the maximum capacity.</p></li>
 </ul>
 <div class="alert note">
-<p>البنود المذكورة أعلاه ليست صحيحة دائمًا. يُنصح بضبط الاسترجاع باستخدام أنواع مختلفة من الفهارس لتحديد النوع الأنسب.</p>
+<p>Mmap is not always the solution. When most of your data is on disk, DiskANN provides better latency.</p>
 </div>
-<h3 id="Performance" class="common-anchor-header">الأداء<button data-href="#Performance" class="anchor-icon" translate="no">
+<h3 id="Recall" class="common-anchor-header">Recall<button data-href="#Recall" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -281,13 +257,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>عادةً ما يتضمن أداء البحث «top-K»، وهو يشير إلى عدد السجلات التي يعرضها البحث. عند التعامل مع الأداء، ضع في اعتبارك ما يلي:</p>
+    </button></h3><p>The recall usually involves the filter ratio, which refers to the data that is filtered out before searches. When dealing with recall, consider the following:</p>
 <ul>
-<li><p>بالنسبة لعملية البحث ذات top-K صغير (على سبيل المثال، 2,000) التي تتطلب معدل استرجاع عالي، تتفوق أنواع الفهرس القائمة على الرسم البياني على متغيرات IVF.</p></li>
-<li><p>بالنسبة لعملية البحث ذات top-K كبير (مقارنةً بالعدد الإجمالي لتضمينات المتجهات)، تُعد متغيرات IVF خيارًا أفضل من أنواع الفهرس القائمة على الرسم البياني.</p></li>
-<li><p>بالنسبة لعملية البحث التي يكون فيها عدد top-K متوسطًا ونسبة التصفية عالية، تُعد متغيرات IVF خيارات أفضل.</p></li>
+<li><p>If the filter ratio is less than 85%, graph-based index types outperform IVF variants.</p></li>
+<li><p>If the filter ratio is between 85% and 95%, use IVF variants.</p></li>
+<li><p>If the filter ratio is over 98%, use Brute-Force (FLAT) for the most accurate search results.</p></li>
 </ul>
-<h3 id="Decision-Matrix-Choosing-the-most-appropriate-index-type" class="common-anchor-header">مصفوفة القرار: اختيار نوع الفهرس الأنسب<button data-href="#Decision-Matrix-Choosing-the-most-appropriate-index-type" class="anchor-icon" translate="no">
+<div class="alert note">
+<p>The above items are not always correct. You are advised to tune the recall with different index types to determine which index type works.</p>
+</div>
+<h3 id="Performance" class="common-anchor-header">Performance<button data-href="#Performance" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -302,45 +281,66 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>الجدول التالي هو مصفوفة قرار يمكنك الرجوع إليها عند اختيار نوع الفهرس المناسب.</p>
+    </button></h3><p>The performance of a search usually involves the top-K, which refers to the number of records that the search returns. When dealing with performance, consider the following:</p>
+<ul>
+<li><p>For a search with a small top-K (e.g., 2,000) requiring a high recall rate, graph-based index types outperform IVF variants.</p></li>
+<li><p>For a search with a great top-K (compared with the total number of vector embeddings), IVF variants are a better choice than graph-based index types.</p></li>
+<li><p>For a search with a medium-sized top-K and a high filter ratio, IVF variants are better choices.</p></li>
+</ul>
+<h3 id="Decision-Matrix-Choosing-the-most-appropriate-index-type" class="common-anchor-header">Decision Matrix: Choosing the most appropriate index type<button data-href="#Decision-Matrix-Choosing-the-most-appropriate-index-type" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>The following table is a decision matrix for you to refer to when choosing an appropriate index type.</p>
 <table>
    <tr>
-     <th><p>السيناريو</p></th>
-     <th><p>الفهرس الموصى به</p></th>
-     <th><p>ملاحظات</p></th>
+     <th><p>Scenario</p></th>
+     <th><p>Recommended Index</p></th>
+     <th><p>Notes</p></th>
    </tr>
    <tr>
-     <td><p>تتسع الذاكرة للبيانات الأولية</p></td>
-     <td><p>HNSW، IVF + التحسين</p></td>
-     <td><p>استخدم HNSW للحصول على معدل استبعاد منخفض (<code translate="no">k</code>) ومعدل استرجاع مرتفع (high recall).</p></td>
+     <td><p>Raw data fits in memory</p></td>
+     <td><p>HNSW, IVF + Refinement</p></td>
+     <td><p>Use HNSW for low-<code translate="no">k</code>/high recall.</p></td>
    </tr>
    <tr>
-     <td><p>البيانات الأولية على القرص، SSD</p></td>
+     <td><p>Raw data on disk, SSD</p></td>
      <td><p>DiskANN</p></td>
-     <td><p>مثالي للاستعلامات الحساسة لزمن الاستجابة.</p></td>
+     <td><p>Optimal for latency-sensitive queries.</p></td>
    </tr>
    <tr>
-     <td><p>البيانات الأولية على القرص، ذاكرة وصول عشوائي (RAM) محدودة</p></td>
+     <td><p>Raw data on disk, limited RAM</p></td>
      <td><p>IVFPQ/SQ + mmap</p></td>
-     <td><p>يوازن بين الوصول إلى الذاكرة والقرص.</p></td>
+     <td><p>Balances memory and disk access.</p></td>
    </tr>
    <tr>
-     <td><p>نسبة تصفية عالية (&gt;95%)</p></td>
-     <td><p>القوة الغاشمة (FLAT)</p></td>
-     <td><p>يتجنب عبء الفهرسة للمجموعات المرشحة الصغيرة.</p></td>
+     <td><p>High filter ratio (&gt;95%)</p></td>
+     <td><p>Brute-Force (FLAT)</p></td>
+     <td><p>Avoids index overhead for tiny candidate sets.</p></td>
    </tr>
    <tr>
-     <td><p>مجموعات مرشحة كبيرة ( <code translate="no">k</code> ) (≥1% من مجموعة البيانات)</p></td>
+     <td><p>Large <code translate="no">k</code> (≥1% of dataset)</p></td>
      <td><p>IVF</p></td>
-     <td><p>يقلل تقليم المجموعات من الحسابات.</p></td>
+     <td><p>Cluster pruning reduces computation.</p></td>
    </tr>
    <tr>
-     <td><p>معدل استرجاع مرتفع للغاية (&gt;99%)</p></td>
-     <td><p>القوة الغاشمة (FLAT) + وحدات معالجة الرسومات (GPUs)</p></td>
+     <td><p>Extremely high recall rate (&gt;99%)</p></td>
+     <td><p>Brute-Force (FLAT) + GPUs</p></td>
      <td><p>--</p></td>
    </tr>
 </table>
-<h2 id="Memory-usage-estimation" class="common-anchor-header">تقدير استهلاك الذاكرة<button data-href="#Memory-usage-estimation" class="anchor-icon" translate="no">
+<h2 id="Memory-usage-estimation" class="common-anchor-header">Memory usage estimation<button data-href="#Memory-usage-estimation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -356,11 +356,11 @@ summary: >-
         ></path>
       </svg>
     </button></h2><div class="alert note">
-<p>يركز هذا القسم على حساب استهلاك الذاكرة لنوع معين من الفهارس ويتضمن العديد من التفاصيل التقنية. يمكنك تخطي هذا القسم بأمان إذا لم يكن ضمن اهتماماتك.</p>
+<p>This section focuses on calculating the memory consumption of a specific index type and includes many technical details. You can skip this section safely if it does not align with your interests.</p>
 </div>
-<p>يتأثر استهلاك الذاكرة للفهرس ببنية البيانات الخاصة به، ومعدل الضغط من خلال التكمية، وأداة التحسين المستخدمة. بشكل عام، عادةً ما يكون للفهرس القائم على الرسم البياني أثر أكبر على الذاكرة بسبب بنية الرسم البياني (على سبيل المثال، <strong>HNSW</strong>)، مما يعني عادةً عبئًا ملحوظًا على مساحة كل متجه. في المقابل، يُعد IVF ومتغيراته أكثر كفاءة في استخدام الذاكرة نظرًا لانخفاض الحمل الإضافي لكل متجه. ومع ذلك، تسمح التقنيات المتقدمة مثل <strong>DiskANN</strong> بتخزين أجزاء من الفهرس، مثل الرسم البياني أو أداة التحسين، على القرص، مما يقلل من حمل الذاكرة مع الحفاظ على الأداء.</p>
-<p>وعلى وجه التحديد، يمكن حساب استهلاك الذاكرة للفهرس على النحو التالي:</p>
-<h3 id="IVF-index-memory-usage" class="common-anchor-header">استخدام ذاكرة فهرس IVF<button data-href="#IVF-index-memory-usage" class="anchor-icon" translate="no">
+<p>The memory consumption of an index is influenced by its data structure, compression rate through quantization, and the refiner in use. Generally speaking, graph-based indices typically have a higher memory footprint due to the graph’s structure (e.g., <strong>HNSW</strong>), which usually implies a noticeable per-vector space overhead. In contrast, IVF and its variants are more memory-efficient because less per-vector space overhead applies. However, advanced techniques such as <strong>DiskANN</strong> allow parts of the index, like the graph or the refiner, to reside on disk, reducing memory load while maintaining performance.</p>
+<p>Specifically, the memory usage of an index can be calculated as follows:</p>
+<h3 id="IVF-index-memory-usage" class="common-anchor-header">IVF index memory usage<button data-href="#IVF-index-memory-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -375,61 +375,61 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تحقق فهارس IVF التوازن بين كفاءة الذاكرة وأداء البحث من خلال تقسيم البيانات إلى مجموعات. فيما يلي تفصيل للذاكرة المستخدمة من قبل مليون متجه ذي 128 بُعدًا تم فهرستها باستخدام متغيرات IVF.</p>
+    </button></h3><p>IVF indexes balance memory efficiency with search performance by partitioning data into clusters. Below is a breakdown of the memory used by 1 million 128-dimensional vectors indexed using IVF variants.</p>
 <ol>
-<li><p><strong>احسب الذاكرة المستخدمة من قبل المراكز.</strong></p>
-<p>تتيح أنواع الفهارس من سلسلة IVF لـ Milvus تجميع المتجهات في مجموعات باستخدام التقسيم القائم على النقاط المركزية. يتم تضمين كل نقطة مركزية في الفهرس في شكل تضمين متجه خام. عند تقسيم المتجهات إلى 2,000 مجموعة، يمكن حساب استخدام الذاكرة على النحو التالي:</p>
+<li><p><strong>Calculate the memory used by centroids.</strong></p>
+<p>IVF-series index types enable Milvus to cluster vectors into buckets using centroid-based partitioning. Each centroid is included in the index in raw vector embedding. When you divide the vectors into 2,000 clusters, the memory usage can be calculated as follows:</p>
 <pre><code translate="no" class="language-plaintext">2,000 clusters × 128 dimensions × 4 bytes = 1.0 MB
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>احسب الذاكرة المستخدمة في تخصيص المجموعات.</strong></p>
-<p>يتم تعيين كل تضمين متجه إلى مجموعة وتخزينه كمعرفات عددية. بالنسبة لـ 2,000 مجموعة، يكفي عدد صحيح مكون من 2 بايت. يمكن حساب استخدام الذاكرة على النحو التالي:</p>
+<li><p><strong>Calculate the memory used by cluster assignments.</strong></p>
+<p>Each vector embedding is assigned to a cluster and stored as integer IDs. For 2,000 clusters, a 2-byte integer suffices. The memory usage can be calculated as follows:</p>
 <pre><code translate="no" class="language-plaintext">1,000,000 vectors × 2 bytes = 2.0 MB
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>احسب الضغط الناتج عن التكمية.</strong></p>
-<p>تستخدم متغيرات IVF عادةً PQ وSQ8، ويمكن تقدير استخدام الذاكرة على النحو التالي:</p>
+<li><p><strong>Calculate the compression caused by quantization.</strong></p>
+<p>IVF variants typically use PQ and SQ8, and the memory usage can be estimated as follows:</p>
 <ul>
-<li><p>استخدام PQ مع 8 مقيّمين فرعيين</p>
+<li><p>Using PQ with 8 subquantizers</p>
 <pre><code translate="no" class="language-plaintext">1,000,000 vectors × 8 bytes = 8.0 MB
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>باستخدام SQ8</p>
+<li><p>Using SQ8</p>
 <pre><code translate="no" class="language-plaintext">1,000,000 vectors × 128 dimensions × 1 byte = 128 MB 
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<p>يسرد الجدول التالي الاستهلاك التقديري للذاكرة مع التكوينات المختلفة:</p>
+<p>The following table lists the estimated memory usage with different configurations:</p>
 <p><table>
 <tr>
-<th><p>التكوين</p></th>
-<th><p>تقدير الذاكرة</p></th>
-<th><p>إجمالي الذاكرة</p></th>
+<th><p>Configuration</p></th>
+<th><p>Memory Estimation</p></th>
+<th><p>Total Memory</p></th>
 </tr>
 <tr>
-<td><p>IVF-PQ (بدون تحسين)</p></td>
-<td><p>1.0 ميغابايت + 2.0 ميغابايت + 8.0 ميغابايت</p></td>
-<td><p>11.0 ميغابايت</p></td>
+<td><p>IVF-PQ (no refinement)</p></td>
+<td><p>1.0 MB + 2.0 MB + 8.0 MB</p></td>
+<td><p>11.0 MB</p></td>
 </tr>
 <tr>
-<td><p>IVF-PQ + تحسين أولي بنسبة 10%</p></td>
-<td><p>1.0 ميغابايت + 2.0 ميغابايت + 8.0 ميغابايت + 51.2 ميغابايت</p></td>
-<td><p>62.2 ميغابايت</p></td>
+<td><p>IVF-PQ + 10% raw refinement</p></td>
+<td><p>1.0 MB + 2.0 MB + 8.0 MB + 51.2 MB</p></td>
+<td><p>62.2 MB</p></td>
 </tr>
 <tr>
-<td><p>IVF-SQ8 (بدون تحسين)</p></td>
-<td><p>1.0 ميغابايت + 2.0 ميغابايت + 128 ميغابايت</p></td>
-<td><p>131.0 ميغابايت</p></td>
+<td><p>IVF-SQ8 (no refinement)</p></td>
+<td><p>1.0 MB + 2.0 MB + 128 MB</p></td>
+<td><p>131.0 MB</p></td>
 </tr>
 <tr>
-<td><p>IVF-FLAT (متجهات خام كاملة)</p></td>
-<td><p>1.0 ميغابايت + 2.0 ميغابايت + 512 ميغابايت</p></td>
-<td><p>515.0 ميغابايت</p></td>
+<td><p>IVF-FLAT (full raw vectors)</p></td>
+<td><p>1.0 MB + 2.0 MB + 512 MB</p></td>
+<td><p>515.0 MB</p></td>
 </tr>
 </table></p></li>
-<li><p><strong>احسب عبء التحسين.</strong></p>
-<p>غالبًا ما تقترن متغيرات IVF بأداة تحسين لإعادة ترتيب المرشحين. بالنسبة لعملية بحث تسترد أفضل 10 نتائج بمعدل توسع يبلغ 5، يمكن تقدير عبء التحسين على النحو التالي:</p>
+<li><p><strong>Calculate the refinement overhead.</strong></p>
+<p>IVF variants often pair with a refiner to re-rank candidates. For a search retrieving the top 10 results with an expansion rate of 5, the refinement overhead can be estimated as follows:</p>
 <pre><code translate="no" class="language-plaintext">10 (topK) x 5 (expansion rate) = 50 candidates
 50 candidates x 128 dimensions x 4 bytes = 25.6 KB
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h3 id="Graph-based-index-memory-usage" class="common-anchor-header">استخدام ذاكرة الفهرس القائم على الرسم البياني<button data-href="#Graph-based-index-memory-usage" class="anchor-icon" translate="no">
+<h3 id="Graph-based-index-memory-usage" class="common-anchor-header">Graph-based index memory usage<button data-href="#Graph-based-index-memory-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -444,29 +444,29 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تتطلب أنواع الفهارس القائمة على الرسوم البيانية مثل HNSW ذاكرة كبيرة لتخزين كل من بنية الرسم البياني وتضمينات المتجهات الأولية. فيما يلي تفصيل مفصل للذاكرة التي يستهلكها مليون متجه ذي 128 بُعدًا تم فهرستها باستخدام نوع الفهرس HNSW.</p>
+    </button></h3><p>Graph-based index types like HNSW require significant memory to store both the graph structure and raw vector embeddings. Below is a detailed breakdown of the memory consumed by 1 million 128-dimensional vectors indexed using the HNSW index type.</p>
 <ol>
-<li><p><strong>احسب الذاكرة التي تستهلكها بنية الرسم البياني.</strong></p>
-<p>يحافظ كل متجه في HNSW على اتصالات مع جيرانه. مع درجة الرسم البياني (الحواف لكل عقدة) التي تبلغ 32، يمكن حساب الذاكرة المستهلكة على النحو التالي:</p>
+<li><p><strong>Calculate the memory used by the graph structure.</strong></p>
+<p>Each vector in HNSW maintains connections to its neighbors. With a graph degree (edges per node) of 32, the memory consumed can be calculated as follows:</p>
 <pre><code translate="no" class="language-plaintext">1,000,000 vectors × 32 links × 4 bytes (for 32-bit integer storage) = 128 MB  
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>حساب الذاكرة المستخدمة لتضمينات المتجهات الأولية.</strong></p>
-<p>يمكن حساب الذاكرة المستهلكة لتخزين المتجهات FP32 غير المضغوطة على النحو التالي:</p>
+<li><p><strong>Calculate the memory used by the raw vector embeddings.</strong></p>
+<p>The memory consumed by storing uncompressed FP32 vectors can be calculated as follows:</p>
 <pre><code translate="no" class="language-plaintext">1,000,000 vectors × 128 dimensions × 4 bytes = 512 MB  
 <button class="copy-code-btn"></button></code></pre>
-<p>عند استخدام HNSW لفهرسة مليون تضمين متجه ذي 128 بُعدًا، ستكون الذاكرة الإجمالية المستخدمة <strong>128 ميغابايت (الرسم البياني) + 512 ميغابايت (المتجهات) = 640 ميغابايت</strong>.</p></li>
-<li><p><strong>احسب الضغط الناتج عن التكمية.</strong></p>
-<p>يقلل التكمية من حجم المتجهات. على سبيل المثال، يؤدي استخدام PQ مع 8 مكميات فرعية (8 بايت لكل متجه) إلى ضغط كبير. يمكن حساب الذاكرة المستهلكة بواسطة تضمينات المتجهات المضغوطة على النحو التالي:</p>
+<p>When you use HNSW to index the 1 million 128-dimensional vector embeddings, the total memory in use would be <strong>128 MB (graph) + 512 MB (vectors) = 640 MB</strong>.</p></li>
+<li><p><strong>Calculate the compression caused by quantization.</strong></p>
+<p>Quantization reduces vector size. For example, using PQ with 8 subquantizers (8 bytes per vector) leads to a drastic compression. The memory consumed by the compressed vector embeddings can be calculated as follows:</p>
 <pre><code translate="no" class="language-plaintext">1,000,000 vectors × 8 bytes = 8 MB
 <button class="copy-code-btn"></button></code></pre>
-<p>وهذا يحقق معدل ضغط يبلغ 64 ضعفًا مقارنةً بعمليات التضمين المتجهة الأولية، وستكون الذاكرة الإجمالية المستخدمة بواسطة نوع الفهرس <strong>HNSWPQ</strong> هي <strong>128 ميغابايت (الرسم البياني) + 8 ميغابايت (المتجهات المضغوطة) = 136 ميغابايت</strong>.</p></li>
-<li><p><strong>احسب عبء التحسين.</strong></p>
-<p>تؤدي عمليات التحسين، مثل إعادة الترتيب باستخدام المتجهات الأولية، إلى تحميل البيانات عالية الدقة مؤقتًا في الذاكرة. بالنسبة لعملية بحث تسترد أفضل 10 نتائج بمعدل توسع يبلغ 5، يمكن تقدير عبء التحسين على النحو التالي:</p>
+<p>This achieves a 64-times compression rate when compared to the raw vector embeddings, and the total memory used by the <strong>HNSWPQ</strong> index type would be <strong>128 MB (graph) + 8 MB (compressed vector) = 136 MB</strong>.</p></li>
+<li><p><strong>Calculate the refinement overhead.</strong></p>
+<p>Refinement, such as re-ranking with raw vectors, temporarily loads high-precision data into memory. For a search retrieving the top 10 results with an expansion rate of 5, the refinement overhead can be estimated as follows:</p>
 <pre><code translate="no" class="language-plaintext">10 (topK) x 5 (expansion rate) = 50 candidates
 50 candidates x 128 dimensions x 4 bytes = 25.6 KB
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h3 id="Other-considerations" class="common-anchor-header">اعتبارات أخرى<button data-href="#Other-considerations" class="anchor-icon" translate="no">
+<h3 id="Other-considerations" class="common-anchor-header">Other considerations<button data-href="#Other-considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -481,8 +481,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بينما تعمل الفهارس القائمة على IVF والرسوم البيانية على تحسين استخدام الذاكرة من خلال التكمية، فإن الملفات المخططة في الذاكرة (mmap) وDiskANN تعالج السيناريوهات التي تتجاوز فيها مجموعات البيانات سعة ذاكرة الوصول العشوائي (RAM) المتاحة.</p>
-<h4 id="DiskANN" class="common-anchor-header">DiskANN</h4><p>DiskANN هو فهرس قائم على مخطط Vamana يربط نقاط البيانات من أجل التنقل الفعال أثناء البحث مع تطبيق PQ لتقليل حجم المتجهات وتمكين الحساب السريع للمسافة التقريبية بين المتجهات.</p>
-<p>يتم تخزين مخطط Vamana على القرص، مما يسمح لـ DiskANN بمعالجة مجموعات البيانات الكبيرة التي قد تكون أكبر من أن تتسع لها الذاكرة. وهذا مفيد بشكل خاص لمجموعات البيانات التي تحتوي على مليارات النقاط.</p>
-<h4 id="Memory-mapped-files-mmap" class="common-anchor-header">الملفات المعينة في الذاكرة (mmap)</h4><p>يتيح تعيين الذاكرة (Mmap) الوصول المباشر إلى الذاكرة للملفات الكبيرة الموجودة على القرص، مما يسمح لـ Milvus بتخزين الفهارس والبيانات في كل من الذاكرة والأقراص الصلبة. تساعد هذه الطريقة في تحسين عمليات الإدخال/الإخراج (I/O) عن طريق تقليل العبء الإضافي لنداءات الإدخال/الإخراج بناءً على تكرار الوصول، وبالتالي توسيع سعة التخزين للمجموعات دون التأثير بشكل كبير على أداء البحث.</p>
-<p>وعلى وجه التحديد، يمكنك تكوين Milvus لتعيين البيانات الأولية في حقول معينة على الذاكرة بدلاً من تحميلها بالكامل في الذاكرة. وبهذه الطريقة، يمكنك الوصول المباشر إلى الحقول عبر الذاكرة دون القلق بشأن مشكلات الذاكرة وتوسيع سعة المجموعة.</p>
+    </button></h3><p>While IVF and graph-based indexes optimize memory usage through quantization, memory-mapped files (mmap) and DiskANN address scenarios where datasets exceed available random access memory (RAM).</p>
+<h4 id="DiskANN" class="common-anchor-header">DiskANN</h4><p>DiskANN is a Vamana graph-based index that connects data points for efficient navigation during search while applying PQ to reduce the size of vectors and enable quick approximate distance calculation between vectors.</p>
+<p>The Vamana graph is stored on disk, which allows DiskANN to handle large datasets that would otherwise be too big to fit in memory. This is particularly useful for billion-point datasets.</p>
+<h4 id="Memory-mapped-files-mmap" class="common-anchor-header">Memory-mapped files (mmap)</h4><p>Memory mapping (Mmap) enables direct memory access to large files on disk, allowing Milvus to store indexes and data in both memory and hard drives. This approach helps optimize I/O operations by reducing the overhead of I/O calls based on access frequency, thereby expanding storage capacity for collections without significantly impacting search performance.</p>
+<p>Specifically, you can configure Milvus to memory-map the raw data in certain fields instead of fully loading them into memory. This way, you can gain direct memory access to the fields without worrying about memory issues and extend the collection capacity.</p>

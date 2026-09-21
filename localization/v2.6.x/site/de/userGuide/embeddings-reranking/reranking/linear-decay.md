@@ -1,19 +1,17 @@
 ---
 id: linear-decay.md
-title: Lineares AbklingenCompatible with Milvus 2.6.x
+title: Linear DecayCompatible with Milvus 2.6.x
 summary: >-
-  Der lineare Verfall erzeugt einen geradlinigen Rückgang, der an einem
-  absoluten Nullpunkt in Ihren Suchergebnissen endet. Ähnlich wie bei einem
-  Countdown für ein bevorstehendes Ereignis, bei dem die Relevanz allmählich
-  abnimmt, bis das Ereignis vorüber ist, führt der lineare Verfall zu einer
-  vorhersehbaren, stetigen Verringerung der Relevanz, wenn sich Elemente von
-  Ihrem idealen Punkt entfernen, bis sie ganz verschwinden. Dieser Ansatz ist
-  ideal, wenn Sie eine konsistente Abklingrate mit einem klaren Grenzwert
-  wünschen, der sicherstellt, dass Artikel jenseits einer bestimmten Grenze
-  vollständig aus den Ergebnissen ausgeschlossen werden.
+  Linear decay creates a straight-line decline that terminates at an absolute
+  zero point in your search results. Like an upcoming event countdown where
+  relevance gradually fades until the event has passed, linear decay applies a
+  predictable, steady reduction in relevance as items move away from your ideal
+  point until they completely disappear. This approach is ideal when you want a
+  consistent decay rate with a clear cutoff, ensuring that items beyond a
+  certain boundary are completely excluded from results.
 beta: Milvus 2.6.x
 ---
-<h1 id="Linear-Decay" class="common-anchor-header">Lineares Abklingen<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Linear-Decay" class="anchor-icon" translate="no">
+<h1 id="Linear-Decay" class="common-anchor-header">Linear Decay<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Linear-Decay" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -28,14 +26,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Der lineare Verfall erzeugt einen geradlinigen Rückgang, der an einem absoluten Nullpunkt in Ihren Suchergebnissen endet. Ähnlich wie bei einem Countdown für ein bevorstehendes Ereignis, bei dem die Relevanz allmählich abnimmt, bis das Ereignis vorüber ist, führt der lineare Verfall zu einer vorhersehbaren, stetigen Verringerung der Relevanz, wenn sich die Elemente von Ihrem Idealpunkt entfernen, bis sie ganz verschwinden. Dieser Ansatz ist ideal, wenn Sie eine konsistente Abklingrate mit einem klaren Grenzwert wünschen, der sicherstellt, dass Artikel jenseits einer bestimmten Grenze vollständig aus den Ergebnissen ausgeschlossen werden.</p>
-<p>Im Gegensatz zu anderen Zerfallsfunktionen:</p>
+    </button></h1><p>Linear decay creates a straight-line decline that terminates at an absolute zero point in your search results. Like an upcoming event countdown where relevance gradually fades until the event has passed, linear decay applies a predictable, steady reduction in relevance as items move away from your ideal point until they completely disappear. This approach is ideal when you want a consistent decay rate with a clear cutoff, ensuring that items beyond a certain boundary are completely excluded from results.</p>
+<p>Unlike other decay functions:</p>
 <ul>
-<li><p>Der Gaußsche Zerfall folgt einer Glockenkurve, die sich allmählich dem Nullpunkt nähert, ihn aber nie erreicht.</p></li>
-<li><p>Exponentieller Zerfall behält einen langen Schwanz minimaler Relevanz bei, der sich unendlich verlängert</p></li>
+<li><p>Gaussian decay follows a bell curve that gradually approaches but never reaches zero</p></li>
+<li><p>Exponential decay maintains a long tail of minimal relevance that extends indefinitely</p></li>
 </ul>
-<p>Der lineare Zerfall schafft einen eindeutigen Endpunkt, was ihn besonders effektiv für Anwendungen mit natürlichen Grenzen oder Fristen macht.</p>
-<h2 id="When-to-use-linear-decay" class="common-anchor-header">Wann sollte man lineares Abklingen verwenden?<button data-href="#When-to-use-linear-decay" class="anchor-icon" translate="no">
+<p>Linear decay uniquely creates a definitive endpoint, making it particularly effective for applications with natural boundaries or deadlines.</p>
+<h2 id="When-to-use-linear-decay" class="common-anchor-header">When to use linear decay<button data-href="#When-to-use-linear-decay" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -50,42 +48,42 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Lineares Abklingen ist besonders effektiv für:</p>
+    </button></h2><p>Linear decay is particularly effective for:</p>
 <table>
    <tr>
-     <th><p>Anwendungsfall</p></th>
-     <th><p>Beispiel</p></th>
-     <th><p>Warum Linear gut funktioniert</p></th>
+     <th><p>Use Case</p></th>
+     <th><p>Example</p></th>
+     <th><p>Why Linear Works Well</p></th>
    </tr>
    <tr>
-     <td><p>Veranstaltungsverzeichnisse</p></td>
-     <td><p>Konzertkarten-Plattformen</p></td>
-     <td><p>Schafft eine klare Grenze für Veranstaltungen, die zu weit in der Zukunft liegen</p></td>
+     <td><p>Event listings</p></td>
+     <td><p>Concert ticket platforms</p></td>
+     <td><p>Creates a clear cutoff for events too far in the future</p></td>
    </tr>
    <tr>
-     <td><p>Befristete Angebote</p></td>
-     <td><p>Blitzverkäufe, Werbeaktionen</p></td>
-     <td><p>Stellt sicher, dass abgelaufene oder bald ablaufende Angebote nicht angezeigt werden</p></td>
+     <td><p>Limited-time offers</p></td>
+     <td><p>Flash sales, promotions</p></td>
+     <td><p>Ensures expired or soon-to-expire offers don't appear</p></td>
    </tr>
    <tr>
-     <td><p>Lieferradius</p></td>
-     <td><p>Lebensmittellieferung, Kurierdienste</p></td>
-     <td><p>Erzwingt harte geografische Grenzen</p></td>
+     <td><p>Delivery radius</p></td>
+     <td><p>Food delivery, courier services</p></td>
+     <td><p>Enforces hard geographical boundaries</p></td>
    </tr>
    <tr>
-     <td><p>Altersbeschränkte Inhalte</p></td>
-     <td><p>Dating-Plattformen, Mediendienste</p></td>
-     <td><p>Legt feste Altersschwellen fest</p></td>
+     <td><p>Age-restricted content</p></td>
+     <td><p>Dating platforms, media services</p></td>
+     <td><p>Establishes firm age thresholds</p></td>
    </tr>
 </table>
-<p>Wählen Sie lineares Abklingen, wenn:</p>
+<p>Choose linear decay when:</p>
 <ul>
-<li><p>Ihre Anwendung eine natürliche Grenze, Frist oder Schwelle hat</p></li>
-<li><p>Elemente, die einen bestimmten Punkt überschreiten, vollständig aus den Ergebnissen ausgeschlossen werden sollen</p></li>
-<li><p>Sie benötigen eine vorhersehbare, konsistente Rate der Relevanzabnahme</p></li>
-<li><p>Die Benutzer sollten eine klare Abgrenzung zwischen relevanten und irrelevanten Elementen sehen</p></li>
+<li><p>Your application has a natural boundary, deadline, or threshold</p></li>
+<li><p>Items beyond a certain point should be completely excluded from results</p></li>
+<li><p>You need a predictable, consistent rate of decline in relevance</p></li>
+<li><p>Users should see a clear demarcation between relevant and irrelevant items</p></li>
 </ul>
-<h2 id="Steady-decline-principle" class="common-anchor-header">Prinzip des stetigen Rückgangs<button data-href="#Steady-decline-principle" class="anchor-icon" translate="no">
+<h2 id="Steady-decline-principle" class="common-anchor-header">Steady decline principle<button data-href="#Steady-decline-principle" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,24 +98,26 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Die lineare Abnahme erzeugt einen geradlinigen Abfall, der mit einer konstanten Rate abnimmt, bis er genau Null erreicht. Dieses Muster kommt in vielen alltäglichen Szenarien vor, wie z. B. bei Countdown-Timern, bei der Erschöpfung von Lagerbeständen und bei der Annäherung an Fristen, bei denen die Relevanz einen eindeutigen Verfallszeitpunkt hat.</p>
+    </button></h2><p>Linear decay creates a straight-line drop that decreases at a constant rate until reaching exactly zero. This pattern appears in many everyday scenarios like countdown timers, inventory depletion, and deadline approaches where relevance has a clear expiration point.</p>
 <div class="alert note">
-<p>Alle Zeitparameter (<code translate="no">origin</code>, <code translate="no">offset</code>, <code translate="no">scale</code>) müssen dieselbe Einheit wie die Daten der Sammlung verwenden. Wenn Ihre Sammlung Zeitstempel in einer anderen Einheit (Millisekunden, Mikrosekunden) speichert, passen Sie alle Parameter entsprechend an.</p>
+<p>All time parameters (<code translate="no">origin</code>, <code translate="no">offset</code>, <code translate="no">scale</code>) must use the same unit as the collection data. If your collection stores timestamps in a different unit (milliseconds, microseconds), adjust all parameters accordingly.</p>
 </div>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/linear-decay.png" alt="Linear Decay" class="doc-image" id="linear-decay" />
-   </span> <span class="img-wrapper"> <span>Lineares Abklingen</span> </span></p>
-<p>Das obige Diagramm zeigt, wie sich der lineare Verfall auf Veranstaltungsangebote auf einer Ticketing-Plattform auswirken würde:</p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/linear-decay.png" alt="Linear Decay" class="doc-image" id="linear-decay" />
+    <span>Linear Decay</span>
+  </span>
+</p>
+<p>The graph above shows how linear decay would affect event listings on a ticketing platform:</p>
 <ul>
-<li><p><code translate="no">origin</code> (aktuelles Datum): Der gegenwärtige Moment, in dem die Relevanz am größten ist (1,0).</p></li>
-<li><p><code translate="no">offset</code> (1 Tag): Das "unmittelbare Veranstaltungsfenster" - alle Veranstaltungen, die innerhalb des nächsten Tages stattfinden, behalten die volle Relevanzbewertung (1,0), wodurch sichergestellt wird, dass sehr bald stattfindende Veranstaltungen nicht wegen geringer Zeitunterschiede benachteiligt werden.</p></li>
-<li><p><code translate="no">decay</code> (0.5): Die Punktzahl in der Skalendistanz - dieser Parameter steuert die Geschwindigkeit der Abnahme der Relevanz.</p></li>
-<li><p><code translate="no">scale</code> (10 Tage): Der Zeitraum, in dem die Relevanz auf den Abklingwert fällt - bei Ereignissen, die 10 Tage entfernt sind, wird die Relevanzbewertung halbiert (0,5).</p></li>
+<li><p><code translate="no">origin</code> (current date): The present moment, where relevance is at its maximum (1.0).</p></li>
+<li><p><code translate="no">offset</code> (1 day): The "immediate events window"—all events happening within the next day maintain full relevance scores (1.0), ensuring that very imminent events aren’t penalized for slight time differences.</p></li>
+<li><p><code translate="no">decay</code> (0.5): The score at the scale distance—this parameter controls the rate of decline in relevance.</p></li>
+<li><p><code translate="no">scale</code> (10 days): The time period at which relevance drops to the decay value—events 10 days away have their relevance scores halved (0.5).</p></li>
 </ul>
-<p>Wie Sie der geradlinigen Kurve entnehmen können, haben Ereignisse, die mehr als 16 Tage entfernt sind, genau null Relevanz und werden in den Suchergebnissen überhaupt nicht angezeigt. Damit wird eine klare Grenze gezogen, die sicherstellt, dass die Nutzer nur relevante Veranstaltungen innerhalb eines bestimmten Zeitfensters sehen.</p>
-<p>Dieses Verhalten spiegelt wider, wie die Veranstaltungsplanung in der Regel funktioniert: Unmittelbar bevorstehende Veranstaltungen sind am relevantesten, Veranstaltungen in den kommenden Wochen haben eine abnehmende Bedeutung, und Veranstaltungen, die zu weit in der Zukunft liegen (oder bereits vergangen sind), sollten überhaupt nicht angezeigt werden.</p>
-<h2 id="Formula" class="common-anchor-header">Formel<button data-href="#Formula" class="anchor-icon" translate="no">
+<p>As you can see from the straight-line curve, events beyond approximately 16 days away have exactly zero relevance and won’t appear in search results at all. This creates a clear boundary that ensures users only see relevant upcoming events within a defined time window.</p>
+<p>This behavior mirrors how event planning typically works—imminent events are most relevant, events in the coming weeks have diminishing importance, and events too far in the future (or already past) shouldn’t appear at all.</p>
+<h2 id="Formula" class="common-anchor-header">Formula<button data-href="#Formula" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,20 +132,20 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Die mathematische Formel für die Berechnung eines linearen Zerfallswertes lautet:</p>
+    </button></h2><p>The mathematical formula for calculating a linear decay score is:</p>
 <p><span class="katex-display" translate="no"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mo stretchy="false">(</mo><mi>d</mi><mi>o</mi><mi>c</mi><mo stretchy="false">)</mo><mo>=</mo><mi>max</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><mrow><mi>s</mi><mo>−</mo><mi>max</mi><mo>⁡</mo><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mi mathvariant="normal">∣</mi><mi>f</mi><mi>i</mi><mi>e</mi><mi>l</mi><mi>d</mi><mi>v</mi><mi>a</mi><mi>l</mi><mi>u</mi><msub><mi>e</mi><mrow><mi>d</mi><mi>o</mi><mi>c</mi></mrow></msub><mo>−</mo><mi>o</mi><mi>r</mi><mi>i</mi><mi>g</mi><mi>i</mi><mi>n</mi><mi mathvariant="normal">∣</mi><mo>−</mo><mi>o</mi><mi>f</mi><mi>f</mi><mi>s</mi><mi>e</mi><mi>t</mi><mo stretchy="false">)</mo></mrow><mi>s</mi></mfrac><mo separator="true">,</mo><mn>0</mn><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">S(doc) = \max\left( \frac{s - \max(0, |fieldvalue_{doc} - origin| - offset)}{s}, 0 \right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mord mathnormal">oc</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mop">max</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">s</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">i</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">oc</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">in</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.10764em;">ff</span><span class="mord mathnormal">se</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span></p>
-<p>Wo:</p>
+<p>Where:</p>
 <p><span class="katex-display" translate="no"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>s</mi><mo>=</mo><mfrac><mrow><mi>s</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>e</mi></mrow><mrow><mo stretchy="false">(</mo><mn>1.0</mn><mo>−</mo><mi>d</mi><mi>e</mi><mi>c</mi><mi>a</mi><mi>y</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">s = \frac{scale}{(1.0 - decay)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3074em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mopen">(</span><span class="mord">1.0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">ec</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">sc</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
-<p>In einfacher Sprache ausgedrückt:</p>
+<p>Breaking this down in plain language:</p>
 <ol>
-<li><p>Berechne, wie weit der Feldwert vom Ursprung entfernt ist: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣feldwert-{doc}</mi></mrow><annotation encoding="application/x-tex">- Ursprung</annotation><mrow><mi mathvariant="normal">∣|feldwert_{doc}</mi></mrow><annotation encoding="application/x-tex">- Ursprung|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">∣feldwert</span></span></span></span></span><span class="pstrut" style="height:2.7em;"></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord"><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist-s">doc</span></span></span></span></span></span></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">-</span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Ursprung∣</span></span></span></span></p></li>
-<li><p>Subtrahieren Sie den Offset (falls vorhanden), aber gehen Sie nie unter Null: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>max</mi><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mi>distance-offset</mi><mo stretchy="false">)</mo></mrow></semantics></math></span></span>\max <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">(0, distance - offset)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">distance</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">-</span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">offset</span><span class="mclose">)</span></span></span></span></p></li>
-<li><p>Bestimmen Sie den Parameter <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">ss</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span></span></span></span> s aus Ihren Skalen- und Abklingwerten.</p></li>
-<li><p>Ziehen Sie die angepasste Entfernung von <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">ss</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span></span></span></span> s ab und dividieren Sie durch <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">ss</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span></span></span></span> s</p></li>
-<li><p>Stellen Sie sicher, dass das Ergebnis nie unter Null geht: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>max</mi><mo stretchy="false">(</mo><mi>result</mi><mo separator="true">,</mo><mn>0</mn><mo stretchy="false">)</mo></mrow></semantics></math></span></span>\max <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">(result, 0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord mathnormal">result</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span></span></span></span> 0 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mclose">)</span></span></span></span></p></li>
+<li><p>Calculate how far the field value is from the origin: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>f</mi><mi>i</mi><mi>e</mi><mi>l</mi><mi>d</mi><mi>v</mi><mi>a</mi><mi>l</mi><mi>u</mi><msub><mi>e</mi><mrow><mi>d</mi><mi>o</mi><mi>c</mi></mrow></msub><mo>−</mo><mi>o</mi><mi>r</mi><mi>i</mi><mi>g</mi><mi>i</mi><mi>n</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|fieldvalue_{doc} - origin|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">i</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">oc</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">in</span><span class="mord">∣</span></span></span></span></p></li>
+<li><p>Subtract the offset (if any) but never go below zero: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>max</mi><mo>⁡</mo><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mi>d</mi><mi>i</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>n</mi><mi>c</mi><mi>e</mi><mo>−</mo><mi>o</mi><mi>f</mi><mi>f</mi><mi>s</mi><mi>e</mi><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\max(0, distance - offset)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">an</span><span class="mord mathnormal">ce</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.10764em;">ff</span><span class="mord mathnormal">se</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span></p></li>
+<li><p>Determine the parameter <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span> from your scale and decay values.</p></li>
+<li><p>Subtract the adjusted distance from <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span> and divide by <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span></p></li>
+<li><p>Ensure the result never goes below zero: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>max</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>r</mi><mi>e</mi><mi>s</mi><mi>u</mi><mi>l</mi><mi>t</mi><mo separator="true">,</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\max(result, 0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord mathnormal">res</span><span class="mord mathnormal">u</span><span class="mord mathnormal">lt</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mclose">)</span></span></span></span></p></li>
 </ol>
-<p>Die Berechnung von <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">ss</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span></span></span></span> s wandelt Ihre Skalierungs- und Abklingparameter in den Punkt um, an dem die Punktzahl Null erreicht. Bei decay=0,5 und scale=7 zum Beispiel erreicht die Punktzahl genau Null bei distance=14 (doppelter Skalenwert).</p>
-<h2 id="Use-linear-decay" class="common-anchor-header">Lineares Abklingen verwenden<button data-href="#Use-linear-decay" class="anchor-icon" translate="no">
+<p>The <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span> calculation transforms your scale and decay parameters into the point where the score reaches zero. For example, with decay=0.5 and scale=7, the score will reach exactly zero at distance=14 (twice the scale value).</p>
+<h2 id="Use-linear-decay" class="common-anchor-header">Use linear decay<button data-href="#Use-linear-decay" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,11 +160,11 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Lineares Decay kann sowohl auf die Standard-Vektorsuche als auch auf hybride Suchoperationen in Milvus angewendet werden. Im Folgenden finden Sie die wichtigsten Codeschnipsel für die Implementierung dieser Funktion.</p>
+    </button></h2><p>Linear decay can be applied to both standard vector search and hybrid search operations in Milvus. Below are the key code snippets for implementing this feature.</p>
 <div class="alert note">
-<p>Bevor Sie Decay-Funktionen verwenden können, müssen Sie zunächst eine Sammlung mit geeigneten numerischen Feldern (wie Zeitstempel, Entfernungen usw.) erstellen, die für Decay-Berechnungen verwendet werden. Vollständige Arbeitsbeispiele, einschließlich der Einrichtung der Sammlung, der Schemadefinition und der Dateneinfügung, finden Sie im <a href="/docs/de/tutorial-implement-a-time-based-ranking-in-milvus.md">Decay Ranker Tutorial</a>.</p>
+<p>Before using decay functions, you must first create a collection with appropriate numeric fields (like timestamps, distances, etc.) that will be used for decay calculations. For complete working examples including collection setup, schema definition, and data insertion, refer to <a href="/docs/de/v2.6.x/tutorial-implement-a-time-based-ranking-in-milvus.md">Decay Ranker Tutorial</a>.</p>
 </div>
-<h3 id="Create-a-decay-ranker" class="common-anchor-header">Erstellen eines Decay Rankers<button data-href="#Create-a-decay-ranker" class="anchor-icon" translate="no">
+<h3 id="Create-a-decay-ranker" class="common-anchor-header">Create a decay ranker<button data-href="#Create-a-decay-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -179,12 +179,17 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Nachdem Ihre Sammlung mit einem numerischen Feld eingerichtet wurde (in diesem Beispiel <code translate="no">event_date</code> als Sekunden ab jetzt), erstellen Sie eine lineare Zerfallsrangliste:</p>
+    </button></h3><p>After your collection is set up with a numeric field (in this example, <code translate="no">event_date</code> as seconds from now), create a linear decay ranker:</p>
 <div class="alert note">
-<p><strong>Konsistenz der Zeiteinheit</strong>: Wenn Sie einen zeitbasierten Zerfall verwenden, stellen Sie sicher, dass die Parameter <code translate="no">origin</code>, <code translate="no">scale</code> und <code translate="no">offset</code> dieselbe Zeiteinheit verwenden wie Ihre Sammlungsdaten. Wenn Ihre Sammlung Zeitstempel in Sekunden speichert, verwenden Sie Sekunden für alle Parameter. Wenn sie Millisekunden verwendet, verwenden Sie Millisekunden für alle Parameter.</p>
+<p><strong>Time unit consistency</strong>: When using time-based decay, ensure that <code translate="no">origin</code>, <code translate="no">scale</code>, and <code translate="no">offset</code> parameters use the same time unit as your collection data. If your collection stores timestamps in seconds, use seconds for all parameters. If it uses milliseconds, use milliseconds for all parameters.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 <span class="hljs-keyword">import</span> time
 
@@ -240,7 +245,7 @@ ranker = Function(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">Auf die Standard-Vektorsuche anwenden<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -255,9 +260,14 @@ ranker = Function(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Nachdem Sie Ihren Decay Ranker definiert haben, können Sie ihn bei Suchvorgängen anwenden, indem Sie ihn an den Parameter <code translate="no">ranker</code> übergeben:</p>
+    </button></h3><p>After defining your decay ranker, you can apply it during search operations by passing it to the <code translate="no">ranker</code> parameter:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Apply decay ranker to vector search</span>
 result = milvus_client.search(
     collection_name,

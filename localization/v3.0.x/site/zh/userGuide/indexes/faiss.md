@@ -1,7 +1,9 @@
 ---
 id: faiss.md
 title: FAISSCompatible with Milvus 3.0.0+
-summary: 在 Milvus 3.0 中，使用 FAISS 索引直通功能来提供 Faiss 索引生成器字符串和特定于生成器的搜索参数。
+summary: >-
+  Use FAISS index passthrough to supply Faiss index-factory strings and
+  factory-specific search parameters in Milvus 3.0.
 beta: Milvus 3.0.0+
 ---
 <h1 id="FAISS" class="common-anchor-header">FAISS<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#FAISS" class="anchor-icon" translate="no">
@@ -19,12 +21,12 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">FAISS</code> 索引类型是Milvus 3.0.0及更高版本中提供的一种专家级直通功能。它允许您提供一个<a href="https://github.com/facebookresearch/faiss/wiki/The-index-factory">Faiss索引生成器字符串</a>，而非选择固定的Milvus索引类型。</p>
-<p>当您已有经过测试的 Faiss 配方，且需要直接控制其构成时，请使用<code translate="no">FAISS</code> 。对于具有专用 Milvus 索引类型的常见配方，建议优先使用专用类型，因为它具有稳定且有文档记录的参数契约。</p>
+    </button></h1><p>The <code translate="no">FAISS</code> index type is an expert-level passthrough available in Milvus 3.0.0 and later. It lets you supply a <a href="https://github.com/facebookresearch/faiss/wiki/The-index-factory">Faiss index-factory string</a> instead of selecting a fixed Milvus index type.</p>
+<p>Use <code translate="no">FAISS</code> when you already have a tested Faiss recipe and need direct control over its composition. For common recipes with a dedicated Milvus index type, prefer the dedicated type because it has a stable, documented parameter contract.</p>
 <div class="alert note">
-<p>上游 Faiss 接受的工厂字符串并不一定自动被 Milvus 支持。兼容性取决于向量字段类型、度量、维度、编译到 Milvus 镜像中的 Faiss 模块，以及生成的索引是否支持 Milvus 所需的操作。</p>
+<p>A factory string accepted by upstream Faiss is not automatically supported by Milvus. Compatibility depends on the vector field type, metric, dimension, Faiss modules compiled into the Milvus image, and whether the resulting index supports the operations that Milvus requires.</p>
 </div>
-<h2 id="Limits" class="common-anchor-header">限制<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,18 +42,18 @@ beta: Milvus 3.0.0+
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><code translate="no">FAISS</code> 支持<code translate="no">FLOAT_VECTOR</code> 和<code translate="no">BINARY_VECTOR</code> 字段。不支持<code translate="no">FLOAT16_VECTOR</code> 、<code translate="no">BFLOAT16_VECTOR</code> 、<code translate="no">INT8_VECTOR</code> 或<code translate="no">SPARSE_FLOAT_VECTOR</code> 字段。</p></li>
-<li><p>通用<code translate="no">FAISS</code> 适配器在 CPU 上运行。它不是 Faiss GPU 索引类型。</p></li>
-<li><p>必须指定<code translate="no">faiss_index_name</code> 构建参数。Milvus会将该参数的值传递给Faiss，而不会将配方转换为专用的Milvus索引类型。</p></li>
-<li><p>构建和搜索参数因工厂而异。某个工厂支持的参数可能被另一个工厂拒绝。</p></li>
-<li><p>标量过滤要求底层 Faiss 索引支持 ID 选择器。Milvus 3.0.0 的测试涵盖了使用浮点工厂<code translate="no">Flat</code> 、<code translate="no">IVF64,Flat</code> 和<code translate="no">HNSW16,Flat</code> 进行的过滤搜索。请勿假设每个工厂都支持过滤器，也不要假设二进制<code translate="no">FAISS</code> 索引支持标量过滤。</p></li>
-<li><p>不支持搜索迭代器。</p></li>
-<li><p>该适配器不提供原始向量检索功能。</p></li>
-<li><p>范围搜索的支持取决于工厂。浮点型<code translate="no">Flat</code> 已通过发布版测试。请勿在二进制<code translate="no">FAISS</code> 索引上使用范围搜索。</p></li>
-<li><p>工厂可能构建成功，但仍会拒绝某些 Milvus 搜索操作。例如，Milvus Standalone<code translate="no">PQ8x4</code> 会拒绝标量过滤搜索所使用的选择器。请单独验证未过滤的使用情况。</p></li>
-<li><p>在 Milvus 3.0.0 中，索引重新加载后需验证<code translate="no">COSINE</code> 的得分和范围搜索阈值。Knowhere v3.0.6 在反序列化过程中无法恢复<code translate="no">FAISS</code> 适配器的余弦归一化状态。</p></li>
+<li><p><code translate="no">FAISS</code> supports <code translate="no">FLOAT_VECTOR</code> and <code translate="no">BINARY_VECTOR</code> fields. It does not support <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">INT8_VECTOR</code>, or <code translate="no">SPARSE_FLOAT_VECTOR</code> fields.</p></li>
+<li><p>The generic <code translate="no">FAISS</code> adapter runs on CPU. It is not a Faiss GPU index type.</p></li>
+<li><p>The <code translate="no">faiss_index_name</code> build parameter is required. Milvus passes its value to Faiss without converting the recipe to a dedicated Milvus index type.</p></li>
+<li><p>Build and search parameters are factory-specific. A parameter supported by one factory can be rejected by another.</p></li>
+<li><p>Scalar filtering requires the underlying Faiss index to support an ID selector. Milvus 3.0.0 tests cover filtered search with the float factories <code translate="no">Flat</code>, <code translate="no">IVF64,Flat</code>, and <code translate="no">HNSW16,Flat</code>. Do not assume that every factory supports filters or that binary <code translate="no">FAISS</code> indexes support scalar filtering.</p></li>
+<li><p>Search iterators are not supported.</p></li>
+<li><p>The adapter does not provide raw-vector retrieval.</p></li>
+<li><p>Range-search support depends on the factory. Float <code translate="no">Flat</code> has release coverage. Do not use range search with binary <code translate="no">FAISS</code> indexes.</p></li>
+<li><p>A factory can build successfully but still reject some Milvus search operations. For example, standalone <code translate="no">PQ8x4</code> rejects the selector used by scalar-filtered search. Validate unfiltered use separately.</p></li>
+<li><p>In Milvus 3.0.0, validate <code translate="no">COSINE</code> scores and range-search thresholds after an index reload. Knowhere v3.0.6 does not restore the <code translate="no">FAISS</code> adapter’s cosine-normalization state during deserialization.</p></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">工作原理<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -66,15 +68,15 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/faiss-index-flow.png" alt="FAISS index passthrough workflow" class="doc-image" id="faiss-index-passthrough-workflow" /> 
-   <span>FAISS 索引直通工作流</span>
-  
- </span></p>
-<p>在构建索引时，Milvus 将 `<code translate="no">faiss_index_name</code>`、向量字段类型、度量以及其他构建参数转发给 Knowhere FAISS 适配器。该适配器会针对 `<code translate="no">FLOAT_VECTOR</code> ` 字段调用 `<code translate="no">faiss::index_factory()</code> `，针对 `<code translate="no">BINARY_VECTOR</code> ` 字段调用 `<code translate="no">faiss::index_binary_factory()</code> `。生成的对象是一个原生 Faiss 索引，通过常规的 Milvus 索引生命周期进行管理。</p>
-<p>在搜索时，适配器会将提供的工厂特定参数转换为对应的 Faiss<code translate="no">SearchParameters</code> 对象。对于受支持的浮点工厂，它还会将 Milvus 过滤器位集作为 Faiss 选择器传递。 选择器的支持因工厂而异，且已发布的测试并未针对二进制<code translate="no">FAISS</code> 索引建立标量过滤功能。这就是为什么某个配方在独立的 Faiss 中有效，却可能被 Milvus 搜索路径所需的操作所拒绝。</p>
-<h2 id="Prerequisites" class="common-anchor-header">先决条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h2><p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/faiss-index-flow.png" alt="FAISS index passthrough workflow" class="doc-image" id="faiss-index-passthrough-workflow" />
+    <span>FAISS index passthrough workflow</span>
+  </span>
+</p>
+<p>For index building, Milvus forwards <code translate="no">faiss_index_name</code>, the vector field type, the metric, and other build parameters to the Knowhere FAISS adapter. The adapter calls <code translate="no">faiss::index_factory()</code> for <code translate="no">FLOAT_VECTOR</code> fields or <code translate="no">faiss::index_binary_factory()</code> for <code translate="no">BINARY_VECTOR</code> fields. The resulting object is a native Faiss index managed through the normal Milvus index lifecycle.</p>
+<p>For search, the adapter converts the supplied factory-specific parameters into the matching Faiss <code translate="no">SearchParameters</code> object. For supported float factories, it also passes the Milvus filter bitset as a Faiss selector. Selector support is factory-specific, and the released tests do not establish scalar filtering for binary <code translate="no">FAISS</code> indexes. This is why a recipe can be valid in standalone Faiss but reject an operation required by the Milvus search path.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -90,12 +92,12 @@ beta: Milvus 3.0.0+
         ></path>
       </svg>
     </button></h2><ul>
-<li>Milvus 3.0.0 或更高版本</li>
-<li>PyMilvus 3.0.0 或更高版本</li>
-<li>熟悉 Faiss 索引生成器的语法以及所选生成器的训练要求</li>
+<li>Milvus 3.0.0 or later</li>
+<li>PyMilvus 3.0.0 or later</li>
+<li>Familiarity with Faiss index-factory syntax and the training requirements of the selected factory</li>
 </ul>
-<p>有关安装说明，请参阅《<a href="/docs/zh/install-pymilvus.md">安装 PyMilvus</a>》。</p>
-<h2 id="Choose-a-factory-string" class="common-anchor-header">选择工厂字符串<button data-href="#Choose-a-factory-string" class="anchor-icon" translate="no">
+<p>For installation instructions, see <a href="/docs/zh/install-pymilvus.md">Install PyMilvus</a>.</p>
+<h2 id="Choose-a-factory-string" class="common-anchor-header">Choose a factory string<button data-href="#Choose-a-factory-string" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -110,23 +112,23 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>工厂字符串将 Faiss 索引描述为一组组件的序列。以下示例已通过 Milvus 3.0.0 发布测试的覆盖验证。此列表并非详尽无遗。</p>
+    </button></h2><p>A factory string describes a Faiss index as a sequence of components. The following examples have Milvus 3.0.0 release-test coverage. This list is not exhaustive.</p>
 <table>
 <thead>
-<tr><th>生成器字符串</th><th>字段类型</th><th>在发布测试中验证的指标</th><th>搜索参数</th><th>备注</th></tr>
+<tr><th>Factory string</th><th>Field type</th><th>Metrics exercised in release tests</th><th>Search parameters</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>,<code translate="no">IP</code>,<code translate="no">COSINE</code></td><td>无</td><td>精确搜索。</td></tr>
-<tr><td><code translate="no">IVF64,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>,<code translate="no">IP</code>,<code translate="no">COSINE</code></td><td><code translate="no">nprobe</code></td><td>使用64个反转列表和未压缩向量的IVF。</td></tr>
-<tr><td><code translate="no">HNSW16,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>,<code translate="no">IP</code>,<code translate="no">COSINE</code></td><td><code translate="no">efSearch</code></td><td>采用扁平向量存储的HNSW图。</td></tr>
-<tr><td><code translate="no">OPQ16,IVF64,PQ16x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>针对特定工厂</td><td>结合了OPQ、IVF和PQ。请使用您的数据验证训练规模和召回率。</td></tr>
-<tr><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td><code translate="no">nprobe</code>,<code translate="no">k_factor</code></td><td>在 PQ 候选项检索后使用扁平化精炼器。</td></tr>
-<tr><td><code translate="no">PQ8x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>无</td><td>内置发布测试。标量过滤搜索会失败，因为索引拒绝了选择器；请单独验证未过滤的使用情况。</td></tr>
-<tr><td><code translate="no">BFlat</code></td><td><code translate="no">BINARY_VECTOR</code></td><td><code translate="no">HAMMING</code></td><td>无</td><td>二进制向量的精确搜索。</td></tr>
+<tr><td><code translate="no">Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td>None</td><td>Exact search.</td></tr>
+<tr><td><code translate="no">IVF64,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">nprobe</code></td><td>IVF with 64 inverted lists and uncompressed vectors.</td></tr>
+<tr><td><code translate="no">HNSW16,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">efSearch</code></td><td>HNSW graph with flat vector storage.</td></tr>
+<tr><td><code translate="no">OPQ16,IVF64,PQ16x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>Factory-specific</td><td>Combines OPQ, IVF, and PQ. Validate training size and recall with your data.</td></tr>
+<tr><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td><code translate="no">nprobe</code>, <code translate="no">k_factor</code></td><td>Uses a flat refiner after PQ candidate retrieval.</td></tr>
+<tr><td><code translate="no">PQ8x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>None</td><td>Builds in release tests. Scalar-filtered search fails because the index rejects the selector; validate unfiltered use separately.</td></tr>
+<tr><td><code translate="no">BFlat</code></td><td><code translate="no">BINARY_VECTOR</code></td><td><code translate="no">HAMMING</code></td><td>None</td><td>Exact search for binary vectors.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">COSINE</code> 条目表示构建和搜索的烟雾测试覆盖率。对于Milvus 3.0.0，这些条目无法在索引重新加载后验证得分或范围搜索的正确性。参见<a href="#limits">“限制”</a>。</p>
-<h2 id="Build-and-search-a-float-index" class="common-anchor-header">构建并搜索浮点索引<button data-href="#Build-and-search-a-float-index" class="anchor-icon" translate="no">
+<p>The <code translate="no">COSINE</code> entries indicate build and search smoke coverage. For Milvus 3.0.0, they do not establish score or range-search correctness after an index reload. See <a href="#limits">Limits</a>.</p>
+<h2 id="Build-and-search-a-float-index" class="common-anchor-header">Build and search a float index<button data-href="#Build-and-search-a-float-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -141,9 +143,9 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下示例创建了 3,000 个 128 维向量。这为示例中使用的<code translate="no">IVF64,Flat</code> 配方提供了足够的训练数据。在构建和搜索索引之前，请展开“设置”代码块并运行它。</p>
+    </button></h2><p>The following example creates 3,000 128-dimensional vectors. This provides enough training data for the <code translate="no">IVF64,Flat</code> recipe used in the example. Expand the setup block and run it before building and searching the index.</p>
 <p><details></p>
-<p><summary>准备浮点向量Collection</summary></p>
+<p><summary>Prepare the float-vector collection</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
@@ -177,7 +179,7 @@ client.insert(collection_name=collection_name, data=rows)
 client.flush(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Build-the-index" class="common-anchor-header">构建索引<button data-href="#Build-the-index" class="anchor-icon" translate="no">
+<h3 id="Build-the-index" class="common-anchor-header">Build the index<button data-href="#Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -192,7 +194,7 @@ client.flush(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>将<code translate="no">index_type</code> 设置为<code translate="no">FAISS</code> ，并使用<code translate="no">faiss_index_name</code> 选择原生Faiss工厂配方。</p>
+    </button></h3><p>Set <code translate="no">index_type</code> to <code translate="no">FAISS</code>, and use <code translate="no">faiss_index_name</code> to select the native Faiss factory recipe.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;vector&quot;</span>,
@@ -205,8 +207,8 @@ index_params.add_index(
 client.create_index(collection_name=collection_name, index_params=index_params)
 client.load_collection(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
-<p>工厂字符串<code translate="no">IVF64,Flat</code> 会创建一个包含 64 个倒排列表的 IVF 索引，并在每个列表中存储未压缩的向量。</p>
-<h3 id="Search-the-index" class="common-anchor-header">搜索索引<button data-href="#Search-the-index" class="anchor-icon" translate="no">
+<p>The factory string <code translate="no">IVF64,Flat</code> creates an IVF index with 64 inverted lists and stores uncompressed vectors in each list.</p>
+<h3 id="Search-the-index" class="common-anchor-header">Search the index<button data-href="#Search-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -221,7 +223,7 @@ client.load_collection(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在<code translate="no">search_params.params</code> 中设置工厂特定的搜索参数。对于 IVF 工厂，<code translate="no">nprobe</code> 控制 Faiss 搜索的倒排列表数量。</p>
+    </button></h3><p>Set factory-specific search parameters inside <code translate="no">search_params.params</code>. For an IVF factory, <code translate="no">nprobe</code> controls how many inverted lists Faiss searches.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">search_params = {</span>
 <span class="highlighted-comment-line">    <span class="hljs-string">&quot;params&quot;</span>: {<span class="hljs-string">&quot;nprobe&quot;</span>: <span class="hljs-number">8</span>},</span>
 <span class="highlighted-comment-line">}</span>
@@ -240,8 +242,8 @@ results = client.search(
     <span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> hits:
         <span class="hljs-built_in">print</span>(hit)
 <button class="copy-code-btn"></button></code></pre>
-<p>该查询使用了<code translate="no">nprobe=8</code> ，因此Faiss会搜索64个倒排列表中的8个。该过滤器将结果限制为<code translate="no">category</code> 值为<code translate="no">reference</code> 的实体。</p>
-<h2 id="Build-and-search-a-binary-index" class="common-anchor-header">构建和搜索二进制索引<button data-href="#Build-and-search-a-binary-index" class="anchor-icon" translate="no">
+<p>The query uses <code translate="no">nprobe=8</code>, so Faiss searches 8 of the 64 inverted lists. The filter restricts results to entities whose <code translate="no">category</code> value is <code translate="no">reference</code>.</p>
+<h2 id="Build-and-search-a-binary-index" class="common-anchor-header">Build and search a binary index<button data-href="#Build-and-search-a-binary-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -256,9 +258,9 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>对于<code translate="no">BINARY_VECTOR</code> 字段，请使用类似<code translate="no">BFlat</code> 的二进制生成字符串以及兼容的二进制度量。在构建和搜索索引之前，请展开设置代码块并运行它。</p>
+    </button></h2><p>For <code translate="no">BINARY_VECTOR</code> fields, use a binary factory string such as <code translate="no">BFlat</code> and a compatible binary metric. Expand the setup block and run it before building and searching the index.</p>
 <p><details></p>
-<p><summary>准备二进制向量Collection</summary></p>
+<p><summary>Prepare the binary-vector collection</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
@@ -284,7 +286,7 @@ client.insert(
 client.flush(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Build-the-index" class="common-anchor-header">构建索引<button data-href="#Build-the-index" class="anchor-icon" translate="no">
+<h3 id="Build-the-index" class="common-anchor-header">Build the index<button data-href="#Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -299,7 +301,7 @@ client.flush(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在此二进制向量示例中，请使用<code translate="no">BFlat</code> 作为生成字符串，并使用<code translate="no">HAMMING</code> 作为度量。</p>
+    </button></h3><p>Use <code translate="no">BFlat</code> as the factory string and <code translate="no">HAMMING</code> as the metric for this binary-vector example.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;binary_vector&quot;</span>,
@@ -312,7 +314,7 @@ index_params.add_index(
 client.create_index(collection_name=collection_name, index_params=index_params)
 client.load_collection(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Search-the-index" class="common-anchor-header">搜索索引<button data-href="#Search-the-index" class="anchor-icon" translate="no">
+<h3 id="Search-the-index" class="common-anchor-header">Search the index<button data-href="#Search-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -327,7 +329,7 @@ client.load_collection(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">BFlat</code> 没有特定于家族的搜索参数。在构建搜索请求时，请传递一个空的 `<code translate="no">params</code> ` 映射。</p>
+    </button></h3><p><code translate="no">BFlat</code> has no family-specific search parameter. Pass an empty <code translate="no">params</code> mapping when constructing the search request.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">search_params = {<span class="hljs-string">&quot;params&quot;</span>: {}}</span>
 
 results = client.search(
@@ -342,8 +344,8 @@ results = client.search(
     <span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> hits:
         <span class="hljs-built_in">print</span>(hit)
 <button class="copy-code-btn"></button></code></pre>
-<p>每个 128 维二进制向量由 16 字节表示。有关更多信息，请参阅《<a href="/docs/zh/binary-vector.md">二进制向量</a>》。</p>
-<h2 id="Configure-build-and-search-parameters" class="common-anchor-header">配置构建和搜索参数<button data-href="#Configure-build-and-search-parameters" class="anchor-icon" translate="no">
+<p>Each 128-dimensional binary vector is represented by 16 bytes. For more information, see <a href="/docs/zh/binary-vector.md">Binary Vector</a>.</p>
+<h2 id="Configure-build-and-search-parameters" class="common-anchor-header">Configure build and search parameters<button data-href="#Configure-build-and-search-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -358,28 +360,28 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">FAISS</code> 索引类型有一个必需的直通构建参数。</p>
+    </button></h2><p>The <code translate="no">FAISS</code> index type has one required passthrough build parameter.</p>
 <table>
 <thead>
-<tr><th>参数</th><th>位置</th><th>描述</th></tr>
+<tr><th>Parameter</th><th>Location</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">faiss_index_name</code></td><td><code translate="no">params</code> in<code translate="no">add_index()</code></td><td>Faiss 索引生成器字符串。例如：<code translate="no">IVF64,Flat</code> 。</td></tr>
+<tr><td><code translate="no">faiss_index_name</code></td><td><code translate="no">params</code> in <code translate="no">add_index()</code></td><td>The Faiss index-factory string. For example, <code translate="no">IVF64,Flat</code>.</td></tr>
 </tbody>
 </table>
-<p>请在<code translate="no">search_params.params</code> 中设置工厂特定的搜索参数。下表列出了常见的示例，但并非详尽无遗。</p>
+<p>Set factory-specific search parameters inside <code translate="no">search_params.params</code>. The following table lists common examples and is not exhaustive.</p>
 <table>
 <thead>
-<tr><th>参数</th><th>工厂示例</th><th>描述</th></tr>
+<tr><th>Parameter</th><th>Example factory</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">nprobe</code></td><td><code translate="no">IVF64,Flat</code></td><td>要搜索的倒排列表数量。</td></tr>
-<tr><td><code translate="no">efSearch</code></td><td><code translate="no">HNSW16,Flat</code></td><td>HNSW 搜索候选项列表的大小。</td></tr>
-<tr><td><code translate="no">k_factor</code></td><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td>相对于请求的“前 K 个”结果，提供给优化器的候选项数量。</td></tr>
+<tr><td><code translate="no">nprobe</code></td><td><code translate="no">IVF64,Flat</code></td><td>Number of inverted lists to search.</td></tr>
+<tr><td><code translate="no">efSearch</code></td><td><code translate="no">HNSW16,Flat</code></td><td>Size of the HNSW search candidate list.</td></tr>
+<tr><td><code translate="no">k_factor</code></td><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td>Number of candidates supplied to the refiner relative to the requested top-K.</td></tr>
 </tbody>
 </table>
-<p>Milvus 仅转发适配器识别的附加参数。未知构建键以及具体工厂家族不支持的搜索键将被拒绝。Milvus 不会为所有可能的工厂维护通用 Schema。 请查阅所选工厂的 Faiss 文档，然后根据您计划部署的确切 Milvus 版本和镜像，验证完整的构建和搜索流程。</p>
-<h2 id="Handle-errors-and-unsupported-operations" class="common-anchor-header">处理错误和不受支持的操作<button data-href="#Handle-errors-and-unsupported-operations" class="anchor-icon" translate="no">
+<p>Milvus forwards only adapter-recognized additional parameters. Unknown build keys and search keys that the concrete factory family does not support are rejected. Milvus does not maintain a universal parameter schema for every possible factory. Check the Faiss documentation for the selected factory, then validate the complete build and search flow against the exact Milvus version and image that you plan to deploy.</p>
+<h2 id="Handle-errors-and-unsupported-operations" class="common-anchor-header">Handle errors and unsupported operations<button data-href="#Handle-errors-and-unsupported-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -395,13 +397,13 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>如果工厂字符串无效或在 Milvus 构建中不可用，索引构建将失败。在加载 Collection 之前，请检查索引状态和失败原因。</p></li>
-<li><p>如果参数类型错误，搜索将失败。例如，<code translate="no">nprobe=&quot;invalid&quot;</code> 会被拒绝，因为<code translate="no">nprobe</code> 必须是数值型。</p></li>
-<li><p>如果某个参数不适用于已构建的工厂，适配器会将其视为不受支持而拒绝。</p></li>
-<li><p>如果工厂不支持 Milvus 选择器，即使同一工厂在独立的 Faiss 中可以进行搜索，过滤搜索仍可能失败。</p></li>
-<li><p>请勿在<code translate="no">FAISS</code> 索引中使用<code translate="no">search_iterator()</code> 。</p></li>
+<li><p>If the factory string is invalid or unavailable in the Milvus build, index building fails. Check the index state and failure reason before loading the collection.</p></li>
+<li><p>If a parameter has the wrong type, search fails. For example, <code translate="no">nprobe=&quot;invalid&quot;</code> is rejected because <code translate="no">nprobe</code> must be numeric.</p></li>
+<li><p>If a parameter does not apply to the built factory, the adapter rejects it as unsupported.</p></li>
+<li><p>If a factory does not support the Milvus selector, filtered search can fail even when the same factory can search in standalone Faiss.</p></li>
+<li><p>Do not use <code translate="no">search_iterator()</code> with a <code translate="no">FAISS</code> index.</p></li>
 </ul>
-<h2 id="Whats-next" class="common-anchor-header">下一步<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -417,7 +419,7 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li>请参阅《<a href="/docs/zh/index-explained.md">索引详解</a>》了解 Milvus 索引的组织方式。</li>
-<li>比较专用的<a href="/docs/zh/ivf-flat.md">IVF_FLAT</a>和<a href="/docs/zh/hnsw.md">HNSW</a>索引类型。</li>
-<li>在为工厂选择指标之前，请先查阅《<a href="/docs/zh/metric.md">指标类型</a>》。</li>
+<li>Learn how Milvus indexes are organized in <a href="/docs/zh/index-explained.md">Index Explained</a>.</li>
+<li>Compare the dedicated <a href="/docs/zh/ivf-flat.md">IVF_FLAT</a> and <a href="/docs/zh/hnsw.md">HNSW</a> index types.</li>
+<li>Review <a href="/docs/zh/metric.md">Metric Types</a> before choosing a metric for the factory.</li>
 </ul>

@@ -1,13 +1,13 @@
 ---
 id: insert-data-into-structarray-fields.md
-title: إدراج البيانات في حقول StructArray
+title: Insert Data into StructArray Fields
 summary: >-
-  قم بإدراج البيانات في حقل StructArray عندما تحتوي كل كيان على قائمة مرتبة من
-  العناصر المنظمة. في حمولة الإدراج، يُمثَّل حقل StructArray كمصفوفة من
-  الكائنات. ويمثل كل كائن عنصرًا واحدًا من عناصر Struct ويستخدم أسماء الحقول
-  الفرعية لـ Struct المُعرَّفة في مخطط المجموعة.
+  Insert data into a StructArray field when each entity contains an ordered list
+  of structured elements. In the insert payload, a StructArray field is
+  represented as an array of objects. Each object represents one Struct element
+  and uses the Struct subfield names defined in the collection schema.
 ---
-<h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">إدراج البيانات في حقول StructArray<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
+<h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">Insert Data into StructArray Fields<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>قم بإدراج البيانات في حقل StructArray عندما تحتوي كل كيان على قائمة مرتبة من العناصر المنظمة. في حمولة الإدراج، يتم تمثيل حقل StructArray كمصفوفة من الكائنات. يمثل كل كائن عنصر Struct واحدًا ويستخدم أسماء الحقول الفرعية لـ Struct المحددة في مخطط المجموعة.</p>
-<p>تستخدم هذه الصفحة مجموعة « <code translate="no">tech_articles</code> » من <a href="/docs/ar/create-structarray-field.md">«إنشاء حقل StructArray</a>». كل كيان هو مقال تقني، ويخزن حقل « <code translate="no">chunks</code> » أجزاء المقال كعناصر Struct.</p>
-<h2 id="Before-you-begin" class="common-anchor-header">قبل البدء<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+    </button></h1><p>Insert data into a StructArray field when each entity contains an ordered list of structured elements. In the insert payload, a StructArray field is represented as an array of objects. Each object represents one Struct element and uses the Struct subfield names defined in the collection schema.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/ar/create-structarray-field.md">Create a StructArray Field</a>. Each entity is a technical article, and the <code translate="no">chunks</code> field stores article chunks as Struct elements.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,38 +39,38 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تأكد من أن مخطط المجموعة يحتوي بالفعل على حقل StructArray المسمى « <code translate="no">chunks</code> ».</p>
+    </button></h2><p>Make sure the collection schema already contains the <code translate="no">chunks</code> StructArray field.</p>
 <table>
 <thead>
-<tr><th>الحقل</th><th>النوع</th><th>إدراج القيمة</th></tr>
+<tr><th>Field</th><th>Type</th><th>Insert value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">doc_id</code></td><td><code translate="no">INT64</code></td><td>معرف المقالة.</td></tr>
-<tr><td><code translate="no">title</code></td><td><code translate="no">VARCHAR</code></td><td>عنوان المقالة.</td></tr>
-<tr><td><code translate="no">category</code></td><td><code translate="no">VARCHAR</code></td><td>فئة المقالة.</td></tr>
-<tr><td><code translate="no">title_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>التضمين على مستوى المقالة.</td></tr>
-<tr><td><code translate="no">chunks</code></td><td><code translate="no">ARRAY</code></td><td>قائمة بكائنات المقتطفات.</td></tr>
+<tr><td><code translate="no">doc_id</code></td><td><code translate="no">INT64</code></td><td>Article ID.</td></tr>
+<tr><td><code translate="no">title</code></td><td><code translate="no">VARCHAR</code></td><td>Article title.</td></tr>
+<tr><td><code translate="no">category</code></td><td><code translate="no">VARCHAR</code></td><td>Article category.</td></tr>
+<tr><td><code translate="no">title_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Article-level embedding.</td></tr>
+<tr><td><code translate="no">chunks</code></td><td><code translate="no">ARRAY</code></td><td>A list of chunk objects.</td></tr>
 </tbody>
 </table>
-<p>يجب أن يتبع كل كائن في " <code translate="no">chunks</code> " مخطط Struct.</p>
+<p>Each object in <code translate="no">chunks</code> must follow the Struct schema.</p>
 <table>
 <thead>
-<tr><th>الحقل الفرعي</th><th>النوع</th><th>قيمة الإدراج</th></tr>
+<tr><th>Subfield</th><th>Type</th><th>Insert value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">text</code></td><td><code translate="no">VARCHAR</code></td><td>نص المقطع.</td></tr>
-<tr><td><code translate="no">section</code></td><td><code translate="no">VARCHAR</code></td><td>اسم القسم، مثل <code translate="no">index</code> أو <code translate="no">search</code> أو <code translate="no">filter</code>.</td></tr>
-<tr><td><code translate="no">page</code></td><td><code translate="no">INT64</code></td><td>رقم الصفحة أو الموضع المنطقي.</td></tr>
-<tr><td><code translate="no">quality_score</code></td><td><code translate="no">FLOAT</code></td><td>النتيجة على مستوى الجزء.</td></tr>
-<tr><td><code translate="no">has_code</code></td><td><code translate="no">BOOL</code></td><td>ما إذا كانت المقطوعة تحتوي على كود أم لا.</td></tr>
-<tr><td><code translate="no">emb_list_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>المتجه المكتوب للبحث في EmbeddingList.</td></tr>
-<tr><td><code translate="no">emb</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>المتجه المكتوب للبحث على مستوى العنصر.</td></tr>
+<tr><td><code translate="no">text</code></td><td><code translate="no">VARCHAR</code></td><td>Chunk text.</td></tr>
+<tr><td><code translate="no">section</code></td><td><code translate="no">VARCHAR</code></td><td>Section name, such as <code translate="no">index</code>, <code translate="no">search</code>, or <code translate="no">filter</code>.</td></tr>
+<tr><td><code translate="no">page</code></td><td><code translate="no">INT64</code></td><td>Page number or logical position.</td></tr>
+<tr><td><code translate="no">quality_score</code></td><td><code translate="no">FLOAT</code></td><td>Chunk-level score.</td></tr>
+<tr><td><code translate="no">has_code</code></td><td><code translate="no">BOOL</code></td><td>Whether the chunk contains code.</td></tr>
+<tr><td><code translate="no">emb_list_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vector written for EmbeddingList search.</td></tr>
+<tr><td><code translate="no">emb</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vector written for element-level search.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>في حمولة الإدراج، يُعد « <code translate="no">chunks</code> » حقلًا عاديًا تكون قيمته عبارة عن مصفوفة من كائنات Struct. داخل كل كائن، استخدم أسماء الحقول الفرعية مثل « <code translate="no">text</code> » و« <code translate="no">emb</code> ». استخدم صيغة المسار، مثل « <code translate="no">chunks[text]</code> » أو « <code translate="no">chunks[emb]</code> »، فقط بعد الإدراج عند إنشاء الفهارس أو إجراء عمليات البحث أو إنشاء عوامل التصفية أو تحديد حقول الإخراج.</p>
+<p>In an insert payload, <code translate="no">chunks</code> is a regular field whose value is an array of Struct objects. Inside each object, use subfield names such as <code translate="no">text</code> and <code translate="no">emb</code>. Use path syntax, such as <code translate="no">chunks[text]</code> or <code translate="no">chunks[emb]</code>, only after insertion when you create indexes, run searches, build filters, or specify output fields.</p>
 </div>
-<h2 id="Understand-the-insert-payload-shape" class="common-anchor-header">فهم شكل حمولة الإدراج<button data-href="#Understand-the-insert-payload-shape" class="anchor-icon" translate="no">
+<h2 id="Understand-the-insert-payload-shape" class="common-anchor-header">Understand the insert payload shape<button data-href="#Understand-the-insert-payload-shape" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -85,7 +85,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تعد قيمة <code translate="no">chunks</code> مصفوفة من عناصر Struct. كل عنصر هو كائن تكون مفاتيحه أسماء حقول فرعية.</p>
+    </button></h2><p>The <code translate="no">chunks</code> value is an array of Struct elements. Each element is an object whose keys are subfield names.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;doc_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;StructArray indexing patterns&quot;</span><span class="hljs-punctuation">,</span>
@@ -113,8 +113,8 @@ summary: >-
   <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">emb_list_vector</code> و <code translate="no">emb</code> هما حقلان فرعيان متجهان منفصلان لأنهما يدعمان أوضاع بحث مختلفة. يعامل البحث باستخدام EmbeddingList جميع المتجهات في حقل StructArray كقائمة تضمين واحدة ويعرض نتائج على مستوى الكيان باستخدام مقاييس <code translate="no">MAX_SIM*</code>. أما البحث على مستوى العنصر فيبحث في كل عنصر Struct بشكل مستقل ويمكنه عرض إزاحة العنصر المطابق. يخزن هذا المثال نفس قيم المتجهات في كلا الحقلين للتبسيط. في تطبيق الإنتاج، يمكنك تخزين نفس التضمينات في كلا الحقلين الفرعيين عندما يستخدم كلا وضعي البحث نفس تضمين المقطع، أو تخزين تضمينات مختلفة عندما يستخدم وضعي البحث تمثيلات مختلفة.</p>
-<h2 id="Insert-rows" class="common-anchor-header">إدراج الصفوف<button data-href="#Insert-rows" class="anchor-icon" translate="no">
+<p><code translate="no">emb_list_vector</code> and <code translate="no">emb</code> are separate vector subfields because they support different search modes. EmbeddingList search treats all vectors in a StructArray field as one embedding list and returns entity-level results with <code translate="no">MAX_SIM*</code> metrics. Element-level search searches each Struct element independently and can return the matched element offset. This example stores the same vector values in both fields for simplicity. In a production application, you can store the same embeddings in both subfields when both search modes use the same chunk embedding, or store different embeddings when the two search modes use different representations.</p>
+<h2 id="Insert-rows" class="common-anchor-header">Insert rows<button data-href="#Insert-rows" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,7 +129,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم ` <code translate="no">client.insert()</code> ` لإدراج صفوف تحتوي على قيم StructArray.</p>
+    </button></h2><p>Use <code translate="no">client.insert()</code> to insert rows that contain StructArray values.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -216,7 +216,7 @@ result = client.insert(
 
 <span class="hljs-built_in">print</span>(result)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-into-nullable-StructArray-fields" class="common-anchor-header">الإدراج في حقول StructArray القابلة للقيمة الفارغة<button data-href="#Insert-into-nullable-StructArray-fields" class="anchor-icon" translate="no">
+<h2 id="Insert-into-nullable-StructArray-fields" class="common-anchor-header">Insert into nullable StructArray fields<button data-href="#Insert-into-nullable-StructArray-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -231,7 +231,7 @@ result = client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>إذا كان حقل ` <code translate="no">chunks</code> ` قابلاً للقيمة `null`، فيمكن للكيان تعيين حقل ` <code translate="no">chunks</code> ` بأكمله إلى `null`. في لغة Python، استخدم ` <code translate="no">None</code> ` لتمثيل قيمة `null`.</p>
+    </button></h2><p>If the <code translate="no">chunks</code> field is nullable, an entity can set the entire <code translate="no">chunks</code> field to null. In Python, use <code translate="no">None</code> to represent a null value.</p>
 <pre><code translate="no" class="language-python">client.insert(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
     data=[
@@ -245,12 +245,12 @@ result = client.insert(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>عندما يحتوي حقل StructArray القابل للقيمة الفارغة على قيمة StructArray صالحة، يجب أن تكون جميع الحقول الفرعية في تلك القيمة إما فارغة أو ذات قيم صالحة. يؤدي إدراج كيان مع تعيين بعض الحقول الفرعية على القيمة الفارغة وتعيين أخرى على قيم صالحة إلى حدوث خطأ.</p>
+<p>When a nullable StructArray field contains a valid StructArray value, all subfields in that value should either be null or have valid values. Inserting an entity with some subfields set to null and others set to valid values results in an error.</p>
 <div class="alert note">
-<p>تحذير
-حقول StructArray القابلة للتعيين بقيمة null متاحة فقط في Milvus v3.0.x. إذا قمت بإضافة حقل StructArray ديناميكيًا إلى مجموعة موجودة، فيجب أن يكون الحقل المضاف قابلاً للتعيين بقيمة null، ويجب أن تُرجع الكيانات الموجودة قيمة " <code translate="no">null</code> " للحقل الجديد عبر جميع حقوله الفرعية.</p>
+<p>Warning
+Nullable StructArray fields are available only in Milvus v3.0.x. If you dynamically add a StructArray field to an existing collection, the added field must be nullable, and existing entities return <code translate="no">null</code> for the new field across all its subfields.</p>
 </div>
-<h2 id="Validate-inserted-data" class="common-anchor-header">التحقق من صحة البيانات المُدرجة<button data-href="#Validate-inserted-data" class="anchor-icon" translate="no">
+<h2 id="Validate-inserted-data" class="common-anchor-header">Validate inserted data<button data-href="#Validate-inserted-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -265,7 +265,7 @@ result = client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك الاستعلام عن المجموعة وإرجاع حقل StructArray أو الحقول الفرعية المحددة.</p>
+    </button></h2><p>You can query the collection and return the StructArray field or selected subfields.</p>
 <pre><code translate="no" class="language-python">rows = client.query(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
     <span class="hljs-built_in">filter</span>=<span class="hljs-string">&quot;doc_id in [1, 2, 3]&quot;</span>,
@@ -281,8 +281,8 @@ result = client.insert(
 <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> rows:
     <span class="hljs-built_in">print</span>(row)
 <button class="copy-code-btn"></button></code></pre>
-<p>استخدم مسارات حقول StructArray، مثل <code translate="no">chunks[text]</code> ، فقط عند الاستعلام أو البحث أو التصفية أو إنشاء الفهارس. يجب أن تستمر حمولات الإدراج في استخدام الكائنات المتداخلة ضمن <code translate="no">chunks</code>.</p>
-<h2 id="Insert-rules" class="common-anchor-header">قواعد الإدراج<button data-href="#Insert-rules" class="anchor-icon" translate="no">
+<p>Use StructArray field paths, such as <code translate="no">chunks[text]</code>, only when you query, search, filter, or create indexes. Insert payloads should still use nested objects under <code translate="no">chunks</code>.</p>
+<h2 id="Insert-rules" class="common-anchor-header">Insert rules<button data-href="#Insert-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -299,19 +299,19 @@ result = client.insert(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>القاعدة</th><th>الشرح</th></tr>
+<tr><th>Rule</th><th>Explanation</th></tr>
 </thead>
 <tbody>
-<tr><td>استخدم مصفوفة من الكائنات لحقل StructArray.</td><td>قيمة <code translate="no">chunks</code> هي قائمة، وكل عنصر في القائمة هو عنصر Struct.</td></tr>
-<tr><td>استخدم أسماء الحقول الفرعية داخل كل عنصر من عناصر Struct.</td><td>أدخل <code translate="no">{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}</code> داخل <code translate="no">chunks</code> ، وليس <code translate="no">{&quot;chunks[text]&quot;: &quot;...&quot;}</code>.</td></tr>
-<tr><td>تأكد من مطابقة مخطط Struct.</td><td>يجب أن يستخدم كل عنصر من عناصر Struct الحقول الفرعية المحددة في مخطط Struct.</td></tr>
-<tr><td>تطابق أبعاد المتجه.</td><td>يجب أن تتطابق قيم المتجهات مع <code translate="no">dim</code> المُعدة لحقولها الفرعية المتجهة.</td></tr>
-<tr><td>يجب مراعاة " <code translate="no">max_capacity</code>".</td><td>يجب ألا يتجاوز عدد عناصر Struct في كيان واحد الحد الأقصى المسموح به ( <code translate="no">max_capacity</code> ) لحقل StructArray.</td></tr>
-<tr><td>استخدم حقول فرعية متجهة منفصلة لأوضاع البحث المنفصلة.</td><td>إذا كان كل من البحث في EmbeddingList والبحث على مستوى العنصر مطلوبين، فاكتب قيم المتجهات في كل من الحقول الفرعية للمتجهات.</td></tr>
-<tr><td>استخدم <code translate="no">null</code> فقط عندما يكون الحقل قابلاً للقيمة الفارغة.</td><td>تتطلب حقول StructArray غير القابلة للقيمة الفارغة قيم StructArray صالحة.</td></tr>
+<tr><td>Use an array of objects for a StructArray field.</td><td>The value of <code translate="no">chunks</code> is a list, and each item in the list is a Struct element.</td></tr>
+<tr><td>Use subfield names inside each Struct element.</td><td>Insert <code translate="no">{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}</code> inside <code translate="no">chunks</code>, not <code translate="no">{&quot;chunks[text]&quot;: &quot;...&quot;}</code>.</td></tr>
+<tr><td>Match the Struct schema.</td><td>Each Struct element must use the subfields defined in the Struct schema.</td></tr>
+<tr><td>Match vector dimensions.</td><td>Vector values must match the <code translate="no">dim</code> configured for their vector subfields.</td></tr>
+<tr><td>Respect <code translate="no">max_capacity</code>.</td><td>The number of Struct elements in one entity must not exceed the <code translate="no">max_capacity</code> of the StructArray field.</td></tr>
+<tr><td>Use separate vector subfields for separate search modes.</td><td>If both EmbeddingList search and element-level search are required, write vector values to both vector subfields.</td></tr>
+<tr><td>Use <code translate="no">null</code> only when the field is nullable.</td><td>Non-nullable StructArray fields require valid StructArray values.</td></tr>
 </tbody>
 </table>
-<h2 id="Common-mistakes" class="common-anchor-header">الأخطاء الشائعة<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -327,15 +327,15 @@ result = client.insert(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>استخدام مسارات الحقول مثل <code translate="no">chunks[text]</code> في حمولات الإدراج.</p></li>
-<li><p>إغفال الحقول الفرعية المطلوبة من عنصر Struct.</p></li>
-<li><p>إدراج متجهات ذات أبعاد خاطئة.</p></li>
-<li><p>إدراج عناصر Struct أكثر مما يسمح به <code translate="no">max_capacity</code>.</p></li>
-<li><p>تعيين حقل فرعي واحد فقط إلى <code translate="no">null</code> بينما تكون الحقول الفرعية الأخرى في نفس قيمة StructArray صالحة.</p></li>
-<li><p>كتابة المتجهات إلى <code translate="no">emb_list_vector</code> فقط ثم محاولة إجراء بحث على مستوى العناصر في <code translate="no">chunks[emb]</code>.</p></li>
-<li><p>كتابة المتجهات إلى <code translate="no">emb</code> فقط ثم محاولة إجراء بحث EmbeddingList على <code translate="no">chunks[emb_list_vector]</code>.</p></li>
+<li><p>Using field paths such as <code translate="no">chunks[text]</code> in insert payloads.</p></li>
+<li><p>Omitting required subfields from a Struct element.</p></li>
+<li><p>Inserting vectors with the wrong dimension.</p></li>
+<li><p>Inserting more Struct elements than <code translate="no">max_capacity</code> allows.</p></li>
+<li><p>Setting only one subfield to <code translate="no">null</code> while other subfields in the same StructArray value are valid.</p></li>
+<li><p>Writing vectors only to <code translate="no">emb_list_vector</code> and then trying to run element-level search on <code translate="no">chunks[emb]</code>.</p></li>
+<li><p>Writing vectors only to <code translate="no">emb</code> and then trying to run EmbeddingList search on <code translate="no">chunks[emb_list_vector]</code>.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">الخطوات التالية<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -351,7 +351,7 @@ result = client.insert(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>لإنشاء فهارس لـ <code translate="no">chunks[emb_list_vector]</code> و <code translate="no">chunks[emb]</code> والحقول الفرعية القياسية، اقرأ <a href="/docs/ar/index-structarray-fields.md">«فهرسة حقول StructArray</a>».</p></li>
-<li><p>للبحث في الحقول الفرعية المتجهة لـ StructArray، اقرأ " <a href="/docs/ar/basic-vector-search-with-structarray.md">البحث المتجه الأساسي باستخدام StructArray</a>".</p></li>
-<li><p>لمراجعة سلوك القيم الفارغة والقيود الخاصة بالإصدارات، اقرأ " <a href="/docs/ar/structarray-limits.md">حدود StructArray</a>".</p></li>
+<li><p>To create indexes for <code translate="no">chunks[emb_list_vector]</code>, <code translate="no">chunks[emb]</code>, and scalar subfields, read <a href="/docs/ar/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To search StructArray vector subfields, read <a href="/docs/ar/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To review nullable behavior and version-specific limitations, read <a href="/docs/ar/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

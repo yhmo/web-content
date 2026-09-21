@@ -1,11 +1,11 @@
 ---
 id: search_patterns.md
-title: 'Prompt: Patrones de búsqueda de Milvus'
+title: 'Prompt: Milvus Search Patterns'
 summary: >-
-  Reglas para que los asistentes de codificación de IA implementen la búsqueda,
-  la búsqueda híbrida y la búsqueda de texto completo en Milvus.
+  Rules for AI coding assistants to implement search, hybrid search, and
+  full-text search in Milvus.
 ---
-<h1 id="Search-Patterns" class="common-anchor-header">Patrones de búsqueda<button data-href="#Search-Patterns" class="anchor-icon" translate="no">
+<h1 id="Search-Patterns" class="common-anchor-header">Search Patterns<button data-href="#Search-Patterns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Reglas para implementar la búsqueda por similitud, la búsqueda híbrida, la búsqueda filtrada y la búsqueda de texto completo en Milvus, incluidas las restricciones de AnnSearchRequest y el uso del clasificador. Copie la solicitud completa que aparece a continuación en su herramienta de IA para aplicar estas reglas automáticamente. Para obtener una visión general de todas las instrucciones, consulte <a href="/docs/es/milvus_for_agents.md">Instrucciones de IA</a>.</p>
-<h2 id="How-to-use-this-prompt" class="common-anchor-header">Cómo utilizar esta instrucción<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
+    </button></h1><p>Rules for implementing similarity search, hybrid search, filtered search, and full-text search in Milvus, including AnnSearchRequest constraints and ranker usage. Copy the full prompt below into your AI tool to apply these rules automatically. For an overview of all prompts, see <a href="/docs/es/milvus_for_agents.md">AI Prompts</a>.</p>
+<h2 id="How-to-use-this-prompt" class="common-anchor-header">How to use this prompt<button data-href="#How-to-use-this-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,12 +37,12 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ol>
-<li><strong>Copie</strong> el mensaje completo de la sección <a href="#full-prompt">Mensaje completo</a>.</li>
-<li><strong>Guárdela</strong> en la ubicación prevista por su herramienta de IA (consulte la <a href="/docs/es/milvus_for_agents.md">tabla de entornos</a> para obtener más información sobre la ubicación).</li>
-<li>Su asistente de IA aplicará automáticamente estas reglas cuando genere o revise código Milvus.</li>
+<li><strong>Copy</strong> the full prompt from the <a href="#full-prompt">Full prompt</a> section below.</li>
+<li><strong>Save</strong> it to the location your AI tool expects — see the <a href="/docs/es/milvus_for_agents.md">environment table</a> for placement details.</li>
+<li>Your AI assistant will automatically apply these rules when generating or reviewing Milvus code.</li>
 </ol>
-<p>Para usuarios <strong>de Cursor</strong>: copie el prompt de la sección <a href="#full-prompt">prompt completo</a> y guárdelo en <code translate="no">.cursor/rules/</code> en su proyecto.</p>
-<h2 id="Full-prompt" class="common-anchor-header">Mensaje completo<button data-href="#Full-prompt" class="anchor-icon" translate="no">
+<p>For <strong>Cursor</strong> users: copy the prompt from the <a href="#full-prompt">Full prompt</a> section and save it under <code translate="no">.cursor/rules/</code> in your project.</p>
+<h2 id="Full-prompt" class="common-anchor-header">Full prompt<button data-href="#Full-prompt" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

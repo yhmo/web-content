@@ -2,8 +2,8 @@
 id: single-vector-search.md
 title: Basic Vector Search
 summary: >-
-  Lakukan pencarian ANN dasar di Milvus dengan vektor kueri, bidang keluaran,
-  filter, rentang, dan iterator.
+  Run basic ANN searches in Milvus with query vectors, output fields, filters,
+  ranges, and iterators.
 ---
 <h1 id="Basic-Vector-Search" class="common-anchor-header">Basic Vector Search<button data-href="#Basic-Vector-Search" class="anchor-icon" translate="no">
       <svg translate="no"

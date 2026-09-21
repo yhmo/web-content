@@ -1,11 +1,11 @@
 ---
 id: string.md
-title: VarChar-Feld
+title: VarChar Field
 summary: >-
-  VARCHAR ist ein skalarer Feldtyp zum Speichern kurzer, begrenzter
-  Zeichenfolgen-Metadaten in Milvus.
+  VARCHAR is a scalar field type for storing short, bounded string metadata in
+  Milvus.
 ---
-<h1 id="VarChar-Field" class="common-anchor-header">VarChar-Feld<button data-href="#VarChar-Field" class="anchor-icon" translate="no">
+<h1 id="VarChar-Field" class="common-anchor-header">VarChar Field<button data-href="#VarChar-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,17 +20,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus unterstützt skalare Textdaten mit den Feldern „ <code translate="no">VARCHAR</code> “ und „ <code translate="no">TEXT</code> “. Auf dieser Seite wird das Feld „ <code translate="no">VARCHAR</code> “ beschrieben, das für kurze, begrenzte Zeichenfolgen-Metadaten wie Namen, Tags, Kategorien und externe IDs vorgesehen ist.</p>
-<p>Für längere Quelltexte, Dokumentpassagen, Artikeltexte, Tickets oder Protokolle, die zusammen mit Entitäten gespeichert und zurückgegeben werden sollen, verwenden Sie stattdessen ein „ <code translate="no">TEXT</code> “-Feld. Verwenden Sie „ <code translate="no">TEXT</code> “, wenn ein Wert die „ <code translate="no">65,535</code> “-Byte-Grenze überschreiten könnte oder wenn Sie keine feste „ <code translate="no">max_length</code> “ im Sammlungsschema festlegen möchten. Weitere Informationen finden Sie unter <a href="/docs/de/text.md">„Textfeld</a>“.</p>
-<p>Wenn Sie ein Feld vom Typ „ <code translate="no">VARCHAR</code> “ definieren, sind zwei Parameter obligatorisch:</p>
+    </button></h1><p>Milvus supports textual scalar data with <code translate="no">VARCHAR</code> and <code translate="no">TEXT</code> fields. This page describes <code translate="no">VARCHAR</code>, which is designed for short, bounded string metadata such as names, tags, categories, and external IDs.</p>
+<p>For longer source text, document passages, article bodies, tickets, or logs that should be stored and returned with entities, use a <code translate="no">TEXT</code> field instead. Use <code translate="no">TEXT</code> when a value may exceed <code translate="no">65,535</code> bytes or when you do not want to set a fixed <code translate="no">max_length</code> in the collection schema. For details, refer to <a href="/docs/de/text.md">Text Field</a>.</p>
+<p>When you define a <code translate="no">VARCHAR</code> field, two parameters are mandatory:</p>
 <ul>
-<li><p>Legen Sie die „ <code translate="no">datatype</code> “ auf „ <code translate="no">DataType.VARCHAR</code> “ fest.</p></li>
-<li><p>Geben Sie die „ <code translate="no">max_length</code> “ an, die die maximale Anzahl an Bytes definiert, die das Feld „ <code translate="no">VARCHAR</code> “ speichern kann. Der gültige Bereich für „ <code translate="no">max_length</code> “ liegt zwischen 1 und 65.535.</p></li>
+<li><p>Set the <code translate="no">datatype</code> to <code translate="no">DataType.VARCHAR</code>.</p></li>
+<li><p>Specify the <code translate="no">max_length</code>, which defines the maximum number of bytes the <code translate="no">VARCHAR</code> field can store. The valid range for <code translate="no">max_length</code> is from 1 to 65,535.</p></li>
 </ul>
 <div class="alert note">
-<p>Milvus unterstützt Nullwerte und Standardwerte für „ <code translate="no">VARCHAR</code> “-Felder. Um diese Funktionen zu aktivieren, setzen Sie „ <code translate="no">nullable</code> “ auf „ <code translate="no">True</code> “ und „ <code translate="no">default_value</code> “ auf einen Zeichenfolgenwert. Weitere Informationen finden Sie unter <a href="/docs/de/nullable-and-default.md">„Nullable &amp; Default</a>“.</p>
+<p>Milvus supports null values and default values for <code translate="no">VARCHAR</code> fields. To enable these features, set <code translate="no">nullable</code> to <code translate="no">True</code> and <code translate="no">default_value</code> to a string value. For details, refer to <a href="/docs/de/nullable-and-default.md">Nullable & Default</a>.</p>
 </div>
-<h2 id="Add-VARCHAR-field" class="common-anchor-header">VARCHAR-Feld hinzufügen<button data-href="#Add-VARCHAR-field" class="anchor-icon" translate="no">
+<h2 id="Add-VARCHAR-field" class="common-anchor-header">Add VARCHAR field<button data-href="#Add-VARCHAR-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -45,20 +45,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Um kurze, begrenzte Zeichenfolgen-Metadaten in Milvus zu speichern, definieren Sie ein Feld vom Typ „ <code translate="no">VARCHAR</code> “ in Ihrem Sammlungsschema. Nachfolgend finden Sie ein Beispiel für die Definition eines Sammlungsschemas mit zwei Feldern vom Typ „ <code translate="no">VARCHAR</code> “:</p>
+    </button></h2><p>To store short, bounded string metadata in Milvus, define a <code translate="no">VARCHAR</code> field in your collection schema. Below is an example of defining a collection schema with two <code translate="no">VARCHAR</code> fields:</p>
 <ul>
-<li><p><code translate="no">varchar_field1</code>: speichert bis zu 100 Byte, erlaubt Nullwerte und hat den Standardwert „ <code translate="no">&quot;Unknown&quot;</code> “.</p></li>
-<li><p><code translate="no">varchar_field2</code>: speichert bis zu 200 Byte, erlaubt Nullwerte, hat jedoch keinen Standardwert.</p></li>
+<li><p><code translate="no">varchar_field1</code>: stores up to 100 bytes, allows null values, and has a default value of <code translate="no">&quot;Unknown&quot;</code>.</p></li>
+<li><p><code translate="no">varchar_field2</code>: stores up to 200 bytes, allows null values, but does not have a default value.</p></li>
 </ul>
 <div class="alert note">
-<p>Wenn Sie bei der Definition des Schemas „ <code translate="no">enable_dynamic_fields=True</code> “ festlegen, erlaubt Milvus das Einfügen von Skalarfeldern, die nicht im Voraus definiert wurden. Dies kann jedoch die Komplexität von Abfragen und der Verwaltung erhöhen und sich möglicherweise auf die Leistung auswirken. Weitere Informationen finden Sie unter <a href="/docs/de/enable-dynamic-field.md">„Dynamisches Feld</a>“.</p>
+<p>If you set <code translate="no">enable_dynamic_fields=True</code> when defining the schema, Milvus allows you to insert scalar fields that were not defined in advance. However, this may increase the complexity of queries and management, potentially impacting performance. For more information, refer to <a href="/docs/de/enable-dynamic-field.md">Dynamic Field</a>.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Import necessary libraries</span>
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
@@ -239,7 +239,7 @@ schema.WithField(entity.NewField().
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-index-params" class="common-anchor-header">Indexparameter festlegen<button data-href="#Set-index-params" class="anchor-icon" translate="no">
+<h2 id="Set-index-params" class="common-anchor-header">Set index params<button data-href="#Set-index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -254,17 +254,17 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Die Indizierung trägt zur Verbesserung der Such- und Abfrageleistung bei. In Milvus ist die Indizierung für Vektorfelder obligatorisch, für Skalarfelder jedoch optional.</p>
-<p>Das folgende Beispiel erstellt Indizes für das Vektorfeld „ <code translate="no">embedding</code> “ und das Skalarfeld „ <code translate="no">varchar_field1</code> “, beide unter Verwendung des Indextyps „ <code translate="no">AUTOINDEX</code> “. Bei diesem Typ wählt Milvus automatisch den am besten geeigneten Index basierend auf dem Datentyp aus. Sie können den Indextyp und die Parameter auch für jedes Feld individuell anpassen. Weitere Informationen finden Sie unter <a href="/docs/de/index-explained.md">„Index Explained</a>“.</p>
+    </button></h2><p>Indexing helps improve search and query performance. In Milvus, indexing is mandatory for vector fields but optional for scalar fields.</p>
+<p>The following example creates indexes on the vector field <code translate="no">embedding</code> and the scalar field <code translate="no">varchar_field1</code>, both using the <code translate="no">AUTOINDEX</code> index type. With this type, Milvus automatically selects the most suitable index based on the data type. You can also customize the index type and params for each field. For details, refer to <a href="/docs/de/index-explained.md">Index Explained</a>.</p>
 <div class="alert note">
-<p>Sie können außerdem einen „ <code translate="no">NGRAM</code> “-Index erstellen, um die Filterung von „ <code translate="no">LIKE</code> “ in „ <code translate="no">VARCHAR</code> “-Feldern zu beschleunigen. Weitere Informationen finden Sie unter <a href="/docs/de/ngram.md">„NGRAM</a>“.</p>
+<p>You can also builds an <code translate="no">NGRAM</code> index to accelerate <code translate="no">LIKE</code> filtering on <code translate="no">VARCHAR</code> fields. For details, refer to <a href="/docs/de/ngram.md">NGRAM</a>.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Set index params</span>
 
@@ -339,7 +339,7 @@ indexParams.<span class="hljs-title function_">push</span>({
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-collection" class="common-anchor-header">Sammlung erstellen<button data-href="#Create-collection" class="anchor-icon" translate="no">
+<h2 id="Create-collection" class="common-anchor-header">Create collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -354,13 +354,13 @@ indexParams.<span class="hljs-title function_">push</span>({
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sobald das Schema und der Index definiert sind, erstellen Sie eine Sammlung, die Zeichenfolgenfelder enthält.</p>
+    </button></h2><p>Once the schema and index are defined, create a collection that includes string fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Create Collection</span>
 client.create_collection(
@@ -402,7 +402,7 @@ client.createCollection(requestCreate);
 }&quot;</span>
 <span class="hljs-comment">## {&quot;code&quot;:0,&quot;data&quot;:{}}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-data" class="common-anchor-header">Daten einfügen<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h2 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -417,13 +417,13 @@ client.createCollection(requestCreate);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Fügen Sie nach dem Erstellen der Sammlung Entitäten ein, die dem Schema entsprechen.</p>
+    </button></h2><p>After creating the collection, insert entities that match the schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample data</span>
 data = [
@@ -534,7 +534,7 @@ _, err = client.Insert(ctx, milvusclient.NewColumnBasedInsertOption(<span class=
 
 <span class="hljs-comment">## {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:{&quot;insertCount&quot;:3,&quot;insertIds&quot;:[1,2,3]}}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Query-with-filter-expressions" class="common-anchor-header">Abfrage mit Filterausdrücken<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Query-with-filter-expressions" class="common-anchor-header">Query with filter expressions<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -549,14 +549,14 @@ _, err = client.Insert(ctx, milvusclient.NewColumnBasedInsertOption(<span class=
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Verwenden Sie nach dem Einfügen der Entitäten die Methode „ <code translate="no">query</code> “, um Entitäten abzurufen, die den angegebenen Filterausdrücken entsprechen.</p>
-<p>Um Entitäten abzurufen, bei denen der Wert von ` <code translate="no">varchar_field1</code> ` mit der Zeichenfolge ` <code translate="no">&quot;Product A&quot;</code>` übereinstimmt:</p>
+    </button></h2><p>After inserting entities, use the <code translate="no">query</code> method to retrieve entities that match the specified filter expressions.</p>
+<p>To retrieve entities where the <code translate="no">varchar_field1</code> matches the string <code translate="no">&quot;Product A&quot;</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Filter `varchar_field1` with value &quot;Product A&quot;</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;varchar_field1 == &quot;Product A&quot;&#x27;</span>
@@ -624,13 +624,13 @@ fmt.Println(<span class="hljs-string">&quot;varchar_field2&quot;</span>, queryRe
 }&#x27;</span>
 <span class="hljs-comment">## {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[{&quot;pk&quot;:1,&quot;varchar_field1&quot;:&quot;Product A&quot;,&quot;varchar_field2&quot;:&quot;High quality product&quot;}]}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>So rufen Sie Entitäten ab, bei denen der Wert von ` <code translate="no">varchar_field2</code> ` null ist:</p>
+<p>To retrieve entities where the <code translate="no">varchar_field2</code> is null:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Filter entities where `varchar_field2` is null</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;varchar_field2 is null&#x27;</span>
@@ -698,13 +698,13 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;varchar_field1&quot;, &quot;varchar_field2&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Um Entitäten abzurufen, bei denen „ <code translate="no">varchar_field1</code> “ den Wert „ <code translate="no">&quot;Unknown&quot;</code> “ hat, verwenden Sie den folgenden Ausdruck. Da der Standardwert von „ <code translate="no">varchar_field1</code> “ „ <code translate="no">&quot;Unknown&quot;</code> “ ist, sollte das erwartete Ergebnis Entitäten enthalten, bei denen „ <code translate="no">varchar_field1</code> “ explizit auf „ <code translate="no">&quot;Unknown&quot;</code> “ gesetzt ist oder bei denen „ <code translate="no">varchar_field1</code> “ auf null gesetzt ist.</p>
+<p>To retrieve entities where <code translate="no">varchar_field1</code> has the value <code translate="no">&quot;Unknown&quot;</code>, use the following expression below. As the default value of <code translate="no">varchar_field1</code> is <code translate="no">&quot;Unknown&quot;</code>, the expected result should include entities with <code translate="no">varchar_field1</code> explicitly set to <code translate="no">&quot;Unknown&quot;</code> or with <code translate="no">varchar_field1</code> set to null.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Filter entities with `varchar_field1` with value `Unknown`</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;varchar_field1 == &quot;Unknown&quot;&#x27;</span>
@@ -771,7 +771,7 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;varchar_field1&quot;, &quot;varchar_field2&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">Vektorsuche mit Filterausdrücken<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">Vector search with filter expressions<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -786,13 +786,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Zusätzlich zur grundlegenden Filterung nach skalaren Feldern können Sie Vektorähnlichkeitssuchen mit Filtern für skalare Felder kombinieren. Der folgende Code zeigt beispielsweise, wie Sie einen Filter für ein skalares Feld zu einer Vektorsuche hinzufügen:</p>
+    </button></h2><p>In addition to basic scalar field filtering, you can combine vector similarity searches with scalar field filters. For example, the following code shows how to add a scalar field filter to a vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Search with string filtering</span>
 

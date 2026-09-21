@@ -1,12 +1,14 @@
 ---
 id: siliconflow-ranker.md
-title: SiliconFlow 排名器Compatible with Milvus 2.6.x
+title: SiliconFlow RankerCompatible with Milvus 2.6.x
 summary: >-
-  SiliconFlow Ranker 利用 SiliconFlow 的综合 Reranking 模型，通过语义 Reranking
-  增强搜索相关性。它提供灵活的文档分块功能，并支持来自不同供应商的各种专业 Reranker 模型。
+  The SiliconFlow Ranker leverages SiliconFlow's comprehensive reranking models
+  to enhance search relevance through semantic reranking. It provides flexible
+  document chunking capabilities and supports a wide range of specialized
+  reranking models from various providers.
 beta: Milvus 2.6.x
 ---
-<h1 id="SiliconFlow-Ranker" class="common-anchor-header">SiliconFlow 排名器<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#SiliconFlow-Ranker" class="anchor-icon" translate="no">
+<h1 id="SiliconFlow-Ranker" class="common-anchor-header">SiliconFlow Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#SiliconFlow-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,15 +23,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>SiliconFlow Ranker 利用<a href="https://www.siliconflow.com/">SiliconFlow 的</a>综合 Reranking 模型，通过语义 Reranking 增强搜索相关性。它提供灵活的文档分块功能，并支持来自不同提供商的各种专业重排模型。</p>
-<p>SiliconFlow Ranker 对于需要以下功能的应用特别有价值：</p>
+    </button></h1><p>The SiliconFlow Ranker leverages <a href="https://www.siliconflow.com/">SiliconFlow’s</a> comprehensive reranking models to enhance search relevance through semantic reranking. It provides flexible document chunking capabilities and supports a wide range of specialized reranking models from various providers.</p>
+<p>SiliconFlow Ranker is particularly valuable for applications requiring:</p>
 <ul>
-<li><p>先进的文档分块功能，可配置重叠部分以处理长文档</p></li>
-<li><p>可访问各种重排模型，包括 BAAI/bge-reranker 系列和其他专业模型</p></li>
-<li><p>灵活的基于分块的评分，其中得分最高的分块代表文档得分</p></li>
-<li><p>具有成本效益的 Reranker，支持标准和专业模型变体</p></li>
+<li><p>Advanced document chunking with configurable overlap for handling long documents</p></li>
+<li><p>Access to diverse reranking models including BAAI/bge-reranker series and other specialized models</p></li>
+<li><p>Flexible chunk-based scoring where the highest-scoring chunk represents the document score</p></li>
+<li><p>Cost-effective reranking with support for both standard and pro model variants</p></li>
 </ul>
-<h2 id="Prerequisites" class="common-anchor-header">前提条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,16 +46,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在 Milvus 中实施 SiliconFlow Ranker 之前，请确保您拥有</p>
+    </button></h2><p>Before implementing SiliconFlow Ranker in Milvus, ensure you have:</p>
 <ul>
-<li><p>具有<code translate="no">VARCHAR</code> 字段的 Milvus Collections，其中包含要重新排名的文本</p></li>
-<li><p>可访问 Rerankers 模型的有效 SiliconFlow API 密钥。在<a href="https://www.siliconflow.com/">SiliconFlow 平台</a>上注册，以获取 API 凭据。您可以</p>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A valid SiliconFlow API key with access to reranking models. Sign up at <a href="https://www.siliconflow.com/">SiliconFlow’s platform</a> to obtain your API credentials. You can either:</p>
 <ul>
-<li><p>设置<code translate="no">SILICONFLOW_API_KEY</code> 环境变量，或</p></li>
-<li><p>在排名器配置中直接指定 API 密钥</p></li>
+<li><p>Set the <code translate="no">SILICONFLOW_API_KEY</code> environment variable, or</p></li>
+<li><p>Specify the API key directly in the ranker configuration</p></li>
 </ul></li>
 </ul>
-<h2 id="Create-a-SiliconFlow-ranker-function" class="common-anchor-header">创建 SiliconFlow 排名器函数<button data-href="#Create-a-SiliconFlow-ranker-function" class="anchor-icon" translate="no">
+<h2 id="Create-a-SiliconFlow-ranker-function" class="common-anchor-header">Create a SiliconFlow ranker function<button data-href="#Create-a-SiliconFlow-ranker-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,9 +70,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要在您的 Milvus 应用程序中使用 SiliconFlow Ranker，请创建一个 Function 对象，指定 Reranking 应如何操作。该函数将传递给 Milvus 搜索操作，以增强结果排名。</p>
+    </button></h2><p>To use SiliconFlow Ranker in your Milvus application, create a Function object that specifies how the reranking should operate. This function will be passed to Milvus search operations to enhance result ranking.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -124,7 +131,7 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="SiliconFlow-ranker-specific-parameters" class="common-anchor-header">SiliconFlow 排序器特定参数<button data-href="#SiliconFlow-ranker-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="SiliconFlow-ranker-specific-parameters" class="common-anchor-header">SiliconFlow ranker-specific parameters<button data-href="#SiliconFlow-ranker-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,68 +146,68 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下参数是 SiliconFlow 排序器的特定参数：</p>
+    </button></h3><p>The following parameters are specific to the SiliconFlow ranker:</p>
 <table>
    <tr>
-     <th><p><strong>参数</strong></p></th>
-     <th><p><strong>是否需要？</strong></p></th>
-     <th><p><strong>描述</strong></p></th>
-     <th><p><strong>值/示例</strong></p></th>
+     <th><p><strong>Parameter</strong></p></th>
+     <th><p><strong>Required?</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
+     <th><p><strong>Value / Example</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reranker</code></p></td>
-     <td><p>是</p></td>
-     <td><p>必须设置为<code translate="no">"model"</code> 才能启用模型重排。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>是</p></td>
-     <td><p>用于重排的模型服务提供商。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"siliconflow"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">model_name</code></p></td>
-     <td><p>是</p></td>
-     <td><p>要从 SiliconFlow 平台支持的模型中使用的 SiliconFlow 重排模型。</p><p>有关可用 Rerankers 模型的列表，请参阅<a href="https://docs.siliconflow.cn/en/api-reference/rerank/create-rerank">SiliconFlow 文档</a>。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The SiliconFlow reranking model to use from supported models on SiliconFlow platform.</p><p>For a list of rerank models available, refer to <a href="https://docs.siliconflow.cn/en/api-reference/rerank/create-rerank">SiliconFlow documentation</a>.</p></td>
      <td><p><code translate="no">"BAAI/bge-reranker-v2-m3"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queries</code></p></td>
-     <td><p>是</p></td>
-     <td><p>Rerankers 模型用于计算相关性得分的查询字符串列表。查询字符串的数量必须与搜索操作中的查询数量完全匹配（即使使用查询向量代替文本），否则将报错。</p></td>
-     <td><p><em>["搜索查询"]</em></p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the rerank model to calculate relevance scores. The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
+     <td><p><em>["search query"]</em></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>否</p></td>
-     <td><p>由于模型服务可能无法一次性处理所有数据，因此此项设置了在多个请求中访问模型服务的批量大小。</p></td>
-     <td><p><code translate="no">128</code> (默认值）</p></td>
+     <td><p>No</p></td>
+     <td><p>Since model services may not process all data at once, this sets the batch size for accessing the model service in multiple requests.</p></td>
+     <td><p><code translate="no">128</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_chunks_per_doc</code></p></td>
-     <td><p>无</p></td>
-     <td><p>从文档中生成的最大块数。长文档会被分成多个分块进行计算，分块中的最高分将作为文档的得分。仅特定模型支持：<code translate="no">BAAI/bge-reranker-v2-m3</code>,<code translate="no">Pro/BAAI/bge-reranker-v2-m3</code>, 和<code translate="no">netease-youdao/bce-reranker-base_v1</code> 。</p></td>
-     <td><p><code translate="no">5</code>,<code translate="no">10</code></p></td>
+     <td><p>No</p></td>
+     <td><p>Maximum number of chunks generated from within a document. Long documents are divided into multiple chunks for calculation, and the highest score among the chunks is taken as the document's score. Only supported by specific models: <code translate="no">BAAI/bge-reranker-v2-m3</code>, <code translate="no">Pro/BAAI/bge-reranker-v2-m3</code>, and <code translate="no">netease-youdao/bce-reranker-base_v1</code>.</p></td>
+     <td><p><code translate="no">5</code>, <code translate="no">10</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">overlap_tokens</code></p></td>
-     <td><p>无</p></td>
-     <td><p>文档分块时，相邻分块之间的标记重叠数。这可确保各分块边界之间的连续性，以便更好地理解语义。仅受特定模型支持：<code translate="no">BAAI/bge-reranker-v2-m3</code>,<code translate="no">Pro/BAAI/bge-reranker-v2-m3</code>, 和<code translate="no">netease-youdao/bce-reranker-base_v1</code> 。</p></td>
+     <td><p>No</p></td>
+     <td><p>Number of token overlaps between adjacent chunks when documents are chunked. This ensures continuity across chunk boundaries for better semantic understanding. Only supported by specific models: <code translate="no">BAAI/bge-reranker-v2-m3</code>, <code translate="no">Pro/BAAI/bge-reranker-v2-m3</code>, and <code translate="no">netease-youdao/bce-reranker-base_v1</code>.</p></td>
      <td><p><code translate="no">50</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">credential</code></p></td>
-     <td><p>不支持</p></td>
-     <td><p>访问 SiliconFlow API 服务的身份验证凭证。如果未指定，系统将查找<code translate="no">SILICONFLOW_API_KEY</code> 环境变量。</p></td>
-     <td><p><em>"your-siliconflow-api-key</em></p></td>
+     <td><p>No</p></td>
+     <td><p>Authentication credential for accessing SiliconFlow API services. If not specified, the system will look for the <code translate="no">SILICONFLOW_API_KEY</code> environment variable.</p></td>
+     <td><p><em>"your-siliconflow-api-key"</em></p></td>
    </tr>
 </table>
-<p><strong>特定于模型的功能支持</strong>：<code translate="no">max_chunks_per_doc</code> 和<code translate="no">overlap_tokens</code> 参数仅受特定模型支持。使用其他模型时，这些参数将被忽略。</p>
+<p><strong>Model-specific feature support</strong>: The <code translate="no">max_chunks_per_doc</code> and <code translate="no">overlap_tokens</code> parameters are only supported by specific models. When using other models, these parameters will be ignored.</p>
 <div class="alert note">
-<p>有关所有模型排序器共享的一般参数（如<code translate="no">provider</code>,<code translate="no">queries</code> ），请参阅<a href="/docs/zh/model-ranker-overview.md#Create-a-model-ranker">创建模型排序器</a>。</p>
+<p>For general parameters shared across all model rankers (e.g., <code translate="no">provider</code>, <code translate="no">queries</code>), refer to <a href="/docs/zh/v2.6.x/model-ranker-overview.md#Create-a-model-ranker">Create a model ranker</a>.</p>
 </div>
-<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">应用于标准向量搜索<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -215,9 +222,14 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>将 SiliconFlow Ranker 应用于标准向量搜索：</p>
+    </button></h2><p>To apply SiliconFlow Ranker to a standard vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Execute search with SiliconFlow reranking</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;your_collection&quot;</span>,

@@ -1,11 +1,13 @@
 ---
 id: range-search-with-structarray.md
-title: 使用 StructArray 进行范围搜索
+title: Range Search with StructArray
 summary: >-
-  使用此页面对 StructArray 的向量子字段执行范围搜索。范围搜索会返回得分或距离落在指定范围内的向量匹配结果。对于 StructArray
-  字段，请结合元素级向量搜索使用范围搜索，即对每个 Struct 元素进行独立搜索。
+  Use this page to run range search on StructArray vector subfields. Range
+  search returns vector hits whose score or distance falls within a specified
+  boundary. For StructArray fields, use range search with element-level vector
+  search, where each Struct element is searched independently.
 ---
-<h1 id="Range-Search-with-StructArray" class="common-anchor-header">使用 StructArray 进行范围搜索<button data-href="#Range-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Range-Search-with-StructArray" class="common-anchor-header">Range Search with StructArray<button data-href="#Range-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>使用本页面对 StructArray 的向量子字段执行范围搜索。范围搜索会返回得分或距离落在指定边界范围内的向量匹配结果。对于 StructArray 字段，请结合元素级向量搜索使用范围搜索，此时每个 Struct 元素将独立进行搜索。</p>
-<p>本页面使用<a href="/docs/zh/create-structarray-field.md">来自“创建 StructArray 字段”中的</a> <code translate="no">tech_articles</code> Collection。该 Collection 包含一个名为<code translate="no">chunks</code> 的 StructArray 字段。其<code translate="no">chunks[emb]</code> 向量已针对元素级搜索进行了索引，可使用常规向量度量（如<code translate="no">COSINE</code> 、<code translate="no">IP</code> 或<code translate="no">L2</code> ）进行搜索。</p>
-<h2 id="How-range-search-applies-to-StructArray" class="common-anchor-header">范围搜索在 StructArray 中的应用<button data-href="#How-range-search-applies-to-StructArray" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to run range search on StructArray vector subfields. Range search returns vector hits whose score or distance falls within a specified boundary. For StructArray fields, use range search with element-level vector search, where each Struct element is searched independently.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/zh/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>. The <code translate="no">chunks[emb]</code> vector subfield is indexed for element-level search with a regular vector metric such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</p>
+<h2 id="How-range-search-applies-to-StructArray" class="common-anchor-header">How range search applies to StructArray<button data-href="#How-range-search-applies-to-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,18 +41,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>搜索模式</th><th>范围搜索行为</th><th>结果粒度</th></tr>
+<tr><th>Search mode</th><th>Range search behavior</th><th>Result granularity</th></tr>
 </thead>
 <tbody>
-<tr><td>EmbeddingList 搜索</td><td>不支持。</td><td>不适用。</td></tr>
-<tr><td>元素级搜索</td><td>使用常规向量查询，配合 `<code translate="no">radius</code> ` 以及可选的 `<code translate="no">range_filter</code>`。</td><td>结构元素级别。</td></tr>
-<tr><td>混合搜索</td><td>当 StructArray 请求针对元素级向量字段时支持。EmbeddingList 级请求不支持范围搜索。</td><td>先进行元素级子搜索，然后进行混合重新排序。</td></tr>
+<tr><td>EmbeddingList search</td><td>Not supported.</td><td>Not applicable.</td></tr>
+<tr><td>Element-level search</td><td>Use a regular vector query with <code translate="no">radius</code> and, optionally, <code translate="no">range_filter</code>.</td><td>Struct element level.</td></tr>
+<tr><td>Hybrid search</td><td>Supported when the StructArray request targets an element-level vector field. EmbeddingList-level requests do not support range search.</td><td>Element-level sub-search, then hybrid reranking.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>如果您只需要最近的 Struct 元素，请先使用<a href="/docs/zh/basic-vector-search-with-structarray.md">StructArray 进行基本向量搜索</a>。当结果必须满足分数或距离边界（而非仅满足前 K 名排名）时，请使用范围搜索。</p>
+<p>If you only need the nearest Struct elements, start with <a href="/docs/zh/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>. Use range search when the result must satisfy a score or distance boundary instead of only a top-K ranking.</p>
 </div>
-<h2 id="Before-you-begin" class="common-anchor-header">开始之前<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -65,20 +67,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在运行范围搜索之前，请准备好Collection、数据和索引。</p>
+    </button></h2><p>Prepare the collection, data, and indexes before running range search.</p>
 <table>
 <thead>
-<tr><th>要求</th><th>详细信息</th></tr>
+<tr><th>Requirement</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>StructArray 字段</td><td>Collection 包含一个 StructArray 字段，例如<code translate="no">chunks</code> 。</td></tr>
-<tr><td>元素级向量子字段</td><td>目标量子向量应为<code translate="no">chunks[emb]</code> ，而非<code translate="no">chunks[emb_list_vector]</code> 。</td></tr>
-<tr><td>索引度量</td><td>该向量子场使用常规向量度量进行索引，例如<code translate="no">COSINE</code> 、<code translate="no">IP</code> 或<code translate="no">L2</code> 。</td></tr>
-<tr><td>查询数据</td><td>查询对象是一个常规向量，而非<code translate="no">EmbeddingList</code> 。</td></tr>
+<tr><td>StructArray field</td><td>The collection contains a StructArray field such as <code translate="no">chunks</code>.</td></tr>
+<tr><td>Element-level vector subfield</td><td>The target vector subfield is <code translate="no">chunks[emb]</code>, not <code translate="no">chunks[emb_list_vector]</code>.</td></tr>
+<tr><td>Index metric</td><td>The vector subfield is indexed with a regular vector metric, such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</td></tr>
+<tr><td>Query data</td><td>The query is a regular vector, not an <code translate="no">EmbeddingList</code>.</td></tr>
 </tbody>
 </table>
-<p>有关索引设置，请参阅<a href="/docs/zh/index-structarray-fields.md">“索引 StructArray 字段</a>”。</p>
-<h2 id="Use-radius-and-rangefilter" class="common-anchor-header">使用 radius 和 range_filter<button data-href="#Use-radius-and-rangefilter" class="anchor-icon" translate="no">
+<p>For index setup, see <a href="/docs/zh/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Use-radius-and-rangefilter" class="common-anchor-header">Use radius and range_filter<button data-href="#Use-radius-and-rangefilter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,18 +95,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>设置 `<code translate="no">radius</code> ` 以定义搜索边界。若同时需要内部边界，请设置 `<code translate="no">range_filter</code> `。方向取决于“更小的距离”与“更高的相似度得分”何者更优。</p>
+    </button></h2><p>Set <code translate="no">radius</code> to define the search boundary. Set <code translate="no">range_filter</code> when you need an inner boundary as well. The direction depends on whether a smaller distance is better or a larger similarity score is better.</p>
 <table>
 <thead>
-<tr><th>度量类型</th><th>分数越高越好？</th><th>使用<code translate="no">range_filter</code> 时的范围条件</th></tr>
+<tr><th>Metric type</th><th>Higher score is better?</th><th>Range condition when <code translate="no">range_filter</code> is used</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">L2</code></td><td>否。距离越小越好。</td><td><code translate="no">range_filter &lt;= distance &lt; radius</code></td></tr>
-<tr><td><code translate="no">IP</code>,<code translate="no">COSINE</code></td><td>是的。分数越大越好。</td><td><code translate="no">radius &lt; distance &lt;= range_filter</code></td></tr>
+<tr><td><code translate="no">L2</code></td><td>No. Smaller distance is better.</td><td><code translate="no">range_filter &lt;= distance &lt; radius</code></td></tr>
+<tr><td><code translate="no">IP</code>, <code translate="no">COSINE</code></td><td>Yes. Larger score is better.</td><td><code translate="no">radius &lt; distance &lt;= range_filter</code></td></tr>
 </tbody>
 </table>
-<p>当仅设置<code translate="no">radius</code> 时，范围搜索会返回满足该度量外边界条件的匹配结果。请根据您Embeddings模型的分数或距离量表选择相应值。</p>
-<h2 id="Run-element-level-range-search" class="common-anchor-header">执行元素级范围搜索<button data-href="#Run-element-level-range-search" class="anchor-icon" translate="no">
+<p>When only <code translate="no">radius</code> is set, the range search returns hits that satisfy the outer boundary for the metric. Choose values according to the score or distance scale of your embeddings.</p>
+<h2 id="Run-element-level-range-search" class="common-anchor-header">Run element-level range search<button data-href="#Run-element-level-range-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -119,7 +121,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下示例搜索那些其<code translate="no">chunks[emb]</code> 向量与查询向量足够相似的单个片段。每个匹配结果都代表一个匹配的Struct元素。</p>
+    </button></h2><p>The following example searches individual chunks whose <code translate="no">chunks[emb]</code> vectors are similar enough to the query vector. Each result hit represents a matched Struct element.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -159,8 +161,8 @@ results = client.search(
             <span class="hljs-string">&quot;entity:&quot;</span>, hit[<span class="hljs-string">&quot;entity&quot;</span>],
         )
 <button class="copy-code-btn"></button></code></pre>
-<p>在此示例中，<code translate="no">COSINE</code> 是一种相似度型度量，因此结果范围大于<code translate="no">radius</code> 且小于或等于<code translate="no">range_filter</code> 。返回时，<code translate="no">offset</code> 值用于标识<code translate="no">chunks</code> 数组中匹配的 Struct 元素。</p>
-<h2 id="Add-scalar-filters" class="common-anchor-header">添加标量过滤器<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
+<p>In this example, <code translate="no">COSINE</code> is a similarity-style metric, so the result range is greater than <code translate="no">radius</code> and less than or equal to <code translate="no">range_filter</code>. The <code translate="no">offset</code> value identifies the matched Struct element in the <code translate="no">chunks</code> array when returned.</p>
+<h2 id="Add-scalar-filters" class="common-anchor-header">Add scalar filters<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -175,7 +177,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您可以将元素级范围搜索与 StructArray 标量过滤相结合。对父实体字段使用顶级谓词，并使用<code translate="no">element_filter</code> 来限制哪些 Struct 元素参与向量范围搜索。</p>
+    </button></h2><p>You can combine element-level range search with StructArray scalar filtering. Use a top-level predicate for parent-entity fields, and use <code translate="no">element_filter</code> to constrain which Struct elements participate in the vector range search.</p>
 <pre><code translate="no" class="language-python">filter_expr = (
     <span class="hljs-string">&#x27;category == &quot;search&quot; &amp;&amp; &#x27;</span>
     <span class="hljs-string">&#x27;element_filter(chunks, &#x27;</span>
@@ -205,8 +207,8 @@ results = client.search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>顶级谓词用于筛选候选实体。<code translate="no">element_filter</code> 谓词则将向量范围搜索限制在匹配的Struct元素上。有关更多过滤示例，请参阅《<a href="/docs/zh/filtered-search-with-structarray.md">使用StructArray进行过滤搜索</a>》。</p>
-<h2 id="Use-range-search-in-hybrid-search" class="common-anchor-header">在混合搜索中使用范围搜索<button data-href="#Use-range-search-in-hybrid-search" class="anchor-icon" translate="no">
+<p>The top-level predicate selects candidate entities. The <code translate="no">element_filter</code> predicate restricts vector range search to matching Struct elements. For more filtering examples, see <a href="/docs/zh/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p>
+<h2 id="Use-range-search-in-hybrid-search" class="common-anchor-header">Use range search in hybrid search<button data-href="#Use-range-search-in-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -221,7 +223,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray 元素级向量字段支持在混合搜索中进行范围搜索。请将 `<code translate="no">radius</code> ` 以及（可选）`<code translate="no">range_filter</code> ` 添加到针对 StructArray 元素级向量字段的 `<code translate="no">AnnSearchRequest</code> ` 中。</p>
+    </button></h2><p>StructArray element-level vector fields support range search in hybrid search. Add <code translate="no">radius</code> and, optionally, <code translate="no">range_filter</code> to the <code translate="no">AnnSearchRequest</code> that targets the StructArray element-level vector field.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> AnnSearchRequest, RRFRanker
 
 title_req = AnnSearchRequest(
@@ -257,8 +259,8 @@ results = client.hybrid_search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>在此示例中，仅<code translate="no">chunks[emb]</code> 子请求使用了范围搜索参数。StructArray请求仍遵循元素级语义：在混合搜索合并并重新排序结果之前，范围边界适用于Struct元素的匹配结果。</p>
-<h2 id="Interpret-range-results" class="common-anchor-header">解析范围搜索结果<button data-href="#Interpret-range-results" class="anchor-icon" translate="no">
+<p>In this example, only the <code translate="no">chunks[emb]</code> sub-request uses range-search parameters. The StructArray request still follows element-level semantics: the range boundary applies to Struct element hits before the hybrid search combines and reranks results.</p>
+<h2 id="Interpret-range-results" class="common-anchor-header">Interpret range results<button data-href="#Interpret-range-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -275,17 +277,17 @@ results = client.hybrid_search(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>结果项</th><th>含义</th></tr>
+<tr><th>Result item</th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">id</code></td><td>包含匹配 Struct 元素的实体的主键。</td></tr>
-<tr><td><code translate="no">distance</code> 或得分</td><td>查询向量与匹配的 Struct 元素向量之间的得分或距离。</td></tr>
-<tr><td><code translate="no">offset</code></td><td>返回时，匹配的 Struct 元素在 StructArray 字段中的从零起算的位置。</td></tr>
-<tr><td>重复的主键</td><td>可能发生。同一实体中的多个 Struct 元素可能落在指定范围内。</td></tr>
-<tr><td><code translate="no">limit</code></td><td>适用于元素命中，而非唯一的父实体。</td></tr>
+<tr><td><code translate="no">id</code></td><td>Primary key of the entity that contains the matched Struct element.</td></tr>
+<tr><td><code translate="no">distance</code> or score</td><td>The score or distance between the query vector and the matched Struct element vector.</td></tr>
+<tr><td><code translate="no">offset</code></td><td>Zero-based position of the matched Struct element in the StructArray field when returned.</td></tr>
+<tr><td>Repeated primary keys</td><td>Possible. More than one Struct element in the same entity can fall within the specified range.</td></tr>
+<tr><td><code translate="no">limit</code></td><td>Applies to element hits, not unique parent entities.</td></tr>
 </tbody>
 </table>
-<h2 id="Limitations" class="common-anchor-header">限制<button data-href="#Limitations" class="anchor-icon" translate="no">
+<h2 id="Limitations" class="common-anchor-header">Limitations<button data-href="#Limitations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -301,11 +303,11 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>请勿对 StructArray 向量子域使用<code translate="no">EmbeddingList</code> 查询或<code translate="no">MAX_SIM*</code> 指标进行范围搜索。EmbeddingList 级别的搜索不支持范围搜索。</p></li>
-<li><p>请勿将范围搜索与分组搜索结合使用。如果您需要为每个父实体返回一个结果，请执行不带范围参数的元素级搜索，并在支持的情况下使用分组功能。</p></li>
-<li><p>StructArray 元素级向量字段支持混合范围搜索。但 EmbeddingList 级别的 StructArray 请求不支持此功能。</p></li>
+<li><p>Do not use an <code translate="no">EmbeddingList</code> query or a <code translate="no">MAX_SIM*</code> metric for range search on StructArray vector subfields. EmbeddingList-level search does not support range search.</p></li>
+<li><p>Do not combine range search with grouping search. If you need one result per parent entity, run an element-level search without range parameters and use grouping where supported.</p></li>
+<li><p>Hybrid range search is supported for StructArray element-level vector fields. It is not supported for EmbeddingList-level StructArray requests.</p></li>
 </ul>
-<h2 id="Common-mistakes" class="common-anchor-header">常见错误<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -321,13 +323,13 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>对<code translate="no">chunks[emb_list_vector]</code> 执行范围搜索，而该指标专用于EmbeddingList搜索。</p></li>
-<li><p>在元素级范围搜索中使用<code translate="no">MAX_SIM_COSINE</code> ，而非常规指标（如<code translate="no">COSINE</code> ）。</p></li>
-<li><p>使用<code translate="no">EmbeddingList</code> 查询代替常规向量查询。</p></li>
-<li><p>期望范围搜索结果按父实体唯一。范围搜索会返回匹配的 Struct 元素命中项。</p></li>
-<li><p>使用 `<code translate="no">chunks.emb</code> ` 代替必需的子字段路径语法 `<code translate="no">chunks[emb]</code>`。</p></li>
+<li><p>Running range search against <code translate="no">chunks[emb_list_vector]</code>, which is intended for EmbeddingList search.</p></li>
+<li><p>Using <code translate="no">MAX_SIM_COSINE</code> instead of a regular metric such as <code translate="no">COSINE</code> for element-level range search.</p></li>
+<li><p>Using an <code translate="no">EmbeddingList</code> query instead of a regular vector query.</p></li>
+<li><p>Expecting range search results to be unique by parent entity. Range search returns matching Struct element hits.</p></li>
+<li><p>Using <code translate="no">chunks.emb</code> instead of the required subfield path syntax <code translate="no">chunks[emb]</code>.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">后续步骤<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -343,8 +345,8 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>要了解 StructArray 的两种基本向量搜索模式，请阅读《<a href="/docs/zh/basic-vector-search-with-structarray.md">使用 StructArray 进行基本向量搜索</a>》。</p></li>
-<li><p>若要向范围搜索添加标量过滤器，请阅读《<a href="/docs/zh/filtered-search-with-structarray.md">使用 StructArray 进行过滤搜索</a>》。</p></li>
-<li><p>若在支持的情况下，希望每个父实体最多返回一个结果，请参阅《<a href="/docs/zh/grouping-search-with-structarray.md">使用 StructArray 进行分组搜索</a>》。</p></li>
-<li><p>要查看特定版本的搜索限制，请阅读《<a href="/docs/zh/structarray-limits.md">StructArray 限制</a>》。</p></li>
+<li><p>To learn the two basic StructArray vector search modes, read <a href="/docs/zh/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To add scalar filters to range search, read <a href="/docs/zh/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
+<li><p>To return at most one result per parent entity where supported, read <a href="/docs/zh/grouping-search-with-structarray.md">Grouping Search with StructArray</a>.</p></li>
+<li><p>To check version-specific search limits, read <a href="/docs/zh/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

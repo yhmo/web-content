@@ -1,12 +1,13 @@
 ---
 id: range-search-with-structarray.md
-title: StructArray를 사용한 범위 검색
+title: Range Search with StructArray
 summary: >-
-  이 페이지를 사용하여 StructArray 벡터 하위 필드에 대해 범위 검색을 실행할 수 있습니다. 범위 검색은 점수나 거리가 지정된 범위
-  내에 속하는 벡터 검색 결과를 반환합니다. StructArray 필드의 경우, 각 Struct 요소를 독립적으로 검색하는 요소 수준 벡터
-  검색과 함께 범위 검색을 사용하십시오.
+  Use this page to run range search on StructArray vector subfields. Range
+  search returns vector hits whose score or distance falls within a specified
+  boundary. For StructArray fields, use range search with element-level vector
+  search, where each Struct element is searched independently.
 ---
-<h1 id="Range-Search-with-StructArray" class="common-anchor-header">StructArray를 사용한 범위 검색<button data-href="#Range-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Range-Search-with-StructArray" class="common-anchor-header">Range Search with StructArray<button data-href="#Range-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>이 페이지를 사용하여 StructArray 벡터 하위 필드에 대해 범위 검색을 실행할 수 있습니다. 범위 검색은 점수 또는 거리가 지정된 범위 내에 속하는 벡터 일치 결과를 반환합니다. StructArray 필드의 경우, 각 Struct 요소를 독립적으로 검색하는 요소 수준 벡터 검색과 함께 범위 검색을 사용하십시오.</p>
-<p>이 페이지에서는 <a href="/docs/ko/create-structarray-field.md">‘StructArray 필드 생성’의</a> <code translate="no">tech_articles</code> 컬렉션을 사용합니다. 이 컬렉션에는 <code translate="no">chunks</code> 라는 StructArray 필드가 있습니다. <code translate="no">chunks[emb]</code> 벡터 하위 필드는 <code translate="no">COSINE</code>, <code translate="no">IP</code> 또는 <code translate="no">L2</code> 와 같은 일반 벡터 메트릭을 사용하여 요소 수준 검색이 가능하도록 인덱싱되어 있습니다.</p>
-<h2 id="How-range-search-applies-to-StructArray" class="common-anchor-header">StructArray에 범위 검색이 적용되는 방식<button data-href="#How-range-search-applies-to-StructArray" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to run range search on StructArray vector subfields. Range search returns vector hits whose score or distance falls within a specified boundary. For StructArray fields, use range search with element-level vector search, where each Struct element is searched independently.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/ko/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>. The <code translate="no">chunks[emb]</code> vector subfield is indexed for element-level search with a regular vector metric such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</p>
+<h2 id="How-range-search-applies-to-StructArray" class="common-anchor-header">How range search applies to StructArray<button data-href="#How-range-search-applies-to-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,18 +41,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>검색 모드</th><th>범위 검색 동작</th><th>결과 세분화 수준</th></tr>
+<tr><th>Search mode</th><th>Range search behavior</th><th>Result granularity</th></tr>
 </thead>
 <tbody>
-<tr><td>EmbeddingList 검색</td><td>지원되지 않습니다.</td><td>해당 사항 없음.</td></tr>
-<tr><td>요소 수준 검색</td><td><code translate="no">radius</code> 및 선택적으로 <code translate="no">range_filter</code> 을 사용하여 일반 벡터 쿼리를 사용하십시오.</td><td>구조체 요소 수준.</td></tr>
-<tr><td>하이브리드 검색</td><td>StructArray 요청이 요소 수준 벡터 필드를 대상으로 할 때 지원됩니다. EmbeddingList 수준 요청은 범위 검색을 지원하지 않습니다.</td><td>요소 수준 하위 검색 후 하이브리드 재순위 지정.</td></tr>
+<tr><td>EmbeddingList search</td><td>Not supported.</td><td>Not applicable.</td></tr>
+<tr><td>Element-level search</td><td>Use a regular vector query with <code translate="no">radius</code> and, optionally, <code translate="no">range_filter</code>.</td><td>Struct element level.</td></tr>
+<tr><td>Hybrid search</td><td>Supported when the StructArray request targets an element-level vector field. EmbeddingList-level requests do not support range search.</td><td>Element-level sub-search, then hybrid reranking.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>가장 가까운 Struct 요소만 필요한 경우, <a href="/docs/ko/basic-vector-search-with-structarray.md">StructArray를 사용한 기본 벡터 검색으로</a> 시작하십시오. 결과가 상위 K개 순위뿐만 아니라 점수 또는 거리 기준을 충족해야 하는 경우 범위 검색을 사용하십시오.</p>
+<p>If you only need the nearest Struct elements, start with <a href="/docs/ko/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>. Use range search when the result must satisfy a score or distance boundary instead of only a top-K ranking.</p>
 </div>
-<h2 id="Before-you-begin" class="common-anchor-header">시작하기 전에<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -66,20 +67,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>범위 검색을 실행하기 전에 컬렉션, 데이터 및 인덱스를 준비하십시오.</p>
+    </button></h2><p>Prepare the collection, data, and indexes before running range search.</p>
 <table>
 <thead>
-<tr><th>요구 사항</th><th>세부 정보</th></tr>
+<tr><th>Requirement</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>StructArray 필드</td><td>컬렉션에는 <code translate="no">chunks</code> 와 같은 StructArray 필드가 포함되어 있습니다.</td></tr>
-<tr><td>요소 수준 벡터 하위 필드</td><td><code translate="no">chunks[emb]</code>대상 벡터 하위 필드는 <code translate="no">chunks[emb_list_vector]</code> 이며, 가 아닙니다.</td></tr>
-<tr><td>인덱스 메트릭</td><td>벡터 하위 필드는 <code translate="no">COSINE</code>, <code translate="no">IP</code> 또는 <code translate="no">L2</code> 와 같은 일반 벡터 메트릭으로 인덱싱됩니다.</td></tr>
-<tr><td>쿼리 데이터</td><td>쿼리는 <code translate="no">EmbeddingList</code> 가 아닌 일반 벡터입니다.</td></tr>
+<tr><td>StructArray field</td><td>The collection contains a StructArray field such as <code translate="no">chunks</code>.</td></tr>
+<tr><td>Element-level vector subfield</td><td>The target vector subfield is <code translate="no">chunks[emb]</code>, not <code translate="no">chunks[emb_list_vector]</code>.</td></tr>
+<tr><td>Index metric</td><td>The vector subfield is indexed with a regular vector metric, such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</td></tr>
+<tr><td>Query data</td><td>The query is a regular vector, not an <code translate="no">EmbeddingList</code>.</td></tr>
 </tbody>
 </table>
-<p>인덱스 설정에 대해서는 <a href="/docs/ko/index-structarray-fields.md">StructArray 필드 인덱싱을</a> 참조하십시오.</p>
-<h2 id="Use-radius-and-rangefilter" class="common-anchor-header">radius 및 range_filter 사용<button data-href="#Use-radius-and-rangefilter" class="anchor-icon" translate="no">
+<p>For index setup, see <a href="/docs/ko/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Use-radius-and-rangefilter" class="common-anchor-header">Use radius and range_filter<button data-href="#Use-radius-and-rangefilter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -94,18 +95,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">radius</code> 을 설정하여 검색 경계를 정의합니다. 내부 경계도 필요한 경우 <code translate="no">range_filter</code> 을 설정하십시오. 방향은 더 짧은 거리가 더 좋은지, 아니면 더 높은 유사도 점수가 더 좋은지에 따라 달라집니다.</p>
+    </button></h2><p>Set <code translate="no">radius</code> to define the search boundary. Set <code translate="no">range_filter</code> when you need an inner boundary as well. The direction depends on whether a smaller distance is better or a larger similarity score is better.</p>
 <table>
 <thead>
-<tr><th>메트릭 유형</th><th>점수가 높을수록 좋은가요?</th><th><code translate="no">range_filter</code> 를 사용할 때의 범위 조건</th></tr>
+<tr><th>Metric type</th><th>Higher score is better?</th><th>Range condition when <code translate="no">range_filter</code> is used</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">L2</code></td><td>아니요. 거리가 더 짧을수록 좋습니다.</td><td><code translate="no">range_filter &lt;= distance &lt; radius</code></td></tr>
-<tr><td><code translate="no">IP</code>, <code translate="no">COSINE</code></td><td>네. 점수가 높을수록 좋습니다.</td><td><code translate="no">radius &lt; distance &lt;= range_filter</code></td></tr>
+<tr><td><code translate="no">L2</code></td><td>No. Smaller distance is better.</td><td><code translate="no">range_filter &lt;= distance &lt; radius</code></td></tr>
+<tr><td><code translate="no">IP</code>, <code translate="no">COSINE</code></td><td>Yes. Larger score is better.</td><td><code translate="no">radius &lt; distance &lt;= range_filter</code></td></tr>
 </tbody>
 </table>
-<p><code translate="no">radius</code> 만 설정된 경우, 범위 검색은 해당 메트릭의 외부 경계를 만족하는 히트를 반환합니다. 임베딩의 점수 또는 거리 척도에 따라 값을 선택하십시오.</p>
-<h2 id="Run-element-level-range-search" class="common-anchor-header">요소 수준 범위 검색 실행<button data-href="#Run-element-level-range-search" class="anchor-icon" translate="no">
+<p>When only <code translate="no">radius</code> is set, the range search returns hits that satisfy the outer boundary for the metric. Choose values according to the score or distance scale of your embeddings.</p>
+<h2 id="Run-element-level-range-search" class="common-anchor-header">Run element-level range search<button data-href="#Run-element-level-range-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -120,7 +121,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>다음 예제는 <code translate="no">chunks[emb]</code> 벡터가 쿼리 벡터와 충분히 유사한 개별 청크를 검색합니다. 각 검색 결과는 일치하는 Struct 요소를 나타냅니다.</p>
+    </button></h2><p>The following example searches individual chunks whose <code translate="no">chunks[emb]</code> vectors are similar enough to the query vector. Each result hit represents a matched Struct element.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -160,8 +161,8 @@ results = client.search(
             <span class="hljs-string">&quot;entity:&quot;</span>, hit[<span class="hljs-string">&quot;entity&quot;</span>],
         )
 <button class="copy-code-btn"></button></code></pre>
-<p>이 예제에서 ` <code translate="no">COSINE</code> `는 유사도 방식의 메트릭이므로, 결과 범위는 ` <code translate="no">radius</code> `보다 크고 ` <code translate="no">range_filter</code>` 이하입니다. ` <code translate="no">offset</code> ` 값은 결과가 반환될 때 ` <code translate="no">chunks</code> ` 배열 내에서 일치하는 Struct 요소를 식별합니다.</p>
-<h2 id="Add-scalar-filters" class="common-anchor-header">스칼라 필터 추가<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
+<p>In this example, <code translate="no">COSINE</code> is a similarity-style metric, so the result range is greater than <code translate="no">radius</code> and less than or equal to <code translate="no">range_filter</code>. The <code translate="no">offset</code> value identifies the matched Struct element in the <code translate="no">chunks</code> array when returned.</p>
+<h2 id="Add-scalar-filters" class="common-anchor-header">Add scalar filters<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -176,7 +177,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>요소 수준 범위 검색을 StructArray 스칼라 필터링과 결합할 수 있습니다. 상위 엔티티 필드에는 최상위 술어를 사용하고, <code translate="no">element_filter</code> 를 사용하여 벡터 범위 검색에 포함될 Struct 요소를 제한합니다.</p>
+    </button></h2><p>You can combine element-level range search with StructArray scalar filtering. Use a top-level predicate for parent-entity fields, and use <code translate="no">element_filter</code> to constrain which Struct elements participate in the vector range search.</p>
 <pre><code translate="no" class="language-python">filter_expr = (
     <span class="hljs-string">&#x27;category == &quot;search&quot; &amp;&amp; &#x27;</span>
     <span class="hljs-string">&#x27;element_filter(chunks, &#x27;</span>
@@ -206,8 +207,8 @@ results = client.search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>최상위 술어는 후보 엔티티를 선택합니다. ` <code translate="no">element_filter</code> ` 술어는 벡터 범위 검색을 일치하는 Struct 요소로만 제한합니다. 더 많은 필터링 예제는 <a href="/docs/ko/filtered-search-with-structarray.md">‘StructArray를 사용한 필터링 검색’을</a> 참조하십시오.</p>
-<h2 id="Use-range-search-in-hybrid-search" class="common-anchor-header">하이브리드 검색에서 범위 검색 사용<button data-href="#Use-range-search-in-hybrid-search" class="anchor-icon" translate="no">
+<p>The top-level predicate selects candidate entities. The <code translate="no">element_filter</code> predicate restricts vector range search to matching Struct elements. For more filtering examples, see <a href="/docs/ko/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p>
+<h2 id="Use-range-search-in-hybrid-search" class="common-anchor-header">Use range search in hybrid search<button data-href="#Use-range-search-in-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -222,7 +223,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray 요소 수준 벡터 필드는 하이브리드 검색에서 범위 검색을 지원합니다. StructArray 요소 수준 벡터 필드를 대상으로 하는 <code translate="no">AnnSearchRequest</code> 에 <code translate="no">radius</code> 를 추가하고, 선택적으로 <code translate="no">range_filter</code> 를 추가하십시오.</p>
+    </button></h2><p>StructArray element-level vector fields support range search in hybrid search. Add <code translate="no">radius</code> and, optionally, <code translate="no">range_filter</code> to the <code translate="no">AnnSearchRequest</code> that targets the StructArray element-level vector field.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> AnnSearchRequest, RRFRanker
 
 title_req = AnnSearchRequest(
@@ -258,8 +259,8 @@ results = client.hybrid_search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>이 예제에서는 <code translate="no">chunks[emb]</code> 하위 요청만 범위 검색 매개변수를 사용합니다. StructArray 요청은 여전히 요소 수준 의미 체계를 따릅니다. 즉, 하이브리드 검색이 결과를 결합하고 재순위를 매기기 전에 범위 경계가 Struct 요소 일치 항목에 적용됩니다.</p>
-<h2 id="Interpret-range-results" class="common-anchor-header">범위 결과 해석<button data-href="#Interpret-range-results" class="anchor-icon" translate="no">
+<p>In this example, only the <code translate="no">chunks[emb]</code> sub-request uses range-search parameters. The StructArray request still follows element-level semantics: the range boundary applies to Struct element hits before the hybrid search combines and reranks results.</p>
+<h2 id="Interpret-range-results" class="common-anchor-header">Interpret range results<button data-href="#Interpret-range-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -276,17 +277,17 @@ results = client.hybrid_search(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>결과 항목</th><th>의미</th></tr>
+<tr><th>Result item</th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">id</code></td><td>일치하는 Struct 요소를 포함하는 엔티티의 기본 키입니다.</td></tr>
-<tr><td><code translate="no">distance</code> 또는 점수</td><td>쿼리 벡터와 일치하는 Struct 요소 벡터 간의 점수 또는 거리입니다.</td></tr>
-<tr><td><code translate="no">offset</code></td><td>반환 시 StructArray 필드 내에서 일치하는 Struct 요소의 0을 기준으로 한 위치.</td></tr>
-<tr><td>중복된 기본 키</td><td>가능합니다. 동일한 엔티티 내의 두 개 이상의 Struct 요소가 지정된 범위에 포함될 수 있습니다.</td></tr>
-<tr><td><code translate="no">limit</code></td><td>이는 고유한 상위 엔티티가 아닌 요소 일치에 적용됩니다.</td></tr>
+<tr><td><code translate="no">id</code></td><td>Primary key of the entity that contains the matched Struct element.</td></tr>
+<tr><td><code translate="no">distance</code> or score</td><td>The score or distance between the query vector and the matched Struct element vector.</td></tr>
+<tr><td><code translate="no">offset</code></td><td>Zero-based position of the matched Struct element in the StructArray field when returned.</td></tr>
+<tr><td>Repeated primary keys</td><td>Possible. More than one Struct element in the same entity can fall within the specified range.</td></tr>
+<tr><td><code translate="no">limit</code></td><td>Applies to element hits, not unique parent entities.</td></tr>
 </tbody>
 </table>
-<h2 id="Limitations" class="common-anchor-header">제한 사항<button data-href="#Limitations" class="anchor-icon" translate="no">
+<h2 id="Limitations" class="common-anchor-header">Limitations<button data-href="#Limitations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -302,11 +303,11 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>StructArray 벡터 하위 필드에 대한 범위 검색에는 <code translate="no">EmbeddingList</code> 쿼리나 <code translate="no">MAX_SIM*</code> 메트릭을 사용하지 마십시오. EmbeddingList 수준 검색은 범위 검색을 지원하지 않습니다.</p></li>
-<li><p>범위 검색을 그룹화 검색과 결합하지 마십시오. 부모 엔티티당 하나의 결과가 필요한 경우, 범위 매개변수 없이 요소 수준 검색을 실행하고 지원되는 경우 그룹화를 사용하십시오.</p></li>
-<li><p>StructArray 요소 수준 벡터 필드에 대해서는 하이브리드 범위 검색이 지원됩니다. EmbeddingList 수준 StructArray 요청의 경우 지원되지 않습니다.</p></li>
+<li><p>Do not use an <code translate="no">EmbeddingList</code> query or a <code translate="no">MAX_SIM*</code> metric for range search on StructArray vector subfields. EmbeddingList-level search does not support range search.</p></li>
+<li><p>Do not combine range search with grouping search. If you need one result per parent entity, run an element-level search without range parameters and use grouping where supported.</p></li>
+<li><p>Hybrid range search is supported for StructArray element-level vector fields. It is not supported for EmbeddingList-level StructArray requests.</p></li>
 </ul>
-<h2 id="Common-mistakes" class="common-anchor-header">흔히 저지르는 실수<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -322,13 +323,13 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><code translate="no">chunks[emb_list_vector]</code> 에 대해 범위 검색을 실행하는 경우. 이 메트릭은 EmbeddingList 검색용으로 설계되었습니다.</p></li>
-<li><p>요소 수준 범위 검색에 <code translate="no">COSINE</code> 와 같은 일반 메트릭 대신 <code translate="no">MAX_SIM_COSINE</code> 를 사용하는 경우.</p></li>
-<li><p>일반 벡터 쿼리 대신 <code translate="no">EmbeddingList</code> 쿼리를 사용하는 경우.</p></li>
-<li><p>범위 검색 결과가 상위 엔티티별로 고유할 것으로 기대하는 경우. 범위 검색은 일치하는 Struct 요소 히트를 반환합니다.</p></li>
-<li><p>필수 하위 필드 경로 구문( <code translate="no">chunks[emb]</code>) 대신 <code translate="no">chunks.emb</code> 를 사용하는 경우.</p></li>
+<li><p>Running range search against <code translate="no">chunks[emb_list_vector]</code>, which is intended for EmbeddingList search.</p></li>
+<li><p>Using <code translate="no">MAX_SIM_COSINE</code> instead of a regular metric such as <code translate="no">COSINE</code> for element-level range search.</p></li>
+<li><p>Using an <code translate="no">EmbeddingList</code> query instead of a regular vector query.</p></li>
+<li><p>Expecting range search results to be unique by parent entity. Range search returns matching Struct element hits.</p></li>
+<li><p>Using <code translate="no">chunks.emb</code> instead of the required subfield path syntax <code translate="no">chunks[emb]</code>.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">다음 단계<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -344,8 +345,8 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>두 가지 기본 StructArray 벡터 검색 모드에 대해 알아보려면 <a href="/docs/ko/basic-vector-search-with-structarray.md">‘StructArray를 사용한 기본 벡터 검색’을</a> 참조하십시오.</p></li>
-<li><p>범위 검색에 스칼라 필터를 추가하려면 <a href="/docs/ko/filtered-search-with-structarray.md">'StructArray를 사용한 필터링 검색'을</a> 참조하십시오.</p></li>
-<li><p>지원되는 경우 상위 엔티티당 최대 하나의 결과만 반환하려면 <a href="/docs/ko/grouping-search-with-structarray.md">‘StructArray를 사용한 그룹화 검색’을</a> 참조하십시오.</p></li>
-<li><p>버전별 검색 제한 사항을 확인하려면 <a href="/docs/ko/structarray-limits.md">StructArray 제한 사항을</a> 참조하십시오.</p></li>
+<li><p>To learn the two basic StructArray vector search modes, read <a href="/docs/ko/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To add scalar filters to range search, read <a href="/docs/ko/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
+<li><p>To return at most one result per parent entity where supported, read <a href="/docs/ko/grouping-search-with-structarray.md">Grouping Search with StructArray</a>.</p></li>
+<li><p>To check version-specific search limits, read <a href="/docs/ko/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

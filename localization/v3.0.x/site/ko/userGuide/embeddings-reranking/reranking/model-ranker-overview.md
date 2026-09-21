@@ -1,14 +1,16 @@
 ---
 id: model-ranker-overview.md
-title: 모델 랭커 개요Compatible with Milvus 2.6.x
+title: Model Ranker OverviewCompatible with Milvus 2.6.x
 summary: >-
-  기존의 벡터 검색은 순전히 수학적 유사성, 즉 고차원 공간에서 벡터들이 얼마나 잘 일치하는지에 따라 결과를 순위를 매깁니다. 이 방식은
-  효율적이긴 하지만, 종종 진정한 의미적 관련성을 놓치곤 합니다. 예를 들어 “데이터베이스 최적화를 위한 모범 사례”를 검색한다고 가정해
-  보겠습니다. 벡터 유사도가 높고 해당 용어를 자주 언급하는 문서가 검색 결과에 나타날 수는 있지만, 실제로 실행 가능한 최적화 전략을
-  제공하지는 않을 수 있습니다.
+  Traditional vector search ranks results purely by mathematical similarity—how
+  closely vectors match in high-dimensional space. While efficient, this
+  approach often misses true semantic relevance. Consider searching for "best
+  practices for database optimization": you might receive documents with high
+  vector similarity that mention these terms frequently, but don't actually
+  provide actionable optimization strategies.
 beta: Milvus 2.6.x
 ---
-<h1 id="Model-Ranker-Overview" class="common-anchor-header">모델 랭커 개요<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Model-Ranker-Overview" class="anchor-icon" translate="no">
+<h1 id="Model-Ranker-Overview" class="common-anchor-header">Model Ranker Overview<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Model-Ranker-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +25,9 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>기존의 벡터 검색은 고차원 공간에서 벡터가 얼마나 잘 일치하는지, 즉 순전히 수학적 유사성에 따라 결과의 순위를 매깁니다. 이 방식은 효율적이긴 하지만, 진정한 의미적 관련성을 놓치는 경우가 많습니다. 예를 들어 <strong>“데이터베이스 최적화를 위한 모범 사례”를</strong> 검색한다고 가정해 보겠습니다 <strong>.</strong> 벡터 유사도가 높고 해당 용어를 자주 언급하는 문서가 검색 결과에 나타날 수는 있지만, 실제로 실행 가능한 최적화 전략을 제공하지는 않을 수 있습니다.</p>
-<p>모델 랭커는 쿼리와 문서 간의 의미적 관계를 이해하는 고급 언어 모델을 통합하여 Milvus 검색 방식을 혁신합니다. 단순히 벡터 유사성에만 의존하는 대신, 콘텐츠의 의미와 맥락을 평가하여 더 지능적이고 관련성 높은 결과를 제공합니다.</p>
-<h2 id="Limits" class="common-anchor-header">제한 사항<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>Traditional vector search ranks results purely by mathematical similarity—how closely vectors match in high-dimensional space. While efficient, this approach often misses true semantic relevance. Consider searching for <strong>“best practices for database optimization”</strong>: you might receive documents with high vector similarity that mention these terms frequently, but don’t actually provide actionable optimization strategies.</p>
+<p>Model Ranker transforms Milvus search by integrating advanced language models that understand semantic relationships between queries and documents. Instead of relying solely on vector similarity, it evaluates content meaning and context to deliver more intelligent, relevant results.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,11 +43,11 @@ beta: Milvus 2.6.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>모델 랭커는 그룹화 검색과 함께 사용할 수 없습니다.</p></li>
-<li><p>모델 재순위 지정에 사용되는 필드는 텍스트 유형(<code translate="no">VARCHAR</code>)이어야 합니다.</p></li>
-<li><p>각 모델 랭커는 평가 시 한 번에 하나의 <code translate="no">VARCHAR</code> 필드만 사용할 수 있습니다.</p></li>
+<li><p>Model rankers cannot be used with grouping searches.</p></li>
+<li><p>Fields used for model reranking must be text type (<code translate="no">VARCHAR</code>).</p></li>
+<li><p>Each model ranker can use only one <code translate="no">VARCHAR</code> field at a time for evaluation.</p></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">작동 원리<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -60,27 +62,27 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>모델 랭커는 명확하게 정의된 워크플로를 통해 언어 모델의 이해 기능을 Milvus 검색 프로세스에 통합합니다:</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/model-ranker-overview.png" alt="Model Ranker Overview" class="doc-image" id="model-ranker-overview" /> 
-   <span>모델 랭커 개요</span>
-  
- </span></p>
+    </button></h2><p>Model rankers integrate language model understanding capabilities into the Milvus search process through a well-defined workflow:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/model-ranker-overview.png" alt="Model Ranker Overview" class="doc-image" id="model-ranker-overview" />
+    <span>Model Ranker Overview</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>초기 쿼리</strong>: 애플리케이션에서 Milvus로 쿼리를 전송합니다.</p></li>
-<li><p><strong>벡터 검색</strong>: Milvus는 표준 벡터 검색을 수행하여 후보 문서를 식별합니다</p></li>
-<li><p><strong>후보 문서 검색</strong>: 시스템은 벡터 유사도를 기반으로 초기 후보 문서 집합을 식별합니다</p></li>
-<li><p><strong>모델 평가</strong>: 모델 랭커 함수가 쿼리-문서 쌍을 처리합니다:</p>
+<li><p><strong>Initial query</strong>: Your application sends a query to Milvus</p></li>
+<li><p><strong>Vector search</strong>: Milvus performs standard vector search to identify candidate documents</p></li>
+<li><p><strong>Candidate retrieval</strong>: The system identifies the initial set of candidate documents based on vector similarity</p></li>
+<li><p><strong>Model evaluation</strong>: The Model Ranker Function processes query-document pairs:</p>
 <ul>
-<li><p>원본 쿼리와 후보 문서를 외부 모델 서비스로 전송합니다</p></li>
-<li><p>언어 모델이 쿼리와 각 문서 간의 의미적 관련성을 평가합니다</p></li>
-<li><p>각 문서는 의미적 이해를 바탕으로 관련성 점수를 부여받습니다</p></li>
+<li><p>Sends the original query and candidate documents to an external model service</p></li>
+<li><p>The language model evaluates semantic relevance between query and each document</p></li>
+<li><p>Each document receives a relevance score based on semantic understanding</p></li>
 </ul></li>
-<li><p><strong>지능형 재순위</strong> 지정: 모델이 생성한 관련성 점수에 따라 문서의 순서가 재정렬됩니다</p></li>
-<li><p><strong>향상된 결과</strong>: 애플리케이션은 단순한 벡터 유사도가 아닌 의미적 관련도에 따라 순위가 매겨진 결과를 수신합니다</p></li>
+<li><p><strong>Intelligent reranking</strong>: Documents are reordered based on model-generated relevance scores</p></li>
+<li><p><strong>Enhanced results</strong>: Your application receives results ranked by semantic relevance rather than just vector similarity</p></li>
 </ol>
-<h2 id="Choose-a-model-provider-for-your-needs" class="common-anchor-header">요구에 맞는 모델 제공업체를 선택하세요<button data-href="#Choose-a-model-provider-for-your-needs" class="anchor-icon" translate="no">
+<h2 id="Choose-a-model-provider-for-your-needs" class="common-anchor-header">Choose a model provider for your needs<button data-href="#Choose-a-model-provider-for-your-needs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,68 +97,68 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus는 재순위를 위해 다음과 같은 모델 서비스 제공업체를 지원하며, 각 제공업체는 고유한 특성을 가지고 있습니다:</p>
+    </button></h2><p>Milvus supports the following model service providers for reranking, each with distinct characteristics:</p>
 <table>
    <tr>
-     <th><p>제공업체</p></th>
-     <th><p>가장 적합한 용도</p></th>
-     <th><p>특징</p></th>
-     <th><p>사용 사례 예시</p></th>
+     <th><p>Provider</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Characteristics</p></th>
+     <th><p>Example Use Case</p></th>
    </tr>
    <tr>
      <td><p>vLLM</p></td>
-     <td><p>심층적인 의미 이해와 맞춤화가 필요한 복잡한 애플리케이션</p></td>
-     <td><ul><li><p>다양한 대규모 언어 모델 지원</p></li><li><p>유연한 배포 옵션</p></li><li><p>더 높은 연산 성능 요구</p></li><li><p>더 큰 맞춤화 가능성</p></li></ul></td>
-     <td><p>법률 용어와 판례 간의 관계를 이해하는 도메인 특화 모델을 적용한 법률 연구 플랫폼</p></td>
+     <td><p>Complex applications requiring deep semantic understanding and customization</p></td>
+     <td><ul><li><p>Supports various large language models</p></li><li><p>Flexible deployment options</p></li><li><p>Higher computational requirements</p></li><li><p>Greater customization potential</p></li></ul></td>
+     <td><p>Legal research platform deploying domain-specific models that understand legal terminology and case law relationships</p></td>
    </tr>
    <tr>
      <td><p>TEI</p></td>
-     <td><p>효율적인 리소스 활용을 통한 신속한 구현</p></td>
-     <td><ul><li><p>텍스트 처리에 최적화된 경량 서비스</p></li><li><p>더 적은 리소스 요구 사항으로 간편한 배포</p></li><li><p>사전 최적화된 재순위 지정 모델</p></li><li><p>인프라 오버헤드 최소화</p></li></ul></td>
-     <td><p>표준 요구 사항을 충족하는 효율적인 재순위 지정 기능이 필요한 콘텐츠 관리 시스템</p></td>
+     <td><p>Quick implementation with efficient resource usage</p></td>
+     <td><ul><li><p>Lightweight service optimized for text operations</p></li><li><p>Easier deployment with lower resource requirements</p></li><li><p>Pre-optimized reranking models</p></li><li><p>Minimal infrastructure overhead</p></li></ul></td>
+     <td><p>Content management system needing efficient reranking capabilities with standard requirements</p></td>
    </tr>
    <tr>
      <td><p>Cohere</p></td>
-     <td><p>신뢰성과 통합 용이성을 최우선으로 하는 엔터프라이즈 애플리케이션</p></td>
-     <td><ul><li><p>엔터프라이즈급 신뢰성 및 확장성</p></li><li><p>인프라 유지 관리가 필요 없는 관리형 서비스</p></li><li><p>다국어 재순위 지정 기능</p></li><li><p>내장된 속도 제한 및 오류 처리 기능</p></li></ul></td>
-     <td><p>일관된 API 성능과 다국어 상품 카탈로그를 갖춘 고가용성 검색이 필요한 전자상거래 플랫폼</p></td>
+     <td><p>Enterprise applications prioritizing reliability and ease of integration</p></td>
+     <td><ul><li><p>Enterprise-grade reliability and scalability</p></li><li><p>Managed service with no infrastructure maintenance</p></li><li><p>Multilingual reranking capabilities</p></li><li><p>Built-in rate limiting and error handling</p></li></ul></td>
+     <td><p>E-commerce platform requiring high-availability search with consistent API performance and multilingual product catalogs</p></td>
    </tr>
    <tr>
      <td><p>Voyage AI</p></td>
-     <td><p>특정 성능 및 컨텍스트 요구 사항이 있는 RAG 애플리케이션</p></td>
-     <td><ul><li><p>재순위 지정 작업을 위해 특별히 훈련된 모델</p></li><li><p>다양한 문서 길이에 대한 세분화된 잘림 제어</p></li><li><p>프로덕션 워크로드에 최적화된 추론</p></li><li><p>다양한 모델 변형(rerank-2, rerank-lite 등)</p></li></ul></td>
-     <td><p>정밀한 성능 제어와 전문적인 의미 이해가 필요한 다양한 문서 길이를 가진 연구 데이터베이스</p></td>
+     <td><p>RAG applications with specific performance and context requirements</p></td>
+     <td><ul><li><p>Models specifically trained for reranking tasks</p></li><li><p>Granular truncation controls for diverse document lengths</p></li><li><p>Optimized inference for production workloads</p></li><li><p>Multiple model variants (rerank-2, rerank-lite, etc.)</p></li></ul></td>
+     <td><p>Research database with varying document lengths requiring fine-tuned performance control and specialized semantic understanding</p></td>
    </tr>
    <tr>
      <td><p>SiliconFlow</p></td>
-     <td><p>비용 효율성을 최우선으로 하는 장문 문서 처리 애플리케이션</p></td>
-     <td><ul><li><p>중첩 범위를 구성할 수 있는 고급 문서 청크 분할</p></li><li><p>청크 기반 점수 산정(점수가 가장 높은 청크가 문서를 대표함)</p></li><li><p>다양한 재순위 지정 모델 지원</p></li><li><p>표준 및 프로 모델 버전을 통한 비용 효율성</p></li></ul></td>
-     <td><p>지능형 분할 및 중첩 제어가 필요한 방대한 매뉴얼과 논문을 처리하는 기술 문서 검색 시스템</p></td>
+     <td><p>Applications processing long documents with cost-effectiveness priorities</p></td>
+     <td><ul><li><p>Advanced document chunking with configurable overlap</p></li><li><p>Chunk-based scoring (highest-scoring chunk represents document)</p></li><li><p>Support for diverse reranking models</p></li><li><p>Cost-effective with standard and pro model variants</p></li></ul></td>
+     <td><p>Technical documentation search system processing lengthy manuals and papers that need intelligent segmentation and overlap control</p></td>
    </tr>
    <tr>
      <td><p>DashScope</p></td>
-     <td><p>알리바바 클라우드 또는 Qwen 재순위 지정 모델을 사용하는 애플리케이션</p></td>
-     <td><ul><li><p>관리형 DashScope 재순위 지정 API</p></li><li><p>다음과 같은 재순위 지정 모델을 지원합니다. <code translate="no">gte-rerank-v2</code></p></li><li><p>API 키 기반 인증</p></li></ul></td>
-     <td><p>알리바바 클라우드에서 호스팅되는 재순위 지정 모델을 사용하여 후보 항목의 순위를 재조정하려는 RAG 애플리케이션</p></td>
+     <td><p>Applications using Alibaba Cloud or Qwen reranking models</p></td>
+     <td><ul><li><p>Managed DashScope reranking API</p></li><li><p>Supports reranking models such as <code translate="no">gte-rerank-v2</code></p></li><li><p>API-key based authentication</p></li></ul></td>
+     <td><p>RAG applications that want to rerank candidates with Alibaba Cloud-hosted reranking models</p></td>
    </tr>
    <tr>
      <td><p>Hugging Face</p></td>
-     <td><p>호스팅된 Hugging Face 문장 유사도 모델을 사용하는 애플리케이션</p></td>
-     <td><ul><li><p>호스팅된 <code translate="no">hf-inference</code> 제공자를 사용합니다</p></li><li><p>Hugging Face Hub에서 모델을 선택합니다</p></li><li><p>후보마다 문장 유사도 점수 1개를 계산합니다</p></li><li><p>API 키 인증을 사용합니다</p></li></ul></td>
-     <td><p>별도의 추론 서비스를 운영하지 않고 Hugging Face 모델을 사용하여 후보 텍스트의 순위를 재조정하려는 시맨틱 검색 애플리케이션</p></td>
+     <td><p>Applications using hosted Hugging Face sentence-similarity models</p></td>
+     <td><ul><li><p>Uses the hosted <code translate="no">hf-inference</code> provider</p></li><li><p>Selects models from the Hugging Face Hub</p></li><li><p>Calculates one sentence-similarity score per candidate</p></li><li><p>Uses API-key authentication</p></li></ul></td>
+     <td><p>Semantic search applications that want to rerank candidate text with a Hugging Face model without operating a separate inference service</p></td>
    </tr>
 </table>
-<p>각 모델 서비스의 구현에 대한 자세한 내용은 전용 문서를 참조하십시오:</p>
+<p>For detailed information about implementation of each model service, refer to the dedicated documentation:</p>
 <ul>
 <li><p><a href="/docs/ko/vllm-ranker.md">vLLM Ranker</a></p></li>
 <li><p><a href="/docs/ko/tei-ranker.md">TEI Ranker</a></p></li>
 <li><p><a href="/docs/ko/cohere-ranker.md">Cohere Ranker</a></p></li>
 <li><p><a href="/docs/ko/voyage-ai-ranker.md">Voyage AI Ranker</a></p></li>
 <li><p><a href="/docs/ko/siliconflow-ranker.md">SiliconFlow Ranker</a></p></li>
-<li><p><a href="/docs/ko/dashscope-ranker.md">DashScope 랭커</a></p></li>
-<li><p><a href="/docs/ko/hugging-face-ranker.md">Hugging Face 랭커</a></p></li>
+<li><p><a href="/docs/ko/dashscope-ranker.md">DashScope Ranker</a></p></li>
+<li><p><a href="/docs/ko/hugging-face-ranker.md">Hugging Face Ranker</a></p></li>
 </ul>
-<h2 id="Implementation" class="common-anchor-header">구현<button data-href="#Implementation" class="anchor-icon" translate="no">
+<h2 id="Implementation" class="common-anchor-header">Implementation<button data-href="#Implementation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -171,14 +173,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>모델 랭커를 구현하기 전에 다음이 준비되어 있는지 확인하십시오:</p>
+    </button></h2><p>Before implementing Model Ranker, ensure you have:</p>
 <ul>
-<li><p>재순위를 매길 텍스트가 포함된 ‘ <code translate="no">VARCHAR</code> ’ 필드가 있는 Milvus 컬렉션</p></li>
-<li><p>Milvus 인스턴스에서 액세스할 수 있는 실행 중인 외부 모델 서비스</p></li>
-<li><p>Milvus와 선택한 모델 서비스 간의 적절한 네트워크 연결</p></li>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A running external model service accessible to your Milvus instance</p></li>
+<li><p>Appropriate network connectivity between Milvus and your chosen model service</p></li>
 </ul>
-<p>모델 랭커는 표준 벡터 검색 및 하이브리드 검색 작업 모두와 원활하게 통합됩니다. 구현 과정에는 재순위 지정 구성을 정의하는 Function 객체를 생성하고 이를 검색 작업에 전달하는 단계가 포함됩니다.</p>
-<h3 id="Create-a-model-ranker" class="common-anchor-header">모델 랭커 생성<button data-href="#Create-a-model-ranker" class="anchor-icon" translate="no">
+<p>Model rankers integrate seamlessly with both standard vector search and hybrid search operations. The implementation involves creating a Function object that defines your reranking configuration and passing it to search operations.</p>
+<h3 id="Create-a-model-ranker" class="common-anchor-header">Create a model ranker<button data-href="#Create-a-model-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -193,13 +195,13 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>모델 재순위를 구현하려면 먼저 적절한 구성으로 Function 객체를 정의해야 합니다. 이 예제에서는 TEI를 서비스 제공자로 사용합니다:</p>
+    </button></h3><p>To implement model reranking, first define a Function object with the appropriate configuration. In this example, we use TEI as the service provider:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
@@ -246,67 +248,67 @@ model_ranker = Function(
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>매개변수</p></th>
-     <th><p>필수?</p></th>
-     <th><p>설명</p></th>
-     <th><p>값 / 예시</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value / Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>예</p></td>
-     <td><p>검색을 실행할 때 사용되는 함수의 식별자입니다.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Identifier for your function used when executing searches.</p></td>
      <td><p><code translate="no">"semantic_ranker"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>예</p></td>
-     <td><p>재순위 지정에 사용할 텍스트 필드의 이름입니다.</p><p><code translate="no">VARCHAR</code> 유형의 필드여야 합니다.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Name of the text field to use for reranking.</p><p>Must be a <code translate="no">VARCHAR</code> type field.</p></td>
      <td><p><code translate="no">["document"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>예</p></td>
-     <td><p>생성되는 함수의 유형을 지정합니다.</p><p>모든 모델 순위 지정기의 경우 반드시 ‘ <code translate="no">RERANK</code> ’로 설정되어야 합니다.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the type of function being created.</p><p>Must be set to <code translate="no">RERANK</code> for all model rankers.</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params</code></p></td>
-     <td><p>예</p></td>
-     <td><p>모델 기반 재순위 지정 함수에 대한 구성이 포함된 사전입니다. 사용 가능한 매개변수(키)는 서비스 제공자에 따라 다릅니다.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>A dictionary containing configuration for the model-based reranking function. The available parameters (keys) vary depending on the service provider.</p></td>
      <td><p><code translate="no">{...}</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>예</p></td>
-     <td><p>모델 재순위를 활성화하려면 <code translate="no">"model"</code> 로 설정해야 합니다.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.provider</code></p></td>
-     <td><p>예</p></td>
-     <td><p>재순위 지정에 사용할 모델 서비스 제공자입니다.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"tei"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.queries</code></p></td>
-     <td><p>예</p></td>
-     <td><p>재순위 지정 모델이 관련성 점수를 계산하는 데 사용하는 쿼리 문자열 목록입니다.</p><p>쿼리 문자열의 수는 검색 작업에 포함된 쿼리 수와 정확히 일치해야 합니다(텍스트 대신 쿼리 벡터를 사용하는 경우에도 마찬가지). 그렇지 않으면 오류가 보고됩니다.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the reranking model to calculate relevance scores.</p><p>The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
      <td><p><code translate="no">["search query"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.endpoint</code></p></td>
-     <td><p>예</p></td>
-     <td><p>모델 서비스의 URL입니다.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>URL of the model service.</p></td>
      <td><p><code translate="no">"http://localhost:8080"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>아니요</p></td>
-     <td><p>단일 배치에서 처리할 수 있는 문서의 최대 수입니다. 값이 클수록 처리량은 증가하지만 더 많은 메모리가 필요합니다.</p></td>
-     <td><p><code translate="no">32</code> (기본값)</p></td>
+     <td><p>No</p></td>
+     <td><p>Maximum number of documents to process in a single batch. Larger values increase throughput but require more memory.</p></td>
+     <td><p><code translate="no">32</code> (default)</p></td>
    </tr>
 </table>
-<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">표준 벡터 검색에 적용<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -321,13 +323,13 @@ model_ranker = Function(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>모델 랭커를 정의한 후에는 랭커 매개변수에 전달하여 검색 작업 중에 적용할 수 있습니다:</p>
+    </button></h3><p>After defining your model ranker, you can apply it during search operations by passing it to the ranker parameter:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Use the model ranker in standard vector search</span>
 results = client.search(

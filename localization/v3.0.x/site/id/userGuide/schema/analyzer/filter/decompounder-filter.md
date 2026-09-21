@@ -1,11 +1,11 @@
 ---
 id: decompounder-filter.md
-title: Pengurai
+title: Decompounder
 summary: >-
-  Gunakan filter pengurai untuk memisahkan kata majemuk dengan kamus sebaris
-  atau sumber daya file terdaftar.
+  Use the decompounder filter to split compound words with an inline dictionary
+  or registered file resource.
 ---
-<h1 id="Decompounder" class="common-anchor-header">Pengurai<button data-href="#Decompounder" class="anchor-icon" translate="no">
+<h1 id="Decompounder" class="common-anchor-header">Decompounder<button data-href="#Decompounder" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Filter <code translate="no">decompounder</code> membagi kata majemuk menjadi beberapa komponen berdasarkan kamus yang ditentukan, sehingga lebih mudah untuk mencari bagian dari istilah majemuk. Filter ini sangat berguna untuk bahasa yang sering menggunakan kata majemuk, seperti bahasa Jerman. Kamus komponen dapat disediakan sebaris melalui parameter <code translate="no">word_list</code> atau dimuat dari <a href="/docs/id/manage-file-resources.md">sumber daya file terdaftar</a> melalui parameter <code translate="no">word_list_file</code>.</p>
-<h2 id="Configuration" class="common-anchor-header">Konfigurasi<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">decompounder</code> filter splits compound words into individual components based on a specified dictionary, making it easier to search for parts of compound terms. This filter is particularly useful for languages that frequently use compound words, such as German. The component dictionary can be supplied inline via the <code translate="no">word_list</code> parameter or loaded from a <a href="/docs/id/manage-file-resources.md">registered file resource</a> via the <code translate="no">word_list_file</code> parameter.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,8 +36,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Filter <code translate="no">decompounder</code> menerima kamus komponennya secara sebaris melalui parameter <code translate="no">word_list</code> atau dari sumber daya file yang terdaftar melalui parameter <code translate="no">word_list_file</code>.</p>
-<h3 id="Inline-word-list" class="common-anchor-header">Daftar kata sebaris<button data-href="#Inline-word-list" class="anchor-icon" translate="no">
+    </button></h2><p>The <code translate="no">decompounder</code> filter accepts its component dictionary either inline via the <code translate="no">word_list</code> parameter or from a registered file resource via the <code translate="no">word_list_file</code> parameter.</p>
+<h3 id="Inline-word-list" class="common-anchor-header">Inline word list<button data-href="#Inline-word-list" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -52,9 +52,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Filter <code translate="no">decompounder</code> adalah filter khusus di Milvus. Untuk menggunakannya, tentukan <code translate="no">&quot;type&quot;: &quot;decompounder&quot;</code> dalam konfigurasi filter, bersama dengan parameter <code translate="no">word_list</code> yang menyediakan kamus komponen kata yang akan dikenali.</p>
+    </button></h3><p>The <code translate="no">decompounder</code> filter is a custom filter in Milvus. To use it, specify <code translate="no">&quot;type&quot;: &quot;decompounder&quot;</code> in the filter configuration, along with a <code translate="no">word_list</code> parameter that provides the dictionary of word components to recognize.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>:[{
@@ -107,20 +112,20 @@ analyzerParams=<span class="hljs-string">&#x27;{
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<p>Filter <code translate="no">decompounder</code> menerima parameter yang dapat dikonfigurasi berikut ini.</p>
+<p>The <code translate="no">decompounder</code> filter accepts the following configurable parameters.</p>
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Deskripsi</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">word_list</code></p></td>
-     <td><p>Daftar komponen kata yang digunakan untuk memisahkan istilah majemuk. Kamus ini menentukan bagaimana kata-kata majemuk diuraikan menjadi istilah-istilah individual.</p></td>
+     <td><p>A list of word components used to split compound terms. This dictionary determines how compound words are decomposed into individual terms.</p></td>
    </tr>
 </table>
-<p>Filter <code translate="no">decompounder</code> beroperasi pada istilah yang dihasilkan oleh tokenizer, sehingga harus digunakan bersama dengan tokenizer. Untuk daftar tokenizer yang tersedia di Milvus, lihat <a href="/docs/id/standard-tokenizer.md">Tokenizer Standar</a> dan halaman-halaman terkait.</p>
-<p>Setelah mendefinisikan <code translate="no">analyzer_params</code>, Anda dapat menerapkannya ke bidang <code translate="no">VARCHAR</code> ketika mendefinisikan skema koleksi. Hal ini memungkinkan Milvus untuk memproses teks dalam bidang tersebut menggunakan penganalisis yang ditentukan untuk tokenisasi dan pemfilteran yang efisien. Untuk detailnya, lihat <a href="/docs/id/analyzer-overview.md#Example-use">Contoh penggunaan</a>.</p>
-<h3 id="Load-word-components-from-a-file-resource--Milvus-30x" class="common-anchor-header">Memuat komponen kata dari sumber daya file<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Load-word-components-from-a-file-resource--Milvus-30x" class="anchor-icon" translate="no">
+<p>The <code translate="no">decompounder</code> filter operates on the terms generated by the tokenizer, so it must be used in combination with a tokenizer. For a list of tokenizers available in Milvus, refer to <a href="/docs/id/standard-tokenizer.md">Standard Tokenizer</a> and its sibling pages.</p>
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/id/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h3 id="Load-word-components-from-a-file-resource" class="common-anchor-header">Load word components from a file resource<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Load-word-components-from-a-file-resource" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -135,8 +140,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk kamus komponen yang besar - terutama daftar kata dalam bahasa lengkap - simpan komponen dalam sebuah berkas dan daftarkan berkas tersebut sebagai sumber daya berkas jarak jauh, lalu rujuk dari filter melalui parameter <code translate="no">word_list_file</code>. Anda dapat menggunakan <code translate="no">word_list_file</code> sendiri atau bersama dengan <code translate="no">word_list</code> sebaris; ketika keduanya diatur, filter menggabungkan kedua sumber menjadi satu daftar komponen.</p>
-<p>Berkas tersebut berupa teks UTF-8 biasa dengan <strong>satu kata komponen per baris</strong>. Sebagai contoh:</p>
+    </button></h3><p>For large component dictionaries — especially full-language word lists — store the components in a file and register the file as a remote file resource, then reference it from the filter via the <code translate="no">word_list_file</code> parameter. You can use <code translate="no">word_list_file</code> on its own or alongside inline <code translate="no">word_list</code>; when both are set, the filter merges the two sources into a single component list.</p>
+<p>The file is plain UTF‑8 text with <strong>one component word per line</strong>. For example:</p>
 <pre><code translate="no" class="language-plaintext">dampf
 schiff
 fahrt
@@ -144,7 +149,7 @@ brot
 backen
 automat
 <button class="copy-code-btn"></button></code></pre>
-<p>Unggah berkas ke penyimpanan objek yang dikonfigurasikan untuk digunakan oleh cluster Milvus Anda, lalu daftarkan:</p>
+<p>Upload the file to the object store that your Milvus cluster is configured to use, then register it:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -155,7 +160,7 @@ client.add_file_resource(
     path=<span class="hljs-string">&quot;file/decompounder.txt&quot;</span>,    <span class="hljs-comment"># full S3 object key, including the rootPath prefix</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Rujuk sumber daya yang terdaftar dalam filter melalui <code translate="no">word_list_file</code>:</p>
+<p>Reference the registered resource in the filter via <code translate="no">word_list_file</code>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [{
@@ -168,26 +173,26 @@ client.add_file_resource(
     }],
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Parameter <code translate="no">word_list_file</code> menerima objek dengan bidang berikut ini:</p>
+<p>The <code translate="no">word_list_file</code> parameter accepts an object with the following fields:</p>
 <table>
    <tr>
-     <th><p><strong>Bidang</strong></p></th>
-     <th><p><strong>Deskripsi</strong></p></th>
+     <th><p><strong>Field</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">type</code></p></td>
-     <td><p>Jenis sumber daya. Gunakan <code translate="no">"remote"</code> untuk file yang didaftarkan melalui <code translate="no">add_file_resource</code>. Untuk varian <code translate="no">"local"</code> yang digunakan dalam penerapan yang dihosting sendiri, lihat <a href="/docs/id/manage-file-resources.md">Mengelola Sumber Daya File</a>.</p></td>
+     <td><p>The resource type. Use <code translate="no">"remote"</code> for a file registered via <code translate="no">add_file_resource</code>. For the <code translate="no">"local"</code> variant used in self-hosted deployments, refer to <a href="/docs/id/manage-file-resources.md">Manage File Resources</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">resource_name</code></p></td>
-     <td><p>Nama yang digunakan saat file didaftarkan dengan <code translate="no">add_file_resource</code>.</p></td>
+     <td><p>The name used when the file was registered with <code translate="no">add_file_resource</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">file_name</code></p></td>
-     <td><p>Bagian nama file dari jalur penyimpanan objek sumber daya yang terdaftar (misalnya, <code translate="no">"decompounder.txt"</code> jika sumber daya terdaftar dengan <code translate="no">path="file/decompounder.txt"</code>).</p></td>
+     <td><p>The filename portion of the registered resource's object-store path (for example, <code translate="no">"decompounder.txt"</code> if the resource was registered with <code translate="no">path="file/decompounder.txt"</code>).</p></td>
    </tr>
 </table>
-<h2 id="Examples" class="common-anchor-header">Contoh<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -202,8 +207,8 @@ client.add_file_resource(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sebelum menerapkan konfigurasi penganalisis ke skema koleksi Anda, verifikasi perilakunya menggunakan metode <code translate="no">run_analyzer</code>.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">Konfigurasi penganalisis<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -219,7 +224,12 @@ client.add_file_resource(
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>:[{
@@ -265,7 +275,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verifikasi menggunakan <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -281,7 +291,12 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
 )
@@ -346,7 +361,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">Keluaran yang diharapkan<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

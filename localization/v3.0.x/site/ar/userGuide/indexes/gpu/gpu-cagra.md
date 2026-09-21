@@ -2,11 +2,9 @@
 id: gpu-cagra.md
 title: GPU_CAGRA
 summary: >-
-  مؤشر GPU_CAGRA هو مؤشر قائم على الرسوم البيانية ومُحسَّن للاستخدام مع وحدات
-  معالجة الرسومات (GPU). وقد يكون استخدام وحدات معالجة الرسومات المخصصة
-  للاستدلال لتشغيل إصدار Milvus المخصص لوحدات معالجة الرسومات أكثر فعالية من حيث
-  التكلفة مقارنةً باستخدام وحدات معالجة الرسومات المخصصة للتدريب، والتي تكون
-  باهظة الثمن.
+  The GPU_CAGRA index is a graph-based index optimized for GPUs. Using
+  inference-grade GPUs to run the Milvus GPU version can be more cost-effective
+  compared to using expensive training-grade GPUs.
 ---
 <h1 id="GPUCAGRA" class="common-anchor-header">GPU_CAGRA<button data-href="#GPUCAGRA" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -23,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>مؤشر <strong>GPU_CAGRA</strong> هو مؤشر قائم على الرسوم البيانية ومُحسّن للاستخدام مع وحدات معالجة الرسومات (GPU). قد يكون استخدام وحدات معالجة الرسومات المخصصة للاستدلال لتشغيل إصدار Milvus المخصص لوحدات معالجة الرسومات أكثر فعالية من حيث التكلفة مقارنةً باستخدام وحدات معالجة الرسومات المخصصة للتدريب والتي تكون باهظة الثمن.</p>
-<h2 id="Build-index" class="common-anchor-header">إنشاء الفهرس<button data-href="#Build-index" class="anchor-icon" translate="no">
+    </button></h1><p>The <strong>GPU_CAGRA</strong> index is a graph-based index optimized for GPUs. Using inference-grade GPUs to run the Milvus GPU version can be more cost-effective compared to using expensive training-grade GPUs.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,7 +37,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لبناء فهرس " <code translate="no">GPU_CAGRA</code> " على حقل متجه في Milvus، استخدم طريقة " <code translate="no">add_index()</code> "، مع تحديد " <code translate="no">index_type</code>" و" <code translate="no">metric_type</code>" والمعلمات الإضافية للفهرس.</p>
+    </button></h2><p>To build a <code translate="no">GPU_CAGRA</code> index on a vector field in Milvus, use the <code translate="no">add_index()</code> method, specifying the <code translate="no">index_type</code>, <code translate="no">metric_type</code>, and additional parameters for the index.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -59,14 +57,14 @@ index_params.add_index(
     } <span class="hljs-comment"># Index building params</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>في هذا التكوين:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: نوع الفهرس المراد إنشاؤه. في هذا المثال، اضبط القيمة على <code translate="no">GPU_CAGRA</code>.</p></li>
-<li><p><code translate="no">metric_type</code>: الطريقة المستخدمة لحساب المسافة بين المتجهات. لمزيد من التفاصيل، راجع <a href="/docs/ar/metric.md">أنواع المقاييس</a>.</p></li>
-<li><p><code translate="no">params</code>: خيارات تكوين إضافية لإنشاء الفهرس. لمعرفة المزيد عن معلمات الإنشاء المتاحة لفهرس <code translate="no">GPU_CAGRA</code> ، راجع <a href="/docs/ar/gpu-cagra.md#Index-building-params">معلمات إنشاء الفهرس</a>.</p></li>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">GPU_CAGRA</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. For details, refer to <a href="/docs/ar/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index. To learn more building parameters available for the <code translate="no">GPU_CAGRA</code> index, refer to <a href="/docs/ar/gpu-cagra.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>بمجرد تكوين معلمات الفهرس، يمكنك إنشاء الفهرس باستخدام الطريقة <code translate="no">create_index()</code> مباشرةً أو عن طريق تمرير معلمات الفهرس في الطريقة <code translate="no">create_collection</code>. لمزيد من التفاصيل، راجع <a href="/docs/ar/create-collection.md">إنشاء مجموعة</a>.</p>
-<h2 id="Search-on-index" class="common-anchor-header">البحث في الفهرس<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>Once the index parameters are configured, you can create the index by using the <code translate="no">create_index()</code> method directly or passing the index params in the <code translate="no">create_collection</code> method. For details, refer to <a href="/docs/ar/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,7 +79,7 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>بمجرد إنشاء الفهرس وإدراج الكيانات، يمكنك إجراء عمليات بحث عن التشابه في الفهرس.</p>
+    </button></h2><p>Once the index is built and entities are inserted, you can perform similarity searches on the index.</p>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {
         <span class="hljs-string">&quot;itopk_size&quot;</span>: <span class="hljs-number">16</span>, <span class="hljs-comment"># Determines the size of intermediate results kept during the search</span>
@@ -97,11 +95,11 @@ res = MilvusClient.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>في هذا التكوين:</p>
+<p>In this configuration:</p>
 <ul>
-<li><code translate="no">params</code>: خيارات تكوين إضافية للبحث في الفهرس. لمعرفة المزيد عن معلمات البحث المتاحة لفهرس <code translate="no">GPU_CAGRA</code> ، راجع <a href="/docs/ar/gpu-cagra.md#Index-specific-search-params">معلمات البحث الخاصة بالفهرس</a>.</li>
+<li><code translate="no">params</code>: Additional configuration options for searching on the index. To learn more search parameters available for the <code translate="no">GPU_CAGRA</code> index, refer to <a href="/docs/ar/gpu-cagra.md#Index-specific-search-params">Index-specific search params</a>.</li>
 </ul>
-<h2 id="Enable-CPU-search-at-load-time--Milvus-264+" class="common-anchor-header">تمكين البحث باستخدام وحدة المعالجة المركزية (CPU) عند التحميل<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Enable-CPU-search-at-load-time--Milvus-264+" class="anchor-icon" translate="no">
+<h2 id="Enable-CPU-search-at-load-time" class="common-anchor-header">Enable CPU search at load time<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Enable-CPU-search-at-load-time" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -116,23 +114,23 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لتمكين البحث باستخدام وحدة المعالجة المركزية (CPU) ديناميكيًا عند التحميل، قم بتحرير التكوين التالي في <code translate="no">milvus.yaml</code>:</p>
+    </button></h2><p>To enable CPU search dynamically at load time, edit the following config in <code translate="no">milvus.yaml</code>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">knowhere:</span>
   <span class="hljs-attr">GPU_CAGRA:</span>
     <span class="hljs-attr">load:</span> 
       <span class="hljs-attr">adapt_for_cpu:</span> <span class="hljs-literal">true</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>السلوك</strong></p>
+<p><strong>Behavior</strong></p>
 <ul>
-<li><p>عندما يتم تعيين <code translate="no">load.adapt_for_cpu</code> على <code translate="no">true</code> ، يقوم Milvus بتحويل فهرس <strong>GPU_CAGRA</strong> إلى تنسيق قابل للتنفيذ على وحدة المعالجة المركزية (CPU) (شبيه بـ HNSW) أثناء التحميل.</p></li>
-<li><p>يتم تنفيذ عمليات البحث اللاحقة على وحدة المعالجة المركزية (CPU)، حتى لو كان الفهرس قد تم إنشاؤه في الأصل لوحدة معالجة الرسومات (GPU).</p></li>
-<li><p>إذا تم تجاهل هذه القيمة أو كانت "false"، يبقى الفهرس على وحدة معالجة الرسومات (GPU) ويتم تشغيل عمليات البحث على وحدة معالجة الرسومات (GPU).</p></li>
+<li><p>When <code translate="no">load.adapt_for_cpu</code> is set to <code translate="no">true</code>, Milvus converts the <strong>GPU_CAGRA</strong> index into a CPU-executable format (HNSW-like) during load.</p></li>
+<li><p>Subsequent search operations are executed on CPU, even if the index was originally built for GPU.</p></li>
+<li><p>If omitted or false, the index stays on GPU and searches run on GPU.</p></li>
 </ul>
 <div class="alert note">
-<p>استخدم التكييف مع وحدة المعالجة المركزية (CPU) في وقت التحميل في البيئات المختلطة أو الحساسة من حيث التكلفة، حيث يتم حجز موارد وحدة معالجة الرسومات (GPU) لإنشاء الفهرس، لكن عمليات البحث تُجرى على وحدة المعالجة المركزية (CPU).</p>
+<p>Use load-time CPU adaptation in hybrid or cost-sensitive environments where GPU resources are reserved for index building but searches run on CPU.</p>
 </div>
-<h2 id="Index-params" class="common-anchor-header">معلمات الفهرس<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -147,8 +145,8 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقدم هذا القسم نظرة عامة على المعلمات المستخدمة لإنشاء الفهرس وإجراء عمليات البحث عليه.</p>
-<h3 id="Index-building-params" class="common-anchor-header">معلمات إنشاء الفهرس<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>This section provides an overview of the parameters used for building an index and performing searches on the index.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -163,40 +161,40 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يسرد الجدول التالي المعلمات التي يمكن تكوينها في <code translate="no">params</code> عند <a href="/docs/ar/gpu-cagra.md#Build-index">إنشاء الفهرس</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/ar/gpu-cagra.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
-     <th><p>المعلمة</p></th>
-     <th><p>الوصف</p></th>
-     <th><p>القيمة الافتراضية</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Default Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">intermediate_graph_degree</code></p></td>
-     <td><p>يؤثر على معدل الاسترجاع ووقت الإنشاء من خلال تحديد درجة الرسم البياني قبل عملية التقليم. القيم الموصى بها هي <code translate="no">32</code> أو <code translate="no">64</code>.</p></td>
+     <td><p>Affects recall and build time by determining the graph’s degree before pruning. Recommended values are <code translate="no">32</code> or <code translate="no">64</code>.</p></td>
      <td><p><code translate="no">128</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">graph_degree</code></p></td>
-     <td><p>يؤثر على أداء البحث ومعدل الاسترجاع من خلال تعيين درجة الرسم البياني بعد عملية التقليم. ويؤدي الفارق الكبير بين هاتين الدرجتين إلى زيادة وقت الإنشاء. ويجب أن تكون قيمته أصغر من قيمة <code translate="no">intermediate_graph_degree</code>.</p></td>
+     <td><p>Affects search performance and recall by setting the graph’s degree after pruning. A larger difference between these two degrees results in a longer build time. Its value must be smaller than the value of <code translate="no">intermediate_graph_degree</code>.</p></td>
      <td><p><code translate="no">64</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">build_algo</code></p></td>
-     <td><p>يحدد خوارزمية إنشاء الرسم البياني قبل عملية التقليم. القيم الممكنة:</p><ul><li><p><code translate="no">IVF_PQ</code>: يوفر جودة أعلى ولكن وقت بناء أبطأ.</p></li><li><p><code translate="no">NN_DESCENT</code>: يوفر إنشاءً أسرع مع احتمال انخفاض معدل الاسترجاع.</p></li></ul></td>
+     <td><p>Selects the graph generation algorithm before pruning. Possible values:</p><ul><li><p><code translate="no">IVF_PQ</code>: Offers higher quality but slower build time.</p></li><li><p><code translate="no">NN_DESCENT</code>: Provides a quicker build with potentially lower recall.</p></li></ul></td>
      <td><p><code translate="no">IVF_PQ</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">cache_dataset_on_device</code></p></td>
-     <td><p>يحدد ما إذا كان سيتم تخزين مجموعة البيانات الأصلية مؤقتًا في ذاكرة وحدة معالجة الرسومات (GPU). القيم الممكنة:</p><ul><li><p><code translate="no">"true"</code>: يخزن مجموعة البيانات الأصلية مؤقتًا لتحسين معدل الاسترجاع عن طريق تحسين نتائج البحث.</p></li><li><p><code translate="no">"false"</code>: لا يخزن مجموعة البيانات الأصلية مؤقتًا لتوفير ذاكرة وحدة معالجة الرسومات (GPU).</p></li></ul></td>
+     <td><p>Decides whether to cache the original dataset in GPU memory. Possible values:</p><ul><li><p><code translate="no">"true"</code>: Caches the original dataset to enhance recall by refining search results.</p></li><li><p><code translate="no">"false"</code>: Does not cache the original dataset to save gpu memory.</p></li></ul></td>
      <td><p><code translate="no">"false"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">adapt_for_cpu</code></p></td>
-     <td><p>يحدد ما إذا كان سيتم استخدام وحدة معالجة الرسومات (GPU) لإنشاء الفهرس ووحدة المعالجة المركزية (CPU) للبحث.</p><p>يتطلب تعيين هذه المعلمة على " <code translate="no">"true"</code> " وجود المعلمة " <code translate="no">ef</code> " في طلبات البحث.</p></td>
+     <td><p>Decides whether to use GPU for index-building and CPU for search.</p><p>Setting this parameter to <code translate="no">"true"</code> requires the presence of the <code translate="no">ef</code> parameter in the search requests.</p></td>
      <td><p><code translate="no">"false"</code></p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">معلمات البحث الخاصة بالفهرس<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -211,41 +209,41 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يسرد الجدول التالي المعلمات التي يمكن تكوينها في <code translate="no">search_params.params</code> عند <a href="/docs/ar/gpu-cagra.md#Search-on-index">البحث في الفهرس</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/ar/gpu-cagra.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
-     <th><p>المعلمة</p></th>
-     <th><p>الوصف</p></th>
-     <th><p>القيمة الافتراضية</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Default Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">itopk_size</code></p></td>
-     <td><p>يحدد حجم النتائج الوسيطة التي يتم الاحتفاظ بها أثناء البحث. قد تؤدي القيمة الأكبر إلى تحسين معدل الاسترجاع على حساب أداء البحث. يجب أن تكون القيمة مساوية على الأقل للقيمة النهائية لـ top-k (الحد)، وعادةً ما تكون من قوى العدد 2 (على سبيل المثال، 16، 32، 64، 128).</p></td>
-     <td><p>فارغ</p></td>
+     <td><p>Determines the size of intermediate results kept during the search. A larger value may improve recall at the expense of search performance. It should be at least equal to the final top-k (limit) value and is typically a power of 2 (e.g., 16, 32, 64, 128).</p></td>
+     <td><p>Empty</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">search_width</code></p></td>
-     <td><p>يحدد عدد نقاط الدخول إلى مخطط CAGRA أثناء البحث. يمكن أن تؤدي زيادة هذه القيمة إلى تحسين معدل الاسترجاع ولكنها قد تؤثر على أداء البحث (على سبيل المثال: 1، 2، 4، 8، 16، 32).</p></td>
-     <td><p>فارغ</p></td>
+     <td><p>Specifies the number of entry points into the CAGRA graph during the search. Increasing this value can enhance recall but may impact search performance（e.g. 1, 2, 4, 8, 16, 32).</p></td>
+     <td><p>Empty</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">num_random_samplings</code></p></td>
-     <td><p>يتحكم في مقدار العينات العشوائية التي يقوم بها CAGRA عند اختيار نقاط الدخول الأولية للبحث في الرسم البياني. تمنح القيمة الأكبر CAGRA فرصًا أكثر للبدء من نقاط أفضل، مما يحسن الاسترجاع على حساب زيادة زمن استجابة البحث. يجب أن تكون القيمة على الأقل <code translate="no">1</code>. متاح في Milvus 2.6.20+.</p></td>
+     <td><p>Controls how much random sampling CAGRA performs when choosing initial entry points for graph search. A larger value gives CAGRA more chances to start from better points, improving recall at the cost of increased search latency. The value must be at least <code translate="no">1</code>. Available in Milvus 2.6.20+.</p></td>
      <td><p><code translate="no">1</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">min_iterations</code> / <code translate="no">max_iterations</code></p></td>
-     <td><p>يتحكم في عملية تكرار البحث. بشكل افتراضي، يتم تعيينها على <code translate="no">0</code> ، ويحدد CAGRA تلقائيًا عدد التكرارات بناءً على <code translate="no">itopk_size</code> و <code translate="no">search_width</code>. يمكن أن يساعد تعديل هذه القيم يدويًّا في تحقيق التوازن بين الأداء والدقة.</p></td>
+     <td><p>Controls the search iteration process. By default, they are set to <code translate="no">0</code>, and CAGRA automatically determines the number of iterations based on <code translate="no">itopk_size</code> and <code translate="no">search_width</code>. Adjusting these values manually can help balance performance and accuracy.</p></td>
      <td><p><code translate="no">0</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">team_size</code></p></td>
-     <td><p>يحدد عدد خيوط CUDA المستخدمة لحساب المسافة المترية على وحدة معالجة الرسومات (GPU). القيم الشائعة هي قوى العدد 2 حتى 32 (على سبيل المثال: 2، 4، 8، 16، 32). وله تأثير طفيف على أداء البحث. القيمة الافتراضية هي <code translate="no">0</code> ، حيث يختار Milvus تلقائيًا <code translate="no">team_size</code> بناءً على بُعد المتجه.</p></td>
+     <td><p>Specifies the number of CUDA threads used for calculating metric distance on the GPU. Common values are a power of 2 up to 32 (e.g. 2, 4, 8, 16, 32). It has a minor impact on search performance. The default value is <code translate="no">0</code>, where Milvus automatically selects the <code translate="no">team_size</code> based on the vector dimension.</p></td>
      <td><p><code translate="no">0</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">ef</code></p></td>
-     <td><p>يحدد التوازن بين وقت الاستعلام ودقته. تؤدي القيمة الأعلى لـ <code translate="no">ef</code> إلى بحث أكثر دقة ولكنه أبطأ.</p><p>هذه المعلمة إلزامية إذا قمت بتعيين <code translate="no">adapt_for_cpu</code> إلى <code translate="no">true</code> عند إنشاء الفهرس.</p></td>
+     <td><p>Specifies the query time/accuracy trade-off. A higher <code translate="no">ef</code> value leads to more accurate but slower search.</p><p>This parameter is mandatory if you set <code translate="no">adapt_for_cpu</code> to <code translate="no">true</code> when you build the index.</p></td>
      <td><p><code translate="no">[top_k, int_max]</code></p></td>
    </tr>
 </table>

@@ -1,12 +1,12 @@
 ---
 id: use-json-fields.md
-title: حقل JSON
+title: JSON Field
 summary: >-
-  يتيح لك Milvus تخزين وفهرسة البيانات المنظمة داخل حقل واحد باستخدام نوع بيانات
-  JSON. يتيح ذلك مخططات مرنة مع سمات متداخلة مع السماح في الوقت نفسه بالتصفية
-  الفعالة عبر فهرسة JSON.
+  Milvus allows you to store and index structured data within a single field
+  using the JSON data type. This enables flexible schemas with nested attributes
+  while still allowing efficient filtering via JSON indexing.
 ---
-<h1 id="JSON-Field" class="common-anchor-header">حقل JSON<button data-href="#JSON-Field" class="anchor-icon" translate="no">
+<h1 id="JSON-Field" class="common-anchor-header">JSON Field<button data-href="#JSON-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يتيح لك Milvus تخزين وفهرسة البيانات المنظمة داخل حقل واحد باستخدام نوع البيانات <code translate="no">JSON</code>. يتيح ذلك مخططات مرنة مع سمات متداخلة مع استمرار السماح بالتصفية الفعالة عبر فهرسة JSON.</p>
-<h2 id="What-is-a-JSON-field" class="common-anchor-header">ما هو حقل JSON؟<button data-href="#What-is-a-JSON-field" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus allows you to store and index structured data within a single field using the <code translate="no">JSON</code> data type. This enables flexible schemas with nested attributes while still allowing efficient filtering via JSON indexing.</p>
+<h2 id="What-is-a-JSON-field" class="common-anchor-header">What is a JSON field?<button data-href="#What-is-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,8 +37,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>حقل JSON هو حقل معرّف بمخطط في Milvus يخزن بيانات منظمة ذات قيمة رئيسية. يمكن أن تتضمن القيم سلاسل أو أرقامًا أو منطقية أو مصفوفات أو كائنات متداخلة بعمق.</p>
-<p>إليك مثال لما قد يبدو عليه حقل JSON في مستند:</p>
+    </button></h2><p>A JSON field is a schema-defined field in Milvus that stores structured key-value data. The values can include strings, numbers, booleans, arrays, or deeply nested objects.</p>
+<p>Here’s an example of what a JSON field might look like in a document:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;category&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;electronics&quot;</span><span class="hljs-punctuation">,</span>
@@ -58,12 +58,12 @@ summary: >-
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>في هذا المثال</p>
+<p>In this example:</p>
 <ul>
-<li><p><code translate="no">metadata</code> هو حقل JSON المحدد في المخطط.</p></li>
-<li><p>يمكنك تخزين القيم المسطحة (على سبيل المثال <code translate="no">category</code> ، <code translate="no">in_stock</code>)، والمصفوفات (<code translate="no">tags</code>)، والكائنات المتداخلة (<code translate="no">supplier</code>).</p></li>
+<li><p><code translate="no">metadata</code> is the JSON field defined in the schema.</p></li>
+<li><p>You can store flat values (e.g. <code translate="no">category</code>, <code translate="no">in_stock</code>), arrays (<code translate="no">tags</code>), and nested objects (<code translate="no">supplier</code>).</p></li>
 </ul>
-<h2 id="Define-a-JSON-field-in-the-schema" class="common-anchor-header">تعريف حقل JSON في المخطط<button data-href="#Define-a-JSON-field-in-the-schema" class="anchor-icon" translate="no">
+<h2 id="Define-a-JSON-field-in-the-schema" class="common-anchor-header">Define a JSON field in the schema<button data-href="#Define-a-JSON-field-in-the-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,15 +78,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لاستخدام حقل JSON، قم بتعريفه بشكل صريح في مخطط المجموعة من خلال تحديد <code translate="no">DataType</code> كـ <code translate="no">JSON</code>.</p>
-<p>يقوم المثال أدناه بإنشاء مجموعة بمخططها الذي يحتوي على هذه الحقول:</p>
+    </button></h2><p>To use a JSON field, explicitly define it in the collection schema by specifying the <code translate="no">DataType</code> as <code translate="no">JSON</code>.</p>
+<p>The example below creates a collection with its schema containing these fields:</p>
 <ul>
-<li><p>المفتاح الأساسي (<code translate="no">product_id</code>)</p></li>
-<li><p>حقل <code translate="no">vector</code> (إلزامي لكل مجموعة)</p></li>
-<li><p>حقل <code translate="no">metadata</code> من النوع <code translate="no">JSON</code> ، والذي يمكنه تخزين البيانات المنظمة مثل القيم المسطحة أو المصفوفات أو الكائنات المتداخلة</p></li>
+<li><p>The primary key (<code translate="no">product_id</code>)</p></li>
+<li><p>A <code translate="no">vector</code> field (mandatory for each collection)</p></li>
+<li><p>A <code translate="no">metadata</code> field of type <code translate="no">JSON</code>, which can store structured data like flat values, arrays, or nested objects</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -256,9 +261,9 @@ curl --request POST \
 
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>يمكنك أيضًا تمكين خاصية الحقل الديناميكي لتخزين الحقول غير المعلنة بمرونة، لكنها ليست مطلوبة لكي تعمل حقول JSON. لمزيد من المعلومات، راجع الحقل <a href="/docs/ar/v2.6.x/enable-dynamic-field.md">الديناميكي</a>.</p>
+<p>You can also enable the dynamic field feature to store undeclared fields flexibly, but it’s not required for JSON fields to function. For more information, refer to <a href="/docs/ar/v2.6.x/enable-dynamic-field.md">Dynamic Field</a>.</p>
 </div>
-<h2 id="Insert-entities-with-JSON-data" class="common-anchor-header">إدراج كيانات ببيانات JSON<button data-href="#Insert-entities-with-JSON-data" class="anchor-icon" translate="no">
+<h2 id="Insert-entities-with-JSON-data" class="common-anchor-header">Insert entities with JSON data<button data-href="#Insert-entities-with-JSON-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -273,9 +278,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>بمجرد إنشاء المجموعة، أدرج الكيانات التي تحتوي على كائنات JSON منظمة في الحقل <code translate="no">metadata</code> JSON.</p>
+    </button></h2><p>Once the collection is created, insert entities that contain structured JSON objects in the <code translate="no">metadata</code> JSON field.</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">entities = [
     {
         <span class="hljs-string">&quot;product_id&quot;</span>: <span class="hljs-number">1</span>,
@@ -429,7 +439,7 @@ curl --request POST \
 }&quot;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Index-values-inside-the-JSON-field" class="common-anchor-header">قيم الفهرسة داخل حقل JSON<button data-href="#Index-values-inside-the-JSON-field" class="anchor-icon" translate="no">
+<h2 id="Index-values-inside-the-JSON-field" class="common-anchor-header">Index values inside the JSON field<button data-href="#Index-values-inside-the-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -444,15 +454,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لتسريع التصفية العددية على حقول JSON، يدعم Milvus الأنواع التالية من الفهارس:</p>
+    </button></h2><p>To accelerate scalar filtering on JSON fields, Milvus supports the following types of indexes:</p>
 <ul>
-<li><p>فهرس<strong>مسار JSON</strong> - فهرسة مسارات JSON محددة بنوع قياسي معلن.</p></li>
-<li><p><strong>فهرس JSON المسطح</strong> - فهرسة كائن JSON كامل (أو شجرة فرعية) مع الاستدلال التلقائي للنوع.</p></li>
+<li><p><strong>JSON path index</strong> – index specific JSON paths with a declared scalar type.</p></li>
+<li><p><strong>JSON flat index</strong> – index an entire JSON object (or subtree) with automatic type inference.</p></li>
 </ul>
 <div class="alert note">
-<p>فهرسة حقول JSON <strong>اختيارية</strong>. لا يزال بإمكانك الاستعلام أو التصفية حسب مسارات JSON بدون فهرس، ولكن قد يؤدي ذلك إلى أداء أبطأ بسبب البحث بالقوة الغاشمة.</p>
+<p>Indexing JSON fields is <strong>optional</strong>. You can still query or filter by JSON paths without an index, but it may result in slower performance due to brute-force search.</p>
 </div>
-<h3 id="Choose-between-path-index-and-flat-index--Milvus-26x" class="common-anchor-header">اختر بين فهرس المسار والفهرس المسطح<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Choose-between-path-index-and-flat-index--Milvus-26x" class="anchor-icon" translate="no">
+<h3 id="Choose-between-path-index-and-flat-index" class="common-anchor-header">Choose between path index and flat index<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Choose-between-path-index-and-flat-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -469,54 +479,54 @@ curl --request POST \
       </svg>
     </button></h3><table>
    <tr>
-     <th><p><strong>القدرة</strong></p></th>
-     <th><p><strong>فهرس مسار JSON</strong></p></th>
-     <th><p><strong>فهرس JSON المسطح</strong></p></th>
+     <th><p><strong>Capability</strong></p></th>
+     <th><p><strong>JSON Path Index</strong></p></th>
+     <th><p><strong>JSON Flat Index</strong></p></th>
    </tr>
    <tr>
-     <td><p>ما يفهرس</p></td>
-     <td><p>المسار (المسارات) المحددة التي تسميها</p></td>
-     <td><p>جميع المسارات المسطحة تحت مسار الكائن</p></td>
+     <td><p>What it indexes</p></td>
+     <td><p>Specific path(s) you name</p></td>
+     <td><p>All flattened paths under an object path</p></td>
    </tr>
    <tr>
-     <td><p>معالجة النوع</p></td>
-     <td><p>تعلن <code translate="no">json_cast_type</code> (أنواع قياسية)</p></td>
-     <td><p>يجب أن تكون JSON (استدلال النوع التلقائي)</p></td>
+     <td><p>Type handling</p></td>
+     <td><p>You declare <code translate="no">json_cast_type</code> (scalar types)</p></td>
+     <td><p>Must be JSON (auto type inference)</p></td>
    </tr>
    <tr>
-     <td><p>المصفوفات كـ LHS¹</p></td>
-     <td><p>مدعومة</p></td>
-     <td><p>غير مدعومة</p></td>
+     <td><p>Arrays as LHS¹</p></td>
+     <td><p>Supported</p></td>
+     <td><p>Not supported</p></td>
    </tr>
    <tr>
-     <td><p>سرعة الاستعلام</p></td>
-     <td><p><strong>عالية</strong> على المسارات المفهرسة</p></td>
-     <td><p><strong>عالية،</strong> أقل قليلاً في المتوسط</p></td>
+     <td><p>Query speed</p></td>
+     <td><p><strong>High</strong> on indexed paths</p></td>
+     <td><p><strong>High</strong>, slightly lower on average</p></td>
    </tr>
    <tr>
-     <td><p>استخدام القرص</p></td>
-     <td><p>أقل</p></td>
-     <td><p>أعلى</p></td>
+     <td><p>Disk use</p></td>
+     <td><p>Lower</p></td>
+     <td><p>Higher</p></td>
    </tr>
 </table>
-<p>¹ <em>المصفوفات كـ LHS</em> يعني أن الطرف الأيسر من تعبير المرشح هو مصفوفة JSON، على سبيل المثال:</p>
+<p>¹ <em>Arrays as LHS</em> means the left-hand side of the filter expression is a JSON array, for example:</p>
 <pre><code translate="no" class="language-plaintext">metadata[&quot;tags&quot;] == [&quot;clearance&quot;, &quot;summer_sale&quot;]
 json_contains(metadata[&quot;tags&quot;], &quot;clearance&quot;)
 <button class="copy-code-btn"></button></code></pre>
-<p>في هذه الحالات، <code translate="no">metadata[&quot;tags&quot;]</code> هو مصفوفة. لا تعمل فهرسة JSON المسطحة على تسريع مثل هذه المرشحات - استخدم فهرس مسار JSON مع نوع مصفوفة مصفوفة بدلاً من ذلك.</p>
-<p><strong>استخدم فهرس مسار JSON عندما:</strong></p>
+<p>In these cases, <code translate="no">metadata[&quot;tags&quot;]</code> is an array. JSON flat indexing does not accelerate such filters — use a JSON path index with an array cast type instead.</p>
+<p><strong>Use JSON path index when:</strong></p>
 <ul>
-<li><p>أنت تعرف مفاتيح التشغيل السريع للاستعلام مسبقًا.</p></li>
-<li><p>تحتاج إلى تصفية حيث يكون الجانب الأيسر عبارة عن مصفوفة.</p></li>
-<li><p>تريد تقليل استخدام القرص.</p></li>
+<li><p>You know the hot keys to query in advance.</p></li>
+<li><p>You need to filter where the left-hand side is an array.</p></li>
+<li><p>You want to minimize disk usage.</p></li>
 </ul>
-<p><strong>استخدم فهرس JSON المسطح عندما:</strong></p>
+<p><strong>Use JSON flat index when:</strong></p>
 <ul>
-<li><p>تريد فهرسة شجرة فرعية كاملة (بما في ذلك الجذر).</p></li>
-<li><p>تتغير بنية JSON الخاصة بك بشكل متكرر.</p></li>
-<li><p>تريد تغطية استعلام أوسع دون الإعلان عن كل مسار.</p></li>
+<li><p>You want to index a whole subtree (including the root).</p></li>
+<li><p>Your JSON structure changes frequently.</p></li>
+<li><p>You want broader query coverage without declaring every path.</p></li>
 </ul>
-<h3 id="JSON-path-indexing" class="common-anchor-header">فهرسة مسار JSON<button data-href="#JSON-path-indexing" class="anchor-icon" translate="no">
+<h3 id="JSON-path-indexing" class="common-anchor-header">JSON path indexing<button data-href="#JSON-path-indexing" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -531,67 +541,72 @@ json_contains(metadata[&quot;tags&quot;], &quot;clearance&quot;)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لإنشاء فهرس مسار JSON، حدد:</p>
+    </button></h3><p>To create a JSON path index, specify:</p>
 <ul>
-<li><p><strong>مسار JSON</strong> (<code translate="no">json_path</code>): المسار إلى المفتاح أو الحقل المتداخل داخل كائن JSON الذي تريد فهرسته.</p>
+<li><p><strong>JSON path</strong> (<code translate="no">json_path</code>): The path to the key or nested field within your JSON object that you want to index.</p>
 <ul>
-<li><p>مثال:</p>
+<li><p>Example:</p>
 <ul>
-<li><p>لمفتاح, <code translate="no">metadata[&quot;category&quot;]</code></p></li>
-<li><p>لحقل متداخل, <code translate="no">metadata[&quot;contact&quot;][&quot;email&quot;]</code></p></li>
+<li><p>For a key, <code translate="no">metadata[&quot;category&quot;]</code></p></li>
+<li><p>For a nested field, <code translate="no">metadata[&quot;contact&quot;][&quot;email&quot;]</code></p></li>
 </ul>
-<p>هذا يحدد المكان الذي يجب أن يبحث فيه محرك الفهرسة داخل بنية JSON.</p></li>
+<p>This defines where the indexing engine should look inside the JSON structure.</p></li>
 </ul></li>
-<li><p><strong>نوع JSON cast type</strong> (<code translate="no">json_cast_type</code>): نوع البيانات الذي يجب أن يستخدمه Milvus عند تفسير وفهرسة القيمة في المسار المحدد.</p>
+<li><p><strong>JSON cast type</strong> (<code translate="no">json_cast_type</code>): The data type that Milvus should use when interpreting and indexing the value at the specified path.</p>
 <ul>
-<li><p>يجب أن يتطابق هذا النوع مع نوع البيانات الفعلي للحقل الذي تتم فهرسته. إذا كنت ترغب في تحويل نوع البيانات إلى نوع آخر أثناء الفهرسة، ففكر في <a href="/docs/ar/v2.6.x/use-json-fields.md#Use-JSON-cast-functions-for-type-conversion">استخدام دالة الإرسال</a>.</p></li>
-<li><p>للحصول على قائمة كاملة، انظر <a href="/docs/ar/v2.6.x/use-json-fields.md#Supported-JSON-cast-types">أدناه</a>.</p></li>
+<li><p>This type must match the actual data type of the field being indexed. If you want to convert the data type to another during indexing, consider <a href="/docs/ar/v2.6.x/use-json-fields.md#Use-JSON-cast-functions-for-type-conversion">using a cast function</a>.</p></li>
+<li><p>For a complete list, see <a href="/docs/ar/v2.6.x/use-json-fields.md#Supported-JSON-cast-types">below</a>.</p></li>
 </ul></li>
 </ul>
-<h4 id="Supported-JSON-cast-types" class="common-anchor-header">أنواع مصبوبات JSON المدعومة</h4><p>أنواع المصبوب غير حساسة لحالة الأحرف. الأنواع التالية مدعومة:</p>
+<h4 id="Supported-JSON-cast-types" class="common-anchor-header">Supported JSON cast types</h4><p>Cast types are case-insensitive. The following types are supported:</p>
 <table>
    <tr>
-     <th><p>نوع المصبوب</p></th>
-     <th><p>الوصف</p></th>
-     <th><p>مثال قيمة JSON</p></th>
+     <th><p>Cast Type</p></th>
+     <th><p>Description</p></th>
+     <th><p>Example JSON Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">bool</code></p></td>
-     <td><p>قيمة منطقية</p></td>
+     <td><p>Boolean value</p></td>
      <td><p><code translate="no">true</code>, <code translate="no">false</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">double</code></p></td>
-     <td><p>قيمة عددية (عدد صحيح أو عائم)</p></td>
-     <td><p><code translate="no">42</code> <code translate="no">99.99</code>, <code translate="no">-15.5</code></p></td>
+     <td><p>Numeric value (integer or float)</p></td>
+     <td><p><code translate="no">42</code>, <code translate="no">99.99</code>, <code translate="no">-15.5</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">varchar</code></p></td>
-     <td><p>قيمة سلسلة</p></td>
+     <td><p>String value</p></td>
      <td><p><code translate="no">"electronics"</code>, <code translate="no">"BrandA"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">array_bool</code></p></td>
-     <td><p>صفيف من المنطقيات</p></td>
+     <td><p>Array of booleans</p></td>
      <td><p><code translate="no">[true, false, true]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">array_double</code></p></td>
-     <td><p>صفيف من الأرقام</p></td>
+     <td><p>Array of numbers</p></td>
      <td><p><code translate="no">[1.2, 3.14, 42]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">array_varchar</code></p></td>
-     <td><p>صفيف من السلاسل</p></td>
+     <td><p>Array of strings</p></td>
      <td><p><code translate="no">["tag1", "tag2", "tag3"]</code></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>يجب أن تحتوي المصفوفات على عناصر من نفس النوع للفهرسة المثلى. لمزيد من المعلومات، راجع <a href="/docs/ar/v2.6.x/array_data_type.md">حقل المصفوفات</a>.</p>
+<p>Arrays should contain elements of the same type for optimal indexing. For more information, refer to <a href="/docs/ar/v2.6.x/array_data_type.md">Array Field</a>.</p>
 </div>
-<h4 id="Example-Create-JSON-path-indexes" class="common-anchor-header">مثال: إنشاء فهارس مسار JSON</h4><p>باستخدام بنية <code translate="no">metadata</code> JSON من مقدمتنا، إليك أمثلة على كيفية إنشاء فهارس على مسارات JSON المختلفة:</p>
+<h4 id="Example-Create-JSON-path-indexes" class="common-anchor-header">Example: Create JSON path indexes</h4><p>Using the <code translate="no">metadata</code> JSON structure from our introduction, here are examples of how to create indexes on different JSON paths:</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Index the category field as a string</span>
 index_params = client.prepare_index_params()
 
@@ -695,22 +710,27 @@ indexOpt2 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot;p
   }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Use-JSON-cast-functions-for-type-conversion--Milvus-2514+" class="common-anchor-header">استخدم دوال JSON cast لتحويل النوع<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.14+</span></h4><p>إذا كان مفتاح حقل JSON الخاص بك يحتوي على قيم بتنسيق غير صحيح (على سبيل المثال، الأرقام المخزنة كسلاسل)، يمكنك استخدام دوال الإرسال لتحويل القيم أثناء الفهرسة.</p>
-<h5 id="Supported-cast-functions" class="common-anchor-header">دوال الإرسال المدعومة</h5><p>دوال الإرسال غير حساسة لحالة الأحرف. الأنواع التالية مدعومة:</p>
+<h4 id="Use-JSON-cast-functions-for-type-conversion" class="common-anchor-header">Use JSON cast functions for type conversion<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.14+</span></h4><p>If your JSON field key contains values in an incorrect format (e.g., numbers stored as strings), you can use cast functions to convert values during indexing.</p>
+<h5 id="Supported-cast-functions" class="common-anchor-header">Supported cast functions</h5><p>Cast functions are case-insensitive. The following types are supported:</p>
 <table>
    <tr>
-     <th><p>دالة الإرسال</p></th>
-     <th><p>تحويل من → إلى</p></th>
-     <th><p>حالة الاستخدام</p></th>
+     <th><p>Cast Function</p></th>
+     <th><p>Converts From → To</p></th>
+     <th><p>Use Case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">"STRING_TO_DOUBLE"</code></p></td>
-     <td><p>سلسلة → عددي (مزدوج)</p></td>
-     <td><p>تحويل <code translate="no">"99.99"</code> إلى <code translate="no">99.99</code></p></td>
+     <td><p>String → Numeric (double)</p></td>
+     <td><p>Convert <code translate="no">"99.99"</code> to <code translate="no">99.99</code></p></td>
    </tr>
 </table>
-<h5 id="Example-Cast-string-numbers-to-double" class="common-anchor-header">مثال: تحويل أرقام السلسلة إلى رقمين</h5><div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<h5 id="Example-Cast-string-numbers-to-double" class="common-anchor-header">Example: Cast string numbers to double</h5><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Convert string numbers to double for indexing</span>
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
@@ -767,11 +787,11 @@ indexOpt3 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot;p
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
 <ul>
-<li><p>المعلمة <code translate="no">json_cast_type</code> إلزامية ويجب أن تكون نفس نوع مخرجات الدالة المصبوبة.</p></li>
-<li><p>إذا فشل التحويل (على سبيل المثال، سلسلة غير رقمية)، يتم تخطي القيمة ولا تتم فهرستها.</p></li>
+<li><p>The <code translate="no">json_cast_type</code> parameter is mandatory and must be the same as the cast function’s output type.</p></li>
+<li><p>If conversion fails (e.g., non-numeric string), the value is skipped and not indexed.</p></li>
 </ul>
 </div>
-<h3 id="JSON-flat-indexing--Milvus-26x" class="common-anchor-header">فهرسة JSON المسطحة<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#JSON-flat-indexing--Milvus-26x" class="anchor-icon" translate="no">
+<h3 id="JSON-flat-indexing" class="common-anchor-header">JSON flat indexing<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#JSON-flat-indexing" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -786,35 +806,40 @@ indexOpt3 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot;p
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بالنسبة للفهرسة <strong>المسطحة</strong> ل JSON، يقوم Milvus بفهرسة جميع أزواج المفاتيح-القيم داخل مسار كائن JSON (بما في ذلك الكائنات المتداخلة) عن طريق <em>تسطيح</em> بنية JSON واستنتاج نوع كل قيمة تلقائيًا.</p>
-<h4 id="How-flattening-and-type-inference-work" class="common-anchor-header">كيفية عمل التسطيح واستنتاج النوع</h4><p>عندما تقوم بإنشاء فهرس JSON مسطح على مسار كائن ما، سيقوم ميلفوس بما يلي:</p>
+    </button></h3><p>For <strong>JSON flat indexing</strong>, Milvus indexes all key–value pairs within a JSON object path (including nested objects) by <em>flattening</em> the JSON structure and automatically inferring the type of each value.</p>
+<h4 id="How-flattening-and-type-inference-work" class="common-anchor-header">How flattening and type inference work</h4><p>When you create a JSON flat index on an object path, Milvus will:</p>
 <ol>
-<li><p><strong>التسطيح</strong> - اجتياز الكائن بشكل متكرر بدءًا من <code translate="no">json_path</code> المحدد واستخراج أزواج القيمة الرئيسية المتداخلة كمسارات مؤهلة بالكامل. باستخدام المثال السابق <code translate="no">metadata</code>:</p>
+<li><p><strong>Flatten</strong> – Recursively traverse the object starting from the specified <code translate="no">json_path</code> and extract nested key–value pairs as fully qualified paths. Using the earlier <code translate="no">metadata</code> example:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;category&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;electronics&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;price&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">99.99</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;supplier&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;country&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;USA&quot;</span> <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>يصبح:</p>
+<p>becomes:</p>
 <pre><code translate="no" class="language-plaintext">metadata[&quot;category&quot;] = &quot;electronics&quot;
 metadata[&quot;price&quot;] = 99.99
 metadata[&quot;supplier&quot;][&quot;country&quot;] = &quot;USA&quot;
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>استنتاج الأنواع تلقائيًا</strong> - لكل قيمة، يحدد Milvus نوعها بالترتيب التالي:</p>
+<li><p><strong>Infer types automatically</strong> – For each value, Milvus determines its type in the following order:</p>
 <pre><code translate="no" class="language-plaintext">unsigned integer → signed integer → floating-point → string
 <button class="copy-code-btn"></button></code></pre>
-<p>يتم استخدام النوع الأول الذي يناسب القيمة للفهرسة.</p>
-<p>هذا يعني أن النوع المستنتج سيكون دائمًا <strong>أحد هذه الأنواع الأربعة</strong>.</p>
-<p>يتم إجراء الاستدلال على النوع <strong>لكل مستند،</strong> لذلك يمكن أن يكون لنفس المسار أنواع مستنبطة مختلفة عبر المستندات.</p>
-<p>بعد الاستدلال على النوع، يتم تمثيل البيانات التي تم تسويتها داخليًا كمصطلحات مع أنواعها المستدل عليها، على سبيل المثال:</p>
+<p>The first type that fits the value is used for indexing.</p>
+<p>This means the inferred type will always be <strong>one of these four</strong>.</p>
+<p>Type inference is performed <strong>per document</strong>, so the same path can have different inferred types across documents.</p>
+<p>After type inference, the flattened data is internally represented as terms with their inferred types, for example:</p>
 <pre><code translate="no" class="language-plaintext">(&quot;category&quot;, Text, &quot;electronics&quot;)
 (&quot;price&quot;, Double, 99.99)
 (&quot;supplier.country&quot;, Text, &quot;USA&quot;)
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h4 id="Example-Create-JSON-flat-index" class="common-anchor-header">مثال: إنشاء فهرس JSON مسطح</h4><div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<h4 id="Example-Create-JSON-flat-index" class="common-anchor-header">Example: Create JSON flat index</h4><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 1. Create a flat index on the root object of the JSON column (covers the entire JSON subtree)</span>
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
@@ -845,7 +870,7 @@ index_params.add_index(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Apply-indexes-to-the-collection" class="common-anchor-header">تطبيق الفهارس على المجموعة<button data-href="#Apply-indexes-to-the-collection" class="anchor-icon" translate="no">
+<h3 id="Apply-indexes-to-the-collection" class="common-anchor-header">Apply indexes to the collection<button data-href="#Apply-indexes-to-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -860,9 +885,14 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بعد تحديد معلمات الفهرس، يمكنك تطبيقها على المجموعة باستخدام <code translate="no">create_index()</code>:</p>
+    </button></h3><p>After defining the index parameters, you can apply them to the collection using <code translate="no">create_index()</code>:</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.create_index(
     collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>,
     index_params=index_params
@@ -906,7 +936,7 @@ curl --request POST \
   \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Filter-by-JSON-field-values" class="common-anchor-header">تصفية حسب قيم حقول JSON<button data-href="#Filter-by-JSON-field-values" class="anchor-icon" translate="no">
+<h2 id="Filter-by-JSON-field-values" class="common-anchor-header">Filter by JSON field values<button data-href="#Filter-by-JSON-field-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -921,10 +951,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>بعد إدراج حقول JSON وفهرستها، يمكنك تصفيتها باستخدام تعبيرات التصفية القياسية باستخدام صيغة مسار JSON.</p>
-<p>على سبيل المثال</p>
+    </button></h2><p>After inserting and indexing JSON fields, you can filter on them using standard filter expressions with JSON path syntax.</p>
+<p>For example:</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata[&quot;category&quot;] == &quot;electronics&quot;&#x27;</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata[&quot;price&quot;] &gt; 50&#x27;</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot;], &quot;featured&quot;)&#x27;</span>
@@ -946,13 +981,13 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
 <span class="hljs-built_in">export</span> filterPrice=<span class="hljs-string">&#x27;metadata[&quot;price&quot;] &gt; 50&#x27;</span>
 <span class="hljs-built_in">export</span> filterTags=<span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot;], &quot;featured&quot;)&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لاستخدام هذه التعبيرات في البحث أو الاستعلام، تأكد من</p>
+<p>To use these expressions in a search or query, make sure:</p>
 <ul>
-<li><p>أنك أنشأت فهرسًا على كل حقل متجه.</p></li>
-<li><p>تم تحميل المجموعة في الذاكرة.</p></li>
+<li><p>You have created an index on each vector field.</p></li>
+<li><p>The collection is loaded into memory.</p></li>
 </ul>
-<p>للاطلاع على قائمة كاملة بالمشغلات والتعبيرات المدعومة، راجع <a href="/docs/ar/v2.6.x/json-operators.md">مشغلات JSON</a>.</p>
-<h2 id="Pull-it-all-together" class="common-anchor-header">اجمع كل شيء معًا<button data-href="#Pull-it-all-together" class="anchor-icon" translate="no">
+<p>For a full list of supported operators and expressions, refer to <a href="/docs/ar/v2.6.x/json-operators.md">JSON Operators</a>.</p>
+<h2 id="Pull-it-all-together" class="common-anchor-header">Pull it all together<button data-href="#Pull-it-all-together" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -967,17 +1002,17 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لقد تعلمت الآن كيفية تعريف وإدراج وفهرسة القيم المنظمة اختياريًا داخل حقل JSON.</p>
-<p>لإكمال سير العمل في تطبيق واقعي، ستحتاج أيضًا إلى:</p>
+    </button></h2><p>By now, you’ve learned how to define, insert, and optionally index structured values inside a JSON field.</p>
+<p>To complete the workflow in a real-world application, you’ll also need to:</p>
 <ul>
-<li><p><strong>إنشاء فهرس على الحقول المتجهة</strong> (إلزامي لكل حقل متجه في مجموعة)</p>
-<p>الرجوع إلى <a href="/docs/ar/v2.6.x/create-collection.md#Optional-Set-Index-Parameters">تعيين معلمات الفهرس</a></p></li>
-<li><p><strong>تحميل المجموعة</strong></p>
-<p>راجع <a href="/docs/ar/v2.6.x/load-and-release.md">تحميل وتحرير</a></p></li>
-<li><p><strong>البحث أو الاستعلام باستخدام مرشحات مسار JSON</strong></p>
-<p>راجع <a href="/docs/ar/v2.6.x/filtered-search.md">البحث المصفى</a> <a href="/docs/ar/v2.6.x/json-operators.md">وعوامل تشغيل JSON</a></p></li>
+<li><p><strong>Create an index on your vector fields</strong> (mandatory for each vector field in a collection)</p>
+<p>Refer to <a href="/docs/ar/v2.6.x/create-collection.md#Optional-Set-Index-Parameters">Set Index Parameters</a></p></li>
+<li><p><strong>Load the collection</strong></p>
+<p>Refer to <a href="/docs/ar/v2.6.x/load-and-release.md">Load & Release</a></p></li>
+<li><p><strong>Search or query using JSON path filters</strong></p>
+<p>Refer to <a href="/docs/ar/v2.6.x/filtered-search.md">Filtered Search</a> and <a href="/docs/ar/v2.6.x/json-operators.md">JSON Operators</a></p></li>
 </ul>
-<h2 id="FAQ" class="common-anchor-header">الأسئلة الشائعة<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -992,7 +1027,7 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="What-are-the-differences-between-a-JSON-field-and-the-dynamic-field" class="common-anchor-header">ما هي الاختلافات بين حقل JSON والحقل الديناميكي؟<button data-href="#What-are-the-differences-between-a-JSON-field-and-the-dynamic-field" class="anchor-icon" translate="no">
+    </button></h2><h3 id="What-are-the-differences-between-a-JSON-field-and-the-dynamic-field" class="common-anchor-header">What are the differences between a JSON field and the dynamic field?<button data-href="#What-are-the-differences-between-a-JSON-field-and-the-dynamic-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1008,12 +1043,12 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><strong>حقل JSON</strong> هو حقل محدد بالمخطط. يجب أن تعلن الحقل صراحةً في المخطط.</p></li>
-<li><p>الحقل<strong>الديناميكي</strong> عبارة عن كائن JSON مخفي (<code translate="no">$meta</code>) يخزن تلقائيًا أي حقل غير محدد في المخطط.</p></li>
+<li><p><strong>JSON field</strong> is schema-defined. You must explicitly declare the field in the schema.</p></li>
+<li><p><strong>Dynamic field</strong> is a hidden JSON object (<code translate="no">$meta</code>) that automatically stores any field not defined in the schema.</p></li>
 </ul>
-<p>كلاهما يدعمان البنى المتداخلة وفهرسة مسار JSON، لكن الحقول الديناميكية أكثر ملاءمة لهياكل البيانات الاختيارية أو المتطورة.</p>
-<p>راجع <a href="/docs/ar/v2.6.x/enable-dynamic-field.md">الحقل الديناميكي</a> للحصول على التفاصيل.</p>
-<h3 id="Are-there-any-limitations-on-the-size-of-a-JSON-field" class="common-anchor-header">هل هناك أي قيود على حجم حقل JSON؟<button data-href="#Are-there-any-limitations-on-the-size-of-a-JSON-field" class="anchor-icon" translate="no">
+<p>Both support nested structures and JSON path indexing, but dynamic fields are more suitable for optional or evolving data structures.</p>
+<p>Refer to <a href="/docs/ar/v2.6.x/enable-dynamic-field.md">Dynamic Field</a> for details.</p>
+<h3 id="Are-there-any-limitations-on-the-size-of-a-JSON-field" class="common-anchor-header">Are there any limitations on the size of a JSON field?<button data-href="#Are-there-any-limitations-on-the-size-of-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1028,8 +1063,8 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>نعم. يقتصر كل حقل JSON على 65,536 بايت.</p>
-<h3 id="Does-a-JSON-field-support-setting-a-default-value" class="common-anchor-header">هل يدعم حقل JSON تعيين قيمة افتراضية؟<button data-href="#Does-a-JSON-field-support-setting-a-default-value" class="anchor-icon" translate="no">
+    </button></h3><p>Yes. Each JSON field is limited to 65,536 bytes.</p>
+<h3 id="Does-a-JSON-field-support-setting-a-default-value" class="common-anchor-header">Does a JSON field support setting a default value?<button data-href="#Does-a-JSON-field-support-setting-a-default-value" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1044,9 +1079,9 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لا، لا تدعم حقول JSON القيم الافتراضية. ومع ذلك، يمكنك تعيين <code translate="no">nullable=True</code> عند تعريف الحقل للسماح بإدخالات فارغة.</p>
-<p>راجع <a href="/docs/ar/v2.6.x/nullable-and-default.md">Nullable &amp; Default</a> للحصول على التفاصيل.</p>
-<h3 id="Are-there-any-naming-conventions-for-JSON-field-keys" class="common-anchor-header">هل هناك أي اصطلاحات تسمية لمفاتيح حقول JSON؟<button data-href="#Are-there-any-naming-conventions-for-JSON-field-keys" class="anchor-icon" translate="no">
+    </button></h3><p>No, JSON fields do not support default values. However, you can set <code translate="no">nullable=True</code> when defining the field to allow empty entries.</p>
+<p>Refer to <a href="/docs/ar/v2.6.x/nullable-and-default.md">Nullable & Default</a> for details.</p>
+<h3 id="Are-there-any-naming-conventions-for-JSON-field-keys" class="common-anchor-header">Are there any naming conventions for JSON field keys?<button data-href="#Are-there-any-naming-conventions-for-JSON-field-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1061,13 +1096,13 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>نعم، لضمان التوافق مع الاستعلامات والفهرسة:</p>
+    </button></h3><p>Yes, to ensure compatibility with queries and indexing:</p>
 <ul>
-<li><p>استخدم الحروف والأرقام والشرطات السفلية فقط في مفاتيح JSON.</p></li>
-<li><p>تجنب استخدام الأحرف الخاصة أو المسافات أو النقاط (<code translate="no">.</code> ، <code translate="no">/</code> ، إلخ).</p></li>
-<li><p>قد تتسبب المفاتيح غير المتوافقة في حدوث مشكلات في تحليل التعبيرات المرشحة.</p></li>
+<li><p>Use only letters, numbers, and underscores in JSON keys.</p></li>
+<li><p>Avoid using special characters, spaces, or dots (<code translate="no">.</code>, <code translate="no">/</code>, etc.).</p></li>
+<li><p>Incompatible keys may cause parsing issues in filter expressions.</p></li>
 </ul>
-<h3 id="How-does-Milvus-handle-string-values-in-JSON-fields" class="common-anchor-header">كيف يتعامل Milvus مع قيم السلاسل في حقول JSON؟<button data-href="#How-does-Milvus-handle-string-values-in-JSON-fields" class="anchor-icon" translate="no">
+<h3 id="How-does-Milvus-handle-string-values-in-JSON-fields" class="common-anchor-header">How does Milvus handle string values in JSON fields?<button data-href="#How-does-Milvus-handle-string-values-in-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1082,14 +1117,14 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يقوم Milvus بتخزين قيم السلسلة تمامًا كما تظهر في مدخلات JSON - بدون تحويل دلالي. قد تؤدي السلاسل المقتبسة بشكل غير صحيح إلى حدوث أخطاء أثناء التحليل.</p>
-<p><strong>أمثلة على السلاسل الصحيحة</strong>:</p>
+    </button></h3><p>Milvus stores string values exactly as they appear in the JSON input—without semantic transformation. Improperly quoted strings may result in errors during parsing.</p>
+<p><strong>Examples of valid strings</strong>:</p>
 <pre><code translate="no" class="language-plaintext">&quot;a\&quot;b&quot;, &quot;a&#x27;b&quot;, &quot;a\\b&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>أمثلة على السلاسل غير الصالحة</strong>:</p>
+<p><strong>Examples of invalid strings</strong>:</p>
 <pre><code translate="no" class="language-plaintext">&#x27;a&quot;b&#x27;, &#x27;a\&#x27;b&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="What-filtering-logic-does-Milvus-use-for-indexed-JSON-paths" class="common-anchor-header">ما هو منطق التصفية الذي يستخدمه Milvus لمسارات JSON المفهرسة؟<button data-href="#What-filtering-logic-does-Milvus-use-for-indexed-JSON-paths" class="anchor-icon" translate="no">
+<h3 id="What-filtering-logic-does-Milvus-use-for-indexed-JSON-paths" class="common-anchor-header">What filtering logic does Milvus use for indexed JSON paths?<button data-href="#What-filtering-logic-does-Milvus-use-for-indexed-JSON-paths" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1105,14 +1140,14 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><strong>الفهرسة العددية</strong>:</p>
-<p>إذا تم إنشاء فهرس باستخدام <code translate="no">json_cast_type=&quot;double&quot;</code> ، فإن شروط التصفية الرقمية فقط (على سبيل المثال، <code translate="no">&gt;</code> ، <code translate="no">&lt;</code> ، <code translate="no">== 42</code>) سوف تستفيد من الفهرس. قد تعود الشروط غير العددية إلى الفحص بالقوة الغاشمة.</p></li>
-<li><p><strong>فهرسة السلسلة</strong>:</p>
-<p>إذا كان الفهرس يستخدم <code translate="no">json_cast_type=&quot;varchar&quot;</code> ، فإن شروط تصفية السلاسل فقط هي التي ستستفيد من الفهرس؛ أما الأنواع الأخرى فقد تعود إلى الفحص بالقوة الغاشمة.</p></li>
-<li><p><strong>الفهرسة المنطقية</strong>:</p>
-<p>تتصرف الفهرسة المنطقية بشكل مشابه لفهرسة السلسلة، مع استخدام الفهرسة فقط عندما يتطابق الشرط بشكل صارم مع صواب أو خطأ.</p></li>
+<li><p><strong>Numeric Indexing</strong>:</p>
+<p>If an index is created with <code translate="no">json_cast_type=&quot;double&quot;</code>, only numeric filter conditions (e.g., <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">== 42</code>) will leverage the index. Non-numeric conditions may fall back to a brute-force scan.</p></li>
+<li><p><strong>String Indexing</strong>:</p>
+<p>If an index uses <code translate="no">json_cast_type=&quot;varchar&quot;</code>, only string filter conditions will benefit from the index; other types may fall back to a brute-force scan.</p></li>
+<li><p><strong>Boolean Indexing</strong>:</p>
+<p>Boolean indexing behaves similarly to string indexing, with index usage only when the condition strictly matches true or false.</p></li>
 </ul>
-<h3 id="What-about-numeric-precision-when-indexing-JSON-fields" class="common-anchor-header">ماذا عن الدقة الرقمية عند فهرسة حقول JSON؟<button data-href="#What-about-numeric-precision-when-indexing-JSON-fields" class="anchor-icon" translate="no">
+<h3 id="What-about-numeric-precision-when-indexing-JSON-fields" class="common-anchor-header">What about numeric precision when indexing JSON fields?<button data-href="#What-about-numeric-precision-when-indexing-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1127,9 +1162,9 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يقوم ميلفوس بتخزين جميع القيم الرقمية المفهرسة على شكل مضاعفات.</p>
-<p>إذا تجاوزت القيمة الرقمية <strong>2^53،</strong> فقد تفقد الدقة. يمكن أن يؤدي فقدان الدقة هذا إلى عدم مطابقة استعلامات التصفية للقيم خارج النطاق تمامًا.</p>
-<h3 id="Can-I-create-multiple-indexes-on-the-same-JSON-path-with-different-cast-types" class="common-anchor-header">هل يمكنني إنشاء فهارس متعددة على نفس مسار JSON بأنواع مختلفة من الإرسال؟<button data-href="#Can-I-create-multiple-indexes-on-the-same-JSON-path-with-different-cast-types" class="anchor-icon" translate="no">
+    </button></h3><p>Milvus stores all indexed numeric values as doubles.</p>
+<p>If a numeric value exceeds <strong>2^53</strong>, it may lose precision. This loss of precision can result in filter queries not matching out-of-range values exactly.</p>
+<h3 id="Can-I-create-multiple-indexes-on-the-same-JSON-path-with-different-cast-types" class="common-anchor-header">Can I create multiple indexes on the same JSON path with different cast types?<button data-href="#Can-I-create-multiple-indexes-on-the-same-JSON-path-with-different-cast-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1144,8 +1179,8 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لا، كل مسار JSON يدعم <strong>فهرساً واحداً فقط</strong>. يجب عليك اختيار فهرس واحد <code translate="no">json_cast_type</code> يطابق بياناتك. لا يتم دعم إنشاء فهارس متعددة على نفس المسار بأنواع مختلفة من أنواع المسبوكات.</p>
-<h3 id="What-if-values-on-a-JSON-path-have-inconsistent-types" class="common-anchor-header">ماذا لو كانت القيم في مسار JSON ذات أنواع غير متناسقة؟<button data-href="#What-if-values-on-a-JSON-path-have-inconsistent-types" class="anchor-icon" translate="no">
+    </button></h3><p>No, each JSON path supports <strong>only one index</strong>. You must choose a single <code translate="no">json_cast_type</code> that matches your data. Creating multiple indexes on the same path with different cast types is not supported.</p>
+<h3 id="What-if-values-on-a-JSON-path-have-inconsistent-types" class="common-anchor-header">What if values on a JSON path have inconsistent types?<button data-href="#What-if-values-on-a-JSON-path-have-inconsistent-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1160,8 +1195,8 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يمكن أن تؤدي الأنواع غير المتسقة عبر الكيانات إلى <strong>فهرسة جزئية</strong>. على سبيل المثال، إذا تم تخزين <code translate="no">metadata[&quot;price&quot;]</code> على شكل رقم (<code translate="no">99.99</code>) وسلسلة (<code translate="no">&quot;99.99&quot;</code>)، وتم تعريف الفهرس بـ <code translate="no">json_cast_type=&quot;double&quot;</code> ، سيتم فهرسة القيم الرقمية فقط. سيتم تخطي إدخالات شكل السلسلة ولن تظهر في نتائج التصفية.</p>
-<h3 id="Can-I-use-filters-with-a-different-type-than-the-indexed-cast-type" class="common-anchor-header">هل يمكنني استخدام فلاتر بنوع مختلف عن نوع المصبوب المفهرس؟<button data-href="#Can-I-use-filters-with-a-different-type-than-the-indexed-cast-type" class="anchor-icon" translate="no">
+    </button></h3><p>Inconsistent types across entities can lead to <strong>partial indexing</strong>. For example, if <code translate="no">metadata[&quot;price&quot;]</code> is stored as both a number (<code translate="no">99.99</code>) and a string (<code translate="no">&quot;99.99&quot;</code>), and the index is defined with <code translate="no">json_cast_type=&quot;double&quot;</code>, only the numeric values will be indexed. The string-form entries will be skipped and not appear in filter results.</p>
+<h3 id="Can-I-use-filters-with-a-different-type-than-the-indexed-cast-type" class="common-anchor-header">Can I use filters with a different type than the indexed cast type?<button data-href="#Can-I-use-filters-with-a-different-type-than-the-indexed-cast-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1176,4 +1211,4 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>إذا كان تعبير عامل التصفية الخاص بك يستخدم نوعًا مختلفًا عن نوع الفهرس <code translate="no">json_cast_type</code> ، <strong>فلن يستخدم</strong> النظام <strong>الفهرس،</strong> وقد يعود إلى الفحص الأبطأ - إذا سمحت البيانات بذلك. للحصول على أفضل أداء، قم دائمًا بمحاذاة تعبير التصفية الخاص بك مع نوع الفهرس المصبوب.</p>
+    </button></h3><p>If your filter expression uses a different type than the index’s <code translate="no">json_cast_type</code>, the system will <strong>not use the index</strong>, and may fall back to a slower brute-force scan—if the data allows. For best performance, always align your filter expression with the cast type of the index.</p>

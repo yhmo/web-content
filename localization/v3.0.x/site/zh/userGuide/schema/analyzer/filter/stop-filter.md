@@ -1,9 +1,11 @@
 ---
 id: stop-filter.md
-title: 停止
-summary: 在分析过程中，使用停用词过滤器从分词后的文本中移除已配置的停用词。
+title: Stop
+summary: >-
+  Use the stop filter to remove configured stop words from tokenized text during
+  analysis.
 ---
-<h1 id="Stop" class="common-anchor-header">停止<button data-href="#Stop" class="anchor-icon" translate="no">
+<h1 id="Stop" class="common-anchor-header">Stop<button data-href="#Stop" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: 在分析过程中，使用停用词过滤器从分词后的文本中�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">stop</code> 过滤器可从分词后的文本中移除指定的停用词，从而帮助剔除常见且意义较小的词汇。您可以通过<code translate="no">stop_words</code> 参数配置停用词列表。</p>
-<h2 id="Configuration" class="common-anchor-header">配置<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">stop</code> filter removes specified stop words from tokenized text, helping to eliminate common, less meaningful words. You can configure the list of stop words using the <code translate="no">stop_words</code> parameter.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,8 +36,8 @@ summary: 在分析过程中，使用停用词过滤器从分词后的文本中�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">stop</code> 过滤器支持通过<code translate="no">stop_words</code> 参数内联指定停用词列表，或通过<code translate="no">stop_words_file</code> 参数从已注册的文件资源中读取停用词列表。</p>
-<h3 id="Inline-stop-words-list" class="common-anchor-header">内联停用词列表<button data-href="#Inline-stop-words-list" class="anchor-icon" translate="no">
+    </button></h2><p>The <code translate="no">stop</code> filter accepts its stop-words list either inline via the <code translate="no">stop_words</code> parameter or from a registered file resource via the <code translate="no">stop_words_file</code> parameter.</p>
+<h3 id="Inline-stop-words-list" class="common-anchor-header">Inline stop-words list<button data-href="#Inline-stop-words-list" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -50,13 +52,13 @@ summary: 在分析过程中，使用停用词过滤器从分词后的文本中�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要使用内联列表配置<code translate="no">stop</code> 过滤器，请在过滤器配置中指定<code translate="no">&quot;type&quot;: &quot;stop&quot;</code> ，并配合<code translate="no">stop_words</code> 参数提供停用词列表。</p>
+    </button></h3><p>To use the <code translate="no">stop</code> filter with an inline list, specify <code translate="no">&quot;type&quot;: &quot;stop&quot;</code> in the filter configuration, along with a <code translate="no">stop_words</code> parameter that provides the list of stop words.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -107,20 +109,20 @@ analyzerParams=<span class="hljs-string">&#x27;{
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">stop</code> 过滤器支持以下可配置参数。</p>
+<p>The <code translate="no">stop</code> filter accepts the following configurable parameters.</p>
 <table>
    <tr>
-     <th><p>参数</p></th>
-     <th><p>描述</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">stop_words</code></p></td>
-     <td><p>要从分词过程中移除的词汇列表。默认情况下，该过滤器使用内置的<code translate="no">_english_</code> 词典。您可以通过以下三种方式覆盖或扩展该词典：</p><ul><li><p><strong>内置词典</strong>——提供以下语言别名之一以使用预定义词典：</p><p><code translate="no">"_arabic_"</code>,<code translate="no">"_english_"</code>,<code translate="no">"_danish_"</code>,<code translate="no">"_dutch_"</code>,<code translate="no">"_finnish_"</code>,<code translate="no">"_french_"</code>,<code translate="no">"_german_"</code>,<code translate="no">"_hungarian_"</code>,<code translate="no">"_italian_"</code>,<code translate="no">"_norwegian_"</code>,<code translate="no">"_portuguese_"</code>,<code translate="no">"_russian_"</code>,<code translate="no">"_spanish_"</code>,<code translate="no">"_swedish_"</code>,<code translate="no">"_thai_"</code></p></li><li><p><strong>自定义列表</strong>——传入您自己的术语数组，例如<code translate="no">["foo", "bar", "baz"]</code> 。</p></li><li><p><strong>混合列表</strong>——结合别名和自定义词条，例如<code translate="no">["of", "to", "_english_"]</code> 。</p><p>有关每个预定义词典确切内容的详细信息，请参阅<a href="https://github.com/milvus-io/milvus/blob/master/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words.rs">stop_words</a>。如需查看阿拉伯语或泰语词典，请参阅<a href="https://github.com/milvus-io/milvus/blob/1945ba399b4552fd0fd0b131f7c735ddde21e71c/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words/arabic.txt">阿拉伯语停用词列表</a>或<a href="https://github.com/milvus-io/milvus/blob/1945ba399b4552fd0fd0b131f7c735ddde21e71c/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words/thai.txt">泰语停用词列表</a>。</p></li></ul></td>
+     <td><p>A list of words to be removed from tokenization. By default, the filter uses the built‑in <code translate="no">_english_</code> dictionary. You can override or extend it in three ways:</p><ul><li><p><strong>Built‑in dictionaries</strong> – supply one of these language aliases to use a predefined dictionary:</p><p><code translate="no">"_arabic_"</code>, <code translate="no">"_english_"</code>, <code translate="no">"_danish_"</code>, <code translate="no">"_dutch_"</code>, <code translate="no">"_finnish_"</code>, <code translate="no">"_french_"</code>, <code translate="no">"_german_"</code>, <code translate="no">"_hungarian_"</code>, <code translate="no">"_italian_"</code>, <code translate="no">"_norwegian_"</code>, <code translate="no">"_portuguese_"</code>, <code translate="no">"_russian_"</code>, <code translate="no">"_spanish_"</code>, <code translate="no">"_swedish_"</code>, <code translate="no">"_thai_"</code></p></li><li><p><strong>Custom list</strong> – pass an array of your own terms, e.g. <code translate="no">["foo", "bar", "baz"]</code>.</p></li><li><p><strong>Mixed list</strong> – combine aliases and custom terms, e.g. <code translate="no">["of", "to", "_english_"]</code>.</p><p>For details on the exact content of each predefined dictionary, refer to <a href="https://github.com/milvus-io/milvus/blob/master/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words.rs">stop_words</a>. To inspect the Arabic or Thai dictionary, refer to the <a href="https://github.com/milvus-io/milvus/blob/1945ba399b4552fd0fd0b131f7c735ddde21e71c/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words/arabic.txt">Arabic stop-word list</a> or <a href="https://github.com/milvus-io/milvus/blob/1945ba399b4552fd0fd0b131f7c735ddde21e71c/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words/thai.txt">Thai stop-word list</a>.</p></li></ul></td>
    </tr>
 </table>
-<p><code translate="no">stop</code> 过滤器作用于分词器生成的术语，因此必须与分词器配合使用。有关 Milvus 中可用分词器的列表，请参阅<a href="/docs/zh/standard-tokenizer.md">“标准分词器”</a>及其相关页面。</p>
-<p>定义<code translate="no">analyzer_params</code> 后，您可以在定义Collection Schema时将其应用于<code translate="no">VARCHAR</code> 字段。这使Milvus能够使用指定的分析器处理该字段中的文本，从而实现高效的分词和过滤。有关详细信息，请参阅<a href="/docs/zh/analyzer-overview.md#Example-use">“使用示例”</a>。</p>
-<h3 id="Load-stop-words-from-a-file-resource--Milvus-30x" class="common-anchor-header">从文件资源加载停用词<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Load-stop-words-from-a-file-resource--Milvus-30x" class="anchor-icon" translate="no">
+<p>The <code translate="no">stop</code> filter operates on the terms generated by the tokenizer, so it must be used in combination with a tokenizer. For a list of tokenizers available in Milvus, refer to <a href="/docs/zh/standard-tokenizer.md">Standard Tokenizer</a> and its sibling pages.</p>
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/zh/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h3 id="Load-stop-words-from-a-file-resource" class="common-anchor-header">Load stop words from a file resource<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Load-stop-words-from-a-file-resource" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -135,13 +137,13 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>对于大型自定义停用词列表（如特定语言的列表、领域词汇表，或您希望在多个Collection间共享的列表），请将词汇存储在文件中并将其注册为远程文件资源，然后通过<code translate="no">stop_words_file</code> 参数在过滤器中引用该文件。 您可以单独使用<code translate="no">stop_words_file</code> ，也可以与内联的<code translate="no">stop_words</code> 配合使用；当两者均设置时，过滤器会将这两个来源合并为一个停用词列表。</p>
-<p>该文件应为纯UTF‑8文本，<strong>每行</strong>包含<strong>一个停用词</strong>。例如：</p>
+    </button></h3><p>For large custom stop-words lists — language-specific lists, domain vocabularies, or lists you want to share across many collections — store the words in a file and register the file as a remote file resource, then reference it from the filter via the <code translate="no">stop_words_file</code> parameter. You can use <code translate="no">stop_words_file</code> on its own or alongside inline <code translate="no">stop_words</code>; when both are set, the filter merges the two sources into a single stop-words list.</p>
+<p>The file is plain UTF‑8 text with <strong>one stop word per line</strong>. For example:</p>
 <pre><code translate="no" class="language-plaintext">the
 of
 for
 <button class="copy-code-btn"></button></code></pre>
-<p>将该文件上传至您的 Milvus 集群配置中指定的对象存储，然后进行注册：</p>
+<p>Upload the file to the object store that your Milvus cluster is configured to use, then register it:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -152,7 +154,7 @@ client.add_file_resource(
     path=<span class="hljs-string">&quot;file/stop_words.txt&quot;</span>,    <span class="hljs-comment"># full S3 object key, including the rootPath prefix</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>通过 `<code translate="no">stop_words_file</code>` 在过滤器中引用已注册的资源：</p>
+<p>Reference the registered resource in the filter via <code translate="no">stop_words_file</code>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [{
@@ -165,26 +167,26 @@ client.add_file_resource(
     }],
 }
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">stop_words_file</code> 参数接受包含以下字段的对象：</p>
+<p>The <code translate="no">stop_words_file</code> parameter accepts an object with the following fields:</p>
 <table>
    <tr>
-     <th><p><strong>字段</strong></p></th>
-     <th><p><strong>描述</strong></p></th>
+     <th><p><strong>Field</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">type</code></p></td>
-     <td><p>资源类型。对于通过<code translate="no">add_file_resource</code> 注册的文件，请使用<code translate="no">"remote"</code> 。对于自托管部署中使用的<code translate="no">"local"</code> 变体，请参阅<a href="/docs/zh/manage-file-resources.md">《管理文件资源》</a>。</p></td>
+     <td><p>The resource type. Use <code translate="no">"remote"</code> for a file registered via <code translate="no">add_file_resource</code>. For the <code translate="no">"local"</code> variant used in self-hosted deployments, refer to <a href="/docs/zh/manage-file-resources.md">Manage File Resources</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">resource_name</code></p></td>
-     <td><p>该名称是在将文件注册到<code translate="no">add_file_resource</code> 时使用的名称。</p></td>
+     <td><p>The name used when the file was registered with <code translate="no">add_file_resource</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">file_name</code></p></td>
-     <td><p>已注册资源的对象存储路径中的文件名部分（例如，如果资源是在<code translate="no">path="file/stop_words.txt"</code> 上注册的，则为<code translate="no">"stop_words.txt"</code> ）。</p></td>
+     <td><p>The filename portion of the registered resource's object-store path (for example, <code translate="no">"stop_words.txt"</code> if the resource was registered with <code translate="no">path="file/stop_words.txt"</code>).</p></td>
    </tr>
 </table>
-<h2 id="Examples" class="common-anchor-header">示例<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -199,8 +201,8 @@ client.add_file_resource(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在将分析器配置应用到 Collection Schema 之前，请使用<code translate="no">run_analyzer</code> 方法验证其行为。</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">分析器配置<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -216,11 +218,11 @@ client.add_file_resource(
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -251,7 +253,7 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">使用以下方式进行验证<code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -267,11 +269,11 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -337,7 +339,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">预期输出<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

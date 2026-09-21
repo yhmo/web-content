@@ -1,13 +1,14 @@
 ---
 id: boost-ranker.md
-title: مصنف التعزيزCompatible with Milvus v2.6.2+
+title: Boost RankerCompatible with Milvus v2.6.2+
 summary: >-
-  بدلًا من الاعتماد فقط على التشابه الدلالي المحسوب على أساس المسافات المتجهة،
-  يتيح لك برنامج Boost Rankers التأثير على نتائج البحث بطريقة مفيدة. وهي مثالية
-  لتعديل نتائج البحث بسرعة باستخدام تصفية البيانات الوصفية.
+  Instead of relying solely on semantic similarity calculated based on vector
+  distances, Boost Rankers allow you to influence search results in a meaningful
+  way. It is ideal for quickly adjusting search results using metadata
+  filtering.
 beta: Milvus v2.6.2+
 ---
-<h1 id="Boost-Ranker" class="common-anchor-header">مصنف التعزيز<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Boost-Ranker" class="anchor-icon" translate="no">
+<h1 id="Boost-Ranker" class="common-anchor-header">Boost Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,9 +23,9 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>بدلًا من الاعتماد فقط على التشابه الدلالي المحسوب على أساس المسافات المتجهة، يتيح لك Boost Rankers التأثير على نتائج البحث بطريقة مفيدة. وهي مثالية لتعديل نتائج البحث بسرعة باستخدام تصفية البيانات الوصفية.</p>
-<p>عندما يشتمل طلب البحث على دالة Boost Ranker، يستخدم Milvus شرط التصفية الاختياري داخل الدالة للعثور على التطابقات بين الكيانات المرشحة لنتائج البحث ويعزز درجات تلك التطابقات من خلال تطبيق الوزن المحدد، مما يساعد على ترقية أو تخفيض تصنيف الكيانات المتطابقة في النتيجة النهائية.</p>
-<h2 id="When-to-use-Boost-Ranker" class="common-anchor-header">متى تستخدم أداة تعزيز التصنيف<button data-href="#When-to-use-Boost-Ranker" class="anchor-icon" translate="no">
+    </button></h1><p>Instead of relying solely on semantic similarity calculated based on vector distances, Boost Rankers allow you to influence search results in a meaningful way. It is ideal for quickly adjusting search results using metadata filtering.</p>
+<p>When a search request includes a Boost Ranker function, Milvus uses the optional filtering condition within the function to find matches among search result candidates and boosts the scores of those matches by applying the specified weight, helping promote or demote the rankings of the matched entities in the final result.</p>
+<h2 id="When-to-use-Boost-Ranker" class="common-anchor-header">When to use Boost Ranker<button data-href="#When-to-use-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,25 +40,25 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>على عكس مصنفات التصنيف الأخرى التي تعتمد على نماذج التشفير المتقاطع أو خوارزميات الدمج، يقوم مصنف التعزيز بإدخال قواعد اختيارية تعتمد على البيانات الوصفية مباشرةً في عملية التصنيف، مما يجعله أكثر ملاءمة في السيناريوهات التالية.</p>
+    </button></h2><p>Unlike other rankers that rely on cross-encoder models or fusion algorithms, a Boost Ranker directly injects optional metadata-driven rules into the ranking process, which makes it more suitable in the following scenarios.</p>
 <table>
    <tr>
-     <th><p>حالة الاستخدام</p></th>
-     <th><p>أمثلة</p></th>
-     <th><p>لماذا يعمل مصنف التعزيز بشكل جيد</p></th>
+     <th><p>Use Case</p></th>
+     <th><p>Examples</p></th>
+     <th><p>Why Boost Ranker Works Well</p></th>
    </tr>
    <tr>
-     <td><p>تحديد أولويات المحتوى القائم على الأعمال التجارية</p></td>
-     <td><ul><li><p>إبراز المنتجات المتميزة في نتائج بحث التجارة الإلكترونية</p></li><li><p>زيادة ظهور المحتوى ذي مقاييس المشاركة العالية للمستخدمين (مثل المشاهدات والإعجابات والمشاركات)</p></li><li><p>رفع مستوى المحتوى الحديث في تطبيقات البحث الحساسة للوقت</p></li><li><p>إعطاء الأولوية للمحتوى من المصادر الموثوقة أو التي تم التحقق منها</p></li><li><p>تعزيز النتائج التي تطابق العبارات الدقيقة أو الكلمات المفتاحية ذات الصلة العالية</p></li></ul></td>
-     <td rowspan="2"><p>من دون الحاجة إلى إعادة إنشاء الفهارس أو تعديل نماذج تضمين المتجهات - وهي عمليات قد تستغرق وقتاً طويلاً - يمكنك على الفور ترقية عناصر محددة أو خفض مرتبتها في نتائج البحث من خلال تطبيق مرشحات بيانات التعريف الاختيارية في الوقت الفعلي. تتيح هذه الآلية تصنيفات بحث مرنة وديناميكية تتكيف بسهولة مع متطلبات العمل المتطورة.</p></td>
+     <td><p>Business-driven content prioritization</p></td>
+     <td><ul><li><p>Highlight premium products in e-commerce search results</p></li><li><p>Increase visibility of content with high user engagement metrics (such as views, likes, and shares)</p></li><li><p>Elevating recent content in time-sensitive search applications</p></li><li><p>Prioritizing content from verified or trusted sources</p></li><li><p>Boosting results that match exact phrases or high-relevance keywords</p></li></ul></td>
+     <td rowspan="2"><p>Without the need to rebuild indexes or modify vector embedding models—operations that can be time-consuming—you can instantly promote or demote specific items in search results by applying optional metadata filters in real time. This mechanism enables flexible, dynamic search rankings that easily adapt to evolving business requirements.</p></td>
    </tr>
    <tr>
-     <td><p>خفض التصنيف الاستراتيجي للمحتوى</p></td>
-     <td><ul><li><p>تقليل بروز العناصر ذات المخزون المنخفض دون إزالتها بالكامل</p></li><li><p>خفض رتبة المحتوى الذي يحتوي على مصطلحات يُحتمل أن تكون مرفوضة دون رقابة</p></li><li><p>خفض رتبة الوثائق القديمة مع إبقائها متاحة في عمليات البحث التقنية</p></li><li><p>تقليل ظهور المنتجات المنافسة بشكل غير ملحوظ في عمليات البحث في السوق</p></li><li><p>تقليل ملاءمة المحتوى مع مؤشرات الجودة المنخفضة (مثل مشكلات التنسيق والطول القصير وما إلى ذلك)</p></li></ul></td>
+     <td><p>Strategic content downranking</p></td>
+     <td><ul><li><p>Reducing the prominence of items with low inventory without removing them completely</p></li><li><p>Lowering the rank of content with potentially objectionable terms without censorship</p></li><li><p>Demoting older documentation while keeping it accessible in technical searches</p></li><li><p>Subtly reducing the visibility of competitor products in marketplace searches</p></li><li><p>Decreasing relevance of content with lower quality indications (such as formatting issues, shorter length, etc.)</p></li></ul></td>
    </tr>
 </table>
-<p>يمكنك أيضًا الجمع بين العديد من مصنفات التعزيز لتنفيذ استراتيجية تصنيف أكثر ديناميكية وقوة قائمة على الوزن.</p>
-<h2 id="Mechanism-of-Boost-Ranker" class="common-anchor-header">آلية مُصنِّف التعزيز<button data-href="#Mechanism-of-Boost-Ranker" class="anchor-icon" translate="no">
+<p>You can also combine multiple Boost Rankers to implement a more dynamic and robust weight-based ranking strategy.</p>
+<h2 id="Mechanism-of-Boost-Ranker" class="common-anchor-header">Mechanism of Boost Ranker<button data-href="#Mechanism-of-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -72,21 +73,23 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يوضح الرسم البياني التالي سير العمل الرئيسي لمصنفي التعزيز.</p>
+    </button></h2><p>The following diagram illustrates the main workflow of Boost Rankers.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/boost-ranker-mechanism.png" alt="Boost Ranker Mechanism" class="doc-image" id="boost-ranker-mechanism" />
-   </span> <span class="img-wrapper"> <span>آلية مصنف المعزز المعزز</span> </span></p>
-<p>عندما تقوم بإدراج البيانات، يقوم ميلفوس بتوزيعها عبر شرائح. أثناء البحث، يقوم كل مقطع بإرجاع مجموعة من المرشحين، ويقوم Milvus بترتيب هؤلاء المرشحين من جميع المقاطع للحصول على النتائج النهائية. عندما يتضمن طلب البحث مصنفًا معززًا، يطبقه Milvus على النتائج المرشحة من كل شريحة لمنع فقدان الدقة المحتمل وتحسين الاستدعاء.</p>
-<p>قبل وضع اللمسات الأخيرة على النتائج، يعالج ميلفوس هؤلاء المرشحين باستخدام مصنف التعزيز على النحو التالي:</p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/boost-ranker-mechanism.png" alt="Boost Ranker Mechanism" class="doc-image" id="boost-ranker-mechanism" />
+    <span>Boost Ranker Mechanism</span>
+  </span>
+</p>
+<p>When you insert data, Milvus distributes it across segments. During a search, each segment returns a set of candidates, and Milvus ranks these candidates from all segments to produce the final results. When a search request includes a Boost Ranker, Milvus applies it to the candidate results from each segment to prevent potential precision loss and improve recall.</p>
+<p>Before finalizing the results, Milvus processes these candidates with the Boost Ranker as follows:</p>
 <ol>
-<li><p>يطبق تعبير التصفية الاختياري المحدد في Boost Ranker لتحديد الكيانات التي تطابق التعبير.</p></li>
-<li><p>يطبق الوزن المحدد في Boost Ranker لتعزيز درجات الكيانات المحددة.</p></li>
+<li><p>Applies the optional filtering expression specified in the Boost Ranker to identify the entities that match the expression.</p></li>
+<li><p>Applies the weight specified in the Boost Ranker to boost the scores of the identified entities.</p></li>
 </ol>
 <div class="alert note">
-<p>لا يمكنك استخدام Boost Ranker كمرتب معزز كمرتب في بحث مختلط متعدد النواقل. ومع ذلك، يمكنك استخدامه كمرتب في أي من طلباته الفرعية (<code translate="no">AnnSearchRequest</code>).</p>
+<p>You cannot use Boost Ranker as the ranker in a multi-vector hybrid search. However, you can use it as the ranker in any of its sub-requests (<code translate="no">AnnSearchRequest</code>).</p>
 </div>
-<h2 id="Examples-of-Boost-Ranker" class="common-anchor-header">أمثلة على Boost Ranker<button data-href="#Examples-of-Boost-Ranker" class="anchor-icon" translate="no">
+<h2 id="Examples-of-Boost-Ranker" class="common-anchor-header">Examples of Boost Ranker<button data-href="#Examples-of-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -101,184 +104,184 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يوضح المثال التالي استخدام مصنف Boost Ranker في بحث أحادي الناقل يتطلب إرجاع الكيانات الخمسة الأولى الأكثر صلة وإضافة أوزان إلى درجات الكيانات ذات نوع المستند المجرد.</p>
+    </button></h2><p>The following example illustrates the use of a Boost Ranker in a single-vector search that requires returning the top five most relevant entities and adding weights to the scores of entities with the abstract doc type.</p>
 <ol>
-<li><p><strong>جمع نتائج البحث المرشحة في شرائح.</strong></p>
-<p>يفترض الجدول التالي أن ميلفوس يوزع الكيانات في شريحتين<strong>(0001</strong> و <strong>0002</strong>)، حيث تقوم كل شريحة بإرجاع خمسة مرشحين.</p>
+<li><p><strong>Collect search result candidates in segments.</strong></p>
+<p>The following table assumes Milvus distributes entities into two segments (<strong>0001</strong> and <strong>0002</strong>), with each segment returning five candidates.</p>
 <p><table>
 <tr>
-<th><p>المعرف</p></th>
-<th><p>نوع المستند</p></th>
-<th><p>الدرجة</p></th>
-<th><p>الرتبة</p></th>
-<th><p>شريحة</p></th>
+<th><p>ID</p></th>
+<th><p>DocType</p></th>
+<th><p>Score</p></th>
+<th><p>Rank</p></th>
+<th><p>segment</p></th>
 </tr>
 <tr>
 <td><p>117</p></td>
-<td><p>مجردة</p></td>
+<td><p>abstract</p></td>
 <td><p>0.344</p></td>
 <td><p>1</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>89</p></td>
-<td><p>ملخص</p></td>
+<td><p>abstract</p></td>
 <td><p>0.456</p></td>
 <td><p>2</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>257</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0.578</p></td>
 <td><p>3</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>358</p></td>
-<td><p>العنوان</p></td>
+<td><p>title</p></td>
 <td><p>0.788</p></td>
 <td><p>4</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>168</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0.899</p></td>
 <td><p>5</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0.189</p></td>
 <td><p>1</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>48</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0265</p></td>
 <td><p>2</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>561</p></td>
-<td><p>ملخص</p></td>
+<td><p>abstract</p></td>
 <td><p>0.366</p></td>
 <td><p>3</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>344</p></td>
-<td><p>ملخص</p></td>
+<td><p>abstract</p></td>
 <td><p>0.444</p></td>
 <td><p>4</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>276</p></td>
-<td><p>ملخص</p></td>
+<td><p>abstract</p></td>
 <td><p>0.845</p></td>
 <td><p>5</p></td>
 <td><p>0002</p></td>
 </tr>
 </table></p></li>
-<li><p><strong>قم بتطبيق تعبير التصفية المحدد في بووست رانكر</strong> (<code translate="no">doctype='abstract'</code>).</p>
-<p>كما هو مبين في الحقل <code translate="no">DocType</code> في الجدول التالي، سيضع ميلفوس علامة على جميع الكيانات التي تم تعيين <code translate="no">doctype</code> على <code translate="no">abstract</code> لمزيد من المعالجة.</p>
+<li><p><strong>Apply the filtering expression specified in the Boost Ranker</strong> (<code translate="no">doctype='abstract'</code>).</p>
+<p>As denoted by the <code translate="no">DocType</code> field in the following table, Milvus will mark all entities with their <code translate="no">doctype</code> set to <code translate="no">abstract</code> for further processing.</p>
 <p><table>
 <tr>
-<th><p>المعرف</p></th>
-<th><p>نوع المستند</p></th>
-<th><p>الدرجة</p></th>
-<th><p>الرتبة</p></th>
-<th><p>الجزء</p></th>
+<th><p>ID</p></th>
+<th><p>DocType</p></th>
+<th><p>Score</p></th>
+<th><p>Rank</p></th>
+<th><p>segment</p></th>
 </tr>
 <tr>
 <td><p><strong>117</strong></p></td>
-<td><p><strong>مجردة</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.344</strong></p></td>
 <td><p><strong>1</strong></p></td>
 <td><p><strong>0001</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>89</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.456</strong></p></td>
 <td><p><strong>2</strong></p></td>
 <td><p><strong>0001</strong></p></td>
 </tr>
 <tr>
 <td><p>257</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0.578</p></td>
 <td><p>3</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>358</p></td>
-<td><p>العنوان</p></td>
+<td><p>title</p></td>
 <td><p>0.788</p></td>
 <td><p>4</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>168</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0.899</p></td>
 <td><p>5</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0.189</p></td>
 <td><p>1</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>48</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0265</p></td>
 <td><p>2</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p><strong>561</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.366</strong></p></td>
 <td><p><strong>3</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>344</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.444</strong></p></td>
 <td><p><strong>4</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>276</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.845</strong></p></td>
 <td><p><strong>5</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 </table></p></li>
-<li><p><strong>تطبيق الوزن المحدد في Boost Ranker</strong> (<code translate="no">weight=0.5</code>).</p>
-<p>سيتم ضرب جميع الكيانات المحددة في الخطوة السابقة بالوزن المحدد في Boost Ranker، مما يؤدي إلى تغييرات في رتبها.</p>
+<li><p><strong>Apply the weight specified in the Boost Ranker</strong> (<code translate="no">weight=0.5</code>).</p>
+<p>All identified entities in the previous step will be multiplied by the weight specified in the Boost Ranker, resulting in changes in their ranks.</p>
 <p><table>
 <tr>
-<th><p>المعرف</p></th>
-<th><p>نوع المستند</p></th>
-<th><p>الدرجة</p></th>
-<th><p>الدرجة المرجحة </p><p>(= الدرجة × الوزن)</p></th>
-<th><p>الرتبة</p></th>
-<th><p>الشريحة</p></th>
+<th><p>ID</p></th>
+<th><p>DocType</p></th>
+<th><p>Score</p></th>
+<th><p>Weighted Score </p><p>(= score x weight)</p></th>
+<th><p>Rank</p></th>
+<th><p>segment</p></th>
 </tr>
 <tr>
 <td><p><strong>117</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.344</strong></p></td>
 <td><p><strong>0.172</strong></p></td>
 <td><p><strong>1</strong></p></td>
@@ -286,7 +289,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>89</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.456</strong></p></td>
 <td><p><strong>0.228</strong></p></td>
 <td><p><strong>2</strong></p></td>
@@ -294,7 +297,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>257</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0.578</p></td>
 <td><p>0.578</p></td>
 <td><p>3</p></td>
@@ -302,7 +305,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>358</p></td>
-<td><p>العنوان</p></td>
+<td><p>title</p></td>
 <td><p>0.788</p></td>
 <td><p>0.788</p></td>
 <td><p>4</p></td>
@@ -310,7 +313,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>168</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0.899</p></td>
 <td><p>0.899</p></td>
 <td><p>5</p></td>
@@ -318,7 +321,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>561</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.366</strong></p></td>
 <td><p><strong>0.183</strong></p></td>
 <td><p><strong>1</strong></p></td>
@@ -326,7 +329,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0.189</p></td>
 <td><p>0.189</p></td>
 <td><p>2</p></td>
@@ -334,7 +337,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>344</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.444</strong></p></td>
 <td><p><strong>0.222</strong></p></td>
 <td><p><strong>3</strong></p></td>
@@ -342,7 +345,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>48</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0.265</p></td>
 <td><p>0.265</p></td>
 <td><p>4</p></td>
@@ -350,7 +353,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>276</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.845</strong></p></td>
 <td><p><strong>0.423</strong></p></td>
 <td><p><strong>5</strong></p></td>
@@ -358,21 +361,21 @@ beta: Milvus v2.6.2+
 </tr>
 </table></p>
 <p><div class="alert note"></p>
-<p>يجب أن يكون الوزن رقمًا عائمًا تختاره أنت. في حالات مثل المثال أعلاه، حيث تشير الدرجة الأصغر إلى أهمية أكبر، استخدم وزنًا أقل من <strong>1</strong>. خلاف ذلك، استخدم وزنًا أكبر من <strong>1</strong>.</p>
+<p>The weight must be a floating-point number that you choose. In cases like the above example, where a smaller score indicates greater relevance, use a weight less than <strong>1</strong>. Otherwise, use a weight greater than <strong>1</strong>.</p>
 <p></div></p></li>
-<li><p><strong>قم بتجميع المرشحين من جميع الشرائح بناءً على الدرجات الموزونة لوضع النتائج النهائية.</strong></p>
+<li><p><strong>Aggregate the candidates from all segments based on the weighted scores to finalize the results.</strong></p>
 <p><table>
 <tr>
-<th><p>المعرف</p></th>
-<th><p>نوع المستند</p></th>
-<th><p>الدرجة</p></th>
-<th><p>الدرجة المرجحة</p></th>
-<th><p>الرتبة</p></th>
-<th><p>الجزء</p></th>
+<th><p>ID</p></th>
+<th><p>DocType</p></th>
+<th><p>Score</p></th>
+<th><p>Weighted Score</p></th>
+<th><p>Rank</p></th>
+<th><p>segment</p></th>
 </tr>
 <tr>
 <td><p><strong>117</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.344</strong></p></td>
 <td><p><strong>0.172</strong></p></td>
 <td><p><strong>1</strong></p></td>
@@ -380,7 +383,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>561</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.366</strong></p></td>
 <td><p><strong>0.183</strong></p></td>
 <td><p><strong>2</strong></p></td>
@@ -388,7 +391,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>الجسم</p></td>
+<td><p>body</p></td>
 <td><p>0.189</p></td>
 <td><p>0.189</p></td>
 <td><p>3</p></td>
@@ -396,7 +399,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>344</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.444</strong></p></td>
 <td><p><strong>0.222</strong></p></td>
 <td><p><strong>4</strong></p></td>
@@ -404,7 +407,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>89</strong></p></td>
-<td><p><strong>ملخص</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.456</strong></p></td>
 <td><p><strong>0.228</strong></p></td>
 <td><p><strong>5</strong></p></td>
@@ -412,7 +415,7 @@ beta: Milvus v2.6.2+
 </tr>
 </table></p></li>
 </ol>
-<h2 id="Usage-of-Boost-Ranker" class="common-anchor-header">استخدام بووست رانكر المعزز<button data-href="#Usage-of-Boost-Ranker" class="anchor-icon" translate="no">
+<h2 id="Usage-of-Boost-Ranker" class="common-anchor-header">Usage of Boost Ranker<button data-href="#Usage-of-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -427,8 +430,8 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في هذا القسم، سترى أمثلة على كيفية استخدام Boost Ranker للتأثير على نتائج بحث أحادي المتجه.</p>
-<h3 id="Create-a-Boost-Ranker" class="common-anchor-header">إنشاء مصنف معزز التصنيف<button data-href="#Create-a-Boost-Ranker" class="anchor-icon" translate="no">
+    </button></h2><p>In this section, you will see examples of how to use Boost Ranker to influence the results of a single-vector search.</p>
+<h3 id="Create-a-Boost-Ranker" class="common-anchor-header">Create a Boost Ranker<button data-href="#Create-a-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -443,9 +446,14 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>قبل تمرير بووست رانكر المعزّز كمعيد ترتيب لطلب بحث، يجب عليك تعريف بووست رانكر المعزّز كدالة إعادة ترتيب على النحو التالي:</p>
+    </button></h3><p>Before passing a Boost Ranker as the reranker of a search request, you should properly define the Boost Ranker as a reranking function as follows:</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#go">جو</a> <a href="#javascript">نودجيس</a> <a href="#bash">CURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 
 ranker = Function(
@@ -497,55 +505,55 @@ ranker = Function(
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>المعلمة</p></th>
-     <th><p>مطلوب؟</p></th>
-     <th><p>الوصف</p></th>
-     <th><p>القيمة/مثال</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>المعرف الفريد لهذه الوظيفة</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Unique identifier for this Function</p></td>
      <td><p><code translate="no">"boost"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>قائمة بالحقول المتجهة لتطبيق الدالة عليها (يجب أن تكون فارغة لمصنف التعزيز)</p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of vector fields to apply the function to (must be empty for Boost Ranker)</p></td>
      <td><p><code translate="no">[]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>نوع الدالة المراد استدعاؤها؛ استخدم <code translate="no">RERANK</code> لتحديد استراتيجية إعادة الترتيب</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The type of Function to invoke; use <code translate="no">RERANK</code> to specify a reranking strategy</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>تحديد نوع أداة إعادة الترتيب.</p><p>يجب ضبطه على <code translate="no">boost</code> لاستخدام Boost Ranker المعزز.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the type of the reranker.</p><p>Must be set to <code translate="no">boost</code> to use Boost Ranker.</p></td>
      <td><p><code translate="no">"boost"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.weight</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>يحدد الوزن الذي سيتم ضربه في درجات أي كيانات مطابقة في نتائج البحث الأولية.</p><p>يجب أن تكون القيمة رقمًا ذا فاصلة عائمة. </p><ul><li><p>للتأكيد على أهمية الكيانات المطابقة، قم بتعيينه إلى قيمة تعزز الدرجات.</p></li><li><p>لتقليل أهمية الكيانات المطابقة، قم بتعيين هذه المعلمة بقيمة تقلل من درجاتها.</p></li></ul></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the weight that will be multiplied by the scores of any matching entities in the raw search results.</p><p>The value should be a floating-point number. </p><ul><li><p>To emphasize the importance of matching entities, set it to a value that boosts the scores.</p></li><li><p>To demote matching entities, assign this parameter a value that lowers their scores.</p></li></ul></td>
      <td><p><code translate="no">1</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.filter</code></p></td>
-     <td><p>لا</p></td>
-     <td><p>تحديد تعبير عامل التصفية الذي سيتم استخدامه لمطابقة الكيانات بين كيانات نتائج البحث. يمكن أن يكون أي تعبير تصفية أساسي صالح مذكور في <a href="/docs/ar/boolean.md">شرح التصفية</a>.</p><p><strong>ملاحظة</strong>: استخدم فقط العوامل الأساسية، مثل <code translate="no">==</code> أو <code translate="no">&gt;</code> أو أو <code translate="no">&lt;</code>. سيؤدي استخدام العوامل المتقدمة، مثل <code translate="no">text_match</code> أو <code translate="no">phrase_match</code> ، إلى خفض أداء البحث.</p></td>
+     <td><p>No</p></td>
+     <td><p>Specifies the filter expression that will be used to match entities among search result entities. It can be any valid basic filter expression mentioned in <a href="/docs/ar/v2.6.x/boolean.md">Filtering Explained</a>.</p><p><strong>Note</strong>: Only use basic operators, such as <code translate="no">==</code>, <code translate="no">&gt;</code>, or <code translate="no">&lt;</code>. Using advanced operators, such as <code translate="no">text_match</code> or <code translate="no">phrase_match</code>, will degrade search performance.</p></td>
      <td><p><code translate="no">"doctype == 'abstract'"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.random_score</code></p></td>
-     <td><p>لا يوجد</p></td>
-     <td><p>يحدد الدالة العشوائية التي تولد قيمة بين <code translate="no">0</code> و <code translate="no">1</code> عشوائيًا. لها الوسيمتان الاختياريتان التاليتان:</p><ul><li><p><code translate="no">seed</code> (رقم) يحدد القيمة الأولية المستخدمة لبدء مولد الأرقام العشوائية الزائفة (PRNG).</p></li><li><p><code translate="no">field</code> (سلسلة) يحدد اسم الحقل الذي سيتم استخدام قيمته كعامل عشوائي في توليد الرقم العشوائي. يكفي وجود حقل بقيم فريدة.</p><p>يُنصح بتعيين كل من <code translate="no">seed</code> و <code translate="no">field</code> لضمان الاتساق عبر الأجيال باستخدام نفس البذرة وقيم الحقل.</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Specifies the random function that generates a value between <code translate="no">0</code> and <code translate="no">1</code> randomly. It has the following two optional arguments:</p><ul><li><p><code translate="no">seed</code> (number) Specifies an initial value used to start a pseudorandom number generator (PRNG).</p></li><li><p><code translate="no">field</code> (string) Specifies the name of a field whose value will be used as a random factor in generating the random number. A field with unique values will suffice.</p><p>You are advised to set both <code translate="no">seed</code> and <code translate="no">field</code> to ensure consistency across generations by using the same seed and field values.</p></li></ul></td>
      <td><p><code translate="no">{"seed": 126, "field": "id"}</code></p></td>
    </tr>
 </table>
-<h3 id="Search-with-a-single-Boost-Ranker" class="common-anchor-header">البحث باستخدام مصنف معزز واحد<button data-href="#Search-with-a-single-Boost-Ranker" class="anchor-icon" translate="no">
+<h3 id="Search-with-a-single-Boost-Ranker" class="common-anchor-header">Search with a single Boost Ranker<button data-href="#Search-with-a-single-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -560,9 +568,14 @@ ranker = Function(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بمجرد أن تصبح دالة Boost Ranker جاهزة، يمكنك الإشارة إليها في طلب بحث. يفترض المثال التالي أنك قد أنشأت بالفعل مجموعة تحتوي على الحقول التالية: <strong>المعرف،</strong> <strong>والمتجه،</strong> <strong>والنوع</strong>.</p>
+    </button></h3><p>Once the Boost Ranker function is ready, you can reference it in a search request. The following example assumes that you have already created a collection that has the following fields: <strong>id</strong>, <strong>vector</strong>, and <strong>doctype</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#go">جو</a> <a href="#javascript">نودجيس</a> <a href="#bash">CURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Connect to the Milvus server</span>
@@ -630,7 +643,7 @@ client.search(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Search-with-multiple-Boost-Rankers" class="common-anchor-header">البحث مع عدة مصنفات معززة متعددة<button data-href="#Search-with-multiple-Boost-Rankers" class="anchor-icon" translate="no">
+<h3 id="Search-with-multiple-Boost-Rankers" class="common-anchor-header">Search with multiple Boost Rankers<button data-href="#Search-with-multiple-Boost-Rankers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -645,10 +658,15 @@ client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يمكنك دمج العديد من مصنّفي Boost في بحث واحد للتأثير على نتائج البحث. للقيام بذلك، قم بإنشاء العديد من مصنفات Boost Rankers، وقم بالرجوع إليها في مثيل <strong>FunctionScore،</strong> واستخدم مثيل <strong>FunctionScore</strong> كمصنّف في طلب البحث.</p>
-<p>يوضح المثال التالي كيفية تعديل درجات جميع الكيانات المحددة من خلال تطبيق وزن بين <strong>0.8</strong> و <strong>1.2</strong>.</p>
+    </button></h3><p>You can combine multiple Boost Rankers in a single search to influence the search results. To do so, create several Boost Rankers, reference them in a <strong>FunctionScore</strong> instance, and use the <strong>FunctionScore</strong> instance as the ranker in the search request.</p>
+<p>The following example shows how to modify the scores of all identified entities by applying a weight between <strong>0.8</strong> and <strong>1.2</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#go">جو</a> <a href="#javascript">نودجيس</a> <a href="#bash">CURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType, FunctionScore
 
 <span class="hljs-comment"># Create a Boost Ranker with a fixed weight</span>
@@ -781,31 +799,31 @@ params.put(<span class="hljs-string">&quot;function_mode&quot;</span>,<span clas
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>على وجه التحديد، هناك نوعان من مصنّفي التعزيز: أحدهما يطبّق وزنًا ثابتًا على جميع الكيانات التي تم العثور عليها، بينما يعيّن الآخر وزنًا عشوائيًا لها. بعد ذلك، نشير إلى هذين المصنفين في <strong>FunctionScore،</strong> والذي يحدد أيضًا كيفية تأثير الأوزان على درجات الكيانات التي تم العثور عليها.</p>
-<p>يسرد الجدول التالي المعلمات المطلوبة لإنشاء مثيل <strong>FunctionScore</strong>.</p>
+<p>Specifically, there are two Boost Rankers: one applies a fixed weight to all found entities, while the other assigns a random weight to them. Then, we reference these two rankers in a <strong>FunctionScore</strong>, which also defines how the weights influence the scores of the found entities.</p>
+<p>The following table lists the parameters required to create a <strong>FunctionScore</strong> instance.</p>
 <table>
    <tr>
-     <th><p>المعلمة</p></th>
-     <th><p>مطلوب؟</p></th>
-     <th><p>الوصف</p></th>
-     <th><p>القيمة/مثال</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">functions</code></p></td>
-     <td><p>نعم</p></td>
-     <td><p>تحديد أسماء المصنفين المستهدفين في قائمة.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the names of the target rankers in a list.</p></td>
      <td><p><code translate="no">["fix_weight_ranker", "random_weight_ranker"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.boost_mode</code></p></td>
-     <td><p>لا يوجد</p></td>
-     <td><p>يحدد كيفية تأثير الأوزان المحددة على درجات أي كيانات مطابقة.</p><p>القيم الممكنة هي:</p><ul><li><p><code translate="no">Multiply</code></p><p>تشير إلى أن القيمة الموزونة تساوي الدرجة الأصلية للكيان المطابق مضروبة في الوزن المحدد. </p><p>هذه هي القيمة الافتراضية.</p></li><li><p><code translate="no">Sum</code></p><p>تشير إلى أن القيمة الموزونة تساوي مجموع الدرجة الأصلية للكيان المطابق والوزن المحدد</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Specifies how the specified weights influence the scores of any matching entities.</p><p>Possible values are:</p><ul><li><p><code translate="no">Multiply</code></p><p>Indicates that the weighted value is equal to the original score of a matching entity multiplied by the specified weight. </p><p>This is the default value.</p></li><li><p><code translate="no">Sum</code></p><p>Indicates that the weighted value is equal to the sum of the original score of a matching entity and the specified weight</p></li></ul></td>
      <td><p><code translate="no">"Sum"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.function_mode</code></p></td>
-     <td><p>لا يوجد</p></td>
-     <td><p>يحدد كيفية معالجة القيم الموزونة من مختلف مصنفات التعزيز المختلفة.</p><p>القيم الممكنة هي:</p><ul><li><p><code translate="no">Multiply</code></p><p>تشير إلى أن الدرجة النهائية للكيان المطابق تساوي حاصل ضرب القيم الموزونة من جميع مصنفات التصنيف المعززة.</p><p>هذه هي القيمة الافتراضية.</p></li><li><p><code translate="no">Sum</code></p><p>تشير إلى أن الدرجة النهائية للكيان المطابق تساوي مجموع القيم الموزونة من جميع مصنفات التصنيف المعززة.</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Specifies how the weighted values from various Boost Rankers are processed.</p><p>Possible values are:</p><ul><li><p><code translate="no">Multiply</code></p><p>Indicates that the final score of a matching entity is equal to the product of the weighted values from all Boost Rankers.</p><p>This is the default value.</p></li><li><p><code translate="no">Sum</code></p><p>Indicates that the final score of a matching entity is equal to the sum of the weighted values from all Boost Rankers.</p></li></ul></td>
      <td><p><code translate="no">"Sum"</code></p></td>
    </tr>
 </table>

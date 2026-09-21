@@ -1,10 +1,14 @@
 ---
 id: analyzer-overview.md
-title: 分析器概述
+title: Analyzer Overview
 summary: >-
-  在文字處理中，分析器是將原始文字轉換為結構化且可搜尋格式的關鍵組件。每個分析器通常由兩個核心元件組成：分詞器與過濾器。這兩者共同將輸入文字轉換為詞元、對這些詞元進行精煉，並為其進行高效索引與檢索做好準備。
+  In text processing, an analyzer is a crucial component that converts raw text
+  into a structured, searchable format. Each analyzer typically consists of two
+  core elements: tokenizer and filter. Together, they transform input text into
+  tokens, refine these tokens, and prepare them for efficient indexing and
+  retrieval.
 ---
-<h1 id="Analyzer-Overview" class="common-anchor-header">分析器概述<button data-href="#Analyzer-Overview" class="anchor-icon" translate="no">
+<h1 id="Analyzer-Overview" class="common-anchor-header">Analyzer Overview<button data-href="#Analyzer-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,16 +23,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在文字處理中<strong>，分析器</strong>是將原始文字轉換為結構化且可搜尋格式的關鍵元件。每個分析器通常由兩個核心元件組成：<strong>分詞器</strong>與<strong>過濾器</strong>。兩者共同將輸入文字轉換為詞元、對這些詞元進行精煉，並為高效的索引與檢索做好準備。</p>
-<p>在 Milvus 中，分析器是在建立集合時進行配置的，具體是在集合架構中新增「<code translate="no">VARCHAR</code> 」欄位時設定。分析器產生的詞元可用於建立關鍵字比對索引，或轉換為稀疏嵌入向量以進行全文檢索。如需更多資訊，請參閱《<a href="/docs/zh-hant/full-text-search.md">全文檢索</a>》、《<a href="/docs/zh-hant/phrase-match.md">短語比對</a>》或《<a href="/docs/zh-hant/keyword-match.md">文字比對</a>》。</p>
+    </button></h1><p>In text processing, an <strong>analyzer</strong> is a crucial component that converts raw text into a structured, searchable format. Each analyzer typically consists of two core elements: <strong>tokenizer</strong> and <strong>filter</strong>. Together, they transform input text into tokens, refine these tokens, and prepare them for efficient indexing and retrieval.</p>
+<p>In Milvus, analyzers are configured during collection creation when you add <code translate="no">VARCHAR</code> fields to the collection schema. Tokens produced by an analyzer can be used to build an index for keyword matching or converted into sparse embeddings for full text search. For more information, refer to  <a href="/docs/zh-hant/full-text-search.md">Full Text Search</a>, <a href="/docs/zh-hant/phrase-match.md">Phrase Match</a>, or <a href="/docs/zh-hant/keyword-match.md">Text Match</a>.</p>
 <div class="alert note">
-<p>使用分析器的做法可能會影響效能：</p>
+<p>The use of analyzers may impact performance:</p>
 <ul>
-<li><p><strong>全文搜尋：</strong>進行全文搜尋時<strong>，DataNode</strong>和<strong>QueryNode</strong>通道的資料處理速度會變慢，因為它們必須等待分詞完成。因此，新導入的資料需要更長的時間才能供搜尋使用。</p></li>
-<li><p><strong>關鍵字匹配：</strong>對於關鍵字匹配，索引建立速度也會較慢，因為必須待分詞完成後才能建立索引。</p></li>
+<li><p><strong>Full text search:</strong> For full text search, <strong>DataNode</strong> and <strong>QueryNode</strong> channels consume data more slowly because they must wait for tokenization to complete. As a result, newly ingested data takes longer to become available for search.</p></li>
+<li><p><strong>Keyword match:</strong> For keyword matching, index creation is also slower since tokenization needs to finish before an index can be built.</p></li>
 </ul>
 </div>
-<h2 id="Anatomy-of-an-analyzer" class="common-anchor-header">分析器的結構<button data-href="#Anatomy-of-an-analyzer" class="anchor-icon" translate="no">
+<h2 id="Anatomy-of-an-analyzer" class="common-anchor-header">Anatomy of an analyzer<button data-href="#Anatomy-of-an-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,22 +47,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 中的分析器由一個<strong>分詞器</strong>及<strong>零個或多個</strong>篩選器組成。</p>
+    </button></h2><p>An analyzer in Milvus consists of exactly one <strong>tokenizer</strong> and <strong>zero or more</strong> filters.</p>
 <ul>
-<li><p><strong>分詞器</strong>：分詞器將輸入文字分割成稱為「詞元」的離散單位。這些詞元可能是單字或短語，具體取決於分詞器的類型。</p></li>
-<li><p><strong>篩選器</strong>：可對分詞結果套用篩選器以進一步精細化處理，例如將其轉為小寫或移除常見詞彙。</p></li>
+<li><p><strong>Tokenizer</strong>: The tokenizer breaks input text into discrete units called tokens. These tokens could be words or phrases, depending on the tokenizer type.</p></li>
+<li><p><strong>Filters</strong>: Filters can be applied to tokens to further refine them, for example, by making them lowercase or removing common words.</p></li>
 </ul>
 <div class="alert note">
-<p>分詞器目前僅支援 UTF-8 格式。未來版本將新增對其他格式的支援。</p>
+<p>Tokenizers support only UTF-8 format. Support for other formats will be added in future releases.</p>
 </div>
-<p>以下工作流程圖展示了解析器如何處理文字。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/analyzer-process-workflow.png" alt="Analyzer Process Workflow" class="doc-image" id="analyzer-process-workflow" /> 
-   <span>分析器處理工作流程</span>
-  
- </span></p>
-<h2 id="Analyzer-types" class="common-anchor-header">分析器類型<button data-href="#Analyzer-types" class="anchor-icon" translate="no">
+<p>The workflow below shows how an analyzer processes text.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/analyzer-process-workflow.png" alt="Analyzer Process Workflow" class="doc-image" id="analyzer-process-workflow" />
+    <span>Analyzer Process Workflow</span>
+  </span>
+</p>
+<h2 id="Analyzer-types" class="common-anchor-header">Analyzer types<button data-href="#Analyzer-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,18 +77,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 提供兩種類型的分析器，以滿足不同的文字處理需求：</p>
+    </button></h2><p>Milvus provides two types of analyzers to meet different text processing needs:</p>
 <ul>
-<li><p><strong>內建分析器</strong>：這些是預先定義的配置，只需最少的設定即可處理常見的文字處理任務。由於無需複雜的設定，內建分析器非常適合用於一般用途的搜尋。</p></li>
-<li><p><strong>自訂分析器</strong>：針對更進階的需求，自訂分析器允許您透過指定分詞器以及零個或多個篩選器，來定義自己的配置。此程度的自訂功能對於需要精確控制文字處理的特殊使用情境特別有用。</p></li>
+<li><p><strong>Built-in analyzer</strong>: These are predefined configurations that cover common text processing tasks with minimal setup. Built-in analyzers are ideal for general-purpose searches, as they require no complex configuration.</p></li>
+<li><p><strong>Custom analyzer</strong>: For more advanced requirements, custom analyzers allow you to define your own configuration by specifying both the tokenizer and zero or more filters. This level of customization is especially useful for specialized use cases where precise control over text processing is needed.</p></li>
 </ul>
 <div class="alert note">
 <ul>
-<li>若在建立資料集時省略分析器設定，Milvus 預設會使用「<code translate="no">standard</code> 」分析器進行所有文字處理。詳細資訊請參閱《<a href="/docs/zh-hant/standard-analyzer.md">標準分析器</a>》。</li>
-<li>為獲得最佳的搜尋與查詢效能，請選擇與您的文字資料語言相符的分析器。例如，雖然「<code translate="no">standard</code> 」分析器用途廣泛，但對於具有獨特語法結構的語言（如中文、阿拉伯文、泰文、日文或韓文），它可能並非最佳選擇。在這種情況下，建議使用特定語言的分析器，例如 <a href="/docs/zh-hant/chinese-analyzer.md"><code translate="no">chinese</code></a>、 <a href="/docs/zh-hant/arabic-analyzer.md"><code translate="no">arabic</code></a>、 <a href="/docs/zh-hant/thai-analyzer.md"><code translate="no">thai</code></a>，或是配備專用分詞器的自訂分析器（例如 <a href="/docs/zh-hant/lindera-tokenizer.md"><code translate="no">lindera</code></a>、 <a href="/docs/zh-hant/icu-tokenizer.md"><code translate="no">icu</code></a>）及篩選器，以確保精確的詞元化並獲得更佳的搜尋結果。</li>
+<li>If you omit analyzer configurations during collection creation, Milvus uses the <code translate="no">standard</code> analyzer for all text processing by default. For details, refer to <a href="/docs/zh-hant/standard-analyzer.md">Standard Analyzer</a>.</li>
+<li>For optimal search and query performance, choose an analyzer that matches the language of your text data. For instance, while the <code translate="no">standard</code> analyzer is versatile, it may not be the best choice for languages with unique grammatical structures, such as Chinese, Arabic, Thai, Japanese, or Korean. In such cases, using a language-specific analyzer like <a href="/docs/zh-hant/chinese-analyzer.md"><code translate="no">chinese</code></a>, <a href="/docs/zh-hant/arabic-analyzer.md"><code translate="no">arabic</code></a>, or <a href="/docs/zh-hant/thai-analyzer.md"><code translate="no">thai</code></a>, or custom analyzers with specialized tokenizers (such as <a href="/docs/zh-hant/lindera-tokenizer.md"><code translate="no">lindera</code></a>, <a href="/docs/zh-hant/icu-tokenizer.md"><code translate="no">icu</code></a>) and filters is highly recommended to ensure accurate tokenization and better search results.</li>
 </ul>
 </div>
-<h3 id="Built-in-analyzer" class="common-anchor-header">內建分析器<button data-href="#Built-in-analyzer" class="anchor-icon" translate="no">
+<h3 id="Built-in-analyzer" class="common-anchor-header">Built-in analyzer<button data-href="#Built-in-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,14 +103,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 中的內建分析器已預先配置了特定的分詞器和過濾器，讓您無需自行定義這些元件即可立即使用。每個內建分析器皆作為一個範本，包含預設的分詞器和過濾器，並提供可自訂的選項參數。</p>
-<p>例如，若要使用內建分析器「<code translate="no">standard</code> 」，只需將其名稱<code translate="no">standard</code> 指定為<code translate="no">type</code> ，並可選擇性地加入此分析器類型的特定額外設定，例如<code translate="no">stop_words</code> ：</p>
+    </button></h3><p>Built-in analyzers in Milvus are pre-configured with specific tokenizers and filters, allowing you to use them immediately without needing to define these components yourself. Each built-in analyzer serves as a template that includes a preset tokenizer and filters, with optional parameters for customization.</p>
+<p>For example, to use the <code translate="no">standard</code> built-in analyzer, simply specify its name <code translate="no">standard</code> as the <code translate="no">type</code> and optionally include extra configurations specific to this analyzer type, such as <code translate="no">stop_words</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>, <span class="hljs-comment"># Uses the standard built-in analyzer</span>
@@ -129,13 +133,13 @@ analyzerParams.put(<span class="hljs-string">&quot;stop_words&quot;</span>, Arra
        &quot;stop_words&quot;: [&quot;a&quot;, &quot;an&quot;, &quot;for&quot;]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>若要檢查分析器的執行結果，請使用<code translate="no">run_analyzer</code> 方法：</p>
+<p>To check the execution result of an analyzer, use the <code translate="no">run_analyzer</code> method:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample text to analyze</span>
 text = <span class="hljs-string">&quot;An efficient system relies on a robust analyzer to correctly process text for various applications.&quot;</span>
@@ -188,17 +192,17 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>輸出結果將為：</p>
+<p>The output will be:</p>
 <pre><code translate="no" class="language-plaintext">[&#x27;efficient&#x27;, &#x27;system&#x27;, &#x27;relies&#x27;, &#x27;on&#x27;, &#x27;robust&#x27;, &#x27;analyzer&#x27;, &#x27;to&#x27;, &#x27;correctly&#x27;, &#x27;process&#x27;, &#x27;text&#x27;, &#x27;various&#x27;, &#x27;applications&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<p>這顯示該分析器已正確地將輸入文字進行分詞，篩除了停用詞<code translate="no">&quot;a&quot;</code> 、<code translate="no">&quot;an&quot;</code> 以及<code translate="no">&quot;for&quot;</code> ，同時回傳剩餘的有意義詞元。</p>
-<p>上述<code translate="no">standard</code> 內建分析器的設定，相當於使用以下參數<a href="/docs/zh-hant/analyzer-overview.md#Custom-analyzer">設定自訂分析器，</a>其中<code translate="no">tokenizer</code> 和<code translate="no">filter</code> 選項是為了實現類似功能而明確定義的：</p>
+<p>This demonstrates that the analyzer properly tokenizes the input text by filtering out the stop words <code translate="no">&quot;a&quot;</code>, <code translate="no">&quot;an&quot;</code>, and <code translate="no">&quot;for&quot;</code>, while returning the remaining meaningful tokens.</p>
+<p>The configuration of the <code translate="no">standard</code> built-in analyzer above is equivalent to setting up a <a href="/docs/zh-hant/analyzer-overview.md#Custom-analyzer">custom analyzer</a> with the following parameters, where <code translate="no">tokenizer</code> and <code translate="no">filter</code> options are explicitly defined to achieve similar functionality:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -248,15 +252,15 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
    ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus 提供以下內建分析器，每個分析器皆針對特定的文字處理需求而設計：</p>
+<p>Milvus offers the following built-in analyzers, each designed for specific text processing needs:</p>
 <ul>
-<li><p><code translate="no">standard</code>: 適用於通用文字處理，會套用標準的詞元分割與小寫過濾。</p></li>
-<li><p><code translate="no">english</code>: 針對英文文本進行優化，支援英文停用詞。</p></li>
-<li><p><code translate="no">chinese</code>: 專為處理中文文本而設計，包含針對中文語言結構進行調整的詞元化處理。</p></li>
-<li><p><code translate="no">arabic</code>: 專為阿拉伯語文本設計，具備阿拉伯語正規化、小數位數正規化、阿拉伯語詞幹提取及阿拉伯語停用詞移除功能。</p></li>
-<li><p><code translate="no">thai</code>: 專為泰文處理設計，具備泰文詞語分割、小數位數正規化及泰文停用詞移除功能。</p></li>
+<li><p><code translate="no">standard</code>: Suitable for general-purpose text processing, applying standard tokenization and lowercase filtering.</p></li>
+<li><p><code translate="no">english</code>: Optimized for English-language text, with support for English stop words.</p></li>
+<li><p><code translate="no">chinese</code>: Specialized for processing Chinese text, including tokenization adapted for Chinese language structures.</p></li>
+<li><p><code translate="no">arabic</code>: Specialized for Arabic text, with Arabic normalization, decimal digit normalization, Arabic stemming, and Arabic stop-word removal.</p></li>
+<li><p><code translate="no">thai</code>: Specialized for Thai text, with Thai word segmentation, decimal digit normalization, and Thai stop-word removal.</p></li>
 </ul>
-<h3 id="Custom-analyzer" class="common-anchor-header">自訂分析器<button data-href="#Custom-analyzer" class="anchor-icon" translate="no">
+<h3 id="Custom-analyzer" class="common-anchor-header">Custom analyzer<button data-href="#Custom-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -271,18 +275,18 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若需進行更進階的文本處理，Milvus 中的自訂分析器可讓您透過指定<strong>分詞器</strong>與<strong>篩選器，</strong>建立量身打造的文本處理管線。此設定非常適合需要精確控制的特殊應用情境。</p>
-<h4 id="Tokenizer" class="common-anchor-header">分詞器</h4><p><strong>分詞器是</strong> <strong>自訂分析器的必備組件</strong>，它會將輸入文字拆解為獨立單位（<strong>即詞元</strong>），從而啟動分析器處理流程。分詞過程遵循特定規則，例如依據空格或標點符號進行分割，具體取決於分詞器的類型。此流程可讓每個單字或短語獲得更精確且獨立的處理。</p>
-<p>例如，分詞器會將文字「<code translate="no">&quot;Vector Database Built for Scale&quot;</code> 」轉換為獨立的詞元：</p>
+    </button></h3><p>For more advanced text processing, custom analyzers in Milvus allow you to build a tailored text-handling pipeline by specifying both a <strong>tokenizer</strong> and <strong>filters</strong>. This setup is ideal for specialized use cases where precise control is required.</p>
+<h4 id="Tokenizer" class="common-anchor-header">Tokenizer</h4><p>The <strong>tokenizer</strong> is a <strong>mandatory</strong> component for a custom analyzer, which initiates the analyzer pipeline by breaking down input text into discrete units or <strong>tokens</strong>. Tokenization follows specific rules, such as splitting by whitespace or punctuation, depending on the tokenizer type. This process allows for more precise and independent handling of each word or phrase.</p>
+<p>For example, a tokenizer would convert text <code translate="no">&quot;Vector Database Built for Scale&quot;</code> into separate tokens:</p>
 <pre><code translate="no" class="language-plaintext">[&quot;Vector&quot;, &quot;Database&quot;, &quot;Built&quot;, &quot;for&quot;, &quot;Scale&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>指定分詞器的範例</strong>：</p>
+<p><strong>Example of specifying a tokenizer</strong>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -301,21 +305,21 @@ analyzerParams.put(<span class="hljs-string">&quot;tokenizer&quot;</span>, <span
        &quot;type&quot;: &quot;whitespace&quot;
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Filter" class="common-anchor-header">篩選器</h4><p><strong>篩選器</strong>是<strong>可選的</strong>組件，用於處理分詞器產生的詞元，並根據需要對其進行轉換或精煉。例如，在對已分詞的詞元<code translate="no">[&quot;Vector&quot;, &quot;Database&quot;, &quot;Built&quot;, &quot;for&quot;, &quot;Scale&quot;]</code> 套用<code translate="no">lowercase</code> 篩選器後，結果可能如下：</p>
+<h4 id="Filter" class="common-anchor-header">Filter</h4><p><strong>Filters</strong> are <strong>optional</strong> components working on the tokens produced by the tokenizer, transforming or refining them as needed. For example, after applying a <code translate="no">lowercase</code> filter to the tokenized terms <code translate="no">[&quot;Vector&quot;, &quot;Database&quot;, &quot;Built&quot;, &quot;for&quot;, &quot;Scale&quot;]</code>, the result might be:</p>
 <pre><code translate="no" class="language-sql">[&quot;vector&quot;, &quot;database&quot;, &quot;built&quot;, &quot;for&quot;, &quot;scale&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p>自訂分析器中的篩選器可為<strong>內建</strong>或<strong>自訂</strong>類型，視配置需求而定。</p>
+<p>Filters in a custom analyzer can be either <strong>built-in</strong> or <strong>custom</strong>, depending on configuration needs.</p>
 <ul>
-<li><p><strong>內建篩選器</strong>：由 Milvus 預先設定，僅需最少的設定即可使用。您只需指定其名稱，即可直接使用這些篩選器。以下篩選器為內建功能，可直接使用：</p>
+<li><p><strong>Built-in filters</strong>: Pre-configured by Milvus, requiring minimal setup. You can use these filters out-of-the-box by specifying their names. The filters below are built-in for direct use:</p>
 <ul>
-<li><p><code translate="no">lowercase</code>: 將文字轉換為小寫，確保不區分大小寫的比對。詳情請參閱「<a href="/docs/zh-hant/lowercase-filter.md">小寫轉換</a>」。</p></li>
-<li><p><code translate="no">asciifolding</code>: 將非 ASCII 字元轉換為 ASCII 等效字元，簡化多語言文字的處理。詳情請參閱「<a href="/docs/zh-hant/ascii-folding-filter.md">ASCII 摺疊</a>」。</p></li>
-<li><p><code translate="no">alphanumonly</code>：移除非字母數字字元，僅保留字母數字字元。詳情請參閱「<a href="/docs/zh-hant/alphanumonly-filter.md">Alphanumonly</a>」。</p></li>
-<li><p><code translate="no">cnalphanumonly</code>: 移除包含中文字元、英文字母或數字以外任何字元的詞元。詳情請參閱<a href="/docs/zh-hant/cnalphanumonly-filter.md">Cnalphanumonly</a>。</p></li>
-<li><p><code translate="no">cncharonly</code>: 移除包含任何非中文字元的詞元。詳情請參閱<a href="/docs/zh-hant/cncharonly-filter.md">Cncharonly</a>。</p></li>
-<li><p><code translate="no">pinyin</code>: 為中文詞元新增拼音詞元形式，使中文文字能進行基於拼音的比對。詳情請參閱「<a href="/docs/zh-hant/pinyin-filter.md">拼音</a>」。</p></li>
+<li><p><code translate="no">lowercase</code>: Converts text to lowercase, ensuring case-insensitive matching. For details, refer to <a href="/docs/zh-hant/lowercase-filter.md">Lowercase</a>.</p></li>
+<li><p><code translate="no">asciifolding</code>: Converts non-ASCII characters to ASCII equivalents, simplifying multilingual text handling. For details, refer to <a href="/docs/zh-hant/ascii-folding-filter.md">ASCII folding</a>.</p></li>
+<li><p><code translate="no">alphanumonly</code>: Retains only alphanumeric characters by removing others. For details, refer to <a href="/docs/zh-hant/alphanumonly-filter.md">Alphanumonly</a>.</p></li>
+<li><p><code translate="no">cnalphanumonly</code>: Removes tokens that contain any characters other than Chinese characters, English letters, or digits. For details, refer to <a href="/docs/zh-hant/cnalphanumonly-filter.md">Cnalphanumonly</a>.</p></li>
+<li><p><code translate="no">cncharonly</code>: Removes tokens that contain any non-Chinese characters. For details, refer to <a href="/docs/zh-hant/cncharonly-filter.md">Cncharonly</a>.</p></li>
+<li><p><code translate="no">pinyin</code>: Adds Pinyin token forms for Chinese tokens, enabling Pinyin-based matching for Chinese text. For details, refer to <a href="/docs/zh-hant/pinyin-filter.md">Pinyin</a>.</p></li>
 </ul>
-<p><strong>使用內建篩選器的範例：</strong></p>
+<p><strong>Example of using a built-in filter:</strong></p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
@@ -345,13 +349,13 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>, Collecti
        &quot;filter&quot;:  [&quot;lowercase&quot;]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>自訂篩選器</strong>：自訂篩選器可進行特殊設定。您可以透過選擇有效的篩選器類型（<code translate="no">filter.type</code> ）並為每種篩選器類型新增特定設定，來定義自訂篩選器。支援自訂的篩選器類型範例：</p>
+<li><p><strong>Custom filters</strong>: Custom filters allow for specialized configurations. You can define a custom filter by choosing a valid filter type (<code translate="no">filter.type</code>) and adding specific settings for each filter type. Examples of filter types that support customization:</p>
 <ul>
-<li><p><code translate="no">stop</code>：透過設定停用詞清單（例如<code translate="no">&quot;stop_words&quot;: [&quot;of&quot;, &quot;to&quot;]</code> ）來移除指定的常見詞彙。詳情請參閱「<a href="/docs/zh-hant/stop-filter.md">停用詞」</a>。</p></li>
-<li><p><code translate="no">length</code>：根據長度標準排除詞元，例如設定詞元最大長度。詳情請參閱<a href="/docs/zh-hant/length-filter.md">「Length」</a>。</p></li>
-<li><p><code translate="no">stemmer</code>: 將單詞還原為詞幹形式，以實現更靈活的匹配。詳情請參閱「<a href="/docs/zh-hant/stemmer-filter.md">詞幹化 (Stemmer)</a>」。</p></li>
+<li><p><code translate="no">stop</code>: Removes specified common words by setting a list of stop words (e.g., <code translate="no">&quot;stop_words&quot;: [&quot;of&quot;, &quot;to&quot;]</code>). For details, refer to <a href="/docs/zh-hant/stop-filter.md">Stop</a>.</p></li>
+<li><p><code translate="no">length</code>: Excludes tokens based on length criteria, such as setting a maximum token length. For details, refer to <a href="/docs/zh-hant/length-filter.md">Length</a>.</p></li>
+<li><p><code translate="no">stemmer</code>: Reduces words to their root forms for more flexible matching. For details, refer to <a href="/docs/zh-hant/stemmer-filter.md">Stemmer</a>.</p></li>
 </ul>
-<p><strong>自訂篩選器的設定範例：</strong></p>
+<p><strong>Example of configuring a custom filter:</strong></p>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
 <a href="#java">Java</a>
@@ -404,7 +408,7 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h2 id="Example-use" class="common-anchor-header">使用範例<button data-href="#Example-use" class="anchor-icon" translate="no">
+<h2 id="Example-use" class="common-anchor-header">Example use<button data-href="#Example-use" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -419,17 +423,17 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在此範例中，您將建立一個包含以下內容的集合架構：</p>
+    </button></h2><p>In this example, you will create a collection schema that includes:</p>
 <ul>
-<li><p>一個用於嵌入向量的向量欄位。</p></li>
-<li><p>兩個用於文字處理的<code translate="no">VARCHAR</code> 欄位：</p>
+<li><p>A vector field for embeddings.</p></li>
+<li><p>Two <code translate="no">VARCHAR</code> fields for text processing:</p>
 <ul>
-<li><p>其中一個欄位使用內建分析器。</p></li>
-<li><p>另一個則使用自訂分析器。</p></li>
+<li><p>One field uses a built-in analyzer.</p></li>
+<li><p>The other uses a custom analyzer.</p></li>
 </ul></li>
 </ul>
-<p>在將這些設定整合至您的集合之前，您將使用 `<code translate="no">run_analyzer</code> ` 方法驗證每個分析器。</p>
-<h3 id="Step-1-Initialize-MilvusClient-and-create-schema" class="common-anchor-header">步驟 1：初始化 MilvusClient 並建立資料結構<button data-href="#Step-1-Initialize-MilvusClient-and-create-schema" class="anchor-icon" translate="no">
+<p>Before incorporating these configurations into your collection, you’ll verify each analyzer using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Step-1-Initialize-MilvusClient-and-create-schema" class="common-anchor-header">Step 1: Initialize MilvusClient and create schema<button data-href="#Step-1-Initialize-MilvusClient-and-create-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -444,13 +448,13 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>首先設定 Milvus 客戶端並建立新的資料結構。</p>
+    </button></h3><p>Begin by setting up the Milvus client and creating a new schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -509,7 +513,7 @@ schema := entity.NewSchema().WithAutoID(<span class="hljs-literal">true</span>).
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Define-and-verify-analyzer-configurations" class="common-anchor-header">步驟 2：定義並驗證分析器設定<button data-href="#Step-2-Define-and-verify-analyzer-configurations" class="anchor-icon" translate="no">
+<h3 id="Step-2-Define-and-verify-analyzer-configurations" class="common-anchor-header">Step 2: Define and verify analyzer configurations<button data-href="#Step-2-Define-and-verify-analyzer-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -525,10 +529,10 @@ schema := entity.NewSchema().WithAutoID(<span class="hljs-literal">true</span>).
         ></path>
       </svg>
     </button></h3><ol>
-<li><p><strong>設定並驗證內建分析器</strong>（<code translate="no">english</code> ）<strong>：</strong></p>
+<li><p><strong>Configure and verify a built-in analyzer</strong> (<code translate="no">english</code>)<strong>:</strong></p>
 <ul>
-<li><p><strong>設定：</strong>定義內建英文分析器的參數。</p></li>
-<li><p><strong>驗證：</strong>使用<code translate="no">run_analyzer</code> 確認該設定能否產生預期的分詞結果。</p></li>
+<li><p><strong>Configuration:</strong> Define the analyzer parameters for the built-in English analyzer.</p></li>
+<li><p><strong>Verification:</strong> Use <code translate="no">run_analyzer</code> to check that the configuration produces the expected tokenization.</p></li>
 </ul>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
@@ -594,10 +598,10 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>設定並驗證自訂分析器：</strong></p>
+<li><p><strong>Configure and verify a custom analyzer:</strong></p>
 <ul>
-<li><p><strong>設定：</strong>定義一個自訂分析器，該分析器使用標準分詞器，並搭配內建的小寫轉換濾波器，以及針對詞元長度和停用詞的自訂濾波器。</p></li>
-<li><p><strong>驗證：</strong>使用<code translate="no">run_analyzer</code> 確保自訂設定能如預期般處理文字。</p></li>
+<li><p><strong>Configuration:</strong> Define a custom analyzer that uses a standard tokenizer along with a built-in lowercase filter and custom filters for token length and stop words.</p></li>
+<li><p><strong>Verification:</strong> Use <code translate="no">run_analyzer</code> to ensure the custom configuration processes text as intended.</p></li>
 </ul>
 <p><div class="multipleCode">
 <a href="#python">Python</a>
@@ -701,7 +705,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># curl</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h3 id="Step-3-Add-fields-to-the-schema" class="common-anchor-header">步驟 3：將欄位新增至模式<button data-href="#Step-3-Add-fields-to-the-schema" class="anchor-icon" translate="no">
+<h3 id="Step-3-Add-fields-to-the-schema" class="common-anchor-header">Step 3: Add fields to the schema<button data-href="#Step-3-Add-fields-to-the-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -716,13 +720,13 @@ result, err := client.RunAnalyzer(ctx, option)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>既然您已驗證分析器的設定，請將其新增至模式欄位中：</p>
+    </button></h3><p>Now that you have verified your analyzer configurations, add them to your schema fields:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Add VARCHAR field &#x27;title_en&#x27; using the built-in analyzer configuration</span>
 schema.add_field(
@@ -826,7 +830,7 @@ schema.addField(AddFieldReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-4-Prepare-index-parameters-and-create-the-collection" class="common-anchor-header">步驟 4：準備索引參數並建立集合<button data-href="#Step-4-Prepare-index-parameters-and-create-the-collection" class="anchor-icon" translate="no">
+<h3 id="Step-4-Prepare-index-parameters-and-create-the-collection" class="common-anchor-header">Step 4: Prepare index parameters and create the collection<button data-href="#Step-4-Prepare-index-parameters-and-create-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -842,11 +846,11 @@ schema.addField(AddFieldReq.builder()
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Set up index parameters for the vector field</span>
 index_params = client.prepare_index_params()
@@ -906,7 +910,7 @@ err = client.CreateCollection(ctx,
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Whats-next" class="common-anchor-header">下一步<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -921,9 +925,9 @@ err = client.CreateCollection(ctx,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>配置完分析器後，您可以整合 Milvus 提供的文字檢索功能。詳細資訊請參閱：</p>
+    </button></h2><p>After configuring an analyzer, you can integrate with text retrieval features provided by Milvus. For details:</p>
 <ul>
-<li><p><a href="/docs/zh-hant/full-text-search.md">全文檢索</a></p></li>
-<li><p><a href="/docs/zh-hant/keyword-match.md">文字比對</a></p></li>
-<li><p><a href="/docs/zh-hant/phrase-match.md">短語匹配</a></p></li>
+<li><p><a href="/docs/zh-hant/full-text-search.md">Full Text Search</a></p></li>
+<li><p><a href="/docs/zh-hant/keyword-match.md">Text Match</a></p></li>
+<li><p><a href="/docs/zh-hant/phrase-match.md">Phrase Match</a></p></li>
 </ul>

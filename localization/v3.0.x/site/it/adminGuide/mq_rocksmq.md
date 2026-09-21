@@ -2,7 +2,7 @@
 id: mq_rocksmq.md
 title: RocksMQ
 ---
-<h1 id="Use-RocksMQ-as-the-Milvus-Message-Queue" class="common-anchor-header">Utilizzare RocksMQ come coda di messaggi di Milvus<button data-href="#Use-RocksMQ-as-the-Milvus-Message-Queue" class="anchor-icon" translate="no">
+<h1 id="Use-RocksMQ-as-the-Milvus-Message-Queue" class="common-anchor-header">Use RocksMQ as the Milvus Message Queue<button data-href="#Use-RocksMQ-as-the-Milvus-Message-Queue" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -17,8 +17,8 @@ title: RocksMQ
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>RocksMQ è una coda di messaggi incorporata (WAL) inclusa in Milvus, disponibile <strong>solo</strong> per <strong>Milvus Standalone</strong>. Nelle versioni precedenti di Milvus era la coda di messaggi predefinita per la versione standalone; in Milvus 3.x, Milvus Standalone utilizza <a href="/docs/it/woodpecker.md">Woodpecker</a> incorporato come impostazione predefinita.</p>
-<h2 id="Version-compatibility" class="common-anchor-header">Compatibilità delle versioni<button data-href="#Version-compatibility" class="anchor-icon" translate="no">
+    </button></h1><p>RocksMQ is an embedded message queue (WAL) bundled with Milvus, available for <strong>Milvus Standalone only</strong>. It was the default standalone message queue in earlier Milvus versions; in Milvus 3.x, Milvus Standalone uses embedded <a href="/docs/it/woodpecker.md">Woodpecker</a> by default.</p>
+<h2 id="Version-compatibility" class="common-anchor-header">Version compatibility<button data-href="#Version-compatibility" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,11 +34,11 @@ title: RocksMQ
         ></path>
       </svg>
     </button></h2><ul>
-<li><strong>Solo Standalone</strong> — RocksMQ <strong>non</strong> è supportato in Milvus Distributed (cluster). Consultare la <a href="/docs/it/mqtype-overview.md#Supported-message-queues">matrice di supporto delle code di messaggi</a>.</li>
-<li>RocksMQ è fornito insieme a Milvus, quindi non è necessario installare una versione separata.</li>
-<li>Era la coda di messaggi predefinita per la versione standalone nelle versioni precedenti di Milvus ed è stata sostituita da Woodpecker integrato in Milvus 3.x.</li>
+<li><strong>Standalone only</strong> — RocksMQ is <strong>not</strong> supported in Milvus Distributed (cluster). See the <a href="/docs/it/mqtype-overview.md#Supported-message-queues">message queue support matrix</a>.</li>
+<li>RocksMQ ships with Milvus, so there is no separate version to install.</li>
+<li>It was the default standalone message queue in earlier Milvus versions, and is superseded by embedded Woodpecker in Milvus 3.x.</li>
 </ul>
-<h2 id="Deploy-Milvus-Standalone-with-RocksMQ-using-Docker" class="common-anchor-header">Distribuire Milvus Standalone con RocksMQ utilizzando Docker<button data-href="#Deploy-Milvus-Standalone-with-RocksMQ-using-Docker" class="anchor-icon" translate="no">
+<h2 id="Deploy-Milvus-Standalone-with-RocksMQ-using-Docker" class="common-anchor-header">Deploy Milvus Standalone with RocksMQ using Docker<button data-href="#Deploy-Milvus-Standalone-with-RocksMQ-using-Docker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,7 +53,7 @@ title: RocksMQ
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Install" class="common-anchor-header">Installazione<button data-href="#Install" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Install" class="common-anchor-header">Install<button data-href="#Install" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,7 +68,7 @@ title: RocksMQ
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Seguire le istruzioni riportate <a href="/docs/it/install_standalone-docker.md">in "Eseguire Milvus in Docker</a>". In Milvus 3.x, l’impostazione predefinita per la modalità standalone è Woodpecker, pertanto è necessario impostare esplicitamente il tipo di coda di messaggi su RocksMQ. Lo script di avvio crea un nuovo file ` <code translate="no">user.yaml</code> ` al <strong>primo</strong> avvio di ` <code translate="no">start</code>`, quindi impostare il tipo <strong>dopo</strong> tale primo avvio e successivamente eseguire ` <code translate="no">restart</code> ` per applicare la modifica (un comando ` <code translate="no">restart</code> ` mantiene il contenuto di ` <code translate="no">user.yaml</code>`):</p>
+    </button></h3><p>Follow <a href="/docs/it/install_standalone-docker.md">Run Milvus in Docker</a>. In Milvus 3.x the standalone default is Woodpecker, so switch the message-queue type to RocksMQ explicitly. The bootstrap script writes a fresh <code translate="no">user.yaml</code> on the <strong>first</strong> <code translate="no">start</code>, so set the type <strong>after</strong> that first start and then <code translate="no">restart</code> to apply (a <code translate="no">restart</code> preserves <code translate="no">user.yaml</code>):</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">mkdir</span> milvus-rocksmq &amp;&amp; <span class="hljs-built_in">cd</span> milvus-rocksmq
 curl -sfL https://raw.githubusercontent.com/milvus-io/milvus/master/scripts/standalone_embed.sh -o standalone_embed.sh
 
@@ -85,9 +85,9 @@ EOF
 bash standalone_embed.sh restart
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-La modifica di <code translate="no">mq.type</code> in questo modo è pensata per un'istanza <b>nuova di zecca</b> (senza collezioni). Per cambiare la coda dei messaggi di un'istanza che contiene già dati, segui invece la <a href="/docs/it/switch-rocksmq-woodpecker.md">procedura di cambio</a>.
+Switching <code translate="no">mq.type</code> this way is meant for a <b>brand-new</b> instance (no collections yet). To change the message queue of an instance that already holds data, follow the <a href="/docs/it/switch-rocksmq-woodpecker.md">switch procedure</a> instead.
 </div>
-<h3 id="Configure" class="common-anchor-header">Configurazione<button data-href="#Configure" class="anchor-icon" translate="no">
+<h3 id="Configure" class="common-anchor-header">Configure<button data-href="#Configure" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,7 +102,7 @@ La modifica di <code translate="no">mq.type</code> in questo modo è pensata per
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Per ottimizzare RocksMQ, aggiungere una sezione <code translate="no">rocksmq</code> al file <code translate="no">user.yaml</code> e riavviare il servizio:</p>
+    </button></h3><p>To tune RocksMQ, add a <code translate="no">rocksmq</code> section to <code translate="no">user.yaml</code> and restart the service:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">mq:</span>
   <span class="hljs-attr">type:</span> <span class="hljs-string">rocksmq</span>
 <span class="hljs-attr">rocksmq:</span>
@@ -116,7 +116,7 @@ La modifica di <code translate="no">mq.type</code> in questo modo è pensata per
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">bash standalone_embed.sh restart
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Uninstall" class="common-anchor-header">Disinstallazione<button data-href="#Uninstall" class="anchor-icon" translate="no">
+<h3 id="Uninstall" class="common-anchor-header">Uninstall<button data-href="#Uninstall" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,7 +134,7 @@ La modifica di <code translate="no">mq.type</code> in questo modo è pensata per
     </button></h3><pre><code translate="no" class="language-bash">bash standalone_embed.sh stop
 bash standalone_embed.sh delete
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Notes" class="common-anchor-header">Note<button data-href="#Notes" class="anchor-icon" translate="no">
+<h2 id="Notes" class="common-anchor-header">Notes<button data-href="#Notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -150,11 +150,11 @@ bash standalone_embed.sh delete
         ></path>
       </svg>
     </button></h2><ul>
-<li><strong>Aggiornamento dalla versione 2.5.x alla 2.6.x:</strong> <strong>Limitazioni relative alle code di messaggi</strong>: durante l'aggiornamento a Milvus v3.0.1, è necessario mantenere la scelta attuale della coda di messaggi. Il passaggio da un sistema di code di messaggi all'altro durante l'aggiornamento non è supportato. Il supporto per la modifica dei sistemi di code di messaggi sarà disponibile nelle versioni future.
-Poiché la versione 2.6.x imposta Woodpecker come predefinito per l’installazione standalone, se si desidera mantenere RocksMQ, è necessario fissare <code translate="no">mq.type: rocksmq</code> nel file <code translate="no">user.yaml</code> <strong>prima di</strong> procedere all’aggiornamento.</li>
-<li>Per modificare la coda dei messaggi di un’istanza in esecuzione, consultare <a href="/docs/it/switch-rocksmq-woodpecker.md">Passare da RocksMQ a Woodpecker</a>.</li>
+<li><strong>Upgrading from 2.5.x to 2.6.x:</strong> <strong>Message Queue limitations</strong>: When upgrading to Milvus v3.0.1, you must maintain your current message queue choice. Switching between different message queue systems during the upgrade is not supported. Support for changing message queue systems will be available in future versions.
+Because 2.6.x changes the standalone default to Woodpecker, pin <code translate="no">mq.type: rocksmq</code> in your <code translate="no">user.yaml</code> <strong>before</strong> upgrading if you want to keep RocksMQ.</li>
+<li>To change the message queue of a running instance, see <a href="/docs/it/switch-rocksmq-woodpecker.md">Switch from RocksMQ to Woodpecker</a>.</li>
 </ul>
-<h2 id="Whats-next" class="common-anchor-header">Prossimi passi<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -170,6 +170,6 @@ Poiché la versione 2.6.x imposta Woodpecker come predefinito per l’installazi
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="/docs/it/woodpecker.md">Woodpecker (coda di messaggi predefinita)</a></li>
-<li><a href="/docs/it/switch-rocksmq-woodpecker.md">Passaggio da RocksMQ a Woodpecker</a></li>
+<li><a href="/docs/it/woodpecker.md">Woodpecker (default message queue)</a></li>
+<li><a href="/docs/it/switch-rocksmq-woodpecker.md">Switch from RocksMQ to Woodpecker</a></li>
 </ul>

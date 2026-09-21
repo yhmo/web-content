@@ -2,10 +2,10 @@
 id: rtree.md
 title: RTREECompatible with Milvus 2.6.4+
 summary: >-
-  فهرس RTREE هو هيكل بيانات قائم على الشجرة يعمل على تسريع الاستعلامات على حقول
-  GEOMETRY في Milvus. إذا كانت مجموعتك تخزن كائنات هندسية مثل النقاط أو الخطوط
-  أو المضلعات بتنسيق نص معروف جيدًا (WKT) وتريد تسريع التصفية المكانية، فإن
-  RTREE هو الخيار المثالي.
+  The RTREE index is a tree-based data structure that accelerates queries on
+  GEOMETRY fields in Milvus. If your collection stores geometric objects such as
+  points, lines, or polygans in Well-known text (WKT) format and you want to
+  accelerate spatial filtering, RTREE is an ideal choice.
 beta: Milvus 2.6.4+
 ---
 <h1 id="RTREE" class="common-anchor-header">RTREE<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#RTREE" class="anchor-icon" translate="no">
@@ -23,8 +23,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>الفهرس <code translate="no">RTREE</code> هو هيكل بيانات قائم على الشجرة يعمل على تسريع الاستعلامات على <code translate="no">GEOMETRY</code> الحقول في ميلفوس. إذا كانت مجموعتك تخزن كائنات هندسية مثل النقاط أو الخطوط أو المضلعات بتنسيق <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">نص معروف جيدًا (WKT</a> ) وتريد تسريع التصفية المكانية، فإن <code translate="no">RTREE</code> هو الخيار المثالي.</p>
-<h2 id="How-it-works" class="common-anchor-header">كيف يعمل<button data-href="#How-it-works" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">RTREE</code> index is a tree-based data structure that accelerates queries on <code translate="no">GEOMETRY</code> fields in Milvus. If your collection stores geometric objects such as points, lines, or polygans in <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-known text (WKT)</a> format and you want to accelerate spatial filtering, <code translate="no">RTREE</code> is an ideal choice.</p>
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,8 +39,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يستخدم Milvus فهرس <code translate="no">RTREE</code> لتنظيم وتصفية البيانات الهندسية بكفاءة، باتباع عملية من مرحلتين:</p>
-<h3 id="Phase-1-Build-the-index" class="common-anchor-header">المرحلة 1: بناء الفهرس<button data-href="#Phase-1-Build-the-index" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus uses an <code translate="no">RTREE</code> index to efficiently organize and filter geometry data, following a two-phase process:</p>
+<h3 id="Phase-1-Build-the-index" class="common-anchor-header">Phase 1: Build the index<button data-href="#Phase-1-Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,15 +56,17 @@ beta: Milvus 2.6.4+
         ></path>
       </svg>
     </button></h3><ol>
-<li><p><strong>إنشاء العقد الورقية:</strong> لكل كائن هندسي، قم بحساب <a href="https://en.wikipedia.org/wiki/Minimum_bounding_rectangle">الحد الأدنى للمستطيل المحيط</a> به (MBR)، وهو أصغر مستطيل يحتوي على الكائن بالكامل، وقم بتخزينه كعقدة ورقة.</p></li>
-<li><p><strong>جمِّع في مربعات أكبر:</strong> قم بتجميع العقد الورقية القريبة معًا ولف كل مجموعة مع MBR جديد، لتكوين عقد داخلية. على سبيل المثال، تحتوي المجموعة <strong>B</strong> على <strong>D</strong> <strong>وE؛</strong> وتحتوي المجموعة <strong>C</strong> على <strong>F</strong> <strong>وG</strong>.</p></li>
-<li><p><strong>أضف عقدة الجذر:</strong> أضف عقدة جذر تغطي MBR جميع المجموعات الداخلية، مما ينتج عنه بنية شجرة متوازنة الارتفاع.</p></li>
+<li><p><strong>Create leaf nodes:</strong> For each geometry object, calculate its <a href="https://en.wikipedia.org/wiki/Minimum_bounding_rectangle">Minimum Bounding Rectangle</a> (MBR), which is the smallest rectangle that fully contains the object, and store it as a leaf node.</p></li>
+<li><p><strong>Group into larger boxes:</strong> Cluster nearby leaf nodes together and wrap each group with a new MBR, forming internal nodes. For example, group <strong>B</strong> contains <strong>D</strong> and <strong>E</strong>; group <strong>C</strong> contains <strong>F</strong> and <strong>G</strong>.</p></li>
+<li><p><strong>Add the root node:</strong> Add a root node whose MBR covers all internal groups, resulting in a height-balanced tree structure.</p></li>
 </ol>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/how-retree-works.png" alt="How Retree Works" class="doc-image" id="how-retree-works" />
-   </span> <span class="img-wrapper"> <span>كيف يعمل ريتري</span> </span></p>
-<h3 id="Phase-2-Accelerate-queries" class="common-anchor-header">المرحلة 2: تسريع الاستعلامات<button data-href="#Phase-2-Accelerate-queries" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/how-retree-works.png" alt="How Retree Works" class="doc-image" id="how-retree-works" />
+    <span>How Retree Works</span>
+  </span>
+</p>
+<h3 id="Phase-2-Accelerate-queries" class="common-anchor-header">Phase 2: Accelerate queries<button data-href="#Phase-2-Accelerate-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -80,12 +82,12 @@ beta: Milvus 2.6.4+
         ></path>
       </svg>
     </button></h3><ol>
-<li><p><strong>تشكيل MBR الاستعلام:</strong> احسب MBR لهندسة الاستعلام الخاص بك.</p></li>
-<li><p><strong>تشذيب الفروع:</strong> بدءًا من الجذر، قارن MBR للاستعلام بكل عقدة داخلية. تخطي أي فروع لا يتقاطع MBR الخاص بها مع MBR للاستعلام.</p></li>
-<li><p><strong>اجمع الفروع المرشحة:</strong> النزول إلى الفروع المتقاطعة لجمع العقد الورقية المرشحة.</p></li>
-<li><p><strong>التطابق التام:</strong> لكل مرشح، قم بإجراء مسند مكاني دقيق لتحديد التطابقات الحقيقية.</p></li>
+<li><p><strong>Form the query MBR:</strong> Calculate the MBR for your query geometry.</p></li>
+<li><p><strong>Prune branches:</strong> Starting at the root, compare the query MBR to each internal node. Skip any branches whose MBR does not intersect with the query MBR.</p></li>
+<li><p><strong>Collect candidates:</strong> Descend into intersecting branches to gather candidate leaf nodes.</p></li>
+<li><p><strong>Exact match:</strong> For each candidate, perform an exact spatial predicate to determine true matches.</p></li>
 </ol>
-<h2 id="Create-an-RTREE-index" class="common-anchor-header">إنشاء فهرس RTREE<button data-href="#Create-an-RTREE-index" class="anchor-icon" translate="no">
+<h2 id="Create-an-RTREE-index" class="common-anchor-header">Create an RTREE index<button data-href="#Create-an-RTREE-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,7 +102,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك إنشاء فهرس <code translate="no">RTREE</code> على حقل <code translate="no">GEOMETRY</code> محدد في مخطط مجموعتك.</p>
+    </button></h2><p>You can create an <code translate="no">RTREE</code> index on a <code translate="no">GEOMETRY</code> field defined in your collection schema.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your server address</span>
@@ -124,7 +126,7 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Query-with-RTREE" class="common-anchor-header">الاستعلام باستخدام RTREE<button data-href="#Query-with-RTREE" class="anchor-icon" translate="no">
+<h2 id="Query-with-RTREE" class="common-anchor-header">Query with RTREE<button data-href="#Query-with-RTREE" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,9 +141,9 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك التصفية باستخدام عوامل الهندسة في التعبير <code translate="no">filter</code>. في حالة وجود <code translate="no">RTREE</code> على الحقل المستهدف <code translate="no">GEOMETRY</code> ، يستخدمه ميلفوس لتشذيب المرشحين تلقائيًا. بدون الفهرس، يعود عامل التصفية إلى المسح الكامل.</p>
-<p>للاطلاع على قائمة كاملة بالمشغلات المتاحة الخاصة بالهندسة، راجع <a href="/docs/ar/geometry-operators.md">مشغلات الهندسة</a>.</p>
-<h3 id="Example-1-Filter-only" class="common-anchor-header">مثال 1: تصفية فقط<button data-href="#Example-1-Filter-only" class="anchor-icon" translate="no">
+    </button></h2><p>You filter with geometry operators in the <code translate="no">filter</code> expression. When an <code translate="no">RTREE</code> exists on the target <code translate="no">GEOMETRY</code> field, Milvus uses it to prune candidates automatically. Without the index, the filter falls back to a full scan.</p>
+<p>For a full list of available geometry-specific operators, refer to <a href="/docs/ar/geometry-operators.md">Geometry Operators</a>.</p>
+<h3 id="Example-1-Filter-only" class="common-anchor-header">Example 1: Filter only<button data-href="#Example-1-Filter-only" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -156,7 +158,7 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>ابحث عن جميع الأجسام الهندسية داخل مضلع معين:</p>
+    </button></h3><p>Find all geometric objects within a given polygon:</p>
 <pre><code translate="no" class="language-python">filter_expr = <span class="hljs-string">&quot;ST_CONTAINS(geo, &#x27;POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))&#x27;)&quot;</span>
 
 res = client.query(
@@ -167,7 +169,7 @@ res = client.query(
 )
 <span class="hljs-built_in">print</span>(res)   <span class="hljs-comment"># Expected: a list of rows where geo is entirely inside the polygon</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Vector-search-+-spatial-filter" class="common-anchor-header">مثال 2: البحث عن المتجهات + التصفية المكانية<button data-href="#Example-2-Vector-search-+-spatial-filter" class="anchor-icon" translate="no">
+<h3 id="Example-2-Vector-search-+-spatial-filter" class="common-anchor-header">Example 2: Vector search + spatial filter<button data-href="#Example-2-Vector-search-+-spatial-filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -182,7 +184,7 @@ res = client.query(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>ابحث عن أقرب المتجهات التي تتقاطع أيضًا مع خط مستقيم:</p>
+    </button></h3><p>Find the nearest vectors that also intersect a line:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Assume you&#x27;ve also created an index on &quot;vec&quot; and loaded the collection.</span>
 query_vec = [[<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.5</span>]]
 filter_expr = <span class="hljs-string">&quot;ST_INTERSECTS(geo, &#x27;LINESTRING (1 1, 2 2)&#x27;)&quot;</span>
@@ -196,8 +198,8 @@ hits = client.search(
 )
 <span class="hljs-built_in">print</span>(hits)  <span class="hljs-comment"># Expected: top-k by vector similarity among rows whose geo intersects the line</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لمزيد من المعلومات حول كيفية استخدام حقل <code translate="no">GEOMETRY</code> ، راجع <a href="/docs/ar/geometry-field.md">حقل الهندسة</a>.</p>
-<h2 id="Drop-an-index" class="common-anchor-header">إسقاط فهرس<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<p>For more information on how to use a <code translate="no">GEOMETRY</code> field, refer to <a href="/docs/ar/geometry-field.md">Geometry Field</a>.</p>
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -212,11 +214,11 @@ hits = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم الأسلوب <code translate="no">drop_index()</code> لإزالة فهرس موجود من مجموعة.</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
 <ul>
-<li><p>في الإصدار <strong>2.6.3 أو الإصدار 2.6.3</strong> أو الإصدارات الأقدم، يجب عليك تحرير المجموعة قبل إسقاط فهرس قياسي.</p></li>
-<li><p>اعتبارًا من الإصدار <strong>2.6.4</strong> أو الإصدار الأحدث، يمكنك إسقاط فهرس قياسي مباشرةً بمجرد عدم الحاجة إليه - لا حاجة لتحرير المجموعة أولاً.</p></li>
+<li><p>In <strong>v2.6.3</strong> or earlier, you must release the collection before dropping a scalar index.</p></li>
+<li><p>From <strong>v2.6.4</strong> or later, you can drop a scalar index directly once it’s no longer needed—no need to release the collection first.</p></li>
 </ul>
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(

@@ -1,11 +1,11 @@
 ---
 id: stop-filter.md
-title: Berhenti
+title: Stop
 summary: >-
-  Gunakan filter stop untuk menghilangkan kata-kata stop yang telah
-  dikonfigurasi dari teks yang telah ditokenisasi selama proses analisis.
+  Use the stop filter to remove configured stop words from tokenized text during
+  analysis.
 ---
-<h1 id="Stop" class="common-anchor-header">Berhenti<button data-href="#Stop" class="anchor-icon" translate="no">
+<h1 id="Stop" class="common-anchor-header">Stop<button data-href="#Stop" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Filter " <code translate="no">stop</code> " menghapus kata-kata stop yang ditentukan dari teks yang telah ditokenisasi, sehingga membantu menghilangkan kata-kata umum yang kurang bermakna. Anda dapat mengonfigurasi daftar kata-kata stop menggunakan parameter " <code translate="no">stop_words</code> ".</p>
-<h2 id="Configuration" class="common-anchor-header">Konfigurasi<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">stop</code> filter removes specified stop words from tokenized text, helping to eliminate common, less meaningful words. You can configure the list of stop words using the <code translate="no">stop_words</code> parameter.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,8 +36,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Filter ` <code translate="no">stop</code> ` menerima daftar kata henti baik secara langsung melalui parameter ` <code translate="no">stop_words</code> ` maupun dari sumber berkas yang terdaftar melalui parameter ` <code translate="no">stop_words_file</code> `.</p>
-<h3 id="Inline-stop-words-list" class="common-anchor-header">Daftar kata-kata yang diabaikan secara langsung<button data-href="#Inline-stop-words-list" class="anchor-icon" translate="no">
+    </button></h2><p>The <code translate="no">stop</code> filter accepts its stop-words list either inline via the <code translate="no">stop_words</code> parameter or from a registered file resource via the <code translate="no">stop_words_file</code> parameter.</p>
+<h3 id="Inline-stop-words-list" class="common-anchor-header">Inline stop-words list<button data-href="#Inline-stop-words-list" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -52,13 +52,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk menggunakan filter ` <code translate="no">stop</code> ` dengan daftar langsung, tentukan ` <code translate="no">&quot;type&quot;: &quot;stop&quot;</code> ` dalam konfigurasi filter, bersama dengan parameter ` <code translate="no">stop_words</code> ` yang menyediakan daftar kata-kata yang diabaikan.</p>
+    </button></h3><p>To use the <code translate="no">stop</code> filter with an inline list, specify <code translate="no">&quot;type&quot;: &quot;stop&quot;</code> in the filter configuration, along with a <code translate="no">stop_words</code> parameter that provides the list of stop words.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -109,20 +109,20 @@ analyzerParams=<span class="hljs-string">&#x27;{
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<p>Filter ` <code translate="no">stop</code> ` menerima parameter-parameter konfigurasi berikut.</p>
+<p>The <code translate="no">stop</code> filter accepts the following configurable parameters.</p>
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Deskripsi</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">stop_words</code></p></td>
-     <td><p>Daftar kata yang akan dihapus dari tokenisasi. Secara default, filter ini menggunakan kamus <code translate="no">_english_</code> bawaan. Anda dapat mengganti atau memperluasnya dengan tiga cara:</p><ul><li><p><strong>Kamus bawaan</strong> – berikan salah satu alias bahasa berikut untuk menggunakan kamus yang telah ditentukan sebelumnya:</p><p><code translate="no">"_arabic_"</code>, <code translate="no">"_english_"</code>, <code translate="no">"_danish_"</code>, <code translate="no">"_dutch_"</code>, <code translate="no">"_finnish_"</code>, <code translate="no">"_french_"</code>, <code translate="no">"_german_"</code>, <code translate="no">"_hungarian_"</code>, <code translate="no">"_italian_"</code>, <code translate="no">"_norwegian_"</code>, <code translate="no">"_portuguese_"</code>, <code translate="no">"_russian_"</code>, <code translate="no">"_spanish_"</code>, <code translate="no">"_swedish_"</code>, <code translate="no">"_thai_"</code></p></li><li><p><strong>Daftar kustom</strong> – berikan array istilah Anda sendiri, misalnya <code translate="no">["foo", "bar", "baz"]</code>.</p></li><li><p><strong>Daftar campuran</strong> – gabungkan alias dan istilah kustom, misalnya <code translate="no">["of", "to", "_english_"]</code>.</p><p>Untuk detail mengenai isi tepat dari setiap kamus bawaan, lihat <a href="https://github.com/milvus-io/milvus/blob/master/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words.rs">stop_words</a>. Untuk memeriksa kamus Arab atau Thailand, lihat <a href="https://github.com/milvus-io/milvus/blob/1945ba399b4552fd0fd0b131f7c735ddde21e71c/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words/arabic.txt">daftar kata henti Arab</a> atau <a href="https://github.com/milvus-io/milvus/blob/1945ba399b4552fd0fd0b131f7c735ddde21e71c/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words/thai.txt">daftar kata henti Thailand</a>.</p></li></ul></td>
+     <td><p>A list of words to be removed from tokenization. By default, the filter uses the built‑in <code translate="no">_english_</code> dictionary. You can override or extend it in three ways:</p><ul><li><p><strong>Built‑in dictionaries</strong> – supply one of these language aliases to use a predefined dictionary:</p><p><code translate="no">"_arabic_"</code>, <code translate="no">"_english_"</code>, <code translate="no">"_danish_"</code>, <code translate="no">"_dutch_"</code>, <code translate="no">"_finnish_"</code>, <code translate="no">"_french_"</code>, <code translate="no">"_german_"</code>, <code translate="no">"_hungarian_"</code>, <code translate="no">"_italian_"</code>, <code translate="no">"_norwegian_"</code>, <code translate="no">"_portuguese_"</code>, <code translate="no">"_russian_"</code>, <code translate="no">"_spanish_"</code>, <code translate="no">"_swedish_"</code>, <code translate="no">"_thai_"</code></p></li><li><p><strong>Custom list</strong> – pass an array of your own terms, e.g. <code translate="no">["foo", "bar", "baz"]</code>.</p></li><li><p><strong>Mixed list</strong> – combine aliases and custom terms, e.g. <code translate="no">["of", "to", "_english_"]</code>.</p><p>For details on the exact content of each predefined dictionary, refer to <a href="https://github.com/milvus-io/milvus/blob/master/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words.rs">stop_words</a>. To inspect the Arabic or Thai dictionary, refer to the <a href="https://github.com/milvus-io/milvus/blob/1945ba399b4552fd0fd0b131f7c735ddde21e71c/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words/arabic.txt">Arabic stop-word list</a> or <a href="https://github.com/milvus-io/milvus/blob/1945ba399b4552fd0fd0b131f7c735ddde21e71c/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words/thai.txt">Thai stop-word list</a>.</p></li></ul></td>
    </tr>
 </table>
-<p>Filter ` <code translate="no">stop</code> ` beroperasi pada istilah yang dihasilkan oleh tokenizer, sehingga harus digunakan bersama dengan tokenizer. Untuk daftar tokenizer yang tersedia di Milvus, lihat <a href="/docs/id/standard-tokenizer.md">`Standard Tokenizer</a> ` dan halaman terkait lainnya.</p>
-<p>Setelah mendefinisikan kata-kata yang diabaikan ( <code translate="no">analyzer_params</code>), Anda dapat menerapkannya ke bidang " <code translate="no">VARCHAR</code> " saat mendefinisikan skema koleksi. Hal ini memungkinkan Milvus memproses teks di bidang tersebut menggunakan penganalisis yang ditentukan untuk tokenisasi dan penyaringan yang efisien. Untuk detailnya, lihat <a href="/docs/id/analyzer-overview.md#Example-use">Contoh penggunaan</a>.</p>
-<h3 id="Load-stop-words-from-a-file-resource--Milvus-30x" class="common-anchor-header">Memuat kata-kata stop dari sumber daya berkas<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Load-stop-words-from-a-file-resource--Milvus-30x" class="anchor-icon" translate="no">
+<p>The <code translate="no">stop</code> filter operates on the terms generated by the tokenizer, so it must be used in combination with a tokenizer. For a list of tokenizers available in Milvus, refer to <a href="/docs/id/standard-tokenizer.md">Standard Tokenizer</a> and its sibling pages.</p>
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/id/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h3 id="Load-stop-words-from-a-file-resource" class="common-anchor-header">Load stop words from a file resource<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Load-stop-words-from-a-file-resource" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -137,13 +137,13 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk daftar kata henti kustom yang besar — daftar khusus bahasa, kosakata domain, atau daftar yang ingin Anda bagikan di banyak koleksi — simpan kata-kata tersebut dalam berkas dan daftarkan berkas tersebut sebagai sumber daya berkas jarak jauh, lalu rujuk berkas tersebut dari filter melalui parameter ` <code translate="no">stop_words_file</code> `. Anda dapat menggunakan ` <code translate="no">stop_words_file</code> ` secara mandiri atau bersama dengan ` <code translate="no">stop_words</code>` yang disertakan; ketika keduanya ditetapkan, filter akan menggabungkan kedua sumber tersebut menjadi satu daftar kata henti.</p>
-<p>File tersebut berupa teks UTF‑8 biasa dengan <strong>satu kata penghalang per baris</strong>. Contoh:</p>
+    </button></h3><p>For large custom stop-words lists — language-specific lists, domain vocabularies, or lists you want to share across many collections — store the words in a file and register the file as a remote file resource, then reference it from the filter via the <code translate="no">stop_words_file</code> parameter. You can use <code translate="no">stop_words_file</code> on its own or alongside inline <code translate="no">stop_words</code>; when both are set, the filter merges the two sources into a single stop-words list.</p>
+<p>The file is plain UTF‑8 text with <strong>one stop word per line</strong>. For example:</p>
 <pre><code translate="no" class="language-plaintext">the
 of
 for
 <button class="copy-code-btn"></button></code></pre>
-<p>Unggah berkas tersebut ke penyimpanan objek yang dikonfigurasi untuk digunakan oleh kluster Milvus Anda, lalu daftarkan berkas tersebut:</p>
+<p>Upload the file to the object store that your Milvus cluster is configured to use, then register it:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -154,7 +154,7 @@ client.add_file_resource(
     path=<span class="hljs-string">&quot;file/stop_words.txt&quot;</span>,    <span class="hljs-comment"># full S3 object key, including the rootPath prefix</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Rujuk sumber daya yang telah didaftarkan dalam filter melalui ` <code translate="no">stop_words_file</code>`:</p>
+<p>Reference the registered resource in the filter via <code translate="no">stop_words_file</code>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [{
@@ -167,26 +167,26 @@ client.add_file_resource(
     }],
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Parameter ` <code translate="no">stop_words_file</code> ` menerima objek dengan bidang-bidang berikut:</p>
+<p>The <code translate="no">stop_words_file</code> parameter accepts an object with the following fields:</p>
 <table>
    <tr>
-     <th><p><strong>Bidang</strong></p></th>
-     <th><p><strong>Deskripsi</strong></p></th>
+     <th><p><strong>Field</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">type</code></p></td>
-     <td><p>Jenis sumber daya. Gunakan ` <code translate="no">"remote"</code> ` untuk berkas yang didaftarkan melalui ` <code translate="no">add_file_resource</code>`. Untuk varian ` <code translate="no">"local"</code> ` yang digunakan dalam deployment self-hosted, lihat <a href="/docs/id/manage-file-resources.md">Manage File Resources</a>.</p></td>
+     <td><p>The resource type. Use <code translate="no">"remote"</code> for a file registered via <code translate="no">add_file_resource</code>. For the <code translate="no">"local"</code> variant used in self-hosted deployments, refer to <a href="/docs/id/manage-file-resources.md">Manage File Resources</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">resource_name</code></p></td>
-     <td><p>Nama yang digunakan saat berkas didaftarkan di <code translate="no">add_file_resource</code>.</p></td>
+     <td><p>The name used when the file was registered with <code translate="no">add_file_resource</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">file_name</code></p></td>
-     <td><p>Bagian nama berkas dari jalur penyimpanan objek sumber daya yang terdaftar (misalnya, <code translate="no">"stop_words.txt"</code> jika sumber daya tersebut didaftarkan melalui <code translate="no">path="file/stop_words.txt"</code>).</p></td>
+     <td><p>The filename portion of the registered resource's object-store path (for example, <code translate="no">"stop_words.txt"</code> if the resource was registered with <code translate="no">path="file/stop_words.txt"</code>).</p></td>
    </tr>
 </table>
-<h2 id="Examples" class="common-anchor-header">Contoh<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -201,8 +201,8 @@ client.add_file_resource(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sebelum menerapkan konfigurasi penganalisis ke skema koleksi Anda, verifikasi perilakunya menggunakan metode <code translate="no">run_analyzer</code>.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">Konfigurasi penganalisis<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -218,11 +218,11 @@ client.add_file_resource(
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -253,7 +253,7 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verifikasi menggunakan <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -269,11 +269,11 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -339,7 +339,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">Hasil yang diharapkan<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

@@ -1,7 +1,9 @@
 ---
 id: yandex-cloud.md
 title: Yandex CloudCompatible with Milvus 2.6.x
-summary: 本主題說明如何在 Milvus 中設定及使用 Yandex Cloud 的嵌入函式。
+summary: >-
+  This topic describes how to configure and use Yandex Cloud embedding functions
+  in Milvus.
 beta: Milvus 2.6.x
 ---
 <h1 id="Yandex-Cloud" class="common-anchor-header">Yandex Cloud<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Yandex-Cloud" class="anchor-icon" translate="no">
@@ -19,8 +21,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>本主題說明如何在 Milvus 中設定及使用 Yandex Cloud 的嵌入式函式。</p>
-<h2 id="Choose-an-embedding-model" class="common-anchor-header">選擇嵌入式模型<button data-href="#Choose-an-embedding-model" class="anchor-icon" translate="no">
+    </button></h1><p>This topic describes how to configure and use Yandex Cloud embedding functions in Milvus.</p>
+<h2 id="Choose-an-embedding-model" class="common-anchor-header">Choose an embedding model<button data-href="#Choose-an-embedding-model" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,9 +37,9 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 透過<code translate="no">yc</code> 提供者支援 Yandex Cloud AI Studio 的文字向量化模型。在「函式參數」中，將 `<code translate="no">model_name</code> ` 設定為 Milvus 應呼叫的 Yandex Cloud 模型 URI。</p>
-<p>例如，Yandex 文件文字嵌入功能使用的模型 URI 為<code translate="no">emb://&lt;folder_ID&gt;/text-search-doc/latest</code> ，並會傳回 256 維向量。有關可用的模型 URI 和維度，請參閱「<a href="https://aistudio.yandex.ru/docs/en/ai-studio/concepts/embeddings">文字向量化模型</a>」。</p>
-<h2 id="Configure-credentials" class="common-anchor-header">設定憑證<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus supports Yandex Cloud AI Studio text vectorization models through the <code translate="no">yc</code> provider. In the Function parameters, set <code translate="no">model_name</code> to the Yandex Cloud model URI that Milvus should call.</p>
+<p>For example, Yandex Text Embeddings for documents use a model URI such as <code translate="no">emb://&lt;folder_ID&gt;/text-search-doc/latest</code> and return 256-dimensional vectors. For available model URIs and dimensions, refer to <a href="https://aistudio.yandex.ru/docs/en/ai-studio/concepts/embeddings">Text vectorization models</a>.</p>
+<h2 id="Configure-credentials" class="common-anchor-header">Configure credentials<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -52,8 +54,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 必須先取得您的 Yandex Cloud API 金鑰，才能請求嵌入向量。您可以在<code translate="no">milvus.yaml</code> 中設定 API 金鑰，或透過環境變數進行設定。</p>
-<h3 id="Option-1-Configuration-file" class="common-anchor-header">選項 1：配置檔案<button data-href="#Option-1-Configuration-file" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus must know your Yandex Cloud API key before it can request embeddings. You can configure the API key in <code translate="no">milvus.yaml</code> or through an environment variable.</p>
+<h3 id="Option-1-Configuration-file" class="common-anchor-header">Option 1: Configuration file<button data-href="#Option-1-Configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,7 +70,7 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>將您的 API 金鑰儲存於<code translate="no">milvus.yaml</code> 中，並將 Yandex Cloud 提供者指向該憑證標籤。</p>
+    </button></h3><p>Store your API key in <code translate="no">milvus.yaml</code> and point the Yandex Cloud provider to the credential label.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">credential:</span>
   <span class="hljs-attr">yandex_apikey:</span>
@@ -81,7 +83,7 @@ beta: Milvus 2.6.x
         <span class="hljs-attr">credential:</span> <span class="hljs-string">yandex_apikey</span>
         <span class="hljs-comment"># url: https://llm.api.cloud.yandex.net/foundationModels/v1/textEmbedding</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Option-2-Environment-variable" class="common-anchor-header">選項 2：環境變數<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
+<h3 id="Option-2-Environment-variable" class="common-anchor-header">Option 2: Environment variable<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,20 +98,20 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若<code translate="no">milvus.yaml</code> 中未配置相符的憑證，Milvus 可從以下環境變數讀取 Yandex Cloud API 金鑰：</p>
+    </button></h3><p>If no matching credential is configured in <code translate="no">milvus.yaml</code>, Milvus can read the Yandex Cloud API key from the following environment variable:</p>
 <table>
    <tr>
-     <th><p>變數</p></th>
-     <th><p>是否必填？</p></th>
-     <th><p>說明</p></th>
+     <th><p>Variable</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">MILVUS_YC_API_KEY</code></p></td>
-     <td><p>是</p></td>
-     <td><p>Milvus 服務用於呼叫 Yandex Cloud AI Studio 的 Yandex Cloud API 金鑰。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Yandex Cloud API key used by the Milvus service to call Yandex Cloud AI Studio.</p></td>
    </tr>
 </table>
-<h2 id="Use-embedding-function" class="common-anchor-header">使用嵌入函式<button data-href="#Use-embedding-function" class="anchor-icon" translate="no">
+<h2 id="Use-embedding-function" class="common-anchor-header">Use embedding function<button data-href="#Use-embedding-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -124,7 +126,7 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>完成憑證設定後，請定義一個包含輸入文字欄位與輸出向量欄位的架構，接著將 Yandex Cloud 嵌入函式新增至該架構中。</p>
+    </button></h2><p>Once credentials are configured, define a schema with an input text field and an output vector field, then add a Yandex Cloud embedding Function to the schema.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -149,7 +151,7 @@ text_embedding_function = Function(
 
 schema.add_function(text_embedding_function)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Yandex-Cloud-specific-parameters" class="common-anchor-header">Yandex Cloud 專屬參數<button data-href="#Yandex-Cloud-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="Yandex-Cloud-specific-parameters" class="common-anchor-header">Yandex Cloud-specific parameters<button data-href="#Yandex-Cloud-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -166,37 +168,37 @@ schema.add_function(text_embedding_function)
       </svg>
     </button></h3><table>
    <tr>
-     <th><p>參數</p></th>
-     <th><p>是否為必填？</p></th>
-     <th><p>說明</p></th>
-     <th><p>值 / 範例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value / Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>是</p></td>
-     <td><p>要使用的嵌入式模型提供者。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The embedding model provider to use.</p></td>
      <td><p><code translate="no">"yc"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">model_name</code></p></td>
-     <td><p>是</p></td>
-     <td><p>要呼叫的 Yandex Cloud 模型 URI。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The Yandex Cloud model URI to call.</p></td>
      <td><p><code translate="no">"emb://&lt;folder_ID&gt;/text-search-doc/latest"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">credential</code></p></td>
-     <td><p>否</p></td>
-     <td><p>在<code translate="no">milvus.yaml</code> 的頂層<code translate="no">credential:</code> 區段中定義的憑證標籤。</p></td>
+     <td><p>No</p></td>
+     <td><p>The label of a credential defined in the top-level <code translate="no">credential:</code> section of <code translate="no">milvus.yaml</code>.</p></td>
      <td><p><code translate="no">"yandex_apikey"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">dim</code></p></td>
-     <td><p>否</p></td>
-     <td><p>輸出向量的維度。若設定此參數，其值必須與輸出向量欄位的維度相符。</p></td>
+     <td><p>No</p></td>
+     <td><p>The output vector dimension. If set, the value must match the dimension of the output vector field.</p></td>
      <td><p><code translate="no">"256"</code></p></td>
    </tr>
 </table>
-<h2 id="Next-steps" class="common-anchor-header">後續步驟<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -211,4 +213,4 @@ schema.add_function(text_embedding_function)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>配置完嵌入函數後，請參閱《<a href="/docs/zh-hant/embedding-function-overview.md">嵌入函數概覽</a>》，以獲取有關建立索引、插入資料及執行語義搜尋的指引。</p>
+    </button></h2><p>After configuring the embedding function, refer to <a href="/docs/zh-hant/embedding-function-overview.md">Embedding Function Overview</a> for guidance on creating indexes, inserting data, and running semantic search.</p>

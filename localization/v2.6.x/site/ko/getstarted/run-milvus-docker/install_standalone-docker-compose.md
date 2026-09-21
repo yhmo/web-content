@@ -2,10 +2,10 @@
 id: install_standalone-docker-compose.md
 label: Docker Compose
 related_key: Docker Compose
-summary: Docker Compose를 사용하여 Milvus 독립 실행형 버전을 설치하는 방법을 알아보세요.
-title: Docker Compose를 사용하여 Milvus 실행하기 (Linux)
+summary: Learn how to install Milvus standalone with Docker Compose.
+title: Run Milvus with Docker Compose (Linux)
 ---
-<h1 id="Run-Milvus-with-Docker-Compose-Linux" class="common-anchor-header">Docker Compose를 사용하여 Milvus 실행하기 (Linux)<button data-href="#Run-Milvus-with-Docker-Compose-Linux" class="anchor-icon" translate="no">
+<h1 id="Run-Milvus-with-Docker-Compose-Linux" class="common-anchor-header">Run Milvus with Docker Compose (Linux)<button data-href="#Run-Milvus-with-Docker-Compose-Linux" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: Docker Compose를 사용하여 Milvus 실행하기 (Linux)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>이 페이지에서는 Docker Compose를 사용하여 Docker에서 Milvus 인스턴스를 실행하는 방법을 설명합니다.</p>
-<h2 id="Prerequisites" class="common-anchor-header">필수 조건<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This page illustrates how to launch a Milvus instance in Docker using Docker Compose.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,10 +37,10 @@ title: Docker Compose를 사용하여 Milvus 실행하기 (Linux)
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="https://docs.docker.com/get-docker/">Docker를 설치하십시오</a>.</li>
-<li>설치 전에<a href="/docs/ko/v2.6.x/prerequisite-docker.md">하드웨어 및 소프트웨어 요구 사항을 확인하십시오</a>.</li>
+<li><a href="https://docs.docker.com/get-docker/">Install Docker</a>.</li>
+<li><a href="/docs/ko/v2.6.x/prerequisite-docker.md">Check the requirements for hardware and software</a> prior to your installation.</li>
 </ul>
-<h2 id="Install-Milvus" class="common-anchor-header">Milvus 설치<button data-href="#Install-Milvus" class="anchor-icon" translate="no">
+<h2 id="Install-Milvus" class="common-anchor-header">Install Milvus<button data-href="#Install-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,9 +55,9 @@ title: Docker Compose를 사용하여 Milvus 실행하기 (Linux)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus는 Milvus 저장소에서 Docker Compose 구성 파일을 제공합니다. Docker Compose를 사용하여 Milvus를 설치하려면 다음 명령을 실행하기만 하면 됩니다.</p>
+    </button></h2><p>Milvus provides a Docker Compose configuration file in the Milvus repository. To install Milvus using Docker Compose, just run</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Download the configuration file</span>
-<span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://github.com/milvus-io/milvus/releases/download/v2.6.23/milvus-standalone-docker-compose.yml -O docker-compose.yml</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://github.com/milvus-io/milvus/releases/download/v2.6.24/milvus-standalone-docker-compose.yml -O docker-compose.yml</span>
 <span class="hljs-meta prompt_">
 # </span><span class="language-bash">Start Milvus</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> docker compose up -d</span>
@@ -67,28 +67,28 @@ Creating milvus-minio ... done
 Creating milvus-standalone ... done
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><strong>v2.6.23의 새로운 기능:</strong></p>
+<p><strong>What’s new in v2.6.24:</strong></p>
 <ul>
-<li><strong>아키텍처 개선</strong>: 새로운 스트리밍 노드와 최적화된 구성 요소를 제공합니다.</li>
-<li><strong>업데이트된 종속성</strong>: 최신 버전의 MinIO 및 etcd 포함</li>
-<li><strong>구성 개선</strong>: 성능 향상을 위한 설정 최적화</li>
+<li><strong>Enhanced Architecture</strong>: Features the new Streaming Node and optimized components</li>
+<li><strong>Updated Dependencies</strong>: Includes the latest MinIO and etcd versions</li>
+<li><strong>Improved Configuration</strong>: Optimized settings for better performance</li>
 </ul>
-<p>v2.6.23의 기능과 호환성을 보장하려면 항상 최신 Docker Compose 구성 파일을 다운로드하십시오.</p>
+<p>Always download the latest Docker Compose configuration to ensure compatibility with v2.6.24 features.</p>
 <ul>
-<li><p>위 명령어를 실행하는 데 실패한 경우, 시스템에 Docker Compose V1이 설치되어 있는지 확인해 주십시오. 설치되어 있는 경우, <a href="https://docs.docker.com/compose/">이 페이지의</a> 참고 사항을 고려하여 Docker Compose V2로 마이그레이션하는 것이 좋습니다.</p></li>
-<li><p>이미지 가져오기 과정에서 문제가 발생하면, 문제의 세부 내용을 <a href="mailto:community@zilliz.com">community@zilliz.com으로</a> 문의해 주시면 필요한 지원을 제공해 드리겠습니다.</p></li>
+<li><p>If you failed to run the above command, please check whether your system has Docker Compose V1 installed. If this is the case, you are advised to migrate to Docker Compose V2 due to the notes on <a href="https://docs.docker.com/compose/">this page</a>.</p></li>
+<li><p>If you encounter any issues pulling the image, contact us at <a href="mailto:community@zilliz.com">community@zilliz.com</a> with details about the problem, and we’ll provide you with the necessary support.</p></li>
 </ul>
 </div>
-<p>Milvus를 시작한 후,</p>
+<p>After starting up Milvus,</p>
 <ul>
-<li><strong>milvus-standalone</strong>, <strong>milvus-minio</strong>, <strong>milvus-etcd라는</strong> 이름의 컨테이너가 실행됩니다.
+<li>Containers named <strong>milvus-standalone</strong>, <strong>milvus-minio</strong>, and <strong>milvus-etcd</strong> are up.
 <ul>
-<li><strong>milvus-etcd</strong> 컨테이너는 호스트에 어떤 포트도 노출하지 않으며, 데이터를 현재 폴더의 <strong>volumes/etcd에</strong> 매핑합니다.</li>
-<li><strong>milvus-minio</strong> 컨테이너는 기본 인증 자격 증명을 사용하여 로컬에서 <strong>9090</strong> 및 <strong>9091</strong> 포트를 제공하며, 데이터를 현재 폴더의 <strong>volumes/minio에</strong> 매핑합니다.</li>
-<li><strong>milvus-standalone</strong> 컨테이너는 기본 설정으로 로컬에서 <strong>19530</strong> 포트를 제공하며, 데이터를 현재 폴더의 <strong>volumes/milvus에</strong> 매핑합니다.</li>
+<li>The <strong>milvus-etcd</strong> container does not expose any ports to the host and maps its data to <strong>volumes/etcd</strong> in the current folder.</li>
+<li>The <strong>milvus-minio</strong> container serves ports <strong>9090</strong> and <strong>9091</strong> locally with the default authentication credentials and maps its data to <strong>volumes/minio</strong> in the current folder.</li>
+<li>The <strong>milvus-standalone</strong> container serves ports <strong>19530</strong> locally with the default settings and maps its data to <strong>volumes/milvus</strong> in the current folder.</li>
 </ul></li>
 </ul>
-<p>다음 명령어를 사용하여 컨테이너가 정상적으로 실행 중인지 확인할 수 있습니다.</p>
+<p>You can check if the containers are up and running using the following command:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> docker-compose ps</span>
 
       Name                     Command                  State                            Ports
@@ -97,8 +97,8 @@ milvus-etcd         etcd -advertise-client-url ...   Up             2379/tcp, 23
 milvus-minio        /usr/bin/docker-entrypoint ...   Up (healthy)   9000/tcp
 milvus-standalone   /tini -- milvus run standalone   Up             0.0.0.0:19530-&gt;19530/tcp, 0.0.0.0:9091-&gt;9091/tcp
 <button class="copy-code-btn"></button></code></pre>
-<p>또한 <code translate="no">http://127.0.0.1:9091/webui/</code> 에서 Milvus WebUI에 접속하여 Milvus 인스턴스에 대한 자세한 정보를 확인할 수 있습니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/milvus-webui.md">Milvus WebUI를</a> 참조하십시오.</p>
-<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(선택 사항) Milvus 구성 업데이트<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
+<p>You can also access Milvus WebUI at <code translate="no">http://127.0.0.1:9091/webui/</code> to learn more about the your Milvus instance. For details, refer to <a href="/docs/ko/v2.6.x/milvus-webui.md">Milvus WebUI</a>.</p>
+<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Optional) Update Milvus configurations<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -113,24 +113,24 @@ milvus-standalone   /tini -- milvus run standalone   Up             0.0.0.0:1953
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>사용자 환경에 맞게 Milvus 구성을 업데이트하려면, ` <code translate="no">milvus-standalone</code> ` 컨테이너 내의 ` <code translate="no">/milvus/configs/user.yaml</code> ` 파일을 수정해야 합니다.</p>
+    </button></h2><p>To update Milvus configuration to suit your needs, you need to modify the <code translate="no">/milvus/configs/user.yaml</code> file within the <code translate="no">milvus-standalone</code> container.</p>
 <ol>
-<li><p><code translate="no">milvus-standalone</code> 컨테이너에 접속합니다.</p>
+<li><p>Access the <code translate="no">milvus-standalone</code> container.</p>
 <pre><code translate="no" class="language-shell">docker exec -it milvus-standalone bash
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>기본 설정을 재정의할 추가 구성을 추가합니다.
-다음 내용은 기본 <code translate="no">proxy.healthCheckTimeout</code> 를 재정의해야 한다고 가정합니다. 적용 가능한 구성 항목에 대해서는 <a href="/docs/ko/v2.6.x/system_configuration.md">시스템 구성을</a> 참조하십시오.</p>
+<li><p>Add extra configurations to override the default ones.
+The following assumes that you need to override the default <code translate="no">proxy.healthCheckTimeout</code>. For applicable configuration items, refer to <a href="/docs/ko/v2.6.x/system_configuration.md">System Configuration</a>.</p>
 <pre><code translate="no" class="language-shell">cat &lt;&lt; EOF &gt; /milvus/configs/user.yaml
 <span class="hljs-meta prompt_"># </span><span class="language-bash">Extra config to override default milvus.yaml</span>
 proxy:
   healthCheckTimeout: 1000 # ms, the interval that to do component healthy check
 EOF
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>변경 사항을 적용하려면 <code translate="no">milvus-standalone</code> 컨테이너를 다시 시작하십시오.</p>
+<li><p>Restart the <code translate="no">milvus-standalone</code> container to apply the changes.</p>
 <pre><code translate="no" class="language-shell">docker restart milvus-standalone
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h2 id="Stop-and-delete-Milvus" class="common-anchor-header">Milvus 중지 및 삭제<button data-href="#Stop-and-delete-Milvus" class="anchor-icon" translate="no">
+<h2 id="Stop-and-delete-Milvus" class="common-anchor-header">Stop and delete Milvus<button data-href="#Stop-and-delete-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -145,14 +145,14 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>다음과 같이 이 컨테이너를 중지하고 삭제할 수 있습니다.</p>
+    </button></h2><p>You can stop and delete this container as follows</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Stop Milvus</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> docker compose down</span>
 <span class="hljs-meta prompt_">
 # </span><span class="language-bash">Delete service data</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">rm</span> -rf volumes</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Whats-next" class="common-anchor-header">다음 단계<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -167,29 +167,29 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Docker에 Milvus를 설치한 후에는 다음을 수행할 수 있습니다.</p>
+    </button></h2><p>Having installed Milvus in Docker, you can:</p>
 <ul>
-<li><p><a href="/docs/ko/v2.6.x/quickstart.md">퀵스타트를</a> 확인하여 Milvus의 기능을 살펴보세요.</p></li>
-<li><p>Milvus의 기본 작동 방식을 알아보세요:</p>
+<li><p>Check <a href="/docs/ko/v2.6.x/quickstart.md">Quickstart</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/ko/v2.6.x/manage_databases.md">데이터베이스 관리</a></li>
-<li><a href="/docs/ko/v2.6.x/manage-collections.md">컬렉션 관리</a></li>
-<li><a href="/docs/ko/v2.6.x/manage-partitions.md">파티션 관리</a></li>
-<li><a href="/docs/ko/v2.6.x/insert-update-delete.md">삽입, 업서트 및 삭제</a></li>
-<li><a href="/docs/ko/v2.6.x/single-vector-search.md">단일 벡터 검색</a></li>
-<li><a href="/docs/ko/v2.6.x/multi-vector-search.md">하이브리드 검색</a></li>
+<li><a href="/docs/ko/v2.6.x/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/ko/v2.6.x/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/ko/v2.6.x/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/ko/v2.6.x/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/ko/v2.6.x/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/ko/v2.6.x/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p><a href="/docs/ko/v2.6.x/upgrade_milvus_cluster-helm.md">Helm 차트를 사용하여 Milvus 업그레이드하기</a>.</p></li>
-<li><p><a href="/docs/ko/v2.6.x/scaleout.md">Milvus 클러스터 확장하기</a>.</p></li>
-<li><p>클라우드에 Milvus 클러스터 배포:</p>
+<li><p><a href="/docs/ko/v2.6.x/upgrade_milvus_cluster-helm.md">Upgrade Milvus Using Helm Chart</a>.</p></li>
+<li><p><a href="/docs/ko/v2.6.x/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvus cluster on clouds:</p>
 <ul>
 <li><a href="/docs/ko/v2.6.x/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/ko/v2.6.x/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/ko/v2.6.x/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>Milvus의 가시성 및 관리를 위한 직관적인 웹 인터페이스인 <a href="/docs/ko/v2.6.x/milvus-webui.md">Milvus WebUI를</a> 살펴보세요.</p></li>
-<li><p>Milvus 데이터 백업을 위한 오픈소스 도구인 <a href="/docs/ko/v2.6.x/milvus_backup_overview.md">Milvus Backup을</a> 살펴보세요.</p></li>
-<li><p>Milvus 디버깅 및 동적 구성 업데이트를 위한 오픈 소스 도구인 <a href="/docs/ko/v2.6.x/birdwatcher_overview.md">Birdwatcher를</a> 살펴보세요.</p></li>
-<li><p>직관적인 Milvus 관리를 위한 오픈 소스 GUI 도구인 <a href="https://github.com/zilliztech/attu">Attu를</a> 살펴보세요.</p></li>
-<li><p><a href="/docs/ko/v2.6.x/monitor.md">Prometheus를 사용하여 Milvus를 모니터링해 보세요</a>.</p></li>
+<li><p>Explore <a href="/docs/ko/v2.6.x/milvus-webui.md">Milvus WebUI</a>, an intuitive web interface for Milvus observability and management.</p></li>
+<li><p>Explore <a href="/docs/ko/v2.6.x/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/ko/v2.6.x/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/ko/v2.6.x/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

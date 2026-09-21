@@ -1,16 +1,17 @@
 ---
 id: exponential-decay.md
-title: التضاؤل الأسيCompatible with Milvus 2.6.x
+title: Exponential DecayCompatible with Milvus 2.6.x
 summary: >-
-  يؤدي الاضمحلال الأسي إلى انخفاض أولي حاد يتبعه ذيل طويل في نتائج بحثك. مثل
-  دورة الأخبار العاجلة حيث تتضاءل الأهمية بسرعة في البداية ولكن بعض القصص تحتفظ
-  بأهميتها مع مرور الوقت، يطبق التضاؤل الأسي عقوبة حادة على العناصر التي تقع
-  خارج النطاق المثالي مع الحفاظ على العناصر البعيدة قابلة للاكتشاف. هذا النهج
-  مثالي عندما ترغب في إعطاء أولوية كبيرة للقرب أو التكرار ولكنك لا تريد استبعاد
-  الخيارات البعيدة تمامًا.
+  Exponential decay creates a steep initial drop followed by a long tail in your
+  search results. Like a breaking news cycle where relevance diminishes rapidly
+  at first but some stories retain importance over time, exponential decay
+  applies a sharp penalty to items just beyond your ideal range while still
+  keeping distant items discoverable. This approach is ideal when you want to
+  heavily prioritize proximity or recency but don't want to completely eliminate
+  more distant options.
 beta: Milvus 2.6.x
 ---
-<h1 id="Exponential-Decay" class="common-anchor-header">التضاؤل الأسي<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Exponential-Decay" class="anchor-icon" translate="no">
+<h1 id="Exponential-Decay" class="common-anchor-header">Exponential Decay<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Exponential-Decay" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -25,14 +26,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يؤدي التضاؤل الأسي إلى انخفاض أولي حاد يتبعه ذيل طويل في نتائج بحثك. مثل دورة الأخبار العاجلة حيث تتضاءل الأهمية بسرعة في البداية ولكن بعض القصص تحتفظ بأهميتها مع مرور الوقت، يطبق التضاؤل الأسي عقوبة حادة على العناصر التي تقع خارج النطاق المثالي مع الحفاظ على العناصر البعيدة قابلة للاكتشاف. هذا النهج مثالي عندما ترغب في إعطاء الأولوية للقرب أو الحداثة بشكل كبير ولكنك لا تريد التخلص تمامًا من الخيارات البعيدة.</p>
-<p>على عكس دوال الاضمحلال الأخرى:</p>
+    </button></h1><p>Exponential decay creates a steep initial drop followed by a long tail in your search results. Like a breaking news cycle where relevance diminishes rapidly at first but some stories retain importance over time, exponential decay applies a sharp penalty to items just beyond your ideal range while still keeping distant items discoverable. This approach is ideal when you want to heavily prioritize proximity or recency but don’t want to completely eliminate more distant options.</p>
+<p>Unlike other decay functions:</p>
 <ul>
-<li><p>يخلق التضاؤل الغاوسي انخفاضًا تدريجيًا على شكل جرس</p></li>
-<li><p>يتناقص التضاؤل الخطي بمعدل ثابت حتى يصل إلى الصفر تمامًا</p></li>
+<li><p>Gaussian decay creates a more gradual, bell-shaped decline</p></li>
+<li><p>Linear decay decreases at a constant rate until reaching exactly zero</p></li>
 </ul>
-<p>يعمل التضاؤل الأسي بشكل فريد على "تحميل العقوبة أماميًا"، مما يؤدي إلى تطبيق معظم تخفيض الصلة في وقت مبكر مع الحفاظ على ذيل طويل من الصلة الدنيا ولكن غير الصفرية.</p>
-<h2 id="When-to-use-exponential-decay" class="common-anchor-header">متى تستخدم التضاؤل الأسي<button data-href="#When-to-use-exponential-decay" class="anchor-icon" translate="no">
+<p>Exponential decay uniquely “frontloads” the penalty, applying most of the relevance reduction early while maintaining a long tail of minimal but non-zero relevance.</p>
+<h2 id="When-to-use-exponential-decay" class="common-anchor-header">When to use exponential decay<button data-href="#When-to-use-exponential-decay" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -47,41 +48,41 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>التضاؤل الأسي فعال بشكل خاص في:</p>
+    </button></h2><p>Exponential decay is particularly effective for:</p>
 <table>
    <tr>
-     <th><p>حالة الاستخدام</p></th>
-     <th><p>مثال</p></th>
-     <th><p>لماذا يعمل التضاؤل الأسي بشكل جيد</p></th>
+     <th><p>Use Case</p></th>
+     <th><p>Example</p></th>
+     <th><p>Why Exponential Works Well</p></th>
    </tr>
    <tr>
-     <td><p>موجز الأخبار</p></td>
-     <td><p>بوابات الأخبار العاجلة</p></td>
-     <td><p>يقلل بسرعة من أهمية الأخبار القديمة مع الاستمرار في عرض الأخبار المهمة من أيام مضت</p></td>
+     <td><p>News feeds</p></td>
+     <td><p>Breaking news portals</p></td>
+     <td><p>Quickly reduces relevance of older news while still showing important stories from days ago</p></td>
    </tr>
    <tr>
-     <td><p>الجداول الزمنية لوسائل التواصل الاجتماعي</p></td>
-     <td><p>موجزات النشاط وتحديثات الحالة</p></td>
-     <td><p>يركز على المحتوى الجديد ولكنه يسمح بظهور المحتوى الأقدم سريع الانتشار</p></td>
+     <td><p>Social media timelines</p></td>
+     <td><p>Activity feeds, status updates</p></td>
+     <td><p>Emphasizes fresh content but allows viral older content to surface</p></td>
    </tr>
    <tr>
-     <td><p>أنظمة التنبيهات</p></td>
-     <td><p>تحديد أولويات التنبيهات</p></td>
-     <td><p>إنشاء تنبيهات عاجلة للتنبيهات الحديثة مع الحفاظ على وضوح التنبيهات المهمة</p></td>
+     <td><p>Notification systems</p></td>
+     <td><p>Alert prioritization</p></td>
+     <td><p>Creates urgency for recent alerts while maintaining visibility for important ones</p></td>
    </tr>
    <tr>
-     <td><p>التنزيلات السريعة</p></td>
-     <td><p>العروض محدودة الوقت</p></td>
-     <td><p>يقلل من الظهور بسرعة مع اقتراب الموعد النهائي</p></td>
+     <td><p>Flash sales</p></td>
+     <td><p>Limited-time offers</p></td>
+     <td><p>Rapidly decreases visibility as deadline approaches</p></td>
    </tr>
 </table>
-<p>اختر التضاؤل الأسي عندما:</p>
+<p>Choose exponential decay when:</p>
 <ul>
-<li><p>يتوقع المستخدمون أن تهيمن العناصر الحديثة جدًا أو القريبة جدًا على النتائج بقوة</p></li>
-<li><p>يجب أن تظل العناصر الأقدم أو البعيدة قابلة للاكتشاف إذا كانت ذات صلة بالموضوع بشكل استثنائي</p></li>
-<li><p>يجب أن يكون الانخفاض في الصلة بالموضوع في المقدمة (أكثر حدة في البداية، وأكثر تدرجًا في وقت لاحق)</p></li>
+<li><p>Users expect very recent or nearby items to strongly dominate results</p></li>
+<li><p>Older or more distant items should still be discoverable if they’re exceptionally relevant</p></li>
+<li><p>The relevance drop-off should be front-loaded (steeper at the beginning, more gradual later)</p></li>
 </ul>
-<h2 id="Sharp-drop-off-principle" class="common-anchor-header">مبدأ الانخفاض الحاد<button data-href="#Sharp-drop-off-principle" class="anchor-icon" translate="no">
+<h2 id="Sharp-drop-off-principle" class="common-anchor-header">Sharp drop-off principle<button data-href="#Sharp-drop-off-principle" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,24 +97,26 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ينشئ التضاؤل الأسي منحنى ينخفض بسرعة في البداية، ثم يتسطح تدريجياً إلى ذيل طويل يقترب من الصفر ولكنه لا يصل إلى الصفر أبداً. يظهر هذا النمط الرياضي بشكل متكرر في الظواهر الطبيعية مثل الاضمحلال الإشعاعي، وانخفاض عدد السكان، وأهمية المعلومات بمرور الوقت.</p>
+    </button></h2><p>Exponential decay creates a curve that drops quickly at first, then gradually flattens into a long tail that approaches but never reaches zero. This mathematical pattern appears frequently in natural phenomena like radioactive decay, population decline, and information relevance over time.</p>
 <div class="alert note">
-<p>يجب أن تستخدم جميع معلمات الوقت (<code translate="no">origin</code> ، <code translate="no">offset</code> ، <code translate="no">scale</code>) نفس وحدة بيانات المجموعة. إذا كانت المجموعة الخاصة بك تخزن الطوابع الزمنية بوحدة مختلفة (ميلي ثانية، ميكروثانية)، فاضبط جميع المعلمات وفقًا لذلك.</p>
+<p>All time parameters (<code translate="no">origin</code>, <code translate="no">offset</code>, <code translate="no">scale</code>) must use the same unit as the collection data. If your collection stores timestamps in a different unit (milliseconds, microseconds), adjust all parameters accordingly.</p>
 </div>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/exp-decay.png" alt="Exp Decay" class="doc-image" id="exp-decay" />
-   </span> <span class="img-wrapper"> <span>التضاؤل الأسي</span> </span></p>
-<p>يوضح الرسم البياني أعلاه كيف سيؤثر الاضمحلال الأسي على تصنيفات المقالات الإخبارية في منصة إخبارية رقمية:</p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/exp-decay.png" alt="Exp Decay" class="doc-image" id="exp-decay" />
+    <span>Exp Decay</span>
+  </span>
+</p>
+<p>The graph above shows how exponential decay would affect news article rankings in a digital news platform:</p>
 <ul>
-<li><p><code translate="no">origin</code> (الوقت الحالي): اللحظة الحالية، حيث تكون الأهمية في حدها الأقصى (1.0).</p></li>
-<li><p><code translate="no">offset</code> (3 ساعات): "نافذة "الأخبار العاجلة" - جميع الأخبار المنشورة خلال الساعات الثلاث الأخيرة تحافظ على درجات الملاءمة الكاملة (1.0)، مما يضمن عدم معاقبة الأخبار الحديثة جدًا دون داعٍ بسبب الاختلافات الزمنية الطفيفة.</p></li>
-<li><p><code translate="no">decay</code> (0.5): الدرجة في مسافة المقياس - يتحكم هذا المتغير في مدى انخفاض الدرجات بشكل كبير مع مرور الوقت.</p></li>
-<li><p><code translate="no">scale</code> (24 ساعة): الفترة الزمنية التي تنخفض عندها الأهمية إلى قيمة الاضمحلال-المقالات الإخبارية التي مضى عليها 24 ساعة بالضبط تنخفض درجاتها إلى النصف (0.5).</p></li>
+<li><p><code translate="no">origin</code> (current time): The present moment, where relevance is at its maximum (1.0).</p></li>
+<li><p><code translate="no">offset</code> (3 hours): The "breaking news window"—all stories published within the last 3 hours maintain full relevance scores (1.0), ensuring that very recent news isn’t needlessly penalized for minor time differences.</p></li>
+<li><p><code translate="no">decay</code> (0.5): The score at the scale distance—this parameter controls how dramatically scores diminish with time.</p></li>
+<li><p><code translate="no">scale</code> (24 hours): The time period at which relevance drops to the decay value—news articles exactly 24 hours old have their relevance scores halved (0.5).</p></li>
 </ul>
-<p>كما ترون من المنحنى، تستمر المقالات الإخبارية التي مضى عليها أكثر من 24 ساعة في الانخفاض في الأهمية ولكنها لا تصل إلى الصفر تمامًا. حتى القصص التي تعود إلى عدة أيام مضت تحتفظ بالحد الأدنى من الملاءمة، مما يسمح للأخبار المهمة ولكن الأقدم لا تزال تظهر في خلاصتك (وإن كان ترتيبها أقل).</p>
-<p>يحاكي هذا السلوك كيفية عمل ملاءمة الأخبار عادةً - تهيمن القصص الحديثة جدًا بقوة، ولكن لا يزال بإمكان القصص الأقدم المهمة أن تبرز إذا كانت ذات صلة استثنائية باهتمامات المستخدم.</p>
-<h2 id="Formula" class="common-anchor-header">المعادلة<button data-href="#Formula" class="anchor-icon" translate="no">
+<p>As you can see from the curve, news articles older than 24 hours continue to decrease in relevance but never quite reach zero. Even stories from several days ago retain some minimal relevance, allowing important but older news to still appear in your feed (albeit ranked lower).</p>
+<p>This behavior mimics how news relevance typically works—very recent stories strongly dominate, but significant older stories can still break through if they’re exceptionally relevant to the user’s interests.</p>
+<h2 id="Formula" class="common-anchor-header">Formula<button data-href="#Formula" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -128,19 +131,19 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>المعادلة الرياضية لحساب درجة الاضمحلال الأسي هي:</p>
+    </button></h2><p>The mathematical formula for calculating an exponential decay score is:</p>
 <p><span class="katex-display" translate="no"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mo stretchy="false">(</mo><mi>d</mi><mi>o</mi><mi>c</mi><mo stretchy="false">)</mo><mo>=</mo><mi>exp</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mi>λ</mi><mo>⋅</mo><mi>max</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mn>0</mn><mo separator="true">,</mo><mrow><mo fence="true">∣</mo><mi>f</mi><mi>i</mi><mi>e</mi><mi>l</mi><mi>d</mi><mi>v</mi><mi>a</mi><mi>l</mi><mi>u</mi><msub><mi>e</mi><mrow><mi>d</mi><mi>o</mi><mi>c</mi></mrow></msub><mo>−</mo><mi>o</mi><mi>r</mi><mi>i</mi><mi>g</mi><mi>i</mi><mi>n</mi><mo fence="true">∣</mo></mrow><mo>−</mo><mi>o</mi><mi>f</mi><mi>f</mi><mi>s</mi><mi>e</mi><mi>t</mi><mo fence="true">)</mo></mrow><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">S(doc) = \exp\left( \lambda \cdot \max\left(0, \left|fieldvalue_{doc} - origin\right| - offset \right) \right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mord mathnormal">oc</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">exp</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mop">max</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">∣</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">i</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">oc</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">in</span><span class="mclose delimcenter" style="top:0em;">∣</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.10764em;">ff</span><span class="mord mathnormal">se</span><span class="mord mathnormal">t</span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span></span></p>
-<p>أين:</p>
+<p>Where:</p>
 <p><span class="katex-display" translate="no"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>λ</mi><mo>=</mo><mfrac><mrow><mi>ln</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>d</mi><mi>e</mi><mi>c</mi><mi>a</mi><mi>y</mi><mo stretchy="false">)</mo></mrow><mrow><mi>s</mi><mi>c</mi><mi>a</mi><mi>l</mi><mi>e</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\lambda = \frac{\ln(decay)}{scale}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.113em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">sc</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">ln</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mord mathnormal">ec</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
-<p>شرح ذلك بلغة بسيطة</p>
+<p>Breaking this down in plain language:</p>
 <ol>
-<li><p>Calculate how far the field value is from the origin: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex"> ∣fieldvaluedoc−origin∣|fieldvalue_{doc} - origin|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">∣fieldvalue</span></span></span></span></span><span class="pstrut" style="height:2.7em;"></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord"><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist-s">doc​</span></span></span></span></span></span></span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">origin∣</span></span></span></span>.</p></li>
-<li><p>اطرح الإزاحة (إن وجدت) ولكن لا تنزل أبدًا إلى ما دون الصفر: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>الحد الأقصى</mi><mo stretchy="false">(</mo><mo separator="true">0،</mo><mi>المسافة -</mi><mi>الإزاحة</mi><mo stretchy="false">)</mo></mrow></semantics></math></span></span>\الحد الأقصى <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">(0، المسافة - الإزاحة)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">الحد الأقصى</span><span class="mopen">(</span><span class="mpunct">0،</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">المسافة</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"> -</span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord mathnormal"> </span><span class="strut" style="height:1em;vertical-align:-0.25em;"></span> <span class="mord mathnormal">الإزاحة</span><span class="mclose">)</span></span></span></span>.</p></li>
-<li><p>اضرب في <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex"> λ</annotation></semantics></math></span></span>\lambda <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ،</span></span></span></span> والذي يتم حسابه من معلمات المقياس والتضاؤل.</p></li>
-<li><p>خذ الأس، والذي يمنحك قيمة بين 0 و1: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>exp</mi><mo stretchy="false">(</mo></mrow></semantics></math></span></span>λ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>⋅⋅⋅value</mi><mo stretchy="false">)</mo></mrow></semantics></math></span></span>\ exp <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">(\lambda \cdot value)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">exp</span><span class="mopen">(</span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅⋅⋅</span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;"> </span><span class="mord mathnormal">القيمة</span></span></span></span> <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mclose">)</span></span></span></span>.</p></li>
+<li><p>Calculate how far the field value is from the origin: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>f</mi><mi>i</mi><mi>e</mi><mi>l</mi><mi>d</mi><mi>v</mi><mi>a</mi><mi>l</mi><mi>u</mi><msub><mi>e</mi><mrow><mi>d</mi><mi>o</mi><mi>c</mi></mrow></msub><mo>−</mo><mi>o</mi><mi>r</mi><mi>i</mi><mi>g</mi><mi>i</mi><mi>n</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|fieldvalue_{doc} - origin|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">i</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">oc</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">in</span><span class="mord">∣</span></span></span></span>.</p></li>
+<li><p>Subtract the offset (if any) but never go below zero: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>max</mi><mo>⁡</mo><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mi>d</mi><mi>i</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>n</mi><mi>c</mi><mi>e</mi><mo>−</mo><mi>o</mi><mi>f</mi><mi>f</mi><mi>s</mi><mi>e</mi><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\max(0, distance - offset)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">an</span><span class="mord mathnormal">ce</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.10764em;">ff</span><span class="mord mathnormal">se</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span>.</p></li>
+<li><p>Multiply by <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span>, which is calculated from your scale and decay parameters.</p></li>
+<li><p>Take the exponent, which gives you a value between 0 and 1: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>exp</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>λ</mi><mo>⋅</mo><mi>v</mi><mi>a</mi><mi>l</mi><mi>u</mi><mi>e</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\exp(\lambda \cdot value)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">exp</span><span class="mopen">(</span><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">u</span><span class="mord mathnormal">e</span><span class="mclose">)</span></span></span></span>.</p></li>
 </ol>
-<p>يحوّل حساب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex"> λ</annotation></semantics></math></span></span> \lambda <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">\lambda λ</span></span></span></span> حساب معامِلات المقياس والتضاؤل إلى معامِل المعدل للدالة الأسية. تؤدي قيمة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex"> λ</annotation></semantics></math></span></span> \lambda <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span> الأكثر سالبة إلى انخفاض أولي أكثر حدة.</p>
-<h2 id="Use-exponential-decay" class="common-anchor-header">استخدام التضاؤل الأسي<button data-href="#Use-exponential-decay" class="anchor-icon" translate="no">
+<p>The <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span> calculation converts your scale and decay parameters into the rate parameter for the exponential function. A more negative <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span> creates a steeper initial drop.</p>
+<h2 id="Use-exponential-decay" class="common-anchor-header">Use exponential decay<button data-href="#Use-exponential-decay" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -155,11 +158,11 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكن تطبيق الاضمحلال الأسي على كل من عمليات البحث المتجه القياسية وعمليات البحث الهجين في ميلفوس. فيما يلي مقتطفات التعليمات البرمجية الرئيسية لتطبيق هذه الميزة.</p>
+    </button></h2><p>Exponential decay can be applied to both standard vector search and hybrid search operations in Milvus. Below are the key code snippets for implementing this feature.</p>
 <div class="alert note">
-<p>قبل استخدام دوال التضاؤل، يجب عليك أولاً إنشاء مجموعة تحتوي على حقول رقمية مناسبة (مثل الطوابع الزمنية والمسافات وغيرها) والتي سيتم استخدامها لحسابات التضاؤل. للحصول على أمثلة عملية كاملة بما في ذلك إعداد المجموعة، وتعريف المخطط، وإدراج البيانات، راجع <a href="/docs/ar/tutorial-implement-a-time-based-ranking-in-milvus.md">البرنامج التعليمي لمصنف التضاؤل</a>.</p>
+<p>Before using decay functions, you must first create a collection with appropriate numeric fields (like timestamps, distances, etc.) that will be used for decay calculations. For complete working examples including collection setup, schema definition, and data insertion, refer to <a href="/docs/ar/v2.6.x/tutorial-implement-a-time-based-ranking-in-milvus.md">Decay Ranker Tutorial</a>.</p>
 </div>
-<h3 id="Create-a-decay-ranker" class="common-anchor-header">إنشاء مصنف اضمحلال<button data-href="#Create-a-decay-ranker" class="anchor-icon" translate="no">
+<h3 id="Create-a-decay-ranker" class="common-anchor-header">Create a decay ranker<button data-href="#Create-a-decay-ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -174,12 +177,17 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بعد إعداد مجموعتك بحقل رقمي (في هذا المثال، <code translate="no">publish_time</code>)، قم بإنشاء مصنف تضاؤل أسي:</p>
+    </button></h3><p>After your collection is set up with a numeric field (in this example, <code translate="no">publish_time</code>), create an exponential decay ranker:</p>
 <div class="alert note">
-<p><strong>تناسق الوحدة الزمنية</strong>: عند استخدام الاضمحلال المستند إلى الوقت، تأكد من أن المعلمات <code translate="no">origin</code> و <code translate="no">scale</code> و <code translate="no">offset</code> تستخدم نفس الوحدة الزمنية التي تستخدمها بيانات مجموعتك. إذا كانت مجموعتك تخزن الطوابع الزمنية بالثواني، فاستخدم الثواني لجميع المعلمات. إذا كانت تستخدم المللي ثانية، فاستخدم المللي ثانية لجميع المعلمات.</p>
+<p><strong>Time unit consistency</strong>: When using time-based decay, ensure that <code translate="no">origin</code>, <code translate="no">scale</code>, and <code translate="no">offset</code> parameters use the same time unit as your collection data. If your collection stores timestamps in seconds, use seconds for all parameters. If it uses milliseconds, use milliseconds for all parameters.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#javascript">NodeJS</a> <a href="#go">الذهاب</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 <span class="hljs-keyword">import</span> datetime
 
@@ -234,7 +242,7 @@ ranker = Function(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">تنطبق على البحث المتجه القياسي<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h3 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -249,9 +257,14 @@ ranker = Function(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بعد تحديد مصنف الاضمحلال الخاص بك، يمكنك تطبيقه أثناء عمليات البحث عن طريق تمريره إلى المعلمة <code translate="no">ranker</code>:</p>
+    </button></h3><p>After defining your decay ranker, you can apply it during search operations by passing it to the <code translate="no">ranker</code> parameter:</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a> <a href="#java">جافا جافا</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Apply decay ranker to vector search</span>
 result = milvus_client.search(
     collection_name,

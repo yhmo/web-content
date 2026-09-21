@@ -1,8 +1,6 @@
 ---
 id: milvus_backup_overview.md
-summary: >-
-  Milvus-Backup es una herramienta que permite a los usuarios realizar copias de
-  seguridad y restaurar datos de Milvus.
+summary: Milvus-Backup is a tool that allows users to backup and restore Milvus data.
 title: Milvus Backup
 ---
 <h1 id="Milvus-Backup" class="common-anchor-header">Milvus Backup<button data-href="#Milvus-Backup" class="anchor-icon" translate="no">
@@ -20,8 +18,8 @@ title: Milvus Backup
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus Backup es una herramienta que permite a los usuarios realizar copias de seguridad y restaurar datos de Milvus. Ofrece tanto una interfaz de línea de comandos (CLI) como una interfaz de programación de aplicaciones (API) para adaptarse a diferentes escenarios de aplicación.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Requisitos previos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus Backup is a tool that allows users to back up and restore Milvus data. It provides both CLI and API to fit itself into different application scenarios.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,12 +34,12 @@ title: Milvus Backup
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Antes de empezar a utilizar Milvus Backup, asegúrate de que</p>
+    </button></h2><p>Before start using Milvus Backup, ensure that</p>
 <ul>
-<li>el sistema operativo sea CentOS 7.5 o superior, o Ubuntu LTS 18.04 o superior,</li>
-<li>la versión de Go sea 1.20.2 o posterior.</li>
+<li>The operating system is CentOS 7.5+ or Ubuntu LTS 18.04+,</li>
+<li>Go version is 1.20.2 or later.</li>
 </ul>
-<h2 id="Architecture" class="common-anchor-header">Arquitectura<button data-href="#Architecture" class="anchor-icon" translate="no">
+<h2 id="Architecture" class="common-anchor-header">Architecture<button data-href="#Architecture" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,16 +54,16 @@ title: Milvus Backup
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/milvus_backup_architecture.png" alt="Milvus Backup architecture" class="doc-image" id="milvus-backup-architecture" /> 
-   <span>Arquitectura de Milvus Backup</span>
-  
- </span></p>
-<p>Milvus Backup facilita la copia de seguridad y la restauración de metadatos, segmentos y datos entre instancias de Milvus. Proporciona interfaces de enlace ascendente, como la CLI, la API y el módulo Go basado en gRPC, para una gestión flexible de los procesos de copia de seguridad y restauración.</p>
-<p>Milvus Backup lee los metadatos y los segmentos de la colección de la instancia de Milvus de origen para crear una copia de seguridad. A continuación, copia los datos de la colección desde la ruta raíz de la instancia de Milvus de origen y guarda los datos copiados en la ruta raíz de la copia de seguridad.</p>
-<p>Para restaurar a partir de una copia de seguridad, Milvus Backup crea una nueva colección en la instancia de Milvus de destino basándose en los metadatos de la colección y la información de los segmentos contenidos en la copia de seguridad. A continuación, copia los datos de la copia de seguridad desde la ruta raíz de la misma hasta la ruta raíz de la instancia de destino.</p>
-<h2 id="Compatibility-matrix" class="common-anchor-header">Matriz de compatibilidad<button data-href="#Compatibility-matrix" class="anchor-icon" translate="no">
+    </button></h2><p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/milvus_backup_architecture.png" alt="Milvus Backup architecture" class="doc-image" id="milvus-backup-architecture" />
+    <span>Milvus Backup architecture</span>
+  </span>
+</p>
+<p>Milvus Backup facilitates backup and restore of metadata, segments, and data across Milvus instances. It provides northbound interfaces, such as CLI, API, and gRPC-based Go module, for flexible manipulation of the backup and restore processes.</p>
+<p>Milvus Backup reads collection metadata and segments from the source Milvus instance to create a backup. It then copies collection data from the root path of the source Milvus instance and saves the copied data into the backup root path.</p>
+<p>To restore from a backup, Milvus Backup creates a new collection in the target Milvus instance based on the collection metadata and segment information in the backup. It then copies the backup data from the backup root path to the root path of the target instance.</p>
+<h2 id="Compatibility-matrix" class="common-anchor-header">Compatibility matrix<button data-href="#Compatibility-matrix" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -80,20 +78,20 @@ title: Milvus Backup
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>La siguiente tabla muestra la compatibilidad de copia de seguridad y restauración entre las diferentes versiones de Milvus desde Milvus Backup v0.5.7.</p>
+    </button></h2><p>The following table lists the backup and restore compatibilities between different Milvus versions since Milvus Backup v0.5.7.</p>
 <table>
 <thead>
-<tr><th>Copia de seguridad desde ↓ / Restauración a →</th><th>Milvus v2.2.x</th><th>Milvus v2.3.x</th><th>Milvus v2.4.x</th><th>Milvus v2.5.x</th><th>Milvus v2.6.x</th></tr>
+<tr><th>Backup From ↓ / Restore To →</th><th>Milvus v2.2.x</th><th>Milvus v2.3.x</th><th>Milvus v2.4.x</th><th>Milvus v2.5.x</th><th>Milvus v2.6.x</th></tr>
 </thead>
 <tbody>
-<tr><td>Milvus v2.2.x</td><td>No</td><td>No</td><td>Sí</td><td>Sí</td><td>Sí</td></tr>
-<tr><td>Milvus v2.3.x</td><td>No</td><td>No</td><td>Sí</td><td>Sí</td><td>Sí</td></tr>
-<tr><td>Milvus v2.4.x</td><td>No</td><td>No</td><td>Sí</td><td>Sí</td><td>Sí</td></tr>
-<tr><td>Milvus v2.5.x</td><td>No</td><td>No</td><td>No</td><td>Sí</td><td>Sí</td></tr>
-<tr><td>Milvus v2.6.x</td><td>No</td><td>No</td><td>No</td><td>No</td><td>Sí</td></tr>
+<tr><td>Milvus v2.2.x</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Milvus v2.3.x</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Milvus v2.4.x</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Milvus v2.5.x</td><td>No</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Milvus v2.6.x</td><td>No</td><td>No</td><td>No</td><td>No</td><td>Yes</td></tr>
 </tbody>
 </table>
-<h2 id="Latest-release" class="common-anchor-header">Última versión<button data-href="#Latest-release" class="anchor-icon" translate="no">
+<h2 id="Latest-release" class="common-anchor-header">Latest release<button data-href="#Latest-release" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

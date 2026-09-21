@@ -1,9 +1,9 @@
 ---
 id: choose-the-right-analyzer-for-your-use-case.md
-title: Pilih Penganalisis yang Tepat untuk Kasus Penggunaan Anda
-summary: Catatan
+title: Choose the Right Analyzer for Your Use Case
+summary: Notes
 ---
-<h1 id="Choose-the-Right-Analyzer-for-Your-Use-Case" class="common-anchor-header">Pilih Penganalisis yang Tepat untuk Kasus Penggunaan Anda<button data-href="#Choose-the-Right-Analyzer-for-Your-Use-Case" class="anchor-icon" translate="no">
+<h1 id="Choose-the-Right-Analyzer-for-Your-Use-Case" class="common-anchor-header">Choose the Right Analyzer for Your Use Case<button data-href="#Choose-the-Right-Analyzer-for-Your-Use-Case" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +19,9 @@ summary: Catatan
         ></path>
       </svg>
     </button></h1><div class="alert note">
-<p>Panduan ini berfokus pada pengambilan keputusan praktis untuk pemilihan penganalisis. Untuk detail teknis mengenai komponen penganalisis dan cara menambahkan parameter penganalisis, lihat <a href="/docs/id/analyzer-overview.md">Ikhtisar P</a>enganalisis.</p>
+<p>This guide focuses on practical decision-making for analyzer selection. For technical details about analyzer components and how to add analyzer parameters, refer to <a href="/docs/id/v2.6.x/analyzer-overview.md">Analyzer Overview</a>.</p>
 </div>
-<h2 id="Understand-analyzers-in-2-minutes" class="common-anchor-header">Memahami penganalisis dalam 2 menit<button data-href="#Understand-analyzers-in-2-minutes" class="anchor-icon" translate="no">
+<h2 id="Understand-analyzers-in-2-minutes" class="common-anchor-header">Understand analyzers in 2 minutes<button data-href="#Understand-analyzers-in-2-minutes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,22 +36,24 @@ summary: Catatan
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Di Milvus, penganalisis memproses teks yang disimpan di bidang ini untuk membuatnya dapat dicari dengan fitur seperti <a href="/docs/id/full-text-search.md">pencarian teks lengkap</a> (BM25), <a href="/docs/id/phrase-match.md">pencocokan frasa</a>, atau <a href="/docs/id/keyword-match.md">pencocokan teks</a>. Anggap saja sebagai pengolah teks yang mengubah konten mentah Anda menjadi token yang dapat dicari.</p>
-<p>Penganalisis bekerja dalam pipa dua tahap yang sederhana:</p>
+    </button></h2><p>In Milvus, an analyzer processes the text stored in this field to make it searchable for features like <a href="/docs/id/v2.6.x/full-text-search.md">full text search</a> (BM25), <a href="/docs/id/v2.6.x/phrase-match.md">phrase match</a>, or <a href="/docs/id/v2.6.x/keyword-match.md">text match</a>. Think of it as a text processor that transforms your raw content into searchable tokens.</p>
+<p>An analyzer works in a simple, two-stage pipeline:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/analyzer-workflow.png" alt="Analyzer Workflow" class="doc-image" id="analyzer-workflow" />
-   </span> <span class="img-wrapper"> <span>Alur Kerja Penganalisis</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/analyzer-workflow.png" alt="Analyzer Workflow" class="doc-image" id="analyzer-workflow" />
+    <span>Analyzer Workflow</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>Tokenisasi (wajib):</strong> Tahap awal ini menerapkan <strong>tokenizer</strong> untuk memecah string teks yang berkelanjutan menjadi unit-unit diskrit dan bermakna yang disebut token. Metode tokenisasi dapat sangat bervariasi, tergantung pada bahasa dan jenis konten.</p></li>
-<li><p><strong>Penyaringan token (opsional):</strong> Setelah tokenisasi, <strong>filter</strong> diterapkan untuk memodifikasi, menghapus, atau menyaring token. Operasi ini dapat mencakup mengubah semua token menjadi huruf kecil, menghapus kata-kata umum yang tidak berarti (seperti stopwords), atau mengurangi kata-kata ke bentuk dasarnya (stemming).</p></li>
+<li><p><strong>Tokenization (required):</strong> This initial stage applies a <strong>tokenizer</strong> to break a continuous string of text into discrete, meaningful units called tokens. The tokenization method can vary significantly depending on the language and content type.</p></li>
+<li><p><strong>Token filtering (optional):</strong> After tokenization, <strong>filters</strong> are applied to modify, remove, or refine the tokens. These operations can include converting all tokens to lowercase, removing common meaningless words (such as stopwords), or reducing words to their root form (stemming).</p></li>
 </ol>
-<p><strong>Contoh</strong>:</p>
+<p><strong>Example</strong>:</p>
 <pre><code translate="no" class="language-plaintext">Input: &quot;Hello World!&quot; 
        1. Tokenization → [&quot;Hello&quot;, &quot;World&quot;, &quot;!&quot;]
        2. Lowercase &amp; Punctuation Filtering → [&quot;hello&quot;, &quot;world&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Why-the-choice-of-analyzer-matters" class="common-anchor-header">Mengapa pilihan alat analisis penting<button data-href="#Why-the-choice-of-analyzer-matters" class="anchor-icon" translate="no">
+<h2 id="Why-the-choice-of-analyzer-matters" class="common-anchor-header">Why the choice of analyzer matters<button data-href="#Why-the-choice-of-analyzer-matters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -66,39 +68,39 @@ summary: Catatan
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Memilih penganalisis yang salah dapat membuat dokumen yang relevan tidak dapat dicari atau mengembalikan hasil yang tidak relevan.</p>
-<p>Tabel berikut ini merangkum masalah umum yang disebabkan oleh pemilihan alat analisis yang tidak tepat dan memberikan solusi yang dapat ditindaklanjuti untuk mendiagnosis masalah pencarian.</p>
+    </button></h2><p>Choosing the wrong analyzer can make relevant documents unsearchable or return irrelevant results.</p>
+<p>The following table summarizes common problems caused by improper analyzer selection and provides actionable solutions for diagnosing search issues.</p>
 <table>
    <tr>
-     <th><p>Masalah</p></th>
-     <th><p>Gejala</p></th>
-     <th><p>Contoh (Masukan &amp; Keluaran)</p></th>
-     <th><p>Penyebab (Penganalisis Buruk)</p></th>
-     <th><p>Solusi (Penganalisis yang Baik)</p></th>
+     <th><p>Problem</p></th>
+     <th><p>Symptom</p></th>
+     <th><p>Example (Input &amp; Output)</p></th>
+     <th><p>Cause (Bad Analyzer)</p></th>
+     <th><p>Solution (Good Analyzer)</p></th>
    </tr>
    <tr>
-     <td><p>Tokenisasi berlebihan</p></td>
-     <td><p>Kueri teks untuk istilah teknis, pengidentifikasi, atau URL gagal menemukan dokumen yang relevan.</p></td>
+     <td><p>Over-tokenization</p></td>
+     <td><p>Text queries for technical terms, identifiers, or URLs fail to find relevant documents.</p></td>
      <td><ul><li><p><code translate="no">"user_id"</code> → <code translate="no">['user', 'id']</code></p></li><li><p><code translate="no">"C++"</code> → <code translate="no">['c']</code></p></li></ul></td>
-     <td><p><a href="/docs/id/standard-analyzer.md"><code translate="no">standard</code></a> penganalisis</p></td>
-     <td><p>Gunakan sebuah <a href="/docs/id/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer; gabungkan dengan sebuah <a href="/docs/id/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> filter.</p></td>
+     <td><p><a href="/docs/id/v2.6.x/standard-analyzer.md"><code translate="no">standard</code></a> analyzer</p></td>
+     <td><p>Use a <a href="/docs/id/v2.6.x/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer; combine with an <a href="/docs/id/v2.6.x/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> filter.</p></td>
    </tr>
    <tr>
-     <td><p>Tokenisasi kurang</p></td>
-     <td><p>Pencarian komponen dari frasa multi-kata gagal mengembalikan dokumen yang berisi frasa lengkap.</p></td>
+     <td><p>Under-tokenization</p></td>
+     <td><p>Search for a component of a multi-word phrase fails to return documents containing the full phrase.</p></td>
      <td><p><code translate="no">"state-of-the-art"</code> → <code translate="no">['state-of-the-art']</code></p></td>
-     <td><p>Penganalisis dengan <a href="/docs/id/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer</p></td>
-     <td><p>Gunakan <a href="/docs/id/standard-tokenizer.md"><code translate="no">standard</code></a> tokenizer untuk memisahkan tanda baca dan spasi; gunakan filter <a href="/docs/id/regex-filter.md">regex</a> khusus.</p></td>
+     <td><p>Analyzer with a <a href="/docs/id/v2.6.x/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer</p></td>
+     <td><p>Use a <a href="/docs/id/v2.6.x/standard-tokenizer.md"><code translate="no">standard</code></a> tokenizer to split on punctuation and spaces; use a custom <a href="/docs/id/v2.6.x/regex-filter.md">regex</a> filter.</p></td>
    </tr>
    <tr>
-     <td><p>Ketidakcocokan Bahasa</p></td>
-     <td><p>Hasil pencarian untuk bahasa tertentu tidak masuk akal atau tidak ada.</p></td>
-     <td><p>Teks bahasa Mandarin: <code translate="no">"机器学习"</code> → <code translate="no">['机器学习']</code> (satu token)</p></td>
-     <td><p><a href="/docs/id/english-analyzer.md"><code translate="no">english</code></a> Penganalisis</p></td>
-     <td><p>Gunakan penganalisis khusus bahasa, seperti <a href="/docs/id/chinese-analyzer.md"><code translate="no">chinese</code></a>.</p></td>
+     <td><p>Language Mismatches</p></td>
+     <td><p>Search results for a specific language are nonsensical or nonexistent.</p></td>
+     <td><p>Chinese text: <code translate="no">"机器学习"</code> → <code translate="no">['机器学习']</code> (one token)</p></td>
+     <td><p><a href="/docs/id/v2.6.x/english-analyzer.md"><code translate="no">english</code></a> analyzer</p></td>
+     <td><p>Use a language-specific analyzer, such as <a href="/docs/id/v2.6.x/chinese-analyzer.md"><code translate="no">chinese</code></a>.</p></td>
    </tr>
 </table>
-<h2 id="First-question-Do-you-need-to-choose-an-analyzer" class="common-anchor-header">Pertanyaan pertama: Apakah Anda perlu memilih penganalisis?<button data-href="#First-question-Do-you-need-to-choose-an-analyzer" class="anchor-icon" translate="no">
+<h2 id="First-question-Do-you-need-to-choose-an-analyzer" class="common-anchor-header">First question: Do you need to choose an analyzer?<button data-href="#First-question-Do-you-need-to-choose-an-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -113,8 +115,8 @@ summary: Catatan
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Untuk banyak kasus penggunaan, Anda tidak perlu melakukan sesuatu yang khusus. Mari kita tentukan apakah Anda termasuk salah satunya.</p>
-<h3 id="Default-behavior-standard-analyzer" class="common-anchor-header">Perilaku default: <code translate="no">standard</code> analyzer<button data-href="#Default-behavior-standard-analyzer" class="anchor-icon" translate="no">
+    </button></h2><p>For many use cases, you don’t need to do anything special. Let’s determine if you’re one of them.</p>
+<h3 id="Default-behavior-standard-analyzer" class="common-anchor-header">Default behavior: <code translate="no">standard</code> analyzer<button data-href="#Default-behavior-standard-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,18 +131,18 @@ summary: Catatan
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Jika Anda tidak menentukan penganalisis ketika menggunakan fitur pengambilan teks seperti pencarian teks lengkap, Milvus secara otomatis menggunakan fitur <a href="/docs/id/standard-analyzer.md"><code translate="no">standard</code></a> analyzer.</p>
-<p>Penganalisis <code translate="no">standard</code>:</p>
+    </button></h3><p>If you don’t specify an analyzer when using text retrieval features like full text search, Milvus automatically uses the <a href="/docs/id/v2.6.x/standard-analyzer.md"><code translate="no">standard</code></a> analyzer.</p>
+<p>The <code translate="no">standard</code> analyzer:</p>
 <ul>
-<li><p>Memisahkan teks berdasarkan spasi dan tanda baca</p></li>
-<li><p>Mengubah semua token menjadi huruf kecil</p></li>
-<li><p>Menghapus sekumpulan kata henti bahasa Inggris yang umum dan sebagian besar tanda baca</p></li>
+<li><p>Splits text on spaces and punctuation</p></li>
+<li><p>Converts all tokens to lowercase</p></li>
+<li><p>Removes a built-in set of common English stop words and most punctuation</p></li>
 </ul>
-<p><strong>Contoh transformasi</strong>:</p>
+<p><strong>Example transformation</strong>:</p>
 <pre><code translate="no" class="language-plaintext">Input:  &quot;The Milvus vector database is built for scale!&quot;
 Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database&#x27;, &#x27;is&#x27;, &#x27;built&#x27;, &#x27;scale&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Decision-criteria-A-quick-check" class="common-anchor-header">Kriteria keputusan: Pemeriksaan cepat<button data-href="#Decision-criteria-A-quick-check" class="anchor-icon" translate="no">
+<h3 id="Decision-criteria-A-quick-check" class="common-anchor-header">Decision criteria: A quick check<button data-href="#Decision-criteria-A-quick-check" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -155,51 +157,51 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Gunakan tabel ini untuk menentukan dengan cepat apakah penganalisis <code translate="no">standard</code> default memenuhi kebutuhan Anda. Jika tidak, Anda harus memilih jalur yang berbeda.</p>
+    </button></h3><p>Use this table to quickly determine if the default <code translate="no">standard</code> analyzer meets your needs. If it doesn’t, you’ll need to choose a different path.</p>
 <table>
    <tr>
-     <th><p>Konten Anda</p></th>
-     <th><p>Penganalisis Standar OK?</p></th>
-     <th><p>Mengapa</p></th>
-     <th><p>Apa yang Anda Butuhkan</p></th>
+     <th><p>Your Content</p></th>
+     <th><p>Standard Analyzer OK?</p></th>
+     <th><p>Why</p></th>
+     <th><p>What You Need</p></th>
    </tr>
    <tr>
-     <td><p>Posting blog berbahasa Inggris</p></td>
-     <td><p>✅ Ya</p></td>
-     <td><p>Perilaku default sudah cukup.</p></td>
-     <td><p>Gunakan default (tidak perlu konfigurasi).</p></td>
+     <td><p>English blog posts</p></td>
+     <td><p>✅ Yes</p></td>
+     <td><p>Default behavior is sufficient.</p></td>
+     <td><p>Use the default (no configuration needed).</p></td>
    </tr>
    <tr>
-     <td><p>Dokumen berbahasa Mandarin</p></td>
-     <td><p>❌ Tidak</p></td>
-     <td><p>Kata-kata dalam bahasa Mandarin tidak memiliki spasi dan akan diperlakukan sebagai satu token.</p></td>
-     <td><p>Gunakan penganalisis bawaan <a href="/docs/id/chinese-analyzer.md"><code translate="no">chinese</code></a> penganalisis bawaan.</p></td>
+     <td><p>Chinese documents</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>Chinese words have no spaces and will be treated as one token.</p></td>
+     <td><p>Use a built-in <a href="/docs/id/v2.6.x/chinese-analyzer.md"><code translate="no">chinese</code></a> analyzer.</p></td>
    </tr>
    <tr>
-     <td><p>Dokumentasi teknis</p></td>
-     <td><p>❌ Tidak</p></td>
-     <td><p>Tanda baca dihilangkan dari istilah seperti <code translate="no">C++</code>.</p></td>
-     <td><p>Buat penganalisis khusus dengan <a href="/docs/id/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer dan <a href="/docs/id/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> filter.</p></td>
+     <td><p>Technical documentation</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>Punctuation is stripped from terms like <code translate="no">C++</code>.</p></td>
+     <td><p>Create a custom analyzer with a <a href="/docs/id/v2.6.x/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer and an <a href="/docs/id/v2.6.x/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> filter.</p></td>
    </tr>
    <tr>
-     <td><p>Bahasa yang dipisahkan oleh spasi seperti teks bahasa Prancis/Spanyol</p></td>
-     <td><p>⚠️ Mungkin</p></td>
-     <td><p>Karakter beraksen (<code translate="no">café</code> vs. <code translate="no">cafe</code>) mungkin tidak cocok.</p></td>
-     <td><p>Penganalisis khusus dengan fitur <a href="/docs/id/ascii-folding-filter.md"><code translate="no">asciifolding</code></a> direkomendasikan untuk hasil yang lebih baik.</p></td>
+     <td><p>Space-separated languages such as French/Spanish text</p></td>
+     <td><p>⚠️ Maybe</p></td>
+     <td><p>Accented characters (<code translate="no">café</code> vs. <code translate="no">cafe</code>) may not match.</p></td>
+     <td><p>A custom analyzer with the <a href="/docs/id/v2.6.x/ascii-folding-filter.md"><code translate="no">asciifolding</code></a> is recommended for better results.</p></td>
    </tr>
    <tr>
-     <td><p>Bahasa multibahasa atau bahasa yang tidak dikenal</p></td>
-     <td><p>❌ Tidak</p></td>
-     <td><p>Penganalisis <code translate="no">standard</code> tidak memiliki logika khusus bahasa yang diperlukan untuk menangani set karakter dan aturan tokenisasi yang berbeda.</p></td>
-     <td><p>Gunakan penganalisis khusus dengan <a href="/docs/id/icu-tokenizer.md"><code translate="no">icu</code></a> tokenizer untuk tokenisasi yang sadar unicode. </p><p>Atau, pertimbangkan untuk mengonfigurasi <a href="/docs/id/multi-language-analyzers.md">penganalisis multibahasa</a> atau <a href="/docs/id/language-identifier.md">pengidentifikasi bahasa</a> untuk penanganan konten multibahasa yang lebih tepat.</p></td>
+     <td><p>Multilingual or unknown languages</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>The <code translate="no">standard</code> analyzer lacks the language-specific logic needed to handle different character sets and tokenization rules.</p></td>
+     <td><p>Use a custom analyzer with the <a href="/docs/id/v2.6.x/icu-tokenizer.md"><code translate="no">icu</code></a> tokenizer for unicode-aware tokenization. </p><p>Alternatively, consider configuring <a href="/docs/id/v2.6.x/multi-language-analyzers.md">multi-language analyzers</a> or a <a href="/docs/id/v2.6.x/language-identifier.md">language identifier</a> for more precise handling of multilingual content.</p></td>
    </tr>
 </table>
-<p>Jika penganalisis <code translate="no">standard</code> default tidak dapat memenuhi kebutuhan Anda, Anda perlu menerapkan penganalisis yang berbeda. Anda memiliki dua jalur:</p>
+<p>If the default <code translate="no">standard</code> analyzer cannot meet your requirements, you need to implement a different one. You have two paths:</p>
 <ul>
-<li><p><a href="/docs/id/choose-the-right-analyzer-for-your-use-case.md#Path-A-Use-built-in-analyzers">Menggunakan penganalisis bawaan</a> atau</p></li>
-<li><p><a href="/docs/id/choose-the-right-analyzer-for-your-use-case.md#Path-B-Create-a-custom-analyzer">Membuat penganalisis khusus</a></p></li>
+<li><p><a href="/docs/id/v2.6.x/choose-the-right-analyzer-for-your-use-case.md#Path-A-Use-built-in-analyzers">Using a built-in analyzer</a> or</p></li>
+<li><p><a href="/docs/id/v2.6.x/choose-the-right-analyzer-for-your-use-case.md#Path-B-Create-a-custom-analyzer">Creating a custom one</a></p></li>
 </ul>
-<h2 id="Path-A-Use-built-in-analyzers" class="common-anchor-header">Jalur A: Menggunakan penganalisis bawaan<button data-href="#Path-A-Use-built-in-analyzers" class="anchor-icon" translate="no">
+<h2 id="Path-A-Use-built-in-analyzers" class="common-anchor-header">Path A: Use built-in analyzers<button data-href="#Path-A-Use-built-in-analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,8 +216,8 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Penganalisis bawaan adalah solusi yang sudah dikonfigurasi sebelumnya untuk bahasa yang umum. Penganalisis bawaan adalah cara termudah untuk memulai ketika penganalisis standar bawaan tidak cocok.</p>
-<h3 id="Available-built-in-analyzers" class="common-anchor-header">Penganalisis bawaan yang tersedia<button data-href="#Available-built-in-analyzers" class="anchor-icon" translate="no">
+    </button></h2><p>Built-in analyzers are pre-configured solutions for common languages. They are the easiest way to get started when the default standard analyzer isn’t a perfect fit.</p>
+<h3 id="Available-built-in-analyzers" class="common-anchor-header">Available built-in analyzers<button data-href="#Available-built-in-analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -232,31 +234,31 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
       </svg>
     </button></h3><table>
    <tr>
-     <th><p>Penganalisis</p></th>
-     <th><p>Dukungan Bahasa</p></th>
-     <th><p>Komponen</p></th>
-     <th><p>Catatan</p></th>
+     <th><p>Analyzer</p></th>
+     <th><p>Language Support</p></th>
+     <th><p>Components</p></th>
+     <th><p>Notes</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/standard-analyzer.md"><code translate="no">standard</code></a></p></td>
-     <td><p>Sebagian besar bahasa yang dipisahkan oleh ruang (Inggris, Prancis, Jerman, Spanyol, dll.)</p></td>
-     <td><ul><li><p>Tokenizer: <code translate="no">standard</code></p></li><li><p>Penyaring: <code translate="no">lowercase</code></p></li></ul></td>
-     <td><p>Penganalisis tujuan umum untuk pemrosesan teks awal. Untuk skenario monolingual, penganalisis khusus bahasa (seperti <code translate="no">english</code>) memberikan kinerja yang lebih baik.</p></td>
+     <td><p><a href="/docs/id/v2.6.x/standard-analyzer.md"><code translate="no">standard</code></a></p></td>
+     <td><p>Most space-separated languages (English, French, German, Spanish, etc.)</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">standard</code></p></li><li><p>Filters: <code translate="no">lowercase</code></p></li></ul></td>
+     <td><p>General-purpose analyzer for initial text processing. For monolingual scenarios, language-specific analyzers (like <code translate="no">english</code>) provide better performance.</p></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/english-analyzer.md"><code translate="no">english</code></a></p></td>
-     <td><p>Didedikasikan untuk bahasa Inggris, yang menerapkan stemming dan penghilangan kata untuk pencocokan semantik bahasa Inggris yang lebih baik</p></td>
-     <td><ul><li><p>Tokenizer: <code translate="no">standard</code></p></li><li><p>Penyaring: <code translate="no">lowercase</code>, <code translate="no">stemmer</code>, <code translate="no">stop</code></p></li></ul></td>
-     <td><p>Direkomendasikan untuk konten hanya dalam bahasa Inggris melalui <code translate="no">standard</code>.</p></td>
+     <td><p><a href="/docs/id/v2.6.x/english-analyzer.md"><code translate="no">english</code></a></p></td>
+     <td><p>Dedicated to English, which applies stemming and stop word removal for better English semantic matching</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">standard</code></p></li><li><p>Filters: <code translate="no">lowercase</code>, <code translate="no">stemmer</code>, <code translate="no">stop</code></p></li></ul></td>
+     <td><p>Recommended for English-only content over <code translate="no">standard</code>.</p></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/chinese-analyzer.md"><code translate="no">chinese</code></a></p></td>
-     <td><p>Bahasa Mandarin</p></td>
-     <td><ul><li><p>Tokenizer: <code translate="no">jieba</code></p></li><li><p>Penyaring: <code translate="no">cnalphanumonly</code></p></li></ul></td>
-     <td><p>Saat ini menggunakan kamus bahasa Mandarin Sederhana secara default.</p></td>
+     <td><p><a href="/docs/id/v2.6.x/chinese-analyzer.md"><code translate="no">chinese</code></a></p></td>
+     <td><p>Chinese</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">jieba</code></p></li><li><p>Filters: <code translate="no">cnalphanumonly</code></p></li></ul></td>
+     <td><p>Currently uses Simplified Chinese dictionary by default.</p></td>
    </tr>
 </table>
-<h3 id="Implementation-example" class="common-anchor-header">Contoh implementasi<button data-href="#Implementation-example" class="anchor-icon" translate="no">
+<h3 id="Implementation-example" class="common-anchor-header">Implementation example<button data-href="#Implementation-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -271,7 +273,7 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk menggunakan penganalisis bawaan, cukup tentukan jenisnya di <code translate="no">analyzer_params</code> saat mendefinisikan skema bidang Anda.</p>
+    </button></h3><p>To use a built-in analyzer, simply specify its type in the <code translate="no">analyzer_params</code> when defining your field schema.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Using built-in English analyzer</span>
 analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;english&quot;</span>
@@ -287,9 +289,9 @@ schema.add_field(
 )
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Untuk penggunaan terperinci, lihat <a href="/docs/id/full-text-search.md">Pencarian Teks Lengkap</a>, <a href="/docs/id/keyword-match.md">Pencocokan Teks</a>, atau Pencocokan <a href="/docs/id/phrase-match.md">Frasa</a>.</p>
+<p>For detailed usage, refer to <a href="/docs/id/v2.6.x/full-text-search.md">Full Text Search</a>, <a href="/docs/id/v2.6.x/keyword-match.md">Text Match</a>, or <a href="/docs/id/v2.6.x/phrase-match.md">Phrase Match</a>.</p>
 </div>
-<h2 id="Path-B-Create-a-custom-analyzer" class="common-anchor-header">Jalur B: Membuat penganalisis khusus<button data-href="#Path-B-Create-a-custom-analyzer" class="anchor-icon" translate="no">
+<h2 id="Path-B-Create-a-custom-analyzer" class="common-anchor-header">Path B: Create a custom analyzer<button data-href="#Path-B-Create-a-custom-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -304,8 +306,8 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Jika <a href="/docs/id/choose-the-right-analyzer-for-your-use-case.md#Available-built-in-analyzers">opsi bawaan</a> tidak memenuhi kebutuhan Anda, Anda dapat membuat penganalisis khusus dengan menggabungkan tokenizer dengan seperangkat filter. Hal ini memberikan Anda kendali penuh atas pipeline pemrosesan teks.</p>
-<h3 id="Step-1-Select-the-tokenizer-based-on-language" class="common-anchor-header">Langkah 1: Pilih tokenizer berdasarkan bahasa<button data-href="#Step-1-Select-the-tokenizer-based-on-language" class="anchor-icon" translate="no">
+    </button></h2><p>When <a href="/docs/id/v2.6.x/choose-the-right-analyzer-for-your-use-case.md#Available-built-in-analyzers">built-in options</a> don’t meet your needs, you can create a custom analyzer by combining a tokenizer with a set of filters. This gives you full control over the text processing pipeline.</p>
+<h3 id="Step-1-Select-the-tokenizer-based-on-language" class="common-anchor-header">Step 1: Select the tokenizer based on language<button data-href="#Step-1-Select-the-tokenizer-based-on-language" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -320,95 +322,95 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Pilih tokenizer berdasarkan bahasa utama konten Anda:</p>
-<h4 id="Western-languages" class="common-anchor-header">Bahasa-bahasa Barat</h4><p>Untuk bahasa yang dipisahkan oleh spasi, Anda memiliki opsi berikut:</p>
+    </button></h3><p>Choose your tokenizer based on your content’s primary language:</p>
+<h4 id="Western-languages" class="common-anchor-header">Western languages</h4><p>For space-separated languages, you have these options:</p>
 <table>
    <tr>
      <th><p>Tokenizer</p></th>
-     <th><p>Bagaimana cara kerjanya</p></th>
-     <th><p>Paling cocok untuk</p></th>
-     <th><p>Contoh</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/standard-tokenizer.md"><code translate="no">standard</code></a></p></td>
-     <td><p>Memisahkan teks berdasarkan spasi dan tanda baca</p></td>
-     <td><p>Teks umum, tanda baca campuran</p></td>
-     <td><ul><li><p>Masukan <code translate="no">"Hello, world! Visit example.com"</code></p></li><li><p>Keluaran <code translate="no">['Hello', 'world', 'Visit', 'example', 'com']</code></p></li></ul></td>
+     <td><p><a href="/docs/id/v2.6.x/standard-tokenizer.md"><code translate="no">standard</code></a></p></td>
+     <td><p>Splits text based on spaces and punctuation marks</p></td>
+     <td><p>General text, mixed punctuation</p></td>
+     <td><ul><li><p>Input: <code translate="no">"Hello, world! Visit example.com"</code></p></li><li><p>Output: <code translate="no">['Hello', 'world', 'Visit', 'example', 'com']</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/whitespace-tokenizer.md"><code translate="no">whitespace</code></a></p></td>
-     <td><p>Memisahkan hanya pada karakter spasi</p></td>
-     <td><p>Konten yang telah diproses sebelumnya, teks yang diformat pengguna</p></td>
-     <td><ul><li><p>Masukan <code translate="no">"user_id = get_user_data()"</code></p></li><li><p>Keluaran <code translate="no">['user_id', '=', 'get_user_data()']</code></p></li></ul></td>
-   </tr>
-</table>
-<h4 id="East-Asian-languages" class="common-anchor-header">Bahasa-bahasa Asia Timur</h4><p>Bahasa berbasis kamus memerlukan tokenizer khusus untuk segmentasi kata yang tepat:</p>
-<h5 id="Chinese" class="common-anchor-header">Bahasa Mandarin</h5><table>
-   <tr>
-     <th><p>Tokenizer</p></th>
-     <th><p>Bagaimana cara kerjanya</p></th>
-     <th><p>Paling cocok untuk</p></th>
-     <th><p>Contoh</p></th>
-   </tr>
-   <tr>
-     <td><p><a href="/docs/id/jieba-tokenizer.md"><code translate="no">jieba</code></a></p></td>
-     <td><p>Segmentasi berbasis kamus bahasa Mandarin dengan algoritme cerdas</p></td>
-     <td><p><strong>Direkomendasikan untuk konten berbahasa Mandarin</strong> - menggabungkan kamus dengan algoritme cerdas, yang dirancang khusus untuk bahasa Mandarin</p></td>
-     <td><ul><li><p>Masukan <code translate="no">"机器学习是人工智能的一个分支"</code></p></li><li><p>Keluaran: <code translate="no">['机器', '学习', '是', '人工', '智能', '人工智能', '的', '一个', '分支']</code></p></li></ul></td>
-   </tr>
-   <tr>
-     <td><p><a href="/docs/id/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
-     <td><p>Analisis morfologi berbasis kamus murni dengan kamus bahasa Mandarin<a href="https://cc-cedict.org/wiki/">(cc-cedict</a>)</p></td>
-     <td><p>Dibandingkan dengan <code translate="no">jieba</code>, memproses teks bahasa Mandarin dengan cara yang lebih umum</p></td>
-     <td><ul><li><p>Masukan <code translate="no">"机器学习算法"</code></p></li><li><p>Keluaran: <code translate="no">["机器", "学习", "算法"]</code></p></li></ul></td>
+     <td><p><a href="/docs/id/v2.6.x/whitespace-tokenizer.md"><code translate="no">whitespace</code></a></p></td>
+     <td><p>Splits only on whitespace characters</p></td>
+     <td><p>Pre-processed content, user-formatted text</p></td>
+     <td><ul><li><p>Input: <code translate="no">"user_id = get_user_data()"</code></p></li><li><p>Output: <code translate="no">['user_id', '=', 'get_user_data()']</code></p></li></ul></td>
    </tr>
 </table>
-<h5 id="Japanese-and-Korean" class="common-anchor-header">Bahasa Jepang dan Korea</h5><table>
+<h4 id="East-Asian-languages" class="common-anchor-header">East Asian languages</h4><p>Dictionary-based languages require specialized tokenizers for proper word segmentation:</p>
+<h5 id="Chinese" class="common-anchor-header">Chinese</h5><table>
    <tr>
-     <th><p>Bahasa</p></th>
      <th><p>Tokenizer</p></th>
-     <th><p>Opsi Kamus</p></th>
-     <th><p>Terbaik untuk</p></th>
-     <th><p>Contoh</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p>Bahasa Jepang</p></td>
-     <td><p><a href="/docs/id/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
-     <td><p><a href="https://taku910.github.io/mecab/">ipadic</a> (tujuan umum), <a href="https://github.com/neologd/mecab-ipadic-neologd">ipadic-neologd</a> (istilah modern), <a href="https://clrd.ninjal.ac.jp/unidic/">unidic</a> (akademis)</p></td>
-     <td><p>Analisis morfologi dengan penanganan kata benda yang tepat</p></td>
-     <td><ul><li><p>Masukan <code translate="no">"東京都渋谷区"</code></p></li><li><p>Keluaran <code translate="no">["東京", "都", "渋谷", "区"]</code></p></li></ul></td>
+     <td><p><a href="/docs/id/v2.6.x/jieba-tokenizer.md"><code translate="no">jieba</code></a></p></td>
+     <td><p>Chinese dictionary-based segmentation with intelligent algorithm</p></td>
+     <td><p><strong>Recommended for Chinese content</strong> - combines dictionary with intelligent algorithms, specifically designed for Chinese</p></td>
+     <td><ul><li><p>Input: <code translate="no">"机器学习是人工智能的一个分支"</code></p></li><li><p>Output: <code translate="no">['机器', '学习', '是', '人工', '智能', '人工智能', '的', '一个', '分支']</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p>Bahasa Korea</p></td>
-     <td><p><a href="/docs/id/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
+     <td><p><a href="/docs/id/v2.6.x/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
+     <td><p>Pure dictionary-based morphological analysis with Chinese dictionary (<a href="https://cc-cedict.org/wiki/">cc-cedict</a>)</p></td>
+     <td><p>Compared to <code translate="no">jieba</code>, processes Chinese text in a more generic manner</p></td>
+     <td><ul><li><p>Input: <code translate="no">"机器学习算法"</code></p></li><li><p>Output: <code translate="no">["机器", "学习", "算法"]</code></p></li></ul></td>
+   </tr>
+</table>
+<h5 id="Japanese-and-Korean" class="common-anchor-header">Japanese and Korean</h5><table>
+   <tr>
+     <th><p>Language</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>Dictionary Options</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
+   </tr>
+   <tr>
+     <td><p>Japanese</p></td>
+     <td><p><a href="/docs/id/v2.6.x/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
+     <td><p><a href="https://taku910.github.io/mecab/">ipadic</a> (general-purpose), <a href="https://github.com/neologd/mecab-ipadic-neologd">ipadic-neologd</a> (modern terms), <a href="https://clrd.ninjal.ac.jp/unidic/">unidic</a> (academic)</p></td>
+     <td><p>Morphological analysis with proper noun handling</p></td>
+     <td><ul><li><p>Input: <code translate="no">"東京都渋谷区"</code></p></li><li><p>Output: <code translate="no">["東京", "都", "渋谷", "区"]</code></p></li></ul></td>
+   </tr>
+   <tr>
+     <td><p>Korean</p></td>
+     <td><p><a href="/docs/id/v2.6.x/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
      <td><p><a href="https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/">ko-dic</a></p></td>
-     <td><p>Analisis morfologi bahasa Korea</p></td>
-     <td><ul><li><p>Masukan <code translate="no">"안녕하세요"</code></p></li><li><p>Keluaran: <code translate="no">["안녕", "하", "세요"]</code></p></li></ul></td>
+     <td><p>Korean morphological analysis</p></td>
+     <td><ul><li><p>Input: <code translate="no">"안녕하세요"</code></p></li><li><p>Output: <code translate="no">["안녕", "하", "세요"]</code></p></li></ul></td>
    </tr>
 </table>
-<h4 id="Multilingual-or-unknown-languages" class="common-anchor-header">Bahasa multibahasa atau bahasa yang tidak dikenal</h4><p>Untuk konten yang bahasanya tidak dapat diprediksi atau tercampur di dalam dokumen:</p>
+<h4 id="Multilingual-or-unknown-languages" class="common-anchor-header">Multilingual or unknown languages</h4><p>For content where languages are unpredictable or mixed within documents:</p>
 <table>
    <tr>
      <th><p>Tokenizer</p></th>
-     <th><p>Bagaimana cara kerjanya</p></th>
-     <th><p>Paling cocok untuk</p></th>
-     <th><p>Contoh</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/icu-tokenizer.md"><code translate="no">icu</code></a></p></td>
-     <td><p>Tokenisasi yang sadar Unicode (Komponen Internasional untuk Unicode)</p></td>
-     <td><p>Skrip campuran, bahasa yang tidak dikenal, atau ketika tokenisasi sederhana sudah cukup</p></td>
-     <td><ul><li><p>Masukan <code translate="no">"Hello 世界 مرحبا"</code></p></li><li><p>Keluaran: <code translate="no">['Hello', ' ', '世界', ' ', 'مرحبا']</code></p></li></ul></td>
+     <td><p><a href="/docs/id/v2.6.x/icu-tokenizer.md"><code translate="no">icu</code></a></p></td>
+     <td><p>Unicode-aware tokenization (International Components for Unicode)</p></td>
+     <td><p>Mixed scripts, unknown languages, or when simple tokenization is sufficient</p></td>
+     <td><ul><li><p>Input: <code translate="no">"Hello 世界 مرحبا"</code></p></li><li><p>Output: <code translate="no">['Hello', ' ', '世界', ' ', 'مرحبا']</code></p></li></ul></td>
    </tr>
 </table>
-<p><strong>Kapan menggunakan icu</strong>:</p>
+<p><strong>When to use icu</strong>:</p>
 <ul>
-<li><p>Bahasa campuran di mana identifikasi bahasa tidak praktis.</p></li>
-<li><p>Anda tidak menginginkan biaya tambahan untuk <a href="/docs/id/multi-language-analyzers.md">penganalisis multi-bahasa</a> atau <a href="/docs/id/language-identifier.md">pengidentifikasi bahasa</a>.</p></li>
-<li><p>Konten memiliki bahasa utama dengan sesekali kata-kata asing yang tidak banyak berkontribusi pada makna keseluruhan (misalnya, teks bahasa Inggris dengan nama merek sporadis atau istilah teknis dalam bahasa Jepang atau Prancis).</p></li>
+<li><p>Mixed languages where language identification is impractical.</p></li>
+<li><p>You don’t want the overhead of <a href="/docs/id/v2.6.x/multi-language-analyzers.md">multi-language analyzers</a> or the <a href="/docs/id/v2.6.x/language-identifier.md">language identifier</a>.</p></li>
+<li><p>Content has a primary language with occasional foreign words that contribute little to the overall meaning (e.g., English text with sporadic brand names or technical terms in Japanese or French).</p></li>
 </ul>
-<p><strong>Pendekatan alternatif</strong>: Untuk penanganan yang lebih tepat terhadap konten multibahasa, pertimbangkan untuk menggunakan penganalisis multibahasa atau pengidentifikasi bahasa. Untuk detailnya, lihat <a href="/docs/id/multi-language-analyzers.md">Penganalisis Multi-bahasa</a> atau <a href="/docs/id/language-identifier.md">Pengidentifikasi Bahasa</a>.</p>
-<h3 id="Step-2-Add-filters-for-precision" class="common-anchor-header">Langkah 2: Menambahkan filter untuk ketepatan<button data-href="#Step-2-Add-filters-for-precision" class="anchor-icon" translate="no">
+<p><strong>Alternative approaches</strong>: For more precise handling of multilingual content, consider using multi-language analyzers or the language identifier. For details, refer to <a href="/docs/id/v2.6.x/multi-language-analyzers.md">Multi-language Analyzers</a> or <a href="/docs/id/v2.6.x/language-identifier.md">Language Identifier</a>.</p>
+<h3 id="Step-2-Add-filters-for-precision" class="common-anchor-header">Step 2: Add filters for precision<button data-href="#Step-2-Add-filters-for-precision" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -423,113 +425,113 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Setelah <a href="/docs/id/choose-the-right-analyzer-for-your-use-case.md#Step-1-Select-the-tokenizer-based-on-language">memilih tokenizer</a>, terapkan filter berdasarkan persyaratan pencarian spesifik dan karakteristik konten.</p>
-<h4 id="Commonly-used-filters" class="common-anchor-header">Filter yang umum digunakan</h4><p>Filter ini penting untuk sebagian besar konfigurasi bahasa yang dipisahkan oleh ruang (Inggris, Prancis, Jerman, Spanyol, dll.) dan secara signifikan meningkatkan kualitas pencarian:</p>
+    </button></h3><p>After <a href="/docs/id/v2.6.x/choose-the-right-analyzer-for-your-use-case.md#Step-1-Select-the-tokenizer-based-on-language">selecting your tokenizer</a>, apply filters based on your specific search requirements and content characteristics.</p>
+<h4 id="Commonly-used-filters" class="common-anchor-header">Commonly used filters</h4><p>These filters are essential for most space-separated language configurations (English, French, German, Spanish, etc.) and significantly improve search quality:</p>
 <table>
    <tr>
      <th><p>Filter</p></th>
-     <th><p>Bagaimana cara kerjanya</p></th>
-     <th><p>Kapan Digunakan</p></th>
-     <th><p>Contoh</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>When to Use</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/lowercase-filter.md"><code translate="no">lowercase</code></a></p></td>
-     <td><p>Mengubah semua token menjadi huruf kecil</p></td>
-     <td><p>Universal - berlaku untuk semua bahasa dengan perbedaan huruf besar/kecil</p></td>
-     <td><ul><li><p>Masukan <code translate="no">["Apple", "iPhone"]</code></p></li><li><p>Keluaran: <code translate="no">[['apple'], ['iphone']]</code></p></li></ul></td>
+     <td><p><a href="/docs/id/v2.6.x/lowercase-filter.md"><code translate="no">lowercase</code></a></p></td>
+     <td><p>Convert all tokens to lowercase</p></td>
+     <td><p>Universal - applies to all languages with case distinctions</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Apple", "iPhone"]</code></p></li><li><p>Output: <code translate="no">[['apple'], ['iphone']]</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/stemmer-filter.md"><code translate="no">stemmer</code></a></p></td>
-     <td><p>Mengurangi kata-kata ke bentuk dasarnya</p></td>
-     <td><p>Bahasa dengan infleksi kata (Inggris, Prancis, Jerman, dll.)</p></td>
-     <td><p>Untuk bahasa Inggris:</p><ul><li><p>Masukan <code translate="no">["running", "runs", "ran"]</code></p></li><li><p>Keluaran: <code translate="no">[['run'], ['run'], ['ran']]</code></p></li></ul></td>
+     <td><p><a href="/docs/id/v2.6.x/stemmer-filter.md"><code translate="no">stemmer</code></a></p></td>
+     <td><p>Reduce words to their root form</p></td>
+     <td><p>Languages with word inflections (English, French, German, etc.)</p></td>
+     <td><p>For English:</p><ul><li><p>Input: <code translate="no">["running", "runs", "ran"]</code></p></li><li><p>Output: <code translate="no">[['run'], ['run'], ['ran']]</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/stop-filter.md"><code translate="no">stop</code></a></p></td>
-     <td><p>Menghapus kata-kata umum yang tidak bermakna</p></td>
-     <td><p>Sebagian besar bahasa - terutama efektif untuk bahasa yang dipisahkan oleh spasi</p></td>
-     <td><ul><li><p>Masukan <code translate="no">["the", "quick", "brown", "fox"]</code></p></li><li><p>Keluaran: <code translate="no">[[], ['quick'], ['brown'], ['fox']]</code></p></li></ul></td>
+     <td><p><a href="/docs/id/v2.6.x/stop-filter.md"><code translate="no">stop</code></a></p></td>
+     <td><p>Remove common meaningless words</p></td>
+     <td><p>Most languages - particularly effective for space-separated languages</p></td>
+     <td><ul><li><p>Input: <code translate="no">["the", "quick", "brown", "fox"]</code></p></li><li><p>Output: <code translate="no">[[], ['quick'], ['brown'], ['fox']]</code></p></li></ul></td>
    </tr>
 </table>
 <div class="alert note">
-<p>Untuk bahasa Asia Timur (Cina, Jepang, Korea, dll.), fokuslah pada <a href="/docs/id/choose-the-right-analyzer-for-your-use-case.md#Language-specific-filters">penyaringan khusus bahasa.</a> Bahasa-bahasa ini biasanya menggunakan pendekatan yang berbeda untuk pemrosesan teks dan mungkin tidak mendapatkan manfaat yang signifikan dari stemming.</p>
+<p>For East Asian languages (Chinese, Japanese, Korean, etc.), focus on <a href="/docs/id/v2.6.x/choose-the-right-analyzer-for-your-use-case.md#Language-specific-filters">language-specific filters</a> instead. These languages typically use different approaches for text processing and may not benefit significantly from stemming.</p>
 </div>
-<h4 id="Text-normalization-filters" class="common-anchor-header">Filter normalisasi teks</h4><p>Filter ini menstandarkan variasi teks untuk meningkatkan konsistensi pencocokan:</p>
+<h4 id="Text-normalization-filters" class="common-anchor-header">Text normalization filters</h4><p>These filters standardize text variations to improve matching consistency:</p>
 <table>
    <tr>
      <th><p>Filter</p></th>
-     <th><p>Bagaimana cara kerjanya</p></th>
-     <th><p>Kapan Digunakan</p></th>
-     <th><p>Contoh</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>When to Use</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/ascii-folding-filter.md"><code translate="no">asciifolding</code></a></p></td>
-     <td><p>Mengonversi karakter beraksen ke karakter yang setara dengan ASCII</p></td>
-     <td><p>Konten internasional, konten buatan pengguna</p></td>
-     <td><ul><li><p>Masukan <code translate="no">["café", "naïve", "résumé"]</code></p></li><li><p>Keluaran <code translate="no">[['cafe'], ['naive'], ['resume']]</code></p></li></ul></td>
+     <td><p><a href="/docs/id/v2.6.x/ascii-folding-filter.md"><code translate="no">asciifolding</code></a></p></td>
+     <td><p>Convert accented characters to ASCII equivalents</p></td>
+     <td><p>International content, user-generated content</p></td>
+     <td><ul><li><p>Input: <code translate="no">["café", "naïve", "résumé"]</code></p></li><li><p>Output: <code translate="no">[['cafe'], ['naive'], ['resume']]</code></p></li></ul></td>
    </tr>
 </table>
-<h4 id="Token-filtering" class="common-anchor-header">Pemfilteran token</h4><p>Mengontrol token mana yang dipertahankan berdasarkan konten atau panjang karakter:</p>
-<table>
-   <tr>
-     <th><p>Menyaring</p></th>
-     <th><p>Bagaimana cara kerjanya</p></th>
-     <th><p>Kapan Digunakan</p></th>
-     <th><p>Contoh</p></th>
-   </tr>
-   <tr>
-     <td><p><a href="/docs/id/removepunct-filter.md"><code translate="no">removepunct</code></a></p></td>
-     <td><p>Menghapus token tanda baca yang berdiri sendiri</p></td>
-     <td><p>Keluaran bersih dari <code translate="no">jieba</code>, <code translate="no">lindera</code>, <code translate="no">icu</code> tokenizers, yang akan mengembalikan tanda baca sebagai token tunggal</p></td>
-     <td><ul><li><p>Masukan <code translate="no">["Hello", "!", "world"]</code></p></li><li><p>Keluaran: <code translate="no">[['Hello'], ['world']]</code></p></li></ul></td>
-   </tr>
-   <tr>
-     <td><p><a href="/docs/id/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a></p></td>
-     <td><p>Simpan hanya huruf dan angka</p></td>
-     <td><p>Konten teknis, pemrosesan teks yang bersih</p></td>
-     <td><ul><li><p>Masukan <code translate="no">["user123", "test@email.com"]</code></p></li><li><p>Keluaran <code translate="no">[['user123'], ['test', 'email', 'com']]</code></p></li></ul></td>
-   </tr>
-   <tr>
-     <td><p><a href="/docs/id/length-filter.md"><code translate="no">length</code></a></p></td>
-     <td><p>Menghapus token di luar rentang panjang yang ditentukan</p></td>
-     <td><p>Menyaring noise (token yang terlalu panjang)</p></td>
-     <td><ul><li><p>Masukan <code translate="no">["a", "very", "extraordinarily"]</code></p></li><li><p>Keluaran: <code translate="no">[['a'], ['very'], []]</code> (jika <strong>maks = 10</strong>)</p></li></ul></td>
-   </tr>
-   <tr>
-     <td><p><a href="/docs/id/regex-filter.md"><code translate="no">regex</code></a></p></td>
-     <td><p>Pemfilteran berbasis pola khusus</p></td>
-     <td><p>Persyaratan token khusus domain</p></td>
-     <td><ul><li><p>Masukan <code translate="no">["test123", "prod456"]</code></p></li><li><p>Keluaran: <code translate="no">[[], ['prod456']]</code> (jika <strong>expr="^prod"</strong>)</p></li></ul></td>
-   </tr>
-</table>
-<h4 id="Language-specific-filters" class="common-anchor-header">Penyaring khusus bahasa</h4><p>Filter ini menangani karakteristik bahasa tertentu:</p>
+<h4 id="Token-filtering" class="common-anchor-header">Token filtering</h4><p>Control which tokens are preserved based on character content or length:</p>
 <table>
    <tr>
      <th><p>Filter</p></th>
-     <th><p>Bahasa</p></th>
-     <th><p>Bagaimana cara kerjanya</p></th>
-     <th><p>Contoh</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>When to Use</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/decompounder-filter.md"><code translate="no">decompounder</code></a></p></td>
-     <td><p>Bahasa Jerman</p></td>
-     <td><p>Memisahkan kata majemuk menjadi komponen yang dapat dicari</p></td>
-     <td><ul><li><p>Masukan <code translate="no">["dampfschifffahrt"]</code></p></li><li><p>Keluaran <code translate="no">[['dampf', 'schiff', 'fahrt']]</code></p></li></ul></td>
+     <td><p><a href="/docs/id/v2.6.x/removepunct-filter.md"><code translate="no">removepunct</code></a></p></td>
+     <td><p>Remove standalone punctuation tokens</p></td>
+     <td><p>Clean output from <code translate="no">jieba</code>, <code translate="no">lindera</code>, <code translate="no">icu</code> tokenizers, which will return punctuations as single tokens</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Hello", "!", "world"]</code></p></li><li><p>Output: <code translate="no">[['Hello'], ['world']]</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/cnalphanumonly-filter.md">cnalphanumonly</a></p></td>
-     <td><p>Bahasa Mandarin</p></td>
-     <td><p>Menyimpan karakter bahasa Mandarin + alfanumerik</p></td>
-     <td><ul><li><p>Masukan <code translate="no">["Hello", "世界", "123", "!@#"]</code></p></li><li><p>Keluaran <code translate="no">[['Hello'], ['世界'], ['123'], []]</code></p></li></ul></td>
+     <td><p><a href="/docs/id/v2.6.x/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a></p></td>
+     <td><p>Keep only letters and numbers</p></td>
+     <td><p>Technical content, clean text processing</p></td>
+     <td><ul><li><p>Input: <code translate="no">["user123", "test@email.com"]</code></p></li><li><p>Output: <code translate="no">[['user123'], ['test', 'email', 'com']]</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p><a href="/docs/id/cncharonly-filter.md"><code translate="no">cncharonly</code></a></p></td>
-     <td><p>Bahasa Mandarin</p></td>
-     <td><p>Hanya menyimpan karakter bahasa Mandarin</p></td>
-     <td><ul><li><p>Masukan <code translate="no">["Hello", "世界", "123"]</code></p></li><li><p>Keluaran <code translate="no">[[], ['世界'], []]</code></p></li></ul></td>
+     <td><p><a href="/docs/id/v2.6.x/length-filter.md"><code translate="no">length</code></a></p></td>
+     <td><p>Remove tokens outside specified length range</p></td>
+     <td><p>Filter noise (exccessively long tokens)</p></td>
+     <td><ul><li><p>Input: <code translate="no">["a", "very", "extraordinarily"]</code></p></li><li><p>Output: <code translate="no">[['a'], ['very'], []]</code> (if <strong>max=10</strong>)</p></li></ul></td>
+   </tr>
+   <tr>
+     <td><p><a href="/docs/id/v2.6.x/regex-filter.md"><code translate="no">regex</code></a></p></td>
+     <td><p>Custom pattern-based filtering</p></td>
+     <td><p>Domain-specific token requirements</p></td>
+     <td><ul><li><p>Input: <code translate="no">["test123", "prod456"]</code></p></li><li><p>Output: <code translate="no">[[], ['prod456']]</code> (if <strong>expr="^prod"</strong>)</p></li></ul></td>
    </tr>
 </table>
-<h3 id="Step-3-Combine-and-implement" class="common-anchor-header">Langkah 3: Gabungkan dan terapkan<button data-href="#Step-3-Combine-and-implement" class="anchor-icon" translate="no">
+<h4 id="Language-specific-filters" class="common-anchor-header">Language-specific filters</h4><p>These filters handle specific language characteristics:</p>
+<table>
+   <tr>
+     <th><p>Filter</p></th>
+     <th><p>Language</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Examples</p></th>
+   </tr>
+   <tr>
+     <td><p><a href="/docs/id/v2.6.x/decompounder-filter.md"><code translate="no">decompounder</code></a></p></td>
+     <td><p>German</p></td>
+     <td><p>Splits compound words into searchable components</p></td>
+     <td><ul><li><p>Input: <code translate="no">["dampfschifffahrt"]</code></p></li><li><p>Output: <code translate="no">[['dampf', 'schiff', 'fahrt']]</code></p></li></ul></td>
+   </tr>
+   <tr>
+     <td><p><a href="/docs/id/v2.6.x/cnalphanumonly-filter.md">cnalphanumonly</a></p></td>
+     <td><p>Chinese</p></td>
+     <td><p>Keeps Chinese characters + alphanumeric</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Hello", "世界", "123", "!@#"]</code></p></li><li><p>Output: <code translate="no">[['Hello'], ['世界'], ['123'], []]</code></p></li></ul></td>
+   </tr>
+   <tr>
+     <td><p><a href="/docs/id/v2.6.x/cncharonly-filter.md"><code translate="no">cncharonly</code></a></p></td>
+     <td><p>Chinese</p></td>
+     <td><p>Keeps only Chinese characters</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Hello", "世界", "123"]</code></p></li><li><p>Output: <code translate="no">[[], ['世界'], []]</code></p></li></ul></td>
+   </tr>
+</table>
+<h3 id="Step-3-Combine-and-implement" class="common-anchor-header">Step 3: Combine and implement<button data-href="#Step-3-Combine-and-implement" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -544,7 +546,7 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk membuat penganalisis khusus, Anda menentukan tokenizer dan daftar filter dalam kamus <code translate="no">analyzer_params</code>. Filter-filter diterapkan sesuai dengan urutan yang tercantum.</p>
+    </button></h3><p>To create your custom analyzer, you define the tokenizer and a list of filters in the <code translate="no">analyzer_params</code> dictionary. The filters are applied in the order they are listed.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Example: A custom analyzer for technical content</span>
 analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -560,7 +562,7 @@ schema.add_field(
 <span class="highlighted-wrapper-line">    analyzer_params=analyzer_params,</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Final-Test-with-runanalyzer" class="common-anchor-header">Akhir: Uji dengan <code translate="no">run_analyzer</code><button data-href="#Final-Test-with-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Final-Test-with-runanalyzer" class="common-anchor-header">Final: Test with <code translate="no">run_analyzer</code><button data-href="#Final-Test-with-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -575,7 +577,7 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Selalu validasi konfigurasi Anda sebelum menerapkannya ke koleksi:</p>
+    </button></h3><p>Always validate your configuration before applying to a collection:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample text to analyze</span>
 sample_text = <span class="hljs-string">&quot;The Milvus vector database is built for scale!&quot;</span>
 
@@ -583,14 +585,14 @@ sample_text = <span class="hljs-string">&quot;The Milvus vector database is buil
 result = client.run_analyzer(sample_text, analyzer_params)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Analyzer output:&quot;</span>, result)
 <button class="copy-code-btn"></button></code></pre>
-<p>Masalah umum yang harus diperiksa:</p>
+<p>Common issues to check:</p>
 <ul>
-<li><p><strong>Tokenisasi berlebihan</strong>: Istilah teknis yang dibagi secara tidak benar</p></li>
-<li><p><strong>Tokenisasi kurang</strong>: Frasa tidak dipisahkan dengan benar</p></li>
-<li><p><strong>Token yang hilang</strong>: Istilah-istilah penting yang disaring</p></li>
+<li><p><strong>Over-tokenization</strong>: Technical terms being split incorrectly</p></li>
+<li><p><strong>Under-tokenization</strong>: Phrases not being separated properly</p></li>
+<li><p><strong>Missing tokens</strong>: Important terms being filtered out</p></li>
 </ul>
-<p>Untuk penggunaan terperinci, lihat <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md">run_analyzer</a>.</p>
-<h2 id="Recommended-configurations-by-use-case" class="common-anchor-header">Konfigurasi yang disarankan berdasarkan kasus penggunaan<button data-href="#Recommended-configurations-by-use-case" class="anchor-icon" translate="no">
+<p>For detailed usage, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md">run_analyzer</a>.</p>
+<h2 id="Recommended-configurations-by-use-case" class="common-anchor-header">Recommended configurations by use case<button data-href="#Recommended-configurations-by-use-case" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -605,11 +607,11 @@ result = client.run_analyzer(sample_text, analyzer_params)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Bagian ini menyediakan konfigurasi tokenizer dan filter yang direkomendasikan untuk kasus penggunaan umum ketika bekerja dengan penganalisis di Milvus. Pilih kombinasi yang paling sesuai dengan jenis konten dan persyaratan pencarian Anda.</p>
+    </button></h2><p>This section provides recommended tokenizer and filter configurations for common use cases when working with analyzers in Milvus. Choose the combination that best matches your content type and search requirements.</p>
 <div class="alert note">
-<p>Sebelum menerapkan penganalisis ke koleksi Anda, kami sarankan Anda menggunakan <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md"><code translate="no">run_analyzer</code></a> untuk menguji dan memvalidasi kinerja analisis teks.</p>
+<p>Before applying an analyzer to your collection, we recommend you use <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md"><code translate="no">run_analyzer</code></a> to test and validate text analysis performance.</p>
 </div>
-<h3 id="Languages-with-accent-marks-French-Spanish-German-etc" class="common-anchor-header">Bahasa dengan tanda aksen (Prancis, Spanyol, Jerman, dll.)<button data-href="#Languages-with-accent-marks-French-Spanish-German-etc" class="anchor-icon" translate="no">
+<h3 id="Languages-with-accent-marks-French-Spanish-German-etc" class="common-anchor-header">Languages with accent marks (French, Spanish, German, etc.)<button data-href="#Languages-with-accent-marks-French-Spanish-German-etc" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -624,7 +626,7 @@ result = client.run_analyzer(sample_text, analyzer_params)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Gunakan tokenizer <code translate="no">standard</code> dengan konversi huruf kecil, stemming khusus bahasa, dan penghilangan kata henti. Konfigurasi ini juga dapat digunakan untuk bahasa-bahasa Eropa lainnya dengan memodifikasi parameter <code translate="no">language</code> dan <code translate="no">stop_words</code>.</p>
+    </button></h3><p>Use a <code translate="no">standard</code> tokenizer with lowercase conversion, language-specific stemming, and stopword removal. This configuration also works for other European languages by modifying the <code translate="no">language</code> and <code translate="no">stop_words</code> parameters.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># French example</span>
 analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -647,7 +649,7 @@ analyzer_params = {
 <span class="hljs-comment"># &quot;language&quot;: &quot;german&quot; for German</span>
 <span class="hljs-comment"># &quot;stop_words&quot;: [&quot;_spanish_&quot;] or [&quot;_german_&quot;] accordingly</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="English-content" class="common-anchor-header">Konten bahasa Inggris<button data-href="#English-content" class="anchor-icon" translate="no">
+<h3 id="English-content" class="common-anchor-header">English content<button data-href="#English-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -662,7 +664,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk pemrosesan teks bahasa Inggris dengan pemfilteran komprehensif. Anda juga dapat menggunakan fitur <a href="/docs/id/english-analyzer.md"><code translate="no">english</code></a> penganalisis bawaan:</p>
+    </button></h3><p>For English text processing with comprehensive filtering. You can also use the built-in <a href="/docs/id/v2.6.x/english-analyzer.md"><code translate="no">english</code></a> analyzer:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [
@@ -683,7 +685,7 @@ analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;english&quot;</span>
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Chinese-content" class="common-anchor-header">Konten bahasa Mandarin<button data-href="#Chinese-content" class="anchor-icon" translate="no">
+<h3 id="Chinese-content" class="common-anchor-header">Chinese content<button data-href="#Chinese-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -698,7 +700,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Gunakan tokenizer <code translate="no">jieba</code> dan terapkan filter karakter untuk mempertahankan hanya karakter bahasa Mandarin, huruf Latin, dan angka.</p>
+    </button></h3><p>Use the <code translate="no">jieba</code> tokenizer and apply a character filter to retain only Chinese characters, Latin letters, and digits.</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [<span class="hljs-string">&quot;cnalphanumonly&quot;</span>]
@@ -710,9 +712,9 @@ analyzer_params = {
 }
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Untuk bahasa Mandarin Sederhana, <code translate="no">cnalphanumonly</code> menghapus semua token kecuali karakter Mandarin, teks alfanumerik, dan angka. Hal ini untuk mencegah tanda baca mempengaruhi kualitas pencarian.</p>
+<p>For Simplified Chinese, <code translate="no">cnalphanumonly</code> removes all tokens except Chinese characters, alphanumeric text, and digits. This prevents punctuation from affecting search quality.</p>
 </div>
-<h3 id="Japanese-content" class="common-anchor-header">Konten bahasa Jepang<button data-href="#Japanese-content" class="anchor-icon" translate="no">
+<h3 id="Japanese-content" class="common-anchor-header">Japanese content<button data-href="#Japanese-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -727,7 +729,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Gunakan tokenizer <code translate="no">lindera</code> dengan kamus dan filter bahasa Jepang untuk membersihkan tanda baca dan mengontrol panjang token:</p>
+    </button></h3><p>Use the <code translate="no">lindera</code> tokenizer with Japanese dictionary and filters to clean punctuation and control token length:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
         <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;lindera&quot;</span>,
@@ -743,7 +745,7 @@ analyzer_params = {
     ]
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Korean-content" class="common-anchor-header">Konten Korea<button data-href="#Korean-content" class="anchor-icon" translate="no">
+<h3 id="Korean-content" class="common-anchor-header">Korean content<button data-href="#Korean-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -758,7 +760,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Mirip dengan bahasa Jepang, menggunakan <code translate="no">lindera</code> tokenizer dengan kamus bahasa Korea:</p>
+    </button></h3><p>Similar to Japanese, using <code translate="no">lindera</code> tokenizer with Korean dictionary:</p>
 <pre><code translate="no" class="language-json">analyzer_params = <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;tokenizer&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
         <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;lindera&quot;</span><span class="hljs-punctuation">,</span>
@@ -774,7 +776,7 @@ analyzer_params = {
     <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Mixed-or-multilingual-content" class="common-anchor-header">Konten campuran atau multibahasa<button data-href="#Mixed-or-multilingual-content" class="anchor-icon" translate="no">
+<h3 id="Mixed-or-multilingual-content" class="common-anchor-header">Mixed or multilingual content<button data-href="#Mixed-or-multilingual-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -789,20 +791,20 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ketika bekerja dengan konten yang menggunakan beberapa bahasa atau menggunakan skrip yang tidak dapat diprediksi, mulailah dengan penganalisis <code translate="no">icu</code>. Penganalisis yang sadar Unicode ini menangani skrip dan simbol campuran secara efektif.</p>
-<p><strong>Konfigurasi multibahasa dasar (tanpa stemming)</strong>:</p>
+    </button></h3><p>When working with content that spans multiple languages or uses scripts unpredictably, start with the <code translate="no">icu</code> analyzer. This Unicode-aware analyzer handles mixed scripts and symbols effectively.</p>
+<p><strong>Basic multilingual configuration (no stemming)</strong>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;icu&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [<span class="hljs-string">&quot;lowercase&quot;</span>, <span class="hljs-string">&quot;asciifolding&quot;</span>]
 }
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Pemrosesan multibahasa tingkat lanjut</strong>:</p>
-<p>Untuk kontrol yang lebih baik atas perilaku token di berbagai bahasa:</p>
+<p><strong>Advanced multilingual processing</strong>:</p>
+<p>For better control over token behavior across different languages:</p>
 <ul>
-<li><p>Gunakan konfigurasi <strong>penganalisis multibahasa</strong>. Untuk detailnya, lihat <a href="/docs/id/multi-language-analyzers.md">Penganalisis Multi-bahasa</a>.</p></li>
-<li><p>Menerapkan <strong>pengidentifikasi bahasa</strong> pada konten Anda. Untuk detailnya, lihat <a href="/docs/id/language-identifier.md">Pengidentifikasi Bahasa</a>.</p></li>
+<li><p>Use a <strong>multi-language analyzer</strong> configuration. For details, refer to <a href="/docs/id/v2.6.x/multi-language-analyzers.md">Multi-language Analyzers</a>.</p></li>
+<li><p>Implement a <strong>language identifier</strong> on your content. For details, refer to <a href="/docs/id/v2.6.x/language-identifier.md">Language Identifier</a>.</p></li>
 </ul>
-<h2 id="Integrate-with-text-retrieval-features" class="common-anchor-header">Mengintegrasikan dengan fitur pengambilan teks<button data-href="#Integrate-with-text-retrieval-features" class="anchor-icon" translate="no">
+<h2 id="Integrate-with-text-retrieval-features" class="common-anchor-header">Integrate with text retrieval features<button data-href="#Integrate-with-text-retrieval-features" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -817,12 +819,12 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Setelah memilih penganalisis Anda, Anda dapat mengintegrasikannya dengan fitur pengambilan teks yang disediakan oleh Milvus.</p>
+    </button></h2><p>After selecting your analyzer, you can integrate it with text retrieval features provided by Milvus.</p>
 <ul>
-<li><p><strong>Pencarian teks lengkap</strong></p>
-<p>Penganalisis secara langsung memengaruhi pencarian teks lengkap berbasis BM25 melalui pembuatan vektor yang jarang. Gunakan penganalisis yang sama untuk pengindeksan dan kueri untuk memastikan tokenisasi yang konsisten. Penganalisis khusus bahasa umumnya memberikan penilaian BM25 yang lebih baik daripada yang umum. Untuk detail implementasi, lihat <a href="/docs/id/full-text-search.md">Pencarian Teks Lengkap</a>.</p></li>
-<li><p><strong>Pencocokan teks</strong></p>
-<p>Operasi pencocokan teks melakukan pencocokan token yang tepat antara kueri dan konten yang diindeks berdasarkan keluaran penganalisis Anda. Untuk detail implementasi, lihat <a href="/docs/id/keyword-match.md">Pencocokan Teks</a>.</p></li>
-<li><p><strong>Pencocokan frasa</strong></p>
-<p>Pencocokan frasa memerlukan tokenisasi yang konsisten di seluruh ekspresi multi-kata untuk mempertahankan batasan dan makna frasa. Untuk detail implementasi, lihat <a href="/docs/id/phrase-match.md">Pencocokan Frasa</a>.</p></li>
+<li><p><strong>Full text search</strong></p>
+<p>Analyzers directly impact BM25-based full text search through sparse vector generation. Use the same analyzer for both indexing and querying to ensure consistent tokenization. Language-specific analyzers generally provide better BM25 scoring than generic ones. For implementation details, refer to <a href="/docs/id/v2.6.x/full-text-search.md">Full Text Search</a>.</p></li>
+<li><p><strong>Text match</strong></p>
+<p>Text match operations perform exact token matching between queries and indexed content based on your analyzer output. For implementation details, refer to <a href="/docs/id/v2.6.x/keyword-match.md">Text Match</a>.</p></li>
+<li><p><strong>Phrase match</strong></p>
+<p>Phrase match requires consistent tokenization across multi-word expressions to maintain phrase boundaries and meaning. For implementation details, refer to <a href="/docs/id/v2.6.x/phrase-match.md">Phrase Match</a>.</p></li>
 </ul>

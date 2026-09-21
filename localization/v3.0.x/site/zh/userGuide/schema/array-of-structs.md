@@ -1,12 +1,14 @@
 ---
 id: array-of-structs.md
-title: StructArray 概述
+title: StructArray Overview
 summary: >-
-  当某个实体需要存储结构化元素的有序列表时，应使用
-  StructArray，例如包含多个片段的文档、包含多个视觉片段的页面，或包含多个视频片段的视频。StructArray
-  将这些元素保存在父实体内部，同时仍允许对每个元素内部的字段进行向量搜索和标量过滤。
+  Use StructArray when one entity needs to store an ordered list of structured
+  elements, such as one document with many chunks, one page with many visual
+  patches, or one video with many clips. StructArray keeps these elements inside
+  the parent entity while still allowing vector search and scalar filtering on
+  fields inside each element.
 ---
-<h1 id="StructArray-Overview" class="common-anchor-header">StructArray 概述<button data-href="#StructArray-Overview" class="anchor-icon" translate="no">
+<h1 id="StructArray-Overview" class="common-anchor-header">StructArray Overview<button data-href="#StructArray-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +23,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>当某个实体需要存储结构化元素的有序列表时，应使用 StructArray，例如包含多个片段的文档、包含多个视觉片段的页面，或包含多个视频片段的视频。StructArray 将这些元素保存在父实体内部，同时仍允许对每个元素内部的字段进行向量搜索和标量过滤。</p>
-<h2 id="What-is-StructArray" class="common-anchor-header">什么是 StructArray？<button data-href="#What-is-StructArray" class="anchor-icon" translate="no">
+    </button></h1><p>Use StructArray when one entity needs to store an ordered list of structured elements, such as one document with many chunks, one page with many visual patches, or one video with many clips. StructArray keeps these elements inside the parent entity while still allowing vector search and scalar filtering on fields inside each element.</p>
+<h2 id="What-is-StructArray" class="common-anchor-header">What is StructArray?<button data-href="#What-is-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,8 +39,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>StructArray</strong>（也称为结构体数组）在每个实体中存储一组有序的 Struct 元素。数组中的每个 Struct 元素都遵循相同的 Schema。一个 Struct 元素可以包含标量子字段、向量字段，或两者兼有。</p>
-<p>例如，一个Collection可以将一篇文章作为实体存储，并将该文章的片段存储在名为<code translate="no">chunks</code> 的StructArray字段中。每个片段可以包含文本、章节元数据、质量评分以及一个或多个向量嵌入。</p>
+    </button></h2><p>A <strong>StructArray</strong>, also known as an array of structs, stores an ordered set of Struct elements in each entity. Every Struct element in the array follows the same schema. A Struct element can contain scalar subfields, vector subfields, or both.</p>
+<p>For example, a collection can store one article as an entity and store its chunks in a StructArray field named <code translate="no">chunks</code>. Each chunk can include text, section metadata, quality scores, and one or more vector embeddings.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;doc_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Vector search tuning guide&quot;</span><span class="hljs-punctuation">,</span>
@@ -67,9 +69,9 @@ summary: >-
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>此示例中的两个向量字段分别从两种搜索视角表示同一个片段。<code translate="no">chunks[emb_list_vector]</code> 用于基于<code translate="no">MAX_SIM*</code> 指标的 EmbeddingList 搜索，而<code translate="no">chunks[emb]</code> 用于基于常规向量指标（如<code translate="no">COSINE</code> 、<code translate="no">IP</code> 或<code translate="no">L2</code> ）的元素级搜索。</p>
+<p>The two vector subfields in this example represent the same chunk from two search perspectives. <code translate="no">chunks[emb_list_vector]</code> is intended for EmbeddingList search with <code translate="no">MAX_SIM*</code> metrics, while <code translate="no">chunks[emb]</code> is intended for element-level search with regular vector metrics such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</p>
 </div>
-<h2 id="When-to-use-StructArray" class="common-anchor-header">何时使用 StructArray<button data-href="#When-to-use-StructArray" class="anchor-icon" translate="no">
+<h2 id="When-to-use-StructArray" class="common-anchor-header">When to use StructArray<button data-href="#When-to-use-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,20 +86,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>当您希望返回的自然单位大于用于搜索或过滤的自然单位时，请使用 StructArray。</p>
+    </button></h2><p>Use StructArray when the natural unit you want to return is larger than the natural unit you want to search or filter.</p>
 <table>
 <thead>
-<tr><th>用例</th><th>StructArray 的优势</th><th>典型的 StructArray 字段</th></tr>
+<tr><th>Use case</th><th>Why StructArray helps</th><th>Typical StructArray field</th></tr>
 </thead>
 <tbody>
-<tr><td>文档检索</td><td>将一个文档作为实体存储，同时对其各分块进行搜索。</td><td><code translate="no">chunks</code></td></tr>
-<tr><td>延迟交互检索</td><td>将文档或页面存储为Embeddings列表，并使用<code translate="no">MAX_SIM*</code> 进行评分。</td><td><code translate="no">chunks[emb_list_vector]</code> 或<code translate="no">patches[emb]</code></td></tr>
-<tr><td>元素级检索</td><td>返回相关性最高的片段、剪辑、补丁或观测结果，并包含其数组偏移量。</td><td><code translate="no">chunks[emb]</code></td></tr>
-<tr><td>结构化过滤</td><td>根据 Struct 元素内的标量子字段（如 section、score、page 或 flags）进行过滤。</td><td><code translate="no">chunks[section]</code>,<code translate="no">chunks[quality_score]</code></td></tr>
-<tr><td>减少重复的父级结果</td><td>将子元素保留在同一父实体下，而不是将每个子元素作为单独的一行存储。</td><td><code translate="no">chunks</code>,<code translate="no">clips</code>,<code translate="no">patches</code></td></tr>
+<tr><td>Document retrieval</td><td>Store one document as an entity while searching across its chunks.</td><td><code translate="no">chunks</code></td></tr>
+<tr><td>Late-interaction retrieval</td><td>Store a document or page as an embedding list and score it with <code translate="no">MAX_SIM*</code>.</td><td><code translate="no">chunks[emb_list_vector]</code> or <code translate="no">patches[emb]</code></td></tr>
+<tr><td>Element-level retrieval</td><td>Return the most relevant chunk, clip, patch, or observation, including its array offset.</td><td><code translate="no">chunks[emb]</code></td></tr>
+<tr><td>Structured filtering</td><td>Filter by scalar subfields inside Struct elements, such as section, score, page, or flags.</td><td><code translate="no">chunks[section]</code>, <code translate="no">chunks[quality_score]</code></td></tr>
+<tr><td>Reducing duplicate parent results</td><td>Keep child elements under the same parent entity instead of storing each child as a separate row.</td><td><code translate="no">chunks</code>, <code translate="no">clips</code>, <code translate="no">patches</code></td></tr>
 </tbody>
 </table>
-<h2 id="Decision-Matrix" class="common-anchor-header">决策矩阵<button data-href="#Decision-Matrix" class="anchor-icon" translate="no">
+<h2 id="Decision-Matrix" class="common-anchor-header">Decision Matrix<button data-href="#Decision-Matrix" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,24 +114,24 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用以下矩阵选择合适的 StructArray 路径。</p>
+    </button></h2><p>Use the following matrix to choose the right StructArray path.</p>
 <table>
 <thead>
-<tr><th>目标</th><th>推荐路径</th><th>结果粒度</th><th>从这里开始</th></tr>
+<tr><th>Goal</th><th>Recommended path</th><th>Result granularity</th><th>Start here</th></tr>
 </thead>
 <tbody>
-<tr><td>模型一个具有多个结构化子对象的父对象。</td><td>创建一个 StructArray 字段。</td><td>实体包含有序的 Struct 元素。</td><td><a href="/docs/zh/create-structarray-field.md">创建 StructArray 字段</a></td></tr>
-<tr><td>插入包含嵌套子数据的父记录。</td><td>插入其 StructArray 字段为 Struct 对象列表的实体。</td><td>实体级插入。</td><td><a href="/docs/zh/insert-data-into-structarray-fields.md">将数据插入 StructArray 字段</a></td></tr>
-<tr><td>运行 ColBERT、ColPali 或文档级延迟交互检索。</td><td>使用<code translate="no">MAX_SIM*</code> 索引进行EmbeddingList搜索。</td><td>实体级别。</td><td><a href="/docs/zh/search-with-embedding-lists.md">使用Embeddings列表进行搜索</a></td></tr>
-<tr><td>搜索单个片段、剪辑或片段。</td><td>使用常规向量度量进行元素级搜索。</td><td>结构元素级别，如有偏移量则包含偏移量。</td><td><a href="/docs/zh/basic-vector-search-with-structarray.md">使用 StructArray 进行基本向量搜索</a></td></tr>
-<tr><td>将元素级向量搜索限制为满足标量条件的元素。</td><td>使用<code translate="no">element_filter</code> 。</td><td>元素级过滤；结果形状取决于搜索类型。</td><td><a href="/docs/zh/filtered-search-with-structarray.md">使用 StructArray 进行过滤搜索</a></td></tr>
-<tr><td>根据满足条件的 Struct 元素数量来选择实体。</td><td>使用<code translate="no">MATCH_ANY</code> 、<code translate="no">MATCH_ALL</code> 、<code translate="no">MATCH_LEAST</code> 、<code translate="no">MATCH_MOST</code> 或<code translate="no">MATCH_EXACT</code> 。</td><td>实体级别。</td><td><a href="/docs/zh/struct-array-operators.md">StructArray 操作符</a></td></tr>
-<tr><td>在 StructArray 向量上使用分数或距离边界。</td><td>使用元素级范围搜索。</td><td>结构元素级别。</td><td><a href="/docs/zh/range-search-with-structarray.md">使用 StructArray 进行范围搜索</a></td></tr>
-<tr><td>在元素级搜索后，每个父实体最多返回一个结果。</td><td>使用主键进行分组搜索。</td><td>分组后的实体级别。</td><td><a href="/docs/zh/grouping-search-with-structarray.md">使用 StructArray 进行分组搜索</a></td></tr>
-<tr><td>将 StructArray 元素搜索与另一个向量字段结合使用。</td><td>使用混合搜索，其中一个 AnnSearchRequest 针对 StructArray 的向量字段。</td><td>元素级子搜索，实体级重新排序。</td><td><a href="/docs/zh/hybrid-search-with-structarray.md">基于 StructArray 的混合搜索</a></td></tr>
+<tr><td>Model one parent object with many structured children.</td><td>Create a StructArray field.</td><td>Entity contains ordered Struct elements.</td><td><a href="/docs/zh/create-structarray-field.md">Create a StructArray Field</a></td></tr>
+<tr><td>Insert parent records with nested child data.</td><td>Insert entities whose StructArray field is a list of Struct objects.</td><td>Entity-level insert.</td><td><a href="/docs/zh/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a></td></tr>
+<tr><td>Run ColBERT, ColPali, or document-level late-interaction retrieval.</td><td>Use EmbeddingList search with a <code translate="no">MAX_SIM*</code> index.</td><td>Entity level.</td><td><a href="/docs/zh/search-with-embedding-lists.md">Search with Embedding Lists</a></td></tr>
+<tr><td>Search individual chunks, clips, or patches.</td><td>Use element-level search with a regular vector metric.</td><td>Struct element level, with offset when available.</td><td><a href="/docs/zh/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a></td></tr>
+<tr><td>Restrict element-level vector search to elements that match scalar conditions.</td><td>Use <code translate="no">element_filter</code>.</td><td>Element-level filtering; result shape depends on the search type.</td><td><a href="/docs/zh/filtered-search-with-structarray.md">Filtered Search with StructArray</a></td></tr>
+<tr><td>Select entities by how many Struct elements satisfy a condition.</td><td>Use <code translate="no">MATCH_ANY</code>, <code translate="no">MATCH_ALL</code>, <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, or <code translate="no">MATCH_EXACT</code>.</td><td>Entity level.</td><td><a href="/docs/zh/struct-array-operators.md">StructArray Operators</a></td></tr>
+<tr><td>Use score or distance boundaries on StructArray vector subfields.</td><td>Use element-level range search.</td><td>Struct element level.</td><td><a href="/docs/zh/range-search-with-structarray.md">Range Search with StructArray</a></td></tr>
+<tr><td>Return at most one result per parent entity after element-level search.</td><td>Use grouping search by primary key.</td><td>Entity level after grouping.</td><td><a href="/docs/zh/grouping-search-with-structarray.md">Grouping Search with StructArray</a></td></tr>
+<tr><td>Combine StructArray element search with another vector field.</td><td>Use hybrid search with one AnnSearchRequest targeting a StructArray vector subfield.</td><td>Element-level sub-search, entity-level reranking.</td><td><a href="/docs/zh/hybrid-search-with-structarray.md">Hybrid Search with StructArray</a></td></tr>
 </tbody>
 </table>
-<h2 id="Understand-the-two-search-models" class="common-anchor-header">了解两种搜索模型<button data-href="#Understand-the-two-search-models" class="anchor-icon" translate="no">
+<h2 id="Understand-the-two-search-models" class="common-anchor-header">Understand the two search models<button data-href="#Understand-the-two-search-models" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -147,38 +149,38 @@ summary: >-
     </button></h2><table>
   <thead>
     <tr>
-      <th scope="col"><h3>EmbeddingList 搜索</h3></th>
-      <th scope="col"><h3>元素级搜索</h3></th>
+      <th scope="col"><h3>EmbeddingList search</h3></th>
+      <th scope="col"><h3>Element-level search</h3></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <p>EmbeddingList搜索将StructArray向量子字段中的向量视为父实体的单一嵌入列表。查询同样是一个嵌入列表。Milvus通过<code translate="no">MAX_SIM*</code> 度量将查询嵌入列表与存储的嵌入列表进行比对，并返回匹配的实体。</p>
+        <p>EmbeddingList search treats the vectors inside a StructArray vector subfield as one embedding list for the parent entity. The query is also an embedding list. Milvus compares the query embedding list with the stored embedding list by using a <code translate="no">MAX_SIM*</code> metric and returns matching entities.</p>
         <ul>
-          <li>查询数据：嵌入列表。</li>
-          <li>度量家族：<code translate="no">MAX_SIM*</code> 。</li>
-          <li>结果粒度：实体级别。</li>
-          <li>最适合：文档级或页面级的后期交互检索。</li>
+          <li>Query data: embedding list.</li>
+          <li>Metric family: <code translate="no">MAX_SIM*</code>.</li>
+          <li>Result granularity: entity level.</li>
+          <li>Best for: document-level or page-level late-interaction retrieval.</li>
         </ul>
       </td>
       <td>
-        <p>元素级搜索将每个 Struct 元素视为独立的向量搜索候选项。每个命中结果代表 StructArray 字段中匹配的元素，且未分组的结果可显示该元素的偏移量。</p>
+        <p>Element-level search treats each Struct element as an independent vector-search candidate. Each hit represents a matched element inside the StructArray field, and ungrouped results can expose the element offset.</p>
         <ul>
-          <li>查询数据：常规向量。</li>
-          <li>度量标准家族：常规向量度量标准。</li>
-          <li>结果粒度：Struct 元素级别。</li>
-          <li>最适合：片段级、剪辑级或补丁级检索。</li>
+          <li>Query data: regular vector.</li>
+          <li>Metric family: regular vector metrics.</li>
+          <li>Result granularity: Struct element level.</li>
+          <li>Best for: chunk-level, clip-level, or patch-level retrieval.</li>
         </ul>
       </td>
     </tr>
   </tbody>
 </table>
 <div class="alert note">
-<p>警告</p>
-<p>如果您的 Collection 同时需要 EmbeddingList 搜索和元素级搜索，请使用两个独立的向量字段。一个向量字段或向量子字段只能接受一个索引，而且这两种搜索模式需要不同的度量族。</p>
+<p>Warning</p>
+<p>If your collection needs both EmbeddingList search and element-level search, use two separate vector subfields. A vector field or vector subfield accepts only one index, and the two search modes require different metric families.</p>
 </div>
-<h2 id="Documentation-map" class="common-anchor-header">文档地图<button data-href="#Documentation-map" class="anchor-icon" translate="no">
+<h2 id="Documentation-map" class="common-anchor-header">Documentation map<button data-href="#Documentation-map" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -193,26 +195,26 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray 文档分为建模页面和搜索页面。请使用建模页面来定义和准备数据，使用搜索页面来选择合适的检索和过滤行为。</p>
+    </button></h2><p>StructArray documentation is split into modeling pages and search pages. Use the modeling pages to define and prepare data. Use the search pages to choose the right retrieval and filtering behavior.</p>
 <table>
 <thead>
-<tr><th>Area</th><th>页面</th><th>用途</th></tr>
+<tr><th>Area</th><th>Page</th><th>Use it for</th></tr>
 </thead>
 <tbody>
-<tr><td>建模</td><td><a href="/docs/zh/create-structarray-field.md">创建 StructArray 字段</a></td><td>定义结构体 Schema 并添加一个 StructArray 字段。</td></tr>
-<tr><td>建模</td><td><a href="/docs/zh/insert-data-into-structarray-fields.md">将数据插入 StructArray 字段</a></td><td>准备并插入嵌套的 StructArray 数据。</td></tr>
-<tr><td>建模</td><td><a href="/docs/zh/index-structarray-fields.md">为 StructArray 字段建立索引</a></td><td>在 StructArray 子字段上创建向量和标量索引。</td></tr>
-<tr><td>参考</td><td><a href="/docs/zh/structarray-limits.md">StructArray 限制</a></td><td>检查Schema、数据类型、索引、搜索、过滤和版本限制。</td></tr>
-<tr><td>搜索</td><td><a href="/docs/zh/basic-vector-search-with-structarray.md">使用 StructArray 进行基本向量搜索</a></td><td>比较 EmbeddingList 搜索与元素级向量搜索。</td></tr>
-<tr><td>搜索</td><td><a href="/docs/zh/range-search-with-structarray.md">使用 StructArray 进行范围搜索</a></td><td>在 StructArray 向量子字段中使用范围约束。</td></tr>
-<tr><td>搜索</td><td><a href="/docs/zh/grouping-search-with-structarray.md">使用 StructArray 进行分组搜索</a></td><td>按主键对元素级搜索结果进行分组。</td></tr>
-<tr><td>搜索</td><td><a href="/docs/zh/hybrid-search-with-structarray.md">结合 StructArray 进行混合搜索</a></td><td>将 StructArray 元素级搜索与其他向量搜索相结合。</td></tr>
-<tr><td>搜索</td><td><a href="/docs/zh/filtered-search-with-structarray.md">使用 StructArray 进行过滤搜索</a></td><td>在搜索、查询和混合搜索中使用 StructArray 过滤器。</td></tr>
-<tr><td>搜索</td><td><a href="/docs/zh/search-with-embedding-lists.md">使用Embeddings列表进行搜索</a></td><td>利用 StructArray 构建 ColBERT 和 ColPali 风格的检索系统。</td></tr>
-<tr><td>筛选</td><td><a href="/docs/zh/struct-array-operators.md">StructArray 操作符</a></td><td><code translate="no">element_filter</code> 和<code translate="no">MATCH_*</code> 操作符的参考语法。</td></tr>
+<tr><td>Modeling</td><td><a href="/docs/zh/create-structarray-field.md">Create a StructArray Field</a></td><td>Define Struct schema and add a StructArray field.</td></tr>
+<tr><td>Modeling</td><td><a href="/docs/zh/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a></td><td>Prepare and insert nested StructArray data.</td></tr>
+<tr><td>Modeling</td><td><a href="/docs/zh/index-structarray-fields.md">Index StructArray Fields</a></td><td>Create vector and scalar indexes on StructArray subfields.</td></tr>
+<tr><td>Reference</td><td><a href="/docs/zh/structarray-limits.md">StructArray Limits</a></td><td>Check schema, data type, index, search, filter, and version limits.</td></tr>
+<tr><td>Search</td><td><a href="/docs/zh/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a></td><td>Compare EmbeddingList search and element-level vector search.</td></tr>
+<tr><td>Search</td><td><a href="/docs/zh/range-search-with-structarray.md">Range Search with StructArray</a></td><td>Use range constraints with StructArray vector subfields.</td></tr>
+<tr><td>Search</td><td><a href="/docs/zh/grouping-search-with-structarray.md">Grouping Search with StructArray</a></td><td>Group element-level search results by primary key.</td></tr>
+<tr><td>Search</td><td><a href="/docs/zh/hybrid-search-with-structarray.md">Hybrid Search with StructArray</a></td><td>Combine StructArray element-level search with other vector searches.</td></tr>
+<tr><td>Search</td><td><a href="/docs/zh/filtered-search-with-structarray.md">Filtered Search with StructArray</a></td><td>Use StructArray filters in search, query, and hybrid search.</td></tr>
+<tr><td>Search</td><td><a href="/docs/zh/search-with-embedding-lists.md">Search with Embedding Lists</a></td><td>Build ColBERT and ColPali-style retrieval systems with StructArray.</td></tr>
+<tr><td>Filter</td><td><a href="/docs/zh/struct-array-operators.md">StructArray Operators</a></td><td>Reference syntax for <code translate="no">element_filter</code> and <code translate="no">MATCH_*</code> operators.</td></tr>
 </tbody>
 </table>
-<h2 id="Key-limits-to-check-first" class="common-anchor-header">首先需检查的关键限制<button data-href="#Key-limits-to-check-first" class="anchor-icon" translate="no">
+<h2 id="Key-limits-to-check-first" class="common-anchor-header">Key limits to check first<button data-href="#Key-limits-to-check-first" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -228,13 +230,13 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Struct 可用作 Array 字段的元素类型，但不能用作顶级 Collection 字段。</p></li>
-<li><p>同一 StructArray 字段中的所有 Struct 元素共享一个预定义的 Schema。</p></li>
-<li><p>向量字段需要索引。EmbeddingList 搜索使用<code translate="no">MAX_SIM*</code> 度量，而元素级搜索则使用常规向量度量。</p></li>
-<li><p><code translate="no">element_filter</code> <code translate="no">MATCH_*</code> 适用于 StructArray 字段内的标量子字段。请仅在这些操作符内部使用 。<code translate="no">$[subfield]</code> </p></li>
-<li><p>某些搜索组合受版本限制或仅在特定模式下可用。在依赖范围搜索、分组搜索、混合搜索、可空字段或动态添加的字段之前，请先查阅<a href="/docs/zh/structarray-limits.md">StructArray 限制</a>。</p></li>
+<li><p>Struct can be used as the element type of an Array field. It is not used as a top-level collection field.</p></li>
+<li><p>All Struct elements in the same StructArray field share one predefined schema.</p></li>
+<li><p>Vector subfields require indexes. EmbeddingList search uses <code translate="no">MAX_SIM*</code> metrics, while element-level search uses regular vector metrics.</p></li>
+<li><p><code translate="no">element_filter</code> and <code translate="no">MATCH_*</code> are for scalar subfields inside StructArray fields. Use <code translate="no">$[subfield]</code> only inside these operators.</p></li>
+<li><p>Some search combinations are version-gated or mode-specific. Check <a href="/docs/zh/structarray-limits.md">StructArray Limits</a> before relying on range search, grouping search, hybrid search, nullable fields, or dynamically added fields.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">后续步骤<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -250,9 +252,9 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>要设计 Schema，请阅读《<a href="/docs/zh/create-structarray-field.md">创建 StructArray 字段》</a>。</p></li>
-<li><p>要准备数据，请阅读《<a href="/docs/zh/insert-data-into-structarray-fields.md">将数据插入 StructArray 字段</a>》。</p></li>
-<li><p>要选择索引，请阅读《为<a href="/docs/zh/index-structarray-fields.md">StructArray 字段建立索引》</a>。</p></li>
-<li><p>若要搜索 StructArray 向量子字段，请从<a href="/docs/zh/basic-vector-search-with-structarray.md">《StructArray 的基本向量搜索》</a>开始。</p></li>
-<li><p>若要过滤 StructArray 标量子字段，请参阅《<a href="/docs/zh/struct-array-operators.md">StructArray 操作符</a>》和《<a href="/docs/zh/filtered-search-with-structarray.md">使用 StructArray 进行过滤搜索</a>》。</p></li>
+<li><p>To design a schema, read <a href="/docs/zh/create-structarray-field.md">Create a StructArray Field</a>.</p></li>
+<li><p>To prepare data, read <a href="/docs/zh/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p></li>
+<li><p>To choose indexes, read <a href="/docs/zh/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To search StructArray vector subfields, start with <a href="/docs/zh/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To filter StructArray scalar subfields, read <a href="/docs/zh/struct-array-operators.md">StructArray Operators</a> and <a href="/docs/zh/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
 </ol>

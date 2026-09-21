@@ -1,12 +1,12 @@
 ---
 id: arabic-normalization-filter.md
-title: Normalizzazione dell'araboCompatible with Milvus 3.0.0+
+title: Arabic NormalizationCompatible with Milvus 3.0.0+
 summary: >-
-  Il filtro arabic_normalization normalizza le varianti delle lettere arabe e
-  rimuove i segni diacritici arabi e il tatweel.
+  The arabic_normalization filter normalizes Arabic letter variants and removes
+  Arabic diacritics and Tatweel.
 beta: Milvus 3.0.0+
 ---
-<h1 id="Arabic-Normalization" class="common-anchor-header">Normalizzazione dell'arabo<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Arabic-Normalization" class="anchor-icon" translate="no">
+<h1 id="Arabic-Normalization" class="common-anchor-header">Arabic Normalization<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Arabic-Normalization" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +21,8 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Il filtro " <code translate="no">arabic_normalization</code> " è un filtro token integrato per il testo arabo. Normalizza le varianti delle lettere specifiche dell'arabo e rimuove i segni opzionali che possono far apparire diversi termini arabi equivalenti durante l'analisi del testo.</p>
-<h2 id="Configuration" class="common-anchor-header">Configurazione<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">arabic_normalization</code> filter is a built-in token filter for Arabic text. It normalizes Arabic-specific letter variants and removes optional marks that can make equivalent Arabic terms appear different during text analysis.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,24 +38,24 @@ beta: Milvus 3.0.0+
         ></path>
       </svg>
     </button></h2><div class="alert note">
-<p>Per il testo arabo, utilizzare l’analizzatore integrato <a href="/docs/it/arabic-analyzer.md"><code translate="no">arabic</code></a> analizzatore integrato. L'analizzatore integrato include questo filtro insieme alla tokenizzazione standard, alla conversione in minuscolo, alla normalizzazione delle cifre decimali, allo stemming arabo e alla rimozione delle parole vuote arabe. Utilizzare direttamente " <code translate="no">arabic_normalization</code> " solo quando è necessario creare una pipeline di analizzatori personalizzata.</p>
+<p>For Arabic text, use the built-in <a href="/docs/it/arabic-analyzer.md"><code translate="no">arabic</code></a> analyzer in most cases. The built-in analyzer includes this filter together with standard tokenization, lowercasing, decimal digit normalization, Arabic stemming, and Arabic stop-word removal. Use <code translate="no">arabic_normalization</code> directly only when you need to build a custom analyzer pipeline.</p>
 </div>
-<p>Per utilizzare il filtro ` <code translate="no">arabic_normalization</code> ` in un analizzatore personalizzato, aggiungerlo alla sezione ` <code translate="no">filter</code> ` in ` <code translate="no">analyzer_params</code>`:</p>
+<p>To use the <code translate="no">arabic_normalization</code> filter in a custom analyzer, add it to the <code translate="no">filter</code> section in <code translate="no">analyzer_params</code>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [<span class="hljs-string">&quot;arabic_normalization&quot;</span>],
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Il filtro <code translate="no">arabic_normalization</code> non presenta parametri configurabili.</p>
-<p>Il filtro applica le seguenti trasformazioni:</p>
+<p>The <code translate="no">arabic_normalization</code> filter has no configurable parameters.</p>
+<p>The filter applies the following transformations:</p>
 <table>
    <tr>
-     <th><p>Trasformazione</p></th>
-     <th><p>Da</p></th>
-     <th><p>A</p></th>
+     <th><p>Transformation</p></th>
+     <th><p>From</p></th>
+     <th><p>To</p></th>
    </tr>
    <tr>
-     <td><p>Varianti di Hamza + Alef</p></td>
+     <td><p>Hamza + Alef variants</p></td>
      <td><p><code translate="no">آ</code>, <code translate="no">أ</code>, <code translate="no">إ</code></p></td>
      <td><p><code translate="no">ا</code></p></td>
    </tr>
@@ -71,17 +71,17 @@ beta: Milvus 3.0.0+
    </tr>
    <tr>
      <td><p>Harakat</p></td>
-     <td><p><code translate="no">U+064B</code> attraverso <code translate="no">U+065F</code></p></td>
-     <td><p>Rimosso</p></td>
+     <td><p><code translate="no">U+064B</code> through <code translate="no">U+065F</code></p></td>
+     <td><p>Removed</p></td>
    </tr>
    <tr>
      <td><p>Tatweel / Kashida</p></td>
      <td><p><code translate="no">ـ</code></p></td>
-     <td><p>Rimosso</p></td>
+     <td><p>Removed</p></td>
    </tr>
 </table>
-<p>Il filtro opera sui token generati dal tokenizzatore. La configurazione sopra riportata è volutamente un esempio di analizzatore personalizzato e non include la pipeline completa di elaborazione dell'arabo.</p>
-<h2 id="Examples" class="common-anchor-header">Esempi<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>The filter operates on tokens generated by the tokenizer. The configuration above is intentionally a custom analyzer example and does not include the complete Arabic processing pipeline.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,8 +96,8 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Prima di applicare la configurazione dell'analizzatore allo schema della propria raccolta, verificarne il comportamento utilizzando il metodo <code translate="no">run_analyzer</code>.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">Configurazione dell’analizzatore<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -117,7 +117,7 @@ beta: Milvus 3.0.0+
     <span class="hljs-string">&quot;filter&quot;</span>: [<span class="hljs-string">&quot;arabic_normalization&quot;</span>],
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verifica tramite <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -141,7 +141,7 @@ sample_text = <span class="hljs-string">&quot;آدم أحمد إسلام مدر�
 result = client.run_analyzer(sample_text, analyzer_params)
 <span class="hljs-built_in">print</span>(result)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">Output previsto<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

@@ -2,11 +2,10 @@
 id: rtree.md
 title: RTREECompatible with Milvus 2.6.4+
 summary: >-
-  Der RTREE-Index ist eine baumbasierte Datenstruktur, die die Abfrage von
-  GEOMETRY-Feldern in Milvus beschleunigt. Wenn Ihre Sammlung geometrische
-  Objekte wie Punkte, Linien oder Polygone im Well-known text (WKT)-Format
-  speichert und Sie die räumliche Filterung beschleunigen möchten, ist RTREE die
-  ideale Wahl.
+  The RTREE index is a tree-based data structure that accelerates queries on
+  GEOMETRY fields in Milvus. If your collection stores geometric objects such as
+  points, lines, or polygans in Well-known text (WKT) format and you want to
+  accelerate spatial filtering, RTREE is an ideal choice.
 beta: Milvus 2.6.4+
 ---
 <h1 id="RTREE" class="common-anchor-header">RTREE<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#RTREE" class="anchor-icon" translate="no">
@@ -24,8 +23,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Der Index <code translate="no">RTREE</code> ist eine baumbasierte Datenstruktur, die die Abfrage von <code translate="no">GEOMETRY</code> Feldern in Milvus beschleunigt. Wenn Ihre Sammlung geometrische Objekte wie Punkte, Linien oder Polygone im <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-known text (WKT)-F</a> ormat speichert und Sie die räumliche Filterung beschleunigen möchten, ist <code translate="no">RTREE</code> eine ideale Wahl.</p>
-<h2 id="How-it-works" class="common-anchor-header">Wie es funktioniert<button data-href="#How-it-works" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">RTREE</code> index is a tree-based data structure that accelerates queries on <code translate="no">GEOMETRY</code> fields in Milvus. If your collection stores geometric objects such as points, lines, or polygans in <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-known text (WKT)</a> format and you want to accelerate spatial filtering, <code translate="no">RTREE</code> is an ideal choice.</p>
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,8 +39,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus verwendet einen <code translate="no">RTREE</code> Index, um Geometriedaten effizient zu organisieren und zu filtern, und folgt dabei einem zweistufigen Prozess:</p>
-<h3 id="Phase-1-Build-the-index" class="common-anchor-header">Phase 1: Aufbau des Index<button data-href="#Phase-1-Build-the-index" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus uses an <code translate="no">RTREE</code> index to efficiently organize and filter geometry data, following a two-phase process:</p>
+<h3 id="Phase-1-Build-the-index" class="common-anchor-header">Phase 1: Build the index<button data-href="#Phase-1-Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,15 +56,17 @@ beta: Milvus 2.6.4+
         ></path>
       </svg>
     </button></h3><ol>
-<li><p><strong>Erstellen Sie Blattknoten:</strong> Berechnen Sie für jedes Geometrieobjekt sein <a href="https://en.wikipedia.org/wiki/Minimum_bounding_rectangle">Minimum Bounding Rectangle</a> (MBR), d. h. das kleinste Rechteck, das das Objekt vollständig enthält, und speichern Sie es als Blattknoten.</p></li>
-<li><p><strong>Gruppieren in größere Boxen:</strong> Fassen Sie nahe gelegene Blattknoten zusammen und umhüllen Sie jede Gruppe mit einem neuen MBR, so dass interne Knoten entstehen. Beispiel: Gruppe <strong>B</strong> enthält <strong>D</strong> und <strong>E</strong>; Gruppe <strong>C</strong> enthält <strong>F</strong> und <strong>G</strong>.</p></li>
-<li><p><strong>Fügen Sie den Wurzelknoten hinzu:</strong> Fügen Sie einen Wurzelknoten hinzu, dessen MBR alle internen Gruppen umfasst, so dass eine in der Höhe ausgeglichene Baumstruktur entsteht.</p></li>
+<li><p><strong>Create leaf nodes:</strong> For each geometry object, calculate its <a href="https://en.wikipedia.org/wiki/Minimum_bounding_rectangle">Minimum Bounding Rectangle</a> (MBR), which is the smallest rectangle that fully contains the object, and store it as a leaf node.</p></li>
+<li><p><strong>Group into larger boxes:</strong> Cluster nearby leaf nodes together and wrap each group with a new MBR, forming internal nodes. For example, group <strong>B</strong> contains <strong>D</strong> and <strong>E</strong>; group <strong>C</strong> contains <strong>F</strong> and <strong>G</strong>.</p></li>
+<li><p><strong>Add the root node:</strong> Add a root node whose MBR covers all internal groups, resulting in a height-balanced tree structure.</p></li>
 </ol>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/how-retree-works.png" alt="How Retree Works" class="doc-image" id="how-retree-works" />
-   </span> <span class="img-wrapper"> <span>So funktioniert Retree</span> </span></p>
-<h3 id="Phase-2-Accelerate-queries" class="common-anchor-header">Phase 2: Abfragen beschleunigen<button data-href="#Phase-2-Accelerate-queries" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/how-retree-works.png" alt="How Retree Works" class="doc-image" id="how-retree-works" />
+    <span>How Retree Works</span>
+  </span>
+</p>
+<h3 id="Phase-2-Accelerate-queries" class="common-anchor-header">Phase 2: Accelerate queries<button data-href="#Phase-2-Accelerate-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,12 +82,12 @@ beta: Milvus 2.6.4+
         ></path>
       </svg>
     </button></h3><ol>
-<li><p><strong>Bilden Sie den Abfrage-MBR:</strong> Berechnen Sie den MBR für Ihre Abfragegeometrie.</p></li>
-<li><p><strong>Beschneiden Sie Zweige:</strong> Vergleichen Sie, beginnend bei der Wurzel, den Abfrage-MBR mit jedem internen Knoten. Überspringen Sie alle Zweige, deren MBR sich nicht mit dem MBR der Abfrage schneiden.</p></li>
-<li><p><strong>Kandidaten sammeln:</strong> Steigen Sie in die sich schneidenden Zweige hinab, um mögliche Blattknoten zu sammeln.</p></li>
-<li><p><strong>Exakte Übereinstimmung:</strong> Führen Sie für jeden Kandidaten ein exaktes räumliches Prädikat durch, um echte Übereinstimmungen zu ermitteln.</p></li>
+<li><p><strong>Form the query MBR:</strong> Calculate the MBR for your query geometry.</p></li>
+<li><p><strong>Prune branches:</strong> Starting at the root, compare the query MBR to each internal node. Skip any branches whose MBR does not intersect with the query MBR.</p></li>
+<li><p><strong>Collect candidates:</strong> Descend into intersecting branches to gather candidate leaf nodes.</p></li>
+<li><p><strong>Exact match:</strong> For each candidate, perform an exact spatial predicate to determine true matches.</p></li>
 </ol>
-<h2 id="Create-an-RTREE-index" class="common-anchor-header">Erstellen eines RTREE-Index<button data-href="#Create-an-RTREE-index" class="anchor-icon" translate="no">
+<h2 id="Create-an-RTREE-index" class="common-anchor-header">Create an RTREE index<button data-href="#Create-an-RTREE-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -101,7 +102,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sie können einen <code translate="no">RTREE</code> Index für ein <code translate="no">GEOMETRY</code> Feld erstellen, das in Ihrem Sammlungsschema definiert ist.</p>
+    </button></h2><p>You can create an <code translate="no">RTREE</code> index on a <code translate="no">GEOMETRY</code> field defined in your collection schema.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your server address</span>
@@ -125,7 +126,7 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Query-with-RTREE" class="common-anchor-header">Abfrage mit RTREE<button data-href="#Query-with-RTREE" class="anchor-icon" translate="no">
+<h2 id="Query-with-RTREE" class="common-anchor-header">Query with RTREE<button data-href="#Query-with-RTREE" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -140,9 +141,9 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sie filtern mit Geometrieoperatoren im <code translate="no">filter</code> Ausdruck. Wenn ein <code translate="no">RTREE</code> auf dem Zielfeld <code translate="no">GEOMETRY</code> existiert, verwendet Milvus diesen, um Kandidaten automatisch auszusortieren. Ohne den Index fällt der Filter auf einen vollständigen Scan zurück.</p>
-<p>Eine vollständige Liste der verfügbaren geometriespezifischen Operatoren finden Sie unter <a href="/docs/de/geometry-operators.md">Geometrie-Operatoren</a>.</p>
-<h3 id="Example-1-Filter-only" class="common-anchor-header">Beispiel 1: Nur filtern<button data-href="#Example-1-Filter-only" class="anchor-icon" translate="no">
+    </button></h2><p>You filter with geometry operators in the <code translate="no">filter</code> expression. When an <code translate="no">RTREE</code> exists on the target <code translate="no">GEOMETRY</code> field, Milvus uses it to prune candidates automatically. Without the index, the filter falls back to a full scan.</p>
+<p>For a full list of available geometry-specific operators, refer to <a href="/docs/de/geometry-operators.md">Geometry Operators</a>.</p>
+<h3 id="Example-1-Filter-only" class="common-anchor-header">Example 1: Filter only<button data-href="#Example-1-Filter-only" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,7 +158,7 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Suche nach allen geometrischen Objekten innerhalb eines bestimmten Polygons:</p>
+    </button></h3><p>Find all geometric objects within a given polygon:</p>
 <pre><code translate="no" class="language-python">filter_expr = <span class="hljs-string">&quot;ST_CONTAINS(geo, &#x27;POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))&#x27;)&quot;</span>
 
 res = client.query(
@@ -168,7 +169,7 @@ res = client.query(
 )
 <span class="hljs-built_in">print</span>(res)   <span class="hljs-comment"># Expected: a list of rows where geo is entirely inside the polygon</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Vector-search-+-spatial-filter" class="common-anchor-header">Beispiel 2: Vektorsuche + räumlicher Filter<button data-href="#Example-2-Vector-search-+-spatial-filter" class="anchor-icon" translate="no">
+<h3 id="Example-2-Vector-search-+-spatial-filter" class="common-anchor-header">Example 2: Vector search + spatial filter<button data-href="#Example-2-Vector-search-+-spatial-filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -183,7 +184,7 @@ res = client.query(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Suche nach den nächstgelegenen Vektoren, die ebenfalls eine Linie schneiden:</p>
+    </button></h3><p>Find the nearest vectors that also intersect a line:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Assume you&#x27;ve also created an index on &quot;vec&quot; and loaded the collection.</span>
 query_vec = [[<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.5</span>]]
 filter_expr = <span class="hljs-string">&quot;ST_INTERSECTS(geo, &#x27;LINESTRING (1 1, 2 2)&#x27;)&quot;</span>
@@ -197,8 +198,8 @@ hits = client.search(
 )
 <span class="hljs-built_in">print</span>(hits)  <span class="hljs-comment"># Expected: top-k by vector similarity among rows whose geo intersects the line</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Weitere Informationen über die Verwendung eines <code translate="no">GEOMETRY</code> Feldes finden Sie unter <a href="/docs/de/geometry-field.md">Geometriefeld</a>.</p>
-<h2 id="Drop-an-index" class="common-anchor-header">Einen Index löschen<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<p>For more information on how to use a <code translate="no">GEOMETRY</code> field, refer to <a href="/docs/de/geometry-field.md">Geometry Field</a>.</p>
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -213,11 +214,11 @@ hits = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Verwenden Sie die Methode <code translate="no">drop_index()</code>, um einen vorhandenen Index aus einer Sammlung zu entfernen.</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
 <ul>
-<li><p>In <strong>v2.6.3</strong> oder früher müssen Sie die Sammlung freigeben, bevor Sie einen skalaren Index löschen können.</p></li>
-<li><p>Ab <strong>Version 2.6.4</strong> können Sie einen skalaren Index direkt löschen, sobald er nicht mehr benötigt wird, ohne die Sammlung vorher freigeben zu müssen.</p></li>
+<li><p>In <strong>v2.6.3</strong> or earlier, you must release the collection before dropping a scalar index.</p></li>
+<li><p>From <strong>v2.6.4</strong> or later, you can drop a scalar index directly once it’s no longer needed—no need to release the collection first.</p></li>
 </ul>
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(

@@ -1,12 +1,14 @@
 ---
 id: generating_milvus_query_filter_expressions.md
 summary: >-
-  이 튜토리얼에서는 대규모 언어 모델(LLM)을 사용하여 자연어 쿼리에서 Milvus 필터 표현식을 자동으로 생성하는 방법을 보여드립니다. 이
-  접근 방식은 사용자가 복잡한 필터링 조건을 일반 영어로 표현한 다음 적절한 Milvus 구문으로 변환할 수 있도록 하여 벡터 데이터베이스
-  쿼리에 더 쉽게 액세스할 수 있게 해줍니다.
-title: 대규모 언어 모델을 사용하여 Milvus 쿼리 필터 표현식 생성하기
+  In this tutorial, we will demonstrate how to use Large Language Models (LLMs)
+  to automatically generate Milvus filter expressions from natural language
+  queries. This approach makes vector database querying more accessible by
+  allowing users to express complex filtering conditions in plain English, which
+  are then converted to proper Milvus syntax.
+title: Generating Milvus Query Filter Expressions with Large Language Models
 ---
-<h1 id="Generating-Milvus-Query-Filter-Expressions-with-Large-Language-Models" class="common-anchor-header">대규모 언어 모델을 사용하여 Milvus 쿼리 필터 표현식 생성하기<button data-href="#Generating-Milvus-Query-Filter-Expressions-with-Large-Language-Models" class="anchor-icon" translate="no">
+<h1 id="Generating-Milvus-Query-Filter-Expressions-with-Large-Language-Models" class="common-anchor-header">Generating Milvus Query Filter Expressions with Large Language Models<button data-href="#Generating-Milvus-Query-Filter-Expressions-with-Large-Language-Models" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,17 +23,17 @@ title: 대규모 언어 모델을 사용하여 Milvus 쿼리 필터 표현식 �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>이 튜토리얼에서는 대규모 언어 모델(LLM)을 사용하여 자연어 쿼리에서 Milvus 필터 표현식을 자동으로 생성하는 방법을 보여드립니다. 이 접근 방식은 사용자가 복잡한 필터링 조건을 일반 영어로 표현할 수 있도록 하여 벡터 데이터베이스 쿼리에 더 쉽게 접근할 수 있게 해주고, 그 다음에는 적절한 Milvus 구문으로 변환됩니다.</p>
-<p>Milvus는 다음과 같은 정교한 필터링 기능을 지원합니다:</p>
+    </button></h1><p>In this tutorial, we will demonstrate how to use Large Language Models (LLMs) to automatically generate Milvus filter expressions from natural language queries. This approach makes vector database querying more accessible by allowing users to express complex filtering conditions in plain English, which are then converted to proper Milvus syntax.</p>
+<p>Milvus supports sophisticated filtering capabilities including:</p>
 <ul>
-<li><strong>기본 연산자</strong>: <code translate="no">==</code> , <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code> 와 같은 비교 연산자, <code translate="no">&lt;=</code></li>
-<li><strong>부울 연산자</strong>: 복잡한 조건을 위한 <code translate="no">and</code>, <code translate="no">or</code>, <code translate="no">not</code> 와 같은 논리 연산자</li>
-<li><strong>문자열 연산</strong>: <code translate="no">like</code> 및 기타 문자열 함수를 사용한 패턴 일치</li>
-<li><strong>배열 연산</strong>: <code translate="no">array_contains</code> , <code translate="no">array_length</code>, 등을 사용한 배열 필드 작업</li>
-<li><strong>JSON 연산</strong>: 특수 연산자로 JSON 필드 쿼리하기</li>
+<li><strong>Basic Operators</strong>: Comparison operators like <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code></li>
+<li><strong>Boolean Operators</strong>: Logical operators like <code translate="no">and</code>, <code translate="no">or</code>, <code translate="no">not</code> for complex conditions</li>
+<li><strong>String Operations</strong>: Pattern matching with <code translate="no">like</code> and other string functions</li>
+<li><strong>Array Operations</strong>: Working with array fields using <code translate="no">array_contains</code>, <code translate="no">array_length</code>, etc.</li>
+<li><strong>JSON Operations</strong>: Querying JSON fields with specialized operators</li>
 </ul>
-<p>LLM을 Milvus 문서와 통합하면 자연어 쿼리를 이해하고 구문적으로 올바른 필터 표현식을 생성하는 지능형 시스템을 만들 수 있습니다. 이 튜토리얼에서는 다양한 필터링 시나리오에서 이 시스템의 효율성을 강조하면서 이 시스템을 설정하는 과정을 안내합니다.</p>
-<h2 id="Dependencies-and-Environment" class="common-anchor-header">종속성 및 환경<button data-href="#Dependencies-and-Environment" class="anchor-icon" translate="no">
+<p>By integrating LLMs with Milvus documentation, we can create an intelligent system that understands natural language queries and generates syntactically correct filter expressions. This tutorial will walk through the process of setting up this system, highlighting its effectiveness in various filtering scenarios.</p>
+<h2 id="Dependencies-and-Environment" class="common-anchor-header">Dependencies and Environment<button data-href="#Dependencies-and-Environment" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -49,7 +51,7 @@ title: 대규모 언어 모델을 사용하여 Milvus 쿼리 필터 표현식 �
     </button></h2><pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip install --upgrade pymilvus openai requests docling beautifulsoup4</span>
 print(&quot;Environment setup complete!&quot;)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-up-environment-variables" class="common-anchor-header">환경 변수 설정하기<button data-href="#Set-up-environment-variables" class="anchor-icon" translate="no">
+<h2 id="Set-up-environment-variables" class="common-anchor-header">Set up environment variables<button data-href="#Set-up-environment-variables" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -64,7 +66,7 @@ print(&quot;Environment setup complete!&quot;)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>임베딩 생성 및 LLM 기반 필터 표현식 생성을 사용하도록 OpenAI API 자격 증명을 구성합니다. <code translate="no">'your_openai_api_key'</code> 을 실제 OpenAI API 키로 바꿉니다.</p>
+    </button></h2><p>Configure your OpenAI API credentials to enable embedding generation and LLM-based filter expression creation. Replace <code translate="no">'your_openai_api_key'</code> with your actual OpenAI API key.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">import</span> openai
 
@@ -77,7 +79,7 @@ api_key = os.getenv(<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>)
 openai.api_key = api_key
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;API key loaded.&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-a-Sample-Collection" class="common-anchor-header">샘플 컬렉션 만들기<button data-href="#Create-a-Sample-Collection" class="anchor-icon" translate="no">
+<h2 id="Create-a-Sample-Collection" class="common-anchor-header">Create a Sample Collection<button data-href="#Create-a-Sample-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -92,7 +94,7 @@ openai.api_key = api_key
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이제 사용자 데이터로 샘플 Milvus 컬렉션을 만들어 보겠습니다. 이 컬렉션에는 스칼라 필드(필터링용)와 벡터 임베딩(시맨틱 검색용)이 모두 포함됩니다. OpenAI의 텍스트 임베딩 모델을 사용하여 사용자 정보의 벡터 표현을 생성하겠습니다.</p>
+    </button></h2><p>Now let’s create a sample Milvus collection with user data. This collection will contain both scalar fields (for filtering) and vector embeddings (for semantic search). We’ll use OpenAI’s text embedding model to generate vector representations of user information.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, FieldSchema, CollectionSchema, DataType
 <span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
@@ -183,7 +185,7 @@ client.insert(collection_name=collection_name, data=insert_data)
 
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Collection &#x27;<span class="hljs-subst">{collection_name}</span>&#x27; has been created and data has been inserted.&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Print-3-sample-data" class="common-anchor-header">3개의 샘플 데이터 인쇄<button data-href="#Print-3-sample-data" class="anchor-icon" translate="no">
+<h2 id="Print-3-sample-data" class="common-anchor-header">Print 3 sample data<button data-href="#Print-3-sample-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -198,16 +200,16 @@ client.insert(collection_name=collection_name, data=insert_data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>위의 코드는 다음과 같은 구조의 Milvus 컬렉션을 생성합니다:</p>
+    </button></h2><p>The code above creates a Milvus collection with the following structure:</p>
 <ul>
-<li><strong>pk</strong>: 기본 키 필드(VARCHAR)</li>
-<li><strong>name</strong>: 사용자 이름(VARCHAR)</li>
-<li><strong>age</strong>: 사용자 나이(INT64)</li>
-<li><strong>city</strong>: 사용자 도시(VARCHAR)</li>
-<li><strong>hobby</strong>: 사용자 취미(VARCHAR)</li>
-<li><strong>임베딩</strong>: 벡터 임베딩(FLOAT_VECTOR, 1536 차원)</li>
+<li><strong>pk</strong>: Primary key field (VARCHAR)</li>
+<li><strong>name</strong>: User name (VARCHAR)</li>
+<li><strong>age</strong>: User age (INT64)</li>
+<li><strong>city</strong>: User city (VARCHAR)</li>
+<li><strong>hobby</strong>: User hobby (VARCHAR)</li>
+<li><strong>embedding</strong>: Vector embedding (FLOAT_VECTOR, 1536 dimensions)</li>
 </ul>
-<p>시맨틱 검색 기능을 위해 11명의 샘플 사용자에 대한 개인 정보를 삽입하고 임베딩을 생성했습니다. 각 사용자의 정보는 임베드되기 전에 이름, 위치, 나이, 관심사를 파악할 수 있는 설명 텍스트로 변환됩니다. 몇 가지 샘플 레코드를 쿼리하여 컬렉션이 성공적으로 생성되었고 예상한 데이터가 포함되어 있는지 확인해 보겠습니다.</p>
+<p>We have inserted 11 sample users with their personal information and generate embeddings for semantic search capabilities. Each user’s information is converted into a descriptive text that captures their name, location, age, and interests before being embedded. Let’s verify that our collection was created successfully and contains the expected data by querying a few sample records.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
@@ -227,7 +229,7 @@ result = client.query(
 <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> result:
     <span class="hljs-built_in">print</span>(record)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Collecting-Milvus-Filter-Expression-Documentation" class="common-anchor-header">Milvus 필터 표현식 문서 수집하기<button data-href="#Collecting-Milvus-Filter-Expression-Documentation" class="anchor-icon" translate="no">
+<h2 id="Collecting-Milvus-Filter-Expression-Documentation" class="common-anchor-header">Collecting Milvus Filter Expression Documentation<button data-href="#Collecting-Milvus-Filter-Expression-Documentation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -242,15 +244,15 @@ result = client.query(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>대규모 언어 모델이 Milvus의 필터 표현식 구문을 더 잘 이해할 수 있도록 관련 공식 문서를 제공해야 합니다. <code translate="no">docling</code> 라이브러리를 사용하여 공식 Milvus 웹사이트에서 몇 가지 주요 페이지를 스크랩하겠습니다.</p>
-<p>이 페이지에는 다음에 대한 자세한 정보가 포함되어 있습니다:</p>
+    </button></h2><p>To help the large language model better understand Milvus’s filter expression syntax, we need to provide it with relevant official documentation. We’ll use the <code translate="no">docling</code> library to scrape several key pages from the official Milvus website.</p>
+<p>These pages contain detailed information about:</p>
 <ul>
-<li><strong>부울 연산자</strong> <code translate="no">and</code>, <code translate="no">or</code>, <code translate="no">not</code> 복잡한 논리 조건의 경우</li>
-<li><strong>기본 연산자</strong>: 비교 연산자: , <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code></li>
-<li><strong>필터링 템플릿</strong>: 고급 필터링 패턴 및 구문</li>
-<li><strong>문자열 매칭</strong>: <code translate="no">like</code> 및 기타 문자열 연산을 사용한 패턴 매칭</li>
+<li><strong>Boolean operators</strong>: <code translate="no">and</code>, <code translate="no">or</code>, <code translate="no">not</code> for complex logical conditions</li>
+<li><strong>Basic operators</strong>: Comparison operators like <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code></li>
+<li><strong>Filtering templates</strong>: Advanced filtering patterns and syntax</li>
+<li><strong>String matching</strong>: Pattern matching with <code translate="no">like</code> and other string operations</li>
 </ul>
-<p>이 문서는 정확한 필터 표현식을 생성하기 위한 LLM의 지식 기반 역할을 합니다.</p>
+<p>This documentation will serve as the knowledge base for our LLM to generate accurate filter expressions.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> docling
 <span class="hljs-keyword">from</span> docling.document_converter <span class="hljs-keyword">import</span> DocumentConverter
 
@@ -267,8 +269,8 @@ docs = [
 <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> docs[:<span class="hljs-number">3</span>]:
     <span class="hljs-built_in">print</span>(doc.document.export_to_markdown())
 <button class="copy-code-btn"></button></code></pre>
-<p>문서 스크래핑은 Milvus 필터 구문에 대한 포괄적인 내용을 제공합니다. 이 기술 자료는 적절한 연산자 사용법, 필드 참조, 복잡한 조건 조합 등 필터 표현식 구성의 뉘앙스를 이해하는 데 도움이 될 것입니다.</p>
-<h2 id="LLM-Powered-Filter-Generation" class="common-anchor-header">LLM 기반 필터 생성<button data-href="#LLM-Powered-Filter-Generation" class="anchor-icon" translate="no">
+<p>The documentation scraping provides comprehensive coverage of Milvus filter syntax. This knowledge base will enable our LLM to understand the nuances of filter expression construction, including proper operator usage, field referencing, and complex condition combinations.</p>
+<h2 id="LLM-Powered-Filter-Generation" class="common-anchor-header">LLM-Powered Filter Generation<button data-href="#LLM-Powered-Filter-Generation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -283,15 +285,15 @@ docs = [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이제 문서 컨텍스트를 확보했으니 필터 표현식을 생성하도록 LLM 시스템을 설정해 보겠습니다. 스크랩한 문서와 사용자 쿼리를 결합하여 구문적으로 올바른 Milvus 필터 표현식을 생성하는 구조화된 프롬프트를 만들겠습니다.</p>
-<p>필터 생성 시스템은 다음과 같이 세심하게 제작된 프롬프트를 사용합니다:</p>
+    </button></h2><p>Now that we have the documentation context, let’s set up the LLM system to generate filter expressions. We’ll create a structured prompt that combines the scraped documentation with user queries to produce syntactically correct Milvus filter expressions.</p>
+<p>Our filter generation system uses a carefully crafted prompt that:</p>
 <ol>
-<li><strong>컨텍스트 제공</strong>: 참조 자료로 전체 Milvus 문서를 포함합니다.</li>
-<li><strong>제약 조건을 설정합니다</strong>: LLM이 문서화된 구문과 기능만 사용하도록 보장합니다.</li>
-<li><strong>정확성 강화</strong>: 구문적으로 정확한 표현을 요구합니다.</li>
-<li><strong>집중력 유지</strong>: 설명 없이 필터 표현식만 반환</li>
+<li><strong>Provides context</strong>: Includes the complete Milvus documentation as reference material</li>
+<li><strong>Sets constraints</strong>: Ensures the LLM only uses documented syntax and features</li>
+<li><strong>Enforces accuracy</strong>: Requires syntactically correct expressions</li>
+<li><strong>Maintains focus</strong>: Returns only the filter expression without explanations</li>
 </ol>
-<p>자연어 쿼리로 이를 테스트하여 LLM이 얼마나 잘 작동하는지 확인해 보겠습니다.</p>
+<p>Let’s test this with a natural language query and see how well the LLM performs.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
 <span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">from</span> IPython.display <span class="hljs-keyword">import</span> display, Markdown
@@ -343,14 +345,14 @@ filter_expr = generate_filter_expr(user_query)
 
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Generated filter expression: <span class="hljs-subst">{filter_expr}</span>&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>LLM이 여러 조건을 결합하는 필터 표현식을 성공적으로 생성했습니다:</p>
+<p>The LLM successfully generated a filter expression that combines multiple conditions:</p>
 <ul>
-<li>다음을 사용한 연령 비교 <code translate="no">&gt;</code></li>
-<li><code translate="no">in</code> 연산자를 사용한 여러 도시 일치</li>
-<li>적절한 필드 참조 및 구문</li>
+<li>Age comparison using <code translate="no">&gt;</code></li>
+<li>Multiple city matching using <code translate="no">in</code> operator</li>
+<li>Proper field referencing and syntax</li>
 </ul>
-<p>이는 LLM 필터 생성을 안내하는 포괄적인 문서 컨텍스트를 제공하는 것이 얼마나 강력한지 보여줍니다.</p>
-<h2 id="Test-the-Generated-Filter" class="common-anchor-header">생성된 필터 테스트하기<button data-href="#Test-the-Generated-Filter" class="anchor-icon" translate="no">
+<p>This demonstrates the power of providing comprehensive documentation context to guide LLM filter generation.</p>
+<h2 id="Test-the-Generated-Filter" class="common-anchor-header">Test the Generated Filter<button data-href="#Test-the-Generated-Filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -365,7 +367,7 @@ filter_expr = generate_filter_expr(user_query)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이제 생성된 필터 표현식을 실제 Milvus 검색 작업에 사용하여 테스트해 보겠습니다. 시맨틱 검색과 정밀한 필터링을 결합하여 쿼리 의도와 특정 기준에 모두 부합하는 사용자를 찾아보겠습니다.</p>
+    </button></h2><p>Now let’s test our generated filter expression by using it in an actual Milvus search operation. We’ll combine semantic search with precise filtering to find users that match both the query intent and the specific criteria.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
 <span class="hljs-keyword">import</span> os
@@ -405,7 +407,7 @@ search_results = client.search(
         <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;  - <span class="hljs-subst">{hit}</span>&quot;</span>)
     <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Results-Analysis" class="common-anchor-header">결과 분석<button data-href="#Results-Analysis" class="anchor-icon" translate="no">
+<h2 id="Results-Analysis" class="common-anchor-header">Results Analysis<button data-href="#Results-Analysis" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -420,10 +422,10 @@ search_results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>검색 결과는 LLM에서 생성된 필터와 Milvus 벡터 검색의 성공적인 통합을 보여줍니다. 필터는 다음과 같은 사용자를 정확하게 식별했습니다:</p>
+    </button></h2><p>The search results demonstrate successful integration of LLM-generated filters with Milvus vector search. The filter correctly identified users who:</p>
 <ul>
-<li>30세 이상</li>
-<li>런던, 도쿄 또는 토론토에 거주</li>
-<li>쿼리의 시맨틱 컨텍스트와 일치</li>
+<li>Are older than 30 years</li>
+<li>Live in London, Tokyo, or Toronto</li>
+<li>Match the semantic context of the query</li>
 </ul>
-<p>이 접근 방식은 구조화된 필터링의 정확성과 자연어 입력의 유연성을 결합하여 특정 쿼리 구문에 익숙하지 않은 사용자도 벡터 데이터베이스에 더 쉽게 접근할 수 있도록 합니다.</p>
+<p>This approach combines the precision of structured filtering with the flexibility of natural language input, making vector databases more accessible to users who may not be familiar with specific query syntax.</p>

@@ -1,12 +1,12 @@
 ---
 id: insert-update-delete.md
-title: Вставка сущностей
+title: Insert Entities
 summary: >-
-  Сущности в коллекции — это записи данных, имеющие одинаковый набор полей.
-  Значения полей в каждой записи данных образуют сущность. На этой странице
-  рассказывается, как добавлять сущности в коллекцию.
+  Entities in a collection are data records that share the same set of fields.
+  Field values in every data record form an entity. This page introduces how to
+  insert entities into a collection.
 ---
-<h1 id="Insert-Entities" class="common-anchor-header">Вставка сущностей<button data-href="#Insert-Entities" class="anchor-icon" translate="no">
+<h1 id="Insert-Entities" class="common-anchor-header">Insert Entities<button data-href="#Insert-Entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,14 +21,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Сущности в коллекции — это записи данных, имеющие одинаковый набор полей. Значения полей в каждой записи данных образуют сущность. На этой странице описано, как вставлять сущности в коллекцию.</p>
+    </button></h1><p>Entities in a collection are data records that share the same set of fields. Field values in every data record form an entity. This page introduces how to insert entities into a collection.</p>
 <div class="alert note">
 <ul>
-<li><p><strong>Поля, добавленные после создания коллекции</strong>: если вы добавляете новые поля в коллекцию после её создания и не указываете значения при вставке, Milvus автоматически заполняет их заданными значениями по умолчанию или значениями « <code translate="no">NULL</code> », если значения по умолчанию не заданы. Подробности см. в разделе <a href="/docs/ru/add-fields-to-an-existing-collection.md">«Изменение схемы коллекции</a>».</p></li>
-<li><p><strong>Обработка дубликатов</strong>: стандартная операция <code translate="no">insert</code> не проверяет наличие дубликатов первичных ключей. Вставка данных с уже существующим первичным ключом приводит к созданию новой сущности с тем же ключом, что вызывает дублирование данных и может вызвать проблемы в приложении. Чтобы обновить существующие сущности или избежать дубликатов, вместо этого используйте операцию <strong><code translate="no">upsert</code></strong> . Дополнительные сведения см. в разделе <a href="/docs/ru/upsert-entities.md">«Upsert сущностей</a>».</p></li>
+<li><p><strong>Fields added after collection creation</strong>: If you add new fields to a collection after creation and do not specify values during insertion, Milvus automatically populates them with defined default values or <code translate="no">NULL</code> if no defaults are set. For details, refer to <a href="/docs/ru/add-fields-to-an-existing-collection.md">Alter Collection Schema</a>.</p></li>
+<li><p><strong>Duplicate handling</strong>: The standard <code translate="no">insert</code> operation does not check for duplicate primary keys. Inserting data with an existing primary key creates a new entity with the same key, leading to data duplication and potential application issues. To update existing entities or avoid duplicates, use the <strong><code translate="no">upsert</code></strong> operation instead. For more information, refer to <a href="/docs/ru/upsert-entities.md">Upsert Entities</a>.</p></li>
 </ul>
 </div>
-<h2 id="Overview" class="common-anchor-header">Обзор<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,10 +43,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В Milvus <strong>сущность (Entity)</strong> — это запись данных в <strong>коллекции</strong>, имеющая одну и ту же <strong>схему (Schema)</strong>, причем данные в каждом поле строки составляют сущность. Таким образом, сущности в пределах одной коллекции имеют одинаковые атрибуты (такие как имена полей, типы данных и другие ограничения).</p>
-<p>При вставке сущности в коллекцию вставляемая сущность может быть успешно добавлена только в том случае, если она содержит все поля, определённые в схеме. Вставленная сущность попадает в раздел с именем <strong>_default</strong> в порядке вставки. При наличии определенного раздела вы также можете вставлять сущности в этот раздел, указав его имя в запросе на вставку.</p>
-<p>Milvus также поддерживает динамические поля для обеспечения масштабируемости коллекции. Если динамические поля включены, в коллекцию можно вставлять поля, не определённые в схеме. Эти поля и значения будут храниться в виде пар «ключ-значение» в зарезервированном поле с именем <strong>$meta</strong>. Дополнительную информацию о динамических полях см. в разделе «Динамические поля».</p>
-<h2 id="Insert-Entities-into-a-Collection" class="common-anchor-header">Вставка сущностей в коллекцию<button data-href="#Insert-Entities-into-a-Collection" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, an <strong>Entity</strong> refers to data records in a <strong>Collection</strong> that share the same <strong>Schema</strong>, with the data in each field of a row constituting an Entity. Therefore, the Entities within the same Collection have the same attributes (such as field names, data types, and other constraints).</p>
+<p>When inserting an Entity into a Collection, the Entity to be inserted can only be successfully added if it contains all the fields defined in the Schema. The inserted Entity will enter a Partition named <strong>_default</strong> in the order of insertion. Provided that a certain Partition exists, you can also insert Entities into that Partition by specifying the Partition name in the insertion request.</p>
+<p>Milvus also supports dynamic fields to maintain the scalability of the Collection. When the dynamic field is enabled, you can insert fields that are not defined in the Schema into the Collection. These fields and values will be stored as key-value pairs in a reserved field named <strong>$meta</strong>. For more information about dynamic fields, please refer to Dynamic Field.</p>
+<h2 id="Insert-Entities-into-a-Collection" class="common-anchor-header">Insert Entities into a Collection<button data-href="#Insert-Entities-into-a-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -61,14 +61,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Перед вставкой данных необходимо организовать данные в виде списка словарей в соответствии со схемой, причём каждый словарь представляет сущность и содержит все поля, определённые в схеме. Если в коллекции включено динамическое поле, каждый словарь может также включать поля, не определённые в схеме.</p>
-<p>В этом разделе вы будете вставлять сущности в коллекцию, созданную с помощью быстрой настройки. Коллекция, созданная таким образом, имеет только два поля: <strong>id</strong> и <strong>vector</strong>. Кроме того, в этой коллекции включено динамическое поле, поэтому сущности в примере кода содержат поле <strong>color</strong>, которое не определено в схеме.</p>
+    </button></h2><p>Before inserting data, you need to organize your data into a list of dictionaries according to the Schema, with each dictionary representing an Entity and containing all the fields defined in the Schema. If the Collection has the dynamic field enabled, each dictionary can also include fields that are not defined in the Schema.</p>
+<p>In this section, you will insert entities into a Collection created in the quick-setup manner. A Collection created in this manner has only two fields, named <strong>id</strong> and <strong>vector</strong>. Additionally, this Collection has the dynamic field enabled, so the Entities in the example code include a field called <strong>color</strong> that is not defined in the Schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -261,7 +261,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-Entities-into-a-Partition" class="common-anchor-header">Вставка сущностей в раздел<button data-href="#Insert-Entities-into-a-Partition" class="anchor-icon" translate="no">
+<h2 id="Insert-Entities-into-a-Partition" class="common-anchor-header">Insert Entities into a Partition<button data-href="#Insert-Entities-into-a-Partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -276,13 +276,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы также можете вставлять сущности в указанный раздел. В приведенных ниже фрагментах кода предполагается, что в вашей коллекции имеется раздел с именем <strong>PartitionA</strong>.</p>
+    </button></h2><p>You can also insert entities into a specified partition. The following code snippets assume that you have a partition named <strong>PartitionA</strong> in your collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">data=[
     {<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-string">&quot;vector&quot;</span>: [<span class="hljs-number">0.3580376395471989</span>, -<span class="hljs-number">0.6023495712049978</span>, <span class="hljs-number">0.18414012509913835</span>, -<span class="hljs-number">0.26286205330961354</span>, <span class="hljs-number">0.9029438446296592</span>], <span class="hljs-string">&quot;color&quot;</span>: <span class="hljs-string">&quot;pink_8682&quot;</span>},

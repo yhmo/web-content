@@ -1,14 +1,13 @@
 ---
 id: filtered-search-with-structarray.md
-title: Фильтрованный поиск с использованием StructArray
+title: Filtered Search with StructArray
 summary: >-
-  Используйте эту страницу для добавления скалярной фильтрации к векторному
-  поиску по полям StructArray. Фильтрация StructArray имеет два уровня: фильтры
-  на уровне строк выбирают родительские сущности, а фильтры на уровне элементов
-  ограничивают набор элементов Struct, участвующих в векторном поиске на уровне
-  элементов.
+  Use this page to add scalar filtering to vector search on StructArray fields.
+  StructArray filtering has two levels: row-level filters select parent
+  entities, while element-level filters constrain which Struct elements
+  participate in element-level vector search.
 ---
-<h1 id="Filtered-Search-with-StructArray" class="common-anchor-header">Фильтрованный поиск с использованием StructArray<button data-href="#Filtered-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Filtered-Search-with-StructArray" class="common-anchor-header">Filtered Search with StructArray<button data-href="#Filtered-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Используйте эту страницу для добавления скалярной фильтрации к векторному поиску по полям StructArray. Фильтрация StructArray имеет два уровня: фильтры на уровне строк выбирают родительские сущности, а фильтры на уровне элементов ограничивают набор элементов Struct, участвующих в векторном поиске на уровне элементов.</p>
-<p>На этой странице используется коллекция « <code translate="no">tech_articles</code> » из <a href="/docs/ru/create-structarray-field.md">раздела «Создание поля StructArray</a>». В коллекции имеется поле StructArray с именем « <code translate="no">chunks</code> », содержащее скалярные подполя, такие как « <code translate="no">section</code> », « <code translate="no">page</code> », « <code translate="no">quality_score</code> » и « <code translate="no">has_code</code> », а также векторные подполя для поиска.</p>
-<h2 id="Choose-a-filter-type" class="common-anchor-header">Выберите тип фильтра<button data-href="#Choose-a-filter-type" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to add scalar filtering to vector search on StructArray fields. StructArray filtering has two levels: row-level filters select parent entities, while element-level filters constrain which Struct elements participate in element-level vector search.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/ru/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>, with scalar subfields such as <code translate="no">section</code>, <code translate="no">page</code>, <code translate="no">quality_score</code>, and <code translate="no">has_code</code>, plus vector subfields for search.</p>
+<h2 id="Choose-a-filter-type" class="common-anchor-header">Choose a filter type<button data-href="#Choose-a-filter-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,18 +41,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Цель</th><th>Использование</th><th>Поведение результата</th></tr>
+<tr><th>Goal</th><th>Use</th><th>Result behavior</th></tr>
 </thead>
 <tbody>
-<tr><td>Фильтрация по скалярному полю верхнего уровня, например <code translate="no">category</code>.</td><td>Обычное выражение фильтра.</td><td>Выбирает родительские сущности до или во время поиска.</td></tr>
-<tr><td>Ограничивает векторный поиск на уровне элементов элементами Struct, соответствующими скалярным условиям.</td><td><code translate="no">element_filter</code>.</td><td>Выполняет поиск только среди соответствующих элементов Struct и может возвращать смещения найденных элементов.</td></tr>
-<tr><td>Выбор сущностей в зависимости от того, соответствуют ли предкату какие-либо, все или определённое количество элементов Struct.</td><td><code translate="no">MATCH_ANY</code>, <code translate="no">MATCH_ALL</code>, <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code> или <code translate="no">MATCH_EXACT</code>.</td><td>Фильтрация на уровне строк. Сами по себе эти операторы не возвращают смещения.</td></tr>
+<tr><td>Filter by a top-level scalar field, such as <code translate="no">category</code>.</td><td>Regular filter expression.</td><td>Selects parent entities before or during search.</td></tr>
+<tr><td>Constrain element-level vector search to Struct elements that match scalar conditions.</td><td><code translate="no">element_filter</code>.</td><td>Searches only matching Struct elements and can return matched element offsets.</td></tr>
+<tr><td>Select entities by whether any, all, or a specific number of Struct elements match a predicate.</td><td><code translate="no">MATCH_ANY</code>, <code translate="no">MATCH_ALL</code>, <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, or <code translate="no">MATCH_EXACT</code>.</td><td>Row-level filtering. These operators do not return offsets by themselves.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>На этой странице объясняется, как использовать фильтры StructArray в рабочих процессах поиска. Полные правила синтаксиса, поддерживаемые типы предикатов и матрица неподдерживаемых предикатов см. в разделе <a href="/docs/ru/struct-array-operators.md">«Операторы StructArray</a>».</p>
+<p>This page explains how to use StructArray filters in search workflows. For the full syntax rules, supported predicate types, and unsupported predicate matrix, see <a href="/docs/ru/struct-array-operators.md">StructArray Operators</a>.</p>
 </div>
-<h2 id="Filter-by-top-level-fields" class="common-anchor-header">Фильтрация по полям верхнего уровня<button data-href="#Filter-by-top-level-fields" class="anchor-icon" translate="no">
+<h2 id="Filter-by-top-level-fields" class="common-anchor-header">Filter by top-level fields<button data-href="#Filter-by-top-level-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,7 +67,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Используйте обычные выражения фильтрации, если условие относится к родительской сущности, а не к отдельному элементу Struct. Это работает как при поиске по EmbeddingList, так и при поиске на уровне элементов.</p>
+    </button></h2><p>Use regular filter expressions when the condition belongs to the parent entity, not to an individual Struct element. This works with both EmbeddingList search and element-level search.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">from</span> pymilvus.client.embedding_list <span class="hljs-keyword">import</span> EmbeddingList
 
@@ -96,8 +95,8 @@ results = client.search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Приведенный выше фильтр выбирает только сущности, у которых поле верхнего уровня <code translate="no">category</code> имеет значение <code translate="no">&quot;search&quot;</code>. Он не выделяет один конкретный соответствующий элемент Struct.</p>
-<h2 id="Filter-element-level-vector-search" class="common-anchor-header">Фильтрация векторного поиска на уровне элементов<button data-href="#Filter-element-level-vector-search" class="anchor-icon" translate="no">
+<p>The filter above selects only entities whose top-level <code translate="no">category</code> field is <code translate="no">&quot;search&quot;</code>. It does not identify one matched Struct element.</p>
+<h2 id="Filter-element-level-vector-search" class="common-anchor-header">Filter element-level vector search<button data-href="#Filter-element-level-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,7 +111,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Используйте <code translate="no">element_filter(structArrayField, predicate)</code>, когда скалярные условия должны применяться к тому же элементу Struct, который участвует в векторном поиске на уровне элементов. Внутри предиката используйте <code translate="no">$[subfield]</code> для ссылки на скалярные подполя текущего элемента Struct.</p>
+    </button></h2><p>Use <code translate="no">element_filter(structArrayField, predicate)</code> when the scalar conditions must apply to the same Struct element that participates in element-level vector search. Inside the predicate, use <code translate="no">$[subfield]</code> to refer to scalar subfields of the current Struct element.</p>
 <pre><code translate="no" class="language-python">query_vector = [<span class="hljs-number">0.19</span>, <span class="hljs-number">0.24</span>, <span class="hljs-number">0.30</span>, <span class="hljs-number">0.37</span>]
 
 filter_expr = (
@@ -149,12 +148,12 @@ results = client.search(
             <span class="hljs-string">&quot;entity:&quot;</span>, hit[<span class="hljs-string">&quot;entity&quot;</span>],
         )
 <button class="copy-code-btn"></button></code></pre>
-<p>В данном примере предикат верхнего уровня <code translate="no">category == &quot;search&quot;</code> выбирает кандидатов, а <code translate="no">element_filter</code> ограничивает векторный поиск на уровне элементов фрагментами, в которых <code translate="no">section</code>, <code translate="no">quality_score</code> и <code translate="no">has_code</code> совпадают в одном и том же элементе Struct.</p>
+<p>In this example, the top-level predicate <code translate="no">category == &quot;search&quot;</code> selects candidate entities, and <code translate="no">element_filter</code> restricts element-level vector search to chunks where <code translate="no">section</code>, <code translate="no">quality_score</code>, and <code translate="no">has_code</code> all match in the same Struct element.</p>
 <div class="alert note">
-<p>Предупреждение</p>
-<p>При объединении предиката верхнего уровня с оператором « <code translate="no">element_filter</code> » помещайте оператор « <code translate="no">element_filter</code> » в конец выражения. Выражение фильтра может содержать только один оператор « <code translate="no">element_filter</code> », и нельзя вкладывать операторы « <code translate="no">element_filter</code> » или « <code translate="no">MATCH_*</code> » внутрь другого оператора «StructArray».</p>
+<p>Warning</p>
+<p>When you combine a top-level predicate with <code translate="no">element_filter</code>, place <code translate="no">element_filter</code> at the end of the expression. A filter expression can contain only one <code translate="no">element_filter</code>, and you cannot nest <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code> inside another StructArray operator.</p>
 </div>
-<h2 id="Filter-entities-with-MATCH-operators" class="common-anchor-header">Фильтрация сущностей с помощью операторов MATCH<button data-href="#Filter-entities-with-MATCH-operators" class="anchor-icon" translate="no">
+<h2 id="Filter-entities-with-MATCH-operators" class="common-anchor-header">Filter entities with MATCH operators<button data-href="#Filter-entities-with-MATCH-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -169,17 +168,17 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Используйте операторы <code translate="no">MATCH_*</code>, когда фильтр должен определять, соответствует ли родительская сущность критериям на основе элементов Struct. Эти операторы являются фильтрами на уровне строк: они выбирают сущности, но сами по себе не возвращают смещения элементов.</p>
+    </button></h2><p>Use <code translate="no">MATCH_*</code> operators when the filter should decide whether a parent entity qualifies based on its Struct elements. These operators are row-level filters: they select entities, but do not return element offsets by themselves.</p>
 <table>
 <thead>
-<tr><th>Оператор</th><th>Используйте его, когда</th><th>Пример</th></tr>
+<tr><th>Operator</th><th>Use it when</th><th>Example</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">MATCH_ANY</code></td><td>По крайней мере один элемент Struct должен удовлетворять предикату.</td><td><code translate="no">MATCH_ANY(chunks, $[section] == &quot;index&quot;)</code></td></tr>
-<tr><td><code translate="no">MATCH_ALL</code></td><td>Все элементы Struct должны удовлетворять предикату.</td><td><code translate="no">MATCH_ALL(chunks, $[quality_score] &gt; 0.5)</code></td></tr>
-<tr><td><code translate="no">MATCH_LEAST</code></td><td>По крайней мере <code translate="no">N</code> элементов структуры должны удовлетворять предикату.</td><td><code translate="no">MATCH_LEAST(chunks, $[has_code] == true, threshold=2)</code></td></tr>
-<tr><td><code translate="no">MATCH_MOST</code></td><td>Не более чем <code translate="no">N</code> элементов структуры должны удовлетворять предикату.</td><td><code translate="no">MATCH_MOST(chunks, $[section] == &quot;appendix&quot;, threshold=1)</code></td></tr>
-<tr><td><code translate="no">MATCH_EXACT</code></td><td>Именно <code translate="no">N</code> элементов Struct должны удовлетворять предикату.</td><td><code translate="no">MATCH_EXACT(chunks, $[section] == &quot;summary&quot;, threshold=1)</code></td></tr>
+<tr><td><code translate="no">MATCH_ANY</code></td><td>At least one Struct element must satisfy the predicate.</td><td><code translate="no">MATCH_ANY(chunks, $[section] == &quot;index&quot;)</code></td></tr>
+<tr><td><code translate="no">MATCH_ALL</code></td><td>All Struct elements must satisfy the predicate.</td><td><code translate="no">MATCH_ALL(chunks, $[quality_score] &gt; 0.5)</code></td></tr>
+<tr><td><code translate="no">MATCH_LEAST</code></td><td>At least <code translate="no">N</code> Struct elements must satisfy the predicate.</td><td><code translate="no">MATCH_LEAST(chunks, $[has_code] == true, threshold=2)</code></td></tr>
+<tr><td><code translate="no">MATCH_MOST</code></td><td>At most <code translate="no">N</code> Struct elements must satisfy the predicate.</td><td><code translate="no">MATCH_MOST(chunks, $[section] == &quot;appendix&quot;, threshold=1)</code></td></tr>
+<tr><td><code translate="no">MATCH_EXACT</code></td><td>Exactly <code translate="no">N</code> Struct elements must satisfy the predicate.</td><td><code translate="no">MATCH_EXACT(chunks, $[section] == &quot;summary&quot;, threshold=1)</code></td></tr>
 </tbody>
 </table>
 <pre><code translate="no" class="language-python">filter_expr = (
@@ -203,8 +202,8 @@ results = client.search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Здесь используется « <code translate="no">MATCH_ANY</code> », поскольку результат поиска EmbeddingList находится на уровне сущности. Фильтр требует, чтобы по крайней мере один фрагмент в сущности был фрагментом « <code translate="no">&quot;index&quot;</code> » с высоким качеством, но сам результат поиска по-прежнему представляет родительскую сущность.</p>
-<h2 id="Use-filters-in-hybrid-search" class="common-anchor-header">Использование фильтров в гибридном поиске<button data-href="#Use-filters-in-hybrid-search" class="anchor-icon" translate="no">
+<p>Use <code translate="no">MATCH_ANY</code> here because the EmbeddingList search result is entity-level. The filter requires at least one chunk in the entity to be an <code translate="no">&quot;index&quot;</code> chunk with high quality, but the search result itself still represents the parent entity.</p>
+<h2 id="Use-filters-in-hybrid-search" class="common-anchor-header">Use filters in hybrid search<button data-href="#Use-filters-in-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -219,7 +218,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В гибридном поиске применяйте фильтры StructArray там, где условие должно вступать в силу. Фильтр верхнего уровня может использоваться во всем гибридном поиске. Фильтр « <code translate="no">element_filter</code> » следует привязывать к запросу на уровне элементов StructArray, который требует ограничений на уровне элементов.</p>
+    </button></h2><p>In hybrid search, apply StructArray filters where the condition should take effect. A top-level filter can be shared by the whole hybrid search. An <code translate="no">element_filter</code> should be attached to the StructArray element-level request that needs element-level constraints.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> AnnSearchRequest, RRFRanker
 
 query_vector = [<span class="hljs-number">0.19</span>, <span class="hljs-number">0.24</span>, <span class="hljs-number">0.30</span>, <span class="hljs-number">0.37</span>]
@@ -253,8 +252,8 @@ results = client.hybrid_search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Аргумент « <code translate="no">filter</code> » применяет условие сущности верхнего уровня, тогда как « <code translate="no">expr</code> » в « <code translate="no">chunk_req</code> » ограничивает только запрос вектора на уровне элементов StructArray. Поддерживаемые комбинации гибридного поиска и ограничения для конкретных версий см. в разделах <a href="/docs/ru/hybrid-search-with-structarray.md">«Гибридный поиск с StructArray</a> » и <a href="/docs/ru/structarray-limits.md">«Ограничения StructArray</a>».</p>
-<h2 id="Predicate-support-summary" class="common-anchor-header">Сводка по поддержке предикатов<button data-href="#Predicate-support-summary" class="anchor-icon" translate="no">
+<p>The <code translate="no">filter</code> argument applies the top-level entity condition, while the <code translate="no">expr</code> on <code translate="no">chunk_req</code> constrains only the StructArray element-level vector request. For supported hybrid search combinations and version-specific limits, see <a href="/docs/ru/hybrid-search-with-structarray.md">Hybrid Search with StructArray</a> and <a href="/docs/ru/structarray-limits.md">StructArray Limits</a>.</p>
+<h2 id="Predicate-support-summary" class="common-anchor-header">Predicate support summary<button data-href="#Predicate-support-summary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -269,21 +268,21 @@ results = client.hybrid_search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Используйте скалярные подполя в предикатах StructArray. Векторные подполя не являются входными данными для скалярных предикатов.</p>
+    </button></h2><p>Use scalar subfields in StructArray predicates. Vector subfields are not scalar predicate inputs.</p>
 <table>
 <thead>
-<tr><th>Тип подполя</th><th>Типичные примеры предикатов</th></tr>
+<tr><th>Subfield type</th><th>Typical predicate examples</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">BOOL</code></td><td><code translate="no">$[has_code] == true</code>, <code translate="no">!($[has_code] == true)</code></td></tr>
-<tr><td>Целые типы</td><td><code translate="no">$[page] &gt;= 2</code>, <code translate="no">$[page] in [1, 2, 3]</code></td></tr>
+<tr><td>Integer types</td><td><code translate="no">$[page] &gt;= 2</code>, <code translate="no">$[page] in [1, 2, 3]</code></td></tr>
 <tr><td><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code></td><td><code translate="no">$[quality_score] &gt; 0.9</code>, <code translate="no">0.7 &lt; $[quality_score] &lt; 0.95</code></td></tr>
 <tr><td><code translate="no">VARCHAR</code></td><td><code translate="no">$[section] == &quot;index&quot;</code>, <code translate="no">$[text] like &quot;range%&quot;</code></td></tr>
-<tr><td>Векторные подполя</td><td>Не поддерживаются в качестве входных данных для скалярных предикатов <code translate="no">$[...]</code>. Вместо этого используйте векторные подполя с помощью векторного поиска.</td></tr>
+<tr><td>Vector subfields</td><td>Not supported as <code translate="no">$[...]</code> scalar predicate inputs. Use vector subfields through vector search instead.</td></tr>
 </tbody>
 </table>
-<p>В отношении неподдерживаемых случаев, таких как пути JSON, функции контейнеров массивов, функции сопоставления текста, предикаты null для <code translate="no">$[...]</code>, функции Geometry, выражения Timestamptz и вызовы обобщённых функций, см. раздел <a href="/docs/ru/struct-array-operators.md">«Операторы StructArray</a>».</p>
-<h2 id="Common-mistakes" class="common-anchor-header">Распространённые ошибки<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<p>For unsupported cases such as JSON paths, array container functions, text match functions, null predicates on <code translate="no">$[...]</code>, Geometry functions, Timestamptz expressions, and generic function calls, see <a href="/docs/ru/struct-array-operators.md">StructArray Operators</a>.</p>
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -299,14 +298,14 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Использование ` <code translate="no">$[subfield]</code> ` вне контекста ` <code translate="no">element_filter</code> ` или ` <code translate="no">MATCH_*</code>`.</p></li>
-<li><p>Использование <code translate="no">chunks.section</code> вместо синтаксиса операторов StructArray, например <code translate="no">element_filter(chunks, $[section] == &quot;index&quot;)</code>.</p></li>
-<li><p>Использование <code translate="no">element_filter</code>, когда требуется только фильтрация на уровне строк. Если необходимо только выбрать сущности, используйте вместо этого <code translate="no">MATCH_ANY</code>.</p></li>
-<li><p>Ожидание того, что оператор ` <code translate="no">MATCH_*</code> ` вернет смещения элементов. Эти операторы выбирают сущности и сами по себе не идентифицируют один соответствующий элемент.</p></li>
-<li><p>Написание простых булевых предикатов, таких как <code translate="no">$[has_code]</code>. Используйте явные сравнения, такие как <code translate="no">$[has_code] == true</code>.</p></li>
-<li><p>Размещение <code translate="no">element_filter</code> перед предикатом верхнего уровня в одном и том же выражении фильтра.</p></li>
+<li><p>Using <code translate="no">$[subfield]</code> outside <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code>.</p></li>
+<li><p>Using <code translate="no">chunks.section</code> instead of StructArray operator syntax such as <code translate="no">element_filter(chunks, $[section] == &quot;index&quot;)</code>.</p></li>
+<li><p>Using <code translate="no">element_filter</code> when you only need row-level filtering. Use <code translate="no">MATCH_ANY</code> instead if you only need to select entities.</p></li>
+<li><p>Expecting <code translate="no">MATCH_*</code> to return element offsets. These operators select entities and do not identify one matched element by themselves.</p></li>
+<li><p>Writing bare boolean predicates such as <code translate="no">$[has_code]</code>. Use explicit comparisons such as <code translate="no">$[has_code] == true</code>.</p></li>
+<li><p>Putting <code translate="no">element_filter</code> before a top-level predicate in the same filter expression.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">Следующие шаги<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -322,8 +321,8 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Чтобы ознакомиться с полным синтаксисом фильтров StructArray, прочтите раздел <a href="/docs/ru/struct-array-operators.md">«Операторы StructArray</a>».</p></li>
-<li><p>Чтобы сначала выполнить поиск по векторам без фильтрации, ознакомьтесь с разделом <a href="/docs/ru/basic-vector-search-with-structarray.md">«Базовый поиск по векторам с помощью StructArray</a>».</p></li>
-<li><p>Чтобы создать скалярные индексы для часто используемых фильтров StructArray, ознакомьтесь с разделом <a href="/docs/ru/index-structarray-fields.md">«Индексирование полей StructArray</a>».</p></li>
-<li><p>Чтобы ознакомиться с ограничениями на фильтрацию и поиск для конкретных версий, ознакомьтесь с разделом <a href="/docs/ru/structarray-limits.md">«Ограничения StructArray</a>».</p></li>
+<li><p>To review full StructArray filter syntax, read <a href="/docs/ru/struct-array-operators.md">StructArray Operators</a>.</p></li>
+<li><p>To run unfiltered vector searches first, read <a href="/docs/ru/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To create scalar indexes for frequently used StructArray filters, read <a href="/docs/ru/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To check version-specific filter and search limits, read <a href="/docs/ru/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

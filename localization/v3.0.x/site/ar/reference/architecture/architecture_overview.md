@@ -1,11 +1,11 @@
 ---
 id: architecture_overview.md
 summary: >-
-  يوفر Milvus قاعدة بيانات متجهات سريعة وموثوقة ومستقرة مصممة خصيصًا للبحث عن
-  التشابه والذكاء الاصطناعي.
-title: نظرة عامة على بنية ميلفوس
+  Milvus provides a fast, reliable, and stable vector database built
+  specifically for similarity search and artificial intelligence.
+title: Milvus Architecture Overview
 ---
-<h1 id="Milvus-Architecture-Overview" class="common-anchor-header">نظرة عامة على بنية ميلفوس<button data-href="#Milvus-Architecture-Overview" class="anchor-icon" translate="no">
+<h1 id="Milvus-Architecture-Overview" class="common-anchor-header">Milvus Architecture Overview<button data-href="#Milvus-Architecture-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus هي قاعدة بيانات متجهية <strong>مفتوحة المصدر</strong> <strong>ومفتوحة</strong> <strong>المصدر</strong> ومصممة للبحث عن التشابه عالي الأداء في مجموعات البيانات المتجهة الضخمة. تم تصميمه على رأس مكتبات البحث المتجه الشائعة بما في ذلك Faiss وHNSW وDiskANN وSCANN، وهو يمكّن تطبيقات الذكاء الاصطناعي وسيناريوهات استرجاع البيانات غير المنظمة. قبل المتابعة، تعرّف على <a href="/docs/ar/glossary.md">المبادئ الأساسية</a> لاسترجاع التضمين.</p>
-<h2 id="Architecture-Diagram" class="common-anchor-header">مخطط الهندسة المعمارية<button data-href="#Architecture-Diagram" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus is an <strong>open-source</strong>, <strong>cloud-native</strong> vector database designed for high-performance similarity search on massive vector datasets. Built on top of popular vector search libraries including Faiss, HNSW, DiskANN, and SCANN, it empowers AI applications and unstructured data retrieval scenarios. Before proceeding, familiarize yourself with the <a href="/docs/ar/glossary.md">basic principles</a> of embedding retrieval.</p>
+<h2 id="Architecture-Diagram" class="common-anchor-header">Architecture Diagram<button data-href="#Architecture-Diagram" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,12 +36,14 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يوضح الرسم البياني التالي بنية Milvus عالية المستوى، ويعرض تصميمها المعياري والقابل للتطوير والسحابة الأصلية مع طبقات تخزين وحوسبة مفصّلة بالكامل.</p>
+    </button></h2><p>The following diagram illustrates Milvus’s high-level architecture, showcasing its modular, scalable, and cloud-native design with fully disaggregated storage and compute layers.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/milvus_architecture_2_6.png" alt="Architecture_diagram" class="doc-image" id="architecture_diagram" />
-   </span> <span class="img-wrapper"> <span>مخطط_العمارة</span> </span></p>
-<h2 id="Architectural-Principles" class="common-anchor-header">المبادئ المعمارية<button data-href="#Architectural-Principles" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/milvus_architecture_2_6.png" alt="Architecture_diagram" class="doc-image" id="architecture_diagram" />
+    <span>Architecture_diagram</span>
+  </span>
+</p>
+<h2 id="Architectural-Principles" class="common-anchor-header">Architectural Principles<button data-href="#Architectural-Principles" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,9 +58,9 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تتبع Milvus مبدأ الفصل بين مستوى البيانات ومستوى التحكم، وتتألف من أربع طبقات رئيسية مستقلة عن بعضها البعض من حيث قابلية التوسع والتعافي من الكوارث. تتيح هذه البنية ذات التخزين المشترك مع طبقات التخزين والحوسبة المفصّلة بالكامل إمكانية التوسع الأفقي لعقد الحوسبة مع تنفيذ Woodpecker كطبقة WAL خالية من الأقراص لزيادة المرونة وتقليل النفقات التشغيلية.</p>
-<p>من خلال فصل معالجة الدفق إلى عقدة التدفق ومعالجة الدُفعات إلى عقدة الاستعلام وعقدة البيانات، تحقق Milvus أداءً عاليًا مع تلبية متطلبات المعالجة في الوقت الفعلي في الوقت نفسه.</p>
-<h2 id="Detailed-Layer-Architecture" class="common-anchor-header">بنية الطبقة التفصيلية<button data-href="#Detailed-Layer-Architecture" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus follows the principle of data plane and control plane disaggregation, comprising four main layers that are mutually independent in terms of scalability and disaster recovery. This shared-storage architecture with fully disaggregated storage and compute layers enables horizontal scaling of compute nodes while implementing Woodpecker as a zero-disk WAL layer for increased elasticity and reduced operational overhead.</p>
+<p>By separating stream processing into Streaming Node and batch processing into Query Node and Data Node, Milvus achieves high performance while meeting real-time processing requirements simultaneously.</p>
+<h2 id="Detailed-Layer-Architecture" class="common-anchor-header">Detailed Layer Architecture<button data-href="#Detailed-Layer-Architecture" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,7 +75,7 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Layer-1-Access-Layer" class="common-anchor-header">الطبقة 1: طبقة الوصول<button data-href="#Layer-1-Access-Layer" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Layer-1-Access-Layer" class="common-anchor-header">Layer 1: Access Layer<button data-href="#Layer-1-Access-Layer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -88,12 +90,12 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تتألف طبقة الوصول من مجموعة من الوكلاء عديمي الحالة، وهي الطبقة الأمامية للنظام ونقطة النهاية للمستخدمين. تتحقق من صحة طلبات العميل وتقلل من النتائج التي يتم إرجاعها:</p>
+    </button></h3><p>Composed of a group of stateless proxies, the access layer is the front layer of the system and endpoint to users. It validates client requests and reduces the returned results:</p>
 <ul>
-<li>الوكيل في حد ذاته عديم الحالة. يوفر عنوان خدمة موحد باستخدام مكونات موازنة التحميل مثل Nginx و Kubernetes Ingress و NodePort و LVS.</li>
-<li>نظرًا لأن Milvus يستخدم بنية معالجة متوازية على نطاق واسع (MPP)، يقوم الوكيل بتجميع النتائج الوسيطة ومعالجتها لاحقًا قبل إعادة النتائج النهائية إلى العميل.</li>
+<li>Proxy is in itself stateless. It provides a unified service address using load balancing components such as Nginx, Kubernetes Ingress, NodePort, and LVS.</li>
+<li>As Milvus employs a massively parallel processing (MPP) architecture, the proxy aggregates and post-process the intermediate results before returning the final results to the client.</li>
 </ul>
-<h3 id="Layer-2-Coordinator" class="common-anchor-header">الطبقة 2: المنسق<button data-href="#Layer-2-Coordinator" class="anchor-icon" translate="no">
+<h3 id="Layer-2-Coordinator" class="common-anchor-header">Layer 2: Coordinator<button data-href="#Layer-2-Coordinator" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -108,15 +110,15 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يعمل المنسق بمثابة عقل ميلفوس. في أي لحظة، يكون منسق واحد فقط نشطًا عبر المجموعة بأكملها، ويكون مسؤولاً عن الحفاظ على طوبولوجيا المجموعة، وجدولة جميع أنواع المهام، والتعهد بالاتساق على مستوى المجموعة.</p>
-<p>فيما يلي بعض المهام التي يتولاها <strong>المنسق</strong>:</p>
+    </button></h3><p>The Coordinator serves as the brain of Milvus. At any moment, exactly one Coordinator is active across the entire cluster, responsible for maintaining the cluster topology, scheduling all task types, and promising cluster-level consistency.</p>
+<p>The following are some of the tasks handled by the <strong>Coordinator</strong>:</p>
 <ul>
-<li><strong>إدارة لغة تعريف البيانات (DDL/DCL) / لغة تعريف البيانات (DDL) / إدارة العمليات المؤقتة</strong>: يتعامل مع طلبات لغة تعريف البيانات (DDL) ولغة التحكم في البيانات (DCL)، مثل إنشاء أو حذف المجموعات أو الأقسام أو الفهارس، بالإضافة إلى إدارة الطابع الزمني أوراكل (TSO) وإصدار شريط الوقت.</li>
-<li><strong>إدارة خدمة التدفق</strong>: يربط سجل الكتابة المسبق (WAL) مع عقد البث ويوفر اكتشاف الخدمة لخدمة البث.</li>
-<li><strong>إدارة الاستعلام</strong>: تدير الطوبولوجيا وموازنة التحميل لعُقد الاستعلام، وتوفر طرق عرض الاستعلامات المقدمة وتديرها لتوجيه توجيه الاستعلام.</li>
-<li><strong>إدارة البيانات التاريخية</strong>: توزع المهام غير المتصلة بالإنترنت مثل الضغط وبناء الفهرس على عقد البيانات، وتدير طوبولوجيا المقاطع وطرق عرض البيانات.</li>
+<li><strong>DDL/DCL/TSO Management</strong>: Handles data definition language (DDL) and data control language (DCL) requests, such as creating or deleting collections, partitions, or indexes, as well as managing timestamp Oracle (TSO) and time ticker issuing.</li>
+<li><strong>Streaming Service Management</strong>: Binds the Write-Ahead Log (WAL) with Streaming Nodes and provides service discovery for the streaming service.</li>
+<li><strong>Query Management</strong>: Manages topology and load balancing for the Query Nodes, and provides and manages the serving query views to guide the query routing.</li>
+<li><strong>Historical Data Management</strong>: Distributes offline tasks such as compaction and index-building to Data Nodes, and manages the topology of segments and data views.</li>
 </ul>
-<h3 id="Layer-3-Worker-Nodes" class="common-anchor-header">الطبقة 3: العقد العاملة<button data-href="#Layer-3-Worker-Nodes" class="anchor-icon" translate="no">
+<h3 id="Layer-3-Worker-Nodes" class="common-anchor-header">Layer 3: Worker Nodes<button data-href="#Layer-3-Worker-Nodes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -131,8 +133,8 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>الأذرع والأرجل. العُقد العاملة هي عبارة عن منفِّذات غبية تتبع تعليمات المنسق. العقد العاملة عديمة الحالة بفضل الفصل بين التخزين والحوسبة، ويمكنها تسهيل توسيع نطاق النظام واستعادة القدرة على العمل بعد الكوارث عند نشرها على Kubernetes. هناك ثلاثة أنواع من العقد العاملة:</p>
-<h3 id="Streaming-node" class="common-anchor-header">عقدة التدفق<button data-href="#Streaming-node" class="anchor-icon" translate="no">
+    </button></h3><p>The arms and legs. Worker nodes are dumb executors that follow instructions from the coordinator. Worker nodes are stateless thanks to separation of storage and computation, and can facilitate system scale-out and disaster recovery when deployed on Kubernetes. There are three types of worker nodes:</p>
+<h3 id="Streaming-node" class="common-anchor-header">Streaming node<button data-href="#Streaming-node" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -147,8 +149,8 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تعمل عقدة التدفق بمثابة "العقل المصغر" على مستوى الشاردة، حيث توفر ضمانات الاتساق على مستوى الشاردة واستعادة الأخطاء استنادًا إلى تخزين WAL الأساسي. وفي الوقت نفسه، فإن عقدة التدفق مسؤولة أيضًا عن زيادة الاستعلام عن البيانات وإنشاء خطط الاستعلام. بالإضافة إلى ذلك، فهي تتعامل أيضًا مع تحويل البيانات المتنامية إلى بيانات مختومة (تاريخية).</p>
-<h3 id="Query-node" class="common-anchor-header">عقدة الاستعلام<button data-href="#Query-node" class="anchor-icon" translate="no">
+    </button></h3><p>Streaming Node serves as the shard-level "mini-brain", providing shard-level consistency guarantees and fault recovery based on underlying WAL Storage. Meanwhile, Streaming Node is also responsible for growing data querying and generating query plans. Additionally, it also handles the conversion of growing data into sealed (historical) data.</p>
+<h3 id="Query-node" class="common-anchor-header">Query node<button data-href="#Query-node" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -163,8 +165,8 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تقوم عقدة الاستعلام بتحميل البيانات التاريخية من تخزين الكائن، وتوفر الاستعلام عن البيانات التاريخية.</p>
-<h3 id="Data-node" class="common-anchor-header">عقدة البيانات<button data-href="#Data-node" class="anchor-icon" translate="no">
+    </button></h3><p>Query node loads the historical data from object storage, and provides the historical data querying.</p>
+<h3 id="Data-node" class="common-anchor-header">Data node<button data-href="#Data-node" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -179,8 +181,8 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>عقدة البيانات مسؤولة عن معالجة البيانات التاريخية دون اتصال بالإنترنت، مثل الضغط وبناء الفهرس.</p>
-<h3 id="Layer-4-Storage" class="common-anchor-header">الطبقة 4: التخزين<button data-href="#Layer-4-Storage" class="anchor-icon" translate="no">
+    </button></h3><p>Data node is responsible for offline processing of historical data, such as compaction and index building.</p>
+<h3 id="Layer-4-Storage" class="common-anchor-header">Layer 4: Storage<button data-href="#Layer-4-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -195,8 +197,8 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>التخزين هو عظمة النظام، وهو المسؤول عن ثبات البيانات. وتتألف من التخزين التعريفي ووسيط السجل وتخزين الكائنات.</p>
-<h3 id="Meta-storage" class="common-anchor-header">التخزين التعريفي<button data-href="#Meta-storage" class="anchor-icon" translate="no">
+    </button></h3><p>Storage is the bone of the system, responsible for data persistence. It comprises meta storage, log broker, and object storage.</p>
+<h3 id="Meta-storage" class="common-anchor-header">Meta storage<button data-href="#Meta-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -211,8 +213,8 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يقوم التخزين التعريفي بتخزين لقطات من البيانات الوصفية مثل مخطط المجموعة ونقاط التحقق من استهلاك الرسائل. يتطلب تخزين البيانات الوصفية توافرًا عاليًا للغاية واتساقًا قويًا ودعمًا للمعاملات، لذلك اختار Milvus موقع etcd للتخزين التعريفي. كما تستخدم ميلفوس أيضًا مخزن إلخd لتسجيل الخدمة والتحقق من صحتها.</p>
-<h3 id="Object-storage" class="common-anchor-header">تخزين الكائنات<button data-href="#Object-storage" class="anchor-icon" translate="no">
+    </button></h3><p>Meta storage stores snapshots of metadata such as collection schema, and message consumption checkpoints. Storing metadata demands extremely high availability, strong consistency, and transaction support, so Milvus chose etcd for meta store. Milvus also uses etcd for service registration and health check.</p>
+<h3 id="Object-storage" class="common-anchor-header">Object storage<button data-href="#Object-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -227,8 +229,8 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يخزن تخزين الكائنات ملفات لقطات من السجلات، وملفات الفهرس للبيانات القياسية والمتجهة، ونتائج الاستعلام الوسيطة. يستخدم Milvus MinIO كتخزين كائنات ويمكن نشره بسهولة على AWS S3 و Azure Blob، وهما من أكثر خدمات التخزين شيوعًا وفعالية من حيث التكلفة في العالم. ومع ذلك، يتميز تخزين الكائنات بزمن وصول عالٍ ويتقاضى رسومًا حسب عدد الاستعلامات. ولتحسين أدائها وخفض التكاليف، تخطط ميلفوس لتنفيذ فصل البيانات الباردة عن الساخنة على ذاكرة أو مخزن تخزين مؤقت قائم على SSD.</p>
-<h3 id="WAL-storage" class="common-anchor-header">تخزين WAL<button data-href="#WAL-storage" class="anchor-icon" translate="no">
+    </button></h3><p>Object storage stores snapshot files of logs, index files for scalar and vector data, and intermediate query results. Milvus uses MinIO as object storage and can be readily deployed on AWS S3 and Azure Blob, two of the world’s most popular, cost-effective storage services. However, object storage has high access latency and charges by the number of queries. To improve its performance and lower the costs, Milvus plans to implement cold-hot data separation on a memory- or SSD-based cache pool.</p>
+<h3 id="WAL-storage" class="common-anchor-header">WAL storage<button data-href="#WAL-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -243,10 +245,10 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تخزين سجل الكتابة المسبق (WAL) هو أساس متانة البيانات واتساقها في الأنظمة الموزعة. قبل إجراء أي تغيير، يتم تسجيله أولاً في السجل - مما يضمن أنه في حالة حدوث فشل، يمكنك استرداد البيانات من حيث توقفت بالضبط.</p>
-<p>تتضمن تطبيقات WAL الشائعة Kafka وPulsar وWoodpecker. على عكس الحلول التقليدية القائمة على الأقراص، يتبنى Woodpecker تصميمًا سحابيًا أصليًا خالٍ من الأقراص يكتب مباشرةً إلى تخزين الكائنات. يتناسب هذا النهج مع احتياجاتك دون عناء ويبسط العمليات من خلال إزالة النفقات العامة لإدارة الأقراص المحلية.</p>
-<p>من خلال تسجيل كل عملية كتابة في وقت مبكر، تضمن طبقة WAL آلية موثوقة على مستوى النظام للاسترداد والاتساق - بغض النظر عن مدى تعقيد بيئتك الموزعة.</p>
-<h2 id="Data-Flow-and-API-Categories" class="common-anchor-header">فئات تدفق البيانات وواجهة برمجة التطبيقات<button data-href="#Data-Flow-and-API-Categories" class="anchor-icon" translate="no">
+    </button></h3><p>Write-Ahead Log (WAL) storage is the foundation of data durability and consistency in distributed systems. Before any change is committed, it’s first recorded in a log—ensuring that, in the event of a failure, you can recover exactly where you left off.</p>
+<p>Common WAL implementations include Kafka, Pulsar, and Woodpecker. Unlike traditional disk-based solutions, Woodpecker adopts a cloud-native, zero-disk design that writes directly to object storage. This approach scales effortlessly with your needs and simplifies operations by removing the overhead of managing local disks.</p>
+<p>By logging every write operation ahead of time, the WAL layer guarantees a reliable, system-wide mechanism for recovery and consistency—no matter how complex your distributed environment grows.</p>
+<h2 id="Data-Flow-and-API-Categories" class="common-anchor-header">Data Flow and API Categories<button data-href="#Data-Flow-and-API-Categories" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -261,18 +263,18 @@ title: نظرة عامة على بنية ميلفوس
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تصنف واجهات برمجة التطبيقات Milvus حسب وظيفتها وتتبع مسارات محددة من خلال البنية:</p>
+    </button></h2><p>Milvus APIs are categorized by their function and follow specific paths through the architecture:</p>
 <table>
 <thead>
-<tr><th>فئة واجهة برمجة التطبيقات</th><th>العمليات</th><th>أمثلة على واجهات برمجة التطبيقات</th><th>تدفق البنية</th></tr>
+<tr><th>API Category</th><th>Operations</th><th>Example APIs</th><th>Architecture Flow</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>DDL/DCL</strong></td><td>المخطط والتحكم في الوصول</td><td><code translate="no">createCollection</code> <code translate="no">dropCollection</code> ، <code translate="no">hasCollection</code> <code translate="no">createPartition</code></td><td>طبقة الوصول → المنسق</td></tr>
-<tr><td><strong>DML</strong></td><td>التلاعب بالبيانات</td><td><code translate="no">insert</code> <code translate="no">delete</code>, <code translate="no">upsert</code></td><td>طبقة الوصول → عقدة عامل التدفق</td></tr>
-<tr><td><strong>DQL</strong></td><td>استعلام البيانات</td><td><code translate="no">search</code>, <code translate="no">query</code></td><td>طبقة الوصول → عقدة عامل الدُفعات (عقد الاستعلام)</td></tr>
+<tr><td><strong>DDL/DCL</strong></td><td>Schema & Access Control</td><td><code translate="no">createCollection</code>, <code translate="no">dropCollection</code>, <code translate="no">hasCollection</code>, <code translate="no">createPartition</code></td><td>Access Layer → Coordinator</td></tr>
+<tr><td><strong>DML</strong></td><td>Data Manipulation</td><td><code translate="no">insert</code>, <code translate="no">delete</code>, <code translate="no">upsert</code></td><td>Access Layer → Streaming Worker Node</td></tr>
+<tr><td><strong>DQL</strong></td><td>Data Query</td><td><code translate="no">search</code>, <code translate="no">query</code></td><td>Access Layer → Batch Worker Node (Query Nodes)</td></tr>
 </tbody>
 </table>
-<h3 id="Example-Data-Flow-Search-Operation" class="common-anchor-header">مثال على تدفق البيانات: عملية البحث<button data-href="#Example-Data-Flow-Search-Operation" class="anchor-icon" translate="no">
+<h3 id="Example-Data-Flow-Search-Operation" class="common-anchor-header">Example Data Flow: Search Operation<button data-href="#Example-Data-Flow-Search-Operation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -288,14 +290,14 @@ title: نظرة عامة على بنية ميلفوس
         ></path>
       </svg>
     </button></h3><ol>
-<li>يرسل العميل طلب بحث عبر SDK/واجهة برمجة تطبيقات SDK/واجهة برمجة تطبيقات ريستفول</li>
-<li>يقوم موازن التحميل بتوجيه الطلب إلى الوكيل المتاح في طبقة الوصول</li>
-<li>يستخدم الوكيل ذاكرة التخزين المؤقت للتوجيه لتحديد العُقد المستهدفة؛ لا يتصل بالمنسق إلا إذا كانت ذاكرة التخزين المؤقت غير متوفرة</li>
-<li>يقوم الوكيل بإعادة توجيه الطلب إلى عقد التدفق المناسبة، والتي تنسق بعد ذلك مع عقد الاستعلام للبحث عن البيانات المختومة أثناء تنفيذ البحث عن البيانات المتزايدة محليًا</li>
-<li>تقوم عُقد الاستعلام بتحميل المقاطع المختومة من مخزن الكائنات حسب الحاجة وإجراء بحث على مستوى المقطع</li>
-<li>تخضع نتائج البحث لاختزال متعدد المستويات تقوم عقد الاستعلام بتقليل النتائج عبر قطاعات متعددة، وتقوم عقد التدفق بتقليل النتائج من عقد الاستعلام، ويقوم الوكيل بتقليل النتائج من جميع عقد التدفق قبل العودة إلى العميل</li>
+<li>Client sends a search request via SDK/RESTful API</li>
+<li>Load Balancer routes request to available Proxy in Access Layer</li>
+<li>Proxy uses routing cache to determine target nodes; contacts Coordinator only if cache is unavailable</li>
+<li>Proxy forwards request to appropriate Streaming Nodes, which then coordinate with Query Nodes for sealed data search while executing growing data search locally</li>
+<li>Query Nodes load sealed segments from Object Storage as needed and perform segment-level search</li>
+<li>Search results undergo multi-level reduction: Query Nodes reduce results across multiple segments, Streaming Nodes reduce results from Query Nodes, and Proxy reduces results from all Streaming Nodes before returning to client</li>
 </ol>
-<h3 id="Example-Data-Flow-Data-Insertion" class="common-anchor-header">مثال على تدفق البيانات: إدراج البيانات<button data-href="#Example-Data-Flow-Data-Insertion" class="anchor-icon" translate="no">
+<h3 id="Example-Data-Flow-Data-Insertion" class="common-anchor-header">Example Data Flow: Data Insertion<button data-href="#Example-Data-Flow-Data-Insertion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -311,15 +313,15 @@ title: نظرة عامة على بنية ميلفوس
         ></path>
       </svg>
     </button></h3><ol>
-<li>يرسل العميل طلب إدراج مع بيانات متجهة</li>
-<li>تقوم طبقة الوصول بالتحقق من صحة الطلب وإعادة توجيهه إلى عقدة التدفق</li>
-<li>تسجل عقدة التدفق العملية إلى مخزن WAL للتخزين من أجل المتانة</li>
-<li>تتم معالجة البيانات في الوقت الفعلي وإتاحتها للاستعلامات</li>
-<li>عندما تصل المقاطع إلى السعة، تقوم عقدة الدفق بتشغيل التحويل إلى مقاطع مختومة</li>
-<li>تتعامل عقدة البيانات مع الضغط وتنشئ فهارس فوق المقاطع المختومة، وتخزن النتائج في مخزن الكائنات</li>
-<li>تقوم عُقد الاستعلام بتحميل الفهارس المبنية حديثًا واستبدال البيانات المتزايدة المقابلة</li>
+<li>Client sends an insert request with vector data</li>
+<li>Access Layer validates and forwards request to Streaming Node</li>
+<li>Streaming Node logs operation to WAL Storage for durability</li>
+<li>Data is processed in real-time and made available for queries</li>
+<li>When segments reach capacity, Streaming Node triggers conversion to sealed segments</li>
+<li>Data Node handles compaction and builds indexes on top of the sealed segments, storing results in Object Storage</li>
+<li>Query Nodes load the newly built indexes and replace the corresponding growing data</li>
 </ol>
-<h2 id="Whats-Next" class="common-anchor-header">ما التالي<button data-href="#Whats-Next" class="anchor-icon" translate="no">
+<h2 id="Whats-Next" class="common-anchor-header">What’s Next<button data-href="#Whats-Next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -335,7 +337,7 @@ title: نظرة عامة على بنية ميلفوس
         ></path>
       </svg>
     </button></h2><ul>
-<li>استكشف <a href="/docs/ar/main_components.md">المكونات الرئيسية</a> للحصول على تفاصيل التنفيذ التفصيلية</li>
-<li>تعرف على سير عمل <a href="/docs/ar/data_processing.md">معالجة البيانات</a> واستراتيجيات التحسين</li>
-<li>فهم <a href="/docs/ar/tune_consistency.md">نموذج الاتساق</a> وضمانات المعاملات في ميلفوس</li>
+<li>Explore the <a href="/docs/ar/main_components.md">Main Components</a> for detailed implementation specifics</li>
+<li>Learn about <a href="/docs/ar/data_processing.md">Data Processing</a> workflows and optimization strategies</li>
+<li>Understand the <a href="/docs/ar/tune_consistency.md">Consistency Model</a> and transaction guarantees in Milvus</li>
 </ul>

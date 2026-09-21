@@ -2,9 +2,8 @@
 id: search-aggregation.md
 title: Search AggregationCompatible with Milvus 3.0.x
 summary: >-
-  Agrupar os resultados da pesquisa vetorial em compartimentos, calcular
-  métricas por compartimento, ordenar os compartimentos e devolver resultados
-  representativos.
+  Group vector search results into buckets, compute per-bucket metrics, order
+  buckets, and return representative hits.
 beta: Milvus 3.0.x
 ---
 <h1 id="Search-Aggregation" class="common-anchor-header">Search Aggregation<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Search-Aggregation" class="anchor-icon" translate="no">

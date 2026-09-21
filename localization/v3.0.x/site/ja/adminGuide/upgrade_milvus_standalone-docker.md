@@ -4,11 +4,11 @@ label: Docker Compose
 order: 2
 group: upgrade_milvus_standalone-operator.md
 related_key: upgrade Milvus Standalone
-summary: Docker Compose を使用して Milvus スタンドアロンをアップグレードする方法について学びましょう。
-title: Docker Compose を使用した Milvus スタンドアロンのアップグレード
+summary: Learn how to upgrade Milvus standalone with Docker Compose.
+title: Upgrade Milvus Standalone with Docker Compose
 ---
-<div class="tab-wrapper"><a href="/docs/ja/upgrade_milvus_standalone-operator.md" class=''>Milvus</a><a href="/docs/ja/upgrade_milvus_standalone-docker.md" class='active '>Operator</a>、Helm、Docker<a href="/docs/ja/upgrade_milvus_standalone-docker.md" class='active '>Compose</a></div>
-<h1 id="Upgrade-Milvus-Standalone-with-Docker-Compose" class="common-anchor-header">Docker Compose を使用した Milvus スタンドアロンのアップグレード<button data-href="#Upgrade-Milvus-Standalone-with-Docker-Compose" class="anchor-icon" translate="no">
+<div class="tab-wrapper"><a href="/docs/ja/upgrade_milvus_standalone-operator.md" class=''>Milvus Operator</a><a href="/docs/ja/upgrade_milvus_standalone-helm.md" class=''>Helm</a><a href="/docs/ja/upgrade_milvus_standalone-docker.md" class='active '>Docker Compose</a></div>
+<h1 id="Upgrade-Milvus-Standalone-with-Docker-Compose" class="common-anchor-header">Upgrade Milvus Standalone with Docker Compose<button data-href="#Upgrade-Milvus-Standalone-with-Docker-Compose" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,11 +23,11 @@ title: Docker Compose を使用した Milvus スタンドアロンのアップ�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>このガイドでは、Docker Compose を使用して Milvus 2.6.x スタンドアロン環境を v3.0.1 にアップグレードする方法について説明します。</p>
+    </button></h1><p>This guide describes how to upgrade a Milvus 2.6.x standalone deployment to v3.0.1 with Docker Compose.</p>
 <div class="alert note">
-<p>この手順は、公式の Milvus 2.6.20 スタンドアロン Docker Compose 構成で検証済みです。このアップグレードでは、etcd、MinIO、Woodpecker、および既存のデータディレクトリは維持され、Milvus イメージのみが<code translate="no">milvusdb/milvus:v3.0.1</code> に変更されました。</p>
+<p>This procedure has been validated with the official Milvus 2.6.20 standalone Docker Compose configuration. The upgrade retained etcd, MinIO, Woodpecker, and the existing data directories, and changed only the Milvus image to <code translate="no">milvusdb/milvus:v3.0.1</code>.</p>
 </div>
-<h2 id="Prerequisites" class="common-anchor-header">前提条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,17 +43,17 @@ title: Docker Compose を使用した Milvus スタンドアロンのアップ�
         ></path>
       </svg>
     </button></h2><ul>
-<li>Docker Engine および Docker Compose V2</li>
-<li>Docker Compose によって管理されている既存の Milvus 2.6.x スタンドアロン環境</li>
-<li>既存のデプロイメントで使用されている Docker Compose ファイルおよび設定</li>
-<li>Milvusのメタデータおよび永続データの最新のバックアップ</li>
+<li>Docker Engine and Docker Compose V2</li>
+<li>An existing Milvus 2.6.x standalone deployment managed by Docker Compose</li>
+<li>The Docker Compose file and configuration used for the existing deployment</li>
+<li>A current backup of Milvus metadata and persistent data</li>
 </ul>
-<p><strong>メッセージキューの制限事項</strong>：Milvus v3.0.1 へのアップグレード時には、現在のメッセージキューの選択を維持する必要があります。アップグレード中に異なるメッセージキューシステムへ切り替えることはサポートされていません。メッセージキューシステムの変更に関するサポートは、将来のバージョンで提供される予定です。</p>
+<p><strong>Message Queue limitations</strong>: When upgrading to Milvus v3.0.1, you must maintain your current message queue choice. Switching between different message queue systems during the upgrade is not supported. Support for changing message queue systems will be available in future versions.</p>
 <div class="alert warning">
-<p>この手順の一環として、現在の Compose ファイルを置き換えたり、依存関係のバージョンを変更したりしないでください。既存の etcd、オブジェクトストレージ、メッセージキュー、ボリューム、および設定はそのまま維持してください。Milvus イメージタグのみを更新してください。</p>
-<p>この手順では、Milvus イメージを 2.6.x に戻すことによるダウングレードやロールバックは検証されていません。 v3.0.1 でデータが書き込まれた後、イメージのみのロールバックでは、更新後の状態を読み取れない場合があります。アップグレードに失敗した場合は、書き込みを停止し、アップグレード前のメタデータと永続データのバックアップを復元するリカバリ計画を実行してください。リカバリ計画は、まず本番環境以外で検証してください。</p>
+<p>Do not replace your current Compose file or change dependency versions as part of this procedure. Keep the existing etcd, object storage, message queue, volumes, and configuration. Update only the Milvus image tag.</p>
+<p>This procedure does not validate a downgrade or rollback by changing the Milvus image back to 2.6.x. After v3.0.1 writes data, an image-only rollback can fail to read the updated state. If the upgrade fails, stop writes and use a recovery plan that restores the pre-upgrade metadata and persistent data backups. Validate the recovery plan in a non-production environment first.</p>
 </div>
-<h2 id="Upgrade-process" class="common-anchor-header">アップグレード手順<button data-href="#Upgrade-process" class="anchor-icon" translate="no">
+<h2 id="Upgrade-process" class="common-anchor-header">Upgrade process<button data-href="#Upgrade-process" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,7 +68,7 @@ title: Docker Compose を使用した Milvus スタンドアロンのアップ�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Back-up-the-current-configuration" class="common-anchor-header">ステップ 1: 現在の構成をバックアップする<button data-href="#Step-1-Back-up-the-current-configuration" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Back-up-the-current-configuration" class="common-anchor-header">Step 1: Back up the current configuration<button data-href="#Step-1-Back-up-the-current-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -83,13 +83,13 @@ title: Docker Compose を使用した Milvus スタンドアロンのアップ�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>現在の Compose ファイルおよびマウントされている Milvus 設定ファイルのコピーを保存します:</p>
+    </button></h3><p>Save a copy of the current Compose file and any mounted Milvus configuration files:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">cp</span> docker-compose.yml docker-compose-before-upgrade.yml
 <button class="copy-code-btn"></button></code></pre>
-<p>アップグレードを開始する前に、現在のコンテナが正常に動作していることを確認してください：</p>
+<p>Confirm that the current containers are healthy before starting the upgrade:</p>
 <pre><code translate="no" class="language-bash">docker compose ps
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Update-the-Milvus-image" class="common-anchor-header">ステップ 2: Milvus イメージを更新する<button data-href="#Step-2-Update-the-Milvus-image" class="anchor-icon" translate="no">
+<h3 id="Step-2-Update-the-Milvus-image" class="common-anchor-header">Step 2: Update the Milvus image<button data-href="#Step-2-Update-the-Milvus-image" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -104,17 +104,17 @@ title: Docker Compose を使用した Milvus スタンドアロンのアップ�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>既存の Compose ファイル内で、<code translate="no">standalone</code> サービスのイメージのみを更新します:</p>
+    </button></h3><p>In the existing Compose file, update only the image for the <code translate="no">standalone</code> service:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">services:</span>
   <span class="hljs-attr">standalone:</span>
     <span class="hljs-attr">image:</span> <span class="hljs-string">milvusdb/milvus:v3.0.1</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>対象イメージを取得し、Milvusコンテナのみを再作成します：</p>
+<p>Pull the target image and recreate only the Milvus container:</p>
 <pre><code translate="no" class="language-bash">docker compose pull standalone
 docker compose up --detach standalone
 <button class="copy-code-btn"></button></code></pre>
-<p>Docker Compose は、既存の etcd および object-storage コンテナを稼働させたままにし、設定済みのデータディレクトリを再利用します。</p>
-<h2 id="Verify-the-upgrade" class="common-anchor-header">アップグレードの確認<button data-href="#Verify-the-upgrade" class="anchor-icon" translate="no">
+<p>Docker Compose keeps the existing etcd and object-storage containers running and reuses the configured data directories.</p>
+<h2 id="Verify-the-upgrade" class="common-anchor-header">Verify the upgrade<button data-href="#Verify-the-upgrade" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,11 +129,11 @@ docker compose up --detach standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>コンテナのステータスと、Milvusコンテナが使用しているイメージを確認します:</p>
+    </button></h2><p>Check the container status and the image used by the Milvus container:</p>
 <pre><code translate="no" class="language-bash">docker compose ps
 
 docker compose images standalone
 
 docker compose logs --<span class="hljs-built_in">tail</span> 100 standalone
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">standalone</code> サービスが正常に動作しており、そのイメージが<code translate="no">milvusdb/milvus:v3.0.1</code> であること、および既存のコレクションに対して引き続きクエリや検索が可能であることを確認してください。v3.0.1 固有の機能を有効にする前に、これらの確認を完了してください。</p>
+<p>Verify that the <code translate="no">standalone</code> service is healthy, its image is <code translate="no">milvusdb/milvus:v3.0.1</code>, and the existing collections remain queryable and searchable. Complete these checks before you enable any v3.0.1-specific feature.</p>

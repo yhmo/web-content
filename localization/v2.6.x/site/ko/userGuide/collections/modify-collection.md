@@ -1,9 +1,11 @@
 ---
 id: modify-collection.md
-title: 컬렉션 수정
-summary: 컬렉션의 이름을 바꾸거나 컬렉션의 설정을 변경할 수 있습니다. 이 페이지에서는 컬렉션을 수정하는 방법을 중점적으로 설명합니다.
+title: Modify Collection
+summary: >-
+  You can rename a collection or change its settings. This page focuses on how
+  to modify a collection.
 ---
-<h1 id="Modify-Collection" class="common-anchor-header">컬렉션 수정<button data-href="#Modify-Collection" class="anchor-icon" translate="no">
+<h1 id="Modify-Collection" class="common-anchor-header">Modify Collection<button data-href="#Modify-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: 컬렉션의 이름을 바꾸거나 컬렉션의 설정을 변경할 �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>컬렉션의 이름을 바꾸거나 컬렉션의 설정을 변경할 수 있습니다. 이 페이지에서는 컬렉션을 수정하는 방법에 대해 중점적으로 설명합니다.</p>
-<h2 id="Rename-Collection" class="common-anchor-header">컬렉션 이름 바꾸기<button data-href="#Rename-Collection" class="anchor-icon" translate="no">
+    </button></h1><p>You can rename a collection or change its settings. This page focuses on how to modify a collection.</p>
+<h2 id="Rename-Collection" class="common-anchor-header">Rename Collection<button data-href="#Rename-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,9 +36,14 @@ summary: 컬렉션의 이름을 바꾸거나 컬렉션의 설정을 변경할 �
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>다음과 같이 컬렉션의 이름을 변경할 수 있습니다.</p>
+    </button></h2><p>You can rename a collection as follows.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -124,7 +131,7 @@ curl --request POST \
     &quot;newCollectionName&quot;: &quot;my_new_collection&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-Collection-Properties" class="common-anchor-header">컬렉션 속성 설정<button data-href="#Set-Collection-Properties" class="anchor-icon" translate="no">
+<h2 id="Set-Collection-Properties" class="common-anchor-header">Set Collection Properties<button data-href="#Set-Collection-Properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,8 +146,8 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션을 만든 후 컬렉션 수준 속성을 수정할 수 있습니다.</p>
-<h3 id="Supported-properties" class="common-anchor-header">지원되는 속성<button data-href="#Supported-properties" class="anchor-icon" translate="no">
+    </button></h2><p>You can modify collection-level properties after a collection is created.</p>
+<h3 id="Supported-properties" class="common-anchor-header">Supported properties<button data-href="#Supported-properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,35 +164,35 @@ curl --request POST \
       </svg>
     </button></h3><table>
    <tr>
-     <th><p>속성</p></th>
-     <th><p>설명</p></th>
+     <th><p>Property</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">collection.ttl.seconds</code></p></td>
-     <td><p>컬렉션의 데이터를 특정 기간 후에 삭제해야 하는 경우 TTL(Time-To-Live)을 초 단위로 설정하는 것이 좋습니다. TTL이 초과되면 Milvus는 컬렉션에서 모든 엔티티를 삭제합니다. </p><p>삭제는 비동기식으로 이루어지므로 삭제가 완료되기 전에도 검색 및 쿼리가 가능합니다.</p><p>자세한 내용은 <a href="/docs/ko/v2.6.x/set-collection-ttl.md">컬렉션 TTL 설정을</a> 참조하세요.</p></td>
+     <td><p>If the data of a collection needs to be deleted after a specific period, consider setting its Time-To-Live (TTL) in seconds. Once the TTL times out, Milvus deletes all entities from the collection. </p><p>The deletion is asynchronous, indicating that searches and queries are still possible before the deletion is complete.</p><p>For details, refer to <a href="/docs/ko/v2.6.x/set-collection-ttl.md">Set Collection TTL</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">mmap.enabled</code></p></td>
-     <td><p>메모리 매핑(Mmap)을 사용하면 디스크의 대용량 파일에 직접 메모리에 액세스할 수 있으므로 Milvus는 인덱스와 데이터를 메모리와 하드 드라이브 모두에 저장할 수 있습니다. 이 접근 방식은 액세스 빈도에 따라 데이터 배치 정책을 최적화하여 검색 성능에 영향을 주지 않으면서 컬렉션의 저장 용량을 확장하는 데 도움이 됩니다.</p><p>자세한 내용은 <a href="/docs/ko/v2.6.x/mmap.md">mmap 사용을</a> 참조하세요.</p></td>
+     <td><p>Memory mapping (Mmap) enables direct memory access to large files on disk, allowing Milvus to store indexes and data in both memory and hard drives. This approach helps optimize data placement policy based on access frequency, expanding storage capacity for collections without impacting search performance.</p><p>For details, refer to <a href="/docs/ko/v2.6.x/mmap.md">Use mmap</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">partitionkey.isolation</code></p></td>
-     <td><p>파티션 키 격리를 활성화하면 Milvus는 파티션 키 값을 기준으로 엔터티를 그룹화하고 각 그룹에 대해 별도의 인덱스를 생성합니다. 검색 요청을 받으면 Milvus는 필터링 조건에 지정된 파티션 키 값을 기준으로 인덱스를 찾고 인덱스에 포함된 엔티티 내에서 검색 범위를 제한하여 검색 중 관련 없는 엔티티를 검색하지 않고 검색 성능을 크게 향상시킵니다.</p><p>자세한 내용은 <a href="/docs/ko/v2.6.x/use-partition-key.md#Use-Partition-Key-Isolation">파티션 키 격리 사용을</a> 참조하세요.</p></td>
+     <td><p>With Partition Key Isolation enabled, Milvus groups entities based on the Partition Key value and creates a separate index for each of these groups. Upon receiving a search request, Milvus locates the index based on the Partition Key value specified in the filtering condition and restricts the search scope within the entities included in the index, thus avoiding scanning irrelevant entities during the search and greatly enhancing the search performance.</p><p>For details, refer to <a href="/docs/ko/v2.6.x/use-partition-key.md#Use-Partition-Key-Isolation">Use Partition Key Isolation</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">dynamicfield.enabled</code></p></td>
-     <td><p>동적 필드를 활성화하지 않고 만든 컬렉션에 대해 동적 필드를 활성화합니다. 활성화하면 원래 스키마에 정의되지 않은 필드가 있는 엔티티를 삽입할 수 있습니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/enable-dynamic-field.md">동적 필드를</a> 참조하세요.</p></td>
+     <td><p>Enables the dynamic field for collections that were created without enabling it. Once enabled, you can insert entities with fields not defined in the original schema. For details, refer to <a href="/docs/ko/v2.6.x/enable-dynamic-field.md">Dynamic Field</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">allow_insert_auto_id</code></p></td>
-     <td><p>컬렉션에 대해 AutoID가 활성화된 경우 컬렉션에서 사용자가 제공한 기본 키 값을 허용할지 여부입니다.</p><ul><li><p><strong>"true"</strong>로 설정하면: 삽입, 업서트 및 대량 가져오기는 사용자가 제공한 기본 키가 있는 경우 해당 기본 키를 사용하며, 그렇지 않으면 기본 키 값이 자동으로 생성됩니다.</p></li><li><p><strong>"false"</strong>로 설정된 경우: 사용자가 제공한 기본 키 값이 거부되거나 무시되며 기본 키 값은 항상 자동 생성됩니다. 기본값은 <strong>"false"</strong>입니다.</p></li></ul></td>
+     <td><p>Whether to allow a collection to accept user-provided primary key values when AutoID has been enabled for the collection.</p><ul><li><p>When set to <strong>"true"</strong>: Inserts, upserts, and bulk imports use the user-provided primary key if present; otherwise, primary key values are auto-generated.</p></li><li><p>When set to <strong>"false"</strong>: User-provided primary key values are rejected or ignored and primary key values are always auto-generated. The default is <strong>"false"</strong>.</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">timezone</code></p></td>
-     <td><p>시간에 민감한 작업, 특히 <code translate="no">TIMESTAMPTZ</code> 필드를 처리할 때 이 컬렉션의 기본 시간대를 지정합니다. 타임스탬프는 내부적으로 UTC로 저장되며, Milvus는 이 설정에 따라 표시 및 비교를 위해 값을 변환합니다. 설정된 경우 컬렉션 표준 시간대가 데이터베이스의 기본 표준 시간대를 재정의하며, 쿼리의 표준 시간대 매개변수는 일시적으로 두 표준 시간대를 모두 재정의할 수 있습니다. 값은 유효한 <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANA 표준 시간대 식별자</a> (예: <strong>아시아/상하이</strong>, <strong>미국/시카고</strong> 또는 <strong>UTC</strong>)여야 합니다. <code translate="no">TIMESTAMPTZ</code> 필드 사용 방법에 대한 자세한 내용은 <a href="/docs/ko/v2.6.x/timestamptz-field.md">TIMESTAMPTZ 필드를</a> 참조하세요.</p></td>
+     <td><p>Specifies the default timezone for this collection when handling time-sensitive operations, especially <code translate="no">TIMESTAMPTZ</code> fields. Timestamps are stored internally in UTC, and Milvus converts values for display and comparison according to this setting. If set, the collection timezone overrides the database’s default timezone; a query’s timezone parameter can temporarily override both. The value must be a valid <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANA time zone identifier</a> (for example, <strong>Asia/Shanghai</strong>, <strong>America/Chicago</strong>, or <strong>UTC</strong>). For details on how to use a <code translate="no">TIMESTAMPTZ</code> field, refer to <a href="/docs/ko/v2.6.x/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p></td>
    </tr>
 </table>
-<h3 id="Example-1-Set-collection-TTL" class="common-anchor-header">예 1: 컬렉션 TTL 설정<button data-href="#Example-1-Set-collection-TTL" class="anchor-icon" translate="no">
+<h3 id="Example-1-Set-collection-TTL" class="common-anchor-header">Example 1: Set collection TTL<button data-href="#Example-1-Set-collection-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -200,9 +207,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>다음 코드 스니펫은 컬렉션 TTL을 설정하는 방법을 보여줍니다.</p>
+    </button></h3><p>The following code snippet demonstrates how to set collection TTL.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client.alter_collection_properties(
@@ -252,7 +264,7 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Enable-mmap" class="common-anchor-header">예 2: mmap 활성화<button data-href="#Example-2-Enable-mmap" class="anchor-icon" translate="no">
+<h3 id="Example-2-Enable-mmap" class="common-anchor-header">Example 2: Enable mmap<button data-href="#Example-2-Enable-mmap" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -267,9 +279,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>다음 코드 스니펫은 mmap을 활성화하는 방법을 보여줍니다.</p>
+    </button></h3><p>The following code snippet demonstrates how to enable mmap.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client.alter_collection_properties(
@@ -311,7 +328,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     }
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Enable-partition-key" class="common-anchor-header">예 3: 파티션 키 활성화<button data-href="#Example-3-Enable-partition-key" class="anchor-icon" translate="no">
+<h3 id="Example-3-Enable-partition-key" class="common-anchor-header">Example 3: Enable partition key<button data-href="#Example-3-Enable-partition-key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -326,9 +343,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>다음 코드 스니펫은 파티션 키를 활성화하는 방법을 보여줍니다.</p>
+    </button></h3><p>The following code snippet demonstrates how to enable the partition key.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client.alter_collection_properties(
@@ -371,7 +393,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     }
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Enable-dynamic-field" class="common-anchor-header">예 4: 동적 필드 활성화<button data-href="#Example-4-Enable-dynamic-field" class="anchor-icon" translate="no">
+<h3 id="Example-4-Enable-dynamic-field" class="common-anchor-header">Example 4: Enable dynamic field<button data-href="#Example-4-Enable-dynamic-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -386,9 +408,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>다음 코드 스니펫은 동적 필드를 활성화하는 방법을 보여줍니다.</p>
+    </button></h3><p>The following code snippet demonstrates how to enable the dynamic field.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client.alter_collection_properties(
@@ -431,7 +458,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     }
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-5-Enable-allowinsertautoid" class="common-anchor-header">예 5: allow_insert_auto_id 활성화<button data-href="#Example-5-Enable-allowinsertautoid" class="anchor-icon" translate="no">
+<h3 id="Example-5-Enable-allowinsertautoid" class="common-anchor-header">Example 5: Enable allow_insert_auto_id<button data-href="#Example-5-Enable-allowinsertautoid" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -446,10 +473,15 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">allow_insert_auto_id</code> 속성을 사용하면 AutoID가 활성화된 컬렉션에서 삽입, 업서트 및 일괄 가져오기 중에 사용자가 제공한 기본 키 값을 허용할 수 있습니다. <strong>"true"</strong>로 설정하면 Milvus는 사용자가 제공한 기본 키 값이 있는 경우 해당 값을 사용하고, 그렇지 않으면 자동 생성합니다. 기본값은 <strong>"false"</strong>입니다.</p>
-<p>아래 예는 <code translate="no">allow_insert_auto_id</code> 을 활성화하는 방법을 보여줍니다:</p>
+    </button></h3><p>The <code translate="no">allow_insert_auto_id</code> property allows a collection with AutoID enabled to accept user-provided primary key values during insert, upsert, and bulk import. When set to <strong>“true”</strong>, Milvus uses the user-provided primary key value if present; otherwise it auto-generates. Default is <strong>“false”</strong>.</p>
+<p>The example below shows how to enable <code translate="no">allow_insert_auto_id</code>:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.alter_collection_properties(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
 <span class="highlighted-wrapper-line">    properties={<span class="hljs-string">&quot;allow_insert_auto_id&quot;</span>: <span class="hljs-string">&quot;true&quot;</span>}</span>
@@ -491,7 +523,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     }
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-6-Set-collection-time-zone" class="common-anchor-header">예 6: 수집 시간대 설정<button data-href="#Example-6-Set-collection-time-zone" class="anchor-icon" translate="no">
+<h3 id="Example-6-Set-collection-time-zone" class="common-anchor-header">Example 6: Set collection time zone<button data-href="#Example-6-Set-collection-time-zone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -506,11 +538,16 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">timezone</code> 속성을 사용하여 컬렉션의 기본 시간대를 설정할 수 있습니다. 이는 데이터 삽입, 쿼리, 결과 표시 등 컬렉션 내의 모든 작업에서 시간 관련 데이터가 해석되고 표시되는 방식을 결정합니다.</p>
-<p><code translate="no">timezone</code> 값은 <code translate="no">Asia/Shanghai</code>, <code translate="no">America/Chicago</code> 또는 <code translate="no">UTC</code> 과 같은 유효한 <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANA 표준 시간대 식별자이어야</a> 합니다. 유효하지 않거나 비표준 값을 사용하면 컬렉션 속성을 수정할 때 오류가 발생합니다.</p>
-<p>아래 예는 수집 시간대를 <strong>아시아/상하이로</strong> 설정하는 방법을 보여줍니다:</p>
+    </button></h3><p>You can set a default time zone for your collection using the <code translate="no">timezone</code> property. This determines how time-related data is interpreted and displayed for all operations within the collection, including data insertion, querying, and results presentation.</p>
+<p>The value of <code translate="no">timezone</code> must be a valid <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANA time zone identifier</a>, such as <code translate="no">Asia/Shanghai</code>, <code translate="no">America/Chicago</code>, or <code translate="no">UTC</code>. Using an invalid or non-standard value will result in an error when modifying the collection property.</p>
+<p>The example below shows how to set the collection time zone to <strong>Asia/Shanghai</strong>:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.alter_collection_properties(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
 <span class="highlighted-wrapper-line">    properties={<span class="hljs-string">&quot;timezone&quot;</span>: <span class="hljs-string">&quot;Asia/Shanghai&quot;</span>}</span>
@@ -546,7 +583,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
     }
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-Collection-Properties" class="common-anchor-header">컬렉션 속성 삭제<button data-href="#Drop-Collection-Properties" class="anchor-icon" translate="no">
+<h2 id="Drop-Collection-Properties" class="common-anchor-header">Drop Collection Properties<button data-href="#Drop-Collection-Properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -561,9 +598,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션 속성을 다음과 같이 삭제하여 재설정할 수도 있습니다.</p>
+    </button></h2><p>You can also reset a collection property by dropping it as follows.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.drop_collection_properties(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
     property_keys=[

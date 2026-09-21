@@ -1,13 +1,12 @@
 ---
 id: structarray-limits.md
-title: Ограничения StructArray
+title: StructArray Limits
 summary: >-
-  Поддержка StructArray охватывает определение схемы, вставку данных,
-  индексирование, режимы поиска и фильтры, специфичные для StructArray.
-  Используйте эту страницу в качестве справочника по ограничениям, прежде чем
-  полагаться на поведение StructArray в производственной среде.
+  StructArray support spans schema definition, insert payloads, indexing, search
+  modes, and StructArray-specific filters. Use this page as the limits reference
+  before you rely on StructArray behavior in production.
 ---
-<h1 id="StructArray-Limits" class="common-anchor-header">Ограничения StructArray<button data-href="#StructArray-Limits" class="anchor-icon" translate="no">
+<h1 id="StructArray-Limits" class="common-anchor-header">StructArray Limits<button data-href="#StructArray-Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,41 +21,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Поддержка StructArray охватывает определение схемы, вставку данных, индексирование, режимы поиска и фильтры, специфичные для StructArray. Используйте эту страницу в качестве справочника по ограничениям, прежде чем полагаться на поведение StructArray в производственной среде.</p>
-<p>Большинство ограничений StructArray обусловлено одним из трёх факторов: моделью схемы StructArray, выбранным режимом поиска для подполей вектора и версией Milvus, на которой работает ваша коллекция.</p>
-<h2 id="Limits-at-a-glance" class="common-anchor-header">Краткий обзор ограничений<button data-href="#Limits-at-a-glance" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><table>
-<thead>
-<tr><th>Область</th><th>Ограничение</th></tr>
-</thead>
-<tbody>
-<tr><td>Форма схемы</td><td>Struct можно использовать только в качестве типа элемента поля Array. Struct не поддерживается в качестве поля коллекции верхнего уровня.</td></tr>
-<tr><td>Схема подполя</td><td>Все элементы Struct в одном поле StructArray используют одну предопределенную схему Struct.</td></tr>
-<tr><td>Емкость</td><td><code translate="no">max_capacity</code> является обязательным параметром и ограничивает количество элементов Struct, которые одна сущность может хранить в поле StructArray.</td></tr>
-<tr><td>Изменения подполей</td><td>После создания поля StructArray добавить подполя в это существующее поле StructArray невозможно.</td></tr>
-<tr><td>Путь к подполю</td><td>Используйте пути в формате <code translate="no">structArray[subfield]</code>, например <code translate="no">chunks[emb]</code>, для индексов, целей поиска, полей вывода и фильтров. Не используйте <code translate="no">chunks.emb</code>.</td></tr>
-<tr><td>Вставка формы</td><td>Вставьте поле StructArray в виде массива объектов. Не используйте синтаксис путей внутри данных вставки.</td></tr>
-<tr><td>Векторные индексы</td><td>Векторное поле или векторное подполе принимает только один индекс. Используйте отдельные векторные подполя для поиска по EmbeddingList и поиска на уровне элементов.</td></tr>
-<tr><td>Функции</td><td>Функции полей не поддерживаются для полей или подполей внутри поля StructArray.</td></tr>
-<tr><td>Поля, допускающие значение null</td><td>Поля StructArray, допускающие значение null, зависят от версии. Если они поддерживаются, значение null применяется ко всему полю StructArray, а не к отдельному элементу Struct независимо.</td></tr>
-<tr><td>Динамическое добавление поля</td><td>Добавление поля StructArray в существующую коллекцию зависит от версии и требует, чтобы добавляемое поле допускало значение null.</td></tr>
-</tbody>
-</table>
-<h2 id="Schema-limits" class="common-anchor-header">Ограничения схемы<button data-href="#Schema-limits" class="anchor-icon" translate="no">
+    </button></h1><p>StructArray support spans schema definition, insert payloads, indexing, search modes, and StructArray-specific filters. Use this page as the limits reference before you rely on StructArray behavior in production.</p>
+<p>Most StructArray limits come from one of three places: the StructArray schema model, the search mode you choose for vector subfields, and the Milvus version that your collection runs on.</p>
+<h2 id="Limits-at-a-glance" class="common-anchor-header">Limits at a glance<button data-href="#Limits-at-a-glance" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,19 +40,22 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Ограничение</th><th>Подробности</th></tr>
+<tr><th>Area</th><th>Limit</th></tr>
 </thead>
 <tbody>
-<tr><td>Struct не является типом поля верхнего уровня.</td><td>Создайте поле StructArray как « <code translate="no">datatype=DataType.ARRAY</code> » с « <code translate="no">element_type=DataType.STRUCT</code> » и « <code translate="no">struct_schema</code> ».</td></tr>
-<tr><td>Все элементы используют одну схему.</td><td>Каждый элемент Struct в поле StructArray соответствует тому же списку подполей и тем же типам данных подполей.</td></tr>
-<tr><td><code translate="no">max_capacity</code> обязателен.</td><td>Количество элементов Struct в одной сущности не должно превышать значение <code translate="no">max_capacity</code>, настроенное для поля StructArray.</td></tr>
-<tr><td>Существующие подполя являются фиксированными.</td><td>К существующему полю StructArray нельзя добавлять новые подполя. Чтобы изменить схему подполей, удалите поле StructArray и добавьте его заново с обновленной схемой.</td></tr>
-<tr><td>Вложенные StructArray не поддерживаются.</td><td>Поле StructArray не может содержать вложенные подполя типа <code translate="no">Array</code>, <code translate="no">ArrayOfVector</code>, <code translate="no">Struct</code> или <code translate="no">ArrayOfStruct</code>.</td></tr>
-<tr><td>Функции внутри StructArray не поддерживаются.</td><td>Не определяйте функции полей для полей StructArray или их подполей.</td></tr>
+<tr><td>Schema shape</td><td>A Struct can be used only as the element type of an Array field. Struct is not supported as a top-level collection field.</td></tr>
+<tr><td>Subfield schema</td><td>All Struct elements in the same StructArray field share one predefined Struct schema.</td></tr>
+<tr><td>Capacity</td><td><code translate="no">max_capacity</code> is required and limits how many Struct elements one entity can store in the StructArray field.</td></tr>
+<tr><td>Subfield changes</td><td>After a StructArray field is created, you cannot add subfields to that existing StructArray field.</td></tr>
+<tr><td>Subfield path</td><td>Use <code translate="no">structArray[subfield]</code> paths, such as <code translate="no">chunks[emb]</code>, for indexes, search targets, output fields, and filters. Do not use <code translate="no">chunks.emb</code>.</td></tr>
+<tr><td>Insert shape</td><td>Insert a StructArray field as an array of objects. Do not use path syntax inside insert payloads.</td></tr>
+<tr><td>Vector indexes</td><td>A vector field or vector subfield accepts only one index. Use separate vector subfields for EmbeddingList search and element-level search.</td></tr>
+<tr><td>Functions</td><td>Field functions are not supported for fields or subfields inside a StructArray field.</td></tr>
+<tr><td>Nullable fields</td><td>Nullable StructArray fields are version-gated. When supported, null applies to the whole StructArray field, not to an individual Struct element independently.</td></tr>
+<tr><td>Dynamic add field</td><td>Adding a StructArray field to an existing collection is version-gated and requires the added field to be nullable.</td></tr>
 </tbody>
 </table>
-<p>Примеры создания схем см. в разделе <a href="/docs/ru/create-structarray-field.md">«Создание поля StructArray</a>».</p>
-<h2 id="Supported-subfield-data-types" class="common-anchor-header">Поддерживаемые типы данных подполей<button data-href="#Supported-subfield-data-types" class="anchor-icon" translate="no">
+<h2 id="Schema-limits" class="common-anchor-header">Schema limits<button data-href="#Schema-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,31 +70,60 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Поподполя StructArray сопоставляются физическому хранению в виде массива. В следующей таблице приведены поддерживаемые и неподдерживаемые физические типы.</p>
+    </button></h2><table>
+<thead>
+<tr><th>Limit</th><th>Details</th></tr>
+</thead>
+<tbody>
+<tr><td>Struct is not a top-level field type.</td><td>Create a StructArray field as <code translate="no">datatype=DataType.ARRAY</code> with <code translate="no">element_type=DataType.STRUCT</code> and a <code translate="no">struct_schema</code>.</td></tr>
+<tr><td>All elements share one schema.</td><td>Every Struct element in a StructArray field follows the same subfield list and subfield data types.</td></tr>
+<tr><td><code translate="no">max_capacity</code> is required.</td><td>The number of Struct elements in one entity must not exceed the <code translate="no">max_capacity</code> configured for the StructArray field.</td></tr>
+<tr><td>Existing subfields are fixed.</td><td>You cannot append new subfields to an existing StructArray field. To change the subfield schema, drop the StructArray field and add it again with the updated schema.</td></tr>
+<tr><td>Nested StructArray is not supported.</td><td>A StructArray field cannot contain nested <code translate="no">Array</code>, <code translate="no">ArrayOfVector</code>, <code translate="no">Struct</code>, or <code translate="no">ArrayOfStruct</code> subfields.</td></tr>
+<tr><td>Functions are not supported inside StructArray.</td><td>Do not define field functions for StructArray fields or their subfields.</td></tr>
+</tbody>
+</table>
+<p>For schema creation examples, see <a href="/docs/ru/create-structarray-field.md">Create a StructArray Field</a>.</p>
+<h2 id="Supported-subfield-data-types" class="common-anchor-header">Supported subfield data types<button data-href="#Supported-subfield-data-types" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><p>StructArray subfields map to physical array-style storage. The following table lists supported and unsupported physical types.</p>
 <table>
 <thead>
-<tr><th>Физический тип подполя Struct</th><th>Поддержка</th><th>Примечания</th></tr>
+<tr><th>Struct subfield physical type</th><th>Support</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Array</code></td><td>Поддерживается</td><td>Определите подполе как <code translate="no">DataType.BOOL</code>.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>Поддерживается</td><td>Определите подполе как <code translate="no">DataType.INT8</code>, <code translate="no">DataType.INT16</code>, <code translate="no">DataType.INT32</code> или <code translate="no">DataType.INT64</code>.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>Поддерживается</td><td>Определите подполе как <code translate="no">DataType.FLOAT</code> или <code translate="no">DataType.DOUBLE</code>.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>Поддерживается</td><td>Определите подполе как <code translate="no">DataType.VARCHAR</code> и установите <code translate="no">max_length</code>.</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>Поддерживается</td><td>Определите подполе как <code translate="no">DataType.FLOAT_VECTOR</code> и установите <code translate="no">dim</code>.</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>Поддерживается</td><td>Определите подполе как <code translate="no">DataType.FLOAT16_VECTOR</code> и установите <code translate="no">dim</code>.</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>Поддерживается</td><td>Определите подполе как « <code translate="no">DataType.BFLOAT16_VECTOR</code> » и установите значение <code translate="no">dim</code>.</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>Поддерживается</td><td>Определите подполе как « <code translate="no">DataType.INT8_VECTOR</code> » и установите значение <code translate="no">dim</code>.</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>Поддерживается</td><td>Определите подполе как « <code translate="no">DataType.BINARY_VECTOR</code> » и установите значение « <code translate="no">dim</code> ».</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>Не поддерживается</td><td>Подполя с разреженными векторами не поддерживаются в полях StructArray.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>Не поддерживается</td><td>Используйте <code translate="no">VARCHAR</code>, а не <code translate="no">String</code>.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>Не поддерживается</td><td>Поподполя JSON не поддерживаются в полях StructArray.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>Не поддерживается</td><td>По podpolu «Геометрия» и функции ГИС не поддерживаются в полях StructArray.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>Не поддерживается</td><td>По podpólia «Текст» в полях StructArray не поддерживаются.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>Не поддерживается</td><td>В полях StructArray не поддерживаются подполя Timestamptz и выражения, зависящие от времени.</td></tr>
-<tr><td>Вложенные « <code translate="no">Array</code> », « <code translate="no">ArrayOfVector</code> », « <code translate="no">Struct</code> » или <code translate="no">ArrayOfStruct</code></td><td>Не поддерживается</td><td>Поля StructArray не поддерживают вложенные подполя типа массив, вектор-массив, Struct или массив структур.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BOOL</code>.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.INT8</code>, <code translate="no">DataType.INT16</code>, <code translate="no">DataType.INT32</code>, or <code translate="no">DataType.INT64</code>.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT</code> or <code translate="no">DataType.DOUBLE</code>.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.VARCHAR</code> and set <code translate="no">max_length</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT16_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BFLOAT16_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.INT8_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BINARY_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Not supported</td><td>Sparse vector subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>Use <code translate="no">VARCHAR</code>, not <code translate="no">String</code>.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>JSON subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>Geometry subfields and GIS functions are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>Text subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>Timestamptz subfields and time-specific expressions are not supported in StructArray fields.</td></tr>
+<tr><td>Nested <code translate="no">Array</code>, <code translate="no">ArrayOfVector</code>, <code translate="no">Struct</code>, or <code translate="no">ArrayOfStruct</code></td><td>Not supported</td><td>StructArray fields do not support nested array, vector-array, Struct, or Array-of-Struct subfields.</td></tr>
 </tbody>
 </table>
-<h2 id="Nullable-and-dynamic-schema-limits" class="common-anchor-header">Ограничения, связанные с допускаемыми нулевыми значениями и динамическими схемами<button data-href="#Nullable-and-dynamic-schema-limits" class="anchor-icon" translate="no">
+<h2 id="Nullable-and-dynamic-schema-limits" class="common-anchor-header">Nullable and dynamic schema limits<button data-href="#Nullable-and-dynamic-schema-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,25 +138,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Поведение StructArray с допустимыми нулевыми значениями и динамическое добавление полей StructArray зависят от версии.</p>
+    </button></h2><p>Nullable StructArray behavior and dynamic StructArray field addition are version-gated.</p>
 <table>
 <thead>
-<tr><th>Возможности</th><th>Ограничение</th></tr>
+<tr><th>Capability</th><th>Limit</th></tr>
 </thead>
 <tbody>
-<tr><td>Поле StructArray с возможностью присвоения нулевого значения</td><td>Поддерживается в Milvus 3.0.0 и более поздних версиях. Установите флаг « <code translate="no">nullable=True</code> » для родительского объекта StructArray; не настраивайте подполя Struct как допускающие нулевые значения отдельно.</td></tr>
-<tr><td>Нулевое значение в Python</td><td>Используйте ` <code translate="no">None</code> ` для вставки нулевого значения StructArray в Python. Не используйте ` <code translate="no">Null</code> ` или ` <code translate="no">null</code>`.</td></tr>
-<tr><td>Область действия нулевого значения</td><td>Null применяется ко всему полю StructArray. Например, <code translate="no">chunks=None</code> допустим только в том случае, если <code translate="no">chunks</code> допускает значение null.</td></tr>
-<tr><td>Частично нулевое значение StructArray</td><td>Если поле StructArray содержит допустимое значение массива, не смешивайте массивы подполей с нулевым значением с массивами подполей с допустимыми значениями в одном и том же значении.</td></tr>
-<tr><td>Динамическое добавление поля StructArray</td><td>Поддерживается в Milvus 3.0.0 и более поздних версиях.</td></tr>
-<tr><td>Требование допускания null при динамическом добавлении</td><td>Поле StructArray, добавляемое в существующую коллекцию, должно допускать значение null, так как существующие сущности не имеют значения для нового поля.</td></tr>
-<tr><td>Сущности после динамического добавления</td><td>Существующие сущности возвращают значение « <code translate="no">null</code> » для добавленного поля StructArray.</td></tr>
+<tr><td>Nullable StructArray field</td><td>Supported in Milvus 3.0.0 and later. Set <code translate="no">nullable=True</code> on the StructArray parent; do not configure Struct subfields as nullable independently.</td></tr>
+<tr><td>Null value in Python</td><td>Use <code translate="no">None</code> to insert a null StructArray value in Python. Do not use <code translate="no">Null</code> or <code translate="no">null</code>.</td></tr>
+<tr><td>Null scope</td><td>Null applies to the whole StructArray field. For example, <code translate="no">chunks=None</code> is valid only when <code translate="no">chunks</code> is nullable.</td></tr>
+<tr><td>Partially null StructArray value</td><td>When a StructArray field contains a valid array value, do not mix null subfield arrays with valid subfield arrays in the same value.</td></tr>
+<tr><td>Dynamic add StructArray field</td><td>Supported in Milvus 3.0.0 and later.</td></tr>
+<tr><td>Nullable requirement for dynamic add</td><td>A StructArray field added to an existing collection must be nullable because existing entities have no value for the new field.</td></tr>
+<tr><td>Existing entities after dynamic add</td><td>Existing entities return <code translate="no">null</code> for the added StructArray field.</td></tr>
 </tbody>
 </table>
-<p>В версиях Milvus 3.0.0 и более поздних поддерживаются поля StructArray, допускающие значение null, векторные массивы, допускающие значение null, а также динамическое добавление полей StructArray как в автономных, так и в распределенных развертываниях. Более ранние версии Milvus не поддерживают эти возможности.</p>
-<p>В Zilliz Cloud эти возможности доступны в кластерах On-Demand, работающих под управлением Milvus 3.0.0 или более поздних версий. Кластеры Serving их не поддерживают.</p>
-<p>Примеры вставки <a href="/docs/ru/insert-data-into-structarray-fields.md">данных</a> с полями StructArray, допускающими значение null, см. в разделе <a href="/docs/ru/insert-data-into-structarray-fields.md">«Вставка данных в поля StructArray</a>».</p>
-<h2 id="Insert-limits" class="common-anchor-header">Ограничения на вставку<button data-href="#Insert-limits" class="anchor-icon" translate="no">
+<p>Milvus 3.0.0 and later releases support nullable StructArray fields, nullable vector arrays, and dynamic StructArray field addition in both Standalone and Distributed deployments. Earlier Milvus versions do not support these capabilities.</p>
+<p>In Zilliz Cloud, these capabilities are available on On-Demand Clusters running Milvus 3.0.0 or later. Serving Clusters do not support them.</p>
+<p>For insert examples with nullable StructArray fields, see <a href="/docs/ru/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p>
+<h2 id="Insert-limits" class="common-anchor-header">Insert limits<button data-href="#Insert-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -174,18 +173,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Ограничение</th><th>Подробности</th></tr>
+<tr><th>Limit</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>Формат данных</td><td>Вставьте поле StructArray в виде массива объектов Struct, например <code translate="no">chunks: [{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}]</code>.</td></tr>
-<tr><td>Имена подполей</td><td>Внутри каждого объекта Struct используйте имена подполей, такие как <code translate="no">text</code> и <code translate="no">emb</code>, а не пути, такие как <code translate="no">chunks[text]</code>.</td></tr>
-<tr><td>Соответствие схеме</td><td>Каждый элемент Struct должен соответствовать схеме Struct.</td></tr>
-<tr><td>Емкость</td><td>Количество элементов Struct в одной сущности не должно превышать <code translate="no">max_capacity</code>.</td></tr>
-<tr><td>Размеры вектора</td><td>Значения вектора должны соответствовать параметру « <code translate="no">dim</code> », настроенному для их векторных подполей.</td></tr>
-<tr><td>Дублирование в режиме поиска</td><td>Если вам требуется как поиск по EmbeddingList, так и поиск на уровне элементов, записывайте векторы в два отдельных векторных подполя.</td></tr>
+<tr><td>Payload shape</td><td>Insert the StructArray field as an array of Struct objects, such as <code translate="no">chunks: [{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}]</code>.</td></tr>
+<tr><td>Subfield names</td><td>Inside each Struct object, use subfield names such as <code translate="no">text</code> and <code translate="no">emb</code>, not paths such as <code translate="no">chunks[text]</code>.</td></tr>
+<tr><td>Schema alignment</td><td>Each Struct element must match the Struct schema.</td></tr>
+<tr><td>Capacity</td><td>The number of Struct elements in one entity must not exceed <code translate="no">max_capacity</code>.</td></tr>
+<tr><td>Vector dimensions</td><td>Vector values must match the <code translate="no">dim</code> configured for their vector subfields.</td></tr>
+<tr><td>Search-mode duplication</td><td>If you need both EmbeddingList search and element-level search, write vectors to two separate vector subfields.</td></tr>
 </tbody>
 </table>
-<h2 id="Index-and-metric-limits" class="common-anchor-header">Ограничения на индекс и метрику<button data-href="#Index-and-metric-limits" class="anchor-icon" translate="no">
+<h2 id="Index-and-metric-limits" class="common-anchor-header">Index and metric limits<button data-href="#Index-and-metric-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -200,20 +199,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Векторное подполе StructArray может быть индексировано либо для поиска по EmbeddingList, либо для поиска на уровне элементов. Одно и то же векторное подполе не может использовать обе семьи метрик, поскольку каждое векторное поле или векторное подполе принимает только один индекс.</p>
+    </button></h2><p>A StructArray vector subfield can be indexed for either EmbeddingList search or element-level search. The same vector subfield cannot use both metric families because each vector field or vector subfield accepts only one index.</p>
 <table>
 <thead>
-<tr><th>Режим поиска</th><th>Семейство метрик</th><th>Уровень результатов</th></tr>
+<tr><th>Search mode</th><th>Metric family</th><th>Result level</th></tr>
 </thead>
 <tbody>
-<tr><td>Поиск по EmbeddingList</td><td><code translate="no">MAX_SIM</code>, метрики « <code translate="no">MAX_SIM_COSINE</code> » , « <code translate="no">MAX_SIM_IP</code> » , « <code translate="no">MAX_SIM_L2</code> » или бинарные метрики « <code translate="no">MAX_SIM_*</code> »</td><td>Результаты на уровне сущностей.</td></tr>
-<tr><td>Поиск на уровне элементов</td><td>Обычные векторные метрики, такие как <code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code>, <code translate="no">HAMMING</code> или <code translate="no">JACCARD</code></td><td>Результаты на уровне элементов, которые могут включать смещение найденного элемента.</td></tr>
+<tr><td>EmbeddingList search</td><td><code translate="no">MAX_SIM</code>, <code translate="no">MAX_SIM_COSINE</code>, <code translate="no">MAX_SIM_IP</code>, <code translate="no">MAX_SIM_L2</code>, or binary <code translate="no">MAX_SIM_*</code> metrics</td><td>Entity-level results.</td></tr>
+<tr><td>Element-level search</td><td>Regular vector metrics such as <code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code>, <code translate="no">HAMMING</code>, or <code translate="no">JACCARD</code></td><td>Element-level results that can include the matched element offset.</td></tr>
 </tbody>
 </table>
-<p>Если требуются оба режима, используйте отдельные векторные подполя. Например, используйте <code translate="no">chunks[emb_list_vector]</code> для поиска по EmbeddingList и <code translate="no">chunks[emb]</code> для поиска на уровне элементов.</p>
-<p>Подполя вектора StructArray учитываются как подполя вектора при планировании схемы коллекции. Общее количество векторных полей и подполей вектора должно укладываться в пределы, установленные для целевой версии и уровня обслуживания.</p>
-<p>Поддерживаемые матрицы типа индекса и метрики см. в разделе <a href="/docs/ru/index-structarray-fields.md">«Поля StructArray индекса</a>».</p>
-<h2 id="Search-limits" class="common-anchor-header">Ограничения поиска<button data-href="#Search-limits" class="anchor-icon" translate="no">
+<p>Use separate vector subfields when both modes are required. For example, use <code translate="no">chunks[emb_list_vector]</code> for EmbeddingList search and <code translate="no">chunks[emb]</code> for element-level search.</p>
+<p>StructArray vector subfields count as vector subfields when you plan your collection schema. Keep the total number of vector fields and vector subfields within the limits of your target version and service tier.</p>
+<p>For the supported index-type and metric-type matrix, see <a href="/docs/ru/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Search-limits" class="common-anchor-header">Search limits<button data-href="#Search-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -230,18 +229,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Поведение поиска</th><th>Поддержка и ограничения</th></tr>
+<tr><th>Search behavior</th><th>Support and limits</th></tr>
 </thead>
 <tbody>
-<tr><td>Базовый поиск по EmbeddingList</td><td>Поддерживается для векторных подполей StructArray, индексированных с помощью метрик типа « <code translate="no">MAX_SIM*</code> ». Возвращает результаты на уровне сущностей.</td></tr>
-<tr><td>Базовый поиск на уровне элементов</td><td>Поддерживается для подполей вектора StructArray, индексированных с помощью обычных векторных метрик. Может возвращать смещения совпадающих элементов.</td></tr>
-<tr><td>Поиск по диапазону</td><td>Поддерживается в зависимости от режима поиска и поддержки индексов/метрик целевой версии. Чтобы узнать о поведении гибридного поиска по диапазону при запросах StructArray на уровне элементов, проверьте вашу целевую версию.</td></tr>
-<tr><td>Поиск с группировкой</td><td>Поиск с группировкой на уровне элементов может возвращать смещения. Поведение гибридного поиска с группировкой для запросов StructArray на уровне элементов зависит от версии.</td></tr>
-<tr><td>Гибридный поиск</td><td>Запрос гибридного поиска может включать запросы на подполя вектора StructArray только в том случае, если целевая версия поддерживает данную комбинацию поиска. Каждый запрос по-прежнему следует семейству метрик индексированного подполя вектора.</td></tr>
-<tr><td>Вывод смещений</td><td>Смещение доступно для результатов поиска на уровне элементов. Поиск по EmbeddingList возвращает результаты на уровне сущностей и не использует смещения элементов в качестве основной единицы результата.</td></tr>
+<tr><td>Basic EmbeddingList search</td><td>Supported on StructArray vector subfields indexed with <code translate="no">MAX_SIM*</code> metrics. Returns entity-level results.</td></tr>
+<tr><td>Basic element-level search</td><td>Supported on StructArray vector subfields indexed with regular vector metrics. Can return matched element offsets.</td></tr>
+<tr><td>Range search</td><td>Supported according to the search mode and index/metric support of the target version. For hybrid search range behavior on element-level StructArray requests, check your target version.</td></tr>
+<tr><td>Grouping search</td><td>Element-level grouping search can return offsets. Hybrid search group-by behavior for element-level StructArray requests is version-gated.</td></tr>
+<tr><td>Hybrid search</td><td>A hybrid search request can include StructArray vector subfield requests only where the target version supports that search combination. Each request still follows the metric family of the indexed vector subfield.</td></tr>
+<tr><td>Offset output</td><td>Offset is available for element-level search results. EmbeddingList search returns entity-level results and does not use element offsets as the primary result unit.</td></tr>
 </tbody>
 </table>
-<h2 id="Filter-and-operator-limits" class="common-anchor-header">Ограничения фильтров и операторов<button data-href="#Filter-and-operator-limits" class="anchor-icon" translate="no">
+<h2 id="Filter-and-operator-limits" class="common-anchor-header">Filter and operator limits<button data-href="#Filter-and-operator-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -256,16 +255,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Скалярная фильтрация StructArray осуществляется с помощью операторов StructArray, таких как « <code translate="no">element_filter</code> » и семейства операторов « <code translate="no">MATCH_*</code> ». Подробная матрица поддержки предикатов приведена в разделе <a href="/docs/ru/struct-array-operators.md">«Операторы StructArray</a>».</p>
-<p>В общих чертах:</p>
+    </button></h2><p>StructArray scalar filtering is handled by StructArray operators, such as <code translate="no">element_filter</code> and the <code translate="no">MATCH_*</code> family. The detailed predicate support matrix belongs in <a href="/docs/ru/struct-array-operators.md">StructArray Operators</a>.</p>
+<p>At a high level:</p>
 <ul>
-<li><p>Используйте « <code translate="no">$[subfield]</code> » только внутри операторов StructArray.</p></li>
-<li><p>Используйте скалярные подполя для скалярных предикатов.</p></li>
-<li><p>Не используйте векторные подполя в качестве входных данных для скалярных предикатов типа « <code translate="no">$[...]</code> ».</p></li>
-<li><p>Синтаксис JSON-путей, функции JSON, функции контейнеров массивов, функции сопоставления текста, функции геометрии/ГИС и выражения Timestamptz не поддерживаются для предикатов на уровне элементов StructArray.</p></li>
-<li><p>Предпочтительно используйте явные булевы сравнения, такие как ` <code translate="no">$[has_code] == true</code> `, вместо простых булевых выражений.</p></li>
+<li><p>Use <code translate="no">$[subfield]</code> only inside StructArray operators.</p></li>
+<li><p>Use scalar subfields for scalar predicates.</p></li>
+<li><p>Do not use vector subfields as <code translate="no">$[...]</code> scalar predicate inputs.</p></li>
+<li><p>JSON path syntax, JSON functions, array container functions, text match functions, Geometry / GIS functions, and Timestamptz expressions are not supported for StructArray element-level predicates.</p></li>
+<li><p>Prefer explicit boolean comparisons such as <code translate="no">$[has_code] == true</code> instead of bare boolean expressions.</p></li>
 </ul>
-<h2 id="Related-pages" class="common-anchor-header">Связанные страницы<button data-href="#Related-pages" class="anchor-icon" translate="no">
+<h2 id="Related-pages" class="common-anchor-header">Related pages<button data-href="#Related-pages" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -281,8 +280,8 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Чтобы создать поле StructArray, ознакомьтесь со статьёй <a href="/docs/ru/create-structarray-field.md">«Создание поля StructArray</a>».</p></li>
-<li><p>Для вставки данных ознакомьтесь с разделом <a href="/docs/ru/insert-data-into-structarray-fields.md">«Вставка данных в поля StructArray</a>».</p></li>
-<li><p>Чтобы создать векторные и скалярные индексы, ознакомьтесь с разделом <a href="/docs/ru/index-structarray-fields.md">«Индексирование полей StructArray</a>».</p></li>
-<li><p>Чтобы ознакомиться с синтаксисом фильтров StructArray, прочтите раздел <a href="/docs/ru/struct-array-operators.md">«Операторы StructArray</a>».</p></li>
+<li><p>To create a StructArray field, read <a href="/docs/ru/create-structarray-field.md">Create a StructArray Field</a>.</p></li>
+<li><p>To insert data, read <a href="/docs/ru/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p></li>
+<li><p>To create vector and scalar indexes, read <a href="/docs/ru/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To review StructArray filter syntax, read <a href="/docs/ru/struct-array-operators.md">StructArray Operators</a>.</p></li>
 </ol>

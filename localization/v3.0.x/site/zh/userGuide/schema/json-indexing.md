@@ -1,12 +1,14 @@
 ---
 id: json-indexing.md
-title: JSON 索引
+title: JSON Indexing
 summary: >-
-  JSON 字段为在 Milvus 中存储结构化元数据提供了一种灵活的方式。如果不进行索引，对 JSON 字段的查询需要扫描整个
-  Collection，随着数据集规模的扩大，这种操作会变得非常缓慢。JSON 索引会在 JSON
-  数据中的特定路径上创建索引，从而使针对这些路径的相等、范围及其他过滤查询能够快速运行。
+  JSON fields provide a flexible way to store structured metadata in Milvus.
+  Without indexing, queries on JSON fields require full collection scans, which
+  become slow as your dataset grows. JSON indexing creates indexes on specific
+  paths within your JSON data so equality, range, and other filter queries on
+  those paths run fast.
 ---
-<h1 id="JSON-Indexing" class="common-anchor-header">JSON 索引<button data-href="#JSON-Indexing" class="anchor-icon" translate="no">
+<h1 id="JSON-Indexing" class="common-anchor-header">JSON Indexing<button data-href="#JSON-Indexing" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,15 +23,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>JSON 字段为在 Milvus 中存储结构化元数据提供了一种灵活的方式。如果不进行索引，对 JSON 字段的查询需要扫描整个 Collection，随着数据集的增长，这种操作会变得非常缓慢。JSON 索引会在 JSON 数据中的特定路径上创建索引，从而使针对该路径的相等、范围及其他过滤查询能够快速运行。</p>
-<p>JSON 索引特别适用于：</p>
+    </button></h1><p>JSON fields provide a flexible way to store structured metadata in Milvus. Without indexing, queries on JSON fields require full collection scans, which become slow as your dataset grows. JSON indexing creates an index on a specific path within your JSON data so equality, range, and other filter queries on that path run fast.</p>
+<p>JSON indexing is ideal for:</p>
 <ul>
-<li><p>具有一致且已知键的结构化Schema</p></li>
-<li><p>针对特定 JSON 路径的相等、<code translate="no">IN</code> 、范围及文本匹配查询</p></li>
-<li><p>需要精确控制哪些键被索引的场景</p></li>
+<li><p>Structured schemas with consistent, known keys</p></li>
+<li><p>Equality, <code translate="no">IN</code>, range, and text-match queries on specific JSON paths</p></li>
+<li><p>Scenarios where you need precise control over which keys are indexed</p></li>
 </ul>
-<p>对于查询模式多样且结构复杂的 JSON 文档，建议考虑使用<a href="/docs/zh/json-shredding.md">JSON 分片</a>作为替代方案。</p>
-<h2 id="Index-type-overview" class="common-anchor-header">索引类型概述<button data-href="#Index-type-overview" class="anchor-icon" translate="no">
+<p>For complex JSON documents with diverse query patterns, consider <a href="/docs/zh/json-shredding.md">JSON Shredding</a> as an alternative.</p>
+<h2 id="Index-type-overview" class="common-anchor-header">Index type overview<button data-href="#Index-type-overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,9 +46,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 为 JSON 路径提供了四种索引类型，每种都适用于不同的查询模式。</p>
-<p>在选择索引类型之前，请先确定 JSON 路径的<strong>转换类型</strong>。转换类型决定了 Milvus 如何解析该路径下的值，以及可用的索引类型。</p>
-<h3 id="Understand-cast-types" class="common-anchor-header">了解转换类型<button data-href="#Understand-cast-types" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus offers four index types for JSON paths. Each is suited to a different query pattern.</p>
+<p>Before choosing an index type, identify the <strong>cast type</strong> for the JSON path. The cast type determines how Milvus interprets the value at that path and which index types are available.</p>
+<h3 id="Understand-cast-types" class="common-anchor-header">Understand cast types<button data-href="#Understand-cast-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -61,24 +63,24 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">json_cast_type</code> 即用于解析和索引<code translate="no">json_path</code> 路径下值的数据类型。它与字段 Schema 类型不同：字段本身仍是<code translate="no">JSON</code> 字段，但每个被索引的路径会被视为特定的标量、数组或 JSON 对象类型。</p>
-<p>请选择与该路径下存储的值相匹配的转换类型。要检查某个转换类型是否与特定索引类型兼容，请参阅《<a href="/docs/zh/json-indexing.md#compatibility-reference">兼容性参考》</a>。</p>
+    </button></h3><p><code translate="no">json_cast_type</code> is the data type used to interpret and index the value at <code translate="no">json_path</code>. It is different from the field schema type: the field is still a <code translate="no">JSON</code> field, but each indexed path is treated as a specific scalar, array, or JSON object type.</p>
+<p>Choose the cast type that matches the values stored at the path. To check whether a cast type works with a specific index type, see <a href="/docs/zh/json-indexing.md#compatibility-reference">Compatibility reference</a>.</p>
 <table>
 <thead>
-<tr><th>转换类型</th><th>当路径值为……时使用</th><th>示例值</th></tr>
+<tr><th>Cast type</th><th>Use when the path value is…</th><th>Example value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code></td><td>布尔值</td><td><code translate="no">true</code></td></tr>
-<tr><td><code translate="no">DOUBLE</code></td><td>数值</td><td><code translate="no">99.99</code></td></tr>
-<tr><td><code translate="no">VARCHAR</code></td><td>字符串值</td><td><code translate="no">&quot;electronics&quot;</code></td></tr>
-<tr><td><code translate="no">ARRAY_BOOL</code></td><td>布尔值数组</td><td><code translate="no">[true, false]</code></td></tr>
-<tr><td><code translate="no">ARRAY_DOUBLE</code></td><td>数值数组</td><td><code translate="no">[1.2, 3.14]</code></td></tr>
-<tr><td><code translate="no">ARRAY_VARCHAR</code></td><td>字符串值的数组</td><td><code translate="no">[&quot;tag1&quot;, &quot;tag2&quot;]</code></td></tr>
-<tr><td><code translate="no">JSON</code></td><td>整个 JSON 对象或子对象。从 Milvus 3.0.0 开始，对整个 JSON 对象的索引功能已被废弃。</td><td><code translate="no">{&quot;supplier&quot;: {&quot;country&quot;: &quot;USA&quot;}}</code></td></tr>
+<tr><td><code translate="no">BOOL</code></td><td>A Boolean value</td><td><code translate="no">true</code></td></tr>
+<tr><td><code translate="no">DOUBLE</code></td><td>A numeric value</td><td><code translate="no">99.99</code></td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td>A string value</td><td><code translate="no">&quot;electronics&quot;</code></td></tr>
+<tr><td><code translate="no">ARRAY_BOOL</code></td><td>An array of Boolean values</td><td><code translate="no">[true, false]</code></td></tr>
+<tr><td><code translate="no">ARRAY_DOUBLE</code></td><td>An array of numeric values</td><td><code translate="no">[1.2, 3.14]</code></td></tr>
+<tr><td><code translate="no">ARRAY_VARCHAR</code></td><td>An array of string values</td><td><code translate="no">[&quot;tag1&quot;, &quot;tag2&quot;]</code></td></tr>
+<tr><td><code translate="no">JSON</code></td><td>An entire JSON object or sub-object. Whole-object JSON indexing is deprecated starting in Milvus 3.0.0.</td><td><code translate="no">{&quot;supplier&quot;: {&quot;country&quot;: &quot;USA&quot;}}</code></td></tr>
 </tbody>
 </table>
-<p>如果同一路径下的值类型不一致，则仅对与转换后类型匹配的值进行索引。例如，如果<code translate="no">metadata[&quot;price&quot;]</code> 同时包含<code translate="no">99.99</code> 和<code translate="no">&quot;99.99&quot;</code> ，则<code translate="no">DOUBLE</code> 转换类型的索引将包含数值并跳过字符串值。若要在索引过程中转换字符串值，请使用<code translate="no">json_cast_function</code> ；<a href="/docs/zh/json-indexing.md#example-5-convert-data-type-at-index-time">参见示例 5：在索引时转换数据类型</a>。</p>
-<h3 id="Choose-an-index-type" class="common-anchor-header">选择索引类型<button data-href="#Choose-an-index-type" class="anchor-icon" translate="no">
+<p>If values at the same path have inconsistent types, only values that match the cast type are indexed. For example, if <code translate="no">metadata[&quot;price&quot;]</code> contains both <code translate="no">99.99</code> and <code translate="no">&quot;99.99&quot;</code>, an index of the <code translate="no">DOUBLE</code> cast type includes the numeric value and skips the string value. To convert string values during indexing, use <code translate="no">json_cast_function</code>; see <a href="/docs/zh/json-indexing.md#example-5-convert-data-type-at-index-time">Example 5: Convert data type at index time</a>.</p>
+<h3 id="Choose-an-index-type" class="common-anchor-header">Choose an index type<button data-href="#Choose-an-index-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,20 +95,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>选择转换类型后，请根据您的查询模式选择索引类型。</p>
+    </button></h3><p>After you choose a cast type, choose the index type according to your query pattern.</p>
 <table>
 <thead>
-<tr><th>查询模式</th><th>推荐的索引类型</th><th>转换类型要求</th><th>备注</th></tr>
+<tr><th>Query pattern</th><th>Recommended index type</th><th>Cast type requirement</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td>对标量值的混合等值和范围过滤条件</td><td><code translate="no">AUTOINDEX</code></td><td>请使用<code translate="no">BOOL</code> 、<code translate="no">DOUBLE</code> 或<code translate="no">VARCHAR</code> 。</td><td>让 Milvus 根据值的基数自动选择内部索引布局。</td></tr>
-<tr><td>对 JSON 数组中值的过滤</td><td><code translate="no">INVERTED</code></td><td>请使用<code translate="no">ARRAY_BOOL</code> 、<code translate="no">ARRAY_DOUBLE</code> 或<code translate="no">ARRAY_VARCHAR</code> 。</td><td>所有数组转换类型均需使用此功能。</td></tr>
-<tr><td>整个对象或子对象索引（已弃用）</td><td><code translate="no">INVERTED</code> 或<code translate="no">AUTOINDEX</code> （仅为兼容性而保留）</td><td>请使用<code translate="no">JSON</code> 。</td><td>出于兼容性考虑而支持。对于新工作负载，请创建路径特定索引或考虑使用<a href="/docs/zh/json-shredding.md">JSON 分片</a>。</td></tr>
-<tr><td>针对数字或可排序字符串的范围过滤器</td><td><code translate="no">STL_SORT</code> 或<code translate="no">AUTOINDEX</code></td><td>使用<code translate="no">DOUBLE</code> 或<code translate="no">VARCHAR</code> 。</td><td>使用 `<code translate="no">STL_SORT</code> ` 强制采用排序布局；若希望自动选择，请使用 `<code translate="no">AUTOINDEX</code> `。</td></tr>
-<tr><td>针对低Cardinal值的相等或<code translate="no">IN</code> 筛选条件</td><td><code translate="no">BITMAP</code> 或<code translate="no">AUTOINDEX</code></td><td>使用<code translate="no">BOOL</code> 或<code translate="no">VARCHAR</code> 。</td><td>使用<code translate="no">BITMAP</code> 强制采用位图布局。对于数值，请使用<code translate="no">AUTOINDEX</code> 或<code translate="no">STL_SORT</code> 。</td></tr>
+<tr><td>Mixed equality and range filters on scalar values</td><td><code translate="no">AUTOINDEX</code></td><td>Use <code translate="no">BOOL</code>, <code translate="no">DOUBLE</code>, or <code translate="no">VARCHAR</code>.</td><td>Lets Milvus choose the internal index layout based on value cardinality.</td></tr>
+<tr><td>Filters on values inside JSON arrays</td><td><code translate="no">INVERTED</code></td><td>Use <code translate="no">ARRAY_BOOL</code>, <code translate="no">ARRAY_DOUBLE</code>, or <code translate="no">ARRAY_VARCHAR</code>.</td><td>Required for all array cast types.</td></tr>
+<tr><td>Whole-object or sub-object indexing (deprecated)</td><td><code translate="no">INVERTED</code> or <code translate="no">AUTOINDEX</code> (compatibility only)</td><td>Use <code translate="no">JSON</code>.</td><td>Supported for compatibility. For new workloads, create path-specific indexes or consider <a href="/docs/zh/json-shredding.md">JSON Shredding</a>.</td></tr>
+<tr><td>Range filters on numbers or sortable strings</td><td><code translate="no">STL_SORT</code> or <code translate="no">AUTOINDEX</code></td><td>Use <code translate="no">DOUBLE</code> or <code translate="no">VARCHAR</code>.</td><td>Use <code translate="no">STL_SORT</code> to force a sorted layout; use <code translate="no">AUTOINDEX</code> when you want automatic selection.</td></tr>
+<tr><td>Equality or <code translate="no">IN</code> filters on low-cardinality values</td><td><code translate="no">BITMAP</code> or <code translate="no">AUTOINDEX</code></td><td>Use <code translate="no">BOOL</code> or <code translate="no">VARCHAR</code>.</td><td>Use <code translate="no">BITMAP</code> to force a bitmap layout. For numeric values, use <code translate="no">AUTOINDEX</code> or <code translate="no">STL_SORT</code>.</td></tr>
 </tbody>
 </table>
-<p>如有疑问，请先使用<code translate="no">AUTOINDEX</code> 处理标量路径。对于数组转换类型和文本匹配查询，请显式使用<code translate="no">INVERTED</code> 。使用<code translate="no">INVERTED</code> 或<code translate="no">AUTOINDEX</code> 进行整个对象的 JSON 索引仍受支持，但自 Milvus 3.0.0 起已弃用。</p>
+<p>When in doubt, start with <code translate="no">AUTOINDEX</code> for scalar paths. Use <code translate="no">INVERTED</code> explicitly for array cast types and text-match queries. Whole-object JSON indexing with either <code translate="no">INVERTED</code> or <code translate="no">AUTOINDEX</code> remains supported, but it is deprecated starting in Milvus 3.0.0.</p>
 <h3 id="AUTOINDEX" class="common-anchor-header">AUTOINDEX<button data-href="#AUTOINDEX" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -122,26 +124,26 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">AUTOINDEX</code> 的行为取决于您指定的<code translate="no">json_cast_type</code> 。在 Milvus 3.0 中，对于 JSON 路径索引，<code translate="no">AUTOINDEX</code> 不再总是解析为<code translate="no">INVERTED</code> 。</p>
+    </button></h3><p><code translate="no">AUTOINDEX</code> behavior depends on the <code translate="no">json_cast_type</code> you specify. In Milvus 3.0, <code translate="no">AUTOINDEX</code> no longer always resolves to <code translate="no">INVERTED</code> for JSON path indexes.</p>
 <table>
 <thead>
-<tr><th>类型转换</th><th><code translate="no">AUTOINDEX</code> 的行为</th></tr>
+<tr><th>Cast type</th><th><code translate="no">AUTOINDEX</code> behavior</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code>、<code translate="no">DOUBLE</code> 、<code translate="no">VARCHAR</code></td><td>根据值的基数在<code translate="no">BITMAP</code> 和<code translate="no">STL_SORT</code> 之间进行选择。</td></tr>
-<tr><td><code translate="no">ARRAY_BOOL</code>,<code translate="no">ARRAY_DOUBLE</code>,<code translate="no">ARRAY_VARCHAR</code></td><td>不支持。请显式使用<code translate="no">INVERTED</code> 作为索引类型。</td></tr>
-<tr><td><code translate="no">JSON</code></td><td>使用<code translate="no">INVERTED</code> 进行整个对象或子对象的索引。此模式自 Milvus 3.0.0 起已弃用。</td></tr>
+<tr><td><code translate="no">BOOL</code>, <code translate="no">DOUBLE</code>, <code translate="no">VARCHAR</code></td><td>Chooses between <code translate="no">BITMAP</code> and <code translate="no">STL_SORT</code> based on value cardinality.</td></tr>
+<tr><td><code translate="no">ARRAY_BOOL</code>, <code translate="no">ARRAY_DOUBLE</code>, <code translate="no">ARRAY_VARCHAR</code></td><td>Not supported. Use <code translate="no">INVERTED</code> explicitly as the index type.</td></tr>
+<tr><td><code translate="no">JSON</code></td><td>Uses <code translate="no">INVERTED</code> for whole-object or sub-object indexing. This mode is deprecated starting in Milvus 3.0.0.</td></tr>
 </tbody>
 </table>
-<p>对于标量转换类型（<code translate="no">BOOL</code> 、<code translate="no">DOUBLE</code> 和<code translate="no">VARCHAR</code> ），当您希望 Milvus 自动选择内部索引布局时，建议将<code translate="no">AUTOINDEX</code> 作为起点。在构建索引期间，Milvus 会测量 JSON 路径下值的<strong>基数</strong>。基数指该路径下不同值的数量。</p>
-<p>根据基数，Milvus 会从两种内部布局中选择一种：</p>
+<p>For scalar cast types (<code translate="no">BOOL</code>, <code translate="no">DOUBLE</code>, and <code translate="no">VARCHAR</code>), <code translate="no">AUTOINDEX</code> is the recommended starting point when you want Milvus to choose the internal index layout. During index build, Milvus measures the <strong>cardinality</strong> of the values at the JSON path. Cardinality means the number of distinct values at that path.</p>
+<p>Based on cardinality, Milvus chooses one of two internal layouts:</p>
 <ul>
-<li><p><strong>低基数</strong>：值频繁重复，例如<code translate="no">metadata[&quot;in_stock&quot;]</code> 包含<code translate="no">true</code> 和<code translate="no">false</code> ，或者<code translate="no">metadata[&quot;status&quot;]</code> 包含一小组状态字符串。Milvus 会在内部构建一个<code translate="no">BITMAP</code> 索引，以实现快速的相等性比较和<code translate="no">IN</code> 过滤器。</p></li>
-<li><p><strong>高基数</strong>：大多数值是唯一的，例如<code translate="no">metadata[&quot;price&quot;]</code> 、<code translate="no">metadata[&quot;created_at&quot;]</code> 或<code translate="no">metadata[&quot;product_id&quot;]</code> 。Milvus 会在内部构建<code translate="no">STL_SORT</code> 索引，以支持快速范围过滤器，例如<code translate="no">&gt;</code> 、<code translate="no">&lt;</code> 、<code translate="no">&gt;=</code> 和<code translate="no">&lt;=</code> 。</p></li>
+<li><p><strong>Low cardinality</strong>: Values repeat often, such as <code translate="no">metadata[&quot;in_stock&quot;]</code> with <code translate="no">true</code> and <code translate="no">false</code>, or <code translate="no">metadata[&quot;status&quot;]</code> with a small set of status strings. Milvus builds a <code translate="no">BITMAP</code> index internally for fast equality and <code translate="no">IN</code> filters.</p></li>
+<li><p><strong>High cardinality</strong>: Most values are distinct, such as <code translate="no">metadata[&quot;price&quot;]</code>, <code translate="no">metadata[&quot;created_at&quot;]</code>, or <code translate="no">metadata[&quot;product_id&quot;]</code>. Milvus builds an <code translate="no">STL_SORT</code> index internally for fast range filters such as <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, and <code translate="no">&lt;=</code>.</p></li>
 </ul>
-<p>默认的<code translate="no">BITMAP</code> 与<code translate="no">STL_SORT</code> 阈值为<strong>100 个不同值</strong>。您可以通过<code translate="no">bitmap_cardinality_limit</code> 调整此阈值；请参阅<a href="/docs/zh/json-indexing.md#how-do-i-tune-autoindexs-bitmap-vs-stl-sort-threshold">“如何调整 AUTOINDEX 的 BITMAP 与 STL_SORT 阈值？”</a>。</p>
+<p>The default <code translate="no">BITMAP</code>-vs-<code translate="no">STL_SORT</code> threshold is <strong>100 distinct values</strong>. You can tune this threshold with <code translate="no">bitmap_cardinality_limit</code>; see <a href="/docs/zh/json-indexing.md#how-do-i-tune-autoindexs-bitmap-vs-stl-sort-threshold">How do I tune AUTOINDEX’s BITMAP-vs-STL_SORT threshold?</a>.</p>
 <div class="alert note">
-<p><strong>Milvus 3.0 中的行为变更</strong>。在早期版本中，对 JSON 路径的<code translate="no">AUTOINDEX</code> 操作始终会构建<code translate="no">INVERTED</code> 索引。从 Milvus 3.0 开始，对于标量转换类型，<code translate="no">AUTOINDEX</code> 会在<code translate="no">BITMAP</code> 和<code translate="no">STL_SORT</code> 之间进行选择。对于<code translate="no">JSON</code> ，<code translate="no">AUTOINDEX</code> 仍使用<code translate="no">INVERTED</code> ，尽管整个对象的 JSON 索引已被弃用。对于数组转换类型和文本匹配查询，请显式指定<code translate="no">INVERTED</code> 。</p>
+<p><strong>Behavior change in Milvus 3.0</strong>. In earlier versions, <code translate="no">AUTOINDEX</code> on JSON paths always built an <code translate="no">INVERTED</code> index. From Milvus 3.0, <code translate="no">AUTOINDEX</code> picks between <code translate="no">BITMAP</code> and <code translate="no">STL_SORT</code> for scalar cast types. For <code translate="no">JSON</code>, <code translate="no">AUTOINDEX</code> still uses <code translate="no">INVERTED</code>, although whole-object JSON indexing is deprecated. For array cast types and text-match queries, specify <code translate="no">INVERTED</code> explicitly.</p>
 </div>
 <h3 id="INVERTED" class="common-anchor-header">INVERTED<button data-href="#INVERTED" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -158,15 +160,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">INVERTED</code> 在需要文本匹配查询或数组索引时最为适用。它也仍然可用于已弃用的整个对象 JSON 索引。</p>
-<p>在以下情况下，请显式指定<code translate="no">INVERTED</code> ：</p>
+    </button></h3><p><code translate="no">INVERTED</code> is the best fit when you need text-match queries or array indexing. It also remains available for deprecated whole-object JSON indexing.</p>
+<p>Specify <code translate="no">INVERTED</code> explicitly when:</p>
 <ul>
-<li><p>需要对 JSON 数组中的值进行索引时。</p></li>
-<li><p>您维护着针对整个 JSON 对象或子对象的现有索引，并希望明确采用 `<code translate="no">INVERTED</code> ` 的行为。</p></li>
-<li><p>您希望使用一种索引类型来处理相等、<code translate="no">IN</code> 、范围、文本匹配和数组查询。出于兼容性考虑，仍支持对整个 JSON 对象的索引，但代价是索引大小会更大。</p></li>
+<li><p>You need to index values inside JSON arrays.</p></li>
+<li><p>You maintain an existing index on an entire JSON object or sub-object and want to make the <code translate="no">INVERTED</code> behavior explicit.</p></li>
+<li><p>You want one index type that handles equality, <code translate="no">IN</code>, range, text-match, and array queries. Whole-object support remains available for compatibility, at the cost of a larger index size.</p></li>
 </ul>
-<p>对于针对整个 JSON 对象（<code translate="no">json_cast_type=&quot;JSON&quot;</code> ）的现有索引，您可以继续使用<code translate="no">INVERTED</code> 或<code translate="no">AUTOINDEX</code> 。<code translate="no">AUTOINDEX</code> 对此转换类型使用<code translate="no">INVERTED</code> 。对于新工作负载，不再建议使用整个对象的 JSON 索引。</p>
-<p>有关详细信息，请参阅<a href="/docs/zh/inverted.md">INVERTED</a>。</p>
+<p>For existing indexes on entire JSON objects (<code translate="no">json_cast_type=&quot;JSON&quot;</code>), you can continue to use either <code translate="no">INVERTED</code> or <code translate="no">AUTOINDEX</code>. <code translate="no">AUTOINDEX</code> uses <code translate="no">INVERTED</code> for this cast type. Whole-object JSON indexing is no longer recommended for new workloads.</p>
+<p>For details, refer to <a href="/docs/zh/inverted.md">INVERTED</a>.</p>
 <h3 id="STLSORT" class="common-anchor-header">STL_SORT<button data-href="#STLSORT" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -182,15 +184,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">STL_SORT</code> 将 JSON 路径中的值按排序顺序存储。该类型针对数值或可排序字符串值的范围过滤进行了优化。</p>
-<p><code translate="no">STL_SORT</code> 仅支持<code translate="no">DOUBLE</code> 和<code translate="no">VARCHAR</code> 转换类型。在以下情况下使用：</p>
+    </button></h3><p><code translate="no">STL_SORT</code> stores values from a JSON path in sorted order. It is optimized for range filters on numeric values or sortable string values.</p>
+<p><code translate="no">STL_SORT</code> supports only <code translate="no">DOUBLE</code> and <code translate="no">VARCHAR</code> cast types. Use it when:</p>
 <ul>
-<li><p>您的过滤器使用<code translate="no">&gt;</code> 、<code translate="no">&lt;</code> 、<code translate="no">&gt;=</code> 或<code translate="no">&lt;=</code> 对值进行比较。</p></li>
-<li><p>索引值具有高基数，例如价格、时间戳、ID 或可排序代码。</p></li>
-<li><p>您希望强制采用排序布局，而不是让<code translate="no">AUTOINDEX</code> 自动选择。</p></li>
+<li><p>Your filters compare values with <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, or <code translate="no">&lt;=</code>.</p></li>
+<li><p>The indexed values have high cardinality, such as prices, timestamps, IDs, or sortable codes.</p></li>
+<li><p>You want to force a sorted layout instead of letting <code translate="no">AUTOINDEX</code> choose.</p></li>
 </ul>
-<p><code translate="no">STL_SORT</code> 不支持<code translate="no">BOOL</code> 、<code translate="no">ARRAY_*</code> 或<code translate="no">JSON</code> 转换类型。对于数组，请使用<code translate="no">INVERTED</code> 。现有的整个对象索引可以继续使用<code translate="no">INVERTED</code> 或<code translate="no">AUTOINDEX</code> ，但整个对象的 JSON 索引已被弃用。</p>
-<p>有关详细信息，请参阅<a href="/docs/zh/stl-sort.md">STL_SORT</a>。</p>
+<p><code translate="no">STL_SORT</code> does not support <code translate="no">BOOL</code>, <code translate="no">ARRAY_*</code>, or <code translate="no">JSON</code> cast types. Use <code translate="no">INVERTED</code> for arrays. Existing whole-object indexes can continue to use <code translate="no">INVERTED</code> or <code translate="no">AUTOINDEX</code>, but whole-object JSON indexing is deprecated.</p>
+<p>For details, refer to <a href="/docs/zh/stl-sort.md">STL_SORT</a>.</p>
 <h3 id="BITMAP" class="common-anchor-header">BITMAP<button data-href="#BITMAP" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -206,16 +208,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">BITMAP</code> 为 JSON 路径中的每个不同值创建一个紧凑的位图。它针对频繁重复的值进行了优化，适用于等值比较和<code translate="no">IN</code> 过滤器。</p>
-<p><code translate="no">BITMAP</code> 仅支持<code translate="no">BOOL</code> 和<code translate="no">VARCHAR</code> 转换类型。在以下情况下使用：</p>
+    </button></h3><p><code translate="no">BITMAP</code> creates a compact bitmap for each distinct value at a JSON path. It is optimized for equality and <code translate="no">IN</code> filters on values that repeat often.</p>
+<p><code translate="no">BITMAP</code> supports only <code translate="no">BOOL</code> and <code translate="no">VARCHAR</code> cast types. Use it when:</p>
 <ul>
-<li><p>您的过滤器使用<code translate="no">==</code> 或<code translate="no">IN</code> 。</p></li>
-<li><p>索引值的基数较低，例如布尔值、状态值或少量类别。</p></li>
-<li><p>您希望强制使用位图布局，而不是让<code translate="no">AUTOINDEX</code> 自行选择。</p></li>
+<li><p>Your filters use <code translate="no">==</code> or <code translate="no">IN</code>.</p></li>
+<li><p>The indexed values have low cardinality, such as booleans, status values, or a small set of categories.</p></li>
+<li><p>You want to force a bitmap layout instead of letting <code translate="no">AUTOINDEX</code> choose.</p></li>
 </ul>
-<p><code translate="no">BITMAP</code> 不支持<code translate="no">DOUBLE</code> 、<code translate="no">ARRAY_*</code> 或<code translate="no">JSON</code> 转换类型。对于数值，请改用<code translate="no">AUTOINDEX</code> 、<code translate="no">STL_SORT</code> 或<code translate="no">INVERTED</code> 。</p>
-<p>有关详细信息，请参阅<a href="/docs/zh/bitmap.md">BITMAP</a>。</p>
-<h3 id="Compatibility-reference" class="common-anchor-header">兼容性参考<button data-href="#Compatibility-reference" class="anchor-icon" translate="no">
+<p><code translate="no">BITMAP</code> does not support <code translate="no">DOUBLE</code>, <code translate="no">ARRAY_*</code>, or <code translate="no">JSON</code> cast types. For numeric values, use <code translate="no">AUTOINDEX</code>, <code translate="no">STL_SORT</code>, or <code translate="no">INVERTED</code> instead.</p>
+<p>For details, refer to <a href="/docs/zh/bitmap.md">BITMAP</a>.</p>
+<h3 id="Compatibility-reference" class="common-anchor-header">Compatibility reference<button data-href="#Compatibility-reference" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -230,23 +232,23 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>请使用以下矩阵作为支持的<code translate="no">(cast type, index type)</code> 组合的快速参考。</p>
+    </button></h3><p>Use the following matrix as a quick reference for supported <code translate="no">(cast type, index type)</code> combinations.</p>
 <table>
 <thead>
-<tr><th>类型转换</th><th>描述</th><th>示例值</th><th>AUTOINDEX</th><th>INVERTED</th><th>STL_SORT</th><th>BITMAP</th></tr>
+<tr><th>Cast type</th><th>Description</th><th>Example value</th><th>AUTOINDEX</th><th>INVERTED</th><th>STL_SORT</th><th>BITMAP</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code></td><td>布尔值（<code translate="no">true</code>/<code translate="no">false</code> ）。</td><td><code translate="no">true</code></td><td>是</td><td>是</td><td>否</td><td>是</td></tr>
-<tr><td><code translate="no">DOUBLE</code></td><td>数值（整数或浮点数）。</td><td><code translate="no">99.99</code></td><td>是</td><td>是</td><td>是</td><td>否</td></tr>
-<tr><td><code translate="no">VARCHAR</code></td><td>字符串值。</td><td><code translate="no">&quot;electronics&quot;</code></td><td>是</td><td>是</td><td>是</td><td>是</td></tr>
-<tr><td><code translate="no">ARRAY_BOOL</code></td><td>布尔值数组。</td><td><code translate="no">[true, false]</code></td><td>否</td><td>是</td><td>否</td><td>否</td></tr>
-<tr><td><code translate="no">ARRAY_DOUBLE</code></td><td>数字数组。</td><td><code translate="no">[1.2, 3.14]</code></td><td>否</td><td>是</td><td>否</td><td>否</td></tr>
-<tr><td><code translate="no">ARRAY_VARCHAR</code></td><td>字符串数组。</td><td><code translate="no">[&quot;tag1&quot;, &quot;tag2&quot;]</code></td><td>否</td><td>是</td><td>否</td><td>否</td></tr>
-<tr><td><code translate="no">JSON</code></td><td>一个完整的 JSON 对象或子对象，具有自动类型推断和扁平化功能。自 Milvus 3.0.0 起已弃用。</td><td>任何嵌套对象</td><td>是（已弃用）</td><td>是（已弃用）</td><td>否</td><td>否</td></tr>
+<tr><td><code translate="no">BOOL</code></td><td>Boolean values (<code translate="no">true</code>/<code translate="no">false</code>).</td><td><code translate="no">true</code></td><td>Yes</td><td>Yes</td><td>No</td><td>Yes</td></tr>
+<tr><td><code translate="no">DOUBLE</code></td><td>Numeric values (integers or floats).</td><td><code translate="no">99.99</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td>String values.</td><td><code translate="no">&quot;electronics&quot;</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code translate="no">ARRAY_BOOL</code></td><td>Array of booleans.</td><td><code translate="no">[true, false]</code></td><td>No</td><td>Yes</td><td>No</td><td>No</td></tr>
+<tr><td><code translate="no">ARRAY_DOUBLE</code></td><td>Array of numbers.</td><td><code translate="no">[1.2, 3.14]</code></td><td>No</td><td>Yes</td><td>No</td><td>No</td></tr>
+<tr><td><code translate="no">ARRAY_VARCHAR</code></td><td>Array of strings.</td><td><code translate="no">[&quot;tag1&quot;, &quot;tag2&quot;]</code></td><td>No</td><td>Yes</td><td>No</td><td>No</td></tr>
+<tr><td><code translate="no">JSON</code></td><td>An entire JSON object or sub-object with automatic type inference and flattening. Deprecated starting in Milvus 3.0.0.</td><td>any nested object</td><td>Yes (deprecated)</td><td>Yes (deprecated)</td><td>No</td><td>No</td></tr>
 </tbody>
 </table>
-<p>对于标记为<code translate="no">No</code> 的单元格，Milvus会在索引创建时拒绝该请求。对于数组转换类型，请显式使用<code translate="no">INVERTED</code> （<code translate="no">AUTOINDEX</code> 不支持数组）。</p>
-<h2 id="Create-a-JSON-index" class="common-anchor-header">创建 JSON 索引<button data-href="#Create-a-JSON-index" class="anchor-icon" translate="no">
+<p>For cells marked <code translate="no">No</code>, Milvus rejects the request at index-creation time. For array cast types, use <code translate="no">INVERTED</code> explicitly (<code translate="no">AUTOINDEX</code> does not cover arrays).</p>
+<h2 id="Create-a-JSON-index" class="common-anchor-header">Create a JSON index<button data-href="#Create-a-JSON-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -261,8 +263,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>本节将逐步介绍如何对不同结构的 JSON 数据进行索引。所有示例均使用下面的示例结构，并假设您已经有一个包含名为<code translate="no">metadata</code> 的<code translate="no">JSON</code> 字段的 Collection。</p>
-<h3 id="Sample-JSON-structure" class="common-anchor-header">示例 JSON 结构<button data-href="#Sample-JSON-structure" class="anchor-icon" translate="no">
+    </button></h2><p>This section walks through indexing different shapes of JSON data. All examples use the sample structure below and assume you already have a collection that includes a <code translate="no">JSON</code> field named <code translate="no">metadata</code>.</p>
+<h3 id="Sample-JSON-structure" class="common-anchor-header">Sample JSON structure<button data-href="#Sample-JSON-structure" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -296,7 +298,7 @@ summary: >-
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Basic-setup" class="common-anchor-header">基本设置<button data-href="#Basic-setup" class="anchor-icon" translate="no">
+<h3 id="Basic-setup" class="common-anchor-header">Basic setup<button data-href="#Basic-setup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -311,9 +313,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>下面的示例假设您已将一个名为<code translate="no">client</code> 的<code translate="no">MilvusClient</code> 连接到您的 Milvus 部署，并且有一个 Collection，其中已包含一个名为<code translate="no">metadata</code> 的<code translate="no">JSON</code> 字段。如果您需要从头开始设置这些内容，请展开下面的代码块。</p>
+    </button></h3><p>The examples below assume you have a <code translate="no">MilvusClient</code> named <code translate="no">client</code> connected to your Milvus deployment, and a collection that already includes a <code translate="no">JSON</code> field named <code translate="no">metadata</code>. If you need to set those up from scratch, expand the block below.</p>
 <p><details></p>
-<p><summary>连接并创建示例Collection</summary></p>
+<p><summary>Connect and create a sample collection</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -360,11 +362,11 @@ client.insert(
 )
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>准备一个 index-params 对象，用于收集以下示例中添加的索引定义：</p>
+<p>Prepare an index-params object to collect the index definitions added in the examples below:</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 <button class="copy-code-btn"></button></code></pre>
-<p>以下每个示例都展示了一个<code translate="no">index_params.add_index(...)</code> 调用。请选择与您的数据相匹配的示例，并在同一个<code translate="no">index_params</code> 对象上调用它们。最后，通过单个<code translate="no">client.create_index(...)</code> 调用应用所有内容。有关详细信息，请参阅<a href="/docs/zh/json-indexing.md#apply-the-index">“应用索引”</a>。</p>
-<h3 id="Example-1-Index-a-top-level-key-with-AUTOINDEX" class="common-anchor-header">示例 1：使用 AUTOINDEX 对顶级键进行索引<button data-href="#Example-1-Index-a-top-level-key-with-AUTOINDEX" class="anchor-icon" translate="no">
+<p>Each example that follows shows one <code translate="no">index_params.add_index(...)</code> call. Pick the ones that match your data and call them on the same <code translate="no">index_params</code> object. Then apply everything in a single <code translate="no">client.create_index(...)</code> call at the end. For details, see <a href="/docs/zh/json-indexing.md#apply-the-index">Apply the index</a>.</p>
+<h3 id="Example-1-Index-a-top-level-key-with-AUTOINDEX" class="common-anchor-header">Example 1: Index a top-level key with AUTOINDEX<button data-href="#Example-1-Index-a-top-level-key-with-AUTOINDEX" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -379,7 +381,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>为<code translate="no">category</code> 字段建立索引，以便按产品类别快速过滤。使用<code translate="no">AUTOINDEX</code> 时，Milvus会根据数据中存在的不同类别数量，自动选择<code translate="no">BITMAP</code> 或<code translate="no">STL_SORT</code> 。</p>
+    </button></h3><p>Index the <code translate="no">category</code> field for fast filtering by product category. With <code translate="no">AUTOINDEX</code>, Milvus picks <code translate="no">BITMAP</code> or <code translate="no">STL_SORT</code> based on how many distinct categories exist in your data.</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;AUTOINDEX&quot;</span>,</span>
@@ -390,7 +392,7 @@ client.insert(
 <span class="highlighted-comment-line">    }</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Index-a-nested-key" class="common-anchor-header">示例 2：为嵌套键建立索引<button data-href="#Example-2-Index-a-nested-key" class="anchor-icon" translate="no">
+<h3 id="Example-2-Index-a-nested-key" class="common-anchor-header">Example 2: Index a nested key<button data-href="#Example-2-Index-a-nested-key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -405,7 +407,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>为供应商联系人查询，对深度嵌套的<code translate="no">email</code> 字段建立索引。<code translate="no">json_path</code> 参数支持任意深度的括号表示法。</p>
+    </button></h3><p>Index the deeply nested <code translate="no">email</code> field for supplier contact lookups. The <code translate="no">json_path</code> parameter accepts any depth of bracket notation.</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;AUTOINDEX&quot;</span>,</span>
@@ -416,7 +418,7 @@ client.insert(
 <span class="highlighted-comment-line">    }</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Range-queries-with-STLSORT" class="common-anchor-header">示例 3：使用 STL_SORT 进行范围查询<button data-href="#Example-3-Range-queries-with-STLSORT" class="anchor-icon" translate="no">
+<h3 id="Example-3-Range-queries-with-STLSORT" class="common-anchor-header">Example 3: Range queries with STL_SORT<button data-href="#Example-3-Range-queries-with-STLSORT" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -431,7 +433,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>当您确定针对某条路径的查询主要涉及范围比较（<code translate="no">&gt;</code> 、<code translate="no">&lt;</code> 、<code translate="no">&gt;=</code> 、<code translate="no">&lt;=</code> ）时，请直接选择<code translate="no">STL_SORT</code> 。这将绕过基数测量，并立即构建已排序的布局。</p>
+    </button></h3><p>When you know your queries on a path will be dominated by range comparisons (<code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code>), pick <code translate="no">STL_SORT</code> directly. This bypasses cardinality measurement and builds the sorted layout immediately.</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;STL_SORT&quot;</span>,</span>
@@ -442,8 +444,8 @@ client.insert(
     }
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>建立索引后，诸如<code translate="no">metadata[&quot;price&quot;] &gt; 50 AND metadata[&quot;price&quot;] &lt; 100</code> 之类的范围查询将使用二进制搜索，而非全表扫描。</p>
-<h3 id="Example-4-Equality-queries-with-BITMAP" class="common-anchor-header">示例 4：使用 BITMAP 的相等性查询<button data-href="#Example-4-Equality-queries-with-BITMAP" class="anchor-icon" translate="no">
+<p>After indexing, range queries like <code translate="no">metadata[&quot;price&quot;] &gt; 50 AND metadata[&quot;price&quot;] &lt; 100</code> use binary search instead of a full scan.</p>
+<h3 id="Example-4-Equality-queries-with-BITMAP" class="common-anchor-header">Example 4: Equality queries with BITMAP<button data-href="#Example-4-Equality-queries-with-BITMAP" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -458,7 +460,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>对于低基数键（如状态码、布尔值或枚举类字符串），请直接选择<code translate="no">BITMAP</code> 。相等查询和<code translate="no">IN</code> 查询将转换为位图操作。</p>
+    </button></h3><p>For low-cardinality keys, such as status codes, booleans, or enum-like strings, pick <code translate="no">BITMAP</code> directly. Equality and <code translate="no">IN</code> queries become bitmap operations.</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;BITMAP&quot;</span>,</span>
@@ -469,8 +471,8 @@ client.insert(
     }
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">BITMAP</code> 对于仅包含少量不同字符串值的<code translate="no">status</code> 列等字段，这也是非常理想的选择。</p>
-<h3 id="Example-5-Convert-data-type-at-index-time" class="common-anchor-header">示例 5：在构建索引时转换数据类型<button data-href="#Example-5-Convert-data-type-at-index-time" class="anchor-icon" translate="no">
+<p><code translate="no">BITMAP</code> is also a strong fit for fields like a <code translate="no">status</code> column with a handful of distinct string values.</p>
+<h3 id="Example-5-Convert-data-type-at-index-time" class="common-anchor-header">Example 5: Convert data type at index time<button data-href="#Example-5-Convert-data-type-at-index-time" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -485,7 +487,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>当数值数据被误存储为字符串时，请在构建索引期间使用 `<code translate="no">STRING_TO_DOUBLE</code> ` 将该值转换为数字。</p>
+    </button></h3><p>When numeric data is mistakenly stored as strings, use <code translate="no">STRING_TO_DOUBLE</code> to convert the value to a number during index build.</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;AUTOINDEX&quot;</span>,</span>
@@ -497,8 +499,8 @@ client.insert(
     }
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>如果某行转换失败（例如，非数字字符串，如<code translate="no">&quot;invalid&quot;</code> ），则在索引过程中会跳过该行。</p>
-<h3 id="Example-6-Index-entire-JSON-objects" class="common-anchor-header">示例 6：索引整个 JSON 对象<button data-href="#Example-6-Index-entire-JSON-objects" class="anchor-icon" translate="no">
+<p>If conversion fails for a row (for example, a non-numeric string like <code translate="no">&quot;invalid&quot;</code>), that row is skipped during indexing.</p>
+<h3 id="Example-6-Index-entire-JSON-objects" class="common-anchor-header">Example 6: Index entire JSON objects<button data-href="#Example-6-Index-entire-JSON-objects" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -514,11 +516,11 @@ client.insert(
         ></path>
       </svg>
     </button></h3><div class="alert warning">
-<p>从 Milvus 3.0.0 开始，整个 JSON 对象的索引（<code translate="no">json_cast_type=&quot;JSON&quot;</code> ），也称为 JSON 平面索引，已被弃用。出于兼容性考虑，现有索引和新索引创建请求仍受支持，但不再建议在新工作负载中使用此模式。请针对已知的查询路径创建 JSON 路径索引。 对于具有广泛查询模式的复杂或不断演变的 JSON 文档，请考虑使用<a href="/docs/zh/json-shredding.md">JSON 分片</a>。JSON 分片不会加速数组内部的值；对于此类查询，请使用带有数组转换类型的 JSON 路径索引。</p>
+<p>Starting in Milvus 3.0.0, whole-object JSON indexing (<code translate="no">json_cast_type=&quot;JSON&quot;</code>), also known as JSON flat indexing, is deprecated. Existing indexes and new index-creation requests remain supported for compatibility, but this mode is no longer recommended for new workloads. Create JSON path indexes for known query paths. For complex or evolving JSON documents with broad query patterns, consider <a href="/docs/zh/json-shredding.md">JSON Shredding</a>. JSON shredding does not accelerate values inside arrays; use JSON path indexes with array cast types for those queries.</p>
 </div>
-<p>对于兼容的现有工作负载，设置<code translate="no">json_cast_type=&quot;JSON&quot;</code> 将对给定路径下的完整结构进行索引。Milvus会将嵌套对象扁平化为路径，并自动推断每个值的类型。该路径下的所有键均可被搜索。</p>
-<p><code translate="no">AUTOINDEX</code> 会透明地使用<code translate="no">INVERTED</code> 作为<code translate="no">JSON</code> 的转换类型，因为扁平化和类型推断属于倒排索引的功能。</p>
-<p>对整个<code translate="no">metadata</code> 对象进行索引：</p>
+<p>For compatible existing workloads, setting <code translate="no">json_cast_type=&quot;JSON&quot;</code> indexes the full structure at the given path. Milvus flattens nested objects into paths and automatically infers each value’s type. All keys under the path become searchable.</p>
+<p><code translate="no">AUTOINDEX</code> transparently uses <code translate="no">INVERTED</code> for <code translate="no">JSON</code> cast type, since flattening and type inference are inverted-index capabilities.</p>
+<p>Index the entire <code translate="no">metadata</code> object:</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;AUTOINDEX&quot;</span>,</span>
@@ -529,7 +531,7 @@ client.insert(
     }
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>或者对子对象进行索引，例如所有<code translate="no">supplier</code> 信息：</p>
+<p>Or index a sub-object, such as all <code translate="no">supplier</code> information:</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;AUTOINDEX&quot;</span>,</span>
@@ -540,8 +542,8 @@ client.insert(
     }
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>对整个对象建立索引会增加索引大小。对于包含深度嵌套文档且查询模式多样的新工作负载，请使用路径特定索引或考虑使用<a href="/docs/zh/json-shredding.md">JSON 拆分</a>。</p>
-<h3 id="Apply-the-index" class="common-anchor-header">应用索引<button data-href="#Apply-the-index" class="anchor-icon" translate="no">
+<p>Indexing entire objects increases index size. For new workloads with deeply nested documents and diverse query patterns, use path-specific indexes or consider <a href="/docs/zh/json-shredding.md">JSON Shredding</a>.</p>
+<h3 id="Apply-the-index" class="common-anchor-header">Apply the index<button data-href="#Apply-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -556,19 +558,19 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>添加所有索引参数后，将其应用到Collection中：</p>
+    </button></h3><p>After adding all your index parameters, apply them to your collection:</p>
 <pre><code translate="no" class="language-python">client.create_index(
     collection_name=<span class="hljs-string">&quot;your_collection_name&quot;</span>,
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>索引构建过程以异步方式运行。请使用<code translate="no">client.describe_index(...)</code> 检查特定索引的构建状态。构建完成后，<code translate="no">state</code> 字段将显示<code translate="no">Finished</code> ；而<code translate="no">total_rows</code> 、<code translate="no">indexed_rows</code> 和<code translate="no">pending_index_rows</code> 字段则会显示构建过程中的进度。</p>
+<p>Index builds run asynchronously. Use <code translate="no">client.describe_index(...)</code> to check the build state of a specific index. The <code translate="no">state</code> field shows <code translate="no">Finished</code> once the build is done, and <code translate="no">total_rows</code>, <code translate="no">indexed_rows</code>, and <code translate="no">pending_index_rows</code> show progress along the way.</p>
 <pre><code translate="no" class="language-python">client.describe_index(
     collection_name=<span class="hljs-string">&quot;your_collection_name&quot;</span>,
     index_name=<span class="hljs-string">&quot;category_index&quot;</span>,
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>响应示例：</p>
+<p>Sample response:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;json_path&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;metadata[\&quot;category\&quot;]&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;json_cast_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;VARCHAR&quot;</span><span class="hljs-punctuation">,</span>
@@ -581,9 +583,9 @@ client.insert(
   <span class="hljs-attr">&quot;state&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Finished&quot;</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>一旦<code translate="no">state</code> 报告<code translate="no">Finished</code> ，针对该索引路径的查询将自动使用新索引。</p>
-<p>对于<code translate="no">AUTOINDEX</code> 条目，此响应中的<code translate="no">index_type</code> 字段将显示为<code translate="no">AUTOINDEX</code> 。Milvus 目前不会公开构建时选择的底层布局（<code translate="no">BITMAP</code> 或<code translate="no">STL_SORT</code> ）。请将此选择视为内部优化：针对该路径的相等性、<code translate="no">IN</code> 以及范围查询，无论选择哪种布局均可正常运行。</p>
-<h2 id="FAQ" class="common-anchor-header">常见问题<button data-href="#FAQ" class="anchor-icon" translate="no">
+<p>Once <code translate="no">state</code> reports <code translate="no">Finished</code>, queries against the indexed path use the new index automatically.</p>
+<p>For <code translate="no">AUTOINDEX</code> entries, the <code translate="no">index_type</code> field in this response is reported as <code translate="no">AUTOINDEX</code>. Milvus does not currently expose which underlying layout (<code translate="no">BITMAP</code> or <code translate="no">STL_SORT</code>) was chosen at build time. Treat the choice as an internal optimization: equality, <code translate="no">IN</code>, and range queries against the path will work regardless of which layout was selected.</p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -598,7 +600,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="How-do-I-choose-between-AUTOINDEX-and-an-explicit-index-type" class="common-anchor-header">如何在 AUTOINDEX 和显式索引类型之间进行选择？<button data-href="#How-do-I-choose-between-AUTOINDEX-and-an-explicit-index-type" class="anchor-icon" translate="no">
+    </button></h2><h3 id="How-do-I-choose-between-AUTOINDEX-and-an-explicit-index-type" class="common-anchor-header">How do I choose between AUTOINDEX and an explicit index type?<button data-href="#How-do-I-choose-between-AUTOINDEX-and-an-explicit-index-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -613,14 +615,14 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>建议从<code translate="no">AUTOINDEX</code> 开始。它会根据数据的基数自动选择合适的布局，并能覆盖 JSON 路径上绝大多数的等值查询、<code translate="no">IN</code> 以及范围查询。在以下情况下请选择显式类型：</p>
+    </button></h3><p>Start with <code translate="no">AUTOINDEX</code>. It picks the right layout from your data’s cardinality, and it covers most equality, <code translate="no">IN</code>, and range queries on JSON paths. Pick an explicit type when:</p>
 <ul>
-<li><p>您已知查询模式（例如，始终进行范围查询时使用<code translate="no">STL_SORT</code> ，而针对低基数值的等值查询始终使用<code translate="no">BITMAP</code> ），且希望跳过基数测量。</p></li>
-<li><p>您需要文本匹配或子字符串查询。请使用<code translate="no">INVERTED</code> 。</p></li>
-<li><p>您正在为数组转换类型建立索引。请显式使用 `<code translate="no">INVERTED</code> `。</p></li>
-<li><p>您正在维护现有的全对象 JSON 索引。出于兼容性考虑，<code translate="no">INVERTED</code> 和<code translate="no">AUTOINDEX</code> 仍受支持，但全对象 JSON 索引自 Milvus 3.0.0 起已弃用。</p></li>
+<li><p>You know your query pattern (for example, always range queries use <code translate="no">STL_SORT</code>, and always equality queries on low-cardinality values use <code translate="no">BITMAP</code>) and want to skip cardinality measurement.</p></li>
+<li><p>You need text-match or substring queries. Use <code translate="no">INVERTED</code>.</p></li>
+<li><p>You’re indexing array cast types. Use <code translate="no">INVERTED</code> explicitly.</p></li>
+<li><p>You’re maintaining an existing whole-object JSON index. Both <code translate="no">INVERTED</code> and <code translate="no">AUTOINDEX</code> remain supported for compatibility, but whole-object JSON indexing is deprecated starting in Milvus 3.0.0.</p></li>
 </ul>
-<h3 id="What-happens-if-a-querys-filter-expression-uses-a-different-type-than-the-indexed-cast-type" class="common-anchor-header">如果查询的过滤表达式使用的类型与索引的转换类型不同，会发生什么情况？<button data-href="#What-happens-if-a-querys-filter-expression-uses-a-different-type-than-the-indexed-cast-type" class="anchor-icon" translate="no">
+<h3 id="What-happens-if-a-querys-filter-expression-uses-a-different-type-than-the-indexed-cast-type" class="common-anchor-header">What happens if a query’s filter expression uses a different type than the indexed cast type?<button data-href="#What-happens-if-a-querys-filter-expression-uses-a-different-type-than-the-indexed-cast-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -635,8 +637,8 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>如果您的过滤表达式使用的类型与索引的<code translate="no">json_cast_type</code> 不同，Milvus 将不会使用该索引，并在数据允许的情况下可能回退到较慢的暴力扫描。 为获得最佳性能，请始终确保过滤表达式与索引的转换类型保持一致。例如，如果使用<code translate="no">json_cast_type=&quot;DOUBLE&quot;</code> 创建了一个数值索引，则只有数值过滤条件才能利用该索引。</p>
-<h3 id="What-if-a-JSON-key-has-inconsistent-data-types-across-different-entities" class="common-anchor-header">如果 JSON 键在不同实体中的数据类型不一致，会怎样？<button data-href="#What-if-a-JSON-key-has-inconsistent-data-types-across-different-entities" class="anchor-icon" translate="no">
+    </button></h3><p>If your filter expression uses a different type than the index’s <code translate="no">json_cast_type</code>, Milvus does not use the index and may fall back to a slower brute-force scan if the data allows. For best performance, always align your filter expression with the cast type of the index. For example, if a numeric index is created with <code translate="no">json_cast_type=&quot;DOUBLE&quot;</code>, only numeric filter conditions will leverage the index.</p>
+<h3 id="What-if-a-JSON-key-has-inconsistent-data-types-across-different-entities" class="common-anchor-header">What if a JSON key has inconsistent data types across different entities?<button data-href="#What-if-a-JSON-key-has-inconsistent-data-types-across-different-entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -651,8 +653,8 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>类型不一致可能会导致<strong>部分索引</strong>。例如，如果<code translate="no">metadata[&quot;price&quot;]</code> 同时以数字（<code translate="no">99.99</code> ）和字符串（<code translate="no">&quot;99.99&quot;</code> ）形式存储，而您使用<code translate="no">json_cast_type=&quot;DOUBLE&quot;</code> 创建索引，则只有数值会被索引。字符串形式的条目将被跳过，且不会出现在过滤结果中。 请在建立索引时使用 `<code translate="no">json_cast_function=&quot;STRING_TO_DOUBLE&quot;</code> ` 将字符串转换为数字，或者修正源数据，确保所有条目都采用同一数据类型。</p>
-<h3 id="Can-I-create-multiple-indexes-on-the-same-JSON-key" class="common-anchor-header">我可以在同一个 JSON 键上创建多个索引吗？<button data-href="#Can-I-create-multiple-indexes-on-the-same-JSON-key" class="anchor-icon" translate="no">
+    </button></h3><p>Inconsistent types can lead to <strong>partial indexing</strong>. For example, if <code translate="no">metadata[&quot;price&quot;]</code> is stored as both a number (<code translate="no">99.99</code>) and a string (<code translate="no">&quot;99.99&quot;</code>) and you create an index with <code translate="no">json_cast_type=&quot;DOUBLE&quot;</code>, only the numeric values are indexed. String-form entries are skipped and won’t appear in filter results. Use <code translate="no">json_cast_function=&quot;STRING_TO_DOUBLE&quot;</code> to coerce strings to numbers at index time, or fix the source data so all entries share one type.</p>
+<h3 id="Can-I-create-multiple-indexes-on-the-same-JSON-key" class="common-anchor-header">Can I create multiple indexes on the same JSON key?<button data-href="#Can-I-create-multiple-indexes-on-the-same-JSON-key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -667,8 +669,8 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>不可以。Milvus 允许每个<code translate="no">(field, json_path)</code> 对最多创建一个索引，无论转换类型或索引类型如何。 您无法在同一路径上同时创建<code translate="no">INVERTED</code> 和<code translate="no">BITMAP</code> 索引，也不能在同一路径上创建两个具有不同转换类型的索引。不过，您可以为整个JSON对象创建一个索引，并为该对象内的嵌套键创建另一个索引，因为它们属于不同的路径。</p>
-<h3 id="How-do-I-tune-AUTOINDEXs-BITMAP-vs-STLSORT-threshold" class="common-anchor-header">如何调整 AUTOINDEX 的 BITMAP 与 STL_SORT 阈值？<button data-href="#How-do-I-tune-AUTOINDEXs-BITMAP-vs-STLSORT-threshold" class="anchor-icon" translate="no">
+    </button></h3><p>No. Milvus allows at most one index per <code translate="no">(field, json_path)</code> pair, regardless of cast type or index type. You cannot create both an <code translate="no">INVERTED</code> and a <code translate="no">BITMAP</code> index on the same path, or two indexes on the same path with different cast types. You can, however, create an index on the entire JSON object and a separate index on a nested key within that object because those are different paths.</p>
+<h3 id="How-do-I-tune-AUTOINDEXs-BITMAP-vs-STLSORT-threshold" class="common-anchor-header">How do I tune AUTOINDEX’s BITMAP-vs-STL_SORT threshold?<button data-href="#How-do-I-tune-AUTOINDEXs-BITMAP-vs-STLSORT-threshold" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -683,7 +685,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>默认情况下，当索引值的<strong>唯一值不超过 100 个时</strong>，<code translate="no">AUTOINDEX</code> 会选择<code translate="no">BITMAP</code> ；否则选择<code translate="no">STL_SORT</code> 。您可以通过在索引参数中添加<code translate="no">&quot;bitmap_cardinality_limit&quot;</code> 来覆盖此阈值（范围：1-1000）：</p>
+    </button></h3><p>By default, <code translate="no">AUTOINDEX</code> picks <code translate="no">BITMAP</code> when the indexed values have <strong>100 or fewer distinct values</strong> and <code translate="no">STL_SORT</code> otherwise. You can override this threshold by adding <code translate="no">&quot;bitmap_cardinality_limit&quot;</code> to your index parameters (range: 1-1000):</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
     index_type=<span class="hljs-string">&quot;AUTOINDEX&quot;</span>,
@@ -695,4 +697,4 @@ client.insert(
     }
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>大多数用户无需调整此设置。若您希望对Cardinal度适中的字段使用位图索引，请提高该阈值；若希望更早地将<code translate="no">AUTOINDEX</code> 转换为<code translate="no">STL_SORT</code> ，请降低该阈值。当您显式指定<code translate="no">INVERTED</code> 、<code translate="no">STL_SORT</code> 或<code translate="no">BITMAP</code> 时，此设置将被忽略。</p>
+<p>Most users don’t need to tune this. Raise it if you have a moderate-cardinality field you’d prefer bitmapped; lower it to push <code translate="no">AUTOINDEX</code> toward <code translate="no">STL_SORT</code> sooner. The setting is ignored when you specify <code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code>, or <code translate="no">BITMAP</code> explicitly.</p>

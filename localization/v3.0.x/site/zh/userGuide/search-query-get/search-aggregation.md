@@ -1,7 +1,9 @@
 ---
 id: search-aggregation.md
 title: Search AggregationCompatible with Milvus 3.0.x
-summary: 将向量搜索结果分组到桶中，计算每个桶的指标，对桶进行排序，并返回具有代表性的搜索结果。
+summary: >-
+  Group vector search results into buckets, compute per-bucket metrics, order
+  buckets, and return representative hits.
 beta: Milvus 3.0.x
 ---
 <h1 id="Search-Aggregation" class="common-anchor-header">Search Aggregation<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Search-Aggregation" class="anchor-icon" translate="no">

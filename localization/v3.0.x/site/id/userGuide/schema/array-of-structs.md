@@ -1,15 +1,14 @@
 ---
 id: array-of-structs.md
-title: Gambaran Umum StructArray
+title: StructArray Overview
 summary: >-
-  Gunakan StructArray ketika suatu entitas perlu menyimpan daftar elemen
-  terstruktur yang terurut, seperti satu dokumen dengan banyak bagian, satu
-  halaman dengan banyak blok visual, atau satu video dengan banyak klip.
-  StructArray menyimpan elemen-elemen ini di dalam entitas induknya sambil tetap
-  memungkinkan pencarian vektor dan penyaringan skalar pada bidang-bidang di
-  dalam setiap elemen.
+  Use StructArray when one entity needs to store an ordered list of structured
+  elements, such as one document with many chunks, one page with many visual
+  patches, or one video with many clips. StructArray keeps these elements inside
+  the parent entity while still allowing vector search and scalar filtering on
+  fields inside each element.
 ---
-<h1 id="StructArray-Overview" class="common-anchor-header">Gambaran Umum StructArray<button data-href="#StructArray-Overview" class="anchor-icon" translate="no">
+<h1 id="StructArray-Overview" class="common-anchor-header">StructArray Overview<button data-href="#StructArray-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,8 +23,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Gunakan StructArray ketika suatu entitas perlu menyimpan daftar terurut dari elemen-elemen terstruktur, seperti satu dokumen dengan banyak bagian, satu halaman dengan banyak potongan visual, atau satu video dengan banyak klip. StructArray menyimpan elemen-elemen ini di dalam entitas induk sambil tetap memungkinkan pencarian vektor dan penyaringan skalar pada bidang-bidang di dalam setiap elemen.</p>
-<h2 id="What-is-StructArray" class="common-anchor-header">Apa itu StructArray?<button data-href="#What-is-StructArray" class="anchor-icon" translate="no">
+    </button></h1><p>Use StructArray when one entity needs to store an ordered list of structured elements, such as one document with many chunks, one page with many visual patches, or one video with many clips. StructArray keeps these elements inside the parent entity while still allowing vector search and scalar filtering on fields inside each element.</p>
+<h2 id="What-is-StructArray" class="common-anchor-header">What is StructArray?<button data-href="#What-is-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,8 +39,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>StructArray</strong>, yang juga dikenal sebagai array struktur, menyimpan sekumpulan elemen Struct yang terurut di dalam setiap entitas. Setiap elemen Struct dalam array tersebut mengikuti skema yang sama. Elemen Struct dapat berisi subbidang skalar, subbidang vektor, atau keduanya.</p>
-<p>Misalnya, sebuah koleksi dapat menyimpan satu artikel sebagai entitas dan menyimpan potongannya dalam bidang StructArray bernama ` <code translate="no">chunks</code>`. Setiap potongan dapat mencakup teks, metadata bagian, skor kualitas, dan satu atau lebih embedding vektor.</p>
+    </button></h2><p>A <strong>StructArray</strong>, also known as an array of structs, stores an ordered set of Struct elements in each entity. Every Struct element in the array follows the same schema. A Struct element can contain scalar subfields, vector subfields, or both.</p>
+<p>For example, a collection can store one article as an entity and store its chunks in a StructArray field named <code translate="no">chunks</code>. Each chunk can include text, section metadata, quality scores, and one or more vector embeddings.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;doc_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Vector search tuning guide&quot;</span><span class="hljs-punctuation">,</span>
@@ -70,9 +69,9 @@ summary: >-
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Dua subbidang vektor dalam contoh ini mewakili potongan yang sama dari dua perspektif pencarian. ` <code translate="no">chunks[emb_list_vector]</code> ` ditujukan untuk pencarian `EmbeddingList` dengan metrik ` <code translate="no">MAX_SIM*</code> `, sedangkan ` <code translate="no">chunks[emb]</code> ` ditujukan untuk pencarian tingkat elemen dengan metrik vektor reguler seperti ` <code translate="no">COSINE</code>`, ` <code translate="no">IP</code>`, atau ` <code translate="no">L2</code>`.</p>
+<p>The two vector subfields in this example represent the same chunk from two search perspectives. <code translate="no">chunks[emb_list_vector]</code> is intended for EmbeddingList search with <code translate="no">MAX_SIM*</code> metrics, while <code translate="no">chunks[emb]</code> is intended for element-level search with regular vector metrics such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</p>
 </div>
-<h2 id="When-to-use-StructArray" class="common-anchor-header">Kapan Menggunakan StructArray<button data-href="#When-to-use-StructArray" class="anchor-icon" translate="no">
+<h2 id="When-to-use-StructArray" class="common-anchor-header">When to use StructArray<button data-href="#When-to-use-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -87,20 +86,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan StructArray jika satuan alami yang ingin Anda kembalikan lebih besar daripada satuan alami yang ingin Anda cari atau saring.</p>
+    </button></h2><p>Use StructArray when the natural unit you want to return is larger than the natural unit you want to search or filter.</p>
 <table>
 <thead>
-<tr><th>Contoh penggunaan</th><th>Mengapa StructArray membantu</th><th>Bidang StructArray yang umum</th></tr>
+<tr><th>Use case</th><th>Why StructArray helps</th><th>Typical StructArray field</th></tr>
 </thead>
 <tbody>
-<tr><td>Pencarian dokumen</td><td>Simpan satu dokumen sebagai entitas sambil melakukan pencarian di seluruh potongannya.</td><td><code translate="no">chunks</code></td></tr>
-<tr><td>Pencarian interaksi terlambat</td><td>Menyimpan dokumen atau halaman sebagai daftar embedding dan memberi skor pad <code translate="no">MAX_SIM*</code>.</td><td><code translate="no">chunks[emb_list_vector]</code> atau <code translate="no">patches[emb]</code></td></tr>
-<tr><td>Pencarian tingkat elemen</td><td>Kembalikan potongan, klip, patch, atau pengamatan yang paling relevan, termasuk offset array-nya.</td><td><code translate="no">chunks[emb]</code></td></tr>
-<tr><td>Penyaringan terstruktur</td><td>Saring berdasarkan subbidang skalar di dalam elemen Struct, seperti section, score, page, atau flags.</td><td><code translate="no">chunks[section]</code>, <code translate="no">chunks[quality_score]</code></td></tr>
-<tr><td>Mengurangi hasil induk yang duplikat</td><td>Pertahankan elemen anak di bawah entitas induk yang sama, bukan menyimpan setiap elemen anak sebagai baris terpisah.</td><td><code translate="no">chunks</code>, <code translate="no">clips</code>, <code translate="no">patches</code></td></tr>
+<tr><td>Document retrieval</td><td>Store one document as an entity while searching across its chunks.</td><td><code translate="no">chunks</code></td></tr>
+<tr><td>Late-interaction retrieval</td><td>Store a document or page as an embedding list and score it with <code translate="no">MAX_SIM*</code>.</td><td><code translate="no">chunks[emb_list_vector]</code> or <code translate="no">patches[emb]</code></td></tr>
+<tr><td>Element-level retrieval</td><td>Return the most relevant chunk, clip, patch, or observation, including its array offset.</td><td><code translate="no">chunks[emb]</code></td></tr>
+<tr><td>Structured filtering</td><td>Filter by scalar subfields inside Struct elements, such as section, score, page, or flags.</td><td><code translate="no">chunks[section]</code>, <code translate="no">chunks[quality_score]</code></td></tr>
+<tr><td>Reducing duplicate parent results</td><td>Keep child elements under the same parent entity instead of storing each child as a separate row.</td><td><code translate="no">chunks</code>, <code translate="no">clips</code>, <code translate="no">patches</code></td></tr>
 </tbody>
 </table>
-<h2 id="Decision-Matrix" class="common-anchor-header">Matriks Keputusan<button data-href="#Decision-Matrix" class="anchor-icon" translate="no">
+<h2 id="Decision-Matrix" class="common-anchor-header">Decision Matrix<button data-href="#Decision-Matrix" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -115,24 +114,24 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan matriks berikut untuk memilih jalur StructArray yang tepat.</p>
+    </button></h2><p>Use the following matrix to choose the right StructArray path.</p>
 <table>
 <thead>
-<tr><th>Tujuan</th><th>Jalur yang direkomendasikan</th><th>Tingkat detail hasil</th><th>Mulailah dari sini</th></tr>
+<tr><th>Goal</th><th>Recommended path</th><th>Result granularity</th><th>Start here</th></tr>
 </thead>
 <tbody>
-<tr><td>Membuat satu objek induk dengan banyak objek anak yang terstruktur.</td><td>Buat bidang StructArray.</td><td>Entitas berisi elemen Struct yang terurut.</td><td><a href="/docs/id/create-structarray-field.md">Buat bidang StructArray</a></td></tr>
-<tr><td>Sisipkan catatan induk dengan data anak yang bersarang.</td><td>Sisipkan entitas yang bidang StructArray-nya berupa daftar objek Struct.</td><td>Penyisipan di tingkat entitas.</td><td><a href="/docs/id/insert-data-into-structarray-fields.md">Sisipkan Data ke dalam Bidang StructArray</a></td></tr>
-<tr><td>Jalankan ColBERT, ColPali, atau pencarian interaksi terlambat di tingkat dokumen.</td><td>Gunakan pencarian EmbeddingList dengan indeks <code translate="no">MAX_SIM*</code>.</td><td>Tingkat entitas.</td><td><a href="/docs/id/search-with-embedding-lists.md">Cari dengan Daftar Embedding</a></td></tr>
-<tr><td>Cari potongan, klip, atau patch individual.</td><td>Gunakan pencarian tingkat elemen dengan metrik vektor biasa.</td><td>Tingkat elemen Struct, dengan offset jika tersedia.</td><td><a href="/docs/id/basic-vector-search-with-structarray.md">Pencarian Vektor Dasar dengan StructArray</a></td></tr>
-<tr><td>Batasi pencarian vektor tingkat elemen pada elemen yang memenuhi kondisi skalar.</td><td>Gunakan ` <code translate="no">element_filter</code>`.</td><td>Penyaringan tingkat elemen; bentuk hasil bergantung pada jenis pencarian.</td><td><a href="/docs/id/filtered-search-with-structarray.md">Pencarian yang Disaring dengan StructArray</a></td></tr>
-<tr><td>Pilih entitas berdasarkan jumlah elemen Struct yang memenuhi suatu kondisi.</td><td>Gunakan <code translate="no">MATCH_ANY</code>, <code translate="no">MATCH_ALL</code>, <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, atau <code translate="no">MATCH_EXACT</code>.</td><td>Tingkat entitas.</td><td><a href="/docs/id/struct-array-operators.md">Operator StructArray</a></td></tr>
-<tr><td>Gunakan batas skor atau jarak pada subbidang vektor StructArray.</td><td>Gunakan pencarian rentang tingkat elemen.</td><td>Tingkat elemen Struct.</td><td><a href="/docs/id/range-search-with-structarray.md">Pencarian Rentang dengan StructArray</a></td></tr>
-<tr><td>Kembalikan paling banyak satu hasil per entitas induk setelah pencarian tingkat elemen.</td><td>Gunakan pencarian berkelompok berdasarkan kunci utama.</td><td>Tingkat entitas setelah pengelompokan.</td><td><a href="/docs/id/grouping-search-with-structarray.md">Pencarian Pengelompokan dengan StructArray</a></td></tr>
-<tr><td>Gabungkan pencarian elemen StructArray dengan bidang vektor lainnya.</td><td>Gunakan pencarian hibrida dengan satu AnnSearchRequest yang menargetkan subbidang vektor StructArray.</td><td>Pencarian sub-elemen, pemeringkatan ulang tingkat entitas.</td><td><a href="/docs/id/hybrid-search-with-structarray.md">Pencarian Hibrida dengan StructArray</a></td></tr>
+<tr><td>Model one parent object with many structured children.</td><td>Create a StructArray field.</td><td>Entity contains ordered Struct elements.</td><td><a href="/docs/id/create-structarray-field.md">Create a StructArray Field</a></td></tr>
+<tr><td>Insert parent records with nested child data.</td><td>Insert entities whose StructArray field is a list of Struct objects.</td><td>Entity-level insert.</td><td><a href="/docs/id/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a></td></tr>
+<tr><td>Run ColBERT, ColPali, or document-level late-interaction retrieval.</td><td>Use EmbeddingList search with a <code translate="no">MAX_SIM*</code> index.</td><td>Entity level.</td><td><a href="/docs/id/search-with-embedding-lists.md">Search with Embedding Lists</a></td></tr>
+<tr><td>Search individual chunks, clips, or patches.</td><td>Use element-level search with a regular vector metric.</td><td>Struct element level, with offset when available.</td><td><a href="/docs/id/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a></td></tr>
+<tr><td>Restrict element-level vector search to elements that match scalar conditions.</td><td>Use <code translate="no">element_filter</code>.</td><td>Element-level filtering; result shape depends on the search type.</td><td><a href="/docs/id/filtered-search-with-structarray.md">Filtered Search with StructArray</a></td></tr>
+<tr><td>Select entities by how many Struct elements satisfy a condition.</td><td>Use <code translate="no">MATCH_ANY</code>, <code translate="no">MATCH_ALL</code>, <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, or <code translate="no">MATCH_EXACT</code>.</td><td>Entity level.</td><td><a href="/docs/id/struct-array-operators.md">StructArray Operators</a></td></tr>
+<tr><td>Use score or distance boundaries on StructArray vector subfields.</td><td>Use element-level range search.</td><td>Struct element level.</td><td><a href="/docs/id/range-search-with-structarray.md">Range Search with StructArray</a></td></tr>
+<tr><td>Return at most one result per parent entity after element-level search.</td><td>Use grouping search by primary key.</td><td>Entity level after grouping.</td><td><a href="/docs/id/grouping-search-with-structarray.md">Grouping Search with StructArray</a></td></tr>
+<tr><td>Combine StructArray element search with another vector field.</td><td>Use hybrid search with one AnnSearchRequest targeting a StructArray vector subfield.</td><td>Element-level sub-search, entity-level reranking.</td><td><a href="/docs/id/hybrid-search-with-structarray.md">Hybrid Search with StructArray</a></td></tr>
 </tbody>
 </table>
-<h2 id="Understand-the-two-search-models" class="common-anchor-header">Memahami dua model pencarian<button data-href="#Understand-the-two-search-models" class="anchor-icon" translate="no">
+<h2 id="Understand-the-two-search-models" class="common-anchor-header">Understand the two search models<button data-href="#Understand-the-two-search-models" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -150,38 +149,38 @@ summary: >-
     </button></h2><table>
   <thead>
     <tr>
-      <th scope="col"><h3>Pencarian EmbeddingList</h3></th>
-      <th scope="col"><h3>Pencarian tingkat elemen</h3></th>
+      <th scope="col"><h3>EmbeddingList search</h3></th>
+      <th scope="col"><h3>Element-level search</h3></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <p>Pencarian EmbeddingList memperlakukan vektor-vektor di dalam subbidang vektor StructArray sebagai satu daftar embedding untuk entitas induk. Kueri juga merupakan daftar embedding. Milvus membandingkan daftar embedding kueri dengan daftar embedding yang tersimpan menggunakan metrik " <code translate="no">MAX_SIM*</code> " dan mengembalikan entitas yang cocok.</p>
+        <p>EmbeddingList search treats the vectors inside a StructArray vector subfield as one embedding list for the parent entity. The query is also an embedding list. Milvus compares the query embedding list with the stored embedding list by using a <code translate="no">MAX_SIM*</code> metric and returns matching entities.</p>
         <ul>
-          <li>Data kueri: daftar embedding.</li>
-          <li>Keluarga metrik: <code translate="no">MAX_SIM*</code>.</li>
-          <li>Tingkat granularitas hasil: tingkat entitas.</li>
-          <li>Cocok untuk: pencarian interaksi lanjutan pada tingkat dokumen atau halaman.</li>
+          <li>Query data: embedding list.</li>
+          <li>Metric family: <code translate="no">MAX_SIM*</code>.</li>
+          <li>Result granularity: entity level.</li>
+          <li>Best for: document-level or page-level late-interaction retrieval.</li>
         </ul>
       </td>
       <td>
-        <p>Pencarian tingkat elemen memperlakukan setiap elemen Struct sebagai kandidat pencarian vektor independen. Setiap hasil yang cocok mewakili elemen yang cocok di dalam bidang StructArray, dan hasil yang tidak dikelompokkan dapat menampilkan offset elemen.</p>
+        <p>Element-level search treats each Struct element as an independent vector-search candidate. Each hit represents a matched element inside the StructArray field, and ungrouped results can expose the element offset.</p>
         <ul>
-          <li>Data kueri: vektor reguler.</li>
-          <li>Keluarga metrik: metrik vektor biasa.</li>
-          <li>Tingkat granularitas hasil: tingkat elemen Struct.</li>
-          <li>Paling cocok untuk: pencarian tingkat potongan, tingkat klip, atau tingkat patch.</li>
+          <li>Query data: regular vector.</li>
+          <li>Metric family: regular vector metrics.</li>
+          <li>Result granularity: Struct element level.</li>
+          <li>Best for: chunk-level, clip-level, or patch-level retrieval.</li>
         </ul>
       </td>
     </tr>
   </tbody>
 </table>
 <div class="alert note">
-<p>Peringatan</p>
-<p>Jika koleksi Anda memerlukan pencarian EmbeddingList dan pencarian tingkat elemen, gunakan dua subbidang vektor terpisah. Bidang vektor atau subbidang vektor hanya menerima satu indeks, dan kedua mode pencarian tersebut memerlukan keluarga metrik yang berbeda.</p>
+<p>Warning</p>
+<p>If your collection needs both EmbeddingList search and element-level search, use two separate vector subfields. A vector field or vector subfield accepts only one index, and the two search modes require different metric families.</p>
 </div>
-<h2 id="Documentation-map" class="common-anchor-header">Peta dokumentasi<button data-href="#Documentation-map" class="anchor-icon" translate="no">
+<h2 id="Documentation-map" class="common-anchor-header">Documentation map<button data-href="#Documentation-map" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -196,26 +195,26 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dokumentasi StructArray dibagi menjadi halaman pemodelan dan halaman pencarian. Gunakan halaman pemodelan untuk mendefinisikan dan menyiapkan data. Gunakan halaman pencarian untuk memilih perilaku pengambilan dan penyaringan yang tepat.</p>
+    </button></h2><p>StructArray documentation is split into modeling pages and search pages. Use the modeling pages to define and prepare data. Use the search pages to choose the right retrieval and filtering behavior.</p>
 <table>
 <thead>
-<tr><th>Area</th><th>Halaman</th><th>Gunakan untuk</th></tr>
+<tr><th>Area</th><th>Page</th><th>Use it for</th></tr>
 </thead>
 <tbody>
-<tr><td>Pemodelan</td><td><a href="/docs/id/create-structarray-field.md">Buat Bidang StructArray</a></td><td>Tentukan skema Struct dan tambahkan bidang StructArray.</td></tr>
-<tr><td>Pemodelan</td><td><a href="/docs/id/insert-data-into-structarray-fields.md">Masukkan Data ke dalam Bidang StructArray</a></td><td>Siapkan dan masukkan data StructArray bersarang.</td></tr>
-<tr><td>Pemodelan</td><td><a href="/docs/id/index-structarray-fields.md">Buat indeks pada bidang StructArray</a></td><td>Buat indeks vektor dan skalar pada subbidang StructArray.</td></tr>
-<tr><td>Referensi</td><td><a href="/docs/id/structarray-limits.md">Batasan StructArray</a></td><td>Periksa batasan skema, tipe data, indeks, pencarian, filter, dan versi.</td></tr>
-<tr><td>Pencarian</td><td><a href="/docs/id/basic-vector-search-with-structarray.md">Pencarian Vektor Dasar dengan StructArray</a></td><td>Bandingkan pencarian EmbeddingList dan pencarian vektor tingkat elemen.</td></tr>
-<tr><td>Pencarian</td><td><a href="/docs/id/range-search-with-structarray.md">Pencarian Rentang dengan StructArray</a></td><td>Gunakan batasan rentang dengan subbidang vektor StructArray.</td></tr>
-<tr><td>Pencarian</td><td><a href="/docs/id/grouping-search-with-structarray.md">Pencarian Pengelompokan dengan StructArray</a></td><td>Kelompokkan hasil pencarian tingkat elemen berdasarkan kunci utama.</td></tr>
-<tr><td>Pencarian</td><td><a href="/docs/id/hybrid-search-with-structarray.md">Pencarian Hibrida dengan StructArray</a></td><td>Gabungkan pencarian tingkat elemen StructArray dengan pencarian vektor lainnya.</td></tr>
-<tr><td>Pencarian</td><td><a href="/docs/id/filtered-search-with-structarray.md">Pencarian yang difilter dengan StructArray</a></td><td>Gunakan filter StructArray dalam pencarian, kueri, dan pencarian hibrida.</td></tr>
-<tr><td>Pencarian</td><td><a href="/docs/id/search-with-embedding-lists.md">Pencarian dengan Daftar Embedding</a></td><td>Bangun sistem pengambilan data bergaya ColBERT dan ColPali dengan StructArray.</td></tr>
-<tr><td>Filter</td><td><a href="/docs/id/struct-array-operators.md">Operator StructArray</a></td><td>Referensi sintaks untuk operator <code translate="no">element_filter</code> dan <code translate="no">MATCH_*</code>.</td></tr>
+<tr><td>Modeling</td><td><a href="/docs/id/create-structarray-field.md">Create a StructArray Field</a></td><td>Define Struct schema and add a StructArray field.</td></tr>
+<tr><td>Modeling</td><td><a href="/docs/id/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a></td><td>Prepare and insert nested StructArray data.</td></tr>
+<tr><td>Modeling</td><td><a href="/docs/id/index-structarray-fields.md">Index StructArray Fields</a></td><td>Create vector and scalar indexes on StructArray subfields.</td></tr>
+<tr><td>Reference</td><td><a href="/docs/id/structarray-limits.md">StructArray Limits</a></td><td>Check schema, data type, index, search, filter, and version limits.</td></tr>
+<tr><td>Search</td><td><a href="/docs/id/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a></td><td>Compare EmbeddingList search and element-level vector search.</td></tr>
+<tr><td>Search</td><td><a href="/docs/id/range-search-with-structarray.md">Range Search with StructArray</a></td><td>Use range constraints with StructArray vector subfields.</td></tr>
+<tr><td>Search</td><td><a href="/docs/id/grouping-search-with-structarray.md">Grouping Search with StructArray</a></td><td>Group element-level search results by primary key.</td></tr>
+<tr><td>Search</td><td><a href="/docs/id/hybrid-search-with-structarray.md">Hybrid Search with StructArray</a></td><td>Combine StructArray element-level search with other vector searches.</td></tr>
+<tr><td>Search</td><td><a href="/docs/id/filtered-search-with-structarray.md">Filtered Search with StructArray</a></td><td>Use StructArray filters in search, query, and hybrid search.</td></tr>
+<tr><td>Search</td><td><a href="/docs/id/search-with-embedding-lists.md">Search with Embedding Lists</a></td><td>Build ColBERT and ColPali-style retrieval systems with StructArray.</td></tr>
+<tr><td>Filter</td><td><a href="/docs/id/struct-array-operators.md">StructArray Operators</a></td><td>Reference syntax for <code translate="no">element_filter</code> and <code translate="no">MATCH_*</code> operators.</td></tr>
 </tbody>
 </table>
-<h2 id="Key-limits-to-check-first" class="common-anchor-header">Batasan kunci yang harus diperiksa terlebih dahulu<button data-href="#Key-limits-to-check-first" class="anchor-icon" translate="no">
+<h2 id="Key-limits-to-check-first" class="common-anchor-header">Key limits to check first<button data-href="#Key-limits-to-check-first" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -231,13 +230,13 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Struct dapat digunakan sebagai tipe elemen dari bidang Array. Struct tidak digunakan sebagai bidang koleksi tingkat atas.</p></li>
-<li><p>Semua elemen Struct dalam bidang StructArray yang sama berbagi satu skema yang telah ditentukan sebelumnya.</p></li>
-<li><p>Subbidang vektor memerlukan indeks. Pencarian EmbeddingList menggunakan metrik ` <code translate="no">MAX_SIM*</code> `, sedangkan pencarian tingkat elemen menggunakan metrik vektor biasa.</p></li>
-<li><p><code translate="no">element_filter</code> dan " <code translate="no">MATCH_*</code> " ditujukan untuk subbidang skalar di dalam bidang StructArray. Gunakan " <code translate="no">$[subfield]</code> " hanya di dalam operator-operator ini.</p></li>
-<li><p>Beberapa kombinasi pencarian bergantung pada versi atau spesifik mode. Periksa <a href="/docs/id/structarray-limits.md">Batasan StructArray</a> sebelum mengandalkan pencarian rentang, pencarian pengelompokan, pencarian hibrida, bidang yang dapat bernilai null, atau bidang yang ditambahkan secara dinamis.</p></li>
+<li><p>Struct can be used as the element type of an Array field. It is not used as a top-level collection field.</p></li>
+<li><p>All Struct elements in the same StructArray field share one predefined schema.</p></li>
+<li><p>Vector subfields require indexes. EmbeddingList search uses <code translate="no">MAX_SIM*</code> metrics, while element-level search uses regular vector metrics.</p></li>
+<li><p><code translate="no">element_filter</code> and <code translate="no">MATCH_*</code> are for scalar subfields inside StructArray fields. Use <code translate="no">$[subfield]</code> only inside these operators.</p></li>
+<li><p>Some search combinations are version-gated or mode-specific. Check <a href="/docs/id/structarray-limits.md">StructArray Limits</a> before relying on range search, grouping search, hybrid search, nullable fields, or dynamically added fields.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">Langkah selanjutnya<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -253,9 +252,9 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Untuk merancang skema, baca <a href="/docs/id/create-structarray-field.md">Buat Bidang StructArray</a>.</p></li>
-<li><p>Untuk mempersiapkan data, baca " <a href="/docs/id/insert-data-into-structarray-fields.md">Sisipkan Data ke dalam Bidang StructArray</a>".</p></li>
-<li><p>Untuk memilih indeks, baca " <a href="/docs/id/index-structarray-fields.md">Index StructArray Fields</a>".</p></li>
-<li><p>Untuk mencari subbidang vektor StructArray, mulailah dengan " <a href="/docs/id/basic-vector-search-with-structarray.md">Pencarian Vektor Dasar dengan StructArray</a>".</p></li>
-<li><p>Untuk menyaring subbidang skalar StructArray, baca " <a href="/docs/id/struct-array-operators.md">Operator StructArray</a> " dan " <a href="/docs/id/filtered-search-with-structarray.md">Pencarian yang Disaring dengan StructArray</a>".</p></li>
+<li><p>To design a schema, read <a href="/docs/id/create-structarray-field.md">Create a StructArray Field</a>.</p></li>
+<li><p>To prepare data, read <a href="/docs/id/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p></li>
+<li><p>To choose indexes, read <a href="/docs/id/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To search StructArray vector subfields, start with <a href="/docs/id/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To filter StructArray scalar subfields, read <a href="/docs/id/struct-array-operators.md">StructArray Operators</a> and <a href="/docs/id/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
 </ol>

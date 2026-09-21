@@ -1,14 +1,14 @@
 ---
 id: tei-ranker.md
-title: TEI-RangiererCompatible with Milvus 2.6.x
+title: TEI RankerCompatible with Milvus 2.6.x
 summary: >-
-  Der TEI Ranker nutzt den Text Embedding Inference (TEI) Service von Hugging
-  Face, um die Suchrelevanz durch semantisches Reranking zu verbessern. Er
-  stellt einen fortschrittlichen Ansatz für die Ordnung von Suchergebnissen dar,
-  der über die traditionelle Vektorähnlichkeit hinausgeht.
+  The TEI Ranker leverages the Text Embedding Inference (TEI) service from
+  Hugging Face to enhance search relevance through semantic reranking. It
+  represents an advanced approach to search result ordering that goes beyond
+  traditional vector similarity.
 beta: Milvus 2.6.x
 ---
-<h1 id="TEI-Ranker" class="common-anchor-header">TEI-Rangierer<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#TEI-Ranker" class="anchor-icon" translate="no">
+<h1 id="TEI-Ranker" class="common-anchor-header">TEI Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#TEI-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,8 +23,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Der TEI Ranker nutzt den <a href="https://huggingface.co/docs/text-embeddings-inference/index">Text Embedding Inference (TEI)</a> Service von Hugging Face, um die Suchrelevanz durch semantisches Reranking zu verbessern. Er stellt einen fortschrittlichen Ansatz für die Ordnung von Suchergebnissen dar, der über die traditionelle Vektorähnlichkeit hinausgeht.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Voraussetzungen<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>The TEI Ranker leverages the <a href="https://huggingface.co/docs/text-embeddings-inference/index">Text Embedding Inference (TEI)</a> service from Hugging Face to enhance search relevance through semantic reranking. It represents an advanced approach to search result ordering that goes beyond traditional vector similarity.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,12 +39,12 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Bevor Sie TEI Ranker in Milvus implementieren, müssen Sie sicherstellen, dass Sie über Folgendes verfügen</p>
+    </button></h2><p>Before implementing TEI Ranker in Milvus, ensure you have:</p>
 <ul>
-<li><p>Eine Milvus-Sammlung mit einem <code translate="no">VARCHAR</code> -Feld, das den neu zu bewertenden Text enthält</p></li>
-<li><p>Ein laufender TEI-Dienst mit Ranglistenfunktionen. Detaillierte Anweisungen zum Einrichten eines TEI-Dienstes finden Sie in der <a href="https://huggingface.co/docs/text-embeddings-inference/en/quick_tour">offiziellen TEI-Dokumentation</a>.</p></li>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A running TEI service with reranking capabilities. For detailed instructions on setting up a TEI service, refer to the <a href="https://huggingface.co/docs/text-embeddings-inference/en/quick_tour">official TEI documentation</a>.</p></li>
 </ul>
-<h2 id="Create-a-TEI-ranker-function" class="common-anchor-header">Erstellen einer TEI-Ranker-Funktion<button data-href="#Create-a-TEI-ranker-function" class="anchor-icon" translate="no">
+<h2 id="Create-a-TEI-ranker-function" class="common-anchor-header">Create a TEI ranker function<button data-href="#Create-a-TEI-ranker-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,9 +59,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Um TEI Ranker in Ihrer Milvus-Anwendung zu verwenden, erstellen Sie ein Function-Objekt, das angibt, wie das Reranking funktionieren soll. Diese Funktion wird an Milvus-Suchoperationen übergeben, um das Ranking der Ergebnisse zu verbessern.</p>
+    </button></h2><p>To use TEI Ranker in your Milvus application, create a Function object that specifies how the reranking should operate. This function will be passed to Milvus search operations to enhance result ranking.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -114,7 +119,7 @@ searchWithRanker(scientists, ranker);
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="TEI-ranker-specific-parameters" class="common-anchor-header">TEI-Ranker-spezifische Parameter<button data-href="#TEI-ranker-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="TEI-ranker-specific-parameters" class="common-anchor-header">TEI ranker-specific parameters<button data-href="#TEI-ranker-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,61 +134,61 @@ searchWithRanker(scientists, ranker);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Die folgenden Parameter sind spezifisch für den TEI Ranker:</p>
+    </button></h3><p>The following parameters are specific to the TEI ranker:</p>
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Erforderlich?</p></th>
-     <th><p>Beschreibung</p></th>
-     <th><p>Wert / Beispiel</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value / Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reranker</code></p></td>
-     <td><p>Ja</p></td>
-     <td><p>Muss auf <code translate="no">"model"</code> gesetzt werden, um das Modell-Reranking zu aktivieren.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>Ja</p></td>
-     <td><p>Der Modelldienstanbieter, der für das Reranking verwendet werden soll.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"tei"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queries</code></p></td>
-     <td><p>Ja</p></td>
-     <td><p>Liste der Abfrage-Strings, die vom Rerank-Modell zur Berechnung der Relevanzwerte verwendet werden. Die Anzahl der Abfragezeichenfolgen muss genau mit der Anzahl der Abfragen in Ihrem Suchvorgang übereinstimmen (auch bei Verwendung von Abfragevektoren anstelle von Text), andernfalls wird ein Fehler gemeldet.</p></td>
-     <td><p><em>["Suchanfrage"]</em></p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the rerank model to calculate relevance scores. The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
+     <td><p><em>["search query"]</em></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">endpoint</code></p></td>
-     <td><p>Ja</p></td>
-     <td><p>Die URL Ihres TEI-Dienstes.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Your TEI service URL.</p></td>
      <td><p><code translate="no">"http://localhost:8080"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>Nein</p></td>
-     <td><p>Da Modelldienste möglicherweise nicht alle Daten auf einmal verarbeiten, wird hier die Stapelgröße für den Zugriff auf den Modelldienst in mehreren Anfragen festgelegt.</p></td>
-     <td><p><code translate="no">32</code> (Voreinstellung)</p></td>
+     <td><p>No</p></td>
+     <td><p>Since model services may not process all data at once, this sets the batch size for accessing the model service in multiple requests.</p></td>
+     <td><p><code translate="no">32</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">truncate</code></p></td>
-     <td><p>Nein</p></td>
-     <td><p>Ob Eingaben, die die maximale Sequenzlänge überschreiten, abgeschnitten werden sollen. Wenn <code translate="no">False</code>, führen lange Eingaben zu Fehlern.</p></td>
-     <td><p><code translate="no">True</code> oder <code translate="no">False</code></p></td>
+     <td><p>No</p></td>
+     <td><p>Whether to truncate inputs exceeding max sequence length. If <code translate="no">False</code>, long inputs raise errors.</p></td>
+     <td><p><code translate="no">True</code> or <code translate="no">False</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">truncation_direction</code></p></td>
-     <td><p>Nein</p></td>
-     <td><p>Richtung, aus der abgeschnitten wird, wenn die Eingabe zu lang ist:</p><ul><li><p><code translate="no">"Right"</code> (Voreinstellung):  Token werden vom Ende der Sequenz entfernt, bis die maximal unterstützte Größe erreicht ist.</p></li><li><p><code translate="no">"Left"</code>: Die Token werden vom Anfang der Sequenz entfernt.</p></li></ul></td>
-     <td><p><code translate="no">"Right"</code> oder <code translate="no">"Left"</code></p></td>
+     <td><p>No</p></td>
+     <td><p>Direction to truncate from when input is too long:</p><ul><li><p><code translate="no">"Right"</code> (default):  Tokens are removed from the end of the sequence until the maximum supported size is matched.</p></li><li><p><code translate="no">"Left"</code>: Tokens are removed from the beginning of the sequence.</p></li></ul></td>
+     <td><p><code translate="no">"Right"</code> or <code translate="no">"Left"</code></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>Allgemeine Parameter, die für alle Model Ranker gelten (z. B. <code translate="no">provider</code>, <code translate="no">queries</code>), finden Sie unter <a href="/docs/de/model-ranker-overview.md#Create-a-model-ranker">Erstellen eines Model Rankers</a>.</p>
+<p>For general parameters shared across all model rankers (e.g., <code translate="no">provider</code>, <code translate="no">queries</code>), refer to <a href="/docs/de/v2.6.x/model-ranker-overview.md#Create-a-model-ranker">Create a model ranker</a>.</p>
 </div>
-<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Auf Standard-Vektorsuche anwenden<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -198,9 +203,14 @@ searchWithRanker(scientists, ranker);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>So wenden Sie TEI Ranker auf eine Standard-Vektorsuche an:</p>
+    </button></h2><p>To apply TEI Ranker to a standard vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Execute search with vLLM reranking</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;your_collection&quot;</span>,

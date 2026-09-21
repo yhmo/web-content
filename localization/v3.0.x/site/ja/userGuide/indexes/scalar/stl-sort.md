@@ -2,7 +2,9 @@
 id: stl-sort.md
 title: STL_SORT
 summary: >-
-  STL_SORTインデックスは、Milvus内の数値フィールド(INT8、INT16など)、VARCHARフィールド、TIMESTAMPTZフィールドのデータをソート順に整理することにより、クエリのパフォーマンスを向上させるために特別に設計されたインデックスタイプです。
+  The STL_SORT index is an index type specifically designed to enhance query
+  performance on numeric fields (INT8, INT16, etc.), VARCHAR fields, or
+  TIMESTAMPTZ fields within Milvus by organizing the data in a sorted order.
 ---
 <h1 id="STLSORT" class="common-anchor-header">STL_SORT<button data-href="#STLSORT" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -19,13 +21,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">STL_SORT</code> インデックスはMilvus内の数値フィールド(INT8、INT16など)、<code translate="no">VARCHAR</code> フィールド、<code translate="no">TIMESTAMPTZ</code> フィールドのデータをソート順に整理することにより、クエリの性能を向上させるために特別に設計されたインデックスタイプです。</p>
-<p>以下のようなクエリを頻繁に実行する場合は、<code translate="no">STL_SORT</code> インデックスを使用してください：</p>
+    </button></h1><p>The <code translate="no">STL_SORT</code> index is an index type specifically designed to enhance query performance on numeric fields (INT8, INT16, etc.), <code translate="no">VARCHAR</code> fields, or <code translate="no">TIMESTAMPTZ</code> fields within Milvus by organizing the data in a sorted order.</p>
+<p>Use the <code translate="no">STL_SORT</code> index if you frequently run queries with:</p>
 <ul>
-<li><p><code translate="no">==</code> 、<code translate="no">!=</code> 、<code translate="no">&gt;</code> 、<code translate="no">&lt;</code> 、<code translate="no">&gt;=</code> 、<code translate="no">&lt;=</code> の演算子による比較フィルタリング。</p></li>
-<li><p><code translate="no">IN</code> および<code translate="no">LIKE</code> 演算子による範囲フィルタリング</p></li>
+<li><p>Comparison filtering with <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, and <code translate="no">&lt;=</code> operators</p></li>
+<li><p>Range filtering with <code translate="no">IN</code> and <code translate="no">LIKE</code> operators</p></li>
 </ul>
-<h2 id="Supported-data-types" class="common-anchor-header">サポートされるデータ型<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
+<h2 id="Supported-data-types" class="common-anchor-header">Supported data types<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,11 +43,11 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>数値フィールド（例：<code translate="no">INT8</code> 、<code translate="no">INT16</code> 、<code translate="no">INT32</code> 、<code translate="no">INT64</code> 、<code translate="no">FLOAT</code> 、<code translate="no">DOUBLE</code> ）。詳細は「<a href="/docs/ja/number.md">Boolean &amp; Number</a>」を参照。</p></li>
-<li><p><code translate="no">VARCHAR</code> フィールド。詳細は<a href="/docs/ja/string.md">文字列フィールドを</a>参照。</p></li>
-<li><p><code translate="no">TIMESTAMPTZ</code> フィールド。詳細は<a href="/docs/ja/timestamptz-field.md">TIMESTAMPTZフィールドを</a>参照。</p></li>
+<li><p>Numeric fields (e.g., <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>). For details, refer to <a href="/docs/ja/number.md">Boolean & Number</a>.</p></li>
+<li><p><code translate="no">VARCHAR</code> fields. For details, refer to <a href="/docs/ja/string.md">String Field</a>.</p></li>
+<li><p><code translate="no">TIMESTAMPTZ</code> fields. For details, refer to <a href="/docs/ja/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">仕組み<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -60,24 +62,24 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusは2つのフェーズで<code translate="no">STL_SORT</code> ：</p>
+    </button></h2><p>Milvus implements <code translate="no">STL_SORT</code> in two phases:</p>
 <ol>
-<li><p><strong>インデックスの構築</strong></p>
+<li><p><strong>Build index</strong></p>
 <ul>
-<li><p>インジェスト中、Milvusはインデックスされたフィールドの全ての値を収集します。</p></li>
-<li><p>値はC++ STLの<a href="https://en.cppreference.com/w/cpp/algorithm/sort.html">std::sortを</a>使用して昇順にソートされます。</p></li>
-<li><p>各値はエンティティIDと対にされ、ソートされた配列がインデックスとして永続化されます。</p></li>
+<li><p>During ingestion, Milvus collects all values for the indexed field.</p></li>
+<li><p>The values are sorted in ascending order using C++ STL’s <a href="https://en.cppreference.com/w/cpp/algorithm/sort.html">std::sort</a>.</p></li>
+<li><p>Each value is paired with its entity ID, and the sorted array is persisted as the index.</p></li>
 </ul></li>
-<li><p><strong>クエリの高速化</strong></p>
+<li><p><strong>Accelerate queries</strong></p>
 <ul>
-<li><p>クエリー時、Milvusはソートされた配列に対して<strong>バイナリサーチ</strong><a href="https://en.cppreference.com/w/cpp/algorithm/lower_bound.html">（std::lower_boundと</a> <a href="https://en.cppreference.com/w/cpp/algorithm/upper_bound.html">std::upper_bound</a>）を使用します。</p></li>
-<li><p>等値の場合、Milvusは一致するすべての値を素早く見つけます。</p></li>
-<li><p>範囲の場合、Milvusは開始位置と終了位置を特定し、その間のすべての値を返します。</p></li>
-<li><p>一致したエンティティIDは、最終的な結果の組み立てのためにクエリ実行部に渡されます。</p></li>
+<li><p>At query time, Milvus uses <strong>binary search</strong> (<a href="https://en.cppreference.com/w/cpp/algorithm/lower_bound.html">std::lower_bound</a> and <a href="https://en.cppreference.com/w/cpp/algorithm/upper_bound.html">std::upper_bound</a>) on the sorted array.</p></li>
+<li><p>For equality, Milvus quickly finds all matching values.</p></li>
+<li><p>For ranges, Milvus locates the start and end positions and returns all values in between.</p></li>
+<li><p>Matching entity IDs are passed to the query executor for final result assembly.</p></li>
 </ul></li>
 </ol>
-<p>これにより、クエリの複雑さが<strong>O(n)</strong>(フルスキャン)から<strong>O(log n + m)</strong>(<em>mは</em>マッチ数<strong>)</strong>に減少します。</p>
-<h2 id="Create-an-STLSORT-index" class="common-anchor-header">STL_SORTインデックスの作成<button data-href="#Create-an-STLSORT-index" class="anchor-icon" translate="no">
+<p>This reduces query complexity from <strong>O(n)</strong> (full scan) to <strong>O(log n + m)</strong>, where <em>m</em> is the number of matches.</p>
+<h2 id="Create-an-STLSORT-index" class="common-anchor-header">Create an STL_SORT index<button data-href="#Create-an-STLSORT-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -92,8 +94,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>数値フィールドまたは<code translate="no">TIMESTAMPTZ</code> フィールドに<code translate="no">STL_SORT</code> インデックスを作成することができます。追加のパラメータは必要ありません。</p>
-<p>以下の例は、<code translate="no">TIMESTAMPTZ</code> フィールドに<code translate="no">STL_SORT</code> インデックスを作成する方法を示しています：</p>
+    </button></h2><p>You can create an <code translate="no">STL_SORT</code> index on a numeric or <code translate="no">TIMESTAMPTZ</code> field. No extra parameters are required.</p>
+<p>The example below shows how to create an <code translate="no">STL_SORT</code> index on a <code translate="no">TIMESTAMPTZ</code> field:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your server address</span>
@@ -117,7 +119,7 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-an-index" class="common-anchor-header">インデックスの削除<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,7 +134,7 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>コレクションから既存のインデックスを削除するには、<code translate="no">drop_index()</code> メソッドを使用します。</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
@@ -140,7 +142,7 @@ client.create_index(
     index_name=<span class="hljs-string">&quot;tsz_index&quot;</span> <span class="hljs-comment"># Name of the index to drop</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Usage-notes" class="common-anchor-header">使用上の注意<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<h2 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -156,7 +158,7 @@ client.create_index(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>フィールド・タイプ：</strong>数値フィールドおよび<code translate="no">TIMESTAMPTZ</code> フィールドで動作します。データ型の詳細は、<a href="/docs/ja/number.md">Boolean &amp; Number</a>および<a href="/docs/ja/timestamptz-field.md">TIMESTAMPTZ Field</a> を参照してください。</p></li>
-<li><p><strong>パラメータ：</strong>インデックス・パラメータは必要ありません。</p></li>
-<li><p><strong>Mmapはサポートされていません：</strong>メモリ・マップド・モードは<code translate="no">STL_SORT</code> では使用できない。</p></li>
+<li><p><strong>Field types:</strong> Works with numeric and <code translate="no">TIMESTAMPTZ</code> fields. For more information on data types, refer to <a href="/docs/ja/number.md">Boolean & Number</a> and <a href="/docs/ja/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p></li>
+<li><p><strong>Parameters:</strong> No index parameters are needed.</p></li>
+<li><p><strong>Mmap not supported:</strong> Memory-mapped mode is not available for <code translate="no">STL_SORT</code>.</p></li>
 </ul>

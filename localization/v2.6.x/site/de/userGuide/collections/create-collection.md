@@ -1,13 +1,12 @@
 ---
 id: create-collection.md
-title: Sammlung erstellen
+title: Create Collection
 summary: >-
-  Sie können eine Sammlung erstellen, indem Sie ihr Schema, die Indexparameter
-  und den Metrik-Typ festlegen und bestimmen, ob sie bei der Erstellung geladen
-  werden soll. Auf dieser Seite erfahren Sie, wie Sie eine Sammlung von Grund
-  auf erstellen können.
+  You can create a collection by defining its schema, index parameters, metric
+  type, and whether to load it upon creation. This page introduces how to create
+  a collection from scratch.
 ---
-<h1 id="Create-Collection" class="common-anchor-header">Sammlung erstellen<button data-href="#Create-Collection" class="anchor-icon" translate="no">
+<h1 id="Create-Collection" class="common-anchor-header">Create Collection<button data-href="#Create-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Sie können eine Sammlung erstellen, indem Sie ihr Schema, die Indexparameter und den Metrik-Typ festlegen und bestimmen, ob sie bei der Erstellung geladen werden soll. Auf dieser Seite erfahren Sie, wie Sie eine Sammlung von Grund auf erstellen können.</p>
-<h2 id="Overview" class="common-anchor-header">Überblick<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>You can create a collection by defining its schema, index parameters, metric type, and whether to load it upon creation. This page introduces how to create a collection from scratch.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,15 +37,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Eine Sammlung ist eine zweidimensionale Tabelle mit festen Spalten und variablen Zeilen. Jede Spalte steht für ein Feld und jede Zeile für eine Entität. Um eine solche strukturelle Datenverwaltung zu implementieren, ist ein Schema erforderlich. Jede Entität, die eingefügt werden soll, muss den im Schema definierten Beschränkungen entsprechen.</p>
-<p>Sie können jeden Aspekt einer Sammlung bestimmen, einschließlich des Schemas, der Indexparameter, des Metrik-Typs und ob sie bei der Erstellung geladen werden soll, um sicherzustellen, dass die Sammlung Ihre Anforderungen vollständig erfüllt.</p>
-<p>Um eine Sammlung zu erstellen, müssen Sie</p>
+    </button></h2><p>A collection is a two-dimensional table with fixed columns and variant rows. Each column represents a field, and each row represents an entity. A schema is required to implement such structural data management. Every entity to insert has to meet the constraints defined in the schema.</p>
+<p>You can determine every aspect of a collection, including its schema, index parameters, metric type, and whether to load it upon creation to ensure that the collection fully meets your requirements.</p>
+<p>To create a collection, you need to</p>
 <ul>
-<li><p><a href="/docs/de/v2.6.x/create-collection.md#Create-Schema">Schema erstellen</a></p></li>
-<li><p><a href="/docs/de/v2.6.x/create-collection.md#Optional-Set-Index-Parameters">Indexparameter festlegen</a> (optional)</p></li>
-<li><p><a href="/docs/de/v2.6.x/create-collection.md#Create-a-Collection">Sammlung erstellen</a></p></li>
+<li><p><a href="/docs/de/v2.6.x/create-collection.md#Create-Schema">Create schema</a></p></li>
+<li><p><a href="/docs/de/v2.6.x/create-collection.md#Optional-Set-Index-Parameters">Set index parameters</a> (Optional)</p></li>
+<li><p><a href="/docs/de/v2.6.x/create-collection.md#Create-a-Collection">Create collection</a></p></li>
 </ul>
-<h2 id="Create-Schema" class="common-anchor-header">Schema erstellen<button data-href="#Create-Schema" class="anchor-icon" translate="no">
+<h2 id="Create-Schema" class="common-anchor-header">Create Schema<button data-href="#Create-Schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -61,13 +60,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ein Schema definiert die Datenstruktur einer Sammlung. Wenn Sie eine Sammlung erstellen, müssen Sie das Schema entsprechend Ihren Anforderungen entwerfen. Einzelheiten hierzu finden Sie unter <a href="/docs/de/v2.6.x/schema.md">Schema erklärt</a>.</p>
-<p>Die folgenden Codeschnipsel erstellen ein Schema mit dem aktivierten dynamischen Feld und drei obligatorischen Feldern namens <code translate="no">my_id</code>, <code translate="no">my_vector</code> und <code translate="no">my_varchar</code>.</p>
+    </button></h2><p>A schema defines the data structure of a collection. When creating a collection, you need to design the schema based on your requirements. For details, refer to <a href="/docs/de/v2.6.x/schema.md">Schema Explained</a>.</p>
+<p>The following code snippets create a schema with the enabled dynamic field and three mandatory fields named <code translate="no">my_id</code>, <code translate="no">my_vector</code>, and <code translate="no">my_varchar</code>.</p>
 <div class="alert note">
-<p>Sie können für jedes skalare Feld Standardwerte festlegen und es löschbar machen. Einzelheiten dazu finden Sie unter <a href="/docs/de/v2.6.x/nullable-and-default.md">Nullable &amp; Default</a>.</p>
+<p>You can set default values for any scalar field and make it nullable. For details, refer to  <a href="/docs/de/v2.6.x/nullable-and-default.md">Nullable & Default</a>.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 3. Create a collection in customized setup mode</span>
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -209,7 +213,7 @@ schema := entity.NewSchema().WithDynamicFieldEnabled(<span class="hljs-literal">
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Optional-Set-Index-Parameters" class="common-anchor-header">(Optional) Index-Parameter setzen<button data-href="#Optional-Set-Index-Parameters" class="anchor-icon" translate="no">
+<h2 id="Optional-Set-Index-Parameters" class="common-anchor-header">(Optional) Set Index Parameters<button data-href="#Optional-Set-Index-Parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -224,12 +228,17 @@ schema := entity.NewSchema().WithDynamicFieldEnabled(<span class="hljs-literal">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Die Erstellung eines Indexes für ein bestimmtes Feld beschleunigt die Suche nach diesem Feld. Ein Index zeichnet die Reihenfolge der Entitäten innerhalb einer Sammlung auf. Wie in den folgenden Codeschnipseln gezeigt, können Sie <code translate="no">metric_type</code> und <code translate="no">index_type</code> verwenden, um geeignete Wege für Milvus auszuwählen, ein Feld zu indizieren und Ähnlichkeiten zwischen Vektoreinbettungen zu messen.</p>
-<p>In Milvus können Sie <code translate="no">AUTOINDEX</code> als Index-Typ für alle Vektorfelder und einen der Typen <code translate="no">COSINE</code>, <code translate="no">L2</code> und <code translate="no">IP</code> als Metrik-Typ je nach Ihren Bedürfnissen verwenden.</p>
-<p>Wie im obigen Codeschnipsel gezeigt, müssen Sie sowohl den Indextyp als auch den metrischen Typ für Vektorfelder und nur den Indextyp für skalare Felder festlegen. Indizes sind für Vektorfelder obligatorisch, und es wird empfohlen, Indizes für skalare Felder zu erstellen, die häufig in Filterbedingungen verwendet werden.</p>
-<p>Details finden Sie unter <a href="/docs/de/v2.6.x/index-vector-fields.md">Index Vektorfelder</a> und <a href="/docs/de/v2.6.x/index-scalar-fields.md">Index Skalarfelder</a>.</p>
+    </button></h2><p>Creating an index on a specific field accelerates the search against this field. An index records the order of entities within a collection. As shown in the following code snippets, you can use <code translate="no">metric_type</code> and <code translate="no">index_type</code> to select appropriate ways for Milvus to index a field and measure similarities between vector embeddings.</p>
+<p>On Milvus, you can use <code translate="no">AUTOINDEX</code> as the index type for all vector fields, and one of <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code> as the metric type based on your needs.</p>
+<p>As demonstrated in the above code snippet, you need to set both the index type and metric type for vector fields and only the index type for the scalar fields. Indexes are mandatory for vector fields, and you are advised to create indexes on scalar fields frequently used in filtering conditions.</p>
+<p>For details, refer to <a href="/docs/de/v2.6.x/index-vector-fields.md">Index Vector Fields</a> and <a href="/docs/de/v2.6.x/index-scalar-fields.md">Index Scalar Fields</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 3.3. Prepare index parameters</span>
 index_params = client.prepare_index_params()
 
@@ -300,7 +309,7 @@ indexOptions := []milvusclient.CreateIndexOption{
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-a-Collection" class="common-anchor-header">Erstellen Sie eine Sammlung<button data-href="#Create-a-Collection" class="anchor-icon" translate="no">
+<h2 id="Create-a-Collection" class="common-anchor-header">Create a Collection<button data-href="#Create-a-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -315,10 +324,15 @@ indexOptions := []milvusclient.CreateIndexOption{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Wenn Sie eine Sammlung mit Indexparametern erstellt haben, lädt Milvus die Sammlung automatisch bei ihrer Erstellung. In diesem Fall werden alle Felder, die in den Indexparametern erwähnt werden, indiziert.</p>
-<p>Die folgenden Codeschnipsel zeigen, wie man eine Sammlung mit Indexparametern erstellt und ihren Ladestatus überprüft.</p>
+    </button></h2><p>If you have created a collection with index parameters, Milvus automatically loads the collection upon its creation. In this case, all fields mentioned in the index parameters are indexed.</p>
+<p>The following code snippets demonstrate how to create the collection with index parameters and check its load status.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 3.5. Create a collection with the index loaded simultaneously</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&quot;customized_setup_1&quot;</span>,
@@ -408,10 +422,15 @@ curl --request POST \
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Sie können auch eine Sammlung ohne Index-Parameter erstellen und diese nachträglich hinzufügen. In diesem Fall lädt Milvus die Sammlung bei ihrer Erstellung nicht. .</p>
-<p>Der folgende Codeschnipsel demonstriert, wie man eine Sammlung ohne Index erstellt, wobei der Ladestatus der Sammlung bei der Erstellung ungeladen bleibt.</p>
+<p>You can also create a collection without any index parameters and add them afterward. In this case, Milvus does not load the collection upon its creation. .</p>
+<p>The following code snippet demonstrates how to create a collection without an index, and the load status of the collection remains unloaded upon creation.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 3.6. Create a collection and index it separately</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&quot;customized_setup_2&quot;</span>,
@@ -508,7 +527,7 @@ curl --request POST \
     \&quot;collectionName\&quot;: \&quot;customized_setup_2\&quot;
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-Collection-Properties" class="common-anchor-header">Eigenschaften der Sammlung festlegen<button data-href="#Set-Collection-Properties" class="anchor-icon" translate="no">
+<h2 id="Set-Collection-Properties" class="common-anchor-header">Set Collection Properties<button data-href="#Set-Collection-Properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -523,8 +542,8 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sie können Eigenschaften für die zu erstellende Sammlung festlegen, damit sie in Ihren Dienst passt. Die anwendbaren Eigenschaften sind wie folgt.</p>
-<h3 id="Set-Shard-Number" class="common-anchor-header">Shard-Nummer festlegen<button data-href="#Set-Shard-Number" class="anchor-icon" translate="no">
+    </button></h2><p>You can set properties for the collection to create to make it fit into your service. The applicable properties are as follows.</p>
+<h3 id="Set-Shard-Number" class="common-anchor-header">Set Shard Number<button data-href="#Set-Shard-Number" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -539,15 +558,20 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Shards sind horizontale Abschnitte einer Sammlung, und jeder Shard entspricht einem Dateneingabekanal. Standardmäßig hat jede Sammlung einen Shard. Sie können die Anzahl der Scherben beim Erstellen einer Sammlung angeben, um sie besser an Ihr Datenvolumen und Ihre Arbeitslast anzupassen.</p>
-<p>Als allgemeine Richtlinie sollten Sie bei der Festlegung der Anzahl der Scherben Folgendes berücksichtigen:</p>
+    </button></h3><p>Shards are horizontal slices of a collection, and each shard corresponds to a data input channel. By default, every collection has one shard. You can specify the number of shards when creating a collection to better suit your data volume and workload.</p>
+<p>As a general guideline, consider the following when setting the number of shards:</p>
 <ul>
-<li><strong>Die Datengröße:</strong> In der Regel wird ein Shard für jeweils 200 Millionen Entitäten verwendet. Sie können auch eine Schätzung auf der Grundlage der Gesamtdatengröße vornehmen, z. B. ein Shard pro 100 GB Daten, die Sie einfügen möchten.</li>
-<li><strong>Auslastung der Stream-Knoten:</strong> Wenn Ihre Milvus-Instanz über mehrere Stream-Knoten verfügt, wird die Verwendung mehrerer Shards empfohlen. Dadurch wird sichergestellt, dass die Arbeitslast beim Einfügen von Daten auf alle verfügbaren Stream Nodes verteilt wird, wodurch verhindert wird, dass einige im Leerlauf sind, während andere überlastet sind.</li>
+<li><strong>Data size:</strong> A common practice is to have one shard for every 200 million entities. You can also estimate based on the total data size, for example, adding one shard for every 100 GB of data you plan to insert.</li>
+<li><strong>Stream node utilization:</strong> If your Milvus instance has multiple stream nodes, using multiple shards is recommended. This ensures that the data insertion workload is distributed across all available stream nodes, preventing some from being idle while others are overloaded.</li>
 </ul>
-<p>Der folgende Codeschnipsel zeigt, wie die Shard-Nummer beim Erstellen einer Sammlung festgelegt wird.</p>
+<p>The following code snippet demonstrates how to set the shard number when you create a collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># With shard number</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&quot;customized_setup_3&quot;</span>,
@@ -594,7 +618,7 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Enable-mmap" class="common-anchor-header">Aktivieren von mmap<button data-href="#Enable-mmap" class="anchor-icon" translate="no">
+<h3 id="Enable-mmap" class="common-anchor-header">Enable mmap<button data-href="#Enable-mmap" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -609,9 +633,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus aktiviert mmap standardmäßig für alle Sammlungen, so dass Milvus die rohen Felddaten in den Speicher mappen kann, anstatt sie vollständig zu laden. Dies reduziert den Speicherbedarf und erhöht die Kapazität der Sammlung. Einzelheiten zu mmap finden Sie unter <a href="/docs/de/v2.6.x/mmap.md">mmap verwenden</a>.</p>
+    </button></h3><p>Milvus enables mmap on all collections by default, allowing Milvus to map raw field data into memory instead of fully loading them. This reduces memory footprints and increases collection capacity. For details on mmap, refer to <a href="/docs/de/v2.6.x/mmap.md">Use mmap</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#plaintext">Klartext</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#plaintext">plaintext</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># With mmap</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&quot;customized_setup_4&quot;</span>,
@@ -663,7 +692,7 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Set-Collection-TTL" class="common-anchor-header">TTL für Sammlungen festlegen<button data-href="#Set-Collection-TTL" class="anchor-icon" translate="no">
+<h3 id="Set-Collection-TTL" class="common-anchor-header">Set Collection TTL<button data-href="#Set-Collection-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -678,10 +707,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Wenn die Daten in einer Sammlung für eine bestimmte Zeitspanne gelöscht werden müssen, sollten Sie ihre Time-To-Live (TTL) in Sekunden festlegen. Sobald die TTL abläuft, löscht Milvus die Entitäten in der Sammlung. Die Löschung erfolgt asynchron, was bedeutet, dass Suchen und Abfragen noch möglich sind, bevor die Löschung abgeschlossen ist.</p>
-<p>Das folgende Codeschnipsel setzt die TTL auf einen Tag (86400 Sekunden). Es wird empfohlen, die TTL auf mindestens ein paar Tage einzustellen.</p>
+    </button></h3><p>If the data in a collection needs to be dropped for a specific period, consider setting its Time-To-Live (TTL) in seconds. Once the TTL times out, Milvus deletes entities in the collection. The deletion is asynchronous, indicating that searches and queries are still possible before the deletion is complete.</p>
+<p>The following code snippet sets the TTL to one day (86400 seconds). You are advised to set the TTL to a couple of days at minimum.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># With TTL</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&quot;customized_setup_5&quot;</span>,
@@ -735,7 +769,7 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Set-Consistency-Level" class="common-anchor-header">Konsistenzlevel festlegen<button data-href="#Set-Consistency-Level" class="anchor-icon" translate="no">
+<h3 id="Set-Consistency-Level" class="common-anchor-header">Set Consistency Level<button data-href="#Set-Consistency-Level" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -750,9 +784,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Bei der Erstellung einer Sammlung können Sie die Konsistenzstufe für Suchen und Abfragen in der Sammlung festlegen. Sie können auch die Konsistenzstufe der Sammlung während einer bestimmten Suche oder Abfrage ändern.</p>
+    </button></h3><p>When creating a collection, you can set the consistency level for searches and queries in the collection. You can also change the consistency level of the collection during a specific search or query.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># With consistency level</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&quot;customized_setup_6&quot;</span>,
@@ -804,8 +843,8 @@ curl --request POST \
     \&quot;params\&quot;: <span class="hljs-variable">$params</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Weitere Informationen zu Konsistenzstufen finden Sie unter <a href="/docs/de/v2.6.x/tune_consistency.md">Konsistenzstufe</a>.</p>
-<h3 id="Enable-Dynamic-Field" class="common-anchor-header">Dynamisches Feld aktivieren<button data-href="#Enable-Dynamic-Field" class="anchor-icon" translate="no">
+<p>For more on consistency levels, see <a href="/docs/de/v2.6.x/tune_consistency.md">Consistency Level</a>.</p>
+<h3 id="Enable-Dynamic-Field" class="common-anchor-header">Enable Dynamic Field<button data-href="#Enable-Dynamic-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -820,5 +859,5 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Das dynamische Feld in einer Sammlung ist ein reserviertes JavaScript Object Notation (JSON)-Feld namens <strong>$meta</strong>. Sobald Sie dieses Feld aktiviert haben, speichert Milvus alle nicht schema-definierten Felder, die in jeder Entität enthalten sind, und ihre Werte als Schlüssel-Wert-Paare in dem reservierten Feld.</p>
-<p>Einzelheiten zur Verwendung des dynamischen Feldes finden Sie unter <a href="/docs/de/v2.6.x/enable-dynamic-field.md">Dynamisches Feld</a>.</p>
+    </button></h3><p>The dynamic field in a collection is a reserved JavaScript Object Notation (JSON) field named <strong>$meta</strong>. Once you have enabled this field, Milvus saves all non-schema-defined fields carried in each entity and their values as key-value pairs in the reserved field.</p>
+<p>For details on how to use the dynamic field, refer to <a href="/docs/de/v2.6.x/enable-dynamic-field.md">Dynamic Field</a>.</p>

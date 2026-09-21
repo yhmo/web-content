@@ -1,16 +1,16 @@
 ---
 id: best-practices-for-array-of-structs.md
-title: Desain Model Data dengan Array StrukturCompatible with Milvus 2.6.4+
+title: Data Model Design with an Array of StructsCompatible with Milvus 2.6.4+
 summary: >-
-  Aplikasi AI modern, terutama di Internet of Things (IoT) dan mengemudi secara
-  otonom, biasanya menalar peristiwa yang kaya dan terstruktur: pembacaan sensor
-  dengan stempel waktu dan penyematan vektor, log diagnostik dengan kode
-  kesalahan dan cuplikan audio, atau segmen perjalanan dengan lokasi, kecepatan,
-  dan konteks pemandangan. Semua ini memerlukan database untuk mendukung
-  konsumsi dan pencarian data bersarang.
+  Modern AI applications, especially in the Internet of Things (IoT) and
+  autonomous driving, typically reason over rich, structured events: a sensor
+  reading with its timestamp and vector embedding, a diagnostic log with an
+  error code and audio snippet, or a trip segment with location, speed, and
+  scene context. These require the database to natively support the ingestion
+  and search of nested data.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Data-Model-Design-with-an-Array-of-Structs" class="common-anchor-header">Desain Model Data dengan Array Struktur<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Data-Model-Design-with-an-Array-of-Structs" class="anchor-icon" translate="no">
+<h1 id="Data-Model-Design-with-an-Array-of-Structs" class="common-anchor-header">Data Model Design with an Array of Structs<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Data-Model-Design-with-an-Array-of-Structs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -25,9 +25,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Aplikasi AI modern, terutama di Internet of Things (IoT) dan pengemudian otonom, biasanya menalar peristiwa yang kaya dan terstruktur: pembacaan sensor dengan stempel waktu dan penyematan vektor, log diagnostik dengan kode kesalahan dan cuplikan audio, atau segmen perjalanan dengan lokasi, kecepatan, dan konteks pemandangan. Semua ini membutuhkan database untuk mendukung konsumsi dan pencarian data bersarang.</p>
-<p>Alih-alih meminta pengguna untuk mengubah peristiwa struktural atomik mereka menjadi model data datar, Milvus memperkenalkan Array of Structs, di mana setiap Struct dalam larik dapat menyimpan skalar dan vektor, menjaga integritas semantik.</p>
-<h2 id="Why-Array-of-Structs" class="common-anchor-header">Mengapa Array of Structs<button data-href="#Why-Array-of-Structs" class="anchor-icon" translate="no">
+    </button></h1><p>Modern AI applications, especially in the Internet of Things (IoT) and autonomous driving, typically reason over rich, structured events: a sensor reading with its timestamp and vector embedding, a diagnostic log with an error code and audio snippet, or a trip segment with location, speed, and scene context. These require the database to natively support the ingestion and search of nested data.</p>
+<p>Instead of asking the user to convert their atomic structural events into flat data models, Milvus introduces the Array of Structs, where each Struct in the array can hold scalars and vectors, preserving semantic integrity.</p>
+<h2 id="Why-Array-of-Structs" class="common-anchor-header">Why Array of Structs<button data-href="#Why-Array-of-Structs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,15 +42,15 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Aplikasi AI modern, mulai dari pengemudian otonom hingga pengambilan multimodal, semakin bergantung pada data yang tersusun dan heterogen. Model data datar tradisional kesulitan untuk merepresentasikan hubungan yang kompleks seperti<strong>"satu dokumen dengan banyak potongan yang dianotasi</strong>" atau<strong>"satu adegan mengemudi dengan beberapa manuver yang diamati</strong>". Di sinilah tipe data Array of Structs di Milvus bersinar.</p>
-<p>Array of Structs memungkinkan Anda untuk menyimpan sekumpulan elemen terstruktur yang terurut, di mana setiap Struct berisi kombinasi bidang skalar dan penyematan vektornya sendiri. Ini membuatnya ideal untuk:</p>
+    </button></h2><p>Modern AI applications, from autonomous driving to multimodal retrieval, increasingly rely on nested, heterogeneous data. Traditional flat data models struggle to represent complex relationships like "<strong>one document with many annotated chunks</strong>" or "<strong>one driving scene with multiple observed maneuvers</strong>". This is where the Array of Structs data type in Milvus shines.</p>
+<p>An Array of Structs allows you to store an ordered set of structured elements, where each Struct contains its own combination of scalar fields and vector embeddings. This makes it ideal for:</p>
 <ul>
-<li><p><strong>Data hirarkis</strong>: Entitas induk dengan beberapa catatan anak, seperti buku dengan banyak potongan teks, atau video dengan banyak bingkai beranotasi.</p></li>
-<li><p><strong>Penyematan multimodal</strong>: Setiap Struct dapat menampung beberapa vektor, seperti penyematan teks plus penyematan gambar, di samping metadata.</p></li>
-<li><p><strong>Data temporal atau sekuensial</strong>: Struktur dalam bidang Array secara alami mewakili deret waktu atau peristiwa langkah demi langkah.</p></li>
+<li><p><strong>Hierarchical data</strong>: Parent entities with multiple child records, such as a book with many text chunks, or a video with many annotated frames.</p></li>
+<li><p><strong>Multimodal embeddings</strong>: Each Struct can hold multiple vectors, such as text embedding plus image embedding, alongside metadata.</p></li>
+<li><p><strong>Temporal or sequential data</strong>: Structs in an Array field naturally represent time-series or step-by-step events.</p></li>
 </ul>
-<p>Tidak seperti solusi tradisional yang menyimpan gumpalan JSON atau membagi data di beberapa koleksi, Array of Structs menyediakan penegakan skema asli, pengindeksan vektor, dan penyimpanan yang efisien di dalam Milvus.</p>
-<h2 id="Schema-design-guidelines" class="common-anchor-header">Panduan desain skema<button data-href="#Schema-design-guidelines" class="anchor-icon" translate="no">
+<p>Unlike traditional workarounds that store JSON blobs or split data across multiple collections, the Array of Structs provides native schema enforcement, vector indexing, and efficient storage within Milvus.</p>
+<h2 id="Schema-design-guidelines" class="common-anchor-header">Schema design guidelines<button data-href="#Schema-design-guidelines" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -65,8 +65,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Selain semua panduan yang dibahas di <a href="/docs/id/schema-hands-on.md">Desain Model Data untuk Pencarian</a>, Anda juga harus mempertimbangkan hal-hal berikut ini sebelum mulai menggunakan Array of Structs dalam desain model data Anda.</p>
-<h3 id="Define-the-Struct-schema" class="common-anchor-header">Tentukan skema Struktur<button data-href="#Define-the-Struct-schema" class="anchor-icon" translate="no">
+    </button></h2><p>In addition to all the guidelines discussed in <a href="/docs/id/schema-hands-on.md">Data Model Design for Search</a>, you should also consider the following things before starting to use an Array of Structs in your data model design.</p>
+<h3 id="Define-the-Struct-schema" class="common-anchor-header">Define the Struct schema<button data-href="#Define-the-Struct-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,9 +81,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Sebelum menambahkan bidang Array ke koleksi Anda, tentukan skema Struktur bagian dalam. Setiap field dalam struktur harus diketik secara eksplisit, skalar<strong>(VARCHAR</strong>, <strong>INT</strong>, <strong>BOOLEAN</strong>, dll.) atau vektor<strong>(FLOAT_VECTOR</strong>).</p>
-<p>Anda disarankan untuk menjaga skema Struct tetap ramping dengan hanya menyertakan bidang yang akan Anda gunakan untuk pengambilan atau tampilan. Hindari membengkaknya metadata yang tidak terpakai.</p>
-<h3 id="Set-the-max-capacity-thoughtfully" class="common-anchor-header">Tetapkan kapasitas maksimum dengan bijaksana<button data-href="#Set-the-max-capacity-thoughtfully" class="anchor-icon" translate="no">
+    </button></h3><p>Before adding the Array field to your collection, define the inner Struct schema. Each field in the struct must be explicitly typed, scalar (<strong>VARCHAR</strong>, <strong>INT</strong>, <strong>BOOLEAN</strong>, etc.) or vector (<strong>FLOAT_VECTOR</strong>).</p>
+<p>You are advised to keep the Struct schema lean by only including fields you’ll use for retrieval or display. Avoid bloating with unused metadata.</p>
+<h3 id="Set-the-max-capacity-thoughtfully" class="common-anchor-header">Set the max capacity thoughtfully<button data-href="#Set-the-max-capacity-thoughtfully" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,9 +98,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Setiap bidang Array memiliki atribut yang menentukan jumlah maksimum elemen yang dapat ditampung oleh bidang Array untuk setiap entitas. Tetapkan ini berdasarkan batas atas kasus penggunaan Anda. Misalnya, ada 1.000 potongan teks per dokumen, atau 100 manuver per adegan mengemudi.</p>
-<p>Nilai yang terlalu tinggi akan memboroskan memori, dan Anda harus melakukan beberapa perhitungan untuk menentukan jumlah maksimum Structs dalam bidang Array.</p>
-<h3 id="Index-vector-fields-in-Structs" class="common-anchor-header">Mengindeks bidang vektor di Structs<button data-href="#Index-vector-fields-in-Structs" class="anchor-icon" translate="no">
+    </button></h3><p>Each Array field has an attribute that specifies the maximum number of elements the Array field can hold for each entity. Set this based on your use case’s upper bound. For example, there are 1,000 text chunks per document, or 100 maneuvers per driving scene.</p>
+<p>An excessively high value wastes memory, and you’ll need to do some calculations to determine the maximum number of Structs in the Array field.</p>
+<h3 id="Index-vector-fields-in-Structs" class="common-anchor-header">Index vector fields in Structs<button data-href="#Index-vector-fields-in-Structs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -115,9 +115,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Pengindeksan wajib dilakukan untuk bidang vektor, termasuk bidang vektor dalam koleksi dan bidang vektor yang didefinisikan dalam Struct. Untuk bidang vektor dalam sebuah Struct, Anda harus menggunakan <code translate="no">AUTOINDEX</code> atau <code translate="no">HNSW</code> sebagai tipe indeks dan seri <code translate="no">MAX_SIM</code> sebagai tipe metrik.</p>
-<p>Untuk detail tentang semua batasan yang berlaku, lihat <a href="/docs/id/array-of-structs.md#Limits">batasan</a>.</p>
-<h2 id="A-real-world-example-Modeling-the-CoVLA-dataset-for-autonomous-driving" class="common-anchor-header">Contoh dunia nyata: Memodelkan kumpulan data CoVLA untuk pengemudian otonom<button data-href="#A-real-world-example-Modeling-the-CoVLA-dataset-for-autonomous-driving" class="anchor-icon" translate="no">
+    </button></h3><p>Indexing is mandatory for vector fields, including both the vector fields in a collection and those defined in a Struct. For vector fields in a Struct, you should use <code translate="no">AUTOINDEX</code> or <code translate="no">HNSW</code> as the index type and <code translate="no">MAX_SIM</code> series as the metric type.</p>
+<p>For details on all applicable limits, refer to <a href="/docs/id/array-of-structs.md#Limits">the limits</a>.</p>
+<h2 id="A-real-world-example-Modeling-the-CoVLA-dataset-for-autonomous-driving" class="common-anchor-header">A real-world example: Modeling the CoVLA dataset for autonomous driving<button data-href="#A-real-world-example-Modeling-the-CoVLA-dataset-for-autonomous-driving" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,14 +132,14 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Kumpulan data Comprehensive Vision-Language-Action (CoVLA), yang diperkenalkan oleh <a href="https://tur.ing/posts/s1QUA1uh">Turing Motors</a> dan diterima pada Konferensi Musim Dingin tentang Aplikasi Visi Komputer (WACV) 2025, memberikan dasar yang kaya untuk melatih dan mengevaluasi model Visi-Bahasa-Tindakan (VLA) dalam pengemudian otonom. Setiap titik data, yang biasanya berupa klip video, tidak hanya berisi input visual mentah tetapi juga teks terstruktur yang menjelaskan:</p>
+    </button></h2><p>The Comprehensive Vision-Language-Action (CoVLA) dataset, introduced by <a href="https://tur.ing/posts/s1QUA1uh">Turing Motors</a> and accepted at the Winter Conference on Applications of Computer Vision (WACV) 2025, provides a rich foundation for training and evaluating Vision-Language-Action (VLA) models in autonomous driving. Each data point, which is usually a video clip, contains not just raw visual input but also structured captions describing:</p>
 <ul>
-<li><p><strong>Perilaku kendaraan ego</strong> (misalnya, "Belok kiri sambil mengalah pada lalu lintas yang datang"),</p></li>
-<li><p><strong>Objek yang terdeteksi</strong> hadir (misalnya, kendaraan terdepan, pejalan kaki, lampu lalu lintas), dan</p></li>
-<li><p><strong>Keterangan</strong> tingkat bingkai dari pemandangan.</p></li>
+<li><p>The <strong>ego vehicle’s behaviors</strong> (e.g., “Merge left while yielding to oncoming traffic”),</p></li>
+<li><p>The <strong>detected objects</strong> present (e.g., leading vehicles, pedestrians, traffic lights), and</p></li>
+<li><p>A frame-level <strong>caption</strong> of the scene.</p></li>
 </ul>
-<p>Sifat hirarkis dan multi-modal ini membuatnya menjadi kandidat yang ideal untuk fitur Array of Structs. Untuk informasi lebih lanjut mengenai dataset CoVLA, lihat <a href="https://turingmotors.github.io/covla-ad/">Situs Web Dataset CoVLA</a>.</p>
-<h3 id="Step-1-Map-the-dataset-into-a-collection-schema" class="common-anchor-header">Langkah 1: Petakan dataset ke dalam skema koleksi<button data-href="#Step-1-Map-the-dataset-into-a-collection-schema" class="anchor-icon" translate="no">
+<p>This hierarchical, multi-modal nature makes it an ideal candidate for the Array of Structs feature. For details on the CoVLA dataset, refer to the <a href="https://turingmotors.github.io/covla-ad/">CoVLA Dataset Website</a>.</p>
+<h3 id="Step-1-Map-the-dataset-into-a-collection-schema" class="common-anchor-header">Step 1: Map the dataset into a collection schema<button data-href="#Step-1-Map-the-dataset-into-a-collection-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -154,8 +154,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dataset CoVLA adalah dataset penggerak multimodal berskala besar yang terdiri dari 10.000 klip video, dengan total lebih dari 80 jam rekaman. Dataset ini mengambil sampel frame dengan kecepatan 20Hz dan memberi keterangan pada setiap frame dengan keterangan bahasa alami yang mendetail bersama dengan informasi mengenai status kendaraan dan koordinat objek yang terdeteksi.</p>
-<p>Struktur kumpulan data adalah sebagai berikut:</p>
+    </button></h3><p>The CoVLA dataset is a large-scale, multimodal driving dataset comprising 10,000 video clips, totaling over 80 hours of footage. It samples frames at a rate of 20Hz and annotates each frame with detailed natural language captions along with information on vehicle states and the coordinates of detected objects.</p>
+<p>The dataset structure is as follows:</p>
 <pre><code translate="no" class="language-python">├── video_1                                       (VIDEO) <span class="hljs-comment"># video.mp4</span>
 │   ├── video_id                                  (INT)
 │   ├── video_url                                 (STRING)
@@ -196,29 +196,31 @@ beta: Milvus 2.6.4+
 ├── ...
 ├── video_n
 <button class="copy-code-btn"></button></code></pre>
-<p>Anda dapat melihat bahwa struktur dataset CoVLA sangat hirarkis, membagi data yang dikumpulkan ke dalam beberapa file <code translate="no">.jsonl</code>, bersama dengan klip video dalam format <code translate="no">.mp4</code>.</p>
-<p>Di Milvus, Anda dapat menggunakan bidang JSON atau bidang Array-of-Structs untuk membuat struktur bersarang di dalam skema koleksi. Ketika penyematan vektor merupakan bagian dari format bersarang, hanya bidang Array-of-Structs yang didukung. Namun, sebuah Struktur di dalam Array tidak dapat berisi struktur bersarang lebih lanjut. Untuk menyimpan kumpulan data CoVLA dengan tetap mempertahankan hubungan yang penting, Anda perlu menghapus hierarki yang tidak perlu dan meratakan data agar sesuai dengan skema koleksi Milvus.</p>
-<p>Diagram di bawah ini mengilustrasikan bagaimana kita dapat memodelkan dataset ini menggunakan skema yang diilustrasikan dalam skema berikut:</p>
+<p>You can find that the structure of the CoVLA dataset is highly hierarchical, dividing the collected data into multiple <code translate="no">.jsonl</code> files, along with the video clips in the <code translate="no">.mp4</code> format.</p>
+<p>In Milvus, you can use either a JSON field or an Array-of-Structs field to create nested structures within a collection schema. When vector embeddings are part of the nested format, only an Array-of-Structs field is supported. However, a Struct inside an Array cannot itself contain further nested structures. To store the CoVLA dataset while retaining essential relationships, you need to remove unnecessary hierarchy and flatten the data so it fits the Milvus collection schema.</p>
+<p>The diagram below illustrates how we can model this dataset using the schema illustrated in the following schema:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/dataset-model.png" alt="Dataset Model" class="doc-image" id="dataset-model" />
-   </span> <span class="img-wrapper"> <span>Model Dataset</span> </span></p>
-<p>Diagram di atas mengilustrasikan struktur klip video, yang terdiri dari bidang-bidang berikut:</p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/dataset-model.png" alt="Dataset Model" class="doc-image" id="dataset-model" />
+    <span>Dataset Model</span>
+  </span>
+</p>
+<p>The above diagram illustrates the structure of a video clip, which comprises the following fields:</p>
 <ul>
-<li><p><code translate="no">video_id</code> berfungsi sebagai kunci utama, yang menerima bilangan bulat bertipe INT64.</p></li>
-<li><p><code translate="no">states</code> adalah badan JSON mentah yang berisi status kendaraan ego di setiap bingkai video saat ini.</p></li>
-<li><p><code translate="no">captions</code> adalah Array Struktur dengan setiap Struktur memiliki bidang berikut:</p>
+<li><p><code translate="no">video_id</code> serves as the primary key, which accepts integers of the INT64 type.</p></li>
+<li><p><code translate="no">states</code> is a raw JSON body that contains the state of the ego vehicle in each frame of the current video.</p></li>
+<li><p><code translate="no">captions</code> is an Array of Structs with each Struct having the following fields:</p>
 <ul>
-<li><p><code translate="no">frame_id</code> mengidentifikasi bingkai tertentu dalam video saat ini.</p></li>
-<li><p><code translate="no">plain_caption</code> adalah deskripsi frame saat ini tanpa lingkungan sekitar, seperti cuaca, kondisi jalan, dll., dan <code translate="no">plain_cap_vector</code> adalah penyematan vektor yang sesuai.</p></li>
-<li><p><code translate="no">rich_caption</code> adalah deskripsi bingkai saat ini dengan lingkungan sekitar, dan <code translate="no">rich_cap_vector</code> adalah penyematan vektor yang sesuai.</p></li>
-<li><p><code translate="no">risk</code> adalah deskripsi risiko yang dihadapi kendaraan ego pada frame saat ini, dan <code translate="no">risk_vector</code> adalah vektor embeddings yang sesuai, dan</p></li>
-<li><p>Semua atribut lain dari frame, seperti <code translate="no">road</code>, <code translate="no">weather</code>, <code translate="no">is_tunnel</code>, <code translate="no">has_pedestrain</code>, dll...</p></li>
+<li><p><code translate="no">frame_id</code> identifies a specific frame within the current video.</p></li>
+<li><p><code translate="no">plain_caption</code> is a description of the current frame without the ambient environment, such as weather, road condition, etc., and <code translate="no">plain_cap_vector</code> is its corresponding vector embeddings.</p></li>
+<li><p><code translate="no">rich_caption</code> is a description of the current frame with the ambient environment, and <code translate="no">rich_cap_vector</code> is its corresponding vector embeddings.</p></li>
+<li><p><code translate="no">risk</code> is a description of the risk that the ego vehicle faces in the current frame, and <code translate="no">risk_vector</code> is its corresponding vector embeddings, and</p></li>
+<li><p>All the other attributes of the frame, such as <code translate="no">road</code>, <code translate="no">weather</code>, <code translate="no">is_tunnel</code>, <code translate="no">has_pedestrain</code>, etc…</p></li>
 </ul></li>
-<li><p><code translate="no">traffic_lights</code> adalah badan JSON yang berisi semua sinyal lampu lalu lintas yang diidentifikasi dalam bingkai saat ini.</p></li>
-<li><p><code translate="no">front_cars</code> juga merupakan Array of Structs yang berisi semua mobil terdepan yang diidentifikasi dalam frame saat ini.</p></li>
+<li><p><code translate="no">traffic_lights</code> is a JSON body that contains all the traffic light signals identified in the current frame.</p></li>
+<li><p><code translate="no">front_cars</code> is also an Array of Structs that contains all the leading cars identified in the current frame.</p></li>
 </ul>
-<h3 id="Step-2-Initialize-the-schemas" class="common-anchor-header">Langkah 2: Menginisialisasi skema<button data-href="#Step-2-Initialize-the-schemas" class="anchor-icon" translate="no">
+<h3 id="Step-2-Initialize-the-schemas" class="common-anchor-header">Step 2: Initialize the schemas<button data-href="#Step-2-Initialize-the-schemas" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -233,9 +235,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk memulai, kita perlu menginisialisasi skema untuk Struktur keterangan, Struktur mobil_terdepan, dan koleksi.</p>
+    </button></h3><p>To start, we need to initialize the schema for a caption Struct, a front_cars Struct, and the collection.</p>
 <ul>
-<li><p>Inisialisasi skema untuk Struktur Caption.</p>
+<li><p>Initialize the schema for the Caption Struct.</p>
 <pre><code translate="no" class="language-python">client = MilvusClient(<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
 
 <span class="hljs-comment"># create the schema for the caption struct</span>
@@ -369,9 +371,9 @@ schema_for_caption.add_field(
     description=<span class="hljs-string">&quot;whether there is a carrier car present&quot;</span>
 )
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Inisialisasi skema untuk Struktur Mobil Depan</p>
+<li><p>Initialize the schema for the Front Car Struct</p>
 <p><div class="alert note"></p>
-<p>Meskipun mobil depan tidak melibatkan penyematan vektor, Anda tetap perlu menyertakannya sebagai array Struct karena ukuran datanya melebihi batas maksimum untuk bidang JSON.</p>
+<p>Although a front car does not involve vector embeddings, you still need to include it as an array of Struct because the data size exceeds the maximum for a JSON field.</p>
 <p></div></p>
 <pre><code translate="no" class="language-python">schema_for_front_car = client.create_struct_field_schema()
 
@@ -417,7 +419,7 @@ schema_for_front_car.add_field(
     description=<span class="hljs-string">&quot;acceleration of the leading vehicle&quot;</span>
 )
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Inisialisasi skema untuk koleksi</p>
+<li><p>Initialize the schema for the collection</p>
 <pre><code translate="no" class="language-python">schema = client.create_schema()
 
 schema.add_field(
@@ -461,7 +463,7 @@ schema.add_field(
 )
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h3 id="Step-3-Set-index-parameters" class="common-anchor-header">Langkah 3: Tetapkan parameter indeks<button data-href="#Step-3-Set-index-parameters" class="anchor-icon" translate="no">
+<h3 id="Step-3-Set-index-parameters" class="common-anchor-header">Step 3: Set index parameters<button data-href="#Step-3-Set-index-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -476,7 +478,7 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Semua bidang vektor harus diindeks. Untuk mengindeks bidang vektor dalam elemen Struct, Anda perlu menggunakan <code translate="no">AUTOINDEX</code> atau <code translate="no">HNSW</code> sebagai tipe indeks dan tipe metrik seri <code translate="no">MAX_SIM</code> untuk mengukur kemiripan di antara daftar penyematan.</p>
+    </button></h3><p>All vector fields must be indexed. To index the vector fields in an element Struct, you need to use <code translate="no">AUTOINDEX</code> or <code translate="no">HNSW</code> as the index type and the <code translate="no">MAX_SIM</code> series metric type to measure the similarities between embedding lists.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
 index_params.add_index(
@@ -503,8 +505,8 @@ index_params.add_index(
     index_params={<span class="hljs-string">&quot;M&quot;</span>: <span class="hljs-number">16</span>, <span class="hljs-string">&quot;efConstruction&quot;</span>: <span class="hljs-number">200</span>}
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Anda disarankan untuk mengaktifkan penghancuran JSON untuk bidang JSON untuk mempercepat pemfilteran di dalam bidang ini.</p>
-<h3 id="Step-4-Create-a-collection" class="common-anchor-header">Langkah 4: Membuat koleksi<button data-href="#Step-4-Create-a-collection" class="anchor-icon" translate="no">
+<p>You are advised to enable JSON shredding for JSON fields to accelerate filtering within these fields.</p>
+<h3 id="Step-4-Create-a-collection" class="common-anchor-header">Step 4: Create a collection<button data-href="#Step-4-Create-a-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -519,14 +521,14 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Setelah skema dan indeks siap, Anda dapat membuat koleksi target sebagai berikut:</p>
+    </button></h3><p>Once the schemas and indexes are ready, you can create the target collection as follows:</p>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;covla_dataset&quot;</span>,
     schema=schema,
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-5-Insert-the-data" class="common-anchor-header">Langkah 5: Masukkan data<button data-href="#Step-5-Insert-the-data" class="anchor-icon" translate="no">
+<h3 id="Step-5-Insert-the-data" class="common-anchor-header">Step 5: Insert the data<button data-href="#Step-5-Insert-the-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -541,8 +543,8 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Turing Motos mengatur kumpulan data CoVLA dalam beberapa file, termasuk klip video mentah (<code translate="no">.mp4</code>), negara bagian (<code translate="no">states.jsonl</code>), keterangan (<code translate="no">captions.jsonl</code>), lampu lalu lintas (<code translate="no">traffic_lights.jsonl</code>), dan mobil depan (<code translate="no">front_cars.jsonl</code>).</p>
-<p>Anda perlu menggabungkan potongan data untuk setiap klip video dari file-file ini dan menyisipkan datanya. Berikut ini adalah skrip untuk menggabungkan potongan data untuk klip video tertentu.</p>
+    </button></h3><p>Turing Motos organizes the CoVLA dataset in multiple files, including raw video clips (<code translate="no">.mp4</code>), states (<code translate="no">states.jsonl</code>), captions (<code translate="no">captions.jsonl</code>), traffic lights (<code translate="no">traffic_lights.jsonl</code>), and front cars (<code translate="no">front_cars.jsonl</code>).</p>
+<p>You need to merge the data pieces for each video clip from these files and insert the data. The following is the script to merge the data pieces for a specific video clip.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
 
@@ -619,7 +621,7 @@ data = {
     <span class="hljs-string">&quot;front_cars&quot;</span>: front_cars
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Setelah Anda memproses data yang sesuai, Anda dapat menyisipkan data sebagai berikut:</p>
+<p>Once you have processed the data accordingly, you can insert it as follows:</p>
 <pre><code translate="no" class="language-python">client.insert(
     collection_name=<span class="hljs-string">&quot;covla_dataset&quot;</span>,
     data=[data]

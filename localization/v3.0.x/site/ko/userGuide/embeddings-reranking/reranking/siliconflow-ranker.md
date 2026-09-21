@@ -1,12 +1,14 @@
 ---
 id: siliconflow-ranker.md
-title: 실리콘플로우 랭커Compatible with Milvus 2.6.x
+title: SiliconFlow RankerCompatible with Milvus 2.6.x
 summary: >-
-  SiliconFlow Ranker는 실리콘플로우의 포괄적인 재랭크 모델을 활용하여 시맨틱 재랭크를 통해 검색 관련성을 향상시킵니다. 유연한
-  문서 청킹 기능을 제공하며 다양한 제공업체의 전문화된 다양한 재랭크 모델을 지원합니다.
+  The SiliconFlow Ranker leverages SiliconFlow's comprehensive reranking models
+  to enhance search relevance through semantic reranking. It provides flexible
+  document chunking capabilities and supports a wide range of specialized
+  reranking models from various providers.
 beta: Milvus 2.6.x
 ---
-<h1 id="SiliconFlow-Ranker" class="common-anchor-header">실리콘플로우 랭커<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#SiliconFlow-Ranker" class="anchor-icon" translate="no">
+<h1 id="SiliconFlow-Ranker" class="common-anchor-header">SiliconFlow Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#SiliconFlow-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,15 +23,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>SiliconFlow Ranker는 <a href="https://www.siliconflow.com/">SiliconFlow의</a> 포괄적인 재랭크 모델을 활용하여 시맨틱 재랭크를 통해 검색 관련성을 향상시킵니다. 유연한 문서 청킹 기능을 제공하며 다양한 제공업체의 전문화된 다양한 재랭크 모델을 지원합니다.</p>
-<p>SiliconFlow Ranker는 특히 필요한 애플리케이션에 유용합니다:</p>
+    </button></h1><p>The SiliconFlow Ranker leverages <a href="https://www.siliconflow.com/">SiliconFlow’s</a> comprehensive reranking models to enhance search relevance through semantic reranking. It provides flexible document chunking capabilities and supports a wide range of specialized reranking models from various providers.</p>
+<p>SiliconFlow Ranker is particularly valuable for applications requiring:</p>
 <ul>
-<li><p>긴 문서 처리를 위한 구성 가능한 오버랩을 통한 고급 문서 청킹 기능</p></li>
-<li><p>BAAI/bge-ranker 시리즈 및 기타 전문화된 모델을 포함한 다양한 재랭킹 모델에 대한 액세스</p></li>
-<li><p>가장 높은 점수를 받은 청크가 문서 점수를 나타내는 유연한 청크 기반 점수 매기기</p></li>
-<li><p>표준 및 프로 모델 변형을 모두 지원하는 비용 효율적인 재랭킹</p></li>
+<li><p>Advanced document chunking with configurable overlap for handling long documents</p></li>
+<li><p>Access to diverse reranking models including BAAI/bge-reranker series and other specialized models</p></li>
+<li><p>Flexible chunk-based scoring where the highest-scoring chunk represents the document score</p></li>
+<li><p>Cost-effective reranking with support for both standard and pro model variants</p></li>
 </ul>
-<h2 id="Prerequisites" class="common-anchor-header">전제 조건<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,16 +46,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus에서 SiliconFlow Ranker를 구현하기 전에 다음이 필요합니다:</p>
+    </button></h2><p>Before implementing SiliconFlow Ranker in Milvus, ensure you have:</p>
 <ul>
-<li><p>재랭크할 텍스트가 포함된 <code translate="no">VARCHAR</code> 필드가 있는 Milvus 컬렉션</p></li>
-<li><p>재랭크 모델에 액세스할 수 있는 유효한 SiliconFlow API 키. <a href="https://www.siliconflow.com/">SiliconFlow 플랫폼에</a> 가입하여 API 자격 증명을 받습니다. 다음 중 하나를 수행할 수 있습니다:</p>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A valid SiliconFlow API key with access to reranking models. Sign up at <a href="https://www.siliconflow.com/">SiliconFlow’s platform</a> to obtain your API credentials. You can either:</p>
 <ul>
-<li><p><code translate="no">SILICONFLOW_API_KEY</code> 환경 변수를 설정하거나</p></li>
-<li><p>랭커 구성에서 직접 API 키를 지정합니다.</p></li>
+<li><p>Set the <code translate="no">SILICONFLOW_API_KEY</code> environment variable, or</p></li>
+<li><p>Specify the API key directly in the ranker configuration</p></li>
 </ul></li>
 </ul>
-<h2 id="Create-a-SiliconFlow-ranker-function" class="common-anchor-header">SiliconFlow 랭커 함수 생성하기<button data-href="#Create-a-SiliconFlow-ranker-function" class="anchor-icon" translate="no">
+<h2 id="Create-a-SiliconFlow-ranker-function" class="common-anchor-header">Create a SiliconFlow ranker function<button data-href="#Create-a-SiliconFlow-ranker-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,9 +70,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 애플리케이션에서 실리콘플로우 랭커를 사용하려면, 재랭킹 작동 방식을 지정하는 함수 객체를 생성하세요. 이 함수는 Milvus 검색 작업에 전달되어 결과 순위를 향상시킵니다.</p>
+    </button></h2><p>To use SiliconFlow Ranker in your Milvus application, create a Function object that specifies how the reranking should operate. This function will be passed to Milvus search operations to enhance result ranking.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -124,7 +131,7 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="SiliconFlow-ranker-specific-parameters" class="common-anchor-header">SiliconFlow 랭커 관련 파라미터<button data-href="#SiliconFlow-ranker-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="SiliconFlow-ranker-specific-parameters" class="common-anchor-header">SiliconFlow ranker-specific parameters<button data-href="#SiliconFlow-ranker-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,68 +146,68 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>다음 파라미터는 SiliconFlow 랭커에만 해당되는 파라미터입니다:</p>
+    </button></h3><p>The following parameters are specific to the SiliconFlow ranker:</p>
 <table>
    <tr>
-     <th><p><strong>파라미터</strong></p></th>
-     <th><p><strong>필수?</strong></p></th>
-     <th><p><strong>설명</strong></p></th>
-     <th><p><strong>값/예시</strong></p></th>
+     <th><p><strong>Parameter</strong></p></th>
+     <th><p><strong>Required?</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
+     <th><p><strong>Value / Example</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reranker</code></p></td>
-     <td><p>예</p></td>
-     <td><p>모델 순위 재지정을 사용하려면 <code translate="no">"model"</code> 으로 설정해야 합니다.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>예</p></td>
-     <td><p>재랭크에 사용할 모델 서비스 제공업체입니다.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"siliconflow"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">model_name</code></p></td>
-     <td><p>예</p></td>
-     <td><p>SiliconFlow 플랫폼에서 지원되는 모델 중에서 사용할 SiliconFlow 재랭크 모델입니다.</p><p>사용 가능한 재랭크 모델 목록은 <a href="https://docs.siliconflow.cn/en/api-reference/rerank/create-rerank">SiliconFlow 설명서를</a> 참조하세요.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The SiliconFlow reranking model to use from supported models on SiliconFlow platform.</p><p>For a list of rerank models available, refer to <a href="https://docs.siliconflow.cn/en/api-reference/rerank/create-rerank">SiliconFlow documentation</a>.</p></td>
      <td><p><code translate="no">"BAAI/bge-reranker-v2-m3"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queries</code></p></td>
-     <td><p>예</p></td>
-     <td><p>재랭크 모델에서 연관성 점수를 계산하는 데 사용하는 쿼리 문자열 목록입니다. 쿼리 문자열의 수는 검색 작업의 쿼리 수와 정확히 일치해야 하며(텍스트 대신 쿼리 벡터를 사용하는 경우에도 마찬가지), 그렇지 않으면 오류가 보고됩니다.</p></td>
-     <td><p><em>["검색 쿼리"]</em></p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the rerank model to calculate relevance scores. The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
+     <td><p><em>["search query"]</em></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
      <td><p>No</p></td>
-     <td><p>모델 서비스가 모든 데이터를 한 번에 처리하지 못할 수 있으므로 여러 요청에서 모델 서비스에 액세스하기 위한 배치 크기를 설정합니다.</p></td>
-     <td><p><code translate="no">128</code> (기본값)</p></td>
+     <td><p>Since model services may not process all data at once, this sets the batch size for accessing the model service in multiple requests.</p></td>
+     <td><p><code translate="no">128</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_chunks_per_doc</code></p></td>
      <td><p>No</p></td>
-     <td><p>문서 내에서 생성되는 최대 청크 수입니다. 긴 문서는 계산을 위해 여러 개의 청크로 나뉘며, 청크 중 가장 높은 점수를 문서의 점수로 사용합니다. 특정 모델에서만 지원됩니다: <code translate="no">BAAI/bge-reranker-v2-m3</code>, <code translate="no">Pro/BAAI/bge-reranker-v2-m3</code>, 및 <code translate="no">netease-youdao/bce-reranker-base_v1</code>.</p></td>
+     <td><p>Maximum number of chunks generated from within a document. Long documents are divided into multiple chunks for calculation, and the highest score among the chunks is taken as the document's score. Only supported by specific models: <code translate="no">BAAI/bge-reranker-v2-m3</code>, <code translate="no">Pro/BAAI/bge-reranker-v2-m3</code>, and <code translate="no">netease-youdao/bce-reranker-base_v1</code>.</p></td>
      <td><p><code translate="no">5</code>, <code translate="no">10</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">overlap_tokens</code></p></td>
      <td><p>No</p></td>
-     <td><p>문서가 청크로 분할될 때 인접한 청크 간에 토큰이 겹치는 개수입니다. 이렇게 하면 청크 경계를 넘어 연속성을 보장하여 의미적 이해를 높일 수 있습니다. 특정 모델에서만 지원됩니다: <code translate="no">BAAI/bge-reranker-v2-m3</code>, <code translate="no">Pro/BAAI/bge-reranker-v2-m3</code>, 및 <code translate="no">netease-youdao/bce-reranker-base_v1</code>.</p></td>
+     <td><p>Number of token overlaps between adjacent chunks when documents are chunked. This ensures continuity across chunk boundaries for better semantic understanding. Only supported by specific models: <code translate="no">BAAI/bge-reranker-v2-m3</code>, <code translate="no">Pro/BAAI/bge-reranker-v2-m3</code>, and <code translate="no">netease-youdao/bce-reranker-base_v1</code>.</p></td>
      <td><p><code translate="no">50</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">credential</code></p></td>
-     <td><p>아니요</p></td>
-     <td><p>SiliconFlow API 서비스에 액세스하기 위한 인증 자격증명입니다. 지정하지 않으면 시스템에서 <code translate="no">SILICONFLOW_API_KEY</code> 환경 변수를 찾습니다.</p></td>
+     <td><p>No</p></td>
+     <td><p>Authentication credential for accessing SiliconFlow API services. If not specified, the system will look for the <code translate="no">SILICONFLOW_API_KEY</code> environment variable.</p></td>
      <td><p><em>"your-siliconflow-api-key"</em></p></td>
    </tr>
 </table>
-<p><strong>모델별 기능 지원</strong>: <code translate="no">max_chunks_per_doc</code> 및 <code translate="no">overlap_tokens</code> 매개 변수는 특정 모델에서만 지원됩니다. 다른 모델을 사용하는 경우 이러한 매개 변수는 무시됩니다.</p>
+<p><strong>Model-specific feature support</strong>: The <code translate="no">max_chunks_per_doc</code> and <code translate="no">overlap_tokens</code> parameters are only supported by specific models. When using other models, these parameters will be ignored.</p>
 <div class="alert note">
-<p>모든 모델 랭커에서 공유되는 일반 매개변수(예: <code translate="no">provider</code>, <code translate="no">queries</code>)는 <a href="/docs/ko/model-ranker-overview.md#Create-a-model-ranker">모델 랭커 만들기를</a> 참조하세요.</p>
+<p>For general parameters shared across all model rankers (e.g., <code translate="no">provider</code>, <code translate="no">queries</code>), refer to <a href="/docs/ko/model-ranker-overview.md#Create-a-model-ranker">Create a model ranker</a>.</p>
 </div>
-<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">표준 벡터 검색에 적용하기<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -215,9 +222,14 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>실리콘플로우 랭커를 표준 벡터 검색에 적용하려면 다음과 같이 하세요:</p>
+    </button></h2><p>To apply SiliconFlow Ranker to a standard vector search:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Execute search with SiliconFlow reranking</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;your_collection&quot;</span>,

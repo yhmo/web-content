@@ -1,9 +1,9 @@
 ---
 id: choose-the-right-analyzer-for-your-use-case.md
-title: اختر جهاز التحليل المناسب لحالة الاستخدام الخاصة بك
-summary: ملاحظات
+title: Choose the Right Analyzer for Your Use Case
+summary: Notes
 ---
-<h1 id="Choose-the-Right-Analyzer-for-Your-Use-Case" class="common-anchor-header">اختر جهاز التحليل المناسب لحالة الاستخدام الخاصة بك<button data-href="#Choose-the-Right-Analyzer-for-Your-Use-Case" class="anchor-icon" translate="no">
+<h1 id="Choose-the-Right-Analyzer-for-Your-Use-Case" class="common-anchor-header">Choose the Right Analyzer for Your Use Case<button data-href="#Choose-the-Right-Analyzer-for-Your-Use-Case" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +19,9 @@ summary: ملاحظات
         ></path>
       </svg>
     </button></h1><div class="alert note">
-<p>يركز هذا الدليل على اتخاذ القرارات العملية لاختيار جهاز التحليل. للحصول على التفاصيل الفنية حول مكونات جهاز التحليل وكيفية إضافة معلمات جهاز التحليل، راجع " <a href="/docs/ar/analyzer-overview.md">نظرة عامة</a> على <a href="/docs/ar/analyzer-overview.md">جهاز التحليل</a>".</p>
+<p>This guide focuses on practical decision-making for analyzer selection. For technical details about analyzer components and how to add analyzer parameters, refer to <a href="/docs/ar/analyzer-overview.md">Analyzer Overview</a>.</p>
 </div>
-<h2 id="Understand-analyzers-in-2-minutes" class="common-anchor-header">فهم أجهزة التحليل في دقيقتين<button data-href="#Understand-analyzers-in-2-minutes" class="anchor-icon" translate="no">
+<h2 id="Understand-analyzers-in-2-minutes" class="common-anchor-header">Understand analyzers in 2 minutes<button data-href="#Understand-analyzers-in-2-minutes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,24 +36,24 @@ summary: ملاحظات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في Milvus، يقوم المحلل بمعالجة النص المخزن في هذا الحقل لجعله قابلاً للبحث عن ميزات مثل <a href="/docs/ar/full-text-search.md">البحث عن النص الكامل</a> (BM25) أو <a href="/docs/ar/phrase-match.md">مطابقة العبارات</a> أو <a href="/docs/ar/keyword-match.md">مطابقة النص</a>. فكر فيه على أنه معالج نصي يحول المحتوى الخام الخاص بك إلى رموز قابلة للبحث.</p>
-<p>يعمل المحلل في مسار بسيط من مرحلتين:</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/analyzer-workflow.png" alt="Analyzer Workflow" class="doc-image" id="analyzer-workflow" /> 
-   <span>سير عمل المحلل</span>
-  
- </span></p>
+    </button></h2><p>In Milvus, an analyzer processes the text stored in this field to make it searchable for features like <a href="/docs/ar/full-text-search.md">full text search</a> (BM25), <a href="/docs/ar/phrase-match.md">phrase match</a>, or <a href="/docs/ar/keyword-match.md">text match</a>. Think of it as a text processor that transforms your raw content into searchable tokens.</p>
+<p>An analyzer works in a simple, two-stage pipeline:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/analyzer-workflow.png" alt="Analyzer Workflow" class="doc-image" id="analyzer-workflow" />
+    <span>Analyzer Workflow</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>التقطيع إلى رموز (إجباري):</strong> تُطبق في هذه المرحلة الأولية أداة <strong>التقطيع إلى رموز</strong> لتقسيم سلسلة نصية متصلة إلى وحدات منفصلة ذات معنى تُسمى الرموز. قد تختلف طريقة التقطيع إلى رموز بشكل كبير اعتمادًا على اللغة ونوع المحتوى.</p></li>
-<li><p><strong>تصفية الرموز (اختياري):</strong> بعد الترميز، تُطبق <strong>المرشحات</strong> لتعديل الرموز أو إزالتها أو تحسينها. يمكن أن تشمل هذه العمليات تحويل جميع الرموز إلى أحرف صغيرة، أو إزالة الكلمات الشائعة التي لا معنى لها (مثل الكلمات الممنوعة)، أو اختزال الكلمات إلى صيغتها الجذرية (الاستخلاص).</p></li>
+<li><p><strong>Tokenization (required):</strong> This initial stage applies a <strong>tokenizer</strong> to break a continuous string of text into discrete, meaningful units called tokens. The tokenization method can vary significantly depending on the language and content type.</p></li>
+<li><p><strong>Token filtering (optional):</strong> After tokenization, <strong>filters</strong> are applied to modify, remove, or refine the tokens. These operations can include converting all tokens to lowercase, removing common meaningless words (such as stopwords), or reducing words to their root form (stemming).</p></li>
 </ol>
-<p><strong>مثال</strong>:</p>
+<p><strong>Example</strong>:</p>
 <pre><code translate="no" class="language-plaintext">Input: &quot;Hello World!&quot; 
        1. Tokenization → [&quot;Hello&quot;, &quot;World&quot;, &quot;!&quot;]
        2. Lowercase &amp; Punctuation Filtering → [&quot;hello&quot;, &quot;world&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Why-the-choice-of-analyzer-matters" class="common-anchor-header">لماذا يهم اختيار أداة التحليل<button data-href="#Why-the-choice-of-analyzer-matters" class="anchor-icon" translate="no">
+<h2 id="Why-the-choice-of-analyzer-matters" class="common-anchor-header">Why the choice of analyzer matters<button data-href="#Why-the-choice-of-analyzer-matters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,46 +68,46 @@ summary: ملاحظات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>قد يؤدي اختيار المحلل الخاطئ إلى جعل المستندات ذات الصلة غير قابلة للبحث أو إرجاع نتائج غير ذات صلة.</p>
-<p>يلخص الجدول التالي المشكلات الشائعة الناتجة عن الاختيار غير السليم للمحلل، ويقدم حلولاً عملية لتشخيص مشكلات البحث.</p>
+    </button></h2><p>Choosing the wrong analyzer can make relevant documents unsearchable or return irrelevant results.</p>
+<p>The following table summarizes common problems caused by improper analyzer selection and provides actionable solutions for diagnosing search issues.</p>
 <table>
    <tr>
-     <th><p>المشكلة</p></th>
-     <th><p>الأعراض</p></th>
-     <th><p>مثال (المدخلات والمخرجات)</p></th>
-     <th><p>السبب (المحلل غير المناسب)</p></th>
-     <th><p>الحل (محلل جيد)</p></th>
+     <th><p>Problem</p></th>
+     <th><p>Symptom</p></th>
+     <th><p>Example (Input &amp; Output)</p></th>
+     <th><p>Cause (Bad Analyzer)</p></th>
+     <th><p>Solution (Good Analyzer)</p></th>
    </tr>
    <tr>
-     <td><p>التجزئة المفرطة</p></td>
-     <td><p>تفشل الاستعلامات النصية عن المصطلحات الفنية أو المعرفات أو عناوين URL في العثور على المستندات ذات الصلة.</p></td>
+     <td><p>Over-tokenization</p></td>
+     <td><p>Text queries for technical terms, identifiers, or URLs fail to find relevant documents.</p></td>
      <td><ul><li><p><code translate="no">"user_id"</code> → <code translate="no">['user', 'id']</code></p></li><li><p><code translate="no">"C++"</code> → <code translate="no">['c']</code></p></li></ul></td>
-     <td><p><a href="/docs/ar/standard-analyzer.md"><code translate="no">standard</code></a> المحلل</p></td>
-     <td><p>استخدم <a href="/docs/ar/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> مُجزئ؛ وادمجه مع <a href="/docs/ar/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> مرشح.</p></td>
+     <td><p><a href="/docs/ar/standard-analyzer.md"><code translate="no">standard</code></a> analyzer</p></td>
+     <td><p>Use a <a href="/docs/ar/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer; combine with an <a href="/docs/ar/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> filter.</p></td>
    </tr>
    <tr>
-     <td><p>التجزئة الناقصة</p></td>
-     <td><p>يفشل البحث عن أحد مكونات عبارة مكونة من عدة كلمات في إرجاع المستندات التي تحتوي على العبارة كاملة.</p></td>
+     <td><p>Under-tokenization</p></td>
+     <td><p>Search for a component of a multi-word phrase fails to return documents containing the full phrase.</p></td>
      <td><p><code translate="no">"state-of-the-art"</code> → <code translate="no">['state-of-the-art']</code></p></td>
-     <td><p>محلل مع <a href="/docs/ar/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> أداة التقطيع</p></td>
-     <td><p>استخدم <a href="/docs/ar/standard-tokenizer.md"><code translate="no">standard</code></a> أداة تجزئة لتقسيم العبارة بناءً على علامات الترقيم والمسافات؛ واستخدم مرشحًا مخصصًا <a href="/docs/ar/regex-filter.md">يعتمد على التعبيرات العادية</a>.</p></td>
+     <td><p>Analyzer with a <a href="/docs/ar/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer</p></td>
+     <td><p>Use a <a href="/docs/ar/standard-tokenizer.md"><code translate="no">standard</code></a> tokenizer to split on punctuation and spaces; use a custom <a href="/docs/ar/regex-filter.md">regex</a> filter.</p></td>
    </tr>
    <tr>
-     <td><p>عدم تطابق اللغة</p></td>
-     <td><p>نتائج البحث بلغة معينة غير منطقية أو غير موجودة.</p></td>
-     <td><p>النص الصيني: <code translate="no">"机器学习"</code> → <code translate="no">['机器学习']</code> (رمز واحد)</p></td>
-     <td><p><a href="/docs/ar/english-analyzer.md"><code translate="no">english</code></a> المحلل</p></td>
-     <td><p>استخدم محللًا خاصًا باللغة، مثل <a href="/docs/ar/chinese-analyzer.md"><code translate="no">chinese</code></a>.</p></td>
+     <td><p>Language Mismatches</p></td>
+     <td><p>Search results for a specific language are nonsensical or nonexistent.</p></td>
+     <td><p>Chinese text: <code translate="no">"机器学习"</code> → <code translate="no">['机器学习']</code> (one token)</p></td>
+     <td><p><a href="/docs/ar/english-analyzer.md"><code translate="no">english</code></a> analyzer</p></td>
+     <td><p>Use a language-specific analyzer, such as <a href="/docs/ar/chinese-analyzer.md"><code translate="no">chinese</code></a>.</p></td>
    </tr>
    <tr>
-     <td><p>عدم تطابق طريقة الإدخال</p></td>
-     <td><p>يكتب المستخدمون بالبينيين، لكن النص المفهرس يستخدم الأحرف الصينية.</p></td>
-     <td><p>النص الصيني: <code translate="no">"足球"</code> ؛ نص الاستعلام: <code translate="no">"zuqiu"</code></p></td>
-     <td><p>المحلل الذي يُنتج رموزًا بالأحرف الصينية فقط</p></td>
-     <td><p>استخدم محللًا مخصصًا مع <a href="/docs/ar/jieba-tokenizer.md"><code translate="no">jieba</code></a> أداة التقطيع <a href="/docs/ar/pinyin-filter.md"><code translate="no">pinyin</code></a> filter.</p></td>
+     <td><p>Input method mismatch</p></td>
+     <td><p>Users type Pinyin, but the indexed text uses Chinese characters.</p></td>
+     <td><p>Chinese text: <code translate="no">"足球"</code>; query text: <code translate="no">"zuqiu"</code></p></td>
+     <td><p>Analyzer that emits only Chinese-character tokens</p></td>
+     <td><p>Use a custom analyzer with the <a href="/docs/ar/jieba-tokenizer.md"><code translate="no">jieba</code></a> tokenizer and <a href="/docs/ar/pinyin-filter.md"><code translate="no">pinyin</code></a> filter.</p></td>
    </tr>
 </table>
-<h2 id="First-question-Do-you-need-to-choose-an-analyzer" class="common-anchor-header">السؤال الأول: هل تحتاج إلى اختيار محلل؟<button data-href="#First-question-Do-you-need-to-choose-an-analyzer" class="anchor-icon" translate="no">
+<h2 id="First-question-Do-you-need-to-choose-an-analyzer" class="common-anchor-header">First question: Do you need to choose an analyzer?<button data-href="#First-question-Do-you-need-to-choose-an-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,8 +122,8 @@ summary: ملاحظات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في العديد من حالات الاستخدام، لا تحتاج إلى القيام بأي شيء خاص. دعنا نحدد ما إذا كنت من بين هذه الحالات.</p>
-<h3 id="Default-behavior-standard-analyzer" class="common-anchor-header">السلوك الافتراضي: محلل « <code translate="no">standard</code> »<button data-href="#Default-behavior-standard-analyzer" class="anchor-icon" translate="no">
+    </button></h2><p>For many use cases, you don’t need to do anything special. Let’s determine if you’re one of them.</p>
+<h3 id="Default-behavior-standard-analyzer" class="common-anchor-header">Default behavior: <code translate="no">standard</code> analyzer<button data-href="#Default-behavior-standard-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -138,18 +138,18 @@ summary: ملاحظات
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>إذا لم تحدد محللًا عند استخدام ميزات استرجاع النص مثل البحث عن النص الكامل، فإن Milvus يستخدم تلقائيًا محلل <a href="/docs/ar/standard-analyzer.md"><code translate="no">standard</code></a> المحلل تلقائيًا.</p>
-<p>مُحلل « <code translate="no">standard</code> »:</p>
+    </button></h3><p>If you don’t specify an analyzer when using text retrieval features like full text search, Milvus automatically uses the <a href="/docs/ar/standard-analyzer.md"><code translate="no">standard</code></a> analyzer.</p>
+<p>The <code translate="no">standard</code> analyzer:</p>
 <ul>
-<li><p>يقسم النص بناءً على المسافات وعلامات الترقيم</p></li>
-<li><p>يحول جميع الرموز إلى أحرف صغيرة</p></li>
-<li><p>يزيل مجموعة مدمجة من الكلمات الممنوعة الشائعة في اللغة الإنجليزية ومعظم علامات الترقيم</p></li>
+<li><p>Splits text on spaces and punctuation</p></li>
+<li><p>Converts all tokens to lowercase</p></li>
+<li><p>Removes a built-in set of common English stop words and most punctuation</p></li>
 </ul>
-<p><strong>مثال على التحويل</strong>:</p>
+<p><strong>Example transformation</strong>:</p>
 <pre><code translate="no" class="language-plaintext">Input:  &quot;The Milvus vector database is built for scale!&quot;
 Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database&#x27;, &#x27;is&#x27;, &#x27;built&#x27;, &#x27;scale&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Decision-criteria-A-quick-check" class="common-anchor-header">معايير اتخاذ القرار: فحص سريع<button data-href="#Decision-criteria-A-quick-check" class="anchor-icon" translate="no">
+<h3 id="Decision-criteria-A-quick-check" class="common-anchor-header">Decision criteria: A quick check<button data-href="#Decision-criteria-A-quick-check" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -164,63 +164,63 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>استخدم هذا الجدول لتحديد بسرعة ما إذا كان محلل " <code translate="no">standard</code> " الافتراضي يلبي احتياجاتك. إذا لم يكن كذلك، فستحتاج إلى اختيار مسار مختلف.</p>
+    </button></h3><p>Use this table to quickly determine if the default <code translate="no">standard</code> analyzer meets your needs. If it doesn’t, you’ll need to choose a different path.</p>
 <table>
    <tr>
-     <th><p>المحتوى الخاص بك</p></th>
-     <th><p>هل المحلل القياسي مناسب؟</p></th>
-     <th><p>لماذا</p></th>
-     <th><p>ما تحتاجه</p></th>
+     <th><p>Your Content</p></th>
+     <th><p>Standard Analyzer OK?</p></th>
+     <th><p>Why</p></th>
+     <th><p>What You Need</p></th>
    </tr>
    <tr>
-     <td><p>منشورات مدونة باللغة الإنجليزية</p></td>
-     <td><p>✅ نعم</p></td>
-     <td><p>السلوك الافتراضي كافٍ.</p></td>
-     <td><p>استخدم الإعداد الافتراضي (لا حاجة إلى تكوين).</p></td>
+     <td><p>English blog posts</p></td>
+     <td><p>✅ Yes</p></td>
+     <td><p>Default behavior is sufficient.</p></td>
+     <td><p>Use the default (no configuration needed).</p></td>
    </tr>
    <tr>
-     <td><p>المستندات باللغة الصينية</p></td>
-     <td><p>❌ لا</p></td>
-     <td><p>الكلمات الصينية لا تحتوي على مسافات وسيتم التعامل معها كرمز واحد.</p></td>
-     <td><p>استخدم محللًا مدمجًا <a href="/docs/ar/chinese-analyzer.md"><code translate="no">chinese</code></a> .</p></td>
+     <td><p>Chinese documents</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>Chinese words have no spaces and will be treated as one token.</p></td>
+     <td><p>Use a built-in <a href="/docs/ar/chinese-analyzer.md"><code translate="no">chinese</code></a> analyzer.</p></td>
    </tr>
    <tr>
-     <td><p>المستندات العربية</p></td>
-     <td><p>❌ لا</p></td>
-     <td><p>قد يتضمن النص العربي أشكالًا مختلفة للحروف، وعلامات التشكيل، والتطويل، والأرقام العربية-الهندية، والكلمات الممنوعة الشائعة في اللغة العربية التي تتطلب معالجة خاصة باللغة.</p></td>
-     <td><p>استخدم محللًا مدمجًا <a href="/docs/ar/arabic-analyzer.md"><code translate="no">arabic</code></a> .</p></td>
+     <td><p>Arabic documents</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>Arabic text may include letter variants, diacritics, Tatweel, Arabic-Indic digits, and common Arabic stop words that need language-specific handling.</p></td>
+     <td><p>Use a built-in <a href="/docs/ar/arabic-analyzer.md"><code translate="no">arabic</code></a> analyzer.</p></td>
    </tr>
    <tr>
-     <td><p>المستندات التايلاندية</p></td>
-     <td><p>❌ لا</p></td>
-     <td><p>النص التايلاندي عادةً لا يستخدم مسافات بين الكلمات، لذا فهو يحتاج إلى تجزئة الكلمات الخاصة باللغة.</p></td>
-     <td><p>استخدم محللًا مدمجًا <a href="/docs/ar/thai-analyzer.md"><code translate="no">thai</code></a> .</p></td>
+     <td><p>Thai documents</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>Thai text usually does not use spaces between words, so it needs language-specific word segmentation.</p></td>
+     <td><p>Use a built-in <a href="/docs/ar/thai-analyzer.md"><code translate="no">thai</code></a> analyzer.</p></td>
    </tr>
    <tr>
-     <td><p>الوثائق الفنية</p></td>
-     <td><p>❌ لا</p></td>
-     <td><p>يتم إزالة علامات الترقيم من مصطلحات مثل <code translate="no">C++</code>.</p></td>
-     <td><p>قم بإنشاء محلل مخصص باستخدام <a href="/docs/ar/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> مُجزئ الرموز و <a href="/docs/ar/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> مرشح.</p></td>
+     <td><p>Technical documentation</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>Punctuation is stripped from terms like <code translate="no">C++</code>.</p></td>
+     <td><p>Create a custom analyzer with a <a href="/docs/ar/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer and an <a href="/docs/ar/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> filter.</p></td>
    </tr>
    <tr>
-     <td><p>اللغات التي تفصل بين الكلمات بمسافات مثل النصوص باللغتين الفرنسية والإسبانية</p></td>
-     <td><p>⚠️ ربما</p></td>
-     <td><p>الأحرف المُشَدَّدة (<code translate="no">café</code> مقابل <code translate="no">cafe</code>) قد لا تتطابق.</p></td>
-     <td><p>يُنصح باستخدام محلل مخصص مع <a href="/docs/ar/ascii-folding-filter.md"><code translate="no">asciifolding</code></a> للحصول على نتائج أفضل.</p></td>
+     <td><p>Space-separated languages such as French/Spanish text</p></td>
+     <td><p>⚠️ Maybe</p></td>
+     <td><p>Accented characters (<code translate="no">café</code> vs. <code translate="no">cafe</code>) may not match.</p></td>
+     <td><p>A custom analyzer with the <a href="/docs/ar/ascii-folding-filter.md"><code translate="no">asciifolding</code></a> is recommended for better results.</p></td>
    </tr>
    <tr>
-     <td><p>اللغات متعددة اللغات أو غير المعروفة</p></td>
-     <td><p>❌ لا</p></td>
-     <td><p>يفتقر محلل <code translate="no">standard</code> إلى المنطق الخاص باللغة المطلوب للتعامل مع مجموعات الأحرف المختلفة وقواعد التقطيع.</p></td>
-     <td><p>استخدم محللًا مخصصًا مع <a href="/docs/ar/icu-tokenizer.md"><code translate="no">icu</code></a> أداة التقطيع من أجل التقطيع المتوافق مع يونيكود. </p><p>أو بدلاً من ذلك، ضع في اعتبارك تكوين <a href="/docs/ar/multi-language-analyzers.md">محللات متعددة اللغات</a> أو <a href="/docs/ar/language-identifier.md">معرّف لغة</a> لمعالجة المحتوى متعدد اللغات بدقة أكبر.</p></td>
+     <td><p>Multilingual or unknown languages</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>The <code translate="no">standard</code> analyzer lacks the language-specific logic needed to handle different character sets and tokenization rules.</p></td>
+     <td><p>Use a custom analyzer with the <a href="/docs/ar/icu-tokenizer.md"><code translate="no">icu</code></a> tokenizer for unicode-aware tokenization. </p><p>Alternatively, consider configuring <a href="/docs/ar/multi-language-analyzers.md">multi-language analyzers</a> or a <a href="/docs/ar/language-identifier.md">language identifier</a> for more precise handling of multilingual content.</p></td>
    </tr>
 </table>
-<p>إذا كان محلل « <code translate="no">standard</code> » الافتراضي لا يلبي متطلباتك، فستحتاج إلى تنفيذ محلل آخر. أمامك مساران:</p>
+<p>If the default <code translate="no">standard</code> analyzer cannot meet your requirements, you need to implement a different one. You have two paths:</p>
 <ul>
-<li><p><a href="/docs/ar/choose-the-right-analyzer-for-your-use-case.md#Path-A-Use-built-in-analyzers">استخدام محلل مدمج</a> أو</p></li>
-<li><p><a href="/docs/ar/choose-the-right-analyzer-for-your-use-case.md#Path-B-Create-a-custom-analyzer">إنشاء محلل مخصص</a></p></li>
+<li><p><a href="/docs/ar/choose-the-right-analyzer-for-your-use-case.md#Path-A-Use-built-in-analyzers">Using a built-in analyzer</a> or</p></li>
+<li><p><a href="/docs/ar/choose-the-right-analyzer-for-your-use-case.md#Path-B-Create-a-custom-analyzer">Creating a custom one</a></p></li>
 </ul>
-<h2 id="Path-A-Use-built-in-analyzers" class="common-anchor-header">الطريق أ: استخدام المحللات المدمجة<button data-href="#Path-A-Use-built-in-analyzers" class="anchor-icon" translate="no">
+<h2 id="Path-A-Use-built-in-analyzers" class="common-anchor-header">Path A: Use built-in analyzers<button data-href="#Path-A-Use-built-in-analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,8 +235,8 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>المحللات المدمجة هي حلول مُهيأة مسبقًا للغات الشائعة. وهي أسهل طريقة للبدء عندما لا يكون المحلل القياسي الافتراضي مناسبًا تمامًا.</p>
-<h3 id="Available-built-in-analyzers" class="common-anchor-header">المحللات المدمجة المتاحة<button data-href="#Available-built-in-analyzers" class="anchor-icon" translate="no">
+    </button></h2><p>Built-in analyzers are pre-configured solutions for common languages. They are the easiest way to get started when the default standard analyzer isn’t a perfect fit.</p>
+<h3 id="Available-built-in-analyzers" class="common-anchor-header">Available built-in analyzers<button data-href="#Available-built-in-analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -253,43 +253,43 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
       </svg>
     </button></h3><table>
    <tr>
-     <th><p>المحلل</p></th>
-     <th><p>اللغة المدعومة</p></th>
-     <th><p>المكونات</p></th>
-     <th><p>ملاحظات</p></th>
+     <th><p>Analyzer</p></th>
+     <th><p>Language Support</p></th>
+     <th><p>Components</p></th>
+     <th><p>Notes</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/standard-analyzer.md"><code translate="no">standard</code></a></p></td>
-     <td><p>معظم اللغات التي تفصل بين الكلمات بمسافات (الإنجليزية، الفرنسية، الألمانية، الإسبانية، إلخ)</p></td>
-     <td><ul><li><p>أداة التقطيع: <code translate="no">standard</code></p></li><li><p>المرشحات: <code translate="no">lowercase</code></p></li></ul></td>
-     <td><p>محلل عام الغرض لمعالجة النص الأولية. بالنسبة للسيناريوهات أحادية اللغة، توفر المحللات الخاصة باللغة (مثل <code translate="no">english</code>) أداءً أفضل.</p></td>
+     <td><p>Most space-separated languages (English, French, German, Spanish, etc.)</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">standard</code></p></li><li><p>Filters: <code translate="no">lowercase</code></p></li></ul></td>
+     <td><p>General-purpose analyzer for initial text processing. For monolingual scenarios, language-specific analyzers (like <code translate="no">english</code>) provide better performance.</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/english-analyzer.md"><code translate="no">english</code></a></p></td>
-     <td><p>مخصص للغة الإنجليزية، ويطبق عملية استخلاص الجذور وإزالة الكلمات غير المهمة لتحسين المطابقة الدلالية باللغة الإنجليزية</p></td>
-     <td><ul><li><p>أداة تجزئة الكلمات: <code translate="no">standard</code></p></li><li><p>الفلاتر: <code translate="no">lowercase</code> ، <code translate="no">stemmer</code> ، <code translate="no">stop</code></p></li></ul></td>
-     <td><p>موصى به للمحتوى باللغة الإنجليزية فقط بدلاً من <code translate="no">standard</code>.</p></td>
+     <td><p>Dedicated to English, which applies stemming and stop word removal for better English semantic matching</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">standard</code></p></li><li><p>Filters: <code translate="no">lowercase</code>, <code translate="no">stemmer</code>, <code translate="no">stop</code></p></li></ul></td>
+     <td><p>Recommended for English-only content over <code translate="no">standard</code>.</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/chinese-analyzer.md"><code translate="no">chinese</code></a></p></td>
-     <td><p>الصينية</p></td>
-     <td><ul><li><p>أداة تجزئة الكلمات: <code translate="no">jieba</code></p></li><li><p>المرشحات: <code translate="no">cnalphanumonly</code></p></li></ul></td>
-     <td><p>يستخدم حاليًا قاموس الصينية المبسطة بشكل افتراضي.</p></td>
+     <td><p>Chinese</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">jieba</code></p></li><li><p>Filters: <code translate="no">cnalphanumonly</code></p></li></ul></td>
+     <td><p>Currently uses Simplified Chinese dictionary by default.</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/arabic-analyzer.md"><code translate="no">arabic</code></a></p></td>
-     <td><p>اللغة العربية</p></td>
-     <td><ul><li><p>مُجزئ الكلمات: <code translate="no">standard</code></p></li><li><p>المرشحات: <code translate="no">lowercase</code> ، <code translate="no">decimaldigit</code> ، <code translate="no">arabic_normalization</code> ، <code translate="no">stemmer</code> ، <code translate="no">stop</code></p></li></ul></td>
-     <td><p>موصى به للنصوص العربية بدلاً من <code translate="no">standard</code>.</p></td>
+     <td><p>Arabic</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">standard</code></p></li><li><p>Filters: <code translate="no">lowercase</code>, <code translate="no">decimaldigit</code>, <code translate="no">arabic_normalization</code>, <code translate="no">stemmer</code>, <code translate="no">stop</code></p></li></ul></td>
+     <td><p>Recommended for Arabic text over <code translate="no">standard</code>.</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/thai-analyzer.md"><code translate="no">thai</code></a></p></td>
-     <td><p>التايلاندية</p></td>
-     <td><ul><li><p>أداة التقطيع: <code translate="no">thai</code></p></li><li><p>المرشحات: <code translate="no">lowercase</code> ، <code translate="no">decimaldigit</code> ، <code translate="no">stop</code></p></li></ul></td>
-     <td><p>موصى به للنصوص التايلاندية بدلاً من <code translate="no">standard</code> أو التقطيع القائم على المسافات البيضاء.</p></td>
+     <td><p>Thai</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">thai</code></p></li><li><p>Filters: <code translate="no">lowercase</code>, <code translate="no">decimaldigit</code>, <code translate="no">stop</code></p></li></ul></td>
+     <td><p>Recommended for Thai text over <code translate="no">standard</code> or whitespace-based tokenization.</p></td>
    </tr>
 </table>
-<h3 id="Implementation-example" class="common-anchor-header">مثال على التنفيذ<button data-href="#Implementation-example" class="anchor-icon" translate="no">
+<h3 id="Implementation-example" class="common-anchor-header">Implementation example<button data-href="#Implementation-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -304,7 +304,7 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لاستخدام محلل مدمج، ما عليك سوى تحديد نوعه في <code translate="no">analyzer_params</code> عند تعريف مخطط الحقل الخاص بك.</p>
+    </button></h3><p>To use a built-in analyzer, simply specify its type in the <code translate="no">analyzer_params</code> when defining your field schema.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Using built-in English analyzer</span>
 analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;english&quot;</span>
@@ -320,9 +320,9 @@ schema.add_field(
 )
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>للحصول على تفاصيل الاستخدام، راجع <a href="/docs/ar/full-text-search.md">البحث</a> عن <a href="/docs/ar/full-text-search.md">النص الكامل</a> أو <a href="/docs/ar/keyword-match.md">مطابقة النص</a> أو <a href="/docs/ar/phrase-match.md">مطابقة العبارة</a>.</p>
+<p>For detailed usage, refer to <a href="/docs/ar/full-text-search.md">Full Text Search</a>, <a href="/docs/ar/keyword-match.md">Text Match</a>, or <a href="/docs/ar/phrase-match.md">Phrase Match</a>.</p>
 </div>
-<h2 id="Path-B-Create-a-custom-analyzer" class="common-anchor-header">الطريقة ب: إنشاء محلل مخصص<button data-href="#Path-B-Create-a-custom-analyzer" class="anchor-icon" translate="no">
+<h2 id="Path-B-Create-a-custom-analyzer" class="common-anchor-header">Path B: Create a custom analyzer<button data-href="#Path-B-Create-a-custom-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -337,8 +337,8 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>عندما لا تلبي <a href="/docs/ar/choose-the-right-analyzer-for-your-use-case.md#Available-built-in-analyzers">الخيارات المدمجة</a> احتياجاتك، يمكنك إنشاء محلل مخصص عن طريق دمج أداة التقطيع مع مجموعة من المرشحات. يمنحك هذا تحكمًا كاملاً في مسار معالجة النص.</p>
-<h3 id="Step-1-Select-the-tokenizer-based-on-language" class="common-anchor-header">الخطوة 1: حدد أداة التقطيع بناءً على اللغة<button data-href="#Step-1-Select-the-tokenizer-based-on-language" class="anchor-icon" translate="no">
+    </button></h2><p>When <a href="/docs/ar/choose-the-right-analyzer-for-your-use-case.md#Available-built-in-analyzers">built-in options</a> don’t meet your needs, you can create a custom analyzer by combining a tokenizer with a set of filters. This gives you full control over the text processing pipeline.</p>
+<h3 id="Step-1-Select-the-tokenizer-based-on-language" class="common-anchor-header">Step 1: Select the tokenizer based on language<button data-href="#Step-1-Select-the-tokenizer-based-on-language" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -353,110 +353,110 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>اختر أداة التقطيع بناءً على اللغة الأساسية للمحتوى الخاص بك:</p>
-<h4 id="Western-languages" class="common-anchor-header">اللغات الغربية</h4><p>بالنسبة للغات التي تفصل بين الكلمات بمسافات، تتوفر لديك الخيارات التالية:</p>
+    </button></h3><p>Choose your tokenizer based on your content’s primary language:</p>
+<h4 id="Western-languages" class="common-anchor-header">Western languages</h4><p>For space-separated languages, you have these options:</p>
 <table>
    <tr>
-     <th><p>أداة تجزئة النص</p></th>
-     <th><p>كيفية العمل</p></th>
-     <th><p>الأفضل لـ</p></th>
-     <th><p>أمثلة</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/standard-tokenizer.md"><code translate="no">standard</code></a></p></td>
-     <td><p>يقسم النص بناءً على المسافات وعلامات الترقيم</p></td>
-     <td><p>نص عام، علامات ترقيم متنوعة</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">"Hello, world! Visit example.com"</code></p></li><li><p>المخرجات: <code translate="no">['Hello', 'world', 'Visit', 'example', 'com']</code></p></li></ul></td>
+     <td><p>Splits text based on spaces and punctuation marks</p></td>
+     <td><p>General text, mixed punctuation</p></td>
+     <td><ul><li><p>Input: <code translate="no">"Hello, world! Visit example.com"</code></p></li><li><p>Output: <code translate="no">['Hello', 'world', 'Visit', 'example', 'com']</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/whitespace-tokenizer.md"><code translate="no">whitespace</code></a></p></td>
-     <td><p>يقسم النص بناءً على أحرف المسافات البيضاء فقط</p></td>
-     <td><p>محتوى معالج مسبقًا، نص منسق من قبل المستخدم</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">"user_id = get_user_data()"</code></p></li><li><p>المخرجات: <code translate="no">['user_id', '=', 'get_user_data()']</code></p></li></ul></td>
+     <td><p>Splits only on whitespace characters</p></td>
+     <td><p>Pre-processed content, user-formatted text</p></td>
+     <td><ul><li><p>Input: <code translate="no">"user_id = get_user_data()"</code></p></li><li><p>Output: <code translate="no">['user_id', '=', 'get_user_data()']</code></p></li></ul></td>
    </tr>
 </table>
-<h4 id="East-Asian-languages" class="common-anchor-header">لغات شرق آسيا</h4><p>تتطلب اللغات التي لا تستخدم المسافات بشكل متسق بين الكلمات أدوات تقطيع متخصصة لتقسيم الكلمات بشكل صحيح:</p>
-<h5 id="Chinese" class="common-anchor-header">الصينية</h5><table>
+<h4 id="East-Asian-languages" class="common-anchor-header">East Asian languages</h4><p>Languages that do not use spaces consistently between words require specialized tokenizers for proper word segmentation:</p>
+<h5 id="Chinese" class="common-anchor-header">Chinese</h5><table>
    <tr>
-     <th><p>أداة تجزئة</p></th>
-     <th><p>كيفية العمل</p></th>
-     <th><p>الأفضل لـ</p></th>
-     <th><p>أمثلة</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/jieba-tokenizer.md"><code translate="no">jieba</code></a></p></td>
-     <td><p>التجزئة المستندة إلى القاموس الصيني باستخدام خوارزمية ذكية</p></td>
-     <td><p><strong>موصى به للمحتوى الصيني</strong> - يجمع بين القاموس والخوارزميات الذكية، وهو مصمم خصيصًا للغة الصينية</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">"机器学习是人工智能的一个分支"</code></p></li><li><p>المخرجات: <code translate="no">['机器', '学习', '是', '人工', '智能', '人工智能', '的', '一个', '分支']</code></p></li></ul></td>
+     <td><p>Chinese dictionary-based segmentation with intelligent algorithm</p></td>
+     <td><p><strong>Recommended for Chinese content</strong> - combines dictionary with intelligent algorithms, specifically designed for Chinese</p></td>
+     <td><ul><li><p>Input: <code translate="no">"机器学习是人工智能的一个分支"</code></p></li><li><p>Output: <code translate="no">['机器', '学习', '是', '人工', '智能', '人工智能', '的', '一个', '分支']</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
-     <td><p>تحليل صرفي يعتمد كليًا على القاموس باستخدام قاموس اللغة الصينية (<a href="https://cc-cedict.org/wiki/">cc-cedict</a>)</p></td>
-     <td><p>بالمقارنة مع <code translate="no">jieba</code> ، يعالج النص الصيني بطريقة أكثر عمومية</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">"机器学习算法"</code></p></li><li><p>المخرجات: <code translate="no">["机器", "学习", "算法"]</code></p></li></ul></td>
+     <td><p>Pure dictionary-based morphological analysis with Chinese dictionary (<a href="https://cc-cedict.org/wiki/">cc-cedict</a>)</p></td>
+     <td><p>Compared to <code translate="no">jieba</code>, processes Chinese text in a more generic manner</p></td>
+     <td><ul><li><p>Input: <code translate="no">"机器学习算法"</code></p></li><li><p>Output: <code translate="no">["机器", "学习", "算法"]</code></p></li></ul></td>
    </tr>
 </table>
-<h5 id="Thai" class="common-anchor-header">التايلاندية</h5><p>بالنسبة لمعظم النصوص التايلاندية، استخدم <a href="/docs/ar/thai-analyzer.md"><code translate="no">thai</code></a> . استخدم أداة <a href="/docs/ar/thai-tokenizer.md"><code translate="no">thai</code></a> فقط عندما تحتاج إلى إنشاء مسار محلل مخصص.</p>
+<h5 id="Thai" class="common-anchor-header">Thai</h5><p>For most Thai text, use the built-in <a href="/docs/ar/thai-analyzer.md"><code translate="no">thai</code></a> analyzer. Use the standalone <a href="/docs/ar/thai-tokenizer.md"><code translate="no">thai</code></a> tokenizer only when you need to build a custom analyzer pipeline.</p>
 <table>
    <tr>
-     <th><p>أداة تقطيع النصوص</p></th>
-     <th><p>كيفية العمل</p></th>
-     <th><p>الأفضل لـ</p></th>
-     <th><p>أمثلة</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/thai-tokenizer.md"><code translate="no">thai</code></a></p></td>
-     <td><p>يقسم النص التايلاندي إلى رموز كلمات ويستبعد المسافات البيضاء والمقاطع التي تحتوي على علامات الترقيم فقط</p></td>
-     <td><p>مسارات تحليل مخصصة للنصوص التايلاندية أو النصوص المختلطة بين التايلاندية والإنجليزية</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">"สวัสดี! ทดสอบ, ระบบ Milvus"</code></p></li><li><p>المخرجات: <code translate="no">['สวัสดี', 'ทดสอบ', 'ระบบ', 'Milvus']</code></p></li></ul></td>
+     <td><p>Segments Thai text into word tokens and filters out whitespace and punctuation-only segments</p></td>
+     <td><p>Custom analyzer pipelines for Thai or mixed Thai/English text</p></td>
+     <td><ul><li><p>Input: <code translate="no">"สวัสดี! ทดสอบ, ระบบ Milvus"</code></p></li><li><p>Output: <code translate="no">['สวัสดี', 'ทดสอบ', 'ระบบ', 'Milvus']</code></p></li></ul></td>
    </tr>
 </table>
-<h5 id="Japanese-and-Korean" class="common-anchor-header">اليابانية والكورية</h5><table>
+<h5 id="Japanese-and-Korean" class="common-anchor-header">Japanese and Korean</h5><table>
    <tr>
-     <th><p>اللغة</p></th>
-     <th><p>أداة التقطيع</p></th>
-     <th><p>خيارات القاموس</p></th>
-     <th><p>الأفضل لـ</p></th>
-     <th><p>أمثلة</p></th>
+     <th><p>Language</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>Dictionary Options</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p>اليابانية</p></td>
+     <td><p>Japanese</p></td>
      <td><p><a href="/docs/ar/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
-     <td><p><a href="https://taku910.github.io/mecab/">ipadic</a> (للأغراض العامة)، <a href="https://github.com/neologd/mecab-ipadic-neologd">ipadic-neologd</a> (المصطلحات الحديثة)، <a href="https://clrd.ninjal.ac.jp/unidic/">unidic</a> (الأكاديمي)</p></td>
-     <td><p>التحليل الصرفي مع معالجة الأسماء الخاصة</p></td>
-     <td><ul><li><p>المدخلات: <code translate="no">"東京都渋谷区"</code></p></li><li><p>المخرجات: <code translate="no">["東京", "都", "渋谷", "区"]</code></p></li></ul></td>
+     <td><p><a href="https://taku910.github.io/mecab/">ipadic</a> (general-purpose), <a href="https://github.com/neologd/mecab-ipadic-neologd">ipadic-neologd</a> (modern terms), <a href="https://clrd.ninjal.ac.jp/unidic/">unidic</a> (academic)</p></td>
+     <td><p>Morphological analysis with proper noun handling</p></td>
+     <td><ul><li><p>Input: <code translate="no">"東京都渋谷区"</code></p></li><li><p>Output: <code translate="no">["東京", "都", "渋谷", "区"]</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p>الكورية</p></td>
+     <td><p>Korean</p></td>
      <td><p><a href="/docs/ar/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
      <td><p><a href="https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/">ko-dic</a></p></td>
-     <td><p>التحليل الصرفي للغة الكورية</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">"안녕하세요"</code></p></li><li><p>المخرجات: <code translate="no">["안녕", "하", "세요"]</code></p></li></ul></td>
+     <td><p>Korean morphological analysis</p></td>
+     <td><ul><li><p>Input: <code translate="no">"안녕하세요"</code></p></li><li><p>Output: <code translate="no">["안녕", "하", "세요"]</code></p></li></ul></td>
    </tr>
 </table>
-<h4 id="Multilingual-or-unknown-languages" class="common-anchor-header">اللغات المتعددة أو غير المعروفة</h4><p>بالنسبة للمحتوى الذي تكون فيه اللغات غير متوقعة أو مختلطة داخل المستندات:</p>
+<h4 id="Multilingual-or-unknown-languages" class="common-anchor-header">Multilingual or unknown languages</h4><p>For content where languages are unpredictable or mixed within documents:</p>
 <table>
    <tr>
-     <th><p>أداة تجزئة الكلمات</p></th>
-     <th><p>كيفية العمل</p></th>
-     <th><p>الأفضل لـ</p></th>
-     <th><p>أمثلة</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/icu-tokenizer.md"><code translate="no">icu</code></a></p></td>
-     <td><p>التقطيع المراعي لـ Unicode (المكونات الدولية لـ Unicode)</p></td>
-     <td><p>النصوص المختلطة، أو اللغات غير المعروفة، أو عندما يكون التقطيع البسيط كافياً</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">"Hello 世界 مرحبا"</code></p></li><li><p>المخرجات: <code translate="no">['Hello', ' ', '世界', ' ', 'مرحبا']</code></p></li></ul></td>
+     <td><p>Unicode-aware tokenization (International Components for Unicode)</p></td>
+     <td><p>Mixed scripts, unknown languages, or when simple tokenization is sufficient</p></td>
+     <td><ul><li><p>Input: <code translate="no">"Hello 世界 مرحبا"</code></p></li><li><p>Output: <code translate="no">['Hello', ' ', '世界', ' ', 'مرحبا']</code></p></li></ul></td>
    </tr>
 </table>
-<p><strong>متى تستخدم icu</strong>:</p>
+<p><strong>When to use icu</strong>:</p>
 <ul>
-<li><p>اللغات المختلطة التي يكون فيها تحديد اللغة غير عملي.</p></li>
-<li><p>عندما لا ترغب في تحمل العبء الإضافي <a href="/docs/ar/multi-language-analyzers.md">لمحللات اللغات المتعددة</a> أو أداة <a href="/docs/ar/language-identifier.md">تحديد اللغة</a>.</p></li>
-<li><p>يحتوي المحتوى على لغة أساسية مع وجود كلمات أجنبية متفرقة لا تسهم كثيرًا في المعنى العام (على سبيل المثال، نص باللغة الإنجليزية يحتوي على أسماء علامات تجارية أو مصطلحات تقنية متفرقة باللغة اليابانية أو الفرنسية).</p></li>
+<li><p>Mixed languages where language identification is impractical.</p></li>
+<li><p>You don’t want the overhead of <a href="/docs/ar/multi-language-analyzers.md">multi-language analyzers</a> or the <a href="/docs/ar/language-identifier.md">language identifier</a>.</p></li>
+<li><p>Content has a primary language with occasional foreign words that contribute little to the overall meaning (e.g., English text with sporadic brand names or technical terms in Japanese or French).</p></li>
 </ul>
-<p><strong>طرق بديلة</strong>: لمعالجة المحتوى متعدد اللغات بدقة أكبر، ضع في اعتبارك استخدام محللات متعددة اللغات أو محدد اللغة. لمزيد من التفاصيل، راجع <a href="/docs/ar/multi-language-analyzers.md">محللات متعددة اللغات</a> أو <a href="/docs/ar/language-identifier.md">محدد اللغة</a>.</p>
-<h3 id="Step-2-Add-filters-for-precision" class="common-anchor-header">الخطوة 2: إضافة عوامل تصفية لتحسين الدقة<button data-href="#Step-2-Add-filters-for-precision" class="anchor-icon" translate="no">
+<p><strong>Alternative approaches</strong>: For more precise handling of multilingual content, consider using multi-language analyzers or the language identifier. For details, refer to <a href="/docs/ar/multi-language-analyzers.md">Multi-language Analyzers</a> or <a href="/docs/ar/language-identifier.md">Language Identifier</a>.</p>
+<h3 id="Step-2-Add-filters-for-precision" class="common-anchor-header">Step 2: Add filters for precision<button data-href="#Step-2-Add-filters-for-precision" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -471,119 +471,119 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بعد <a href="/docs/ar/choose-the-right-analyzer-for-your-use-case.md#Step-1-Select-the-tokenizer-based-on-language">تحديد أداة التقطيع</a>، قم بتطبيق المرشحات بناءً على متطلبات البحث المحددة وخصائص المحتوى.</p>
-<h4 id="Commonly-used-filters" class="common-anchor-header">المرشحات الشائعة الاستخدام</h4><p>تعد هذه المرشحات أساسية لمعظم تكوينات اللغات المفصولة بمسافات (الإنجليزية، الفرنسية، الألمانية، الإسبانية، إلخ) وتحسّن جودة البحث بشكل كبير:</p>
+    </button></h3><p>After <a href="/docs/ar/choose-the-right-analyzer-for-your-use-case.md#Step-1-Select-the-tokenizer-based-on-language">selecting your tokenizer</a>, apply filters based on your specific search requirements and content characteristics.</p>
+<h4 id="Commonly-used-filters" class="common-anchor-header">Commonly used filters</h4><p>These filters are essential for most space-separated language configurations (English, French, German, Spanish, etc.) and significantly improve search quality:</p>
 <table>
    <tr>
-     <th><p>المرشح</p></th>
-     <th><p>كيفية العمل</p></th>
-     <th><p>متى يُستخدم</p></th>
-     <th><p>أمثلة</p></th>
+     <th><p>Filter</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>When to Use</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/lowercase-filter.md"><code translate="no">lowercase</code></a></p></td>
-     <td><p>تحويل جميع الرموز إلى أحرف صغيرة</p></td>
-     <td><p>عام - ينطبق على جميع اللغات التي تميز بين الأحرف الكبيرة والصغيرة</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">["Apple", "iPhone"]</code></p></li><li><p>المخرجات: <code translate="no">[['apple'], ['iphone']]</code></p></li></ul></td>
+     <td><p>Convert all tokens to lowercase</p></td>
+     <td><p>Universal - applies to all languages with case distinctions</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Apple", "iPhone"]</code></p></li><li><p>Output: <code translate="no">[['apple'], ['iphone']]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/stemmer-filter.md"><code translate="no">stemmer</code></a></p></td>
-     <td><p>تقليص الكلمات إلى صيغتها الأصلية</p></td>
-     <td><p>اللغات التي تحتوي على تصريفات الكلمات (الإنجليزية، الفرنسية، الألمانية، إلخ)</p></td>
-     <td><p>بالنسبة للغة الإنجليزية:</p><ul><li><p>الإدخال: <code translate="no">["running", "runs", "ran"]</code></p></li><li><p>الناتج: <code translate="no">[['run'], ['run'], ['ran']]</code></p></li></ul></td>
+     <td><p>Reduce words to their root form</p></td>
+     <td><p>Languages with word inflections (English, French, German, etc.)</p></td>
+     <td><p>For English:</p><ul><li><p>Input: <code translate="no">["running", "runs", "ran"]</code></p></li><li><p>Output: <code translate="no">[['run'], ['run'], ['ran']]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/stop-filter.md"><code translate="no">stop</code></a></p></td>
-     <td><p>إزالة الكلمات الشائعة التي لا معنى لها</p></td>
-     <td><p>معظم اللغات - فعال بشكل خاص للغات التي تفصل الكلمات بمسافات</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">["the", "quick", "brown", "fox"]</code></p></li><li><p>المخرجات: <code translate="no">[[], ['quick'], ['brown'], ['fox']]</code></p></li></ul></td>
+     <td><p>Remove common meaningless words</p></td>
+     <td><p>Most languages - particularly effective for space-separated languages</p></td>
+     <td><ul><li><p>Input: <code translate="no">["the", "quick", "brown", "fox"]</code></p></li><li><p>Output: <code translate="no">[[], ['quick'], ['brown'], ['fox']]</code></p></li></ul></td>
    </tr>
 </table>
 <div class="alert note">
-<p>بالنسبة للغات شرق آسيا (الصينية، اليابانية، الكورية، إلخ)، ركز بدلاً من ذلك على <a href="/docs/ar/choose-the-right-analyzer-for-your-use-case.md#Language-specific-filters">المرشحات الخاصة بكل لغة</a>. عادةً ما تستخدم هذه اللغات أساليب مختلفة لمعالجة النصوص وقد لا تستفيد بشكل كبير من عملية استخلاص الجذور.</p>
+<p>For East Asian languages (Chinese, Japanese, Korean, etc.), focus on <a href="/docs/ar/choose-the-right-analyzer-for-your-use-case.md#Language-specific-filters">language-specific filters</a> instead. These languages typically use different approaches for text processing and may not benefit significantly from stemming.</p>
 </div>
-<h4 id="Text-normalization-filters" class="common-anchor-header">مرشحات توحيد النص</h4><p>تعمل هذه المرشحات على توحيد الاختلافات في النص لتحسين اتساق المطابقة:</p>
+<h4 id="Text-normalization-filters" class="common-anchor-header">Text normalization filters</h4><p>These filters standardize text variations to improve matching consistency:</p>
 <table>
    <tr>
-     <th><p>المرشح</p></th>
-     <th><p>كيفية العمل</p></th>
-     <th><p>متى تُستخدم</p></th>
-     <th><p>أمثلة</p></th>
+     <th><p>Filter</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>When to Use</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/ascii-folding-filter.md"><code translate="no">asciifolding</code></a></p></td>
-     <td><p>تحويل الأحرف المُشَدَّدة إلى نظائرها في ASCII</p></td>
-     <td><p>المحتوى الدولي، والمحتوى الذي ينشئه المستخدمون</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">["café", "naïve", "résumé"]</code></p></li><li><p>المخرجات: <code translate="no">[['cafe'], ['naive'], ['resume']]</code></p></li></ul></td>
+     <td><p>Convert accented characters to ASCII equivalents</p></td>
+     <td><p>International content, user-generated content</p></td>
+     <td><ul><li><p>Input: <code translate="no">["café", "naïve", "résumé"]</code></p></li><li><p>Output: <code translate="no">[['cafe'], ['naive'], ['resume']]</code></p></li></ul></td>
    </tr>
 </table>
-<h4 id="Token-filtering" class="common-anchor-header">تصفية الرموز</h4><p>التحكم في الرموز التي يتم الاحتفاظ بها بناءً على محتوى الحرف أو طوله:</p>
+<h4 id="Token-filtering" class="common-anchor-header">Token filtering</h4><p>Control which tokens are preserved based on character content or length:</p>
 <table>
    <tr>
-     <th><p>تصفية</p></th>
-     <th><p>كيفية العمل</p></th>
-     <th><p>متى تستخدم</p></th>
-     <th><p>أمثلة</p></th>
+     <th><p>Filter</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>When to Use</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/removepunct-filter.md"><code translate="no">removepunct</code></a></p></td>
-     <td><p>إزالة الرموز النحوية المستقلة</p></td>
-     <td><p>تنقية النتائج الناتجة عن أدوات تحليل العلامات التالية: <code translate="no">jieba</code> ، <code translate="no">lindera</code> ، <code translate="no">icu</code> ، والتي تعرض علامات الترقيم كوحدات منفردة</p></td>
-     <td><ul><li><p>المدخلات: <code translate="no">["Hello", "!", "world"]</code></p></li><li><p>المخرجات: <code translate="no">[['Hello'], ['world']]</code></p></li></ul></td>
+     <td><p>Remove standalone punctuation tokens</p></td>
+     <td><p>Clean output from <code translate="no">jieba</code>, <code translate="no">lindera</code>, <code translate="no">icu</code> tokenizers, which will return punctuations as single tokens</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Hello", "!", "world"]</code></p></li><li><p>Output: <code translate="no">[['Hello'], ['world']]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a></p></td>
-     <td><p>الاحتفاظ بالحروف والأرقام فقط</p></td>
-     <td><p>المحتوى التقني، معالجة النص النظيف</p></td>
-     <td><ul><li><p>المدخلات: <code translate="no">["user123", "test@email.com"]</code></p></li><li><p>المخرجات: <code translate="no">[['user123'], ['test', 'email', 'com']]</code></p></li></ul></td>
+     <td><p>Keep only letters and numbers</p></td>
+     <td><p>Technical content, clean text processing</p></td>
+     <td><ul><li><p>Input: <code translate="no">["user123", "test@email.com"]</code></p></li><li><p>Output: <code translate="no">[['user123'], ['test', 'email', 'com']]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/length-filter.md"><code translate="no">length</code></a></p></td>
-     <td><p>إزالة الرموز التي تقع خارج نطاق الطول المحدد</p></td>
-     <td><p>تصفية الضوضاء (الرموز الطويلة بشكل مفرط)</p></td>
-     <td><ul><li><p>المدخلات: <code translate="no">["a", "very", "extraordinarily"]</code></p></li><li><p>المخرجات: <code translate="no">[['a'], ['very'], []]</code> (إذا كان <strong>الحد الأقصى = 10</strong>)</p></li></ul></td>
+     <td><p>Remove tokens outside specified length range</p></td>
+     <td><p>Filter noise (exccessively long tokens)</p></td>
+     <td><ul><li><p>Input: <code translate="no">["a", "very", "extraordinarily"]</code></p></li><li><p>Output: <code translate="no">[['a'], ['very'], []]</code> (if <strong>max=10</strong>)</p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/regex-filter.md"><code translate="no">regex</code></a></p></td>
-     <td><p>التصفية المخصصة القائمة على الأنماط</p></td>
-     <td><p>متطلبات الرموز الخاصة بالمجال</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">["test123", "prod456"]</code></p></li><li><p>المخرجات: <code translate="no">[[], ['prod456']]</code> (إذا كان <strong>expr="^prod"</strong>)</p></li></ul></td>
+     <td><p>Custom pattern-based filtering</p></td>
+     <td><p>Domain-specific token requirements</p></td>
+     <td><ul><li><p>Input: <code translate="no">["test123", "prod456"]</code></p></li><li><p>Output: <code translate="no">[[], ['prod456']]</code> (if <strong>expr="^prod"</strong>)</p></li></ul></td>
    </tr>
 </table>
-<h4 id="Language-specific-filters" class="common-anchor-header">مرشحات خاصة باللغة</h4><p>تتعامل هذه المرشحات مع خصائص لغوية محددة:</p>
+<h4 id="Language-specific-filters" class="common-anchor-header">Language-specific filters</h4><p>These filters handle specific language characteristics:</p>
 <table>
    <tr>
-     <th><p>المرشح</p></th>
-     <th><p>اللغة</p></th>
-     <th><p>كيفية العمل</p></th>
-     <th><p>أمثلة</p></th>
+     <th><p>Filter</p></th>
+     <th><p>Language</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/decompounder-filter.md"><code translate="no">decompounder</code></a></p></td>
-     <td><p>الألمانية</p></td>
-     <td><p>يقسم الكلمات المركبة إلى مكونات قابلة للبحث</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">["dampfschifffahrt"]</code></p></li><li><p>المخرجات: <code translate="no">[['dampf', 'schiff', 'fahrt']]</code></p></li></ul></td>
+     <td><p>German</p></td>
+     <td><p>Splits compound words into searchable components</p></td>
+     <td><ul><li><p>Input: <code translate="no">["dampfschifffahrt"]</code></p></li><li><p>Output: <code translate="no">[['dampf', 'schiff', 'fahrt']]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/cnalphanumonly-filter.md">cnalphanumonly</a></p></td>
-     <td><p>الصينية</p></td>
-     <td><p>يحتفظ بالأحرف الصينية + الأحرف الأبجدية الرقمية</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">["Hello", "世界", "123", "!@#"]</code></p></li><li><p>المخرجات: <code translate="no">[['Hello'], ['世界'], ['123'], []]</code></p></li></ul></td>
+     <td><p>Chinese</p></td>
+     <td><p>Keeps Chinese characters + alphanumeric</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Hello", "世界", "123", "!@#"]</code></p></li><li><p>Output: <code translate="no">[['Hello'], ['世界'], ['123'], []]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/cncharonly-filter.md"><code translate="no">cncharonly</code></a></p></td>
-     <td><p>الصينية</p></td>
-     <td><p>يحتفظ بالأحرف الصينية فقط</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">["Hello", "世界", "123"]</code></p></li><li><p>المخرجات: <code translate="no">[[], ['世界'], []]</code></p></li></ul></td>
+     <td><p>Chinese</p></td>
+     <td><p>Keeps only Chinese characters</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Hello", "世界", "123"]</code></p></li><li><p>Output: <code translate="no">[[], ['世界'], []]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/ar/pinyin-filter.md"><code translate="no">pinyin</code></a></p></td>
-     <td><p>الصينية</p></td>
-     <td><p>يُصدر أشكال رموز بينيين للرموز الصينية</p></td>
-     <td><ul><li><p>الإدخال: <code translate="no">["中文"]</code></p></li><li><p>المخرجات: <code translate="no">[['中文', 'zhong', 'wen']]</code></p></li></ul></td>
+     <td><p>Chinese</p></td>
+     <td><p>Emits Pinyin token forms for Chinese tokens</p></td>
+     <td><ul><li><p>Input: <code translate="no">["中文"]</code></p></li><li><p>Output: <code translate="no">[['中文', 'zhong', 'wen']]</code></p></li></ul></td>
    </tr>
 </table>
-<h3 id="Step-3-Combine-and-implement" class="common-anchor-header">الخطوة 3: الدمج والتنفيذ<button data-href="#Step-3-Combine-and-implement" class="anchor-icon" translate="no">
+<h3 id="Step-3-Combine-and-implement" class="common-anchor-header">Step 3: Combine and implement<button data-href="#Step-3-Combine-and-implement" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -598,7 +598,7 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لإنشاء محلل مخصص، عليك تعريف أداة التقطيع وقائمة المرشحات في قاموس <code translate="no">analyzer_params</code>. يتم تطبيق المرشحات بالترتيب الذي ترد به في القائمة.</p>
+    </button></h3><p>To create your custom analyzer, you define the tokenizer and a list of filters in the <code translate="no">analyzer_params</code> dictionary. The filters are applied in the order they are listed.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Example: A custom analyzer for technical content</span>
 analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -614,7 +614,7 @@ schema.add_field(
 <span class="highlighted-wrapper-line">    analyzer_params=analyzer_params,</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Final-Test-with-runanalyzer" class="common-anchor-header">النهاية: الاختبار باستخدام <code translate="no">run_analyzer</code><button data-href="#Final-Test-with-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Final-Test-with-runanalyzer" class="common-anchor-header">Final: Test with <code translate="no">run_analyzer</code><button data-href="#Final-Test-with-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -629,7 +629,7 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تأكد دائمًا من صحة التكوين قبل تطبيقه على مجموعة:</p>
+    </button></h3><p>Always validate your configuration before applying to a collection:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample text to analyze</span>
 sample_text = <span class="hljs-string">&quot;The Milvus vector database is built for scale!&quot;</span>
 
@@ -637,14 +637,14 @@ sample_text = <span class="hljs-string">&quot;The Milvus vector database is buil
 result = client.run_analyzer(sample_text, analyzer_params)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Analyzer output:&quot;</span>, result)
 <button class="copy-code-btn"></button></code></pre>
-<p>المشكلات الشائعة التي يجب التحقق منها:</p>
+<p>Common issues to check:</p>
 <ul>
-<li><p><strong>التقطيع المفرط</strong>: تقسيم المصطلحات الفنية بشكل غير صحيح</p></li>
-<li><p><strong>التجزئة الناقصة</strong>: عدم فصل العبارات بشكل صحيح</p></li>
-<li><p><strong>الرموز المفقودة</strong>: يتم استبعاد المصطلحات المهمة</p></li>
+<li><p><strong>Over-tokenization</strong>: Technical terms being split incorrectly</p></li>
+<li><p><strong>Under-tokenization</strong>: Phrases not being separated properly</p></li>
+<li><p><strong>Missing tokens</strong>: Important terms being filtered out</p></li>
 </ul>
-<p>للحصول على تفاصيل الاستخدام، راجع <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md">run_analyzer</a>.</p>
-<h2 id="Recommended-configurations-by-use-case" class="common-anchor-header">التكوينات الموصى بها حسب حالة الاستخدام<button data-href="#Recommended-configurations-by-use-case" class="anchor-icon" translate="no">
+<p>For detailed usage, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md">run_analyzer</a>.</p>
+<h2 id="Recommended-configurations-by-use-case" class="common-anchor-header">Recommended configurations by use case<button data-href="#Recommended-configurations-by-use-case" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -659,11 +659,11 @@ result = client.run_analyzer(sample_text, analyzer_params)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقدم هذا القسم إعدادات مقترحة لمُجزئ الرموز والمرشحات لحالات الاستخدام الشائعة عند العمل مع أدوات التحليل في Milvus. اختر التركيبة التي تتناسب بشكل أفضل مع نوع المحتوى ومتطلبات البحث الخاصة بك.</p>
+    </button></h2><p>This section provides recommended tokenizer and filter configurations for common use cases when working with analyzers in Milvus. Choose the combination that best matches your content type and search requirements.</p>
 <div class="alert note">
-<p>قبل تطبيق أداة التحليل على مجموعتك، نوصيك باستخدام <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md"><code translate="no">run_analyzer</code></a> لاختبار أداء تحليل النص والتحقق من صحته.</p>
+<p>Before applying an analyzer to your collection, we recommend you use <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md"><code translate="no">run_analyzer</code></a> to test and validate text analysis performance.</p>
 </div>
-<h3 id="Languages-with-accent-marks-French-Spanish-German-etc" class="common-anchor-header">اللغات التي تحتوي على علامات التشكيل (الفرنسية، الإسبانية، الألمانية، إلخ)<button data-href="#Languages-with-accent-marks-French-Spanish-German-etc" class="anchor-icon" translate="no">
+<h3 id="Languages-with-accent-marks-French-Spanish-German-etc" class="common-anchor-header">Languages with accent marks (French, Spanish, German, etc.)<button data-href="#Languages-with-accent-marks-French-Spanish-German-etc" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -678,7 +678,7 @@ result = client.run_analyzer(sample_text, analyzer_params)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>استخدم أداة التقطيع « <code translate="no">standard</code> » مع تحويل الأحرف إلى صغرى، واستخلاص الجذور الخاصة باللغة، وإزالة الكلمات الممنوعة. يعمل هذا التكوين أيضًا مع اللغات الأوروبية الأخرى عن طريق تعديل المعلمات « <code translate="no">language</code> » و« <code translate="no">stop_words</code> ».</p>
+    </button></h3><p>Use a <code translate="no">standard</code> tokenizer with lowercase conversion, language-specific stemming, and stopword removal. This configuration also works for other European languages by modifying the <code translate="no">language</code> and <code translate="no">stop_words</code> parameters.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># French example</span>
 analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -701,7 +701,7 @@ analyzer_params = {
 <span class="hljs-comment"># &quot;language&quot;: &quot;german&quot; for German</span>
 <span class="hljs-comment"># &quot;stop_words&quot;: [&quot;_spanish_&quot;] or [&quot;_german_&quot;] accordingly</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="English-content" class="common-anchor-header">المحتوى باللغة الإنجليزية<button data-href="#English-content" class="anchor-icon" translate="no">
+<h3 id="English-content" class="common-anchor-header">English content<button data-href="#English-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -716,7 +716,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لمعالجة النصوص الإنجليزية مع تصفية شاملة. يمكنك أيضًا استخدام أداة التحليل المدمجة <a href="/docs/ar/english-analyzer.md"><code translate="no">english</code></a> المُحلل المدمج:</p>
+    </button></h3><p>For English text processing with comprehensive filtering. You can also use the built-in <a href="/docs/ar/english-analyzer.md"><code translate="no">english</code></a> analyzer:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [
@@ -737,7 +737,7 @@ analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;english&quot;</span>
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Chinese-content" class="common-anchor-header">المحتوى الصيني<button data-href="#Chinese-content" class="anchor-icon" translate="no">
+<h3 id="Chinese-content" class="common-anchor-header">Chinese content<button data-href="#Chinese-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -752,7 +752,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>استخدم أداة تحليل الكلمات " <code translate="no">jieba</code> " وقم بتطبيق مرشح الأحرف للاحتفاظ فقط بالأحرف الصينية والحروف اللاتينية والأرقام.</p>
+    </button></h3><p>Use the <code translate="no">jieba</code> tokenizer and apply a character filter to retain only Chinese characters, Latin letters, and digits.</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [<span class="hljs-string">&quot;cnalphanumonly&quot;</span>]
@@ -764,15 +764,15 @@ analyzer_params = {
 }
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>بالنسبة للصينية المبسطة، يقوم <code translate="no">cnalphanumonly</code> بإزالة جميع الرموز باستثناء الأحرف الصينية والنص الأبجدي الرقمي والأرقام. وهذا يمنع علامات الترقيم من التأثير على جودة البحث.</p>
+<p>For Simplified Chinese, <code translate="no">cnalphanumonly</code> removes all tokens except Chinese characters, alphanumeric text, and digits. This prevents punctuation from affecting search quality.</p>
 </div>
-<p>إذا كان من المحتمل أن يبحث المستخدمون عن نص صيني عن طريق كتابة بينيين، فاستخدم محللًا مخصصًا مع أداة تجزئة <code translate="no">jieba</code> وفلتر <a href="/docs/ar/pinyin-filter.md"><code translate="no">pinyin</code></a> بدلاً من محلل « <code translate="no">chinese</code> » المدمج.</p>
+<p>If users may search Chinese text by typing Pinyin, use a custom analyzer with the <code translate="no">jieba</code> tokenizer and the <a href="/docs/ar/pinyin-filter.md"><code translate="no">pinyin</code></a> filter instead of the built-in <code translate="no">chinese</code> analyzer.</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [<span class="hljs-string">&quot;pinyin&quot;</span>]
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Japanese-content" class="common-anchor-header">المحتوى الياباني<button data-href="#Japanese-content" class="anchor-icon" translate="no">
+<h3 id="Japanese-content" class="common-anchor-header">Japanese content<button data-href="#Japanese-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -787,7 +787,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>استخدم أداة تجزئة « <code translate="no">lindera</code> » مع القاموس الياباني والمرشحات لتنقية علامات الترقيم والتحكم في طول الرموز:</p>
+    </button></h3><p>Use the <code translate="no">lindera</code> tokenizer with Japanese dictionary and filters to clean punctuation and control token length:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
         <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;lindera&quot;</span>,
@@ -803,7 +803,7 @@ analyzer_params = {
     ]
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Korean-content" class="common-anchor-header">المحتوى الكوري<button data-href="#Korean-content" class="anchor-icon" translate="no">
+<h3 id="Korean-content" class="common-anchor-header">Korean content<button data-href="#Korean-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -818,7 +818,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>على غرار اللغة اليابانية، استخدم أداة تجزئة <code translate="no">lindera</code> مع القاموس الكوري:</p>
+    </button></h3><p>Similar to Japanese, using <code translate="no">lindera</code> tokenizer with Korean dictionary:</p>
 <pre><code translate="no" class="language-json">analyzer_params = <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;tokenizer&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
         <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;lindera&quot;</span><span class="hljs-punctuation">,</span>
@@ -834,7 +834,7 @@ analyzer_params = {
     <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Mixed-or-multilingual-content" class="common-anchor-header">المحتوى المختلط أو متعدد اللغات<button data-href="#Mixed-or-multilingual-content" class="anchor-icon" translate="no">
+<h3 id="Mixed-or-multilingual-content" class="common-anchor-header">Mixed or multilingual content<button data-href="#Mixed-or-multilingual-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -849,20 +849,20 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>عند التعامل مع محتوى يمتد عبر لغات متعددة أو يستخدم أنظمة كتابة غير متوقعة، ابدأ باستخدام محلل <code translate="no">icu</code>. يتعامل هذا المحلل الذي يدعم Unicode مع أنظمة الكتابة والرموز المختلطة بفعالية.</p>
-<p><strong>التكوين الأساسي متعدد اللغات (بدون استخلاص الجذور)</strong>:</p>
+    </button></h3><p>When working with content that spans multiple languages or uses scripts unpredictably, start with the <code translate="no">icu</code> analyzer. This Unicode-aware analyzer handles mixed scripts and symbols effectively.</p>
+<p><strong>Basic multilingual configuration (no stemming)</strong>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;icu&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [<span class="hljs-string">&quot;lowercase&quot;</span>, <span class="hljs-string">&quot;asciifolding&quot;</span>]
 }
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>المعالجة المتعددة اللغات المتقدمة</strong>:</p>
-<p>للتحكم بشكل أفضل في سلوك الرموز عبر اللغات المختلفة:</p>
+<p><strong>Advanced multilingual processing</strong>:</p>
+<p>For better control over token behavior across different languages:</p>
 <ul>
-<li><p>استخدم تكوين <strong>محلل متعدد اللغات</strong>. لمزيد من التفاصيل، راجع <a href="/docs/ar/multi-language-analyzers.md">المحللات متعددة اللغات</a>.</p></li>
-<li><p>قم بتنفيذ <strong>معرّف اللغة</strong> على المحتوى الخاص بك. لمزيد من التفاصيل، راجع " <a href="/docs/ar/language-identifier.md">معرّف اللغة</a>".</p></li>
+<li><p>Use a <strong>multi-language analyzer</strong> configuration. For details, refer to <a href="/docs/ar/multi-language-analyzers.md">Multi-language Analyzers</a>.</p></li>
+<li><p>Implement a <strong>language identifier</strong> on your content. For details, refer to <a href="/docs/ar/language-identifier.md">Language Identifier</a>.</p></li>
 </ul>
-<h2 id="Integrate-with-text-retrieval-features" class="common-anchor-header">التكامل مع ميزات استرجاع النصوص<button data-href="#Integrate-with-text-retrieval-features" class="anchor-icon" translate="no">
+<h2 id="Integrate-with-text-retrieval-features" class="common-anchor-header">Integrate with text retrieval features<button data-href="#Integrate-with-text-retrieval-features" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -877,12 +877,12 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>بعد اختيار المحلل الخاص بك، يمكنك دمجه مع ميزات استرجاع النص التي يوفرها Milvus.</p>
+    </button></h2><p>After selecting your analyzer, you can integrate it with text retrieval features provided by Milvus.</p>
 <ul>
-<li><p><strong>البحث عن النص الكامل</strong></p>
-<p>تؤثر المحللات بشكل مباشر على البحث عن النص الكامل القائم على BM25 من خلال إنشاء متجهات متفرقة. استخدم نفس المحلل لكل من الفهرسة والاستعلام لضمان تجزئة متسقة. توفر المحللات الخاصة باللغة عمومًا تقييم BM25 أفضل من المحللات العامة. للحصول على تفاصيل التنفيذ، راجع " <a href="/docs/ar/full-text-search.md">البحث عن النص الكامل</a>".</p></li>
-<li><p><strong>مطابقة النص</strong></p>
-<p>تقوم عمليات مطابقة النص بمطابقة الرموز بشكل دقيق بين الاستعلامات والمحتوى المفهرس بناءً على ناتج أداة التحليل الخاصة بك. للحصول على تفاصيل التنفيذ، راجع " <a href="/docs/ar/keyword-match.md">مطابقة النص</a>".</p></li>
-<li><p><strong>مطابقة العبارات</strong></p>
-<p>تتطلب مطابقة العبارات تجزئة متسقة عبر التعبيرات المكونة من عدة كلمات للحفاظ على حدود العبارات ومعناها. للحصول على تفاصيل التنفيذ، راجع " <a href="/docs/ar/phrase-match.md">مطابقة العبارات</a>".</p></li>
+<li><p><strong>Full text search</strong></p>
+<p>Analyzers directly impact BM25-based full text search through sparse vector generation. Use the same analyzer for both indexing and querying to ensure consistent tokenization. Language-specific analyzers generally provide better BM25 scoring than generic ones. For implementation details, refer to <a href="/docs/ar/full-text-search.md">Full Text Search</a>.</p></li>
+<li><p><strong>Text match</strong></p>
+<p>Text match operations perform exact token matching between queries and indexed content based on your analyzer output. For implementation details, refer to <a href="/docs/ar/keyword-match.md">Text Match</a>.</p></li>
+<li><p><strong>Phrase match</strong></p>
+<p>Phrase match requires consistent tokenization across multi-word expressions to maintain phrase boundaries and meaning. For implementation details, refer to <a href="/docs/ar/phrase-match.md">Phrase Match</a>.</p></li>
 </ul>

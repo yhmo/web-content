@@ -1,10 +1,13 @@
 ---
 id: insert-data-into-structarray-fields.md
-title: StructArrayフィールドへのデータの挿入
+title: Insert Data into StructArray Fields
 summary: >-
-  各エンティティが構造化された要素の順序付きリストを含む場合、StructArrayフィールドにデータを挿入します。挿入ペイロードにおいて、StructArrayフィールドはオブジェクトの配列として表現されます。各オブジェクトは1つのStruct要素を表し、コレクションスキーマで定義されたStructサブフィールド名を使用します。
+  Insert data into a StructArray field when each entity contains an ordered list
+  of structured elements. In the insert payload, a StructArray field is
+  represented as an array of objects. Each object represents one Struct element
+  and uses the Struct subfield names defined in the collection schema.
 ---
-<h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">StructArrayフィールドへのデータの挿入<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
+<h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">Insert Data into StructArray Fields<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>各エンティティが構造化された要素の順序付きリストを含む場合、StructArrayフィールドにデータを挿入します。挿入ペイロードにおいて、StructArrayフィールドはオブジェクトの配列として表現されます。各オブジェクトは1つのStruct要素を表し、コレクションスキーマで定義されたStructサブフィールド名を使用します。</p>
-<p>このページでは、「<a href="/docs/ja/create-structarray-field.md">StructArrayフィールドの作成</a>」の<code translate="no">tech_articles</code> コレクションを使用しています。各エンティティは技術記事であり、<code translate="no">chunks</code> フィールドには、記事のチャンクがStruct要素として格納されています。</p>
-<h2 id="Before-you-begin" class="common-anchor-header">開始する前に<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+    </button></h1><p>Insert data into a StructArray field when each entity contains an ordered list of structured elements. In the insert payload, a StructArray field is represented as an array of objects. Each object represents one Struct element and uses the Struct subfield names defined in the collection schema.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/ja/create-structarray-field.md">Create a StructArray Field</a>. Each entity is a technical article, and the <code translate="no">chunks</code> field stores article chunks as Struct elements.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,38 +39,38 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>コレクションスキーマに、<code translate="no">chunks</code> というStructArrayフィールドがすでに含まれていることを確認してください。</p>
+    </button></h2><p>Make sure the collection schema already contains the <code translate="no">chunks</code> StructArray field.</p>
 <table>
 <thead>
-<tr><th>フィールド</th><th>タイプ</th><th>値の挿入</th></tr>
+<tr><th>Field</th><th>Type</th><th>Insert value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">doc_id</code></td><td><code translate="no">INT64</code></td><td>記事 ID。</td></tr>
-<tr><td><code translate="no">title</code></td><td><code translate="no">VARCHAR</code></td><td>記事のタイトル。</td></tr>
-<tr><td><code translate="no">category</code></td><td><code translate="no">VARCHAR</code></td><td>記事のカテゴリ。</td></tr>
-<tr><td><code translate="no">title_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>記事レベルの埋め込み。</td></tr>
-<tr><td><code translate="no">chunks</code></td><td><code translate="no">ARRAY</code></td><td>チャンク・オブジェクトのリスト。</td></tr>
+<tr><td><code translate="no">doc_id</code></td><td><code translate="no">INT64</code></td><td>Article ID.</td></tr>
+<tr><td><code translate="no">title</code></td><td><code translate="no">VARCHAR</code></td><td>Article title.</td></tr>
+<tr><td><code translate="no">category</code></td><td><code translate="no">VARCHAR</code></td><td>Article category.</td></tr>
+<tr><td><code translate="no">title_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Article-level embedding.</td></tr>
+<tr><td><code translate="no">chunks</code></td><td><code translate="no">ARRAY</code></td><td>A list of chunk objects.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">chunks</code> 内の各オブジェクトは、Struct スキーマに従う必要があります。</p>
+<p>Each object in <code translate="no">chunks</code> must follow the Struct schema.</p>
 <table>
 <thead>
-<tr><th>サブフィールド</th><th>タイプ</th><th>挿入値</th></tr>
+<tr><th>Subfield</th><th>Type</th><th>Insert value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">text</code></td><td><code translate="no">VARCHAR</code></td><td>チャンクテキスト。</td></tr>
-<tr><td><code translate="no">section</code></td><td><code translate="no">VARCHAR</code></td><td><code translate="no">index</code> 、<code translate="no">search</code> 、<code translate="no">filter</code> などのセクション名。</td></tr>
-<tr><td><code translate="no">page</code></td><td><code translate="no">INT64</code></td><td>ページ番号または論理的な位置。</td></tr>
-<tr><td><code translate="no">quality_score</code></td><td><code translate="no">FLOAT</code></td><td>チャンクレベルのスコア。</td></tr>
-<tr><td><code translate="no">has_code</code></td><td><code translate="no">BOOL</code></td><td>チャンクにコードが含まれているかどうか。</td></tr>
-<tr><td><code translate="no">emb_list_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>EmbeddingList 検索用に記述されたベクトル。</td></tr>
-<tr><td><code translate="no">emb</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>要素レベルの検索用に記述されたベクトル。</td></tr>
+<tr><td><code translate="no">text</code></td><td><code translate="no">VARCHAR</code></td><td>Chunk text.</td></tr>
+<tr><td><code translate="no">section</code></td><td><code translate="no">VARCHAR</code></td><td>Section name, such as <code translate="no">index</code>, <code translate="no">search</code>, or <code translate="no">filter</code>.</td></tr>
+<tr><td><code translate="no">page</code></td><td><code translate="no">INT64</code></td><td>Page number or logical position.</td></tr>
+<tr><td><code translate="no">quality_score</code></td><td><code translate="no">FLOAT</code></td><td>Chunk-level score.</td></tr>
+<tr><td><code translate="no">has_code</code></td><td><code translate="no">BOOL</code></td><td>Whether the chunk contains code.</td></tr>
+<tr><td><code translate="no">emb_list_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vector written for EmbeddingList search.</td></tr>
+<tr><td><code translate="no">emb</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vector written for element-level search.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>挿入ペイロードでは、<code translate="no">chunks</code> は、値が Struct オブジェクトの配列である通常のフィールドです。各オブジェクト内では、<code translate="no">text</code> や<code translate="no">emb</code> などのサブフィールド名を使用してください。<code translate="no">chunks[text]</code> や<code translate="no">chunks[emb]</code> などのパス構文は、挿入後のインデックスの作成、検索の実行、フィルタの構築、または出力フィールドの指定時にのみ使用してください。</p>
+<p>In an insert payload, <code translate="no">chunks</code> is a regular field whose value is an array of Struct objects. Inside each object, use subfield names such as <code translate="no">text</code> and <code translate="no">emb</code>. Use path syntax, such as <code translate="no">chunks[text]</code> or <code translate="no">chunks[emb]</code>, only after insertion when you create indexes, run searches, build filters, or specify output fields.</p>
 </div>
-<h2 id="Understand-the-insert-payload-shape" class="common-anchor-header">挿入ペイロードの形状を理解する<button data-href="#Understand-the-insert-payload-shape" class="anchor-icon" translate="no">
+<h2 id="Understand-the-insert-payload-shape" class="common-anchor-header">Understand the insert payload shape<button data-href="#Understand-the-insert-payload-shape" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -82,7 +85,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">chunks</code> の値は、Struct要素の配列です。各要素は、キーがサブフィールド名であるオブジェクトです。</p>
+    </button></h2><p>The <code translate="no">chunks</code> value is an array of Struct elements. Each element is an object whose keys are subfield names.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;doc_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;StructArray indexing patterns&quot;</span><span class="hljs-punctuation">,</span>
@@ -110,8 +113,8 @@ summary: >-
   <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">emb_list_vector</code> および<code translate="no">emb</code> は、サポートする検索モードが異なるため、別々のベクトルサブフィールドです。EmbeddingList 検索は、StructArray フィールド内のすべてのベクトルを 1 つの埋め込みリストとして扱い、<code translate="no">MAX_SIM*</code> メトリクスを使用したエンティティレベルの結果を返します。要素レベル検索は、各 Struct 要素を個別に検索し、一致した要素のオフセットを返すことができます。この例では、簡略化のため、両方のフィールドに同じベクトル値を格納しています。 本番環境のアプリケーションでは、両方の検索モードで同じチャンク埋め込みが使用される場合は、両方のサブフィールドに同じ埋め込みを格納し、2つの検索モードで異なる表現が使用される場合は、異なる埋め込みを格納することができます。</p>
-<h2 id="Insert-rows" class="common-anchor-header">行の挿入<button data-href="#Insert-rows" class="anchor-icon" translate="no">
+<p><code translate="no">emb_list_vector</code> and <code translate="no">emb</code> are separate vector subfields because they support different search modes. EmbeddingList search treats all vectors in a StructArray field as one embedding list and returns entity-level results with <code translate="no">MAX_SIM*</code> metrics. Element-level search searches each Struct element independently and can return the matched element offset. This example stores the same vector values in both fields for simplicity. In a production application, you can store the same embeddings in both subfields when both search modes use the same chunk embedding, or store different embeddings when the two search modes use different representations.</p>
+<h2 id="Insert-rows" class="common-anchor-header">Insert rows<button data-href="#Insert-rows" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -126,7 +129,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">client.insert()</code> を使用して、StructArray 値を含む行を挿入します。</p>
+    </button></h2><p>Use <code translate="no">client.insert()</code> to insert rows that contain StructArray values.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -213,7 +216,7 @@ result = client.insert(
 
 <span class="hljs-built_in">print</span>(result)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-into-nullable-StructArray-fields" class="common-anchor-header">Null 許容の StructArray フィールドへの挿入<button data-href="#Insert-into-nullable-StructArray-fields" class="anchor-icon" translate="no">
+<h2 id="Insert-into-nullable-StructArray-fields" class="common-anchor-header">Insert into nullable StructArray fields<button data-href="#Insert-into-nullable-StructArray-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -228,7 +231,7 @@ result = client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">chunks</code> フィールドがnull許容型の場合、エンティティは<code translate="no">chunks</code> フィールド全体をnullに設定できます。Pythonでは、<code translate="no">None</code> を使用してnull値を表現します。</p>
+    </button></h2><p>If the <code translate="no">chunks</code> field is nullable, an entity can set the entire <code translate="no">chunks</code> field to null. In Python, use <code translate="no">None</code> to represent a null value.</p>
 <pre><code translate="no" class="language-python">client.insert(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
     data=[
@@ -242,12 +245,12 @@ result = client.insert(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Null 許容の StructArray フィールドに有効な StructArray 値が含まれている場合、その値内のすべてのサブフィールドは null であるか、有効な値を持つ必要があります。一部のサブフィールドが null に設定され、他のサブフィールドが有効な値に設定されたエンティティを挿入すると、エラーが発生します。</p>
+<p>When a nullable StructArray field contains a valid StructArray value, all subfields in that value should either be null or have valid values. Inserting an entity with some subfields set to null and others set to valid values results in an error.</p>
 <div class="alert note">
-<p>警告
-Nullable StructArrayフィールドは、Milvus v3.0.xでのみ利用可能です。既存のコレクションにStructArrayフィールドを動的に追加する場合、追加するフィールドはNullableでなければならず、既存のエンティティは、その新しいフィールドのすべてのサブフィールドに対して<code translate="no">null</code> を返します。</p>
+<p>Warning
+Nullable StructArray fields are available only in Milvus v3.0.x. If you dynamically add a StructArray field to an existing collection, the added field must be nullable, and existing entities return <code translate="no">null</code> for the new field across all its subfields.</p>
 </div>
-<h2 id="Validate-inserted-data" class="common-anchor-header">挿入データの検証<button data-href="#Validate-inserted-data" class="anchor-icon" translate="no">
+<h2 id="Validate-inserted-data" class="common-anchor-header">Validate inserted data<button data-href="#Validate-inserted-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -262,7 +265,7 @@ Nullable StructArrayフィールドは、Milvus v3.0.xでのみ利用可能で�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>コレクションをクエリし、StructArrayフィールドまたは選択したサブフィールドを返すことができます。</p>
+    </button></h2><p>You can query the collection and return the StructArray field or selected subfields.</p>
 <pre><code translate="no" class="language-python">rows = client.query(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
     <span class="hljs-built_in">filter</span>=<span class="hljs-string">&quot;doc_id in [1, 2, 3]&quot;</span>,
@@ -278,8 +281,8 @@ Nullable StructArrayフィールドは、Milvus v3.0.xでのみ利用可能で�
 <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> rows:
     <span class="hljs-built_in">print</span>(row)
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">chunks[text]</code> などの StructArray フィールドパスは、クエリ、検索、フィルタリング、またはインデックスの作成時のみ使用してください。挿入ペイロードでは、引き続き<code translate="no">chunks</code> の下にあるネストされたオブジェクトを使用する必要があります。</p>
-<h2 id="Insert-rules" class="common-anchor-header">挿入ルール<button data-href="#Insert-rules" class="anchor-icon" translate="no">
+<p>Use StructArray field paths, such as <code translate="no">chunks[text]</code>, only when you query, search, filter, or create indexes. Insert payloads should still use nested objects under <code translate="no">chunks</code>.</p>
+<h2 id="Insert-rules" class="common-anchor-header">Insert rules<button data-href="#Insert-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -296,19 +299,19 @@ Nullable StructArrayフィールドは、Milvus v3.0.xでのみ利用可能で�
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>ルール</th><th>説明</th></tr>
+<tr><th>Rule</th><th>Explanation</th></tr>
 </thead>
 <tbody>
-<tr><td>StructArray フィールドには、オブジェクトの配列を使用してください。</td><td><code translate="no">chunks</code> の値はリストであり、リストの各項目は Struct 要素です。</td></tr>
-<tr><td>各 Struct 要素内でサブフィールド名を使用します。</td><td><code translate="no">{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}</code> は、<code translate="no">{&quot;chunks[text]&quot;: &quot;...&quot;}</code> ではなく、<code translate="no">chunks</code> 内に挿入してください。</td></tr>
-<tr><td>Structスキーマに準拠してください。</td><td>各 Struct 要素は、Struct スキーマで定義されたサブフィールドを使用する必要があります。</td></tr>
-<tr><td>ベクトルの次元を一致させてください。</td><td>ベクトルの値は、そのベクトルサブフィールドに対して設定された<code translate="no">dim</code> と一致している必要があります。</td></tr>
-<tr><td><code translate="no">max_capacity</code> を遵守してください。</td><td>1 つのエンティティに含まれる Struct 要素の数は、StructArray フィールドの<code translate="no">max_capacity</code> を超えてはなりません。</td></tr>
-<tr><td>検索モードごとに個別のベクトルサブフィールドを使用してください。</td><td>EmbeddingList 検索と要素レベルの検索の両方が必要な場合は、両方のベクトルサブフィールドにベクトル値を書き込んでください。</td></tr>
-<tr><td><code translate="no">null</code> は、フィールドが null 許容である場合にのみ使用してください。</td><td>Null 許容ではない StructArray フィールドには、有効な StructArray 値を指定する必要があります。</td></tr>
+<tr><td>Use an array of objects for a StructArray field.</td><td>The value of <code translate="no">chunks</code> is a list, and each item in the list is a Struct element.</td></tr>
+<tr><td>Use subfield names inside each Struct element.</td><td>Insert <code translate="no">{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}</code> inside <code translate="no">chunks</code>, not <code translate="no">{&quot;chunks[text]&quot;: &quot;...&quot;}</code>.</td></tr>
+<tr><td>Match the Struct schema.</td><td>Each Struct element must use the subfields defined in the Struct schema.</td></tr>
+<tr><td>Match vector dimensions.</td><td>Vector values must match the <code translate="no">dim</code> configured for their vector subfields.</td></tr>
+<tr><td>Respect <code translate="no">max_capacity</code>.</td><td>The number of Struct elements in one entity must not exceed the <code translate="no">max_capacity</code> of the StructArray field.</td></tr>
+<tr><td>Use separate vector subfields for separate search modes.</td><td>If both EmbeddingList search and element-level search are required, write vector values to both vector subfields.</td></tr>
+<tr><td>Use <code translate="no">null</code> only when the field is nullable.</td><td>Non-nullable StructArray fields require valid StructArray values.</td></tr>
 </tbody>
 </table>
-<h2 id="Common-mistakes" class="common-anchor-header">よくある間違い<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -324,15 +327,15 @@ Nullable StructArrayフィールドは、Milvus v3.0.xでのみ利用可能で�
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>挿入ペイロードで、<code translate="no">chunks[text]</code> などのフィールドパスを使用すること。</p></li>
-<li><p>Struct 要素から必須のサブフィールドを省略してしまう。</p></li>
-<li><p>間違った次元のベクトルを挿入すること。</p></li>
-<li><p><code translate="no">max_capacity</code> で許可されている数よりも多くの Struct 要素を挿入すること。</p></li>
-<li><p><code translate="no">null</code> に 1 つのサブフィールドのみを設定し、同じ StructArray 値内の他のサブフィールドが有効である場合。</p></li>
-<li><p>ベクトルを<code translate="no">emb_list_vector</code> にのみ書き込んだ後、<code translate="no">chunks[emb]</code> で要素レベルの検索を実行しようとした。</p></li>
-<li><p>ベクトルを<code translate="no">emb</code> にのみ書き込んだ後、<code translate="no">chunks[emb_list_vector]</code> に対してEmbeddingList検索を実行しようとした場合。</p></li>
+<li><p>Using field paths such as <code translate="no">chunks[text]</code> in insert payloads.</p></li>
+<li><p>Omitting required subfields from a Struct element.</p></li>
+<li><p>Inserting vectors with the wrong dimension.</p></li>
+<li><p>Inserting more Struct elements than <code translate="no">max_capacity</code> allows.</p></li>
+<li><p>Setting only one subfield to <code translate="no">null</code> while other subfields in the same StructArray value are valid.</p></li>
+<li><p>Writing vectors only to <code translate="no">emb_list_vector</code> and then trying to run element-level search on <code translate="no">chunks[emb]</code>.</p></li>
+<li><p>Writing vectors only to <code translate="no">emb</code> and then trying to run EmbeddingList search on <code translate="no">chunks[emb_list_vector]</code>.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">次の手順<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -348,7 +351,7 @@ Nullable StructArrayフィールドは、Milvus v3.0.xでのみ利用可能で�
         ></path>
       </svg>
     </button></h2><ol>
-<li><p><code translate="no">chunks[emb_list_vector]</code> 、<code translate="no">chunks[emb]</code> 、およびスカラーサブフィールドのインデックスを作成するには、「<a href="/docs/ja/index-structarray-fields.md">StructArray フィールドのインデックス作成</a>」を参照してください。</p></li>
-<li><p>StructArray のベクトルサブフィールドを検索するには、「<a href="/docs/ja/basic-vector-search-with-structarray.md">StructArray を使用した基本的なベクトル検索</a>」を参照してください。</p></li>
-<li><p>Null 許容の挙動やバージョン固有の制限事項を確認するには、「<a href="/docs/ja/structarray-limits.md">StructArray の制限事項</a>」を参照してください。</p></li>
+<li><p>To create indexes for <code translate="no">chunks[emb_list_vector]</code>, <code translate="no">chunks[emb]</code>, and scalar subfields, read <a href="/docs/ja/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To search StructArray vector subfields, read <a href="/docs/ja/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To review nullable behavior and version-specific limitations, read <a href="/docs/ja/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

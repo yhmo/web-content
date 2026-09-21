@@ -1,14 +1,14 @@
 ---
 id: text-highlighter.md
-title: Penyorot TeksCompatible with Milvus 2.6.8+
+title: Text HighlighterCompatible with Milvus 2.6.8+
 summary: >-
-  Penyorot di Milvus memberi keterangan pada istilah yang cocok di bidang teks
-  dengan membungkusnya dengan tag yang dapat disesuaikan. Penyorotan membantu
-  menjelaskan mengapa sebuah dokumen cocok, meningkatkan keterbacaan hasil, dan
-  mendukung rendering yang kaya dalam aplikasi pencarian dan RAG.
+  The Highlighter in Milvus annotates matched terms in text fields by wrapping
+  them with customizable tags. Highlighting helps explain why a document
+  matches, improves result readability, and supports rich rendering in search
+  and RAG applications.
 beta: Milvus 2.6.8+
 ---
-<h1 id="Text-Highlighter" class="common-anchor-header">Penyorot Teks<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#Text-Highlighter" class="anchor-icon" translate="no">
+<h1 id="Text-Highlighter" class="common-anchor-header">Text Highlighter<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#Text-Highlighter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,19 +23,19 @@ beta: Milvus 2.6.8+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Penyorot di Milvus memberi keterangan pada istilah yang cocok di bidang teks dengan membungkusnya dengan tag yang dapat disesuaikan. Penyorotan membantu menjelaskan mengapa sebuah dokumen cocok, meningkatkan keterbacaan hasil, dan mendukung rendering yang kaya dalam aplikasi pencarian dan RAG.</p>
-<p>Penyorotan dijalankan sebagai langkah pasca-pemrosesan pada kumpulan hasil pencarian akhir. Hal ini tidak memengaruhi pengambilan kandidat, logika penyaringan, peringkat, atau penilaian.</p>
-<p>Penyorot memberikan tiga dimensi kontrol yang independen:</p>
+    </button></h1><p>The Highlighter in Milvus annotates matched terms in text fields by wrapping them with customizable tags. Highlighting helps explain why a document matches, improves result readability, and supports rich rendering in search and RAG applications.</p>
+<p>Highlighting is executed as a post-processing step on the final search result set. It does not affect candidate retrieval, filtering logic, ranking, or scoring.</p>
+<p>The Highlighter provides three independent dimensions of control:</p>
 <ul>
-<li><p><strong>Istilah mana yang disorot</strong></p>
-<p>Anda dapat memilih dari mana istilah yang disorot berasal. Misalnya, menyorot istilah pencarian yang digunakan dalam <strong>pencarian teks lengkap BM25</strong>, atau istilah kueri yang ditentukan dalam <strong>ekspresi pemfilteran berbasis teks</strong> (seperti <code translate="no">TEXT_MATCH</code> kondisi).</p></li>
-<li><p><strong>Bagaimana istilah yang disorot ditampilkan</strong></p>
-<p>Anda dapat mengontrol bagaimana istilah yang cocok muncul di output penyorotan dengan mengonfigurasi tag yang disisipkan sebelum dan sesudah setiap kecocokan. Misalnya, gunakan penanda sederhana seperti <code translate="no">{}</code> atau tag HTML seperti <code translate="no">&lt;em&gt;&lt;/em&gt;</code> untuk rich rendering.</p></li>
-<li><p><strong>Bagaimana teks yang disorot dikembalikan</strong></p>
-<p>Anda dapat mengontrol bagaimana hasil yang disorot dikembalikan sebagai fragmen, termasuk di mana fragmen dimulai, berapa panjangnya, dan berapa banyak fragmen yang dikembalikan.</p></li>
+<li><p><strong>Which terms are highlighted</strong></p>
+<p>You can choose where highlighted terms come from. For example, highlight search terms used in <strong>BM25 full text search</strong>, or query terms specified in <strong>text-based filtering expressions</strong> (such as <code translate="no">TEXT_MATCH</code> conditions).</p></li>
+<li><p><strong>How highlighted terms are rendered</strong></p>
+<p>You can control how matched terms appear in the highlighting output by configuring the tags inserted before and after each match. For example, use simple markers like <code translate="no">{}</code> or HTML tags such as <code translate="no">&lt;em&gt;&lt;/em&gt;</code> for rich rendering.</p></li>
+<li><p><strong>How highlighted text is returned</strong></p>
+<p>You can control how highlighted results are returned as fragments, including where fragments start, how long they are, and how many fragments are returned.</p></li>
 </ul>
-<p>Bagian berikut akan membahas skenario ini.</p>
-<h2 id="Search-term-highlighting-in-BM25-full-text-search" class="common-anchor-header">Penyorotan istilah pencarian dalam pencarian teks lengkap BM25<button data-href="#Search-term-highlighting-in-BM25-full-text-search" class="anchor-icon" translate="no">
+<p>The following sections walk through these scenarios.</p>
+<h2 id="Search-term-highlighting-in-BM25-full-text-search" class="common-anchor-header">Search term highlighting in BM25 full text search<button data-href="#Search-term-highlighting-in-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -50,13 +50,13 @@ beta: Milvus 2.6.8+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Saat Anda melakukan pencarian teks lengkap BM25, Anda dapat menyorot <strong>istilah pencarian</strong> di hasil yang dikembalikan untuk membantu menjelaskan mengapa sebuah dokumen cocok dengan kueri. Untuk mempelajari lebih lanjut tentang pencarian teks lengkap BM25, lihat <a href="/docs/id/full-text-search.md">Pencarian Teks Lengkap</a>.</p>
-<p>Dalam skenario ini, istilah yang disorot berasal langsung dari istilah pencarian yang digunakan dalam pencarian teks lengkap BM25. Penyorot menggunakan istilah-istilah ini untuk membuat anotasi teks yang cocok pada hasil akhir.</p>
-<p>Asumsikan konten berikut ini disimpan dalam bidang teks:</p>
+    </button></h2><p>When you perform a BM25 full text search, you can highlight the <strong>search terms</strong> in the returned result to help explain why a document matches the query. To learn more about BM25 full text search, refer to <a href="/docs/id/v2.6.x/full-text-search.md">Full Text Search</a>.</p>
+<p>In this scenario, highlighted terms come directly from the search terms used in BM25 full text search. The Highlighter uses these terms to annotate matched text in the final result.</p>
+<p>Assume the following content is stored in a text field:</p>
 <pre><code translate="no" class="language-plaintext">Milvus supports full text search. Use BM25 for keyword relevance. Filters can narrow results.
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Konfigurasi penyorot</strong></p>
-<p>Untuk menyorot istilah pencarian di pencarian teks lengkap BM25, buat <code translate="no">LexicalHighlighter</code> dan aktifkan penyorotan istilah pencarian untuk pencarian teks lengkap BM25:</p>
+<p><strong>Highlighter configuration</strong></p>
+<p>To highlight search terms in BM25 full text search, create a <code translate="no">LexicalHighlighter</code> and enable search term highlighting for BM25 full text search:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> LexicalHighlighter
 
 highlighter = LexicalHighlighter(
@@ -65,21 +65,21 @@ highlighter = LexicalHighlighter(
     highlight_search_text=<span class="hljs-literal">True</span>   <span class="hljs-comment"># Enable search term highlighting for BM25 full text search</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam contoh ini:</p>
+<p>In this example:</p>
 <ul>
-<li><p><code translate="no">pre_tags</code> dan <code translate="no">post_tags</code> mengontrol bagaimana teks yang disorot muncul di output. Dalam hal ini, istilah yang cocok diapit oleh <code translate="no">{}</code> (misalnya, <code translate="no">{term}</code>). Anda juga dapat memberikan beberapa tag sebagai daftar (misalnya, <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). Ketika beberapa istilah disorot, tag diterapkan secara berurutan dan diputar berdasarkan urutan kecocokan.</p></li>
-<li><p><code translate="no">highlight_search_text=True</code> memberi tahu Milvus untuk menggunakan istilah pencarian dalam pencarian teks lengkap BM25 sebagai sumber istilah yang disorot.</p></li>
+<li><p><code translate="no">pre_tags</code> and <code translate="no">post_tags</code> control how highlighted text appears in the output. In this case, matched terms are wrapped by <code translate="no">{}</code> (for example, <code translate="no">{term}</code>). You can also provide multiple tags as a list (for example, <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). When multiple terms are highlighted, tags are applied in order and rotated by match sequence.</p></li>
+<li><p><code translate="no">highlight_search_text=True</code> tells Milvus to use the search terms in BM25 full text search as the source of highlighted terms.</p></li>
 </ul>
-<p>Setelah objek Penyorot dibuat, terapkan konfigurasinya ke permintaan pencarian teks lengkap BM25 Anda:</p>
+<p>Once the Highlighter object is created, apply its configuration to your BM25 full text search request:</p>
 <pre><code translate="no" class="language-python">results = client.search(
     ...,
     data=[<span class="hljs-string">&quot;BM25&quot;</span>],      <span class="hljs-comment"># Search term used in BM25 full text search</span>
 <span class="highlighted-wrapper-line">    highlighter=highlighter <span class="hljs-comment"># Pass highlighter config here</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Menyoroti keluaran</strong></p>
-<p>Ketika penyorotan diaktifkan, Milvus mengembalikan teks yang disorot dalam bidang <code translate="no">highlight</code> khusus. Secara default, keluaran yang disorot dikembalikan sebagai fragmen yang dimulai dari istilah pertama yang cocok.</p>
-<p>Dalam contoh ini, istilah pencarian adalah <code translate="no">&quot;BM25&quot;</code>, sehingga istilah tersebut disorot dalam hasil yang dikembalikan:</p>
+<p><strong>Highlighting output</strong></p>
+<p>When highlighting is enabled, Milvus returns highlighted text in a dedicated <code translate="no">highlight</code> field. By default, highlighted output is returned as a fragment starting from the first matched term.</p>
+<p>In this example, the search term is <code translate="no">&quot;BM25&quot;</code>, so it is highlighted in the returned result:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     ...<span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;highlight&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -89,8 +89,8 @@ highlighter = LexicalHighlighter(
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Untuk mengontrol posisi, panjang, dan jumlah fragmen yang dikembalikan, lihat <a href="/docs/id/text-highlighter.md#Fragment-based-highlighting-output">Mengembalikan teks yang disorot sebagai fragmen</a>.</p>
-<h2 id="Query-term-highlighting-in-filtering" class="common-anchor-header">Penyorotan istilah kueri dalam pemfilteran<button data-href="#Query-term-highlighting-in-filtering" class="anchor-icon" translate="no">
+<p>To control the position, length, and number of returned fragments, see <a href="/docs/id/v2.6.x/text-highlighter.md#Fragment-based-highlighting-output">Return highlighted text as fragments</a>.</p>
+<h2 id="Query-term-highlighting-in-filtering" class="common-anchor-header">Query term highlighting in filtering<button data-href="#Query-term-highlighting-in-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -105,16 +105,16 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Selain menyorot istilah pencarian, Anda dapat menyorot istilah yang digunakan dalam ekspresi pemfilteran berbasis teks.</p>
+    </button></h2><p>In addition to highlighting search terms, you can highlight terms used in text-based filtering expressions.</p>
 <div class="alert note">
-<p>Saat ini, hanya kondisi pemfilteran <code translate="no">TEXT_MATCH</code> yang didukung untuk penyorotan istilah kueri. Untuk mempelajari lebih lanjut, lihat <a href="/docs/id/keyword-match.md">Pencocokan Teks</a>.</p>
+<p>Currently, only the <code translate="no">TEXT_MATCH</code> filtering condition is supported for query term highlighting. To learn more, refer to <a href="/docs/id/v2.6.x/keyword-match.md">Text Match</a>.</p>
 </div>
-<p>Dalam skenario ini, istilah yang disorot berasal dari ekspresi pemfilteran berbasis teks. Pemfilteran menentukan dokumen mana yang cocok, sementara Penyorot memberi keterangan pada rentang teks yang cocok.</p>
-<p>Asumsikan konten berikut disimpan dalam bidang teks:</p>
+<p>In this scenario, highlighted terms come from text-based filtering expressions. Filtering determines which documents match, while the Highlighter annotates the matched text spans.</p>
+<p>Assume the following content is stored in a text field:</p>
 <pre><code translate="no" class="language-python">This document explains how text filtering works <span class="hljs-keyword">in</span> Milvus.
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Konfigurasi penyorot</strong></p>
-<p>Untuk menyoroti istilah kueri yang digunakan dalam pemfilteran, buat <code translate="no">LexicalHighlighter</code> dan tentukan <code translate="no">highlight_query</code> yang sesuai dengan kondisi pemfilteran:</p>
+<p><strong>Highlighter configuration</strong></p>
+<p>To highlight query terms used in filtering, create a <code translate="no">LexicalHighlighter</code> and define a <code translate="no">highlight_query</code> that corresponds to the filtering condition:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> LexicalHighlighter
 
 highlighter = LexicalHighlighter(
@@ -127,21 +127,21 @@ highlighter = LexicalHighlighter(
     }]
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam konfigurasi ini:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">pre_tags</code> dan <code translate="no">post_tags</code> mengontrol bagaimana teks yang disorot muncul di output. Dalam hal ini, istilah yang cocok dibungkus dengan <code translate="no">{}</code> (misalnya, <code translate="no">{term}</code>). Anda juga dapat memberikan beberapa tag sebagai daftar (misalnya, <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). Ketika beberapa istilah disorot, tag diterapkan secara berurutan dan diputar berdasarkan urutan kecocokan.</p></li>
-<li><p><code translate="no">highlight_query</code> mendefinisikan istilah pemfilteran mana yang harus disorot.</p></li>
+<li><p><code translate="no">pre_tags</code> and <code translate="no">post_tags</code> control how highlighted text appears in the output. In this case, matched terms are wrapped by <code translate="no">{}</code> (for example, <code translate="no">{term}</code>). You can also provide multiple tags as a list (for example, <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). When multiple terms are highlighted, tags are applied in order and rotated by match sequence.</p></li>
+<li><p><code translate="no">highlight_query</code> defines which filtering terms should be highlighted.</p></li>
 </ul>
-<p>Setelah objek Penyorot dibuat, terapkan ekspresi pemfilteran yang sama dan konfigurasi penyorot ke permintaan pencarian Anda:</p>
+<p>Once the Highlighter object is created, apply the same filtering expression and the highlighter configuration to your search request:</p>
 <pre><code translate="no" class="language-python">results = client.search(
     ...,
     <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;TEXT_MATCH(text, &quot;text filtering&quot;)&#x27;</span>,
 <span class="highlighted-wrapper-line">    highlighter=highlighter <span class="hljs-comment"># Pass highlighter config here</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Menyoroti keluaran</strong></p>
-<p>Ketika penyorotan istilah kueri diaktifkan untuk pemfilteran, Milvus mengembalikan teks yang disorot dalam bidang <code translate="no">highlight</code> khusus. Secara default, keluaran yang disorot dikembalikan sebagai fragmen yang dimulai dari istilah pertama yang cocok.</p>
-<p>Dalam contoh ini, istilah pertama yang cocok adalah <code translate="no">&quot;text&quot;</code>, sehingga teks yang disorot dikembalikan mulai dari posisi tersebut:</p>
+<p><strong>Highlighting output</strong></p>
+<p>When query term highlighting is enabled for filtering, Milvus returns highlighted text in a dedicated <code translate="no">highlight</code> field. By default, highlighted output is returned as a fragment starting from the first matched term.</p>
+<p>In this example, the first matched term is <code translate="no">&quot;text&quot;</code>, so the returned highlighted text starts from that position:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     ...<span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;highlight&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -151,8 +151,8 @@ highlighter = LexicalHighlighter(
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Untuk mengontrol posisi, panjang, dan jumlah fragmen yang dikembalikan, lihat <a href="/docs/id/text-highlighter.md#Fragment-based-highlighting-output">Mengembalikan teks yang disorot sebagai fragmen</a>.</p>
-<h2 id="Fragment-based-highlighting-output" class="common-anchor-header">Output penyorotan berbasis fragmen<button data-href="#Fragment-based-highlighting-output" class="anchor-icon" translate="no">
+<p>To control the position, length, and number of returned fragments, see <a href="/docs/id/v2.6.x/text-highlighter.md#Fragment-based-highlighting-output">Return highlighted text as fragments</a>.</p>
+<h2 id="Fragment-based-highlighting-output" class="common-anchor-header">Fragment-based highlighting output<button data-href="#Fragment-based-highlighting-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -167,12 +167,12 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Secara default, Milvus mengembalikan teks yang disorot sebagai fragmen mulai dari istilah pertama yang cocok. Pengaturan terkait fragmen memungkinkan Anda untuk mengontrol lebih lanjut bagaimana fragmen dikembalikan, tanpa mengubah istilah mana yang disorot.</p>
-<p>Asumsikan konten berikut disimpan dalam bidang teks:</p>
+    </button></h2><p>By default, Milvus returns highlighted text as fragments starting from the first matched term. Fragment-related settings allow you to further control how fragments are returned, without changing which terms are highlighted.</p>
+<p>Assume the following content is stored in a text field:</p>
 <pre><code translate="no" class="language-plaintext">Milvus supports full text search. Use BM25 for keyword relevance. Filters can narrow results.
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Konfigurasi penyorot</strong></p>
-<p>Untuk mengontrol bentuk fragmen yang disorot, konfigurasikan opsi terkait fragmen di <code translate="no">LexicalHighlighter</code>:</p>
+<p><strong>Highlighter configuration</strong></p>
+<p>To control the shape of highlighted fragments, configure fragment-related options in the <code translate="no">LexicalHighlighter</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> LexicalHighlighter
 
 highlighter = LexicalHighlighter(
@@ -184,21 +184,21 @@ highlighter = LexicalHighlighter(
     num_of_fragments=<span class="hljs-number">1</span>     <span class="hljs-comment"># Max. number of fragments to return</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam konfigurasi ini:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">fragment_offset</code> menyimpan konteks terdepan sebelum istilah pertama yang disorot.</p></li>
-<li><p><code translate="no">fragment_size</code> membatasi jumlah teks yang disertakan dalam setiap fragmen.</p></li>
-<li><p><code translate="no">num_of_fragments</code> mengontrol berapa banyak fragmen yang dikembalikan.</p></li>
+<li><p><code translate="no">fragment_offset</code> reserves leading context before the first highlighted term.</p></li>
+<li><p><code translate="no">fragment_size</code> limits how much text is included in each fragment.</p></li>
+<li><p><code translate="no">num_of_fragments</code> controls how many fragments are returned.</p></li>
 </ul>
-<p>Setelah objek Penyorot dibuat, terapkan konfigurasi penyorot ke permintaan pencarian Anda:</p>
+<p>Once the Highlighter object is created, apply the highlighter configuration to your search request:</p>
 <pre><code translate="no" class="language-python">results = client.search(
     ...,
     data=[<span class="hljs-string">&quot;BM25&quot;</span>],
 <span class="highlighted-wrapper-line">    highlighter=highlighter <span class="hljs-comment"># Pass highlighter config here</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Menyoroti keluaran</strong></p>
-<p>Dengan penyorotan berbasis fragmen diaktifkan, Milvus mengembalikan teks yang disorot sebagai fragmen di bidang <code translate="no">highlight</code>:</p>
+<p><strong>Highlighting output</strong></p>
+<p>With fragment-based highlighting enabled, Milvus returns highlighted text as fragments in the <code translate="no">highlight</code> field:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     ...<span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;highlight&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -208,13 +208,13 @@ highlighter = LexicalHighlighter(
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam keluaran ini:</p>
+<p>In this output:</p>
 <ul>
-<li><p>Fragmen tidak dimulai tepat di <code translate="no">{BM25}</code> karena <code translate="no">fragment_offset</code> telah diatur.</p></li>
-<li><p>Hanya satu fragmen yang dikembalikan karena <code translate="no">num_of_fragments</code> adalah 1.</p></li>
-<li><p>Panjang fragmen dibatasi oleh <code translate="no">fragment_size</code>.</p></li>
+<li><p>The fragment does not start exactly at <code translate="no">{BM25}</code> because <code translate="no">fragment_offset</code> is set.</p></li>
+<li><p>Only one fragment is returned because <code translate="no">num_of_fragments</code> is 1.</p></li>
+<li><p>The length of the fragment is capped by <code translate="no">fragment_size</code>.</p></li>
 </ul>
-<h2 id="Examples" class="common-anchor-header">Contoh<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -229,7 +229,7 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Preparation" class="common-anchor-header">Persiapan<button data-href="#Preparation" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Preparation" class="common-anchor-header">Preparation<button data-href="#Preparation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -244,10 +244,10 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Sebelum menggunakan penyorot, pastikan koleksi Anda dikonfigurasi dengan benar.</p>
-<p>Contoh di bawah ini membuat koleksi yang mendukung penelusuran teks lengkap BM25 dan kueri <code translate="no">TEXT_MATCH</code>, lalu menyisipkan dokumen contoh.</p>
+    </button></h3><p>Before using the highlighter, ensure your collection is properly configured.</p>
+<p>The example below creates a collection that supports BM25 full text search and <code translate="no">TEXT_MATCH</code> queries, then inserts sample documents.</p>
 <p><details></p>
-<p><summary><strong>Siapkan koleksi Anda</strong></summary></p>
+<p><summary><strong>Prepare your collection</strong></summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
     DataType,
@@ -312,7 +312,7 @@ SEARCH_PARAMS = {<span class="hljs-string">&quot;metric_type&quot;</span>: <span
 <span class="hljs-comment"># ✓ Collection created with 4 documents</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-1-Highlight-search-terms-in-BM25-full-text-search" class="common-anchor-header">Contoh 1: Menyorot istilah pencarian dalam pencarian teks lengkap BM25<button data-href="#Example-1-Highlight-search-terms-in-BM25-full-text-search" class="anchor-icon" translate="no">
+<h3 id="Example-1-Highlight-search-terms-in-BM25-full-text-search" class="common-anchor-header">Example 1: Highlight search terms in BM25 full text search<button data-href="#Example-1-Highlight-search-terms-in-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -327,10 +327,10 @@ SEARCH_PARAMS = {<span class="hljs-string">&quot;metric_type&quot;</span>: <span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Contoh ini menunjukkan cara menyorot istilah pencarian dalam pencarian teks lengkap BM25.</p>
+    </button></h3><p>This example shows how to highlight search terms in BM25 full text search.</p>
 <ul>
-<li><p>Pencarian teks lengkap BM25 menggunakan <code translate="no">&quot;test&quot;</code> sebagai istilah pencarian</p></li>
-<li><p>Penyorot membungkus semua kemunculan "tes" dengan tag <code translate="no">{</code> dan <code translate="no">}</code> </p></li>
+<li><p>BM25 full text search uses <code translate="no">&quot;test&quot;</code> as the search term</p></li>
+<li><p>The highlighter wraps all occurrences of “test” with <code translate="no">{</code> and <code translate="no">}</code> tags</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -353,14 +353,14 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>Hasil yang diharapkan</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;{test} doc&#x27;]
 [&#x27;{test} doc&#x27;]
 [&#x27;{test} doc. Milvus is an open-source vector database built for GenAI applications.&#x27;]
 [&#x27;{test} doc. Milvus is an open-source vector database that suits AI applications of every size from run&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-2-Highlight-query-terms-in-filtering" class="common-anchor-header">Contoh 2: Menyorot istilah kueri dalam pemfilteran<button data-href="#Example-2-Highlight-query-terms-in-filtering" class="anchor-icon" translate="no">
+<h3 id="Example-2-Highlight-query-terms-in-filtering" class="common-anchor-header">Example 2: Highlight query terms in filtering<button data-href="#Example-2-Highlight-query-terms-in-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -375,11 +375,11 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Contoh ini menunjukkan cara menyorot istilah yang cocok dengan filter <code translate="no">TEXT_MATCH</code>.</p>
+    </button></h3><p>This example shows how to highlight terms matched by a <code translate="no">TEXT_MATCH</code> filter.</p>
 <ul>
-<li><p>Pencarian teks lengkap BM25 menggunakan <code translate="no">&quot;test&quot;</code> sebagai istilah kueri</p></li>
-<li><p>Parameter <code translate="no">queries</code> menambahkan <code translate="no">&quot;my doc&quot;</code> ke daftar sorotan</p></li>
-<li><p>Penyorot membungkus semua istilah yang cocok (<code translate="no">&quot;my&quot;</code>, <code translate="no">&quot;test&quot;</code>, <code translate="no">&quot;doc&quot;</code>) dengan <code translate="no">{</code> dan <code translate="no">}</code></p></li>
+<li><p>BM25 full text search uses <code translate="no">&quot;test&quot;</code> as the query term</p></li>
+<li><p>The <code translate="no">queries</code> parameter adds <code translate="no">&quot;my doc&quot;</code> to the highlight list</p></li>
+<li><p>The highlighter wraps all matched terms (<code translate="no">&quot;my&quot;</code>, <code translate="no">&quot;test&quot;</code>, <code translate="no">&quot;doc&quot;</code>) with <code translate="no">{</code> and <code translate="no">}</code></p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -405,14 +405,14 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>Keluaran yang diharapkan</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;{my} first {test} {doc}&#x27;]
 [&#x27;{my} second {test} {doc}&#x27;]
 [&#x27;{my} first {test} {doc}. Milvus is an open-source vector database built for GenAI applications.&#x27;]
 [&#x27;{my} second {test} {doc}. Milvus is an open-source vector database that suits AI applications of every siz&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-3-Return-highlights-as-fragments" class="common-anchor-header">Contoh 3: Mengembalikan sorotan sebagai fragmen<button data-href="#Example-3-Return-highlights-as-fragments" class="anchor-icon" translate="no">
+<h3 id="Example-3-Return-highlights-as-fragments" class="common-anchor-header">Example 3: Return highlights as fragments<button data-href="#Example-3-Return-highlights-as-fragments" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -427,11 +427,11 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dalam contoh ini, kueri mencari <code translate="no">&quot;Milvus&quot;</code> dan mengembalikan fragmen sorotan dalam pengaturan berikut:</p>
+    </button></h3><p>In this example, the query searches for <code translate="no">&quot;Milvus&quot;</code> and returns highlight fragments in the following settings:</p>
 <ul>
-<li><p><code translate="no">fragment_offset</code> menyimpan hingga 20 karakter sebelum rentang yang disorot pertama sebagai konteks utama (standarnya 0).</p></li>
-<li><p><code translate="no">fragment_size</code> membatasi setiap fragmen hingga sekitar 60 karakter (standarnya adalah 100).</p></li>
-<li><p><code translate="no">num_of_fragments</code> membatasi jumlah fragmen yang dikembalikan per nilai teks (standarnya adalah 5).</p></li>
+<li><p><code translate="no">fragment_offset</code> keeps up to 20 characters before the first highlighted span as leading context (default is 0).</p></li>
+<li><p><code translate="no">fragment_size</code> limits each fragment to approximately 60 characters (default is 100).</p></li>
+<li><p><code translate="no">num_of_fragments</code> limits the number of returned fragments per text value (default is 5).</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -457,12 +457,12 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>Keluaran yang diharapkan</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Doc 1: [&#x27;my first test doc. {Milvus} is an open-source vector database &#x27;]
 Doc 2: [&#x27;my second test doc. {Milvus} is an open-source vector database&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-4-Multi-query-highlighting" class="common-anchor-header">Contoh 4: Penyorotan beberapa kueri<button data-href="#Example-4-Multi-query-highlighting" class="anchor-icon" translate="no">
+<h3 id="Example-4-Multi-query-highlighting" class="common-anchor-header">Example 4: Multi-query highlighting<button data-href="#Example-4-Multi-query-highlighting" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -477,11 +477,11 @@ Doc 2: [&#x27;my second test doc. {Milvus} is an open-source vector database&#x2
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Saat mencari dengan beberapa kueri dalam pencarian teks lengkap BM25, setiap hasil kueri disorot secara terpisah. Hasil kueri pertama berisi sorotan untuk istilah pencariannya, dan hasil kueri kedua berisi sorotan untuk istilah pencariannya, dan seterusnya. Setiap kueri menggunakan konfigurasi <code translate="no">highlighter</code> yang sama tetapi menerapkannya secara independen.</p>
-<p>Pada contoh di bawah ini:</p>
+    </button></h3><p>When searching with multiple queries in BM25 full text search, each query’s results are highlighted independently. The first query’s results contain highlights for its search term, and the second query’s results contain highlights for its search term, and so on. Each query uses the same <code translate="no">highlighter</code> configuration but applies it independently.</p>
+<p>In the example below:</p>
 <ul>
-<li><p>Kueri pertama menyoroti <code translate="no">&quot;test&quot;</code> dalam kumpulan hasilnya</p></li>
-<li><p>Kueri kedua menyoroti <code translate="no">&quot;Milvus&quot;</code> dalam kumpulan hasilnya</p></li>
+<li><p>First query highlights <code translate="no">&quot;test&quot;</code> in its result set</p></li>
+<li><p>Second query highlights <code translate="no">&quot;Milvus&quot;</code> in its result set</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -507,7 +507,7 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>Keluaran yang diharapkan</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Query &#x27;test&#x27;:
   [&#x27;{test} doc&#x27;]
   [&#x27;{test} doc&#x27;]
@@ -516,7 +516,7 @@ Query &#x27;Milvus&#x27;:
   [&#x27;{Milvus} is an open-source vector database that suits AI applications of every size from running a dem&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-5-Custom-HTML-tags" class="common-anchor-header">Contoh 5: Tag HTML khusus<button data-href="#Example-5-Custom-HTML-tags" class="anchor-icon" translate="no">
+<h3 id="Example-5-Custom-HTML-tags" class="common-anchor-header">Example 5: Custom HTML tags<button data-href="#Example-5-Custom-HTML-tags" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -531,7 +531,7 @@ Query &#x27;Milvus&#x27;:
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Anda dapat menggunakan tag apa pun untuk penyorotan, seperti tag HTML yang aman untuk UI web. Hal ini berguna saat merender hasil penelusuran di browser.</p>
+    </button></h3><p>You can use any tags for highlighting, such as HTML-safe tags for web UIs. This is useful when rendering search results in a browser.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;&lt;mark&gt;&quot;</span>],</span>
 <span class="highlighted-comment-line">    post_tags=[<span class="hljs-string">&quot;&lt;/mark&gt;&quot;</span>],</span>
@@ -553,7 +553,7 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>Keluaran yang diharapkan</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;&lt;mark&gt;test&lt;/mark&gt; doc&#x27;]
 [&#x27;&lt;mark&gt;test&lt;/mark&gt; doc&#x27;]
 <button class="copy-code-btn"></button></code></pre>

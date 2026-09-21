@@ -1,14 +1,14 @@
 ---
 id: json-indexing.md
-title: فهرسة JSON
+title: JSON Indexing
 summary: >-
-  توفر حقول JSON طريقة مرنة لتخزين البيانات الوصفية المنظمة في Milvus. وبدون
-  الفهرسة، تتطلب الاستعلامات على حقول JSON إجراء عمليات مسح كاملة للمجموعة، وهو
-  ما يؤدي إلى إبطاء الأداء مع نمو مجموعة البيانات الخاصة بك. تعمل فهرسة JSON على
-  إنشاء فهارس لمسارات محددة داخل بيانات JSON الخاصة بك، بحيث يتم تنفيذ استعلامات
-  المساواة والنطاق واستعلامات التصفية الأخرى على تلك المسارات بسرعة.
+  JSON fields provide a flexible way to store structured metadata in Milvus.
+  Without indexing, queries on JSON fields require full collection scans, which
+  become slow as your dataset grows. JSON indexing creates indexes on specific
+  paths within your JSON data so equality, range, and other filter queries on
+  those paths run fast.
 ---
-<h1 id="JSON-Indexing" class="common-anchor-header">فهرسة JSON<button data-href="#JSON-Indexing" class="anchor-icon" translate="no">
+<h1 id="JSON-Indexing" class="common-anchor-header">JSON Indexing<button data-href="#JSON-Indexing" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,15 +23,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>توفر حقول JSON طريقة مرنة لتخزين البيانات الوصفية المنظمة في Milvus. بدون الفهرسة، تتطلب الاستعلامات على حقول JSON إجراء عمليات مسح كاملة للمجموعة، مما يؤدي إلى بطء الأداء مع نمو مجموعة البيانات الخاصة بك. تعمل فهرسة JSON على إنشاء فهرس على مسار محدد داخل بيانات JSON الخاصة بك، بحيث يتم تنفيذ استعلامات المساواة والنطاق واستعلامات التصفية الأخرى على هذا المسار بسرعة.</p>
-<p>تعد فهرسة JSON مثالية لما يلي:</p>
+    </button></h1><p>JSON fields provide a flexible way to store structured metadata in Milvus. Without indexing, queries on JSON fields require full collection scans, which become slow as your dataset grows. JSON indexing creates an index on a specific path within your JSON data so equality, range, and other filter queries on that path run fast.</p>
+<p>JSON indexing is ideal for:</p>
 <ul>
-<li><p>المخططات المنظمة ذات المفاتيح الثابتة والمعروفة</p></li>
-<li><p>استعلامات المساواة و <code translate="no">IN</code> والنطاق ومطابقة النص على مسارات JSON محددة</p></li>
-<li><p>السيناريوهات التي تحتاج فيها إلى تحكم دقيق في المفاتيح التي يتم فهرستها</p></li>
+<li><p>Structured schemas with consistent, known keys</p></li>
+<li><p>Equality, <code translate="no">IN</code>, range, and text-match queries on specific JSON paths</p></li>
+<li><p>Scenarios where you need precise control over which keys are indexed</p></li>
 </ul>
-<p>بالنسبة لمستندات JSON المعقدة ذات أنماط الاستعلام المتنوعة، ضع في اعتبارك استخدام <a href="/docs/ar/json-shredding.md">تقطيع JSON</a> كبديل.</p>
-<h2 id="Index-type-overview" class="common-anchor-header">نظرة عامة على أنواع الفهرسة<button data-href="#Index-type-overview" class="anchor-icon" translate="no">
+<p>For complex JSON documents with diverse query patterns, consider <a href="/docs/ar/json-shredding.md">JSON Shredding</a> as an alternative.</p>
+<h2 id="Index-type-overview" class="common-anchor-header">Index type overview<button data-href="#Index-type-overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -46,9 +46,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يقدم Milvus أربعة أنواع من الفهارس لمسارات JSON. كل منها مناسب لنمط استعلام مختلف.</p>
-<p>قبل اختيار نوع الفهرس، حدد <strong>نوع التحويل</strong> لمسار JSON. يحدد نوع التحويل كيفية تفسير Milvus للقيمة في ذلك المسار وأنواع الفهارس المتاحة.</p>
-<h3 id="Understand-cast-types" class="common-anchor-header">فهم أنواع التحويل<button data-href="#Understand-cast-types" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus offers four index types for JSON paths. Each is suited to a different query pattern.</p>
+<p>Before choosing an index type, identify the <strong>cast type</strong> for the JSON path. The cast type determines how Milvus interprets the value at that path and which index types are available.</p>
+<h3 id="Understand-cast-types" class="common-anchor-header">Understand cast types<button data-href="#Understand-cast-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -63,24 +63,24 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">json_cast_type</code> هو نوع البيانات المستخدم لتفسير وفهرسة القيمة الموجودة في <code translate="no">json_path</code>. وهو يختلف عن نوع مخطط الحقل: يظل الحقل حقلًا من نوع « <code translate="no">JSON</code> »، ولكن يتم التعامل مع كل مسار مفهرس على أنه نوع محدد من القيم العددية أو المصفوفات أو كائنات JSON.</p>
-<p>اختر نوع التحويل الذي يتطابق مع القيم المخزنة في المسار. للتحقق مما إذا كان نوع التحويل يعمل مع نوع فهرس معين، راجع <a href="/docs/ar/json-indexing.md#compatibility-reference">مرجع التوافق</a>.</p>
+    </button></h3><p><code translate="no">json_cast_type</code> is the data type used to interpret and index the value at <code translate="no">json_path</code>. It is different from the field schema type: the field is still a <code translate="no">JSON</code> field, but each indexed path is treated as a specific scalar, array, or JSON object type.</p>
+<p>Choose the cast type that matches the values stored at the path. To check whether a cast type works with a specific index type, see <a href="/docs/ar/json-indexing.md#compatibility-reference">Compatibility reference</a>.</p>
 <table>
 <thead>
-<tr><th>نوع التحويل</th><th>استخدمه عندما تكون قيمة المسار...</th><th>قيمة مثال</th></tr>
+<tr><th>Cast type</th><th>Use when the path value is…</th><th>Example value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code></td><td>قيمة منطقية</td><td><code translate="no">true</code></td></tr>
-<tr><td><code translate="no">DOUBLE</code></td><td>قيمة عددية</td><td><code translate="no">99.99</code></td></tr>
-<tr><td><code translate="no">VARCHAR</code></td><td>قيمة سلسلة</td><td><code translate="no">&quot;electronics&quot;</code></td></tr>
-<tr><td><code translate="no">ARRAY_BOOL</code></td><td>مصفوفة من القيم المنطقية</td><td><code translate="no">[true, false]</code></td></tr>
-<tr><td><code translate="no">ARRAY_DOUBLE</code></td><td>مصفوفة من القيم العددية</td><td><code translate="no">[1.2, 3.14]</code></td></tr>
-<tr><td><code translate="no">ARRAY_VARCHAR</code></td><td>مصفوفة من القيم النصية</td><td><code translate="no">[&quot;tag1&quot;, &quot;tag2&quot;]</code></td></tr>
-<tr><td><code translate="no">JSON</code></td><td>كائن JSON كامل أو كائن فرعي. تم إهمال فهرسة كائنات JSON الكاملة بدءًا من الإصدار Milvus 3.0.0.</td><td><code translate="no">{&quot;supplier&quot;: {&quot;country&quot;: &quot;USA&quot;}}</code></td></tr>
+<tr><td><code translate="no">BOOL</code></td><td>A Boolean value</td><td><code translate="no">true</code></td></tr>
+<tr><td><code translate="no">DOUBLE</code></td><td>A numeric value</td><td><code translate="no">99.99</code></td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td>A string value</td><td><code translate="no">&quot;electronics&quot;</code></td></tr>
+<tr><td><code translate="no">ARRAY_BOOL</code></td><td>An array of Boolean values</td><td><code translate="no">[true, false]</code></td></tr>
+<tr><td><code translate="no">ARRAY_DOUBLE</code></td><td>An array of numeric values</td><td><code translate="no">[1.2, 3.14]</code></td></tr>
+<tr><td><code translate="no">ARRAY_VARCHAR</code></td><td>An array of string values</td><td><code translate="no">[&quot;tag1&quot;, &quot;tag2&quot;]</code></td></tr>
+<tr><td><code translate="no">JSON</code></td><td>An entire JSON object or sub-object. Whole-object JSON indexing is deprecated starting in Milvus 3.0.0.</td><td><code translate="no">{&quot;supplier&quot;: {&quot;country&quot;: &quot;USA&quot;}}</code></td></tr>
 </tbody>
 </table>
-<p>إذا كانت القيم الموجودة في نفس المسار ذات أنواع غير متسقة، فسيتم فهرسة القيم التي تتطابق مع نوع التحويل فقط. على سبيل المثال، إذا كان <code translate="no">metadata[&quot;price&quot;]</code> يحتوي على كل من <code translate="no">99.99</code> و <code translate="no">&quot;99.99&quot;</code> ، فإن الفهرس من نوع التحويل <code translate="no">DOUBLE</code> يتضمن القيمة الرقمية ويتخطى القيمة النصية. لتحويل القيم النصية أثناء الفهرسة، استخدم <code translate="no">json_cast_function</code> ؛ انظر <a href="/docs/ar/json-indexing.md#example-5-convert-data-type-at-index-time">المثال 5: تحويل نوع البيانات في وقت الفهرسة</a>.</p>
-<h3 id="Choose-an-index-type" class="common-anchor-header">اختر نوع الفهرس<button data-href="#Choose-an-index-type" class="anchor-icon" translate="no">
+<p>If values at the same path have inconsistent types, only values that match the cast type are indexed. For example, if <code translate="no">metadata[&quot;price&quot;]</code> contains both <code translate="no">99.99</code> and <code translate="no">&quot;99.99&quot;</code>, an index of the <code translate="no">DOUBLE</code> cast type includes the numeric value and skips the string value. To convert string values during indexing, use <code translate="no">json_cast_function</code>; see <a href="/docs/ar/json-indexing.md#example-5-convert-data-type-at-index-time">Example 5: Convert data type at index time</a>.</p>
+<h3 id="Choose-an-index-type" class="common-anchor-header">Choose an index type<button data-href="#Choose-an-index-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,20 +95,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بعد اختيار نوع التحويل، اختر نوع الفهرس وفقًا لنمط الاستعلام الخاص بك.</p>
+    </button></h3><p>After you choose a cast type, choose the index type according to your query pattern.</p>
 <table>
 <thead>
-<tr><th>نمط الاستعلام</th><th>نوع الفهرس الموصى به</th><th>متطلبات نوع التحويل</th><th>ملاحظات</th></tr>
+<tr><th>Query pattern</th><th>Recommended index type</th><th>Cast type requirement</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td>مرشحات المساواة والنطاق المختلطة على القيم العددية</td><td><code translate="no">AUTOINDEX</code></td><td>استخدم <code translate="no">BOOL</code> أو <code translate="no">DOUBLE</code> أو <code translate="no">VARCHAR</code>.</td><td>دع Milvus يختار تخطيط الفهرس الداخلي بناءً على عدد القيم.</td></tr>
-<tr><td>مرشحات على القيم داخل مصفوفات JSON</td><td><code translate="no">INVERTED</code></td><td>استخدم <code translate="no">ARRAY_BOOL</code> أو <code translate="no">ARRAY_DOUBLE</code> أو <code translate="no">ARRAY_VARCHAR</code>.</td><td>مطلوب لجميع أنواع تحويل المصفوفات.</td></tr>
-<tr><td>فهرسة الكائن بأكمله أو جزء منه (مهملة)</td><td><code translate="no">INVERTED</code> أو <code translate="no">AUTOINDEX</code> (للتوافق فقط)</td><td>استخدم <code translate="no">JSON</code>.</td><td>مدعوم لأغراض التوافق. بالنسبة لأحمال العمل الجديدة، قم بإنشاء فهارس خاصة بالمسار أو ضع في اعتبارك <a href="/docs/ar/json-shredding.md">تقطيع JSON</a>.</td></tr>
-<tr><td>مرشحات النطاق للأرقام أو السلاسل القابلة للفرز</td><td><code translate="no">STL_SORT</code> أو <code translate="no">AUTOINDEX</code></td><td>استخدم <code translate="no">DOUBLE</code> أو <code translate="no">VARCHAR</code>.</td><td>استخدم <code translate="no">STL_SORT</code> لفرض تخطيط مرتب؛ واستخدم <code translate="no">AUTOINDEX</code> عندما تريد التحديد التلقائي.</td></tr>
-<tr><td>مرشحات المساواة أو <code translate="no">IN</code> للقيم ذات الكاردينالية المنخفضة</td><td><code translate="no">BITMAP</code> أو <code translate="no">AUTOINDEX</code></td><td>استخدم <code translate="no">BOOL</code> أو <code translate="no">VARCHAR</code>.</td><td>استخدم <code translate="no">BITMAP</code> لفرض تخطيط الصورة النقطية. بالنسبة للقيم الرقمية، استخدم <code translate="no">AUTOINDEX</code> أو <code translate="no">STL_SORT</code>.</td></tr>
+<tr><td>Mixed equality and range filters on scalar values</td><td><code translate="no">AUTOINDEX</code></td><td>Use <code translate="no">BOOL</code>, <code translate="no">DOUBLE</code>, or <code translate="no">VARCHAR</code>.</td><td>Lets Milvus choose the internal index layout based on value cardinality.</td></tr>
+<tr><td>Filters on values inside JSON arrays</td><td><code translate="no">INVERTED</code></td><td>Use <code translate="no">ARRAY_BOOL</code>, <code translate="no">ARRAY_DOUBLE</code>, or <code translate="no">ARRAY_VARCHAR</code>.</td><td>Required for all array cast types.</td></tr>
+<tr><td>Whole-object or sub-object indexing (deprecated)</td><td><code translate="no">INVERTED</code> or <code translate="no">AUTOINDEX</code> (compatibility only)</td><td>Use <code translate="no">JSON</code>.</td><td>Supported for compatibility. For new workloads, create path-specific indexes or consider <a href="/docs/ar/json-shredding.md">JSON Shredding</a>.</td></tr>
+<tr><td>Range filters on numbers or sortable strings</td><td><code translate="no">STL_SORT</code> or <code translate="no">AUTOINDEX</code></td><td>Use <code translate="no">DOUBLE</code> or <code translate="no">VARCHAR</code>.</td><td>Use <code translate="no">STL_SORT</code> to force a sorted layout; use <code translate="no">AUTOINDEX</code> when you want automatic selection.</td></tr>
+<tr><td>Equality or <code translate="no">IN</code> filters on low-cardinality values</td><td><code translate="no">BITMAP</code> or <code translate="no">AUTOINDEX</code></td><td>Use <code translate="no">BOOL</code> or <code translate="no">VARCHAR</code>.</td><td>Use <code translate="no">BITMAP</code> to force a bitmap layout. For numeric values, use <code translate="no">AUTOINDEX</code> or <code translate="no">STL_SORT</code>.</td></tr>
 </tbody>
 </table>
-<p>في حالة الشك، ابدأ باستخدام <code translate="no">AUTOINDEX</code> للمسارات القياسية. استخدم <code translate="no">INVERTED</code> بشكل صريح لأنواع التحويل إلى المصفوفات واستعلامات مطابقة النص. لا يزال فهرسة JSON للكائن بأكمله باستخدام <code translate="no">INVERTED</code> أو <code translate="no">AUTOINDEX</code> مدعومة، ولكنها أصبحت مهملة بدءًا من Milvus 3.0.0.</p>
+<p>When in doubt, start with <code translate="no">AUTOINDEX</code> for scalar paths. Use <code translate="no">INVERTED</code> explicitly for array cast types and text-match queries. Whole-object JSON indexing with either <code translate="no">INVERTED</code> or <code translate="no">AUTOINDEX</code> remains supported, but it is deprecated starting in Milvus 3.0.0.</p>
 <h3 id="AUTOINDEX" class="common-anchor-header">AUTOINDEX<button data-href="#AUTOINDEX" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -124,28 +124,28 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">AUTOINDEX</code> يعتمد على <code translate="no">json_cast_type</code> الذي تحدده. في Milvus 3.0، لم يعد <code translate="no">AUTOINDEX</code> يُحل دائمًا إلى <code translate="no">INVERTED</code> لفهارس مسارات JSON.</p>
+    </button></h3><p><code translate="no">AUTOINDEX</code> behavior depends on the <code translate="no">json_cast_type</code> you specify. In Milvus 3.0, <code translate="no">AUTOINDEX</code> no longer always resolves to <code translate="no">INVERTED</code> for JSON path indexes.</p>
 <table>
 <thead>
-<tr><th>نوع التحويل</th><th><code translate="no">AUTOINDEX</code> السلوك</th></tr>
+<tr><th>Cast type</th><th><code translate="no">AUTOINDEX</code> behavior</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code>، <code translate="no">DOUBLE</code> ، <code translate="no">VARCHAR</code></td><td>يختار بين <code translate="no">BITMAP</code> و <code translate="no">STL_SORT</code> بناءً على عدد قيم العنصر.</td></tr>
-<tr><td><code translate="no">ARRAY_BOOL</code>، <code translate="no">ARRAY_DOUBLE</code> ، <code translate="no">ARRAY_VARCHAR</code></td><td>غير مدعوم. استخدم <code translate="no">INVERTED</code> صراحةً كنوع الفهرس.</td></tr>
-<tr><td><code translate="no">JSON</code></td><td>يستخدم <code translate="no">INVERTED</code> لفهرسة الكائن بأكمله أو الكائنات الفرعية. تم إهمال هذا الوضع بدءًا من Milvus 3.0.0.</td></tr>
+<tr><td><code translate="no">BOOL</code>, <code translate="no">DOUBLE</code>, <code translate="no">VARCHAR</code></td><td>Chooses between <code translate="no">BITMAP</code> and <code translate="no">STL_SORT</code> based on value cardinality.</td></tr>
+<tr><td><code translate="no">ARRAY_BOOL</code>, <code translate="no">ARRAY_DOUBLE</code>, <code translate="no">ARRAY_VARCHAR</code></td><td>Not supported. Use <code translate="no">INVERTED</code> explicitly as the index type.</td></tr>
+<tr><td><code translate="no">JSON</code></td><td>Uses <code translate="no">INVERTED</code> for whole-object or sub-object indexing. This mode is deprecated starting in Milvus 3.0.0.</td></tr>
 </tbody>
 </table>
-<p>بالنسبة لأنواع التحويل القياسية (<code translate="no">BOOL</code> و <code translate="no">DOUBLE</code> و <code translate="no">VARCHAR</code>)، يُعد « <code translate="no">AUTOINDEX</code> » نقطة البداية الموصى بها عندما تريد أن يختار Milvus تخطيط الفهرس الداخلي. أثناء إنشاء الفهرس، يقيس Milvus <strong>عدد</strong> القيم في مسار JSON. ويشير <strong>«عدد القيم</strong> » إلى عدد القيم المتميزة في ذلك المسار.</p>
-<p>بناءً على الكاردينالية، يختار Milvus أحد التخطيطين الداخليين التاليين:</p>
+<p>For scalar cast types (<code translate="no">BOOL</code>, <code translate="no">DOUBLE</code>, and <code translate="no">VARCHAR</code>), <code translate="no">AUTOINDEX</code> is the recommended starting point when you want Milvus to choose the internal index layout. During index build, Milvus measures the <strong>cardinality</strong> of the values at the JSON path. Cardinality means the number of distinct values at that path.</p>
+<p>Based on cardinality, Milvus chooses one of two internal layouts:</p>
 <ul>
-<li><p><strong>عدد القيم المنخفض</strong>: تتكرر القيم كثيرًا، مثل <code translate="no">metadata[&quot;in_stock&quot;]</code> مع <code translate="no">true</code> و <code translate="no">false</code> ، أو <code translate="no">metadata[&quot;status&quot;]</code> مع مجموعة صغيرة من سلاسل الحالة. يقوم Milvus بإنشاء فهرس <code translate="no">BITMAP</code> داخليًّا لتسريع عمليات المقارنة (equality) وعمليات التصفية ( <code translate="no">IN</code> ).</p></li>
-<li><p><strong>عدد كبير من القيم</strong>: معظم القيم متمايزة، مثل <code translate="no">metadata[&quot;price&quot;]</code> و <code translate="no">metadata[&quot;created_at&quot;]</code> و <code translate="no">metadata[&quot;product_id&quot;]</code>. يقوم Milvus بإنشاء فهرس <code translate="no">STL_SORT</code> داخليًا لتسريع عمليات التصفية حسب النطاق مثل <code translate="no">&gt;</code> و <code translate="no">&lt;</code> و <code translate="no">&gt;=</code> و <code translate="no">&lt;=</code>.</p></li>
+<li><p><strong>Low cardinality</strong>: Values repeat often, such as <code translate="no">metadata[&quot;in_stock&quot;]</code> with <code translate="no">true</code> and <code translate="no">false</code>, or <code translate="no">metadata[&quot;status&quot;]</code> with a small set of status strings. Milvus builds a <code translate="no">BITMAP</code> index internally for fast equality and <code translate="no">IN</code> filters.</p></li>
+<li><p><strong>High cardinality</strong>: Most values are distinct, such as <code translate="no">metadata[&quot;price&quot;]</code>, <code translate="no">metadata[&quot;created_at&quot;]</code>, or <code translate="no">metadata[&quot;product_id&quot;]</code>. Milvus builds an <code translate="no">STL_SORT</code> index internally for fast range filters such as <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, and <code translate="no">&lt;=</code>.</p></li>
 </ul>
-<p>العتبة الافتراضية لـ <code translate="no">BITMAP</code> مقابل<code translate="no">STL_SORT</code> هي <strong>100 قيمة مميزة</strong>. يمكنك ضبط هذه العتبة باستخدام <code translate="no">bitmap_cardinality_limit</code> ؛ انظر <a href="/docs/ar/json-indexing.md#how-do-i-tune-autoindexs-bitmap-vs-stl-sort-threshold">كيف يمكنني ضبط عتبة BITMAP مقابل STL_SORT في AUTOINDEX؟</a>.</p>
+<p>The default <code translate="no">BITMAP</code>-vs-<code translate="no">STL_SORT</code> threshold is <strong>100 distinct values</strong>. You can tune this threshold with <code translate="no">bitmap_cardinality_limit</code>; see <a href="/docs/ar/json-indexing.md#how-do-i-tune-autoindexs-bitmap-vs-stl-sort-threshold">How do I tune AUTOINDEX’s BITMAP-vs-STL_SORT threshold?</a>.</p>
 <div class="alert note">
-<p><strong>تغيير في السلوك في Milvus 3.0</strong>. في الإصدارات السابقة، كان <code translate="no">AUTOINDEX</code> على مسارات JSON ينشئ دائمًا فهرس <code translate="no">INVERTED</code>. بدءًا من Milvus 3.0، يختار <code translate="no">AUTOINDEX</code> بين <code translate="no">BITMAP</code> و <code translate="no">STL_SORT</code> لأنواع التحويل القياسية. بالنسبة لـ <code translate="no">JSON</code> ، لا يزال <code translate="no">AUTOINDEX</code> يستخدم <code translate="no">INVERTED</code> ، على الرغم من أن فهرسة JSON للكائن بأكمله أصبحت مهملة. بالنسبة لأنواع التحويل المصفوفية واستعلامات مطابقة النص، حدد <code translate="no">INVERTED</code> صراحةً.</p>
+<p><strong>Behavior change in Milvus 3.0</strong>. In earlier versions, <code translate="no">AUTOINDEX</code> on JSON paths always built an <code translate="no">INVERTED</code> index. From Milvus 3.0, <code translate="no">AUTOINDEX</code> picks between <code translate="no">BITMAP</code> and <code translate="no">STL_SORT</code> for scalar cast types. For <code translate="no">JSON</code>, <code translate="no">AUTOINDEX</code> still uses <code translate="no">INVERTED</code>, although whole-object JSON indexing is deprecated. For array cast types and text-match queries, specify <code translate="no">INVERTED</code> explicitly.</p>
 </div>
-<h3 id="INVERTED" class="common-anchor-header">يُعد الخيار<button data-href="#INVERTED" class="anchor-icon" translate="no">
+<h3 id="INVERTED" class="common-anchor-header">INVERTED<button data-href="#INVERTED" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,15 +160,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">INVERTED</code> هي الخيار الأنسب عندما تحتاج إلى استعلامات مطابقة النص أو فهرسة المصفوفات. كما أنها تظل متاحة لفهرسة JSON للكائنات بأكملها التي تم إهمالها.</p>
-<p>حدد <code translate="no">INVERTED</code> بشكل صريح في الحالات التالية:</p>
+    </button></h3><p><code translate="no">INVERTED</code> is the best fit when you need text-match queries or array indexing. It also remains available for deprecated whole-object JSON indexing.</p>
+<p>Specify <code translate="no">INVERTED</code> explicitly when:</p>
 <ul>
-<li><p>تحتاج إلى فهرسة القيم داخل مصفوفات JSON.</p></li>
-<li><p>تقوم بصيانة فهرس موجود على كائن JSON كامل أو كائن فرعي وترغب في جعل سلوك " <code translate="no">INVERTED</code> " صريحًا.</p></li>
-<li><p>ترغب في نوع فهرس واحد يتعامل مع استعلامات المساواة و <code translate="no">IN</code> والنطاق ومطابقة النص والمصفوفات. يظل دعم الكائن بأكمله متاحًا للتوافق، على حساب حجم فهرس أكبر.</p></li>
+<li><p>You need to index values inside JSON arrays.</p></li>
+<li><p>You maintain an existing index on an entire JSON object or sub-object and want to make the <code translate="no">INVERTED</code> behavior explicit.</p></li>
+<li><p>You want one index type that handles equality, <code translate="no">IN</code>, range, text-match, and array queries. Whole-object support remains available for compatibility, at the cost of a larger index size.</p></li>
 </ul>
-<p>بالنسبة للفهارس الموجودة على كائنات JSON بأكملها (<code translate="no">json_cast_type=&quot;JSON&quot;</code>)، يمكنك الاستمرار في استخدام إما <code translate="no">INVERTED</code> أو <code translate="no">AUTOINDEX</code>. يستخدم <code translate="no">AUTOINDEX</code> <code translate="no">INVERTED</code> لهذا النوع من التحويل. لم يعد يُنصح بفهرسة JSON للكائن بأكمله لأحمال العمل الجديدة.</p>
-<p>للحصول على التفاصيل، راجع <a href="/docs/ar/inverted.md">INVERTED</a>.</p>
+<p>For existing indexes on entire JSON objects (<code translate="no">json_cast_type=&quot;JSON&quot;</code>), you can continue to use either <code translate="no">INVERTED</code> or <code translate="no">AUTOINDEX</code>. <code translate="no">AUTOINDEX</code> uses <code translate="no">INVERTED</code> for this cast type. Whole-object JSON indexing is no longer recommended for new workloads.</p>
+<p>For details, refer to <a href="/docs/ar/inverted.md">INVERTED</a>.</p>
 <h3 id="STLSORT" class="common-anchor-header">STL_SORT<button data-href="#STLSORT" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -184,15 +184,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">STL_SORT</code> يخزن القيم من مسار JSON بترتيب مرتب. وقد تم تحسينه لمرشحات النطاق على القيم الرقمية أو قيم السلاسل القابلة للفرز.</p>
-<p><code translate="no">STL_SORT</code> يدعم فقط أنواع التحويل <code translate="no">DOUBLE</code> و <code translate="no">VARCHAR</code>. استخدمه في الحالات التالية:</p>
+    </button></h3><p><code translate="no">STL_SORT</code> stores values from a JSON path in sorted order. It is optimized for range filters on numeric values or sortable string values.</p>
+<p><code translate="no">STL_SORT</code> supports only <code translate="no">DOUBLE</code> and <code translate="no">VARCHAR</code> cast types. Use it when:</p>
 <ul>
-<li><p>تقوم عوامل التصفية الخاصة بك بمقارنة القيم باستخدام <code translate="no">&gt;</code> أو <code translate="no">&lt;</code> أو <code translate="no">&gt;=</code> أو <code translate="no">&lt;=</code>.</p></li>
-<li><p>تتميز القيم المفهرسة بعدد كبير من العناصر، مثل الأسعار أو الطوابع الزمنية أو معرّفات الهوية أو الرموز القابلة للفرز.</p></li>
-<li><p>ترغب في فرض تخطيط مرتب بدلاً من ترك الاختيار لـ <code translate="no">AUTOINDEX</code>.</p></li>
+<li><p>Your filters compare values with <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, or <code translate="no">&lt;=</code>.</p></li>
+<li><p>The indexed values have high cardinality, such as prices, timestamps, IDs, or sortable codes.</p></li>
+<li><p>You want to force a sorted layout instead of letting <code translate="no">AUTOINDEX</code> choose.</p></li>
 </ul>
-<p><code translate="no">STL_SORT</code> لا يدعم أنواع التحويل <code translate="no">BOOL</code> أو <code translate="no">ARRAY_*</code> أو <code translate="no">JSON</code>. استخدم <code translate="no">INVERTED</code> للمصفوفات. يمكن أن تستمر الفهارس الحالية للكائنات بأكملها في استخدام <code translate="no">INVERTED</code> أو <code translate="no">AUTOINDEX</code> ، ولكن فهرسة JSON للكائنات بأكملها أصبحت قديمة.</p>
-<p>للحصول على التفاصيل، راجع <a href="/docs/ar/stl-sort.md">STL_SORT</a>.</p>
+<p><code translate="no">STL_SORT</code> does not support <code translate="no">BOOL</code>, <code translate="no">ARRAY_*</code>, or <code translate="no">JSON</code> cast types. Use <code translate="no">INVERTED</code> for arrays. Existing whole-object indexes can continue to use <code translate="no">INVERTED</code> or <code translate="no">AUTOINDEX</code>, but whole-object JSON indexing is deprecated.</p>
+<p>For details, refer to <a href="/docs/ar/stl-sort.md">STL_SORT</a>.</p>
 <h3 id="BITMAP" class="common-anchor-header">BITMAP<button data-href="#BITMAP" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -208,16 +208,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">BITMAP</code> يُنشئ صورة نقطية مدمجة لكل قيمة مميزة في مسار JSON. وقد تم تحسينه لعمليات التصفية على أساس المساواة و <code translate="no">IN</code> للقيم التي تتكرر كثيرًا.</p>
-<p><code translate="no">BITMAP</code> يدعم فقط أنواع التحويل <code translate="no">BOOL</code> و <code translate="no">VARCHAR</code>. استخدمه عندما:</p>
+    </button></h3><p><code translate="no">BITMAP</code> creates a compact bitmap for each distinct value at a JSON path. It is optimized for equality and <code translate="no">IN</code> filters on values that repeat often.</p>
+<p><code translate="no">BITMAP</code> supports only <code translate="no">BOOL</code> and <code translate="no">VARCHAR</code> cast types. Use it when:</p>
 <ul>
-<li><p>تستخدم عوامل التصفية الخاصة بك <code translate="no">==</code> أو <code translate="no">IN</code>.</p></li>
-<li><p>تتميز القيم المفهرسة بعدد قليل من القيم، مثل القيم المنطقية أو قيم الحالة أو مجموعة صغيرة من الفئات.</p></li>
-<li><p>ترغب في فرض تخطيط صورة نقطية بدلاً من ترك الاختيار لـ <code translate="no">AUTOINDEX</code>.</p></li>
+<li><p>Your filters use <code translate="no">==</code> or <code translate="no">IN</code>.</p></li>
+<li><p>The indexed values have low cardinality, such as booleans, status values, or a small set of categories.</p></li>
+<li><p>You want to force a bitmap layout instead of letting <code translate="no">AUTOINDEX</code> choose.</p></li>
 </ul>
-<p><code translate="no">BITMAP</code> لا يدعم أنواع التحويل <code translate="no">DOUBLE</code> أو <code translate="no">ARRAY_*</code> أو <code translate="no">JSON</code>. بالنسبة للقيم الرقمية، استخدم بدلاً من ذلك <code translate="no">AUTOINDEX</code> أو <code translate="no">STL_SORT</code> أو <code translate="no">INVERTED</code>.</p>
-<p>للحصول على التفاصيل، راجع <a href="/docs/ar/bitmap.md">BITMAP</a>.</p>
-<h3 id="Compatibility-reference" class="common-anchor-header">مرجع التوافق<button data-href="#Compatibility-reference" class="anchor-icon" translate="no">
+<p><code translate="no">BITMAP</code> does not support <code translate="no">DOUBLE</code>, <code translate="no">ARRAY_*</code>, or <code translate="no">JSON</code> cast types. For numeric values, use <code translate="no">AUTOINDEX</code>, <code translate="no">STL_SORT</code>, or <code translate="no">INVERTED</code> instead.</p>
+<p>For details, refer to <a href="/docs/ar/bitmap.md">BITMAP</a>.</p>
+<h3 id="Compatibility-reference" class="common-anchor-header">Compatibility reference<button data-href="#Compatibility-reference" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -232,23 +232,23 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>استخدم المصفوفة التالية كمرجع سريع لتركيبات <code translate="no">(cast type, index type)</code> المدعومة.</p>
+    </button></h3><p>Use the following matrix as a quick reference for supported <code translate="no">(cast type, index type)</code> combinations.</p>
 <table>
 <thead>
-<tr><th>تحويل النوع</th><th>الوصف</th><th>مثال على القيمة</th><th>AUTOINDEX</th><th>INVERTED</th><th>STL_SORT</th><th>BITMAP</th></tr>
+<tr><th>Cast type</th><th>Description</th><th>Example value</th><th>AUTOINDEX</th><th>INVERTED</th><th>STL_SORT</th><th>BITMAP</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code></td><td>القيم المنطقية (<code translate="no">true</code>/<code translate="no">false</code>).</td><td><code translate="no">true</code></td><td>نعم</td><td>نعم</td><td>لا</td><td>نعم</td></tr>
-<tr><td><code translate="no">DOUBLE</code></td><td>القيم العددية (أعداد صحيحة أو أعداد عائمة).</td><td><code translate="no">99.99</code></td><td>نعم</td><td>نعم</td><td>نعم</td><td>لا</td></tr>
-<tr><td><code translate="no">VARCHAR</code></td><td>القيم النصية.</td><td><code translate="no">&quot;electronics&quot;</code></td><td>نعم</td><td>نعم</td><td>نعم</td><td>نعم</td></tr>
-<tr><td><code translate="no">ARRAY_BOOL</code></td><td>مصفوفة من القيم المنطقية.</td><td><code translate="no">[true, false]</code></td><td>لا</td><td>نعم</td><td>لا</td><td>لا</td></tr>
-<tr><td><code translate="no">ARRAY_DOUBLE</code></td><td>مصفوفة من الأرقام.</td><td><code translate="no">[1.2, 3.14]</code></td><td>لا</td><td>نعم</td><td>لا</td><td>لا</td></tr>
-<tr><td><code translate="no">ARRAY_VARCHAR</code></td><td>مصفوفة من السلاسل.</td><td><code translate="no">[&quot;tag1&quot;, &quot;tag2&quot;]</code></td><td>لا</td><td>نعم</td><td>لا</td><td>لا</td></tr>
-<tr><td><code translate="no">JSON</code></td><td>كائن JSON كامل أو كائن فرعي مع الاستدلال التلقائي على النوع والتسطيح. تم إهماله بدءًا من Milvus 3.0.0.</td><td>أي كائن متداخل</td><td>نعم (مهمل)</td><td>نعم (مهمل)</td><td>لا</td><td>لا</td></tr>
+<tr><td><code translate="no">BOOL</code></td><td>Boolean values (<code translate="no">true</code>/<code translate="no">false</code>).</td><td><code translate="no">true</code></td><td>Yes</td><td>Yes</td><td>No</td><td>Yes</td></tr>
+<tr><td><code translate="no">DOUBLE</code></td><td>Numeric values (integers or floats).</td><td><code translate="no">99.99</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td>String values.</td><td><code translate="no">&quot;electronics&quot;</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code translate="no">ARRAY_BOOL</code></td><td>Array of booleans.</td><td><code translate="no">[true, false]</code></td><td>No</td><td>Yes</td><td>No</td><td>No</td></tr>
+<tr><td><code translate="no">ARRAY_DOUBLE</code></td><td>Array of numbers.</td><td><code translate="no">[1.2, 3.14]</code></td><td>No</td><td>Yes</td><td>No</td><td>No</td></tr>
+<tr><td><code translate="no">ARRAY_VARCHAR</code></td><td>Array of strings.</td><td><code translate="no">[&quot;tag1&quot;, &quot;tag2&quot;]</code></td><td>No</td><td>Yes</td><td>No</td><td>No</td></tr>
+<tr><td><code translate="no">JSON</code></td><td>An entire JSON object or sub-object with automatic type inference and flattening. Deprecated starting in Milvus 3.0.0.</td><td>any nested object</td><td>Yes (deprecated)</td><td>Yes (deprecated)</td><td>No</td><td>No</td></tr>
 </tbody>
 </table>
-<p>بالنسبة للخلايا التي تحمل علامة " <code translate="no">No</code>"، يرفض Milvus الطلب عند إنشاء الفهرس. بالنسبة لأنواع التحويل إلى مصفوفة، استخدم " <code translate="no">INVERTED</code> " بشكل صريح (لا يغطي "<code translate="no">AUTOINDEX</code> " المصفوفات).</p>
-<h2 id="Create-a-JSON-index" class="common-anchor-header">إنشاء فهرس JSON<button data-href="#Create-a-JSON-index" class="anchor-icon" translate="no">
+<p>For cells marked <code translate="no">No</code>, Milvus rejects the request at index-creation time. For array cast types, use <code translate="no">INVERTED</code> explicitly (<code translate="no">AUTOINDEX</code> does not cover arrays).</p>
+<h2 id="Create-a-JSON-index" class="common-anchor-header">Create a JSON index<button data-href="#Create-a-JSON-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -263,8 +263,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يشرح هذا القسم كيفية فهرسة أشكال مختلفة من بيانات JSON. تستخدم جميع الأمثلة البنية النموذجية أدناه وتفترض أن لديك بالفعل مجموعة تتضمن حقل <code translate="no">JSON</code> باسم <code translate="no">metadata</code>.</p>
-<h3 id="Sample-JSON-structure" class="common-anchor-header">هيكل JSON النموذجي<button data-href="#Sample-JSON-structure" class="anchor-icon" translate="no">
+    </button></h2><p>This section walks through indexing different shapes of JSON data. All examples use the sample structure below and assume you already have a collection that includes a <code translate="no">JSON</code> field named <code translate="no">metadata</code>.</p>
+<h3 id="Sample-JSON-structure" class="common-anchor-header">Sample JSON structure<button data-href="#Sample-JSON-structure" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -298,7 +298,7 @@ summary: >-
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Basic-setup" class="common-anchor-header">الإعداد الأساسي<button data-href="#Basic-setup" class="anchor-icon" translate="no">
+<h3 id="Basic-setup" class="common-anchor-header">Basic setup<button data-href="#Basic-setup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -313,9 +313,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>تفترض الأمثلة أدناه أن لديك <code translate="no">MilvusClient</code> باسم <code translate="no">client</code> متصل بنشر Milvus الخاص بك، ومجموعة تتضمن بالفعل حقل <code translate="no">JSON</code> باسم <code translate="no">metadata</code>. إذا كنت بحاجة إلى إعدادها من البداية، فقم بتوسيع المربع أدناه.</p>
+    </button></h3><p>The examples below assume you have a <code translate="no">MilvusClient</code> named <code translate="no">client</code> connected to your Milvus deployment, and a collection that already includes a <code translate="no">JSON</code> field named <code translate="no">metadata</code>. If you need to set those up from scratch, expand the block below.</p>
 <p><details></p>
-<p><summary>الاتصال وإنشاء مجموعة نموذجية</summary></p>
+<p><summary>Connect and create a sample collection</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -362,11 +362,11 @@ client.insert(
 )
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>قم بإعداد كائن index-params لجمع تعريفات الفهرس المضافة في الأمثلة أدناه:</p>
+<p>Prepare an index-params object to collect the index definitions added in the examples below:</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 <button class="copy-code-btn"></button></code></pre>
-<p>يُظهر كل مثال من الأمثلة التالية استدعاءً واحدًا لـ <code translate="no">index_params.add_index(...)</code>. اختر الاستدعاءات التي تتطابق مع بياناتك وقم باستدعائها على نفس كائن <code translate="no">index_params</code>. ثم قم بتطبيق كل شيء في استدعاء واحد لـ <code translate="no">client.create_index(...)</code> في النهاية. لمزيد من التفاصيل، راجع <a href="/docs/ar/json-indexing.md#apply-the-index">تطبيق الفهرس</a>.</p>
-<h3 id="Example-1-Index-a-top-level-key-with-AUTOINDEX" class="common-anchor-header">المثال 1: فهرسة مفتاح من المستوى الأعلى باستخدام AUTOINDEX<button data-href="#Example-1-Index-a-top-level-key-with-AUTOINDEX" class="anchor-icon" translate="no">
+<p>Each example that follows shows one <code translate="no">index_params.add_index(...)</code> call. Pick the ones that match your data and call them on the same <code translate="no">index_params</code> object. Then apply everything in a single <code translate="no">client.create_index(...)</code> call at the end. For details, see <a href="/docs/ar/json-indexing.md#apply-the-index">Apply the index</a>.</p>
+<h3 id="Example-1-Index-a-top-level-key-with-AUTOINDEX" class="common-anchor-header">Example 1: Index a top-level key with AUTOINDEX<button data-href="#Example-1-Index-a-top-level-key-with-AUTOINDEX" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -381,7 +381,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>قم بفهرسة حقل <code translate="no">category</code> للتصفية السريعة حسب فئة المنتج. باستخدام <code translate="no">AUTOINDEX</code> ، يختار Milvus بين <code translate="no">BITMAP</code> أو <code translate="no">STL_SORT</code> بناءً على عدد الفئات المتميزة الموجودة في بياناتك.</p>
+    </button></h3><p>Index the <code translate="no">category</code> field for fast filtering by product category. With <code translate="no">AUTOINDEX</code>, Milvus picks <code translate="no">BITMAP</code> or <code translate="no">STL_SORT</code> based on how many distinct categories exist in your data.</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;AUTOINDEX&quot;</span>,</span>
@@ -392,7 +392,7 @@ client.insert(
 <span class="highlighted-comment-line">    }</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Index-a-nested-key" class="common-anchor-header">المثال 2: فهرسة مفتاح متداخل<button data-href="#Example-2-Index-a-nested-key" class="anchor-icon" translate="no">
+<h3 id="Example-2-Index-a-nested-key" class="common-anchor-header">Example 2: Index a nested key<button data-href="#Example-2-Index-a-nested-key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -407,7 +407,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>قم بفهرسة الحقل <code translate="no">email</code> المتداخل بعمق للبحث عن جهات اتصال الموردين. تقبل المعلمة <code translate="no">json_path</code> أي عمق لترميز الأقواس.</p>
+    </button></h3><p>Index the deeply nested <code translate="no">email</code> field for supplier contact lookups. The <code translate="no">json_path</code> parameter accepts any depth of bracket notation.</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;AUTOINDEX&quot;</span>,</span>
@@ -418,7 +418,7 @@ client.insert(
 <span class="highlighted-comment-line">    }</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Range-queries-with-STLSORT" class="common-anchor-header">المثال 3: استعلامات النطاق باستخدام STL_SORT<button data-href="#Example-3-Range-queries-with-STLSORT" class="anchor-icon" translate="no">
+<h3 id="Example-3-Range-queries-with-STLSORT" class="common-anchor-header">Example 3: Range queries with STL_SORT<button data-href="#Example-3-Range-queries-with-STLSORT" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -433,7 +433,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>عندما تعلم أن استعلاماتك على مسار ما ستكون مهيمنة عليها مقارنات النطاق (<code translate="no">&gt;</code> ، <code translate="no">&lt;</code> ، <code translate="no">&gt;=</code> ، <code translate="no">&lt;=</code>)، اختر <code translate="no">STL_SORT</code> مباشرةً. يؤدي ذلك إلى تجاوز قياس الكاردينالية وإنشاء التخطيط المصنف على الفور.</p>
+    </button></h3><p>When you know your queries on a path will be dominated by range comparisons (<code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code>), pick <code translate="no">STL_SORT</code> directly. This bypasses cardinality measurement and builds the sorted layout immediately.</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;STL_SORT&quot;</span>,</span>
@@ -444,8 +444,8 @@ client.insert(
     }
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>بعد الفهرسة، تستخدم استعلامات النطاق مثل <code translate="no">metadata[&quot;price&quot;] &gt; 50 AND metadata[&quot;price&quot;] &lt; 100</code> البحث الثنائي بدلاً من المسح الكامل.</p>
-<h3 id="Example-4-Equality-queries-with-BITMAP" class="common-anchor-header">المثال 4: استعلامات المساواة باستخدام BITMAP<button data-href="#Example-4-Equality-queries-with-BITMAP" class="anchor-icon" translate="no">
+<p>After indexing, range queries like <code translate="no">metadata[&quot;price&quot;] &gt; 50 AND metadata[&quot;price&quot;] &lt; 100</code> use binary search instead of a full scan.</p>
+<h3 id="Example-4-Equality-queries-with-BITMAP" class="common-anchor-header">Example 4: Equality queries with BITMAP<button data-href="#Example-4-Equality-queries-with-BITMAP" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -460,7 +460,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بالنسبة للمفاتيح ذات الكاردينالية المنخفضة، مثل رموز الحالة أو القيم المنطقية أو السلاسل الشبيهة بقوائم التعداد، اختر <code translate="no">BITMAP</code> مباشرةً. تصبح استعلامات المساواة و <code translate="no">IN</code> عمليات bitmap.</p>
+    </button></h3><p>For low-cardinality keys, such as status codes, booleans, or enum-like strings, pick <code translate="no">BITMAP</code> directly. Equality and <code translate="no">IN</code> queries become bitmap operations.</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;BITMAP&quot;</span>,</span>
@@ -471,8 +471,8 @@ client.insert(
     }
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">BITMAP</code> كما أنه مناسب تمامًا لحقول مثل عمود " <code translate="no">status</code> " الذي يحتوي على عدد قليل من قيم السلاسل المتميزة.</p>
-<h3 id="Example-5-Convert-data-type-at-index-time" class="common-anchor-header">المثال 5: تحويل نوع البيانات عند إنشاء الفهرس<button data-href="#Example-5-Convert-data-type-at-index-time" class="anchor-icon" translate="no">
+<p><code translate="no">BITMAP</code> is also a strong fit for fields like a <code translate="no">status</code> column with a handful of distinct string values.</p>
+<h3 id="Example-5-Convert-data-type-at-index-time" class="common-anchor-header">Example 5: Convert data type at index time<button data-href="#Example-5-Convert-data-type-at-index-time" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -487,7 +487,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>عندما يتم تخزين البيانات الرقمية عن طريق الخطأ كسلاسل نصية، استخدم <code translate="no">STRING_TO_DOUBLE</code> لتحويل القيمة إلى رقم أثناء إنشاء الفهرس.</p>
+    </button></h3><p>When numeric data is mistakenly stored as strings, use <code translate="no">STRING_TO_DOUBLE</code> to convert the value to a number during index build.</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;AUTOINDEX&quot;</span>,</span>
@@ -499,8 +499,8 @@ client.insert(
     }
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>إذا فشل التحويل لصف ما (على سبيل المثال، سلسلة غير رقمية مثل <code translate="no">&quot;invalid&quot;</code>)، يتم تخطي هذا الصف أثناء الفهرسة.</p>
-<h3 id="Example-6-Index-entire-JSON-objects" class="common-anchor-header">المثال 6: فهرسة كائنات JSON بالكامل<button data-href="#Example-6-Index-entire-JSON-objects" class="anchor-icon" translate="no">
+<p>If conversion fails for a row (for example, a non-numeric string like <code translate="no">&quot;invalid&quot;</code>), that row is skipped during indexing.</p>
+<h3 id="Example-6-Index-entire-JSON-objects" class="common-anchor-header">Example 6: Index entire JSON objects<button data-href="#Example-6-Index-entire-JSON-objects" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -516,11 +516,11 @@ client.insert(
         ></path>
       </svg>
     </button></h3><div class="alert warning">
-<p>بدءًا من Milvus 3.0.0، تم إيقاف استخدام فهرسة كائنات JSON بالكامل (<code translate="no">json_cast_type=&quot;JSON&quot;</code>)، والمعروفة أيضًا باسم الفهرسة المسطحة لـ JSON. لا يزال يتم دعم الفهارس الحالية وطلبات إنشاء الفهارس الجديدة من أجل التوافق، ولكن لم يعد يُنصح باستخدام هذا الوضع لأحمال العمل الجديدة. قم بإنشاء فهارس مسار JSON لمسارات الاستعلام المعروفة. بالنسبة لمستندات JSON المعقدة أو المتطورة ذات أنماط الاستعلام الواسعة، ضع في اعتبارك <a href="/docs/ar/json-shredding.md">تقطيع JSON</a>. لا يعمل تقطيع JSON على تسريع القيم داخل المصفوفات؛ استخدم فهارس مسار JSON مع أنواع تحويل المصفوفات لتلك الاستعلامات.</p>
+<p>Starting in Milvus 3.0.0, whole-object JSON indexing (<code translate="no">json_cast_type=&quot;JSON&quot;</code>), also known as JSON flat indexing, is deprecated. Existing indexes and new index-creation requests remain supported for compatibility, but this mode is no longer recommended for new workloads. Create JSON path indexes for known query paths. For complex or evolving JSON documents with broad query patterns, consider <a href="/docs/ar/json-shredding.md">JSON Shredding</a>. JSON shredding does not accelerate values inside arrays; use JSON path indexes with array cast types for those queries.</p>
 </div>
-<p>بالنسبة لأحمال العمل الحالية المتوافقة، يؤدي تعيين " <code translate="no">json_cast_type=&quot;JSON&quot;</code> " إلى فهرسة الهيكل الكامل في المسار المحدد. يقوم Milvus بتسوية الكائنات المتداخلة إلى مسارات ويستنتج نوع كل قيمة تلقائيًا. تصبح جميع المفاتيح الموجودة ضمن المسار قابلة للبحث.</p>
-<p><code translate="no">AUTOINDEX</code> يستخدم بشكل شفاف <code translate="no">INVERTED</code> لنوع التحويل <code translate="no">JSON</code> ، نظرًا لأن التسوية واستنتاج النوع هما من إمكانيات الفهرس المعكوس.</p>
-<p>فهرسة كائن <code translate="no">metadata</code> بالكامل:</p>
+<p>For compatible existing workloads, setting <code translate="no">json_cast_type=&quot;JSON&quot;</code> indexes the full structure at the given path. Milvus flattens nested objects into paths and automatically infers each value’s type. All keys under the path become searchable.</p>
+<p><code translate="no">AUTOINDEX</code> transparently uses <code translate="no">INVERTED</code> for <code translate="no">JSON</code> cast type, since flattening and type inference are inverted-index capabilities.</p>
+<p>Index the entire <code translate="no">metadata</code> object:</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;AUTOINDEX&quot;</span>,</span>
@@ -531,7 +531,7 @@ client.insert(
     }
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>أو فهرسة كائن فرعي، مثل جميع معلومات <code translate="no">supplier</code>:</p>
+<p>Or index a sub-object, such as all <code translate="no">supplier</code> information:</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
 <span class="highlighted-wrapper-line">    index_type=<span class="hljs-string">&quot;AUTOINDEX&quot;</span>,</span>
@@ -542,8 +542,8 @@ client.insert(
     }
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>يؤدي فهرسة الكائنات بالكامل إلى زيادة حجم الفهرس. بالنسبة لأحمال العمل الجديدة التي تحتوي على مستندات متداخلة بعمق وأنماط استعلام متنوعة، استخدم الفهارس الخاصة بالمسار أو ضع في اعتبارك <a href="/docs/ar/json-shredding.md">تقطيع JSON</a>.</p>
-<h3 id="Apply-the-index" class="common-anchor-header">تطبيق الفهرس<button data-href="#Apply-the-index" class="anchor-icon" translate="no">
+<p>Indexing entire objects increases index size. For new workloads with deeply nested documents and diverse query patterns, use path-specific indexes or consider <a href="/docs/ar/json-shredding.md">JSON Shredding</a>.</p>
+<h3 id="Apply-the-index" class="common-anchor-header">Apply the index<button data-href="#Apply-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -558,19 +558,19 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بعد إضافة جميع معلمات الفهرس، قم بتطبيقها على مجموعتك:</p>
+    </button></h3><p>After adding all your index parameters, apply them to your collection:</p>
 <pre><code translate="no" class="language-python">client.create_index(
     collection_name=<span class="hljs-string">&quot;your_collection_name&quot;</span>,
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>تتم عمليات إنشاء الفهرس بشكل غير متزامن. استخدم <code translate="no">client.describe_index(...)</code> للتحقق من حالة إنشاء فهرس معين. يُظهر الحقل <code translate="no">state</code> <code translate="no">Finished</code> بمجرد اكتمال الإنشاء، بينما تُظهر الحقول <code translate="no">total_rows</code> و <code translate="no">indexed_rows</code> و <code translate="no">pending_index_rows</code> التقدم المحرز خلال العملية.</p>
+<p>Index builds run asynchronously. Use <code translate="no">client.describe_index(...)</code> to check the build state of a specific index. The <code translate="no">state</code> field shows <code translate="no">Finished</code> once the build is done, and <code translate="no">total_rows</code>, <code translate="no">indexed_rows</code>, and <code translate="no">pending_index_rows</code> show progress along the way.</p>
 <pre><code translate="no" class="language-python">client.describe_index(
     collection_name=<span class="hljs-string">&quot;your_collection_name&quot;</span>,
     index_name=<span class="hljs-string">&quot;category_index&quot;</span>,
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>نموذج للاستجابة:</p>
+<p>Sample response:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;json_path&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;metadata[\&quot;category\&quot;]&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;json_cast_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;VARCHAR&quot;</span><span class="hljs-punctuation">,</span>
@@ -583,9 +583,9 @@ client.insert(
   <span class="hljs-attr">&quot;state&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Finished&quot;</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>بمجرد أن يُبلغ <code translate="no">state</code> عن <code translate="no">Finished</code> ، تستخدم الاستعلامات التي تُجرى على المسار المفهرس الفهرس الجديد تلقائيًا.</p>
-<p>بالنسبة لمدخلات <code translate="no">AUTOINDEX</code> ، يتم الإبلاغ عن الحقل <code translate="no">index_type</code> في هذا الرد على أنه <code translate="no">AUTOINDEX</code>. لا يكشف Milvus حاليًا عن التخطيط الأساسي (<code translate="no">BITMAP</code> أو <code translate="no">STL_SORT</code>) الذي تم اختياره وقت الإنشاء. تعامل مع هذا الاختيار على أنه تحسين داخلي: ستعمل استعلامات المساواة و <code translate="no">IN</code> والنطاق على المسار بغض النظر عن التخطيط الذي تم اختياره.</p>
-<h2 id="FAQ" class="common-anchor-header">الأسئلة الشائعة<button data-href="#FAQ" class="anchor-icon" translate="no">
+<p>Once <code translate="no">state</code> reports <code translate="no">Finished</code>, queries against the indexed path use the new index automatically.</p>
+<p>For <code translate="no">AUTOINDEX</code> entries, the <code translate="no">index_type</code> field in this response is reported as <code translate="no">AUTOINDEX</code>. Milvus does not currently expose which underlying layout (<code translate="no">BITMAP</code> or <code translate="no">STL_SORT</code>) was chosen at build time. Treat the choice as an internal optimization: equality, <code translate="no">IN</code>, and range queries against the path will work regardless of which layout was selected.</p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -600,7 +600,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="How-do-I-choose-between-AUTOINDEX-and-an-explicit-index-type" class="common-anchor-header">كيف أختار بين AUTOINDEX ونوع الفهرس الصريح؟<button data-href="#How-do-I-choose-between-AUTOINDEX-and-an-explicit-index-type" class="anchor-icon" translate="no">
+    </button></h2><h3 id="How-do-I-choose-between-AUTOINDEX-and-an-explicit-index-type" class="common-anchor-header">How do I choose between AUTOINDEX and an explicit index type?<button data-href="#How-do-I-choose-between-AUTOINDEX-and-an-explicit-index-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -615,14 +615,14 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>ابدأ بـ <code translate="no">AUTOINDEX</code>. فهو يختار التخطيط المناسب بناءً على عدد عناصر البيانات، ويغطي معظم استعلامات المساواة، <code translate="no">IN</code> ، واستعلامات النطاق على مسارات JSON. اختر نوعًا صريحًا في الحالات التالية:</p>
+    </button></h3><p>Start with <code translate="no">AUTOINDEX</code>. It picks the right layout from your data’s cardinality, and it covers most equality, <code translate="no">IN</code>, and range queries on JSON paths. Pick an explicit type when:</p>
 <ul>
-<li><p>كنت تعرف نمط الاستعلام الخاص بك (على سبيل المثال، استخدم دائمًا <code translate="no">STL_SORT</code> للاستعلامات النطاقية، و <code translate="no">BITMAP</code> للاستعلامات المساواة على القيم ذات الكاردينالية المنخفضة) وترغب في تخطي قياس الكاردينالية.</p></li>
-<li><p>كنت بحاجة إلى استعلامات مطابقة النص أو السلسلة الفرعية. استخدم <code translate="no">INVERTED</code>.</p></li>
-<li><p>كنت تقوم بفهرسة أنواع تحويل المصفوفات. استخدم <code translate="no">INVERTED</code> بشكل صريح.</p></li>
-<li><p>أنت تقوم بصيانة فهرس JSON لكامل الكائن موجود بالفعل. يظل كل من <code translate="no">INVERTED</code> و <code translate="no">AUTOINDEX</code> مدعومين من أجل التوافق، ولكن فهرسة JSON لكامل الكائن أصبحت مهملة بدءًا من Milvus 3.0.0.</p></li>
+<li><p>You know your query pattern (for example, always range queries use <code translate="no">STL_SORT</code>, and always equality queries on low-cardinality values use <code translate="no">BITMAP</code>) and want to skip cardinality measurement.</p></li>
+<li><p>You need text-match or substring queries. Use <code translate="no">INVERTED</code>.</p></li>
+<li><p>You’re indexing array cast types. Use <code translate="no">INVERTED</code> explicitly.</p></li>
+<li><p>You’re maintaining an existing whole-object JSON index. Both <code translate="no">INVERTED</code> and <code translate="no">AUTOINDEX</code> remain supported for compatibility, but whole-object JSON indexing is deprecated starting in Milvus 3.0.0.</p></li>
 </ul>
-<h3 id="What-happens-if-a-querys-filter-expression-uses-a-different-type-than-the-indexed-cast-type" class="common-anchor-header">ماذا يحدث إذا استخدم تعبير التصفية في الاستعلام نوعًا مختلفًا عن نوع التحويل المفهرس؟<button data-href="#What-happens-if-a-querys-filter-expression-uses-a-different-type-than-the-indexed-cast-type" class="anchor-icon" translate="no">
+<h3 id="What-happens-if-a-querys-filter-expression-uses-a-different-type-than-the-indexed-cast-type" class="common-anchor-header">What happens if a query’s filter expression uses a different type than the indexed cast type?<button data-href="#What-happens-if-a-querys-filter-expression-uses-a-different-type-than-the-indexed-cast-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -637,8 +637,8 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>إذا كان تعبير التصفية الخاص بك يستخدم نوعًا مختلفًا عن <code translate="no">json_cast_type</code> الخاص بالفهرس، فلن يستخدم Milvus الفهرس وقد يلجأ إلى مسح قوي أبطأ إذا سمحت البيانات بذلك. للحصول على أفضل أداء، قم دائمًا بمواءمة تعبير التصفية مع نوع التحويل الخاص بالفهرس. على سبيل المثال، إذا تم إنشاء فهرس رقمي باستخدام <code translate="no">json_cast_type=&quot;DOUBLE&quot;</code> ، فلن تستفيد من الفهرس سوى شروط التصفية الرقمية.</p>
-<h3 id="What-if-a-JSON-key-has-inconsistent-data-types-across-different-entities" class="common-anchor-header">ماذا لو احتوى مفتاح JSON على أنواع بيانات غير متسقة عبر كيانات مختلفة؟<button data-href="#What-if-a-JSON-key-has-inconsistent-data-types-across-different-entities" class="anchor-icon" translate="no">
+    </button></h3><p>If your filter expression uses a different type than the index’s <code translate="no">json_cast_type</code>, Milvus does not use the index and may fall back to a slower brute-force scan if the data allows. For best performance, always align your filter expression with the cast type of the index. For example, if a numeric index is created with <code translate="no">json_cast_type=&quot;DOUBLE&quot;</code>, only numeric filter conditions will leverage the index.</p>
+<h3 id="What-if-a-JSON-key-has-inconsistent-data-types-across-different-entities" class="common-anchor-header">What if a JSON key has inconsistent data types across different entities?<button data-href="#What-if-a-JSON-key-has-inconsistent-data-types-across-different-entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -653,8 +653,8 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>قد تؤدي الأنواع غير المتسقة إلى <strong>فهرسة جزئية</strong>. على سبيل المثال، إذا تم تخزين <code translate="no">metadata[&quot;price&quot;]</code> كرقم (<code translate="no">99.99</code>) وكسلسلة (<code translate="no">&quot;99.99&quot;</code>) وقمت بإنشاء فهرس باستخدام <code translate="no">json_cast_type=&quot;DOUBLE&quot;</code> ، فسيتم فهرسة القيم الرقمية فقط. يتم تخطي الإدخالات في شكل سلاسل ولن تظهر في نتائج التصفية. استخدم <code translate="no">json_cast_function=&quot;STRING_TO_DOUBLE&quot;</code> لتحويل السلاسل إلى أرقام عند الفهرسة، أو قم بتعديل البيانات المصدر بحيث تكون جميع الإدخالات من نفس النوع.</p>
-<h3 id="Can-I-create-multiple-indexes-on-the-same-JSON-key" class="common-anchor-header">هل يمكنني إنشاء فهارس متعددة على نفس مفتاح JSON؟<button data-href="#Can-I-create-multiple-indexes-on-the-same-JSON-key" class="anchor-icon" translate="no">
+    </button></h3><p>Inconsistent types can lead to <strong>partial indexing</strong>. For example, if <code translate="no">metadata[&quot;price&quot;]</code> is stored as both a number (<code translate="no">99.99</code>) and a string (<code translate="no">&quot;99.99&quot;</code>) and you create an index with <code translate="no">json_cast_type=&quot;DOUBLE&quot;</code>, only the numeric values are indexed. String-form entries are skipped and won’t appear in filter results. Use <code translate="no">json_cast_function=&quot;STRING_TO_DOUBLE&quot;</code> to coerce strings to numbers at index time, or fix the source data so all entries share one type.</p>
+<h3 id="Can-I-create-multiple-indexes-on-the-same-JSON-key" class="common-anchor-header">Can I create multiple indexes on the same JSON key?<button data-href="#Can-I-create-multiple-indexes-on-the-same-JSON-key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -669,8 +669,8 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>لا. يسمح Milvus بإنشاء فهرس واحد كحد أقصى لكل زوج من <code translate="no">(field, json_path)</code> ، بغض النظر عن نوع التحويل أو نوع الفهرس. لا يمكنك إنشاء كل من فهرس « <code translate="no">INVERTED</code> » وفهرس « <code translate="no">BITMAP</code> » على نفس المسار، أو إنشاء فهرسين على نفس المسار بنوعي تحويل مختلفين. ومع ذلك، يمكنك إنشاء فهرس على كائن JSON بأكمله وفهرس منفصل على مفتاح متداخل داخل هذا الكائن لأنهما مساران مختلفان.</p>
-<h3 id="How-do-I-tune-AUTOINDEXs-BITMAP-vs-STLSORT-threshold" class="common-anchor-header">كيف يمكنني ضبط عتبة BITMAP مقابل STL_SORT في AUTOINDEX؟<button data-href="#How-do-I-tune-AUTOINDEXs-BITMAP-vs-STLSORT-threshold" class="anchor-icon" translate="no">
+    </button></h3><p>No. Milvus allows at most one index per <code translate="no">(field, json_path)</code> pair, regardless of cast type or index type. You cannot create both an <code translate="no">INVERTED</code> and a <code translate="no">BITMAP</code> index on the same path, or two indexes on the same path with different cast types. You can, however, create an index on the entire JSON object and a separate index on a nested key within that object because those are different paths.</p>
+<h3 id="How-do-I-tune-AUTOINDEXs-BITMAP-vs-STLSORT-threshold" class="common-anchor-header">How do I tune AUTOINDEX’s BITMAP-vs-STL_SORT threshold?<button data-href="#How-do-I-tune-AUTOINDEXs-BITMAP-vs-STLSORT-threshold" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -685,7 +685,7 @@ client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بشكل افتراضي، يختار <code translate="no">AUTOINDEX</code> خيار « <code translate="no">BITMAP</code> » عندما تحتوي القيم المفهرسة على <strong>100 قيمة مميزة أو أقل،</strong> ويختار خيار « <code translate="no">STL_SORT</code> » في الحالات الأخرى. يمكنك تجاوز هذا الحد عن طريق إضافة <code translate="no">&quot;bitmap_cardinality_limit&quot;</code> إلى معلمات الفهرس (النطاق: 1-1000):</p>
+    </button></h3><p>By default, <code translate="no">AUTOINDEX</code> picks <code translate="no">BITMAP</code> when the indexed values have <strong>100 or fewer distinct values</strong> and <code translate="no">STL_SORT</code> otherwise. You can override this threshold by adding <code translate="no">&quot;bitmap_cardinality_limit&quot;</code> to your index parameters (range: 1-1000):</p>
 <pre><code translate="no" class="language-python">index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
     index_type=<span class="hljs-string">&quot;AUTOINDEX&quot;</span>,
@@ -697,4 +697,4 @@ client.insert(
     }
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>لا يحتاج معظم المستخدمين إلى ضبط هذا الإعداد. قم برفع القيمة إذا كان لديك حقل ذو عدد عناصر معتدل تفضل معالجته بنظام الخرائط الثنائية؛ وقم بخفضها لدفع <code translate="no">AUTOINDEX</code> نحو <code translate="no">STL_SORT</code> في وقت أبكر. يتم تجاهل هذا الإعداد عند تحديد <code translate="no">INVERTED</code> أو <code translate="no">STL_SORT</code> أو <code translate="no">BITMAP</code> بشكل صريح.</p>
+<p>Most users don’t need to tune this. Raise it if you have a moderate-cardinality field you’d prefer bitmapped; lower it to push <code translate="no">AUTOINDEX</code> toward <code translate="no">STL_SORT</code> sooner. The setting is ignored when you specify <code translate="no">INVERTED</code>, <code translate="no">STL_SORT</code>, or <code translate="no">BITMAP</code> explicitly.</p>

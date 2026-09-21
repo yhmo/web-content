@@ -1,13 +1,16 @@
 ---
 id: full-text-search.md
-title: 전체 텍스트 검색
+title: Full Text Search
 summary: >-
-  전체 텍스트 검색은 텍스트 데이터 세트에서 특정 용어나 구문이 포함된 문서를 검색한 다음 관련성에 따라 결과의 순위를 매기는 기능입니다. 이
-  기능은 정확한 용어를 놓칠 수 있는 시맨틱 검색의 한계를 극복하여 가장 정확하고 문맥과 연관성이 높은 결과를 얻을 수 있도록 해줍니다.
-  또한, 원시 텍스트 입력을 받아 벡터 임베딩을 수동으로 생성할 필요 없이 텍스트 데이터를 스파스 임베딩으로 자동 변환함으로써 벡터 검색을
-  간소화합니다.
+  Full text search is a feature that retrieves documents containing specific
+  terms or phrases in text datasets, then ranking the results based on
+  relevance. This feature overcomes semantic search limitations, which might
+  overlook precise terms, ensuring you receive the most accurate and
+  contextually relevant results. Additionally, it simplifies vector searches by
+  accepting raw text input, automatically converting your text data into sparse
+  embeddings without the need to manually generate vector embeddings.
 ---
-<h1 id="Full-Text-Search" class="common-anchor-header">전체 텍스트 검색<button data-href="#Full-Text-Search" class="anchor-icon" translate="no">
+<h1 id="Full-Text-Search" class="common-anchor-header">Full Text Search<button data-href="#Full-Text-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,12 +25,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>전체 텍스트 검색은 텍스트 데이터 세트에서 특정 용어나 구문이 포함된 문서를 검색한 다음 관련성에 따라 결과의 순위를 매기는 기능입니다. 이 기능은 정확한 용어를 놓칠 수 있는 시맨틱 검색의 한계를 극복하여 가장 정확하고 문맥과 연관성이 높은 결과를 얻을 수 있도록 해줍니다. 또한, 원시 텍스트 입력을 받아 벡터 임베딩을 수동으로 생성할 필요 없이 텍스트 데이터를 스파스 임베딩으로 자동 변환함으로써 벡터 검색을 간소화합니다.</p>
-<p>관련성 점수에 BM25 알고리즘을 사용하는 이 기능은 특정 검색어와 가장 근접하게 일치하는 문서의 우선순위를 정하는 검색 증강 생성(RAG) 시나리오에서 특히 유용합니다.</p>
+    </button></h1><p>Full text search is a feature that retrieves documents containing specific terms or phrases in text datasets, then ranking the results based on relevance. This feature overcomes semantic search limitations, which might overlook precise terms, ensuring you receive the most accurate and contextually relevant results. Additionally, it simplifies vector searches by accepting raw text input, automatically converting your text data into sparse embeddings without the need to manually generate vector embeddings.</p>
+<p>Using the BM25 algorithm for relevance scoring, this feature is particularly valuable in retrieval-augmented generation (RAG) scenarios, where it prioritizes documents that closely match specific search terms.</p>
 <div class="alert note">
-<p>전체 텍스트 검색과 시맨틱 기반의 고밀도 벡터 검색을 통합하면 검색 결과의 정확도와 관련성을 높일 수 있습니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/multi-vector-search.md">하이브리드 검색을</a> 참조하세요.</p>
+<p>By integrating full text search with semantic-based dense vector search, you can enhance the accuracy and relevance of search results. For more information, refer to <a href="/docs/ko/v2.6.x/multi-vector-search.md">Hybrid Search</a>.</p>
 </div>
-<h2 id="BM25-implementation" class="common-anchor-header">BM25 구현<button data-href="#BM25-implementation" class="anchor-icon" translate="no">
+<h2 id="BM25-implementation" class="common-anchor-header">BM25 implementation<button data-href="#BM25-implementation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,26 +45,28 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus는 정보 검색 시스템에서 널리 채택된 채점 기능인 BM25 관련성 알고리즘으로 구동되는 전체 텍스트 검색을 제공하며, 이를 검색 워크플로우에 통합하여 정확하고 관련성 순위가 높은 텍스트 결과를 제공합니다.</p>
-<p>Milvus의 전체 텍스트 검색은 아래의 워크플로우를 따릅니다:</p>
+    </button></h2><p>Milvus provides full text search powered by the BM25 relevance algorithm, a widely adopted scoring function in information retrieval systems, and Milvus integrates it into the search workflow to deliver accurate, relevance-ranked text results.</p>
+<p>Full text search in Milvus follows the workflow below:</p>
 <ol>
-<li><p><strong>원시 텍스트 입력</strong>: 임베딩 모델 없이 텍스트 문서를 삽입하거나 일반 텍스트를 사용하여 쿼리를 입력합니다.</p></li>
-<li><p><strong>텍스트 분석</strong>: Milvus는 <a href="/docs/ko/v2.6.x/analyzer-overview.md">분석기를</a> 사용하여 텍스트를 색인 및 검색이 가능한 의미 있는 용어로 처리합니다.</p></li>
-<li><p><strong>BM25 함수 처리</strong>: 내장된 함수가 이러한 용어를 BM25 채점에 최적화된 희소 벡터 표현으로 변환합니다.</p></li>
-<li><p><strong>컬렉션 저장소</strong>: Milvus는 빠른 검색과 순위를 매길 수 있도록 결과 스파스 임베딩을 컬렉션에 저장합니다.</p></li>
-<li><p><strong>BM25 관련성 점수</strong>: 검색 시 Milvus는 BM25 스코어링 기능을 적용하여 문서 관련성을 계산하고 쿼리 용어와 가장 일치하는 순위를 매긴 결과를 반환합니다.</p></li>
+<li><p><strong>Raw text input</strong>: You insert text documents or provide a query using plain text, no embedding models required.</p></li>
+<li><p><strong>Text analysis</strong>: Milvus uses an <a href="/docs/ko/v2.6.x/analyzer-overview.md">analyzer</a> to process your text into meaningful terms that can be indexed and searched.</p></li>
+<li><p><strong>BM25 function processing</strong>: A built-in function transforms these terms into sparse vector representations optimized for BM25 scoring.</p></li>
+<li><p><strong>Collection store</strong>: Milvus stores the resulting sparse embeddings in a collection for fast retrieval and ranking.</p></li>
+<li><p><strong>BM25 relevance scoring</strong>: At search time, Milvus applies the BM25 scoring function to compute document relevance and return ranked results that best match the query terms.</p></li>
 </ol>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/full-text-search.png" alt="Full Text Search" class="doc-image" id="full-text-search" />
-   </span> <span class="img-wrapper"> <span>전체 텍스트 검색</span> </span></p>
-<p>전체 텍스트 검색을 사용하려면 다음 주요 단계를 따르세요:</p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/full-text-search.png" alt="Full Text Search" class="doc-image" id="full-text-search" />
+    <span>Full Text Search</span>
+  </span>
+</p>
+<p>To use full text search, follow these main steps:</p>
 <ol>
-<li><p><a href="/docs/ko/v2.6.x/full-text-search.md#Create-a-collection-for-BM25-full-text-search">컬렉션을 만듭니다</a>: 필수 필드를 설정하고 원시 텍스트를 스파스 임베딩으로 변환하는 BM25 함수를 정의합니다.</p></li>
-<li><p><a href="/docs/ko/v2.6.x/full-text-search.md#Insert-text-data">데이터 삽입</a>: 원시 텍스트 문서를 컬렉션에 수집합니다.</p></li>
-<li><p><a href="/docs/ko/v2.6.x/full-text-search.md#Perform-full-text-search">검색 수행</a>: 자연어 쿼리 텍스트를 사용하여 BM25 관련성에 따라 순위가 매겨진 결과를 검색합니다.</p></li>
+<li><p><a href="/docs/ko/v2.6.x/full-text-search.md#Create-a-collection-for-BM25-full-text-search">Create a collection</a>: Set up the required fields and define a BM25 function that converts raw text into sparse embeddings.</p></li>
+<li><p><a href="/docs/ko/v2.6.x/full-text-search.md#Insert-text-data">Insert data</a>: Ingest your raw text documents to the collection.</p></li>
+<li><p><a href="/docs/ko/v2.6.x/full-text-search.md#Perform-full-text-search">Perform searches</a>: Use natural-language query text to retrieve ranked results based on BM25 relevance.</p></li>
 </ol>
-<h2 id="Create-a-collection-for-BM25-full-text-search" class="common-anchor-header">BM25 전체 텍스트 검색을 위한 컬렉션 만들기<button data-href="#Create-a-collection-for-BM25-full-text-search" class="anchor-icon" translate="no">
+<h2 id="Create-a-collection-for-BM25-full-text-search" class="common-anchor-header">Create a collection for BM25 full text search<button data-href="#Create-a-collection-for-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,8 +81,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>BM25 기반 전체 텍스트 검색을 사용하려면 필수 필드가 포함된 컬렉션을 준비하고, 스파스 벡터를 생성하는 BM25 함수를 정의하고, 인덱스를 구성한 다음 컬렉션을 만들어야 합니다.</p>
-<h3 id="Define-schema-fields" class="common-anchor-header">스키마 필드 정의<button data-href="#Define-schema-fields" class="anchor-icon" translate="no">
+    </button></h2><p>To enable BM25-powered full text search, you must prepare a collection with the required fields, define a BM25 function to generate sparse vectors, configure an index, and then create the collection.</p>
+<h3 id="Define-schema-fields" class="common-anchor-header">Define schema fields<button data-href="#Define-schema-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -92,14 +97,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>컬렉션 스키마에는 최소 3개의 필수 필드가 포함되어야 합니다:</p>
+    </button></h3><p>Your collection schema must include at least three required fields:</p>
 <ul>
-<li><p><strong>기본 필드</strong>: 컬렉션의 각 엔티티를 고유하게 식별합니다.</p></li>
-<li><p><strong>텍스트 필드</strong> (<code translate="no">VARCHAR</code>): 원시 텍스트 문서를 저장합니다. Milvus가 BM25 관련성 순위를 위해 텍스트를 처리할 수 있도록 <code translate="no">enable_analyzer=True</code> 을 설정해야 합니다. 기본적으로 Milvus는 텍스트 분석을 위해 <a href="/docs/ko/v2.6.x/standard-analyzer.md"><code translate="no">standard</code></a><a href="/docs/ko/v2.6.x/standard-analyzer.md"> 분석기를</a> 사용합니다. 다른 분석기를 구성하려면 <a href="/docs/ko/v2.6.x/analyzer-overview.md">분석기 개요를</a> 참조하세요.</p></li>
-<li><p><strong>스파스 벡터 필드</strong> (<code translate="no">SPARSE_FLOAT_VECTOR</code>): BM25 함수에 의해 자동으로 생성된 스파스 임베딩을 저장합니다.</p></li>
+<li><p><strong>Primary field</strong>: Uniquely identifies each entity in the collection.</p></li>
+<li><p><strong>Text field</strong> (<code translate="no">VARCHAR</code>): Stores raw text documents. Must set <code translate="no">enable_analyzer=True</code> so Milvus can process the text for BM25 relevance ranking. By default, Milvus uses the <a href="/docs/ko/v2.6.x/standard-analyzer.md"><code translate="no">standard</code></a><a href="/docs/ko/v2.6.x/standard-analyzer.md"> analyzer</a> for text analysis. To configure a different analyzer, refer to <a href="/docs/ko/v2.6.x/analyzer-overview.md">Analyzer Overview</a>.</p></li>
+<li><p><strong>Sparse vector field</strong> (<code translate="no">SPARSE_FLOAT_VECTOR</code>): Stores sparse embeddings automatically generated by the BM25 function.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
 client = MilvusClient(
@@ -225,13 +235,13 @@ schema.WithField(entity.NewField().
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>앞의 config,</p>
+<p>In the preceding config,</p>
 <ul>
-<li><p><code translate="no">id</code>는 기본 키 역할을 하며 <code translate="no">auto_id=True</code> 로 자동 생성됩니다.</p></li>
-<li><p><code translate="no">text</code>는 전체 텍스트 검색 작업을 위한 원시 텍스트 데이터를 저장합니다. 데이터 유형은 <code translate="no">VARCHAR</code> 이 텍스트 저장을 위한 Milvus 문자열 데이터 유형이므로 <code translate="no">VARCHAR</code> 여야 합니다.</p></li>
-<li><p><code translate="no">sparse</code>전체 텍스트 검색 작업을 위해 내부적으로 생성된 스파스 임베딩을 저장하기 위해 예약된 벡터 필드입니다. 데이터 유형은 <code translate="no">SPARSE_FLOAT_VECTOR</code> 여야 합니다.</p></li>
+<li><p><code translate="no">id</code>: serves as the primary key and is automatically generated with <code translate="no">auto_id=True</code>.</p></li>
+<li><p><code translate="no">text</code>: stores your raw text data for full text search operations. The data type must be <code translate="no">VARCHAR</code>, as <code translate="no">VARCHAR</code> is Milvus string data type for text storage.</p></li>
+<li><p><code translate="no">sparse</code>: a vector field reserved to store internally generated sparse embeddings for full text search operations. The data type must be <code translate="no">SPARSE_FLOAT_VECTOR</code>.</p></li>
 </ul>
-<h3 id="Define-the-BM25-function" class="common-anchor-header">BM25 함수 정의<button data-href="#Define-the-BM25-function" class="anchor-icon" translate="no">
+<h3 id="Define-the-BM25-function" class="common-anchor-header">Define the BM25 function<button data-href="#Define-the-BM25-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -246,10 +256,15 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>BM25 함수는 토큰화된 텍스트를 BM25 채점을 지원하는 스파스 벡터로 변환합니다.</p>
-<p>함수를 정의하고 스키마에 추가합니다:</p>
+    </button></h3><p>The BM25 function converts tokenized text into sparse vectors that support BM25 scoring.</p>
+<p>Define the function and add it to your schema:</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">bm25_function = Function(
     name=<span class="hljs-string">&quot;text_bm25_emb&quot;</span>, <span class="hljs-comment"># Function name</span>
     input_field_names=[<span class="hljs-string">&quot;text&quot;</span>], <span class="hljs-comment"># Name of the VARCHAR field containing raw text data</span>
@@ -324,30 +339,30 @@ schema.WithFunction(function)
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>파라미터</p></th>
-     <th><p>설명</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>함수의 이름입니다. 이 함수는 <code translate="no">text</code> 필드의 원시 텍스트를 <code translate="no">sparse</code> 필드에 저장될 BM25 호환 스파스 벡터로 변환합니다.</p></td>
+     <td><p>The name of the function. This function converts your raw text from the <code translate="no">text</code> field into BM25-compatible sparse vectors that will be stored in the <code translate="no">sparse</code> field.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>텍스트를 스파스 벡터로 변환해야 하는 <code translate="no">VARCHAR</code> 필드의 이름입니다. <code translate="no">FunctionType.BM25</code> 의 경우 이 매개변수는 하나의 필드 이름만 허용합니다.</p></td>
+     <td><p>The name of the <code translate="no">VARCHAR</code> field requiring text-to-sparse-vector conversion. For <code translate="no">FunctionType.BM25</code>, this parameter accepts only one field name.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">output_field_names</code></p></td>
-     <td><p>내부적으로 생성된 스파스 벡터가 저장될 필드의 이름입니다. <code translate="no">FunctionType.BM25</code> 의 경우 이 매개변수는 하나의 필드 이름만 허용합니다.</p></td>
+     <td><p>The name of the field where the internally generated sparse vectors will be stored. For <code translate="no">FunctionType.BM25</code>, this parameter accepts only one field name.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>사용할 함수의 유형입니다. <code translate="no">FunctionType.BM25</code> 여야 합니다.</p></td>
+     <td><p>The type of the function to use. Must be <code translate="no">FunctionType.BM25</code>.</p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>여러 개의 <code translate="no">VARCHAR</code> 필드에 BM25 처리가 필요한 경우, 각 필드마다 고유한 이름과 출력 필드를 가진 <strong>하나의 BM25 함수를</strong> 정의합니다.</p>
+<p>If multiple <code translate="no">VARCHAR</code> fields require BM25 processing, define <strong>one BM25 function per field</strong>, each with a unique name and output field.</p>
 </div>
-<h3 id="Configure-the-index" class="common-anchor-header">인덱스 구성<button data-href="#Configure-the-index" class="anchor-icon" translate="no">
+<h3 id="Configure-the-index" class="common-anchor-header">Configure the index<button data-href="#Configure-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -362,9 +377,14 @@ schema.WithFunction(function)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>필요한 필드와 기본 제공 함수로 스키마를 정의한 후 컬렉션의 인덱스를 설정합니다.</p>
+    </button></h3><p>After defining the schema with necessary fields and the built-in function, set up the index for your collection.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
 index_params.add_index(
@@ -429,39 +449,39 @@ indexes.add(IndexParam.builder()
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>파라미터</p></th>
-     <th><p>설명</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">field_name</code></p></td>
-     <td><p>인덱싱할 벡터 필드의 이름입니다. 전체 텍스트 검색의 경우, 생성된 스파스 벡터를 저장하는 필드여야 합니다. 이 예에서는 값을 <code translate="no">sparse</code> 로 설정합니다.</p></td>
+     <td><p>The name of the vector field to index. For full text search, this should be the field that stores the generated sparse vectors. In this example, set the value to <code translate="no">sparse</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">index_type</code></p></td>
-     <td><p>생성할 인덱스의 유형. <code translate="no">AUTOINDEX</code> 을 입력하면 Milvus가 자동으로 인덱스 설정을 최적화합니다. 인덱스 설정을 보다 세밀하게 제어해야 하는 경우 Milvus에서 스파스 벡터에 사용할 수 있는 다양한 인덱스 유형 중에서 선택할 수 있습니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/index.md#Indexes-supported-in-Milvus">Milvus에서 지원되는 인덱스를</a> 참조하세요.</p></td>
+     <td><p>The type of the index to create. <code translate="no">AUTOINDEX</code> allows Milvus to automatically optimize index settings. If you need more control over your index settings, you can choose from various index types available for sparse vectors in Milvus. For more information, refer to <a href="/docs/ko/v2.6.x/index.md#Indexes-supported-in-Milvus">Indexes supported in Milvus</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">metric_type</code></p></td>
-     <td><p>특히 전체 텍스트 검색 기능을 사용하려면 이 매개변수의 값을 <code translate="no">BM25</code> 로 설정해야 합니다.</p></td>
+     <td><p>The value for this parameter must be set to <code translate="no">BM25</code> specifically for full text search functionality.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params</code></p></td>
-     <td><p>인덱스와 관련된 추가 매개변수 사전입니다.</p></td>
+     <td><p>A dictionary of additional parameters specific to the index.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.inverted_index_algo</code></p></td>
-     <td><p>인덱스 구축 및 쿼리에 사용되는 알고리즘입니다. 유효한 값입니다:</p><ul><li><p><code translate="no">"DAAT_MAXSCORE"</code> (기본값): MaxScore 알고리즘을 사용하여 DAAT(Document-at-a-Time) 쿼리 처리를 최적화합니다. MaxScore는 영향이 미미할 것 같은 용어와 문서를 건너뛰는 방식으로 높은 <em>k</em> 값이나 많은 용어가 포함된 쿼리에 대해 더 나은 성능을 제공합니다. 최대 영향력 점수를 기준으로 용어를 필수 및 비필수 그룹으로 분류하여 상위 k 결과에 기여할 수 있는 용어에 집중함으로써 이를 달성합니다.</p></li><li><p><code translate="no">"DAAT_WAND"</code>: WAND 알고리즘을 사용하여 최적화된 DAAT 쿼리 처리. WAND는 최대 영향력 점수를 활용하여 비경쟁 문서를 건너뛰기 때문에 히트 문서를 더 적게 평가하지만, 히트당 오버헤드가 더 높습니다. 따라서 건너뛰기가 더 용이한 작은 <em>k</em> 값의 쿼리나 짧은 쿼리에는 WAND가 더 효율적입니다.</p></li><li><p><code translate="no">"TAAT_NAIVE"</code>: 기본 TAAT(Term-at-a-Time) 쿼리 처리. <code translate="no">DAAT_MAXSCORE</code> 및 <code translate="no">DAAT_WAND</code> 에 비해 느리지만 <code translate="no">TAAT_NAIVE</code> 은 고유한 이점을 제공합니다. 전역 수집 매개변수(avgdl)의 변경에 관계없이 정적으로 유지되는 캐시된 최대 영향 점수를 사용하는 DAAT 알고리즘과 달리 <code translate="no">TAAT_NAIVE</code> 은 이러한 변경에 동적으로 적응합니다.</p></li></ul></td>
+     <td><p>The algorithm used for building and querying the index. Valid values:</p><ul><li><p><code translate="no">"DAAT_MAXSCORE"</code> (default): Optimized Document-at-a-Time (DAAT) query processing using the MaxScore algorithm. MaxScore provides better performance for high <em>k</em> values or queries with many terms by skipping terms and documents likely to have minimal impact. It achieves this by partitioning terms into essential and non-essential groups based on their maximum impact scores, focusing on terms that can contribute to the top-k results.</p></li><li><p><code translate="no">"DAAT_WAND"</code>: Optimized DAAT query processing using the WAND algorithm. WAND evaluates fewer hit documents by leveraging maximum impact scores to skip non-competitive documents, but it has a higher per-hit overhead. This makes WAND more efficient for queries with small <em>k</em> values or short queries, where skipping is more feasible.</p></li><li><p><code translate="no">"TAAT_NAIVE"</code>: Basic Term-at-a-Time (TAAT) query processing. While it is slower compared to <code translate="no">DAAT_MAXSCORE</code> and <code translate="no">DAAT_WAND</code>, <code translate="no">TAAT_NAIVE</code> offers a unique advantage. Unlike DAAT algorithms, which use cached maximum impact scores that remain static regardless of changes to the global collection parameter (avgdl), <code translate="no">TAAT_NAIVE</code> dynamically adapts to such changes.</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.bm25_k1</code></p></td>
-     <td><p>용어 빈도 포화도를 제어합니다. 값이 높을수록 문서 순위에서 용어 빈도의 중요도가 높아집니다. 값 범위: [1.2, 2.0].</p></td>
+     <td><p>Controls the term frequency saturation. Higher values increase the importance of term frequencies in document ranking. Value range: [1.2, 2.0].</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.bm25_b</code></p></td>
-     <td><p>문서 길이가 정규화되는 정도를 제어합니다. 일반적으로 0에서 1 사이의 값이 사용되며, 일반적인 기본값은 0.75 정도입니다. 값이 1이면 길이 정규화를 하지 않고, 값이 0이면 전체 정규화를 의미합니다.</p></td>
+     <td><p>Controls the extent to which document length is normalized. Values between 0 and 1 are typically used, with a common default around 0.75. A value of 1 means no length normalization, while a value of 0 means full normalization.</p></td>
    </tr>
 </table>
-<h3 id="Create-the-collection" class="common-anchor-header">컬렉션 만들기<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
+<h3 id="Create-the-collection" class="common-anchor-header">Create the collection<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -476,9 +496,14 @@ indexes.add(IndexParam.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이제 정의한 스키마 및 인덱스 매개변수를 사용하여 컬렉션을 생성합니다.</p>
+    </button></h3><p>Now create the collection using the schema and index parameters defined.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>, 
     schema=schema, 
@@ -523,7 +548,7 @@ curl --request POST \
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-text-data" class="common-anchor-header">텍스트 데이터 삽입<button data-href="#Insert-text-data" class="anchor-icon" translate="no">
+<h2 id="Insert-text-data" class="common-anchor-header">Insert text data<button data-href="#Insert-text-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -538,9 +563,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션과 인덱스를 설정했으면 텍스트 데이터를 삽입할 준비가 되었습니다. 이 과정에서는 원시 텍스트만 제공하면 됩니다. 앞서 정의한 내장 함수는 각 텍스트 항목에 해당하는 스파스 벡터를 자동으로 생성합니다.</p>
+    </button></h2><p>After setting up your collection and index, you’re ready to insert text data. In this process, you need only to provide the raw text. The built-in function we defined earlier automatically generates the corresponding sparse vector for each text entry.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.insert(<span class="hljs-string">&#x27;my_collection&#x27;</span>, [
     {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval is a field of study.&#x27;</span>},
     {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval focuses on finding relevant information in large datasets.&#x27;</span>},
@@ -589,7 +619,7 @@ client.insert(InsertReq.builder()
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Perform-full-text-search" class="common-anchor-header">전체 텍스트 검색 수행<button data-href="#Perform-full-text-search" class="anchor-icon" translate="no">
+<h2 id="Perform-full-text-search" class="common-anchor-header">Perform full text search<button data-href="#Perform-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -604,12 +634,17 @@ client.insert(InsertReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션에 데이터를 삽입한 후에는 원시 텍스트 쿼리를 사용하여 전체 텍스트 검색을 수행할 수 있습니다. Milvus는 자동으로 쿼리를 스파스 벡터로 변환하고 BM25 알고리즘을 사용하여 일치하는 검색 결과의 순위를 매긴 다음 상위 K (<code translate="no">limit</code>) 결과를 반환합니다.</p>
+    </button></h2><p>Once you’ve inserted data into your collection, you can perform full text searches using raw text queries. Milvus automatically converts your query into a sparse vector and ranks the matched search results using the BM25 algorithm, and then returns the topK (<code translate="no">limit</code>) results.</p>
 <div class="alert note">
-<p>텍스트 형광펜을 구성하여 검색 결과에서 일치하는 용어를 강조 표시할 수 있습니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/text-highlighter.md">텍스트 하이라이터를</a> 참조하세요.</p>
+<p>You can highlight the matched terms in search results by configuring a text highlighter. See <a href="/docs/ko/v2.6.x/text-highlighter.md">Text Highlighter</a> for details.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>, 
 <span class="highlighted-comment-line">    data=[<span class="hljs-string">&#x27;whats the focus of information retrieval?&#x27;</span>],</span>
@@ -685,16 +720,16 @@ resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>파라미터</p></th>
-     <th><p>설명</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">search_params</code></p></td>
-     <td><p>검색 매개변수가 포함된 사전입니다.</p></td>
+     <td><p>A dictionary containing search parameters.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.drop_ratio_search</code></p></td>
-     <td><p>검색 중에 무시할 중요도가 낮은 용어의 비율입니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/sparse_vector.md">스파스 벡터를</a> 참조하세요.</p></td>
+     <td><p>Proportion of low-importance terms to ignore during search. For details, refer to <a href="/docs/ko/v2.6.x/sparse_vector.md">Sparse Vector</a>.</p></td>
    </tr>
    <tr>
      <td></td>
@@ -702,19 +737,19 @@ resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
    </tr>
    <tr>
      <td><p><code translate="no">data</code></p></td>
-     <td><p>자연어로 된 원시 쿼리 텍스트. Milvus는 BM25 함수를 사용하여 텍스트 쿼리를 자동으로 스파스 벡터로 변환하며, 미리 계산된 벡터를 제공하지 않습니다.</p></td>
+     <td><p>Raw query text in natural language. Milvus automatically converts your text query into sparse vectors using the BM25 function - do not provide pre-computed vectors.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">anns_field</code></p></td>
-     <td><p>내부적으로 생성된 스파스 벡터가 포함된 필드의 이름입니다.</p></td>
+     <td><p>The name of the field that contains internally generated sparse vectors.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">output_fields</code></p></td>
-     <td><p>검색 결과에 반환할 필드 이름의 목록입니다. BM25로 생성된 임베딩이 포함된 <strong>스파스 벡터 필드를 제외한</strong> 모든 필드를 지원합니다. 일반적인 출력 필드에는 기본 키 필드(예: <code translate="no">id</code>)와 원본 텍스트 필드(예: <code translate="no">text</code>)가 포함됩니다. 자세한 내용은 <a href="/docs/ko/v2.6.x/full-text-search.md#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search">FAQ를</a> 참조하세요.</p></td>
+     <td><p>List of field names to return in search results. Supports all fields <strong>except the sparse vector field</strong> containing BM25-generated embeddings. Common output fields include the primary key field (e.g., <code translate="no">id</code>) and the original text field (e.g., <code translate="no">text</code>). For more information, refer to <a href="/docs/ko/v2.6.x/full-text-search.md#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search">FAQ</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">limit</code></p></td>
-     <td><p>반환할 상위 일치 항목의 최대 개수입니다.</p></td>
+     <td><p>Maximum number of top matches to return.</p></td>
    </tr>
 </table>
 <h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
@@ -732,7 +767,7 @@ resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="common-anchor-header">전체 텍스트 검색에서 BM25 함수에 의해 생성된 스파스 벡터를 출력하거나 액세스할 수 있나요?<button data-href="#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="common-anchor-header">Can I output or access the sparse vectors generated by the BM25 function in full text search?<button data-href="#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -747,13 +782,13 @@ resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>아니요, BM25 함수에 의해 생성된 스파스 벡터는 전체 텍스트 검색에서 직접 액세스하거나 출력할 수 없습니다. 자세한 내용은 다음과 같습니다:</p>
+    </button></h3><p>No, the sparse vectors generated by the BM25 function are not directly accessible or outputable in full text search. Here are the details:</p>
 <ul>
-<li><p>BM25 함수는 내부적으로 랭킹 및 검색을 위해 스파스 벡터를 생성합니다.</p></li>
-<li><p>이러한 벡터는 스파스 필드에 저장되지만 다음에는 포함될 수 없습니다. <code translate="no">output_fields</code></p></li>
-<li><p>원본 텍스트 필드와 메타데이터(예: <code translate="no">id</code>, <code translate="no">text</code>)만 출력할 수 있습니다.</p></li>
+<li><p>The BM25 function generates sparse vectors internally for ranking and retrieval</p></li>
+<li><p>These vectors are stored in the sparse field but cannot be included in <code translate="no">output_fields</code></p></li>
+<li><p>You can only output the original text fields and metadata (like <code translate="no">id</code>, <code translate="no">text</code>)</p></li>
 </ul>
-<p>예시:</p>
+<p>Example:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># ❌ This throws an error - you cannot output the sparse field</span>
 client.search(
     collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>, 
@@ -774,7 +809,7 @@ client.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="common-anchor-header">액세스할 수 없는데 왜 스파스 벡터 필드를 정의해야 하나요?<button data-href="#Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="anchor-icon" translate="no">
+<h3 id="Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="common-anchor-header">Why do I need to define a sparse vector field if I can’t access it?<button data-href="#Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -789,16 +824,16 @@ client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>스파스 벡터 필드는 사용자가 직접 상호 작용하지 않는 데이터베이스 인덱스와 유사한 내부 검색 인덱스 역할을 합니다.</p>
-<p><strong>설계 근거</strong>:</p>
+    </button></h3><p>The sparse vector field serves as an internal search index, similar to database indexes that users don’t directly interact with.</p>
+<p><strong>Design Rationale</strong>:</p>
 <ul>
-<li><p>관심사 분리: 사용자는 텍스트(입력/출력)로 작업하고, Milvus는 벡터(내부 처리)를 처리합니다.</p></li>
-<li><p>성능: 사전 계산된 스파스 벡터를 통해 쿼리 중 빠른 BM25 순위 지정 가능</p></li>
-<li><p>사용자 경험: 간단한 텍스트 인터페이스 뒤에 복잡한 벡터 연산을 추상화합니다.</p></li>
+<li><p>Separation of Concerns: You work with text (input/output), Milvus handles vectors (internal processing)</p></li>
+<li><p>Performance: Pre-computed sparse vectors enable fast BM25 ranking during queries</p></li>
+<li><p>User Experience: Abstracts away complex vector operations behind a simple text interface</p></li>
 </ul>
-<p><strong>벡터 액세스가 필요한 경우</strong>:</p>
+<p><strong>If you need vector access</strong>:</p>
 <ul>
-<li><p>전체 텍스트 검색 대신 수동 스파스 벡터 연산 사용</p></li>
-<li><p>사용자 정의 스파스 벡터 워크플로우를 위한 별도의 컬렉션 생성</p></li>
+<li><p>Use manual sparse vector operations instead of full text search</p></li>
+<li><p>Create separate collections for custom sparse vector workflows</p></li>
 </ul>
-<p>자세한 내용은 <a href="/docs/ko/v2.6.x/sparse_vector.md">스파스 벡터를</a> 참조하세요.</p>
+<p>For details, refer to <a href="/docs/ko/v2.6.x/sparse_vector.md">Sparse Vector</a>.</p>

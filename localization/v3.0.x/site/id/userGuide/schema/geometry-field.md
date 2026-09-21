@@ -1,15 +1,14 @@
 ---
 id: geometry-field.md
-title: Bidang GeometriCompatible with Milvus 2.6.4+
+title: Geometry FieldCompatible with Milvus 2.6.4+
 summary: >-
-  Ketika membangun aplikasi seperti Sistem Informasi Geografis (SIG), alat
-  pemetaan, atau layanan berbasis lokasi, Anda sering kali perlu menyimpan dan
-  melakukan kueri data geometris. Tipe data GEOMETRI di Milvus memecahkan
-  tantangan ini dengan menyediakan cara asli untuk menyimpan dan meminta data
-  geometris yang fleksibel.
+  When building applications like Geographic Information Systems (GIS), mapping
+  tools, or location-based services, you often need to store and query geometric
+  data. The GEOMETRY data type in Milvus solves this challenge by providing a
+  native way to store and query flexible geometric data.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Geometry-Field" class="common-anchor-header">Bidang Geometri<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Geometry-Field" class="anchor-icon" translate="no">
+<h1 id="Geometry-Field" class="common-anchor-header">Geometry Field<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Geometry-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,17 +23,17 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Ketika membangun aplikasi seperti Sistem Informasi Geografis (SIG), alat pemetaan, atau layanan berbasis lokasi, Anda sering kali perlu menyimpan dan melakukan kueri data geometri. Tipe data <code translate="no">GEOMETRY</code> di Milvus memecahkan tantangan ini dengan menyediakan cara asli untuk menyimpan dan meminta data geometris yang fleksibel.</p>
-<p>Gunakan bidang GEOMETRI ketika Anda perlu menggabungkan kesamaan vektor dengan batasan spasial, misalnya:</p>
+    </button></h1><p>When building applications like Geographic Information Systems (GIS), mapping tools, or location-based services, you often need to store and query geometric data. The <code translate="no">GEOMETRY</code> data type in Milvus solves this challenge by providing a native way to store and query flexible geometric data.</p>
+<p>Use a GEOMETRY field when you need to combine vector similarity with spatial constraints, for example:</p>
 <ul>
-<li><p>Layanan Berbasis Lokasi (LBS): "temukan POI yang mirip <strong>dalam</strong> blok kota ini"</p></li>
-<li><p>Pencarian multi-modal: "ambil foto yang mirip <strong>dalam jarak 1 km</strong> dari titik ini"</p></li>
-<li><p>Peta &amp; logistik: "aset <strong>di dalam</strong> suatu wilayah" atau "rute yang <strong>berpotongan</strong> dengan jalur"</p></li>
+<li><p>Location-Base Service (LBS): “find similar POIs <strong>within</strong> this city block”</p></li>
+<li><p>Multi‑modal search: “retrieve similar photos <strong>within 1km</strong> of this point”</p></li>
+<li><p>Maps & logistics: “assets <strong>inside</strong> a region” or “routes <strong>intersecting</strong> a path”</p></li>
 </ul>
 <div class="alert note">
-<p>Untuk menggunakan bidang GEOMETRI, tingkatkan SDK Anda ke versi terbaru.</p>
+<p>To use the GEOMETRY field, upgrade your SDK to the latest version.</p>
 </div>
-<h2 id="What-is-a-GEOMETRY-field" class="common-anchor-header">Apa yang dimaksud dengan bidang GEOMETRI?<button data-href="#What-is-a-GEOMETRY-field" class="anchor-icon" translate="no">
+<h2 id="What-is-a-GEOMETRY-field" class="common-anchor-header">What is a GEOMETRY field?<button data-href="#What-is-a-GEOMETRY-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -49,18 +48,18 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Bidang GEOMETRI adalah tipe data yang ditentukan skema (<code translate="no">DataType.GEOMETRY</code>) di Milvus yang menyimpan data geometri. Ketika bekerja dengan bidang geometri, Anda berinteraksi dengan data menggunakan format <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-Known Text (WKT</a> ), representasi yang dapat dibaca oleh manusia yang digunakan untuk menyisipkan data dan melakukan kueri. Secara internal, Milvus mengubah WKT menjadi <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary">Well-Known Binary (WKB</a> ) untuk penyimpanan dan pemrosesan yang efisien, tetapi Anda tidak perlu menangani WKB secara langsung.</p>
-<p>Tipe data <code translate="no">GEOMETRY</code> mendukung objek-objek geometris berikut ini:</p>
+    </button></h2><p>A GEOMETRY field is a schema-defined data type (<code translate="no">DataType.GEOMETRY</code>) in Milvus that stores geometric data. When working with geometry fields, you interact with the data using the <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-Known Text (WKT)</a> format, a human-readable representation used for both inserting data and querying. Internally, Milvus converts WKT to <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary">Well-Known Binary (WKB)</a> for efficient storage and processing, but you do not need to handle WKB directly.</p>
+<p>The <code translate="no">GEOMETRY</code> data type supports the following geometric objects:</p>
 <ul>
-<li><p><strong>TITIK</strong>: <code translate="no">POINT (x y)</code>; misalnya, <code translate="no">POINT (13.403683 52.520711)</code> di mana <code translate="no">x</code> = bujur dan <code translate="no">y</code> = lintang</p></li>
-<li><p><strong>LINESTRING</strong>: <code translate="no">LINESTRING (x1 y1, x2 y2, …)</code>; sebagai contoh, <code translate="no">LINESTRING (13.40 52.52, 13.41 52.51)</code></p></li>
-<li><p><strong>POLIGON</strong>: <code translate="no">POLYGON ((x1 y1, x2 y2, x3 y3, x1 y1))</code>; sebagai contoh, <code translate="no">POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))</code></p></li>
-<li><p><strong>MULTIPOINT</strong>: <code translate="no">MULTIPOINT ((x1 y1), (x2 y2), …)</code>, sebagai contoh, <code translate="no">MULTIPOINT ((10 40), (40 30), (20 20), (30 10))</code></p></li>
-<li><p><strong>MULTILINESTRING</strong>: <code translate="no">MULTILINESTRING ((x1 y1, …), (xk yk, …))</code>, misalnya, <code translate="no">MULTILINESTRING ((10 10, 20 20, 10 40), (40 40, 30 30, 40 20, 30 10))</code></p></li>
-<li><p><strong>MULTIPOLYGON</strong>: <code translate="no">MULTIPOLYGON (((outer ring ...)), ((outer ring ...)))</code>, misalnya, <code translate="no">MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), ((15 5, 40 10, 10 20, 5 10, 15 5)))</code></p></li>
-<li><p><strong>KUMPULAN GEOMETRI</strong>: <code translate="no">GEOMETRYCOLLECTION(POINT(x y), LINESTRING(x1 y1, x2 y2), ...)</code>, sebagai contoh, <code translate="no">GEOMETRYCOLLECTION (POINT (40 10), LINESTRING (10 10, 20 20, 10 40), POLYGON ((40 40, 20 45, 45 30, 40 40)))</code></p></li>
+<li><p><strong>POINT</strong>: <code translate="no">POINT (x y)</code>; for example, <code translate="no">POINT (13.403683 52.520711)</code> where <code translate="no">x</code> = longitude and <code translate="no">y</code> = latitude</p></li>
+<li><p><strong>LINESTRING</strong>: <code translate="no">LINESTRING (x1 y1, x2 y2, …)</code>; for example, <code translate="no">LINESTRING (13.40 52.52, 13.41 52.51)</code></p></li>
+<li><p><strong>POLYGON</strong>: <code translate="no">POLYGON ((x1 y1, x2 y2, x3 y3, x1 y1))</code>; for example, <code translate="no">POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))</code></p></li>
+<li><p><strong>MULTIPOINT</strong>: <code translate="no">MULTIPOINT ((x1 y1), (x2 y2), …)</code>, for example, <code translate="no">MULTIPOINT ((10 40), (40 30), (20 20), (30 10))</code></p></li>
+<li><p><strong>MULTILINESTRING</strong>: <code translate="no">MULTILINESTRING ((x1 y1, …), (xk yk, …))</code>, for example, <code translate="no">MULTILINESTRING ((10 10, 20 20, 10 40), (40 40, 30 30, 40 20, 30 10))</code></p></li>
+<li><p><strong>MULTIPOLYGON</strong>: <code translate="no">MULTIPOLYGON (((outer ring ...)), ((outer ring ...)))</code>, for example, <code translate="no">MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), ((15 5, 40 10, 10 20, 5 10, 15 5)))</code></p></li>
+<li><p><strong>GEOMETRYCOLLECTION</strong>: <code translate="no">GEOMETRYCOLLECTION(POINT(x y), LINESTRING(x1 y1, x2 y2), ...)</code>, for example, <code translate="no">GEOMETRYCOLLECTION (POINT (40 10), LINESTRING (10 10, 20 20, 10 40), POLYGON ((40 40, 20 45, 45 30, 40 40)))</code></p></li>
 </ul>
-<h2 id="Basic-operations" class="common-anchor-header">Operasi dasar<button data-href="#Basic-operations" class="anchor-icon" translate="no">
+<h2 id="Basic-operations" class="common-anchor-header">Basic operations<button data-href="#Basic-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,8 +74,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Alur kerja untuk menggunakan bidang <code translate="no">GEOMETRY</code> melibatkan pendefinisiannya dalam skema koleksi Anda, memasukkan data geometri, dan kemudian meminta data menggunakan ekspresi filter tertentu.</p>
-<h3 id="Step-1-Define-a-GEOMETRY-field" class="common-anchor-header">Langkah 1: Mendefinisikan bidang GEOMETRI<button data-href="#Step-1-Define-a-GEOMETRY-field" class="anchor-icon" translate="no">
+    </button></h2><p>The workflow for using a <code translate="no">GEOMETRY</code> field involves defining it in your collection schema, inserting geometric data, and then querying the data using specific filter expressions.</p>
+<h3 id="Step-1-Define-a-GEOMETRY-field" class="common-anchor-header">Step 1: Define a GEOMETRY field<button data-href="#Step-1-Define-a-GEOMETRY-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -91,9 +90,14 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk menggunakan bidang <code translate="no">GEOMETRY</code>, tentukan secara eksplisit dalam skema koleksi Anda saat membuat koleksi. Contoh berikut ini menunjukkan cara membuat koleksi dengan field <code translate="no">geo</code> bertipe <code translate="no">DataType.GEOMETRY</code>.</p>
+    </button></h3><p>To use a <code translate="no">GEOMETRY</code> field, explicitly define it in your collection schema when creating the collection. The following example demonstrates how to create a collection with a <code translate="no">geo</code> field of type <code translate="no">DataType.GEOMETRY</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 
@@ -175,9 +179,9 @@ client.createCollection(requestCreate);
 
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Dalam contoh ini, bidang <code translate="no">GEOMETRY</code> yang didefinisikan dalam skema koleksi mengizinkan nilai null dengan <code translate="no">nullable=True</code>. Untuk detailnya, lihat <a href="/docs/id/nullable-and-default.md">Nullable &amp; Default</a>.</p>
+<p>In this example, the <code translate="no">GEOMETRY</code> field defined in the collection schema allows null values with <code translate="no">nullable=True</code>. For details, refer to <a href="/docs/id/nullable-and-default.md">Nullable & Default</a>.</p>
 </div>
-<h3 id="Step-2-Insert-data" class="common-anchor-header">Langkah 2: Menyisipkan data<button data-href="#Step-2-Insert-data" class="anchor-icon" translate="no">
+<h3 id="Step-2-Insert-data" class="common-anchor-header">Step 2: Insert data<button data-href="#Step-2-Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -192,9 +196,14 @@ client.createCollection(requestCreate);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Masukkan entitas dengan data geometri dalam format <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">WKT</a>. Berikut adalah contoh dengan beberapa titik geografis:</p>
+    </button></h3><p>Insert entities with geometry data in <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">WKT</a> format. Here’s an example with several geo points:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">rng = np.random.default_rng(seed=<span class="hljs-number">19530</span>)
 geo_points = [
     <span class="hljs-string">&#x27;POINT(13.399710 52.518010)&#x27;</span>,
@@ -282,7 +291,7 @@ client.insert(InsertReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Filtering-operations" class="common-anchor-header">Langkah 3: Operasi pemfilteran<button data-href="#Step-3-Filtering-operations" class="anchor-icon" translate="no">
+<h3 id="Step-3-Filtering-operations" class="common-anchor-header">Step 3: Filtering operations<button data-href="#Step-3-Filtering-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -297,15 +306,20 @@ client.insert(InsertReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Sebelum Anda dapat melakukan operasi pemfilteran pada bidang <code translate="no">GEOMETRY</code>, pastikan:</p>
+    </button></h3><p>Before you can perform filtering operations on <code translate="no">GEOMETRY</code> fields, make sure:</p>
 <ul>
-<li><p>Anda telah membuat indeks pada setiap bidang vektor.</p></li>
-<li><p>Koleksi dimuat ke dalam memori.</p></li>
+<li><p>You have created an index on each vector field.</p></li>
+<li><p>The collection is loaded into memory.</p></li>
 </ul>
 <p><details></p>
-<p><summary>Tampilkan kode</summary></p>
+<p><summary>Show code</summary></p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">index_params = milvus_client.prepare_index_params()
 index_params.add_index(field_name=<span class="hljs-string">&quot;embeddings&quot;</span>, metric_type=<span class="hljs-string">&quot;L2&quot;</span>)
 
@@ -349,22 +363,27 @@ client.createIndex(CreateIndexReq.builder()
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>Setelah persyaratan ini terpenuhi, Anda dapat menggunakan ekspresi dengan operator geometri khusus untuk memfilter koleksi Anda berdasarkan nilai geometri.</p>
-<h4 id="Define-filter-expressions" class="common-anchor-header">Menentukan ekspresi penyaringan</h4><p>Untuk memfilter pada bidang <code translate="no">GEOMETRY</code>, gunakan operator geometri dalam ekspresi:</p>
+<p>Once these requirements are met, you can use expressions with dedicated geometry operators to filter your collection based on the geometric values.</p>
+<h4 id="Define-filter-expressions" class="common-anchor-header">Define filter expressions</h4><p>To filter on a <code translate="no">GEOMETRY</code> field, use a geometry operator in an expression:</p>
 <ul>
-<li><p>Umum: <code translate="no">{operator}(geo_field, '{wkt}')</code></p></li>
-<li><p>Berbasis jarak: <code translate="no">ST_DWITHIN(geo_field, '{wkt}', distance)</code></p></li>
+<li><p>General: <code translate="no">{operator}(geo_field, '{wkt}')</code></p></li>
+<li><p>Distance-based: <code translate="no">ST_DWITHIN(geo_field, '{wkt}', distance)</code></p></li>
 </ul>
-<p>Di mana</p>
+<p>Where:</p>
 <ul>
-<li><p><code translate="no">operator</code> adalah salah satu operator geometri yang didukung (misalnya, <code translate="no">ST_CONTAINS</code>, <code translate="no">ST_INTERSECTS</code>). Nama operator harus menggunakan huruf besar atau huruf kecil. Untuk daftar operator yang didukung, lihat <a href="/docs/id/geometry-operators.md#Supported-geometry-operators">Operator geometri yang didukung</a>.</p></li>
-<li><p><code translate="no">geo_field</code> adalah nama bidang <code translate="no">GEOMETRY</code> Anda.</p></li>
-<li><p><code translate="no">'{wkt}'</code> adalah representasi WKT dari geometri yang akan ditanyakan.</p></li>
-<li><p><code translate="no">distance</code> adalah ambang batas khusus untuk <code translate="no">ST_DWITHIN</code>.</p></li>
+<li><p><code translate="no">operator</code> is one of the supported geometry operators (e.g., <code translate="no">ST_CONTAINS</code>, <code translate="no">ST_INTERSECTS</code>). Operator names must be all uppercase or all lowercase. For a list of supported operators, refer to <a href="/docs/id/geometry-operators.md#Supported-geometry-operators">Supported geometry operators</a>.</p></li>
+<li><p><code translate="no">geo_field</code> is the name of your <code translate="no">GEOMETRY</code> field.</p></li>
+<li><p><code translate="no">'{wkt}'</code> is the WKT representation of the geometry to query.</p></li>
+<li><p><code translate="no">distance</code> is the threshold specifically for <code translate="no">ST_DWITHIN</code>.</p></li>
 </ul>
-<p>Contoh berikut ini menunjukkan cara menggunakan operator khusus geometri yang berbeda dalam ekspresi filter:</p>
-<h4 id="Example-1-Find-entities-within-a-rectangular-area" class="common-anchor-header">Contoh 1: Menemukan entitas dalam area persegi panjang</h4><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<p>The following examples demonstrate how to use different geometry-specific operators in a filter expression:</p>
+<h4 id="Example-1-Find-entities-within-a-rectangular-area" class="common-anchor-header">Example 1: Find entities within a rectangular area</h4><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">top_left_lon, top_left_lat = <span class="hljs-number">13.403683</span>, <span class="hljs-number">52.520711</span>
 bottom_right_lon, bottom_right_lat = <span class="hljs-number">13.455868</span>, <span class="hljs-number">52.495862</span>
 bounding_box_wkt = <span class="hljs-string">f&quot;POLYGON((<span class="hljs-subst">{top_left_lon}</span> <span class="hljs-subst">{top_left_lat}</span>, <span class="hljs-subst">{bottom_right_lon}</span> <span class="hljs-subst">{top_left_lat}</span>, <span class="hljs-subst">{bottom_right_lon}</span> <span class="hljs-subst">{bottom_right_lat}</span>, <span class="hljs-subst">{top_left_lon}</span> <span class="hljs-subst">{bottom_right_lat}</span>, <span class="hljs-subst">{top_left_lon}</span> <span class="hljs-subst">{top_left_lat}</span>))&quot;</span>
@@ -429,8 +448,13 @@ System.out.println(<span class="hljs-string">&quot;Query results:&quot;</span>);
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Example-2-Find-entities-within-1km-of-a-central-point" class="common-anchor-header">Contoh 2: Menemukan entitas dalam jarak 1 km dari titik pusat</h4><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<h4 id="Example-2-Find-entities-within-1km-of-a-central-point" class="common-anchor-header">Example 2: Find entities within 1km of a central point</h4><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">center_point_lon, center_point_lat = <span class="hljs-number">13.403683</span>, <span class="hljs-number">52.520711</span>
 radius_meters = <span class="hljs-number">1000.0</span>
 central_point_wkt = <span class="hljs-string">f&quot;POINT(<span class="hljs-subst">{center_point_lon}</span> <span class="hljs-subst">{center_point_lat}</span>)&quot;</span>
@@ -483,8 +507,13 @@ System.out.println(<span class="hljs-string">&quot;Query results:&quot;</span>);
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Example-3-Combine-vector-similarity-with-a-spatial-filter" class="common-anchor-header">Contoh 3: Menggabungkan kemiripan vektor dengan filter spasial</h4><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<h4 id="Example-3-Combine-vector-similarity-with-a-spatial-filter" class="common-anchor-header">Example 3: Combine vector similarity with a spatial filter</h4><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">vectors_to_search = rng.random((<span class="hljs-number">1</span>, dim))
 result = milvus_client.search(
     collection_name,
@@ -543,7 +572,7 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Next-Accelerate-queries" class="common-anchor-header">Berikutnya: Mempercepat kueri<button data-href="#Next-Accelerate-queries" class="anchor-icon" translate="no">
+<h2 id="Next-Accelerate-queries" class="common-anchor-header">Next: Accelerate queries<button data-href="#Next-Accelerate-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -558,9 +587,9 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Secara default, kueri pada bidang <code translate="no">GEOMETRY</code> tanpa indeks akan melakukan pemindaian penuh terhadap semua baris, yang dapat berjalan lambat pada kumpulan data yang besar. Untuk mempercepat kueri geometri, buat indeks <code translate="no">RTREE</code> pada bidang GEOMETRI Anda.</p>
-<p>Untuk detailnya, lihat <a href="/docs/id/rtree.md">RTREE</a>.</p>
-<h2 id="FAQ" class="common-anchor-header">PERTANYAAN UMUM<button data-href="#FAQ" class="anchor-icon" translate="no">
+    </button></h2><p>By default, queries on <code translate="no">GEOMETRY</code> fields without an index will perform a full scan of all rows, which can be slow on large datasets. To accelerate geometric queries, create an <code translate="no">RTREE</code> index on your GEOMETRY field.</p>
+<p>For details, refer to <a href="/docs/id/rtree.md">RTREE</a>.</p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -575,7 +604,7 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="If-Ive-enabled-the-dynamic-field-feature-for-my-collection-can-I-insert-geometric-data-into-a-dynamic-field-key" class="common-anchor-header">Jika saya telah mengaktifkan fitur bidang dinamis untuk koleksi saya, dapatkah saya memasukkan data geometri ke dalam kunci bidang dinamis?<button data-href="#If-Ive-enabled-the-dynamic-field-feature-for-my-collection-can-I-insert-geometric-data-into-a-dynamic-field-key" class="anchor-icon" translate="no">
+    </button></h2><h3 id="If-Ive-enabled-the-dynamic-field-feature-for-my-collection-can-I-insert-geometric-data-into-a-dynamic-field-key" class="common-anchor-header">If I’ve enabled the dynamic field feature for my collection, can I insert geometric data into a dynamic field key?<button data-href="#If-Ive-enabled-the-dynamic-field-feature-for-my-collection-can-I-insert-geometric-data-into-a-dynamic-field-key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -590,8 +619,8 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Tidak, data geometri tidak dapat dimasukkan ke dalam field dinamis. Sebelum memasukkan data geometri, pastikan bidang <code translate="no">GEOMETRY</code> telah didefinisikan secara eksplisit dalam skema koleksi Anda.</p>
-<h3 id="Does-the-GEOMETRY-field-support-the-mmap-feature" class="common-anchor-header">Apakah field GEOMETRI mendukung fitur mmap?<button data-href="#Does-the-GEOMETRY-field-support-the-mmap-feature" class="anchor-icon" translate="no">
+    </button></h3><p>No, geometry data cannot be inserted into a dynamic field. Before inserting geometric data, make sure the <code translate="no">GEOMETRY</code> field has been explicitly defined in your collection schema.</p>
+<h3 id="Does-the-GEOMETRY-field-support-the-mmap-feature" class="common-anchor-header">Does the GEOMETRY field support the mmap feature?<button data-href="#Does-the-GEOMETRY-field-support-the-mmap-feature" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -606,8 +635,8 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ya, bidang <code translate="no">GEOMETRY</code> mendukung mmap. Untuk informasi lebih lanjut, lihat <a href="https://zilliverse.feishu.cn/wiki/P3wrwSMNNihy8Vkf9p6cTsWYnTb">Menggunakan mmap</a>.</p>
-<h3 id="Can-I-define-the-GEOMETRY-field-as-nullable-or-set-a-default-value" class="common-anchor-header">Dapatkah saya mendefinisikan bidang GEOMETRI sebagai nullable atau menetapkan nilai default?<button data-href="#Can-I-define-the-GEOMETRY-field-as-nullable-or-set-a-default-value" class="anchor-icon" translate="no">
+    </button></h3><p>Yes, the <code translate="no">GEOMETRY</code> field supports mmap. For more information, refer to <a href="https://zilliverse.feishu.cn/wiki/P3wrwSMNNihy8Vkf9p6cTsWYnTb">Use mmap</a>.</p>
+<h3 id="Can-I-define-the-GEOMETRY-field-as-nullable-or-set-a-default-value" class="common-anchor-header">Can I define the GEOMETRY field as nullable or set a default value?<button data-href="#Can-I-define-the-GEOMETRY-field-as-nullable-or-set-a-default-value" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -622,4 +651,4 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ya, bidang GEOMETRI mendukung atribut <code translate="no">nullable</code> dan nilai default dalam format WKT. Untuk informasi lebih lanjut, lihat <a href="/docs/id/nullable-and-default.md">Nullable &amp; Default</a>.</p>
+    </button></h3><p>Yes, the GEOMETRY field supports the <code translate="no">nullable</code> attribute and a default value in WKT format. For more information, refer to <a href="/docs/id/nullable-and-default.md">Nullable & Default</a>.</p>

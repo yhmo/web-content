@@ -2,11 +2,14 @@
 id: ngram.md
 title: NGRAM
 summary: >-
-  Milvus 中的 NGRAM 索引是為了加速 VARCHAR 欄位或 JSON 欄位中特定 JSON 路徑的 LIKE
-  查詢而建立的。在建立索引之前，Milvus 會將文字分割成固定長度 n 的重疊子串，稱為 n-gram。例如，當 n = 3
-  時，單字「Milvus」會被分割成 3 個字元："Mil"、"ilv"、"lvu 「和 」vus"。這些 n-grams
-  會儲存在一個反向索引中，該索引會將每個 gram 對應到其出現的文件 ID。在查詢時，此索引允許 Milvus
-  快速將搜尋範圍縮小到一小組候選項，從而大大加快了查詢的執行速度。
+  The NGRAM index in Milvus is built to accelerate LIKE queries on VARCHAR
+  fields or specific JSON paths within JSON fields. Before building the index,
+  Milvus splits text into short, overlapping substrings of a fixed length n,
+  known as n-grams. For example, with n = 3, the word "Milvus" is split into
+  3-grams: "Mil", "ilv", "lvu", and "vus". These n-grams are then stored in an
+  inverted index that maps each gram to the document IDs in which it appears. At
+  query time, this index allows Milvus to quickly narrow the search to a small
+  set of candidates, resulting in much faster query execution.
 ---
 <h1 id="NGRAM" class="common-anchor-header">NGRAM<button data-href="#NGRAM" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -23,17 +26,17 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 中的<code translate="no">NGRAM</code> 索引是為了加速對<code translate="no">VARCHAR</code> 欄位或<code translate="no">JSON</code> 欄位內特定 JSON 路徑的<code translate="no">LIKE</code> 查詢而建立的。在建立索引之前，Milvus 會將文字分割成固定長度<em>n</em> 的短小、重疊子串，稱為<em>n-gram</em>。例如，當<em>n = 3</em> 時，單字<em>「Milvus」</em>會被分割成 3 個字元：<em>"Mil"、</em> <em>"ilv"、"</em> <em>lvu 「</em>和<em>」vus"。</em>然後，這些 n-grams 會儲存在一個反向索引中，該索引會將每個 gram 對應到出現該 gram 的文件 ID。在查詢時，此索引允許 Milvus 快速將搜尋範圍縮小到一小組候選詞，從而大大加快了查詢的執行速度。</p>
-<p>當您需要快速的前綴、後綴、下綴或通配符篩選時，請使用它，例如：</p>
+    </button></h1><p>The <code translate="no">NGRAM</code> index in Milvus is built to accelerate <code translate="no">LIKE</code> queries on <code translate="no">VARCHAR</code> fields or specific JSON paths within <code translate="no">JSON</code> fields. Before building the index, Milvus splits text into short, overlapping substrings of a fixed length <em>n</em>, known as <em>n-grams</em>. For example, with <em>n = 3</em>, the word <em>“Milvus”</em> is split into 3-grams: <em>“Mil”</em>, <em>“ilv”</em>, <em>“lvu”</em>, and <em>“vus”</em>. These n-grams are then stored in an inverted index that maps each gram to the document IDs in which it appears. At query time, this index allows Milvus to quickly narrow the search to a small set of candidates, resulting in much faster query execution.</p>
+<p>Use it when you need fast prefix, suffix, infix, or wildcard filtering such as:</p>
 <ul>
 <li><p><code translate="no">name LIKE &quot;data%&quot;</code></p></li>
 <li><p><code translate="no">title LIKE &quot;%vector%&quot;</code></p></li>
 <li><p><code translate="no">path LIKE &quot;%json&quot;</code></p></li>
 </ul>
 <div class="alert note">
-<p>有關篩選表達語法的詳細資訊，請參閱<a href="/docs/zh-hant/basic-operators.md#Range-operators">基本運算符</a>。</p>
+<p>For details on filter expression syntax, refer to <a href="/docs/zh-hant/v2.6.x/basic-operators.md#Range-operators">Basic Operators</a>.</p>
 </div>
-<h2 id="How-it-works" class="common-anchor-header">如何運作<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -48,12 +51,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 在兩個階段的過程中實現<code translate="no">NGRAM</code> 索引：</p>
+    </button></h2><p>Milvus implements the <code translate="no">NGRAM</code> index in a two-phase process:</p>
 <ol>
-<li><p><strong>建立索引</strong>：為每個文件產生 n-grams，並在擷取過程中建立反向索引。</p></li>
-<li><p><strong>加速查詢</strong>：使用索引過濾到一個小的候選集，然後驗證完全匹配。</p></li>
+<li><p><strong>Build index</strong>: Generate n-grams for each document and build an inverted index during ingest.</p></li>
+<li><p><strong>Accelerate queries</strong> : Use the index to filter to a small candidate set, then verify exact matches.</p></li>
 </ol>
-<h3 id="Phase-1-Build-the-index" class="common-anchor-header">階段 1：建立索引<button data-href="#Phase-1-Build-the-index" class="anchor-icon" translate="no">
+<h3 id="Phase-1-Build-the-index" class="common-anchor-header">Phase 1: Build the index<button data-href="#Phase-1-Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,19 +71,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在資料擷取過程中，Milvus 會執行兩個主要步驟來建立 NGRAM 索引：</p>
+    </button></h3><p>During data ingestion, Milvus builds the NGRAM index by performing two main steps:</p>
 <ol>
-<li><p><strong>將文字分解成 n-grams</strong>：Milvus 在目標欄位中的每個字串上滑動一個<em>n</em>的視窗，並擷取重疊的子串或<em>n-gram</em>。這些子串的長度在可設定的範圍內，<code translate="no">[min_gram, max_gram]</code>.</p>
+<li><p><strong>Decompose text into n-grams</strong>: Milvus slides a window of <em>n</em> across each string in the target field and extracts overlapping substrings, or <em>n-grams</em>. The length of these substrings falls within a configurable range, <code translate="no">[min_gram, max_gram]</code>.</p>
 <ul>
-<li><p><code translate="no">min_gram</code>:要產生的最短 n-gram。這也定義了可從索引獲益的最小查詢子串長度。</p></li>
-<li><p><code translate="no">max_gram</code>:要產生的最長 n-gram。在查詢時，它也會用來作為分割長查詢字串時的最大視窗大小。</p></li>
+<li><p><code translate="no">min_gram</code>: The shortest n-gram to generate. This also defines the minimum query substring length that can benefit from the index.</p></li>
+<li><p><code translate="no">max_gram</code>: The longest n-gram to generate. At query time, it is also used as the maximum window size when splitting long query strings.</p></li>
 </ul>
-<p>例如，以<code translate="no">min_gram=2</code> 和<code translate="no">max_gram=3</code> 為例，字串<code translate="no">&quot;AI database&quot;</code> 拆分如下：</p></li>
+<p>For example, with <code translate="no">min_gram=2</code> and <code translate="no">max_gram=3</code>, the string <code translate="no">&quot;AI database&quot;</code> is broken down as follows:</p></li>
 </ol>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/build-ngram-index.png" alt="Build Ngram Index" class="doc-image" id="build-ngram-index" />
-   </span> <span class="img-wrapper"> <span>建立 Ngram 索引</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/build-ngram-index.png" alt="Build Ngram Index" class="doc-image" id="build-ngram-index" />
+    <span>Build Ngram Index</span>
+  </span>
+</p>
 <pre><code translate="no">- **2-grams:** `AI`, `I_`, `_d`, `da`, `at`, ...
 
 - **3-grams:** `AI_`, `I_d`, `_da`, `dat`, `ata`, ...
@@ -104,20 +109,22 @@ summary: >-
 &lt;/div&gt;
 </code></pre>
 <ol>
-<li><p><strong>建立倒置索引</strong>：建立<strong>倒置索引</strong>，將每個產生的 n-gram 對應到包含該 n-gram 的文件 ID 清單。</p>
-<p>例如，如果 2-gram<code translate="no">&quot;AI&quot;</code> 出現在 ID 為 1、5、6、8 和 9 的文件中，索引就會記錄<code translate="no">{&quot;AI&quot;: [1, 5, 6, 8, 9]}</code> 。此索引可在查詢時使用，以快速縮小搜尋範圍。</p></li>
+<li><p><strong>Build an inverted index</strong>: An <strong>inverted index</strong> is created that maps each generated n-gram to a list of the document IDs containing it.</p>
+<p>For instance, if the 2-gram <code translate="no">&quot;AI&quot;</code> appears in documents with IDs 1, 5, 6, 8, and 9, the index records <code translate="no">{&quot;AI&quot;: [1, 5, 6, 8, 9]}</code>. This index is then used at query time to quickly narrow the search scope.</p></li>
 </ol>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/build-ngram-index-2.png" alt="Build Ngram Index 2" class="doc-image" id="build-ngram-index-2" />
-   </span> <span class="img-wrapper"> <span>建立 Ngram 索引 2</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/build-ngram-index-2.png" alt="Build Ngram Index 2" class="doc-image" id="build-ngram-index-2" />
+    <span>Build Ngram Index 2</span>
+  </span>
+</p>
 <pre><code translate="no">&lt;div class=&quot;alert note&quot;&gt;
 
 A wider `[min_gram, max_gram]` range creates more grams and larger mapping lists. If memory is tight, consider mmap mode for very large posting lists. For details, refer to [Use mmap](https://zilliverse.feishu.cn/wiki/P3wrwSMNNihy8Vkf9p6cTsWYnTb).
 
 &lt;/div&gt;
 </code></pre>
-<h3 id="Phase-2-Accelerate-queries" class="common-anchor-header">第二階段：加速查詢<button data-href="#Phase-2-Accelerate-queries" class="anchor-icon" translate="no">
+<h3 id="Phase-2-Accelerate-queries" class="common-anchor-header">Phase 2: Accelerate queries<button data-href="#Phase-2-Accelerate-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,24 +139,26 @@ A wider `[min_gram, max_gram]` range creates more grams and larger mapping lists
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>當<code translate="no">LIKE</code> 過濾器被執行時，Milvus 會使用 NGRAM 索引來加速查詢，步驟如下：</p>
+    </button></h3><p>When a <code translate="no">LIKE</code> filter is executed, Milvus uses the NGRAM index to accelerate the query in the following steps:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/accelerate-queries.png" alt="Accelerate Queries" class="doc-image" id="accelerate-queries" />
-   </span> <span class="img-wrapper"> <span>加速查詢</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/accelerate-queries.png" alt="Accelerate Queries" class="doc-image" id="accelerate-queries" />
+    <span>Accelerate Queries</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>擷取查詢詞：</strong>從<code translate="no">LIKE</code> 表達式中萃取不含通配符的連續子串 (例如<code translate="no">&quot;%database%&quot;</code> 變成<code translate="no">&quot;database&quot;</code>)。</p></li>
-<li><p><strong>分解查詢詞：</strong>根據查詢詞的長度 (<code translate="no">L</code>) 以及<code translate="no">min_gram</code> 和<code translate="no">max_gram</code> 的設定，將查詢詞分解為<em>n 個字元</em>。</p>
+<li><p><strong>Extract the query term:</strong> The contiguous substring without wildcards is extracted from the <code translate="no">LIKE</code> expression (e.g., <code translate="no">&quot;%database%&quot;</code> becomes <code translate="no">&quot;database&quot;</code>).</p></li>
+<li><p><strong>Decompose the query term:</strong> The query term is decomposed into <em>n-grams</em> based on its length (<code translate="no">L</code>) and the <code translate="no">min_gram</code> and <code translate="no">max_gram</code> settings.</p>
 <ul>
-<li><p>如果<code translate="no">L &lt; min_gram</code> ，則無法使用索引，查詢會退回到完整掃描。</p></li>
-<li><p>如果是<code translate="no">min_gram ≤ L ≤ max_gram</code> ，則整個查詢詞會被視為單一 n-gram，不需要進一步分解。</p></li>
-<li><p>如果是<code translate="no">L &gt; max_gram</code> ，查詢詞會使用等於<code translate="no">max_gram</code> 的視窗大小分解成重疊的格。</p></li>
+<li><p>If <code translate="no">L &lt; min_gram</code>, the index cannot be used, and the query falls back to a full scan.</p></li>
+<li><p>If <code translate="no">min_gram ≤ L ≤ max_gram</code>, the entire query term is treated as a single n-gram, and no further decomposition is necessary.</p></li>
+<li><p>If <code translate="no">L &gt; max_gram</code>, the query term is broken down into overlapping grams using a window size equal to <code translate="no">max_gram</code>.</p></li>
 </ul>
-<p>舉例來說，如果<code translate="no">max_gram</code> 設定為<code translate="no">3</code> ，而查詢詞為<code translate="no">&quot;database&quot;</code> ，長度為<strong>8</strong>，則會分解為<code translate="no">&quot;dat&quot;</code>,<code translate="no">&quot;ata&quot;</code>,<code translate="no">&quot;tab&quot;</code> 等 3 個克的子串。</p></li>
-<li><p><strong>尋找每個格及交集</strong>：Milvus 在倒排索引中尋找每個查詢格，然後交集所得的文件 ID 清單，找出一小組候選文件。這些候選文件包含查詢中的所有語法。</p></li>
-<li><p><strong>驗證並返回結果：</strong>然後，原始的<code translate="no">LIKE</code> 過濾器只會應用在小的候選集上做最後檢查，以找出完全符合的結果。</p></li>
+<p>For example, if the <code translate="no">max_gram</code> is set to <code translate="no">3</code> and the query term is <code translate="no">&quot;database&quot;</code>, which has a length of <strong>8</strong>, it is decomposed into 3-gram substrings like <code translate="no">&quot;dat&quot;</code>, <code translate="no">&quot;ata&quot;</code>, <code translate="no">&quot;tab&quot;</code>, and so on.</p></li>
+<li><p><strong>Look for each gram & intersect</strong>: Milvus looks up each of the query grams in the inverted index and then intersects the resulting document ID lists to find a small set of candidate documents. These candidates contain all the grams from the query.</p></li>
+<li><p><strong>Verify and return results:</strong> The original <code translate="no">LIKE</code> filter is then applied as a final check on only the small candidate set to find the exact matches.</p></li>
 </ol>
-<h2 id="Create-an-NGRAM-index" class="common-anchor-header">建立 NGRAM 索引<button data-href="#Create-an-NGRAM-index" class="anchor-icon" translate="no">
+<h2 id="Create-an-NGRAM-index" class="common-anchor-header">Create an NGRAM index<button data-href="#Create-an-NGRAM-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -164,8 +173,8 @@ A wider `[min_gram, max_gram]` range creates more grams and larger mapping lists
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您可以在<code translate="no">VARCHAR</code> 欄位或<code translate="no">JSON</code> 欄位內的特定路徑上建立 NGRAM 索引。</p>
-<h3 id="Example-1-Create-on-a-VARCHAR-field" class="common-anchor-header">範例 1：在 VARCHAR 欄位上建立<button data-href="#Example-1-Create-on-a-VARCHAR-field" class="anchor-icon" translate="no">
+    </button></h2><p>You can create an NGRAM index on a <code translate="no">VARCHAR</code> field or on a specific path inside a <code translate="no">JSON</code> field.</p>
+<h3 id="Example-1-Create-on-a-VARCHAR-field" class="common-anchor-header">Example 1: Create on a VARCHAR field<button data-href="#Example-1-Create-on-a-VARCHAR-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -180,7 +189,7 @@ A wider `[min_gram, max_gram]` range creates more grams and larger mapping lists
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>對於<code translate="no">VARCHAR</code> 欄位，您只需指定<code translate="no">field_name</code> 並配置<code translate="no">min_gram</code> 和<code translate="no">max_gram</code> 。</p>
+    </button></h3><p>For a <code translate="no">VARCHAR</code> field, you simply specify the <code translate="no">field_name</code> and configure <code translate="no">min_gram</code> and <code translate="no">max_gram</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your server address</span>
@@ -205,8 +214,8 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>此設定會為<code translate="no">text</code> 中的每個字串產生 2-gram 和 3-gram，並將它們儲存在反向索引中。</p>
-<h3 id="Example-2-Create-on-a-JSON-path" class="common-anchor-header">範例 2：在 JSON 路徑上製作<button data-href="#Example-2-Create-on-a-JSON-path" class="anchor-icon" translate="no">
+<p>This configuration generates 2-grams and 3-grams for each string in <code translate="no">text</code> and stores them in the inverted index.</p>
+<h3 id="Example-2-Create-on-a-JSON-path" class="common-anchor-header">Example 2: Create on a JSON path<button data-href="#Example-2-Create-on-a-JSON-path" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -221,10 +230,10 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>對於<code translate="no">JSON</code> 欄位，除了克設定外，還必須指定：</p>
+    </button></h3><p>For a <code translate="no">JSON</code> field, in addition to the gram settings, you must also specify:</p>
 <ul>
-<li><p><code translate="no">params.json_path</code> - 指向要索引的值的 JSON 路徑。</p></li>
-<li><p><code translate="no">params.json_cast_type</code> - 必須是<code translate="no">&quot;varchar&quot;</code> (不區分大小寫)，因為 NGRAM 索引是對字串操作的。</p></li>
+<li><p><code translate="no">params.json_path</code> – the JSON path that points to the value you want to index.</p></li>
+<li><p><code translate="no">params.json_cast_type</code> – must be <code translate="no">&quot;varchar&quot;</code> (case-insensitive), because NGRAM indexing operates on strings.</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Assume you have defined a JSON field named &quot;json_field&quot; in your collection schema, with a JSON path named &quot;body&quot;</span>
 
@@ -250,14 +259,14 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>在本範例中</p>
+<p>In this example:</p>
 <ul>
-<li><p>只索引<code translate="no">json_field[&quot;body&quot;]</code> 的值。</p></li>
-<li><p>在 n-gram 標記化之前，該值會被轉換為<code translate="no">VARCHAR</code> 。</p></li>
-<li><p>Milvus 會產生長度為 2 到 4 的子串，並將它們儲存在反向索引中。</p></li>
+<li><p>Only the value at <code translate="no">json_field[&quot;body&quot;]</code> is indexed.</p></li>
+<li><p>The value is cast to <code translate="no">VARCHAR</code> before n-gram tokenization.</p></li>
+<li><p>Milvus generates substrings of length 2 to 4 and stores them in the inverted index.</p></li>
 </ul>
-<p>有關如何索引 JSON 欄位的詳細資訊，請參閱<a href="/docs/zh-hant/json-indexing.md">JSON 索引</a>。</p>
-<h2 id="Queries-accelerated-by-NGRAM" class="common-anchor-header">由 NGRAM 加速的查詢<button data-href="#Queries-accelerated-by-NGRAM" class="anchor-icon" translate="no">
+<p>For more information on how to index a JSON field, refer to <a href="/docs/zh-hant/v2.6.x/json-indexing.md">JSON Indexing</a>.</p>
+<h2 id="Queries-accelerated-by-NGRAM" class="common-anchor-header">Queries accelerated by NGRAM<button data-href="#Queries-accelerated-by-NGRAM" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -272,36 +281,37 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若要套用 NGRAM 索引：</p>
+    </button></h2><p>For the NGRAM index to be applied:</p>
 <ul>
-<li><p>查詢的目標必須是有<code translate="no">NGRAM</code> 索引的<code translate="no">VARCHAR</code> 欄位（或 JSON 路徑）。</p></li>
-<li><p><code translate="no">LIKE</code> 模式的字面部分必須至少有<code translate="no">min_gram</code> 個字元長<em>（例如，如果您最短的預期查詢字詞是 2 個字元，請在建立索引時設定 min_gram=2）。</em></p></li>
+<li><p>The query must target a <code translate="no">VARCHAR</code> field (or JSON path) that has an <code translate="no">NGRAM</code> index.</p></li>
+<li><p>The literal part of the <code translate="no">LIKE</code> pattern must be at least <code translate="no">min_gram</code> characters long.
+<em>(For example, if your shortest expected query term is 2 characters, set min_gram=2 when creating the index.)</em></p></li>
 </ul>
-<p>支援的查詢類型：</p>
+<p>Supported query types:</p>
 <ul>
-<li><p><strong>前綴匹配</strong></p>
+<li><p><strong>Prefix match</strong></p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match any string that starts with the substring &quot;database&quot;</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text LIKE &quot;database%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>後綴匹配</strong></p>
+<li><p><strong>Suffix match</strong></p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match any string that ends with the substring &quot;database&quot;</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text LIKE &quot;%database&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>後綴匹配</strong></p>
+<li><p><strong>Infix match</strong></p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match any string that contains the substring &quot;database&quot; anywhere</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text LIKE &quot;%database%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>通配符匹配</strong></p>
-<p>Milvus 支援<code translate="no">%</code> (零個或多個字元) 和<code translate="no">_</code> (正好一個字元)。</p>
+<li><p><strong>Wildcard match</strong></p>
+<p>Milvus supports both <code translate="no">%</code> (zero or more characters) and <code translate="no">_</code> (exactly one character).</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match any string where &quot;st&quot; appears first, and &quot;um&quot; appears later in the text </span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;text LIKE &quot;%st%um%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>JSON 路徑查詢</strong></p>
+<li><p><strong>JSON path queries</strong></p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;json_field[&quot;body&quot;] LIKE &quot;%database%&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<p>有關篩選表達式語法的更多資訊，請參閱<a href="/docs/zh-hant/basic-operators.md">基本運算符</a>號。</p>
-<h2 id="Drop-an-index" class="common-anchor-header">刪除索引<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<p>For more information on filter expression syntax, refer to <a href="/docs/zh-hant/v2.6.x/basic-operators.md">Basic Operators</a>.</p>
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -316,7 +326,7 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用<code translate="no">drop_index()</code> 方法從集合中移除現有的索引。</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
@@ -324,7 +334,7 @@ client.create_index(
     index_name=<span class="hljs-string">&quot;ngram_index&quot;</span> <span class="hljs-comment"># Name of the index to drop</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Usage-notes" class="common-anchor-header">使用注意事項<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<h2 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -340,12 +350,12 @@ client.create_index(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>欄位類型</strong>：支援<code translate="no">VARCHAR</code> 和<code translate="no">JSON</code> 欄位。對於 JSON，同時提供<code translate="no">params.json_path</code> 和<code translate="no">params.json_cast_type=&quot;varchar&quot;</code> 。</p></li>
-<li><p><strong>Unicode</strong>：NGRAM 分解以字元為基礎，與語言無關，並包含空白和標點符號。</p></li>
-<li><p><strong>時空權衡</strong>：更寬的克數範圍<code translate="no">[min_gram, max_gram]</code> 會產生更多的克數和更大的索引。如果記憶體緊張，可考慮<code translate="no">mmap</code> 模式來處理大型張貼清單。如需詳細資訊，請參閱<a href="https://zilliverse.feishu.cn/wiki/P3wrwSMNNihy8Vkf9p6cTsWYnTb">使用 mmap</a>。</p></li>
-<li><p><strong>不變性</strong>：<code translate="no">min_gram</code> 和<code translate="no">max_gram</code> 無法就地變更，必須重新建立索引才能調整。</p></li>
+<li><p><strong>Field types</strong>: Supported on <code translate="no">VARCHAR</code> and <code translate="no">JSON</code> fields. For JSON, provide both <code translate="no">params.json_path</code> and <code translate="no">params.json_cast_type=&quot;varchar&quot;</code>.</p></li>
+<li><p><strong>Unicode</strong>: NGRAM decomposition is character-based and language-agnostic and includes whitespace and punctuation.</p></li>
+<li><p><strong>Space–time trade-off</strong>: Wider gram ranges <code translate="no">[min_gram, max_gram]</code> produce more grams and larger indexes. If memory is tight, consider <code translate="no">mmap</code> mode for large posting lists. For more information, refer to <a href="https://zilliverse.feishu.cn/wiki/P3wrwSMNNihy8Vkf9p6cTsWYnTb">Use mmap</a>.</p></li>
+<li><p><strong>Immutability</strong>: <code translate="no">min_gram</code> and <code translate="no">max_gram</code> cannot be changed in place—rebuild the index to adjust them.</p></li>
 </ul>
-<h2 id="Best-practices" class="common-anchor-header">最佳做法<button data-href="#Best-practices" class="anchor-icon" translate="no">
+<h2 id="Best-practices" class="common-anchor-header">Best practices<button data-href="#Best-practices" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -361,14 +371,14 @@ client.create_index(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>選擇 min_gram 和 max_gram 以符合搜尋行為</strong></p>
+<li><p><strong>Choose min_gram and max_gram to match search behavior</strong></p>
 <ul>
-<li><p>從<code translate="no">min_gram=2</code>,<code translate="no">max_gram=3</code> 開始。</p></li>
-<li><p>將<code translate="no">min_gram</code> 設定為您預期使用者會輸入的最短文字。</p></li>
-<li><p>將<code translate="no">max_gram</code> 設定在有意義子串的典型長度附近；較大的<code translate="no">max_gram</code> 可以改善過濾，但會增加空間。</p></li>
+<li><p>Start with <code translate="no">min_gram=2</code>, <code translate="no">max_gram=3</code>.</p></li>
+<li><p>Set <code translate="no">min_gram</code> to the shortest literal you expect users to type.</p></li>
+<li><p>Set <code translate="no">max_gram</code> near the typical length of meaningful substrings; larger <code translate="no">max_gram</code> improves filtering but increases space.</p></li>
 </ul></li>
-<li><p><strong>避免低選擇性克</strong></p>
-<p>高度重複的模式 (例如：<code translate="no">&quot;aaaaaa&quot;</code>)，過濾效果較弱，可能產生有限的效益。</p></li>
-<li><p><strong>一致地標準化</strong></p>
-<p>如果您的使用情況需要，請將相同的規範化方式套用於擷取的文字與查詢字面意義（例如：降低大小寫、修剪）。</p></li>
+<li><p><strong>Avoid low-selectivity grams</strong></p>
+<p>Highly repetitive patterns (e.g., <code translate="no">&quot;aaaaaa&quot;</code>) provide weak filtering and may yield limited gains.</p></li>
+<li><p><strong>Normalize consistently</strong></p>
+<p>Apply the same normalization to ingested text and query literals (e.g., lowercasing, trimming) if your use case needs it.</p></li>
 </ul>

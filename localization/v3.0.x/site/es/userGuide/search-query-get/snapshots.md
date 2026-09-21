@@ -1,12 +1,12 @@
 ---
 id: snapshots.md
-title: InstantáneasCompatible with Milvus 3.0.x
+title: SnapshotsCompatible with Milvus 3.0.x
 summary: >-
-  Utiliza instantáneas para capturar el estado de las colecciones en un momento
-  determinado con fines de reversión, control de versiones y pruebas.
+  Use snapshots to capture point-in-time collection states for rollback,
+  versioning, and testing.
 beta: Milvus 3.0.x
 ---
-<h1 id="Snapshots" class="common-anchor-header">Instantáneas<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Snapshots" class="anchor-icon" translate="no">
+<h1 id="Snapshots" class="common-anchor-header">Snapshots<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Snapshots" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,10 +21,10 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Una instantánea es una imagen de una colección de Milvus en un momento determinado, ideal para reversiones rápidas, control de versiones y pruebas. Captura el estado de la colección en una marca de tiempo específica y almacena únicamente metadatos y archivos de manifiesto, como el esquema, los índices y los archivos de datos vectoriales (binlogs), para un almacenamiento y una restauración eficientes.</p>
-<p>Las instantáneas son imágenes rápidas de los datos en un momento determinado, adecuadas para reversiones rápidas o pruebas (<strong>de días a semanas</strong>). Por su parte, las copias de seguridad son copias independientes y completas que se almacenan por separado para la recuperación ante desastres a largo plazo (<strong>de semanas a años</strong>) y para una mayor protección frente a un fallo total del almacenamiento.</p>
-<p>Para crear copias de seguridad, consulta <a href="/docs/es/milvus_backup_overview.md">«Copia de seguridad</a> de <a href="/docs/es/milvus_backup_overview.md">Milvus</a>».</p>
-<h2 id="Snapshot-anatomy" class="common-anchor-header">Anatomía de una instantánea<button data-href="#Snapshot-anatomy" class="anchor-icon" translate="no">
+    </button></h1><p>A snapshot is a point-in-time image of a Milvus collection, ideal for quick rollbacks, versioning, and testing. It captures the collection’s state at a specific timestamp and stores only metadata and manifest files, such as the schema, indexes, and vector data files (binlogs), for efficient storage and restoration.</p>
+<p>Snapshots are quick, point-in-time images of data, suitable for fast rollbacks or testing (<strong>days to weeks</strong>). At the same time, backups are independent, complete copies stored separately for long-term disaster recovery (<strong>weeks to years</strong>) and for better protection against total storage failure.</p>
+<p>To create backups, refer to <a href="/docs/es/milvus_backup_overview.md">Milvus Backup</a>.</p>
+<h2 id="Snapshot-anatomy" class="common-anchor-header">Snapshot anatomy<button data-href="#Snapshot-anatomy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,19 +39,19 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus implementa una arquitectura de instantáneas basada en manifiestos para la captura, el almacenamiento y la restauración eficientes de datos en un momento determinado sin duplicar los datos vectoriales reales. La arquitectura separa la gestión de metadatos del almacenamiento físico de datos, lo que permite crear instantáneas ligeras que hacen referencia a archivos de segmentos existentes en el almacenamiento de objetos.</p>
-<p>Al crear una instantánea para una colección, Milvus recopila lo siguiente:</p>
+    </button></h2><p>Milvus implements a manifest-based snapshot architecture for efficient point-in-time capture, storage, and restoration of data without duplicating the actual vector data. The architecture separates metadata management from physical data storage, enabling lightweight snapshots that reference existing segment files in object storage.</p>
+<p>When you create a snapshot for a collection, Milvus collects the following:</p>
 <ul>
-<li><p><strong>Metadatos de la instantánea</strong></p>
-<p>Proporciona información básica para crear la instantánea, incluyendo el nombre y la descripción de la misma, el ID de la colección de destino y el momento en el que se crea la instantánea.</p></li>
-<li><p><strong>Descripción de la colección</strong></p>
-<p>Contiene la descripción de la colección de destino, incluida su definición de esquema, la información de partición y las propiedades.</p></li>
-<li><p><strong>Información del índice</strong></p>
-<p>Almacena los metadatos del índice y las rutas de acceso a los archivos de índice.</p></li>
-<li><p><strong>Datos de segmentos</strong></p>
-<p>Recoge los archivos de datos vectoriales (binlogs), los registros de eliminación (deltalogs) y los archivos de índice.</p></li>
+<li><p><strong>Snapshot metadata</strong></p>
+<p>It provides basic information for creating the snapshot, including the snapshot name and description, the target collection ID, and the time point at which the snapshot is created.</p></li>
+<li><p><strong>Collection description</strong></p>
+<p>It contains the description of the target collection, including its schema definition, partition information, and properties.</p></li>
+<li><p><strong>Index information</strong></p>
+<p>It stores the index metadata and the paths to index files.</p></li>
+<li><p><strong>Segment data</strong></p>
+<p>It captures the vector data files (binlogs), deletion logs (deltalogs), and index files.</p></li>
 </ul>
-<p>A partir de la información anterior, Milvus genera un archivo de manifiesto de Apache Avro para cada segmento y almacena los metadatos de la instantánea, la descripción de la colección, la información del índice y las rutas a los archivos de manifiesto en un archivo JSON. El siguiente diagrama ilustra la estructura de carpetas de la instantánea.</p>
+<p>Among the above information, Milvus generates an Apache Avro manifest file for each segment and stores the snapshot metadata, collection description, index information, and the paths to the manifest files in a JSON file. The following diagram illustrates the snapshot folder structure.</p>
 <pre><code translate="no" class="language-text">snapshots/{collection_id}/
 ├── metadata/
 │   └── {snapshot_id}.json         # Snapshot metadata (JSON format)
@@ -62,8 +62,8 @@ beta: Milvus 3.0.x
         ├── {segment_id_2}.avro
         └── ...
 <button class="copy-code-btn"></button></code></pre>
-<p>La creación de una instantánea suele tardar milisegundos, y su restauración, entre segundos y minutos, dependiendo del volumen de datos.</p>
-<h2 id="Storage-impacts-and-considerations" class="common-anchor-header">Repercusiones y consideraciones sobre el almacenamiento<button data-href="#Storage-impacts-and-considerations" class="anchor-icon" translate="no">
+<p>Creating a snapshot usually takes milliseconds, and restoring it takes seconds to minutes, depending on the data volume.</p>
+<h2 id="Storage-impacts-and-considerations" class="common-anchor-header">Storage impacts and considerations<button data-href="#Storage-impacts-and-considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,15 +78,15 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Una vez que Milvus hace referencia a un segmento o a un archivo de índice en una instantánea, no libera esos archivos mediante la recolección de basura a menos que elimines la instantánea. Las instantáneas consumen almacenamiento de forma proporcional al tamaño de las colecciones de destino, y se aplican los costes de almacenamiento de objetos a la retención de las instantáneas. En casos extremos, una sola instantánea puede incluso duplicar tus costes de almacenamiento de objetos. Se recomienda</p>
+    </button></h2><p>Once Milvus references a segment or index file in a snapshot, it does not garbage-collect those files unless you drop the snapshot. Snapshots consume storage proportional to the size of the target collections, and object storage costs apply to snapshot retention. In extreme cases, a single snapshot can even double your object storage costs. You are advised to</p>
 <ul>
-<li>Eliminar las instantáneas antiguas con regularidad para ahorrar espacio de almacenamiento.</li>
-<li>Utilizar nombres y descripciones descriptivos para futuras consultas.</li>
-<li>Verificar siempre los resultados de la creación y restauración de instantáneas.</li>
-<li>Realizar un seguimiento de las marcas de tiempo de creación de las instantáneas y del uso del almacenamiento para la supervisión y la resolución de problemas.</li>
-<li>Almacenar los ID de los trabajos de restauración para la supervisión y la resolución de problemas.</li>
+<li>Remove old snapshots regularly to save storage.</li>
+<li>Use descriptive names and descriptions for future reference.</li>
+<li>Always verify snapshot creation and restoration results.</li>
+<li>Track snapshot creation timestamps and storage usage for monitoring and troubleshooting.</li>
+<li>Store restoration job IDs for monitoring and troubleshooting.</li>
 </ul>
-<h2 id="Limits-and-restrictions" class="common-anchor-header">Límites y restricciones<button data-href="#Limits-and-restrictions" class="anchor-icon" translate="no">
+<h2 id="Limits-and-restrictions" class="common-anchor-header">Limits and restrictions<button data-href="#Limits-and-restrictions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,13 +102,13 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><ul>
-<li>Las instantáneas se vuelven inmutables tras su creación.</li>
-<li>Solo se puede restaurar una instantánea en una nueva colección dentro del mismo clúster que la original.</li>
-<li>Las colecciones restauradas conservan el mismo esquema, número de fragmentos y número de particiones.</li>
-<li>Los datos históricos restaurados pueden entrar en conflicto con las políticas de TTL. Se recomienda desactivar el TTL o ajustar la configuración del TTL antes de crear instantáneas.</li>
-<li>Para utilizar una instantánea como fuente externa de « <code translate="no">milvus-table</code> », la instantánea de origen debe proceder de una colección normal de StorageV3 Milvus. Las instantáneas de colecciones externas no son compatibles como fuentes de « <code translate="no">milvus-table</code> ».</li>
+<li>Snapshots become immutable after creation.</li>
+<li>You can restore a snapshot only to a new collection within the same cluster as the original.</li>
+<li>Restored collections retain the same schema, number of shards, and partition count.</li>
+<li>Restored historical data may conflict with TTL policies. You are advised to disable TTL or adjust TTL settings before creating snapshots.</li>
+<li>To use a snapshot as a <code translate="no">milvus-table</code> external source, the source snapshot must come from a normal StorageV3 Milvus collection. Snapshots of external collections are not supported as <code translate="no">milvus-table</code> sources.</li>
 </ul>
-<h2 id="Further-readings" class="common-anchor-header">Más información<button data-href="#Further-readings" class="anchor-icon" translate="no">
+<h2 id="Further-readings" class="common-anchor-header">Further readings<button data-href="#Further-readings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -124,7 +124,7 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="/docs/es/manage-snapshots.md">Gestionar instantáneas</a>: crear, listar, describir, fijar, restaurar y eliminar instantáneas.</li>
-<li><a href="/docs/es/snapshot-use-cases.md">Casos de uso de instantáneas</a>: patrones y flujos de trabajo habituales.</li>
-<li><a href="/docs/es/milvus_backup_overview.md">Copia de seguridad de Milvus</a>: copia de seguridad a largo plazo y restauración entre clústeres.</li>
+<li><a href="/docs/es/manage-snapshots.md">Manage Snapshots</a> — create, list, describe, pin, restore, and delete snapshots.</li>
+<li><a href="/docs/es/snapshot-use-cases.md">Snapshot Use Cases</a> — common patterns and workflows.</li>
+<li><a href="/docs/es/milvus_backup_overview.md">Milvus Backup</a> — long-term backup and restore across clusters.</li>
 </ul>

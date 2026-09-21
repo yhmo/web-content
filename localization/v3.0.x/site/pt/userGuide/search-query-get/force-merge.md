@@ -1,12 +1,12 @@
 ---
 id: force-merge.md
-title: Compactação do Force MergeCompatible with Milvus 3.0.x
+title: Force Merge CompactionCompatible with Milvus 3.0.x
 summary: >-
-  Utilize a compactação de mesclagem forçada para consolidar segmentos pequenos
-  e melhorar o desempenho da consulta e a eficiência do armazenamento.
+  Use force merge compaction to consolidate small segments and improve query
+  performance and storage efficiency.
 beta: Milvus 3.0.x
 ---
-<h1 id="Force-Merge-Compaction" class="common-anchor-header">Compactação do Force Merge<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Force-Merge-Compaction" class="anchor-icon" translate="no">
+<h1 id="Force-Merge-Compaction" class="common-anchor-header">Force Merge Compaction<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Force-Merge-Compaction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,11 +21,11 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>O Force Merge foi projetado para consolidar segmentos pequenos e fragmentados em segmentos menores e maiores para melhorar o desempenho da consulta e a eficiência do armazenamento. Este guia explica como usar a compactação de mesclagem forçada.</p>
+    </button></h1><p>Force Merge is designed to consolidate small and fragmented segments into fewer and larger ones to improve query performance and storage efficiency. This guide explains how to use force merge compaction.</p>
 <div class="alert note">
-<p>Esse recurso está em visualização pública. Não o utilize em ambientes de produção.</p>
+<p>This feature is in public preview. Do not use it in production environments.</p>
 </div>
-<h2 id="Overview" class="common-anchor-header">Visão geral<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,16 +40,18 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/Management/compact.md">A compactação</a> padrão mantém os tamanhos de segmento próximos aos configurados <code translate="no">maxSize</code> por meio de mesclagens de muitos para um, mas ainda pode deixar fragmentos de tamanho médio que não podem ser mesclados ainda mais sem exceder os limites. Por exemplo, conforme ilustrado abaixo, se uma coleção tiver cinco segmentos de 2 MB e <code translate="no">maxSize</code> for de 3 MB, a mesclagem de quaisquer dois segmentos excederia o limite, de modo que a compactação padrão não pode reduzir ainda mais a contagem de segmentos e o layout fragmentado permanece.</p>
-<p>Forçar mesclagem adiciona um parâmetro <code translate="no">target_size</code> e suporta a reorganização dos segmentos em direção ao tamanho desejado dentro de uma tolerância estreita quando possível. Conforme ilustrado abaixo, se o <code translate="no">target_size</code> especificado for 4 MB, os cinco segmentos pequenos de 2 MB poderão ser mesclados em menos segmentos maiores. Isso reduz o excesso de contagens de segmentos, suporta destinos maiores do que as configurações padrão do <code translate="no">maxSize</code> e, quando o destino é muito grande, permite que o sistema escolha um tamanho de saída prático e uma contagem de segmentos para o hardware atual e a topologia do QueryNode.</p>
-<p>Para entender qual método de compactação deve ser usado, consulte <a href="#faq">FAQ</a>.</p>
+    </button></h2><p>Standard <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/Management/compact.md">compaction</a> keeps segment sizes near the configured <code translate="no">maxSize</code> through many-to-one merges, but it can still leave mid-sized fragments that cannot be merged further without exceeding limits. For example, as illustrated below, if a collection has five 2 MB segments and <code translate="no">maxSize</code> is 3 MB, merging any two segments would exceed the limit, so standard compaction cannot further reduce the segment count and the fragmented layout remains.</p>
+<p>Force merge adds a <code translate="no">target_size</code> parameter and supports reorganizing segments toward the desired size within a tight tolerance when possible. As illustrated below, if the specified <code translate="no">target_size</code> is 4 MB, the five 2 MB small segments can be further merged into fewer larger segments. This reduces excess segment counts, supports targets larger than the default <code translate="no">maxSize</code> settings, and, when the target is very large, lets the system choose a practical output size and segment count for the current hardware and QueryNode topology.</p>
+<p>To understand which compaction method to use, see <a href="#faq">FAQ</a>.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v3.0.x/assets/compaction.png" alt="R8eow3kaqhktokblcmocnvxmnee" class="doc-image" id="r8eow3kaqhktokblcmocnvxmnee" />
-   </span> <span class="img-wrapper"> <span>R8eow3kaqhktokblcmocnvxmnee</span> </span></p>
-<p>A compactação de mesclagem forçada estende a API <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/Management/compact.md"><code translate="no">Compaction</code></a> API existente com um parâmetro <code translate="no">target_size</code>. É totalmente compatível com as versões anteriores: as chamadas de compactação existentes sem <code translate="no">target_size</code> continuam a funcionar como antes.</p>
-<p>A compactação forçada funciona de forma assíncrona. Não bloqueia as operações de pesquisa ou consulta, embora consuma recursos de E/S e memória durante a execução.</p>
-<h2 id="Use-Force-Merge-Compaction" class="common-anchor-header">Usar a compactação Force Merge<button data-href="#Use-Force-Merge-Compaction" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/compaction.png" alt="R8eow3kaqhktokblcmocnvxmnee" class="doc-image" id="r8eow3kaqhktokblcmocnvxmnee" />
+    <span>R8eow3kaqhktokblcmocnvxmnee</span>
+  </span>
+</p>
+<p>Force merge compaction extends the existing <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/Management/compact.md"><code translate="no">Compaction</code></a> API with a <code translate="no">target_size</code> parameter. It is fully backward-compatible: existing compaction calls without <code translate="no">target_size</code> continue to work as before.</p>
+<p>Force merge operates asynchronously. It does not block search or query operations, though it consumes I/O and memory resources during execution.</p>
+<h2 id="Use-Force-Merge-Compaction" class="common-anchor-header">Use Force Merge Compaction<button data-href="#Use-Force-Merge-Compaction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -64,7 +66,7 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Prerequisites" class="common-anchor-header">Pré-requisitos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -80,10 +82,10 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h3><ul>
-<li><p>Milvus versão 3.0 ou posterior</p></li>
-<li><p>PyMilvus 3.0 ou posterior</p></li>
+<li><p>Milvus version 3.0 or later</p></li>
+<li><p>PyMilvus 3.0 or later</p></li>
 </ul>
-<h3 id="Global-Configuration" class="common-anchor-header">Configuração global<button data-href="#Global-Configuration" class="anchor-icon" translate="no">
+<h3 id="Global-Configuration" class="common-anchor-header">Global Configuration<button data-href="#Global-Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,7 +100,7 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Os seguintes parâmetros de configuração controlam o comportamento do Force Merge. Defina-os no arquivo de configuração do Milvus ou através de variáveis de ambiente.</p>
+    </button></h3><p>The following configuration parameters control Force Merge behavior. Set them in the Milvus configuration file or via environment variables.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">dataCoord:</span>
   <span class="hljs-attr">segment:</span>
     <span class="hljs-attr">maxSize:</span> <span class="hljs-number">512</span>         <span class="hljs-comment"># Default segment max size (MB).</span>
@@ -120,33 +122,33 @@ beta: Milvus 3.0.x
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Parâmetro</p></th>
-     <th><p>Valor Padrão</p></th>
-     <th><p>Descrição</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Default Value</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">dataCoord.segment.maxSize</code></p></td>
      <td><p>512</p></td>
-     <td><p>Tamanho máximo do segmento padrão em MB. Utilizado como alvo quando <code translate="no">target_size</code> é 0 ou omitido. Também serve como o valor mínimo permitido para <code translate="no">target_size</code> explícito.</p></td>
+     <td><p>Default segment max size in MB. Used as the target when <code translate="no">target_size</code> is 0 or omitted. Also serves as the minimum allowed value for explicit <code translate="no">target_size</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">dataCoord.compaction.maxFullSegmentThreshold</code></p></td>
      <td><p>100</p></td>
-     <td><p>Limite de contagem de segmentos para a seleção do algoritmo. Quando o número de segmentos excede este valor, o Milvus utiliza um algoritmo guloso mais rápido para o planeamento da fusão.</p><ul><li><p><strong>Algoritmo padrão</strong> (utilizado quando a contagem de segmentos é &lt;= <code translate="no">dataCoord.compaction.maxFullSegmentThreshold</code>): produz resultados de fusão mais optimizados, mas demora mais tempo a calcular.</p></li><li><p><strong>Algoritmo guloso</strong> (utilizado quando a contagem de segmentos &gt; <code translate="no">dataCoord.compaction.maxFullSegmentThreshold</code>): completa o planeamento muito mais rapidamente à custa de um agrupamento de segmentos ligeiramente menos optimizado.</p></li></ul></td>
+     <td><p>Segment count threshold for algorithm selection. When the number of segments exceeds this value, Milvus uses a faster greedy algorithm for merge planning.</p><ul><li><p><strong>Standard algorithm</strong> (used when segment count &lt;= <code translate="no">dataCoord.compaction.maxFullSegmentThreshold</code>): produces more optimal merge results but takes longer to compute.</p></li><li><p><strong>Greedy algorithm</strong> (used when segment count &gt; <code translate="no">dataCoord.compaction.maxFullSegmentThreshold</code>): completes planning much faster at the cost of slightly less optimal segment grouping.</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">dataCoord.compaction.forceMerge.datanodeMemoryFactor</code></p></td>
      <td><p>4.0</p></td>
-     <td><p>A memória do DataNode é dividida por esse fator para calcular o maior tamanho de segmento que o sistema pode permitir.</p><ul><li><p>Um valor maior aloca menos memória para a fusão, mas deixa mais para outras operações do DataNode, melhorando a estabilidade do nó.</p></li><li><p>Um valor menor permite fusões maiores, mas aumenta a pressão da memória.</p></li><li><p>Por exemplo, com o fator padrão de 4,0 e um DataNode com 16 GB de memória, o orçamento de mesclagem é de 4 GB. Isso significa que o tamanho total dos segmentos que estão sendo mesclados em uma única operação não pode exceder 4 GB.</p></li></ul></td>
+     <td><p>DataNode memory is divided by this factor to calculate the largest segment size the system can allow.</p><ul><li><p>A larger value allocates less memory to merging but leaves more for other DataNode operations, improving  node stability.</p></li><li><p>A smaller value allows larger merges but increases memory pressure.</p></li><li><p>For example, with the default factor of 4.0 and a DataNode with 16 GB memory, the merge budget is 4 GB. This means the total size of segments being merged in a single operation cannot exceed 4 GB.</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">dataCoord.compaction.forceMerge.querynodeMemoryFactor</code></p></td>
      <td><p>4.0</p></td>
-     <td><p>A memória mínima do QueryNode é dividida por esse fator. Usado durante o cálculo automático de tamanho (<code translate="no">target_size=max_int64</code>) para garantir que os segmentos mesclados possam ser carregados pelos QueryNodes.</p><ul><li><p>Um valor maior produz segmentos mais pequenos que são mais fáceis de carregar pelos QueryNodes.</p></li><li><p>Um valor menor permite segmentos maiores, mas pode causar falhas de carregamento em QueryNodes com restrições de memória.</p></li><li><p>Por exemplo, com o fator padrão de 4,0 e o menor QueryNode com 16 GB de memória, o tamanho de destino calculado automaticamente não excederá 4 GB. Isso evita que o Force Merge produza segmentos tão grandes que os QueryNodes não possam carregá-los.</p></li></ul></td>
+     <td><p>The minimum QueryNode memory is divided by this factor. Used during automatic size calculation (<code translate="no">target_size=max_int64</code>) to ensure that merged segments can be loaded by QueryNodes.</p><ul><li><p>A larger value produces smaller segments that are easier for QueryNodes to load.</p></li><li><p>A smaller value allows larger segments but may cause load failures on memory-constrained QueryNodes.</p></li><li><p>For example, with the default factor of 4.0 and the smallest QueryNode having 16 GB memory, the auto-calculated target size will not exceed 4 GB. This prevents Force Merge from producing segments so large that QueryNodes cannot load them.</p></li></ul></td>
    </tr>
 </table>
-<p>Para aplicar as alterações acima ao seu cluster Milvus, siga as etapas em <a href="/docs/pt/configure-helm.md#Configure-Milvus-via-configuration-file">Configure Milvus with Helm</a> e <a href="/docs/pt/configure_operator.md">Configure Milvus with Milvus Operators</a>.</p>
-<h3 id="Trigger-Force-Merge-Compaction" class="common-anchor-header">Acionar a compactação Force Merge<button data-href="#Trigger-Force-Merge-Compaction" class="anchor-icon" translate="no">
+<p>To apply the above changes to your Milvus cluster, please follow the steps in <a href="/docs/pt/configure-helm.md#Configure-Milvus-via-configuration-file">Configure Milvus with Helm</a> and <a href="/docs/pt/configure_operator.md">Configure Milvus with Milvus Operators</a>.</p>
+<h3 id="Trigger-Force-Merge-Compaction" class="common-anchor-header">Trigger Force Merge Compaction<button data-href="#Trigger-Force-Merge-Compaction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -161,8 +163,8 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Você aciona a compactação Force Merge chamando <code translate="no">compact()</code> com o parâmetro <code translate="no">target_size</code>. Para obter detalhes sobre o parâmetro, consulte <a href="#parameter-reference">Referência do parâmetro</a> abaixo.</p>
-<p>Estão disponíveis três modos de compactação Force Merge:</p>
+    </button></h3><p>You trigger Force Merge compaction by calling <code translate="no">compact()</code> with the <code translate="no">target_size</code> parameter. For parameter details, see <a href="#parameter-reference">Parameter reference</a> below.</p>
+<p>Three force merge compaction modes are available:</p>
 <pre><code translate="no" class="language-plaintext">compact(&quot;my_collection&quot;, target_size=?)
 │
 ├─ Mode 1: target_size = 0 (or omitted)
@@ -177,8 +179,8 @@ beta: Milvus 3.0.x
    Auto-calculates optimal size based on
    segment distribution and node memory
 <button class="copy-code-btn"></button></code></pre>
-<p>A seguir estão exemplos que mostram como usar cada modo de compactação de mesclagem forçada.</p>
-<h4 id="Default-standard-compaction" class="common-anchor-header">Padrão (compactação padrão)</h4><pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
+<p>The following are examples to show how to use each force merge compaction mode.</p>
+<h4 id="Default-standard-compaction" class="common-anchor-header">Default (standard compaction)</h4><pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
     uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>,
@@ -188,13 +190,13 @@ client = MilvusClient(
 <span class="hljs-comment"># Standard compaction — uses config maxSize (default 512 MB)</span>
 job_id = client.compact(<span class="hljs-string">&quot;target_collection&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Explicit-target-size" class="common-anchor-header">Tamanho alvo explícito</h4><pre><code translate="no" class="language-python"><span class="hljs-comment"># Merge segments to approximately 2 GB each</span>
+<h4 id="Explicit-target-size" class="common-anchor-header">Explicit target size</h4><pre><code translate="no" class="language-python"><span class="hljs-comment"># Merge segments to approximately 2 GB each</span>
 job_id = client.compact(
     <span class="hljs-string">&quot;target_collection&quot;</span>,
     target_size=<span class="hljs-string">&quot;2048&quot;</span>  <span class="hljs-comment"># The unit is MB</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Automatic-size-calculation" class="common-anchor-header">Cálculo automático do tamanho</h4><pre><code translate="no" class="language-python"><span class="hljs-comment"># Let Milvus determine the optimal segment size</span>
+<h4 id="Automatic-size-calculation" class="common-anchor-header">Automatic size calculation</h4><pre><code translate="no" class="language-python"><span class="hljs-comment"># Let Milvus determine the optimal segment size</span>
 max_int64 = (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">63</span>) - <span class="hljs-number">1</span>
 job_id = client.compact(
     <span class="hljs-string">&quot;target_collection&quot;</span>,
@@ -202,28 +204,28 @@ job_id = client.compact(
 )
 <button class="copy-code-btn"></button></code></pre>
 <p><a id="parameter-reference"></a></p>
-<h4 id="Parameter-reference" class="common-anchor-header">Referência dos parâmetros</h4><p>A tabela seguinte explica os parâmetros.</p>
+<h4 id="Parameter-reference" class="common-anchor-header">Parameter reference</h4><p>The following table explains the parameters.</p>
 <table>
    <tr>
-     <th><p><strong>Parâmetro</strong></p></th>
-     <th><p><strong>Tipo de parâmetro</strong></p></th>
-     <th><p><strong>Descrição</strong></p></th>
+     <th><p><strong>Parameter</strong></p></th>
+     <th><p><strong>Type</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">collection_name</code></p></td>
      <td><p>str</p></td>
-     <td><p>Obrigatório. O nome da coleção a compactar.</p></td>
+     <td><p>Required. The name of the collection to compact.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">target_size</code></p></td>
      <td><p>int</p></td>
-     <td><p>Opcional. O tamanho do segmento de destino em MB. Há 3 opções para o valor do parâmetro:</p><ul><li><p><strong>0 ou omitido</strong>: Usa o <code translate="no">dataCoord.segment.maxSize</code> configurado (padrão: 512 MB). Equivalente à compactação padrão.</p></li><li><p><strong>Valor explícito</strong>: mescla segmentos com aproximadamente o tamanho especificado em MB (por exemplo, 2048). Deve ser maior ou igual ao configurado <code translate="no">dataCoord.segment.maxSize</code>.</p></li><li><p><strong>max_int64 ((1 &lt;&lt; 63) - 1)</strong>: Calcula automaticamente o tamanho ideal com base na distribuição atual do segmento e nos recursos disponíveis do nó.</p></li></ul></td>
+     <td><p>Optional. The target segment size in MB. There are 3 options of the parameter value:</p><ul><li><p><strong>0 or omitted</strong>: Uses the configured <code translate="no">dataCoord.segment.maxSize</code> (default: 512 MB). Equivalent to standard compaction.</p></li><li><p><strong>Explicit value</strong> : Merges segments to approximately the specified size in MB (eg. 2048). Must be greater than or equal to the configured <code translate="no">dataCoord.segment.maxSize</code>.</p></li><li><p><strong>max_int64 ((1 << 63) - 1)</strong>: Automatically calculates the optimal size based on current segment distribution and available node resources.</p></li></ul></td>
    </tr>
 </table>
 <div class="alert note">
-<p>Se o <code translate="no">target_size</code> especificado for menor que o <code translate="no">dataCoord.segment.maxSize</code> configurado, a solicitação será rejeitada com um erro.</p>
+<p>If the specified <code translate="no">target_size</code> is less than the configured <code translate="no">dataCoord.segment.maxSize</code>, the request is rejected with an error.</p>
 </div>
-<h3 id="Check-Compaction-Progress" class="common-anchor-header">Verificar o progresso da compactação<button data-href="#Check-Compaction-Progress" class="anchor-icon" translate="no">
+<h3 id="Check-Compaction-Progress" class="common-anchor-header">Check Compaction Progress<button data-href="#Check-Compaction-Progress" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -238,12 +240,12 @@ job_id = client.compact(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>A compactação do Force Merge é executada de forma assíncrona. Use a ID do trabalho retornada para verificar o progresso:</p>
+    </button></h3><p>Force Merge compaction runs asynchronously. Use the returned job ID to check progress:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Check compaction state</span>
 state = client.get_compaction_state(job_id)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;State: <span class="hljs-subst">{state}</span>&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Best-practices" class="common-anchor-header">Práticas recomendadas<button data-href="#Best-practices" class="anchor-icon" translate="no">
+<h2 id="Best-practices" class="common-anchor-header">Best practices<button data-href="#Best-practices" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -259,13 +261,13 @@ state = client.get_compaction_state(job_id)
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Não use a compactação de mesclagem forçada em ambientes de produção.</strong></p></li>
-<li><p><strong>Use o modo de cálculo automático de tamanho para a maioria dos casos.</strong> Definir <code translate="no">target_size</code> como <code translate="no">max_int64</code> permite que o Milvus analise a distribuição do segmento e os recursos do nó para determinar o melhor tamanho. Essa é a abordagem recomendada, a menos que você tenha requisitos de tamanho específicos.</p></li>
-<li><p><strong>Considere a troca de desempenho.</strong> A compactação Force Merge é uma operação que consome muitos recursos. Ela lê, mescla e reescreve os dados do segmento. Programe-a durante períodos de baixo tráfego para minimizar o impacto na latência da consulta.</p></li>
-<li><p><strong>Monitore a contagem de segmentos antes e depois.</strong> Use <code translate="no">get_compaction_state()</code> e <code translate="no">list_persistent_segments</code> para verificar se a compactação produziu menos segmentos maiores, conforme esperado.</p></li>
+<li><p><strong>Do not use force merge compaction in production environments.</strong></p></li>
+<li><p><strong>Use automatic size calculation mode for most cases.</strong> Setting <code translate="no">target_size</code> to <code translate="no">max_int64</code> lets Milvus analyze your segment distribution and node resources to determine the best size. This is the recommended approach unless you have specific sizing requirements.</p></li>
+<li><p><strong>Consider the performance trade-off.</strong> Force Merge compaction is a resource-intensive operation. It reads, merges, and rewrites segment data. Schedule it during low-traffic periods to minimize impact on query latency.</p></li>
+<li><p><strong>Monitor segment count before and after.</strong> Use <code translate="no">get_compaction_state()</code> and <code translate="no">list_persistent_segments</code> to verify that the compaction produced fewer, larger segments as expected.</p></li>
 </ul>
 <p><a id="faq"></a></p>
-<h2 id="FAQ" class="common-anchor-header">PERGUNTAS FREQUENTES<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -280,88 +282,88 @@ state = client.get_compaction_state(job_id)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>Qual é a diferença entre Force Merge e compactação padrão?</strong></p>
-<p>Esses dois tipos de operações de compactação têm finalidades diferentes.</p>
+    </button></h2><p><strong>How is Force Merge different from standard compaction?</strong></p>
+<p>These two types of compaction operations serve different purposes.</p>
 <ul>
-<li><p>A compactação padrão (targetSize=0 ou omitida) é um caminho de limpeza incremental e de melhor esforço.</p></li>
-<li><p>Force merge (targetSize&gt;0) é um caminho de reempacotamento no nível da coleção para produzir menos segmentos, maiores e próximos ao alvo.</p></li>
+<li><p>Standard compaction (targetSize=0 or omitted) is a best-effort, incremental cleanup path.</p></li>
+<li><p>Force merge (targetSize>0) is a collection-level repacking path to produce fewer, larger, near-target segments.</p></li>
 </ul>
-<p>A diferença chave é a forma da mesclagem: a compactação padrão é efetivamente m → 1 por tarefa, enquanto a mesclagem forçada é m → n através de entradas agrupadas. É por isso que o force merge pode resolver layouts de segmentos que a compactação padrão não pode. A tabela a seguir compara os dois tipos de operações.</p>
+<p>The key difference is merge shape: standard compaction is effectively m → 1 per task, while force merge is m → n across grouped inputs. This is why force merge can solve segment layouts that standard compaction cannot. The following table compares the 2 types of operations.</p>
 <table>
    <tr>
-     <th><p><strong>Dimensão</strong></p></th>
-     <th><p><strong>Compactação padrão (padrão)</strong></p></th>
-     <th><p><strong>Forçar mesclagem</strong></p></th>
+     <th><p><strong>Dimension</strong></p></th>
+     <th><p><strong>Standard compaction (default)</strong></p></th>
+     <th><p><strong>Force merge</strong></p></th>
    </tr>
    <tr>
-     <td><p>Acionador de API</p></td>
-     <td><p>targetSize=0 (ou não definido), sem sinalizador Major/L0</p></td>
+     <td><p>API trigger</p></td>
+     <td><p>targetSize=0 (or not set), no Major/L0 flag</p></td>
      <td><p>targetSize&gt;0 (MB)</p></td>
    </tr>
    <tr>
-     <td><p>Objetivo principal</p></td>
-     <td><p>Limpeza incremental de fragmentos óbvios; manutenção de rotina</p></td>
-     <td><p>Consolidação de toda a coleção para pesquisa e equilíbrio</p></td>
+     <td><p>Primary goal</p></td>
+     <td><p>Incremental cleanup of obvious fragments; routine maintenance</p></td>
+     <td><p>Collection-wide consolidation for search and balance</p></td>
    </tr>
    <tr>
-     <td><p>Fonte do tamanho do segmento</p></td>
-     <td><p>DataCoord.segment.maxSize fixo (configuração do servidor)</p></td>
-     <td><p>TargetSize do utilizador, depois fixado com segurança por maxSafeSize</p></td>
+     <td><p>Segment size source</p></td>
+     <td><p>Fixed dataCoord.segment.maxSize (server config)</p></td>
+     <td><p>User targetSize, then safety-clamped by maxSafeSize</p></td>
    </tr>
    <tr>
-     <td><p>Validade do parâmetro</p></td>
-     <td><p>Sem ajuste de tamanho do utilizador</p></td>
-     <td><p>User targetSize deve ser &gt;= dataCoord.segment.maxSize; caso contrário, rejeitado</p></td>
+     <td><p>Parameter validity</p></td>
+     <td><p>No user size tuning</p></td>
+     <td><p>User targetSize must be &gt;= dataCoord.segment.maxSize; otherwise rejected</p></td>
    </tr>
    <tr>
-     <td><p>Limite superior de segurança</p></td>
-     <td><p>Apenas limite de configuração</p></td>
-     <td><p>maxSafeSize = min(QueryNode mem, DataNode mem) / memory_factor (standalone non-pooling: mais metade)</p></td>
+     <td><p>Safety upper bound</p></td>
+     <td><p>Config cap only</p></td>
+     <td><p>maxSafeSize = min(QueryNode mem, DataNode mem) / memory_factor (standalone non-pooling: further halved)</p></td>
    </tr>
    <tr>
-     <td><p>Forma da fusão</p></td>
-     <td><p>m → 1 por tarefa, saída &lt;= configMaxSize</p></td>
-     <td><p>m → n, saídas próximas a targetSize</p></td>
+     <td><p>Merge shape</p></td>
+     <td><p>m → 1 per task, output &lt;= configMaxSize</p></td>
+     <td><p>m → n, outputs near targetSize</p></td>
    </tr>
    <tr>
-     <td><p>Comportamento do segmento médio</p></td>
-     <td><p>Pode ficar preso permanentemente (por exemplo, dois segmentos de 60% não podem legalmente se tornar um segmento de 120%)</p></td>
-     <td><p>Reempacotar + dividir funciona; nenhum padrão "preso em 60%"</p></td>
+     <td><p>Medium-segment behavior</p></td>
+     <td><p>Can get stuck permanently (for example, two 60% segments cannot legally become one 120% segment)</p></td>
+     <td><p>Repack + split works; no “stuck at 60%” pattern</p></td>
    </tr>
    <tr>
-     <td><p>Capacidade de achatamento da coleção</p></td>
-     <td><p>Limitada; execuções repetidas podem ainda deixar muitos segmentos médios</p></td>
-     <td><p>Forte; concebido para reduzir a contagem de segmentos e aumentar a plenitude</p></td>
+     <td><p>Collection flattening ability</p></td>
+     <td><p>Limited; repeated runs may still leave many medium segments</p></td>
+     <td><p>Strong; designed to reduce segment count and push fullness higher</p></td>
    </tr>
    <tr>
-     <td><p>Conhecimento da topologia</p></td>
-     <td><p>Nenhum</p></td>
-     <td><p>Sim; utiliza QueryNode/replica/shard layout</p></td>
+     <td><p>Topology awareness</p></td>
+     <td><p>None</p></td>
+     <td><p>Yes; uses QueryNode/replica/shard layout</p></td>
    </tr>
    <tr>
-     <td><p>Ajuste do paralelismo do caminho de leitura</p></td>
-     <td><p>Nenhum</p></td>
-     <td><p>Ajusta a contagem de saída usando queryNodeCount / (réplicas × shards) quando válido</p></td>
+     <td><p>Read-path parallelism tuning</p></td>
+     <td><p>None</p></td>
+     <td><p>Adjusts output count using queryNodeCount / (replicas × shards) when valid</p></td>
    </tr>
    <tr>
-     <td><p>Caso de utilização típico</p></td>
-     <td><p>Limpeza diária de alta rotatividade após gravações/exclusões</p></td>
-     <td><p>Preparação de benchmark, otimização de pesquisa, alinhamento de paralelismo de carga</p></td>
+     <td><p>Typical use case</p></td>
+     <td><p>High-churn daily cleanup after writes/deletes</p></td>
+     <td><p>Benchmark prep, search optimization, load-parallelism alignment</p></td>
    </tr>
    <tr>
-     <td><p>Expectativa de alcance</p></td>
-     <td><p>Não se espera um reempacotamento da coleção completa</p></td>
-     <td><p>Destinado a resultados de reempacotamento ao nível da coleção</p></td>
+     <td><p>Scope expectation</p></td>
+     <td><p>Do not expect full-collection repack</p></td>
+     <td><p>Intended for collection-level repack outcome</p></td>
    </tr>
 </table>
-<p><strong>Orientação de seleção:</strong></p>
+<p><strong>Selection guidance:</strong></p>
 <ul>
-<li><p>Escolha a compactação padrão para uma limpeza incremental e de baixo risco.</p></li>
-<li><p>Escolha a compactação forçada quando desejar explicitamente remodelar a coleção em segmentos menores e maiores, alinhados com o comportamento de pesquisa e carregamento.</p></li>
+<li><p>Choose standard compaction for low-risk, incremental cleanup.</p></li>
+<li><p>Choose force merge when you explicitly want to reshape the collection into fewer, larger segments aligned with search and loading behavior.</p></li>
 </ul>
-<p><strong>Qual é a diferença entre o Force Merge e a compactação de clustering?</strong></p>
-<p>A compactação<a href="/docs/pt/clustering-compaction.md">de clustering</a> (<code translate="no">is_clustering=True</code>) reorganiza os dados dentro dos segmentos com base em uma chave de clustering para melhorar a poda de pesquisa. O Force Merge (<code translate="no">target_size=N</code>) optimiza os tamanhos dos segmentos sem alterar a distribuição dos dados. Eles têm finalidades diferentes e podem ser usados juntos - execute a compactação de clustering primeiro para organizar os dados e, em seguida, Force Merge para consolidar os segmentos resultantes.</p>
-<p><strong>Posso executar o Force Merge em uma coleção que está sendo consultada?</strong></p>
-<p>Sim. O Force Merge é executado de forma assíncrona e não bloqueia as consultas. No entanto, ele consome recursos de E/S do DataNode e do disco, de modo que a latência da consulta pode aumentar durante a compactação. Programe o Force Merge durante períodos de baixo tráfego para obter melhores resultados.</p>
-<p><strong>O que acontece se eu definir um target_size menor que maxSize?</strong></p>
-<p>A solicitação é rejeitada com um erro. O tamanho de destino deve ser maior ou igual ao tamanho configurado <code translate="no">dataCoord.segment.maxSize</code>.</p>
+<p><strong>How is Force Merge different from clustering compaction?</strong></p>
+<p><a href="/docs/pt/clustering-compaction.md">Clustering compaction</a> (<code translate="no">is_clustering=True</code>) reorganizes data within segments based on a clustering key to improve search pruning. Force Merge (<code translate="no">target_size=N</code>) optimizes segment sizes without changing data distribution. They serve different purposes and can be used together — run clustering compaction first to organize data, then Force Merge to consolidate the resulting segments.</p>
+<p><strong>Can I run Force Merge on a collection that is being queried?</strong></p>
+<p>Yes. Force Merge runs asynchronously and does not block queries. However, it consumes DataNode and disk I/O resources, so query latency may increase during compaction. Schedule Force Merge during low-traffic periods for best results.</p>
+<p><strong>What happens if I set a target_size smaller than maxSize?</strong></p>
+<p>The request is rejected with an error. The target size must be greater than or equal to the configured <code translate="no">dataCoord.segment.maxSize</code>.</p>

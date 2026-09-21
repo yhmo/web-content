@@ -2,7 +2,10 @@
 id: scann.md
 title: SCANN
 summary: >-
-  GoogleのScaNNライブラリを搭載したMilvusのSCANNインデックスは、ベクトル類似検索のスケーリングの課題に対応するように設計されており、従来はほとんどの検索アルゴリズムにとって課題となるような大規模なデータセットであっても、速度と精度のバランスを取ることができる。
+  Powered by the ScaNN library from Google, the SCANN index in Milvus is
+  designed to address scaling vector similarity search challenges, striking a
+  balance between speed and accuracy, even on large datasets that would
+  traditionally pose challenges for most search algorithms.
 ---
 <h1 id="SCANN" class="common-anchor-header">SCANN<button data-href="#SCANN" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -19,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Googleの<a href="https://github.com/google-research/google-research/blob/master/scann%2FREADME.md">ScaNN</a>ライブラリを搭載したMilvusの<code translate="no">SCANN</code> インデックスは、ベクトル類似検索のスケーリングの課題に対応するように設計されており、従来はほとんどの検索アルゴリズムにとって課題となるような大規模なデータセットであっても、速度と精度のバランスを取ることができます。</p>
-<h2 id="Overview" class="common-anchor-header">概要<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>Powered by the <a href="https://github.com/google-research/google-research/blob/master/scann%2FREADME.md">ScaNN</a> library from Google, the <code translate="no">SCANN</code> index in Milvus is designed to address scaling vector similarity search challenges, striking a balance between speed and accuracy, even on large datasets that would traditionally pose challenges for most search algorithms.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,23 +38,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ScaNNは、ベクトル検索における最大の課題の1つである、データセットが大きく複雑になっても、高次元空間で最も関連性の高いベクトルを効率的に見つけるという課題を解決するために構築されています。ScaNNのアーキテクチャは、ベクトル検索プロセスを明確な段階に分解します：</p>
+    </button></h2><p>ScaNN is built to solve one of the biggest challenges in vector search: efficiently finding the most relevant vectors in high-dimensional spaces, even as datasets grow larger and more complex. Its architecture breaks down the vector search process into distinct stages:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/scann.png" alt="Scann" class="doc-image" id="scann" />
-   </span> <span class="img-wrapper"> <span>スキャン</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/scann.png" alt="Scann" class="doc-image" id="scann" />
+    <span>Scann</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>パーティショニング</strong>：データセットをクラスタに分割する。この方法では、データセット全体をスキャンする代わりに、関連するデータのサブセットのみに焦点を当てることで検索空間を狭め、時間と処理リソースを節約する。ScaNN は多くの場合、<a href="https://zilliz.com/blog/k-means-clustering">k-means</a> などのクラスタリング・アルゴリズムを使用してクラスターを特定するため、類似検索をより効率的に実行できる。</p></li>
-<li><p><strong>量子化</strong>：ScaNN はパーティショニング後に<a href="https://arxiv.org/abs/1908.10396">異方性ベクトル量子化として</a>知られる量子化プロセスを適用する。従来の量子化は、元のベクトルと圧縮されたベクトル間の全体的な距離を最小化することに重点を置いているが、これは<a href="https://papers.nips.cc/paper/5329-asymmetric-lsh-alsh-for-sublinear-time-maximum-inner-product-search-mips.pdf">最大内積探索（MIPS）の</a>ような、類似性が直接的な距離ではなくベクトルの内積によって決定されるタスクには理想的ではない。異方的量子化では、代わりにベクトル間の平行成分、つまり正確な内積を計算するために最も重要な部分を保存することを優先します。このアプローチにより、ScaNNは圧縮されたベクトルをクエリに注意深く合わせることで高いMIPS精度を維持し、より高速で正確な類似性検索を可能にする。</p></li>
-<li><p><strong>再ランク付け</strong>：再順位付け段階は最終段階で、ScaNN は分割および量子化段階からの検索結果を微調整する。この再順位付けでは、上位の候補ベクトルに対して正確な内積計算が適用され、最終結果が高精度になるようにします。再順位付けは、最初のフィルタリングとクラスタリングが粗い層として機能し、最終段階で最も関連性の高い結果のみがユーザーに返されるようにする、高速推薦エンジンや画像検索アプリケーションにおいて極めて重要である。</p></li>
+<li><p><strong>Partitioning</strong>: Divides the dataset into clusters. This method narrows the search space by focusing only on relevant data subsets instead of scanning the entire dataset, saving time and processing resources. ScaNN often uses clustering algorithms, such as <a href="https://zilliz.com/blog/k-means-clustering">k-means</a>, to identify clusters, which allows it to perform similarity searches more efficiently.</p></li>
+<li><p><strong>Quantization</strong>: ScaNN applies a quantization process known as <a href="https://arxiv.org/abs/1908.10396">anisotropic vector quantization</a> after partitioning. Traditional quantization focuses on minimizing the overall distance between original and compressed vectors, which isn’t ideal for tasks like <a href="https://papers.nips.cc/paper/5329-asymmetric-lsh-alsh-for-sublinear-time-maximum-inner-product-search-mips.pdf">Maximum Inner Product Search (MIPS)</a>, where similarity is determined by the inner product of vectors rather than direct distance. Anisotropic quantization instead prioritizes preserving parallel components between vectors, or the parts most important for calculating accurate inner products. This approach allows ScaNN to maintain high MIPS accuracy by carefully aligning compressed vectors with the query, enabling faster, more precise similarity searches.</p></li>
+<li><p><strong>Re-ranking</strong>: The re-ranking phase is the final step, where ScaNN fine-tunes the search results from the partitioning and quantization stages. This re-ranking applies precise inner product calculations to the top candidate vectors, ensuring the final results are highly accurate. Re-ranking is crucial in high-speed recommendation engines or image search applications where the initial filtering and clustering serve as a coarse layer, and the final stage ensures that only the most relevant results are returned to the user.</p></li>
 </ol>
-<p><code translate="no">SCANN</code> の性能は、速度と精度のバランスを微調整できる2つの重要なパラメータによって制御されます：</p>
+<p>The performance of <code translate="no">SCANN</code> is controlled by two key parameters that let you fine-tune the balance between speed and accuracy:</p>
 <ul>
-<li><p><code translate="no">with_raw_data</code>:元のベクトル・データを量子化された表現と一緒に保存するかどうかを制御します。このパラメータを有効にすると、再ランキング時の精度が向上しますが、ストレージ要件が増加します。</p></li>
-<li><p><code translate="no">reorder_k</code>:最終的な再ランキング段階で、いくつの候補を絞り込むかを決定します。値を高くすると精度は向上しますが、検索待ち時間が長くなります。</p></li>
+<li><p><code translate="no">with_raw_data</code>: Controls whether original vector data is stored alongside quantized representations. Enabling this parameter improves accuracy during re-ranking but increases storage requirements.</p></li>
+<li><p><code translate="no">reorder_k</code>: Determines how many candidates are refined during the final re-ranking phase. Higher values improve accuracy but increase search latency.</p></li>
 </ul>
-<p>これらのパラメータを特定のユースケースに最適化するための詳細なガイダンスについては、<a href="/docs/ja/scann.md#Index-params">Index params</a> を参照してください。</p>
-<h2 id="Build-index" class="common-anchor-header">インデックスの構築<button data-href="#Build-index" class="anchor-icon" translate="no">
+<p>For detailed guidance on optimizing these parameters for your specific use case, refer to <a href="/docs/ja/v2.6.x/scann.md#Index-params">Index params</a>.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -66,7 +71,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusでベクトルフィールドに<code translate="no">SCANN</code> インデックスを構築するには、<code translate="no">add_index()</code> メソッドを使用し、<code translate="no">index_type</code> 、<code translate="no">metric_type</code> 、インデックス用の追加パラメータを指定します。</p>
+    </button></h2><p>To build a <code translate="no">SCANN</code> index on a vector field in Milvus, use the <code translate="no">add_index()</code> method, specifying the <code translate="no">index_type</code>, <code translate="no">metric_type</code>, and additional parameters for the index.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -82,18 +87,18 @@ index_params.add_index(
     } <span class="hljs-comment"># Index building params</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>この設定では</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>:構築するインデックスのタイプ。この例では<code translate="no">SCANN</code> とします。</p></li>
-<li><p><code translate="no">metric_type</code>:ベクトル間の距離の計算方法。サポートされている値には、<code translate="no">COSINE</code> 、<code translate="no">L2</code> 、<code translate="no">IP</code> があります。詳細については、<a href="/docs/ja/metric.md">メトリック・タイプを</a>参照してください。</p></li>
-<li><p><code translate="no">params</code>:インデックスを構築するための追加設定オプション。</p>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">SCANN</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. Supported values include <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code>. For details, refer to <a href="/docs/ja/v2.6.x/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index.</p>
 <ul>
-<li><code translate="no">with_raw_data</code>:元のベクトルデータを、量子化された表現と一緒に保存するかどうか。</li>
+<li><code translate="no">with_raw_data</code>: Whether to store the original vector data alongside the quantized representation.</li>
 </ul>
-<p><code translate="no">SCANN</code> インデックスで利用可能な構築パラメータの詳細については、<a href="/docs/ja/scann.md#Index-building-params">インデックス構築パラメータを</a>参照してください。</p></li>
+<p>To learn more building parameters available for the <code translate="no">SCANN</code> index, refer to <a href="/docs/ja/v2.6.x/scann.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>インデックス・パラメータを構成したら、<code translate="no">create_index()</code> メソッドを直接使用するか、<code translate="no">create_collection</code> メソッドでインデックス・パラメータを渡してインデックスを作成できます。詳細は、<a href="/docs/ja/create-collection.md">コレクションの作成</a> を参照してください。</p>
-<h2 id="Search-on-index" class="common-anchor-header">インデックスでの検索<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>Once the index parameters are configured, you can create the index by using the <code translate="no">create_index()</code> method directly or passing the index params in the <code translate="no">create_collection</code> method. For details, refer to <a href="/docs/ja/v2.6.x/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -108,7 +113,7 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>インデックスが構築され、エンティティが挿入されると、インデックス上で類似検索を実行できます。</p>
+    </button></h2><p>Once the index is built and entities are inserted, you can perform similarity searches on the index.</p>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {
         <span class="hljs-string">&quot;reorder_k&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-comment"># Number of candidates to refine</span>
@@ -124,16 +129,16 @@ res = MilvusClient.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>この構成では</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">params</code>:インデックスで検索するための追加構成オプション。</p>
+<li><p><code translate="no">params</code>: Additional configuration options for searching on the index.</p>
 <ul>
-<li><code translate="no">reorder_k</code>:再ランク付けの段階で絞り込む候補の数。</li>
-<li><code translate="no">nprobe</code>:検索するクラスタの数。</li>
+<li><code translate="no">reorder_k</code>: Number of candidates to refine during the re-ranking phase.</li>
+<li><code translate="no">nprobe</code>: Number of clusters to search for.</li>
 </ul>
-<p><code translate="no">SCANN</code> インデックスで利用可能な検索パラメータについては、<a href="/docs/ja/scann.md#Index-specific-search-params">インデックス固有の検索パラメータ</a> を参照。</p></li>
+<p>To learn more search parameters available for the <code translate="no">SCANN</code> index, refer to <a href="/docs/ja/v2.6.x/scann.md#Index-specific-search-params">Index-specific search params</a>.</p></li>
 </ul>
-<h2 id="Index-params" class="common-anchor-header">インデックスパラメータ<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -148,8 +153,8 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>この節では、インデックスの構築とインデックスに対する検索の実行に使用するパラメータの概要を説明します。</p>
-<h3 id="Index-building-params" class="common-anchor-header">インデックス構築パラメータ<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>This section provides an overview of the parameters used for building an index and performing searches on the index.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -164,28 +169,28 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下の表は、<code translate="no">params</code> で<a href="/docs/ja/scann.md#Build-index">インデックスを構築する</a>際に設定できるパラメータの一覧です。</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/ja/v2.6.x/scann.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>説明</p></th>
-     <th><p>値の範囲</p></th>
-     <th><p>チューニングの提案</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">nlist</code></p></td>
-     <td><p>クラスタ・ユニット数</p></td>
+     <td><p>Number of cluster units</p></td>
      <td><p>[1, 65536]</p></td>
-     <td><p><em>nlistを</em>大きくすると、枝刈りの効率が上がり、一般的に粗い探索が速くなりますが、パーティションが小さくなりすぎてリコールが低下する可能性があります；<em>nlistを</em>小さくすると、より大きなクラスタをスキャンし、リコールは向上しますが、探索が遅くなります。</p></td>
+     <td><p>A higher <em>nlist</em> increases pruning efficiency and typically speeds up coarse search, but partitions can get too small, which may reduce recall; a lower <em>nlist</em> scans larger clusters, improving recall but slowing search.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">with_raw_data</code></p></td>
-     <td><p>元のベクトルデータを量子化された表現と一緒に保存するかどうか。有効にすると、再順位付けの段階で、量子化された近似ベクトルではなく元のベクトルを使用することで、より正確な類似度計算が可能になる。</p></td>
-     <td><p><strong>型</strong>：ブール値</p><p><strong>範囲</strong>：<code translate="no">true</code>,<code translate="no">false</code></p><p><strong>デフォルト値</strong>：<code translate="no">true</code></p></td>
-     <td><p><strong>より高い検索精度を</strong>得るため、またストレージ容量が重要でない場合は、<code translate="no">true</code> に設定する。オリジナルのベクトル・データにより、再ランキング時に、より正確な類似度計算が可能になる。</p><p><code translate="no">false</code> に設定すると、特に大きなデータセットの場合、<strong>ストレージのオーバーヘッドと</strong>メモリ使用<strong>量が削減される</strong>。ただし、再ランキング段階では量子化されたベクトルを使用するため、検索精度が若干低下する可能性があります。</p><p><strong>推奨</strong>：精度が重要なプロダクション・アプリケーションには<code translate="no">true</code> を使用する。</p></td>
+     <td><p>Whether to store the original vector data alongside the quantized representation. When enabled, this allows for more accurate similarity calculations during the re-ranking phase by using the original vectors instead of quantized approximations.</p></td>
+     <td><p><strong>Type</strong>: Boolean</p><p><strong>Range</strong>: <code translate="no">true</code>, <code translate="no">false</code></p><p><strong>Default value</strong>: <code translate="no">true</code></p></td>
+     <td><p>Set to <code translate="no">true</code> for <strong>higher search accuracy</strong> and when storage space is not a primary concern. The original vector data enables more precise similarity calculations during re-ranking.</p><p>Set to <code translate="no">false</code> to <strong>reduce storage overhead</strong> and memory usage, especially for large datasets. However, this may result in slightly lower search accuracy as the re-ranking phase will use quantized vectors.</p><p><strong>Recommended</strong>: Use <code translate="no">true</code> for production applications where accuracy is critical.</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">インデックス固有の検索パラメータ<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -200,24 +205,24 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下の表は、<code translate="no">search_params.params</code> で<a href="/docs/ja/scann.md#Search-on-index">インデックス検索</a>時に設定できるパラメータの一覧です。</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/ja/v2.6.x/scann.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>説明</p></th>
-     <th><p>値の範囲</p></th>
-     <th><p>調整候補</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reorder_k</code></p></td>
-     <td><p>再順位付け段階で絞り込まれる候補ベクトルの数を制御する。このパラメータは、最初のパーティショニングと量子化段階からの上位候補が、より正確な類似度計算を使用して再評価される数を決定します。</p></td>
-     <td><p><strong>タイプ</strong>整数</p><p><strong>範囲</strong>: [1, int_max]：[1,<em>int_max］</em></p><p><strong>デフォルト値</strong>：なし</p></td>
-     <td><p><code translate="no">reorder_k</code> を大きくすると、最終的な絞り込み段階でより多くの候補が考慮されるため、一般的に<strong>検索精度が高く</strong>なる。しかし、これはまた、追加の計算のために<strong>検索時間を増加させます</strong>。</p><p>高い想起率を達成することが重要で、検索速度があまり気にならない場合は、<code translate="no">reorder_k</code> を増やすことを検討してください。<code translate="no">limit</code> (TopK results to return)の2-5倍から始めるのがよいでしょう。</p><p>特に、精度が多少低下しても構わないようなシナリオでは、より高速な検索を優先するため、<code translate="no">reorder_k</code> を減らすことを検討してください。</p><p>ほとんどの場合、この範囲内の値を設定することをお勧めします：[<em>limit</em>,<em>limit</em>* 5]。</p></td>
+     <td><p>Controls the number of candidate vectors that are refined during the re-ranking phase. This parameter determines how many top candidates from the initial partitioning and quantization stages are re-evaluated using more precise similarity calculations.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: None</p></td>
+     <td><p>A larger <code translate="no">reorder_k</code> generally leads to <strong>higher search accuracy</strong> as more candidates are considered during the final refinement phase. However, this also <strong>increases search time</strong> due to additional computation.</p><p>Consider increasing <code translate="no">reorder_k</code> when achieving high recall is critical and search speed is less of a concern. A good starting point is 2-5x your desired <code translate="no">limit</code> (TopK results to return).</p><p>Consider decreasing <code translate="no">reorder_k</code> to prioritize faster searches, especially in scenarios where a slight reduction in accuracy is acceptable.</p><p>In most cases, we recommend you set a value within this range: [<em>limit</em>, <em>limit</em> * 5].</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">nprobe</code></p></td>
-     <td><p>候補を検索するクラスタ数。</p></td>
-     <td><p><strong>タイプ</strong>整数</p><p><strong>範囲</strong>[1,<em>nlist</em>] とする。</p><p><strong>デフォルト値</strong>：<code translate="no">8</code></p></td>
-     <td><p>より高い値は、より多くのクラスタを検索することを可能にし、検索範囲を拡大することでリコールを向上させるが、その代償としてクエリの待ち時間が増加する。</p><p>速度と精度のバランスをとるために、<code translate="no">nlist</code> に比例して<code translate="no">nprobe</code> を設定します。</p><p>ほとんどの場合、この範囲内の値を設定することをお勧めします：[1, nlist]。</p></td>
+     <td><p>The number of clusters to search for candidates.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, <em>nlist</em>]</p><p><strong>Default value</strong>: <code translate="no">8</code></p></td>
+     <td><p>Higher values allow more clusters to be searched, improving recall by expanding the search scope but at the cost of increased query latency.</p><p>Set <code translate="no">nprobe</code> proportionally to <code translate="no">nlist</code> to balance speed and accuracy.</p><p>In most cases, we recommend you set a value within this range: [1, nlist].</p></td>
    </tr>
 </table>

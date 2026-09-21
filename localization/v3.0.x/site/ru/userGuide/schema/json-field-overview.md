@@ -1,17 +1,15 @@
 ---
 id: json-field-overview.md
-title: Обзор полей JSON
+title: JSON Field Overview
 summary: >-
-  При разработке таких приложений, как каталоги товаров, системы управления
-  контентом или механизмы учета пользовательских предпочтений, часто возникает
-  необходимость хранить гибкие метаданные наряду с векторными вложениями.
-  Атрибуты товаров варьируются в зависимости от категории, пользовательские
-  предпочтения меняются со временем, а свойства документов имеют сложные
-  вложенные структуры. Поля JSON в Milvus позволяют решить эту задачу,
-  обеспечивая возможность хранения и поиска гибких структурированных данных без
-  ущерба для производительности.
+  When building applications like product catalogs, content management systems,
+  or user preference engines, you often need to store flexible metadata
+  alongside your vector embeddings. Product attributes vary by category, user
+  preferences evolve over time, and document properties have complex nested
+  structures. JSON fields in Milvus solve this challenge by allowing you to
+  store and query flexible structured data without sacrificing performance.
 ---
-<h1 id="JSON-Field-Overview" class="common-anchor-header">Обзор полей JSON<button data-href="#JSON-Field-Overview" class="anchor-icon" translate="no">
+<h1 id="JSON-Field-Overview" class="common-anchor-header">JSON Field Overview<button data-href="#JSON-Field-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,8 +24,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>При разработке таких приложений, как каталоги товаров, системы управления контентом или механизмы учета пользовательских предпочтений, часто возникает необходимость хранить гибкие метаданные наряду с векторными вложениями. Атрибуты товаров варьируются в зависимости от категории, пользовательские предпочтения меняются со временем, а свойства документов имеют сложные вложенные структуры. Поля JSON в Milvus решают эту задачу, позволяя хранить и запрашивать гибкие структурированные данные без ущерба для производительности.</p>
-<h2 id="What-is-a-JSON-field" class="common-anchor-header">Что такое поле JSON?<button data-href="#What-is-a-JSON-field" class="anchor-icon" translate="no">
+    </button></h1><p>When building applications like product catalogs, content management systems, or user preference engines, you often need to store flexible metadata alongside your vector embeddings. Product attributes vary by category, user preferences evolve over time, and document properties have complex nested structures. JSON fields in Milvus solve this challenge by allowing you to store and query flexible structured data without sacrificing performance.</p>
+<h2 id="What-is-a-JSON-field" class="common-anchor-header">What is a JSON field?<button data-href="#What-is-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,8 +40,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>JSON-поле — это тип данных, определяемый схемой (<code translate="no">DataType.JSON</code>) в Milvus, который хранит структурированные данные в формате «ключ-значение». В отличие от традиционных жестких столбцов баз данных, JSON-поля поддерживают вложенные объекты, массивы и смешанные типы данных, предоставляя при этом множество вариантов индексирования для быстрого выполнения запросов.</p>
-<p>Пример структуры поля JSON:</p>
+    </button></h2><p>A JSON field is a schema-defined data type (<code translate="no">DataType.JSON</code>) in Milvus that stores structured key-value data. Unlike traditional rigid database columns, JSON fields accommodate nested objects, arrays, and mixed data types while providing multiple indexing options for fast queries.</p>
+<p>Example JSON field structure:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> 
     <span class="hljs-attr">&quot;category&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;electronics&quot;</span><span class="hljs-punctuation">,</span>
@@ -63,11 +61,11 @@ summary: >-
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>В данном примере <code translate="no">metadata</code> представляет собой одно поле JSON, содержащее смесь плоских значений (например, <code translate="no">category</code>, <code translate="no">in_stock</code>), массивов (<code translate="no">tags</code>) и вложенных объектов (<code translate="no">supplier</code>).</p>
+<p>In this example, <code translate="no">metadata</code> is a single JSON field that contains a mix of flat values (e.g. <code translate="no">category</code>, <code translate="no">in_stock</code>), arrays (<code translate="no">tags</code>), and nested objects (<code translate="no">supplier</code>).</p>
 <div class="alert note">
-<p><strong>Правила именования:</strong> в ключах JSON используйте только буквы, цифры и подчеркивания. Избегайте специальных символов, пробелов или точек, так как они могут вызвать проблемы с разбором в запросах.</p>
+<p><strong>Naming convention:</strong> Use only letters, numbers, and underscores in JSON keys. Avoid special characters, spaces, or dots as they may cause parsing issues in queries.</p>
 </div>
-<h2 id="JSON-field-vs-dynamic-field" class="common-anchor-header">Поле JSON и динамическое поле<button data-href="#JSON-field-vs-dynamic-field" class="anchor-icon" translate="no">
+<h2 id="JSON-field-vs-dynamic-field" class="common-anchor-header">JSON field vs. dynamic field<button data-href="#JSON-field-vs-dynamic-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -82,36 +80,36 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Часто возникает путаница в связи с различием между полем JSON и <a href="/docs/ru/enable-dynamic-field.md">динамическим полем</a>. Хотя оба они связаны с JSON, они служат разным целям.</p>
-<p>В таблице ниже приведены основные различия между полем JSON и динамическим полем:</p>
+    </button></h2><p>A common point of confusion is the difference between a JSON field and the <a href="/docs/ru/enable-dynamic-field.md">dynamic field</a>. While both are related to JSON, they serve different purposes.</p>
+<p>The table below summarizes the key differences between a JSON field and the dynamic field:</p>
 <table>
    <tr>
-     <th><p>Характеристика</p></th>
-     <th><p>Поле JSON</p></th>
-     <th><p>Динамическое поле</p></th>
+     <th><p>Feature</p></th>
+     <th><p>JSON Field</p></th>
+     <th><p>Dynamic Field</p></th>
    </tr>
    <tr>
-     <td><p>Определение схемы</p></td>
-     <td><p>Скалярное поле, которое должно быть явно объявлено в схеме коллекции с типом <code translate="no">DataType.JSON</code>.</p></td>
-     <td><p>Скрытое поле JSON (с именем <code translate="no">$meta</code>), в котором автоматически хранятся не объявленные поля.</p></td>
+     <td><p>Schema definition</p></td>
+     <td><p>A scalar field that must be explicitly declared in the collection schema with the <code translate="no">DataType.JSON</code> type.</p></td>
+     <td><p>A hidden JSON field (named <code translate="no">$meta</code>) that automatically stores undeclared fields.</p></td>
    </tr>
    <tr>
-     <td><p>Вариант использования</p></td>
-     <td><p>Хранение структурированных данных, схема которых известна и является согласованной.</p></td>
-     <td><p>Хранение гибких, развивающихся или полуструктурированных данных, которые не соответствуют фиксированной схеме.</p></td>
+     <td><p>Use case</p></td>
+     <td><p>Stores structured data where the schema is known and consistent.</p></td>
+     <td><p>Stores flexible, evolving, or semi-structured data that doesn't fit a fixed schema.</p></td>
    </tr>
    <tr>
-     <td><p>Управление</p></td>
-     <td><p>Вы сами определяете имя и структуру поля.</p></td>
-     <td><p>Неопределённые поля управляются системой.</p></td>
+     <td><p>Control</p></td>
+     <td><p>You control the field name and structure.</p></td>
+     <td><p>System-managed for undefined fields.</p></td>
    </tr>
    <tr>
-     <td><p>Запрос</p></td>
-     <td><p>Запросы можно выполнять, используя название поля или целевой ключ внутри поля JSON: <code translate="no">metadata["key"]</code>.</p></td>
-     <td><p>Запрос напрямую с использованием ключа динамического поля: <code translate="no">"dynamic_key"</code> или через <code translate="no">$meta</code>: <code translate="no">$meta["dynamic_key"]</code></p></td>
+     <td><p>Querying</p></td>
+     <td><p>Query using your field name or target key inside the JSON field: <code translate="no">metadata["key"]</code>.</p></td>
+     <td><p>Query directly using the dynamic field key: <code translate="no">"dynamic_key"</code> or via <code translate="no">$meta</code>: <code translate="no">$meta["dynamic_key"]</code></p></td>
    </tr>
 </table>
-<h2 id="Basic-operations" class="common-anchor-header">Основные операции<button data-href="#Basic-operations" class="anchor-icon" translate="no">
+<h2 id="Basic-operations" class="common-anchor-header">Basic operations<button data-href="#Basic-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -126,8 +124,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Основной рабочий процесс использования поля JSON включает его определение в схеме, вставку данных, а затем запрос данных с использованием определённых выражений фильтрации.</p>
-<h3 id="Define-a-JSON-field" class="common-anchor-header">Определение поля JSON<button data-href="#Define-a-JSON-field" class="anchor-icon" translate="no">
+    </button></h2><p>The fundamental workflow for using a JSON field involves defining it in your schema, inserting data, and then querying the data using specific filter expressions.</p>
+<h3 id="Define-a-JSON-field" class="common-anchor-header">Define a JSON field<button data-href="#Define-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -142,7 +140,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Чтобы использовать поле JSON, явно определите его в схеме коллекции при создании коллекции. В следующем примере показано, как создать коллекцию с полем <code translate="no">metadata</code> типа <code translate="no">DataType.JSON</code>:</p>
+    </button></h3><p>To use a JSON field, explicitly define it in your collection schema when creating the collection. The following example demonstrates how to create a collection with a <code translate="no">metadata</code> field of type <code translate="no">DataType.JSON</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your server address </span>
@@ -161,9 +159,9 @@ client.create_collection(
 )
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>В этом примере поле JSON, определённое в схеме коллекции, допускает нулевые значения с помощью атрибута ` <code translate="no">nullable=True</code>`. Подробности см. в разделе <a href="/docs/ru/nullable-and-default.md">«Nullable &amp; Default</a>».</p>
+<p>In this example, the JSON field defined in the collection schema allows null values with <code translate="no">nullable=True</code>. For details, refer to <a href="/docs/ru/nullable-and-default.md">Nullable & Default</a>.</p>
 </div>
-<h3 id="Insert-data" class="common-anchor-header">Вставка данных<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h3 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -178,7 +176,7 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>После создания коллекции добавьте сущности, содержащие структурированные объекты JSON, в указанное поле JSON. Ваши данные должны быть отформатированы в виде списка словарей.</p>
+    </button></h3><p>Once the collection is created, insert entities that contain structured JSON objects in your designated JSON field. Your data should be formatted as a list of dictionaries.</p>
 <pre><code translate="no" class="language-python">entities = [
     {
         <span class="hljs-string">&quot;product_id&quot;</span>: <span class="hljs-number">1</span>,
@@ -204,7 +202,7 @@ client.create_collection(
 
 client.insert(collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>, data=entities)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Filtering-operations" class="common-anchor-header">Операции фильтрации<button data-href="#Filtering-operations" class="anchor-icon" translate="no">
+<h3 id="Filtering-operations" class="common-anchor-header">Filtering operations<button data-href="#Filtering-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -219,13 +217,13 @@ client.insert(collection_name=<span class="hljs-string">&quot;product_catalog&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Прежде чем выполнять операции фильтрации по полям JSON, убедитесь, что:</p>
+    </button></h3><p>Before you can perform filtering operations on JSON fields, make sure:</p>
 <ul>
-<li><p>Вы создали индекс для каждого векторного поля.</p></li>
-<li><p>Коллекция загружена в память.</p></li>
+<li><p>You have created an index on each vector field.</p></li>
+<li><p>The collection is loaded into memory.</p></li>
 </ul>
 <p><details></p>
-<p><summary>Показать код</summary></p>
+<p><summary>Show code</summary></p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;vector&quot;</span>,
@@ -239,9 +237,9 @@ client.create_index(collection_name=<span class="hljs-string">&quot;product_cata
 client.load_collection(collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>После выполнения этих требований вы можете использовать приведенные ниже выражения для фильтрации коллекции на основе значений в поле JSON. Эти выражения фильтрации используют специфический синтаксис JSON-пути и специальные операторы.</p>
-<h4 id="Filtering-with-JSON-path-syntax" class="common-anchor-header">Фильтрация с использованием синтаксиса JSON-путей</h4><p>Для запроса конкретного ключа используйте скобочную нотацию: <code translate="no">json_field_name[&quot;key&quot;]</code>. Для вложенных ключей объединяйте их в цепочку: <code translate="no">json_field_name[&quot;key1&quot;][&quot;key2&quot;]</code>.</p>
-<p>Чтобы отфильтровать сущности, у которых <code translate="no">category</code> равно <code translate="no">&quot;electronics&quot;</code>:</p>
+<p>Once these requirements are met, you can use the expressions below to filter on your collection based on the values within the JSON field. These filter expressions leverage specific JSON path syntax and dedicated operators.</p>
+<h4 id="Filtering-with-JSON-path-syntax" class="common-anchor-header">Filtering with JSON path syntax</h4><p>To query a specific key, use bracket notation to access JSON keys: <code translate="no">json_field_name[&quot;key&quot;]</code>. For nested keys, chain them together: <code translate="no">json_field_name[&quot;key1&quot;][&quot;key2&quot;]</code>.</p>
+<p>To filter for entities where the <code translate="no">category</code> is <code translate="no">&quot;electronics&quot;</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata[&quot;category&quot;] == &quot;electronics&quot;&#x27;</span>
 
@@ -253,7 +251,7 @@ client.search(
     output_fields=[<span class="hljs-string">&quot;product_id&quot;</span>, <span class="hljs-string">&quot;metadata&quot;</span>]   <span class="hljs-comment"># Fields to include in the search results</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Чтобы отфильтровать сущности, у которых вложенный ключ <code translate="no">supplier[&quot;country&quot;]</code> равен <code translate="no">&quot;USA&quot;</code>:</p>
+<p>To filter for entities where the nested key <code translate="no">supplier[&quot;country&quot;]</code> is <code translate="no">&quot;USA&quot;</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata[&quot;supplier&quot;][&quot;country&quot;] == &quot;USA&quot;&#x27;</span>
 
@@ -267,13 +265,13 @@ res = client.search(
 
 <span class="hljs-built_in">print</span>(res)
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Filtering-with-JSON-specific-operators" class="common-anchor-header">Фильтрация с помощью операторов, специфичных для JSON</h4><p>Milvus также предоставляет специальные операторы для запроса значений массива по конкретным ключам полей JSON. Например:</p>
+<h4 id="Filtering-with-JSON-specific-operators" class="common-anchor-header">Filtering with JSON-specific operators</h4><p>Milvus also provides special operators for querying array values on specific JSON field keys. For example:</p>
 <ul>
-<li><p><code translate="no">json_contains(identifier, expr)</code>: Проверяет, существует ли конкретный элемент или подмассив в массиве JSON</p></li>
-<li><p><code translate="no">json_contains_all(identifier, expr)</code>: Гарантирует, что все элементы указанного JSON-выражения присутствуют в поле</p></li>
-<li><p><code translate="no">json_contains_any(identifier, expr)</code>: Фильтрует сущности, в поле которых присутствует хотя бы один элемент JSON-выражения</p></li>
+<li><p><code translate="no">json_contains(identifier, expr)</code>: Checks if a specific element or sub-array exists within a JSON array</p></li>
+<li><p><code translate="no">json_contains_all(identifier, expr)</code>: Ensures that all elements of the specified JSON expression are present in the field</p></li>
+<li><p><code translate="no">json_contains_any(identifier, expr)</code>: Filters entities where at least one member of the JSON expression exists within the field</p></li>
 </ul>
-<p>Чтобы найти продукт, имеющий значение <code translate="no">&quot;summer_sale&quot;</code> под ключом <code translate="no">tags</code>:</p>
+<p>To find a product that has the <code translate="no">&quot;summer_sale&quot;</code> value under the <code translate="no">tags</code> key:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot;], &quot;summer_sale&quot;)&#x27;</span>
 
@@ -287,7 +285,7 @@ res = client.search(
 
 <span class="hljs-built_in">print</span>(res)
 <button class="copy-code-btn"></button></code></pre>
-<p>Чтобы найти продукт, в котором под ключом ` <code translate="no">tags</code> ` присутствует хотя бы одно из значений ` <code translate="no">&quot;electronics&quot;</code>`, ` <code translate="no">&quot;new&quot;</code>` или ` <code translate="no">&quot;clearance&quot;</code> `:</p>
+<p>To find a product that has at least one of the <code translate="no">&quot;electronics&quot;</code>, <code translate="no">&quot;new&quot;</code>, or <code translate="no">&quot;clearance&quot;</code> values under the <code translate="no">tags</code> key:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;json_contains_any(metadata[&quot;tags&quot;], [&quot;electronics&quot;, &quot;new&quot;, &quot;clearance&quot;])&#x27;</span>
 
@@ -301,8 +299,8 @@ res = client.search(
 
 <span class="hljs-built_in">print</span>(res)
 <button class="copy-code-btn"></button></code></pre>
-<p>Дополнительные сведения об операторах, специфичных для JSON, см. в разделе <a href="/docs/ru/json-operators.md">«Операторы JSON</a>».</p>
-<h2 id="Next-Accelerate-JSON-queries" class="common-anchor-header">Далее: Ускорение запросов к JSON<button data-href="#Next-Accelerate-JSON-queries" class="anchor-icon" translate="no">
+<p>For more information about JSON-specific operators, refer to <a href="/docs/ru/json-operators.md">JSON Operators</a>.</p>
+<h2 id="Next-Accelerate-JSON-queries" class="common-anchor-header">Next: Accelerate JSON queries<button data-href="#Next-Accelerate-JSON-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -317,45 +315,45 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>По умолчанию запросы по полям JSON без ускорения выполняют полное сканирование всех строк, что может замедлять работу при работе с большими наборами данных. Для ускорения запросов JSON Milvus предоставляет расширенные функции индексирования и оптимизации хранения.</p>
+    </button></h2><p>By default, queries on JSON fields without acceleration will perform a full scan of all rows, which can be slow on large datasets. To speed up JSON queries, Milvus provides advanced indexing and storage optimization features.</p>
 <div class="alert warning">
-<p>Начиная с версии Milvus 3.0.0, индексирование JSON по целому объекту (<code translate="no">json_cast_type=&quot;JSON&quot;</code>), также известное как плоское индексирование JSON, признано устаревшим. Существующие индексы и новые запросы на создание индексов по-прежнему поддерживаются в целях совместимости, но этот режим больше не рекомендуется для новых рабочих нагрузок. Используйте индексирование по пути JSON для известных путей запросов или рассмотрите возможность использования <a href="/docs/ru/json-shredding.md">JSON Shredding</a> для общего ускорения запросов по сложным или меняющимся документам.</p>
+<p>Starting in Milvus 3.0.0, whole-object JSON indexing (<code translate="no">json_cast_type=&quot;JSON&quot;</code>), also known as JSON flat indexing, is deprecated. Existing indexes and new index-creation requests remain supported for compatibility, but this mode is no longer recommended for new workloads. Use JSON path indexing for known query paths, or consider <a href="/docs/ru/json-shredding.md">JSON Shredding</a> for broad query acceleration across complex or evolving documents.</p>
 </div>
-<p>В таблице ниже приведены их различия и оптимальные сценарии использования:</p>
+<p>The table below summarizes their differences and best-use scenarios:</p>
 <table>
    <tr>
-     <th><p>Метод</p></th>
-     <th><p>Оптимально подходит для</p></th>
-     <th><p>Ускорение работы с массивами</p></th>
-     <th><p>Примечания</p></th>
+     <th><p>Technique</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Arrays Acceleration</p></th>
+     <th><p>Notes</p></th>
    </tr>
    <tr>
-     <td><p>Индексирование JSON</p></td>
-     <td><p>Небольшой набор часто используемых ключей, массивы по определенному ключу массива</p></td>
-     <td><p>Да (по индексированному ключу массива)</p></td>
-     <td><p>Необходимо предварительно выбрать ключи; требуется обслуживание при изменении схемы</p></td>
+     <td><p>JSON Indexing</p></td>
+     <td><p>Small set of frequently accessed keys, arrays on a specific array key</p></td>
+     <td><p>Yes (on indexed array key)</p></td>
+     <td><p>Must preselect keys, maintenance needed if schema evolves</p></td>
    </tr>
    <tr>
-     <td><p>Фрагментация JSON</p></td>
-     <td><p>Общее ускорение по многим ключам, гибкость для разнообразных запросов</p></td>
-     <td><p>Нет (не ускоряет обработку значений внутри массивов)</p></td>
-     <td><p>Требуется дополнительная настройка хранилища, массивы по-прежнему нуждаются в индексе для каждого ключа</p></td>
+     <td><p>JSON Shredding</p></td>
+     <td><p>General speed-up across many keys, flexible for varied queries</p></td>
+     <td><p>No (does not accelerate values inside arrays)</p></td>
+     <td><p>Extra storage config, arrays still need per-key index</p></td>
    </tr>
    <tr>
-     <td><p>Индекс NGRAM</p></td>
-     <td><p>Поиск с использованием подстановочных знаков, сопоставление подстрок в текстовых полях</p></td>
-     <td><p>Не применимо</p></td>
-     <td><p>Не подходит для числовых фильтров и фильтров по диапазону</p></td>
+     <td><p>NGRAM Index</p></td>
+     <td><p>Wildcard searches, substring matching in text fields</p></td>
+     <td><p>N/A</p></td>
+     <td><p>Not for numeric/range filters</p></td>
    </tr>
 </table>
-<p><strong>Совет:</strong> можно комбинировать эти подходы — например, использовать фрагментацию JSON для ускорения широких запросов, индексирование JSON для часто используемых ключей массивов и индексирование NGRAM для гибкого текстового поиска.</p>
-<p>Подробности реализации см. в:</p>
+<p><strong>Tip:</strong> You can combine these approaches—for example, use JSON shredding for broad query acceleration, JSON indexing for high-frequency array keys, and NGRAM indexing for flexible text search.</p>
+<p>For implementation details, refer to:</p>
 <ul>
-<li><p><a href="/docs/ru/json-indexing.md">Индексирование JSON</a></p></li>
-<li><p><a href="/docs/ru/json-shredding.md">Фрагментация JSON</a></p></li>
+<li><p><a href="/docs/ru/json-indexing.md">JSON Indexing</a></p></li>
+<li><p><a href="/docs/ru/json-shredding.md">JSON Shredding</a></p></li>
 <li><p><a href="/docs/ru/ngram.md">NGRAM</a></p></li>
 </ul>
-<h2 id="FAQ" class="common-anchor-header">Часто задаваемые вопросы<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -370,7 +368,7 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Are-there-any-limitations-on-the-size-of-a-JSON-field" class="common-anchor-header">Существуют ли какие-либо ограничения на размер поля JSON?<button data-href="#Are-there-any-limitations-on-the-size-of-a-JSON-field" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Are-there-any-limitations-on-the-size-of-a-JSON-field" class="common-anchor-header">Are there any limitations on the size of a JSON field?<button data-href="#Are-there-any-limitations-on-the-size-of-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -385,8 +383,8 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Да. Размер каждого поля JSON ограничен 65 536 байтами.</p>
-<h3 id="Does-a-JSON-field-support-setting-a-default-value" class="common-anchor-header">Поддерживает ли поле JSON задание значения по умолчанию?<button data-href="#Does-a-JSON-field-support-setting-a-default-value" class="anchor-icon" translate="no">
+    </button></h3><p>Yes. Each JSON field is limited to 65,536 bytes.</p>
+<h3 id="Does-a-JSON-field-support-setting-a-default-value" class="common-anchor-header">Does a JSON field support setting a default value?<button data-href="#Does-a-JSON-field-support-setting-a-default-value" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -401,9 +399,9 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Нет, поля JSON не поддерживают значения по умолчанию. Однако при определении поля можно установить флаг « <code translate="no">nullable=True</code> », чтобы разрешить пустые записи.</p>
-<p>Подробности см. в разделе <a href="/docs/ru/nullable-and-default.md">«Nullable &amp; Default</a> ».</p>
-<h3 id="Are-there-any-naming-conventions-for-JSON-field-keys" class="common-anchor-header">Существуют ли какие-либо соглашения об именовании ключей полей JSON?<button data-href="#Are-there-any-naming-conventions-for-JSON-field-keys" class="anchor-icon" translate="no">
+    </button></h3><p>No, JSON fields do not support default values. However, you can set <code translate="no">nullable=True</code> when defining the field to allow empty entries.</p>
+<p>Refer to <a href="/docs/ru/nullable-and-default.md">Nullable & Default</a> for details.</p>
+<h3 id="Are-there-any-naming-conventions-for-JSON-field-keys" class="common-anchor-header">Are there any naming conventions for JSON field keys?<button data-href="#Are-there-any-naming-conventions-for-JSON-field-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -418,13 +416,13 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Да, для обеспечения совместимости с запросами и индексированием:</p>
+    </button></h3><p>Yes, to ensure compatibility with queries and indexing:</p>
 <ul>
-<li><p>Используйте в ключах JSON только буквы, цифры и подчеркивания.</p></li>
-<li><p>Избегайте использования специальных символов, пробелов или точек (<code translate="no">.</code>, <code translate="no">/</code> и т. д.).</p></li>
-<li><p>Несовместимые ключи могут привести к проблемам с разбором в выражениях фильтров.</p></li>
+<li><p>Use only letters, numbers, and underscores in JSON keys.</p></li>
+<li><p>Avoid using special characters, spaces, or dots (<code translate="no">.</code>, <code translate="no">/</code>, etc.).</p></li>
+<li><p>Incompatible keys may cause parsing issues in filter expressions.</p></li>
 </ul>
-<h3 id="How-does-Milvus-handle-string-values-in-JSON-fields" class="common-anchor-header">Как Milvus обрабатывает строковые значения в полях JSON?<button data-href="#How-does-Milvus-handle-string-values-in-JSON-fields" class="anchor-icon" translate="no">
+<h3 id="How-does-Milvus-handle-string-values-in-JSON-fields" class="common-anchor-header">How does Milvus handle string values in JSON fields?<button data-href="#How-does-Milvus-handle-string-values-in-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -439,10 +437,10 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus сохраняет строковые значения точно так, как они представлены во входных данных JSON — без семантического преобразования. Строки, заключённые в некорректные кавычки, могут привести к ошибкам при разборе.</p>
-<p><strong>Примеры допустимых строк</strong>:</p>
+    </button></h3><p>Milvus stores string values exactly as they appear in the JSON input—without semantic transformation. Improperly quoted strings may result in errors during parsing.</p>
+<p><strong>Examples of valid strings</strong>:</p>
 <pre><code translate="no" class="language-plaintext">&quot;a\&quot;b&quot;, &quot;a&#x27;b&quot;, &quot;a\\b&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Примеры недопустимых строк</strong>:</p>
+<p><strong>Examples of invalid strings</strong>:</p>
 <pre><code translate="no" class="language-plaintext">&#x27;a&quot;b&#x27;, &#x27;a\&#x27;b&#x27;
 <button class="copy-code-btn"></button></code></pre>

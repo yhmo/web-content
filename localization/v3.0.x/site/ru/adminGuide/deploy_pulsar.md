@@ -1,10 +1,10 @@
 ---
 id: deploy_pulsar.md
-title: Настройка хранилища сообщений с помощью Docker Compose или Helm
+title: Configure Message Storage with Docker Compose or Helm
 related_key: 'Pulsar, storage'
-summary: 'Узнайте, как настроить хранилище сообщений с помощью Docker Compose или Helm.'
+summary: Learn how to configure message storage with Docker Compose or Helm.
 ---
-<h1 id="Configure-Message-Storage-with-Docker-Compose-or-Helm" class="common-anchor-header">Настройка хранилища сообщений с помощью Docker Compose или Helm<button data-href="#Configure-Message-Storage-with-Docker-Compose-or-Helm" class="anchor-icon" translate="no">
+<h1 id="Configure-Message-Storage-with-Docker-Compose-or-Helm" class="common-anchor-header">Configure Message Storage with Docker Compose or Helm<button data-href="#Configure-Message-Storage-with-Docker-Compose-or-Helm" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,12 +19,12 @@ summary: 'Узнайте, как настроить хранилище сооб�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus использует очередь сообщений для управления журналами последних изменений, вывода потоковых журналов и предоставления подписок на журналы. Начиная с версии Milvus 3.0.x, Woodpecker является рекомендуемой по умолчанию очередью сообщений; в этой статье рассказывается, как настроить Pulsar или Kafka с помощью Docker Compose или Helm.</p>
-<p>Вы можете настроить Pulsar с помощью <a href="https://docs.docker.com/get-started/overview/">Docker Compose</a> или в K8s, а Kafka — в K8s.</p>
+    </button></h1><p>Milvus uses a message queue for managing logs of recent changes, outputting stream logs, and providing log subscriptions. Starting from Milvus 3.0.x, Woodpecker is the default recommended message queue; this topic introduces how to configure Pulsar or Kafka with Docker Compose or Helm.</p>
+<p>You can configure Pulsar with <a href="https://docs.docker.com/get-started/overview/">Docker Compose</a> or on K8s and configure Kafka on K8s.</p>
 <div class="alert note">
-<p><strong>Ограничения</strong>, связанные с<strong>очередью сообщений</strong>: при обновлении до Milvus v3.0.1 необходимо сохранить текущий выбор системы очереди сообщений. Переключение между различными системами очередей сообщений во время обновления не поддерживается. Поддержка смены системы очереди сообщений будет доступна в будущих версиях.</p>
+<p><strong>Message Queue limitations</strong>: When upgrading to Milvus v3.0.1, you must maintain your current message queue choice. Switching between different message queue systems during the upgrade is not supported. Support for changing message queue systems will be available in future versions.</p>
 </div>
-<h2 id="Configure-Pulsar-with-Docker-Compose" class="common-anchor-header">Настройка Pulsar с помощью Docker Compose<button data-href="#Configure-Pulsar-with-Docker-Compose" class="anchor-icon" translate="no">
+<h2 id="Configure-Pulsar-with-Docker-Compose" class="common-anchor-header">Configure Pulsar with Docker Compose<button data-href="#Configure-Pulsar-with-Docker-Compose" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,7 +39,7 @@ summary: 'Узнайте, как настроить хранилище сооб�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="1-Configure-Pulsar" class="common-anchor-header">1. Настройка Pulsar<button data-href="#1-Configure-Pulsar" class="anchor-icon" translate="no">
+    </button></h2><h3 id="1-Configure-Pulsar" class="common-anchor-header">1. Configure Pulsar<button data-href="#1-Configure-Pulsar" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -54,14 +54,14 @@ summary: 'Узнайте, как настроить хранилище сооб�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Чтобы настроить Pulsar с помощью Docker Compose, укажите свои значения в разделе « <code translate="no">pulsar</code> » в файле ` <code translate="no">milvus.yaml</code> `, расположенном в каталоге `milvus/configs`.</p>
+    </button></h3><p>To configure Pulsar with Docker Compose, provide your values for the <code translate="no">pulsar</code> section in the <code translate="no">milvus.yaml</code> file on the milvus/configs path.</p>
 <pre><code translate="no"><span class="hljs-attr">pulsar:</span>
   <span class="hljs-attr">address:</span> <span class="hljs-string">localhost</span> <span class="hljs-comment"># Address of pulsar</span>
   <span class="hljs-attr">port:</span> <span class="hljs-number">6650</span> <span class="hljs-comment"># Port of pulsar</span>
   <span class="hljs-attr">maxMessageSize:</span> <span class="hljs-number">5242880</span> <span class="hljs-comment"># 5 * 1024 * 1024 Bytes, Maximum size of each message in pulsar.</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Дополнительные сведения см. в разделе <a href="/docs/ru/configure_pulsar.md">«Настройки, связанные с Pulsar</a> ».</p>
-<h3 id="2-Run-Milvus" class="common-anchor-header">2. Запуск Milvus<button data-href="#2-Run-Milvus" class="anchor-icon" translate="no">
+<p>See <a href="/docs/ru/configure_pulsar.md">Pulsar-related configurations</a> for more information.</p>
+<h3 id="2-Run-Milvus" class="common-anchor-header">2. Run Milvus<button data-href="#2-Run-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,11 +76,11 @@ summary: 'Узнайте, как настроить хранилище сооб�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Выполните следующую команду, чтобы запустить Milvus с использованием настроек Pulsar.</p>
+    </button></h3><p>Run the following command to start Milvus that uses the Pulsar configurations.</p>
 <pre><code translate="no"><span class="hljs-attribute">docker</span> compose up
 <button class="copy-code-btn"></button></code></pre>
-<div class="alert note">Настройки вступают в силу только после запуска Milvus. Дополнительные сведения см. в разделе <a href="https://milvus.io/docs/install_standalone-docker.md#Start-Milvus">«Запуск Milvus</a> ».</div>
-<h2 id="Configure-Pulsar-with-Helm" class="common-anchor-header">Настройка Pulsar с помощью Helm<button data-href="#Configure-Pulsar-with-Helm" class="anchor-icon" translate="no">
+<div class="alert note">Configurations only take effect after Milvus starts. See <a href="https://milvus.io/docs/install_standalone-docker.md#Start-Milvus">Start Milvus</a> for more information.</div>
+<h2 id="Configure-Pulsar-with-Helm" class="common-anchor-header">Configure Pulsar with Helm<button data-href="#Configure-Pulsar-with-Helm" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,10 +95,10 @@ summary: 'Узнайте, как настроить хранилище сооб�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Для кластеров Milvus на K8s вы можете настроить Pulsar в той же команде, что и запускает Milvus. В качестве альтернативы вы можете настроить Pulsar с помощью файла « <code translate="no">values.yml</code> », расположенного в папке /charts/milvus в репозитории <a href="https://github.com/milvus-io/milvus-helm">milvus-helm</a>, перед запуском Milvus.</p>
-<p>Подробнее о том, как настроить Milvus с помощью Helm, см. в разделе <a href="/docs/ru/configure-helm.md">«Настройка Milvus с помощью диаграмм Helm</a>». Подробнее о параметрах конфигурации, связанных с Pulsar, см. в разделе <a href="/docs/ru/configure_pulsar.md">«Настройки, связанные с Pulsar</a>».
+    </button></h2><p>For Milvus clusters on K8s, you can configure Pulsar in the same command that starts Milvus. Alternatively, you can configure Pulsar using the <code translate="no">values.yml</code> file on the /charts/milvus path in the <a href="https://github.com/milvus-io/milvus-helm">milvus-helm</a> repository before you start Milvus.</p>
+<p>For details on how to configure Milvus using Helm, refer to <a href="/docs/ru/configure-helm.md">Configure Milvus with Helm Charts</a>. For details on Pulsar-related configuration items, refer to <a href="/docs/ru/configure_pulsar.md">Pulsar-related configurations</a>.
 |</p>
-<h3 id="Using-the-YAML-file" class="common-anchor-header">Использование файла YAML<button data-href="#Using-the-YAML-file" class="anchor-icon" translate="no">
+<h3 id="Using-the-YAML-file" class="common-anchor-header">Using the YAML file<button data-href="#Using-the-YAML-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -114,7 +114,7 @@ summary: 'Узнайте, как настроить хранилище сооб�
         ></path>
       </svg>
     </button></h3><ol>
-<li>Настройте раздел ` <code translate="no">externalConfigFiles</code> ` в файле ` <code translate="no">values.yaml</code> `.</li>
+<li>Configure the <code translate="no">externalConfigFiles</code> section in the <code translate="no">values.yaml</code> file.</li>
 </ol>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">extraConfigFiles:</span>
   <span class="hljs-attr">user.yaml:</span> <span class="hljs-string">|+
@@ -127,11 +127,11 @@ summary: 'Узнайте, как настроить хранилище сооб�
       namespace: default    
 </span><button class="copy-code-btn"></button></code></pre>
 <ol start="2">
-<li>После настройки вышеуказанных разделов и сохранения файла ` <code translate="no">values.yaml</code> ` выполните следующую команду для установки Milvus с использованием конфигураций Pulsar.</li>
+<li>After configuring the preceding sections and saving the <code translate="no">values.yaml</code> file, run the following command to install Milvus which uses the Pulsar configurations.</li>
 </ol>
 <pre><code translate="no" class="language-shell">helm install &lt;your_release_name&gt; milvus/milvus -f values.yaml
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Configure-Woodpecker-with-Helm" class="common-anchor-header">Настройка Woodpecker с помощью Helm<button data-href="#Configure-Woodpecker-with-Helm" class="anchor-icon" translate="no">
+<h2 id="Configure-Woodpecker-with-Helm" class="common-anchor-header">Configure Woodpecker with Helm<button data-href="#Configure-Woodpecker-with-Helm" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -146,10 +146,10 @@ summary: 'Узнайте, как настроить хранилище сооб�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Для кластеров Milvus на K8s вы можете настроить Woodpecker в той же команде, которая запускает Milvus. В качестве альтернативы вы можете настроить Woodpecker с помощью файла <code translate="no">values.yml</code>, расположенного по пути /charts/milvus в репозитории <a href="https://github.com/milvus-io/milvus-helm">milvus-helm</a>, перед запуском Milvus.</p>
-<p>Подробные сведения о настройке Milvus с помощью Helm см. в разделе <a href="/docs/ru/configure-helm.md">«Настройка Milvus с помощью Helm Charts</a>». Подробные сведения о параметрах конфигурации, связанных с Woodpecker, см. в разделе <a href="/docs/ru/woodpecker.md">«Конфигурации, связанные с Woodpecker</a>».
+    </button></h2><p>For Milvus clusters on K8s, you can configure Woodpecker in the same command that starts Milvus. Alternatively, you can configure Woodpecker using the <code translate="no">values.yml</code> file on the /charts/milvus path in the <a href="https://github.com/milvus-io/milvus-helm">milvus-helm</a> repository before you start Milvus.</p>
+<p>For details on how to configure Milvus using Helm, refer to <a href="/docs/ru/configure-helm.md">Configure Milvus with Helm Charts</a>. For details on Woodpecker-related configuration items, refer to <a href="/docs/ru/woodpecker.md">woodpecker-related configurations</a>.
 |</p>
-<h3 id="Using-the-YAML-file" class="common-anchor-header">Использование файла YAML<button data-href="#Using-the-YAML-file" class="anchor-icon" translate="no">
+<h3 id="Using-the-YAML-file" class="common-anchor-header">Using the YAML file<button data-href="#Using-the-YAML-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -165,7 +165,7 @@ summary: 'Узнайте, как настроить хранилище сооб�
         ></path>
       </svg>
     </button></h3><ol>
-<li>Настройте раздел ` <code translate="no">externalConfigFiles</code> ` в файле ` <code translate="no">values.yaml</code> `.</li>
+<li>Configure the <code translate="no">externalConfigFiles</code> section in the <code translate="no">values.yaml</code> file.</li>
 </ol>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">extraConfigFiles:</span>
   <span class="hljs-attr">user.yaml:</span> <span class="hljs-string">|+
@@ -205,11 +205,11 @@ summary: 'Узнайте, как настроить хранилище сооб�
         rootPath: /var/lib/milvus/woodpecker # The root path of the storage provider.    
 </span><button class="copy-code-btn"></button></code></pre>
 <ol start="2">
-<li>После настройки вышеуказанных разделов и сохранения файла ` <code translate="no">values.yaml</code> ` выполните следующую команду для установки Milvus с использованием конфигураций Woodpecker.</li>
+<li>After configuring the preceding sections and saving the <code translate="no">values.yaml</code> file, run the following command to install Milvus which uses the Woodpecker configurations.</li>
 </ol>
 <pre><code translate="no" class="language-shell">helm install &lt;your_release_name&gt; milvus/milvus -f values.yaml
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Configure-Kafka-with-Helm" class="common-anchor-header">Настройка Kafka с помощью Helm<button data-href="#Configure-Kafka-with-Helm" class="anchor-icon" translate="no">
+<h2 id="Configure-Kafka-with-Helm" class="common-anchor-header">Configure Kafka with Helm<button data-href="#Configure-Kafka-with-Helm" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -224,9 +224,9 @@ summary: 'Узнайте, как настроить хранилище сооб�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Для кластеров Milvus на K8s вы можете настроить Kafka в той же команде, которая запускает Milvus. В качестве альтернативы вы можете настроить Kafka с помощью файла <code translate="no">values.yml</code>, расположенного по пути /charts/milvus в репозитории <a href="https://github.com/milvus-io/milvus-helm">milvus-helm</a>, перед запуском Milvus.</p>
-<p>Подробнее о том, как настроить Milvus с помощью Helm, см. в разделе <a href="/docs/ru/configure-helm.md">«Настройка Milvus с помощью диаграмм Helm</a>». Подробнее о параметрах конфигурации, связанных с Pulsar, см. в разделе <a href="/docs/ru/configure_pulsar.md">«Настройки, связанные с Pulsar</a>».</p>
-<h3 id="Using-the-YAML-file" class="common-anchor-header">Использование файла YAML<button data-href="#Using-the-YAML-file" class="anchor-icon" translate="no">
+    </button></h2><p>For Milvus clusters on K8s, you can configure Kafka in the same command that starts Milvus. Alternatively, you can configure Kafka using the <code translate="no">values.yml</code> file on the /charts/milvus path in the <a href="https://github.com/milvus-io/milvus-helm">milvus-helm</a> repository before you start Milvus.</p>
+<p>For details on how to configure Milvus using Helm, refer to <a href="/docs/ru/configure-helm.md">Configure Milvus with Helm Charts</a>. For details on Pulsar-related configuration items, refer to <a href="/docs/ru/configure_pulsar.md">Pulsar-related configurations</a>.</p>
+<h3 id="Using-the-YAML-file" class="common-anchor-header">Using the YAML file<button data-href="#Using-the-YAML-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -242,7 +242,7 @@ summary: 'Узнайте, как настроить хранилище сооб�
         ></path>
       </svg>
     </button></h3><ol>
-<li>Настройте раздел ` <code translate="no">externalConfigFiles</code> ` в файле ` <code translate="no">values.yaml</code> `, если хотите использовать Kafka в качестве системы хранения сообщений.</li>
+<li>Configure the <code translate="no">externalConfigFiles</code> section in the <code translate="no">values.yaml</code> file if you want to use Kafka as the message storage system.</li>
 </ol>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">extraConfigFiles:</span>
   <span class="hljs-attr">user.yaml:</span> <span class="hljs-string">|+
@@ -255,11 +255,11 @@ summary: 'Узнайте, как настроить хранилище сооб�
       securityProtocol: SASL_SSL    
 </span><button class="copy-code-btn"></button></code></pre>
 <ol start="2">
-<li>После настройки предыдущих разделов и сохранения файла ` <code translate="no">values.yaml</code> ` выполните следующую команду, чтобы установить Milvus с использованием настроек Kafka.</li>
+<li>After configuring the preceding sections and saving the <code translate="no">values.yaml</code> file, run the following command to install Milvus that uses the Kafka configurations.</li>
 </ol>
 <pre><code translate="no" class="language-shell">helm install &lt;your_release_name&gt; milvus/milvus -f values.yaml
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Configure-RocksMQ-with-Helm" class="common-anchor-header">Настройка RocksMQ с помощью Helm<button data-href="#Configure-RocksMQ-with-Helm" class="anchor-icon" translate="no">
+<h2 id="Configure-RocksMQ-with-Helm" class="common-anchor-header">Configure RocksMQ with Helm<button data-href="#Configure-RocksMQ-with-Helm" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -274,10 +274,10 @@ summary: 'Узнайте, как настроить хранилище сооб�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>До версии 2.5.x RocksMQ был хранилищем сообщений по умолчанию в автономной версии Milvus; начиная с версии 2.6.x по умолчанию используется Woodpecker. Подробные инструкции по настройке Milvus с помощью Helm см. в разделе <a href="/docs/ru/configure-helm.md">«Настройка Milvus с помощью диаграмм Helm</a>». Подробную информацию о параметрах конфигурации, связанных с RocksMQ, см. в разделе <a href="/docs/ru/configure_rocksmq.md">«Настройки, связанные с RocksMQ</a>».</p>
+    </button></h2><p>RocksMQ was the default message storage in Milvus standalone up to 2.5.x; from 2.6.x the default is Woodpecker. For detailed steps on how to configure Milvus with Helm, refer to <a href="/docs/ru/configure-helm.md">Configure Milvus with Helm Charts</a>. For details on RocksMQ-related configuration items, refer to <a href="/docs/ru/configure_rocksmq.md">RocksMQ-related configurations</a>.</p>
 <ul>
-<li><p>Если вы запустили Milvus с RocksMQ и хотите изменить его настройки, вы можете выполнить команду ` <code translate="no">helm upgrade -f</code> ` с измененными настройками в следующем файле YAML.</p></li>
-<li><p>Если вы установили автономную версию Milvus с помощью Helm с хранилищем сообщений, отличным от RocksMQ, и хотите вернуться к RocksMQ, запустите команду ` <code translate="no">helm upgrade -f</code> ` с использованием следующего файла YAML после того, как очистите все коллекции и остановите Milvus.</p></li>
+<li><p>If you start Milvus with RocksMQ and want to change its settings, you can run <code translate="no">helm upgrade -f</code> with the changed settings in the following YAML file.</p></li>
+<li><p>If you have installed Milvus standalone using Helm with a message store other than RocksMQ and want to change it back to RocksMQ, run <code translate="no">helm upgrade -f</code> with the following YAML file after you have flushed all collections and stopped Milvus.</p></li>
 </ul>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">extraConfigFiles:</span>
   <span class="hljs-attr">user.yaml:</span> <span class="hljs-string">|+
@@ -296,9 +296,9 @@ summary: 'Узнайте, как настроить хранилище сооб�
       compressionTypes: [0, 0, 7, 7, 7]    
 </span><button class="copy-code-btn"></button></code></pre>
 <div class="alert warning">
-<p>Изменение хранилища сообщений не рекомендуется. Если вы всё же хотите это сделать, остановите все операции DDL, затем вызовите API-метод FlushAll для очистки всех коллекций и, наконец, остановите Milvus перед тем, как фактически изменить хранилище сообщений.</p>
+<p>Changing the message store is not recommended. If this is you want to do this, stop all DDL operations, then call the FlushAll API to flush all collections, and finally stop Milvus in the end before you actually change the message store.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">Что дальше<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -313,8 +313,8 @@ summary: 'Узнайте, как настроить хранилище сооб�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Узнайте, как настроить другие зависимости Milvus с помощью Docker Compose или Helm:</p>
+    </button></h2><p>Learn how to configure other Milvus dependencies with Docker Compose or Helm:</p>
 <ul>
-<li><a href="/docs/ru/deploy_s3.md">Настройка объектного хранилища с помощью Docker Compose или Helm</a></li>
-<li><a href="/docs/ru/deploy_etcd.md">Настройка хранилища метаданных с помощью Docker Compose или Helm</a></li>
+<li><a href="/docs/ru/deploy_s3.md">Configure Object Storage with Docker Compose or Helm</a></li>
+<li><a href="/docs/ru/deploy_etcd.md">Configure Meta Storage with Docker Compose or Helm</a></li>
 </ul>

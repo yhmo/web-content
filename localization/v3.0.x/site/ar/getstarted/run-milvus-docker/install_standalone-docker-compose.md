@@ -2,10 +2,10 @@
 id: install_standalone-docker-compose.md
 label: Docker Compose
 related_key: Docker Compose
-summary: تعرف على كيفية تثبيت Milvus بشكل مستقل باستخدام Docker Compose.
-title: تشغيل Milvus باستخدام Docker Compose (لينكس)
+summary: Learn how to install Milvus standalone with Docker Compose.
+title: Run Milvus with Docker Compose (Linux)
 ---
-<h1 id="Run-Milvus-with-Docker-Compose-Linux" class="common-anchor-header">تشغيل Milvus باستخدام Docker Compose (لينكس)<button data-href="#Run-Milvus-with-Docker-Compose-Linux" class="anchor-icon" translate="no">
+<h1 id="Run-Milvus-with-Docker-Compose-Linux" class="common-anchor-header">Run Milvus with Docker Compose (Linux)<button data-href="#Run-Milvus-with-Docker-Compose-Linux" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: تشغيل Milvus باستخدام Docker Compose (لينكس)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>توضح هذه الصفحة كيفية تشغيل مثيل Milvus في Docker باستخدام Docker Compose.</p>
-<h2 id="Prerequisites" class="common-anchor-header">المتطلبات المسبقة<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This page illustrates how to launch a Milvus instance in Docker using Docker Compose.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,10 +37,10 @@ title: تشغيل Milvus باستخدام Docker Compose (لينكس)
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="https://docs.docker.com/get-docker/">قم بتثبيت Docker</a>.</li>
-<li><a href="/docs/ar/prerequisite-docker.md">تحقق من متطلبات الأجهزة والبرامج</a> قبل التثبيت.</li>
+<li><a href="https://docs.docker.com/get-docker/">Install Docker</a>.</li>
+<li><a href="/docs/ar/prerequisite-docker.md">Check the requirements for hardware and software</a> prior to your installation.</li>
 </ul>
-<h2 id="Install-Milvus" class="common-anchor-header">تثبيت Milvus<button data-href="#Install-Milvus" class="anchor-icon" translate="no">
+<h2 id="Install-Milvus" class="common-anchor-header">Install Milvus<button data-href="#Install-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,7 +55,7 @@ title: تشغيل Milvus باستخدام Docker Compose (لينكس)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يوفر Milvus ملف تكوين Docker Compose في مستودع Milvus. لتثبيت Milvus باستخدام Docker Compose، ما عليك سوى تشغيل</p>
+    </button></h2><p>Milvus provides a Docker Compose configuration file in the Milvus repository. To install Milvus using Docker Compose, just run</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Download the configuration file</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://github.com/milvus-io/milvus/releases/download/v3.0.1/milvus-standalone-docker-compose.yml -O docker-compose.yml</span>
 <span class="hljs-meta prompt_">
@@ -67,28 +67,28 @@ Creating milvus-minio ... done
 Creating milvus-standalone ... done
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><strong>النشر الافتراضي (الإصدار 3.0.1):</strong> <code translate="no">docker compose up -d</code> يبدأ ثلاث حاويات — <code translate="no">milvus-etcd</code> (البيانات الوصفية)، <code translate="no">milvus-minio</code> (تخزين الكائنات)، و <code translate="no">milvus-standalone</code>. قائمة انتظار الرسائل هي <strong>Woodpecker (مضمنة، مع MinIO / تخزين الكائنات كخلفية WAL لها)</strong>، لذا لا يلزم وجود حاوية منفصلة لقائمة انتظار الرسائل.</p>
-<p><strong>قائمة انتظار الرسائل الافتراضية حسب الإصدار:</strong></p>
+<p><strong>Default deployment (v3.0.1):</strong> <code translate="no">docker compose up -d</code> starts three containers — <code translate="no">milvus-etcd</code> (metadata), <code translate="no">milvus-minio</code> (object storage), and <code translate="no">milvus-standalone</code>. The message queue is <strong>Woodpecker (embedded, with MinIO / object storage as its WAL backend)</strong>, so no separate message-queue container is required.</p>
+<p><strong>Message-queue default by version:</strong></p>
 <ul>
-<li><strong>2.5.x</strong> — قائمة انتظار الرسائل الافتراضية هي <strong>RocksMQ</strong>.</li>
-<li><strong>2.6.x والإصدارات الأحدث</strong> — قائمة انتظار الرسائل الافتراضية هي <strong>Woodpecker (مدمجة)</strong>.</li>
+<li><strong>2.5.x</strong> — default message queue is <strong>RocksMQ</strong>.</li>
+<li><strong>2.6.x and later</strong> — default message queue is <strong>Woodpecker (embedded)</strong>.</li>
 </ul>
-<p>قم دائمًا بتنزيل أحدث تكوين لـ Docker Compose لضمان التوافق مع ميزات الإصدار v3.0.1.</p>
+<p>Always download the latest Docker Compose configuration to ensure compatibility with v3.0.1 features.</p>
 <ul>
-<li><p>إذا فشلت في تشغيل الأمر أعلاه، يرجى التحقق مما إذا كان نظامك يحتوي على Docker Compose V1 مثبتًا. إذا كان الأمر كذلك، يُنصح بالترحيل إلى Docker Compose V2 وفقًا للملاحظات الواردة في <a href="https://docs.docker.com/compose/">هذه الصفحة</a>.</p></li>
-<li><p>إذا واجهت أي مشكلات في سحب الصورة، فاتصل بنا على <a href="mailto:community@zilliz.com">community@zilliz.com</a> مع تفاصيل عن المشكلة، وسنقدم لك الدعم اللازم.</p></li>
+<li><p>If you failed to run the above command, please check whether your system has Docker Compose V1 installed. If this is the case, you are advised to migrate to Docker Compose V2 due to the notes on <a href="https://docs.docker.com/compose/">this page</a>.</p></li>
+<li><p>If you encounter any issues pulling the image, contact us at <a href="mailto:community@zilliz.com">community@zilliz.com</a> with details about the problem, and we’ll provide you with the necessary support.</p></li>
 </ul>
 </div>
-<p>بعد بدء تشغيل Milvus،</p>
+<p>After starting up Milvus,</p>
 <ul>
-<li>تكون الحاويات المسماة <strong>milvus-standalone</strong> و <strong>milvus-minio</strong> و <strong>milvus-etcd</strong> قيد التشغيل.
+<li>Containers named <strong>milvus-standalone</strong>, <strong>milvus-minio</strong>, and <strong>milvus-etcd</strong> are up.
 <ul>
-<li>لا تكشف حاوية <strong>milvus-etcd</strong> عن أي منافذ للمضيف وتقوم بتعيين بياناتها إلى <strong>volumes/etcd</strong> في المجلد الحالي.</li>
-<li>تقدم حاوية <strong>milvus-minio</strong> المنافذ <strong>9000</strong> <strong>و9001</strong> محليًا باستخدام بيانات اعتماد المصادقة الافتراضية وتقوم بتعيين بياناتها إلى <strong>volumes/minio</strong> في المجلد الحالي.</li>
-<li>تقدم حاوية <strong>milvus-standalone</strong> المنافذ <strong>19530</strong> محليًا باستخدام الإعدادات الافتراضية وتقوم بتعيين بياناتها إلى <strong>مجلد volumes/milvus</strong> في المجلد الحالي.</li>
+<li>The <strong>milvus-etcd</strong> container does not expose any ports to the host and maps its data to <strong>volumes/etcd</strong> in the current folder.</li>
+<li>The <strong>milvus-minio</strong> container serves ports <strong>9000</strong> and <strong>9001</strong> locally with the default authentication credentials and maps its data to <strong>volumes/minio</strong> in the current folder.</li>
+<li>The <strong>milvus-standalone</strong> container serves ports <strong>19530</strong> locally with the default settings and maps its data to <strong>volumes/milvus</strong> in the current folder.</li>
 </ul></li>
 </ul>
-<p>يمكنك التحقق مما إذا كانت الحاويات قيد التشغيل باستخدام الأمر التالي:</p>
+<p>You can check if the containers are up and running using the following command:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">docker compose ps</span>
 
 NAME                IMAGE   COMMAND                  SERVICE      CREATED         STATUS                   PORTS
@@ -96,8 +96,8 @@ milvus-etcd         …       &quot;etcd -advertise-cli…&quot;   etcd         
 milvus-minio        …       &quot;/usr/bin/docker-ent…&quot;   minio        2 minutes ago   Up 2 minutes (healthy)   9000-9001/tcp
 milvus-standalone   …       &quot;/tini -- milvus run…&quot;   standalone   2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:9091-&gt;9091/tcp, 0.0.0.0:19530-&gt;19530/tcp
 <button class="copy-code-btn"></button></code></pre>
-<p>يمكنك أيضًا الوصول إلى واجهة المستخدم على الويب لـ Milvus على <code translate="no">http://127.0.0.1:9091/webui/</code> لمعرفة المزيد عن مثيل Milvus الخاص بك. لمزيد من التفاصيل، راجع <a href="/docs/ar/milvus-webui.md">واجهة المستخدم على الويب</a> ل <a href="/docs/ar/milvus-webui.md">ـ Milvus</a>.</p>
-<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(اختياري) تحديث تكوينات Milvus<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
+<p>You can also access Milvus WebUI at <code translate="no">http://127.0.0.1:9091/webui/</code> to learn more about the your Milvus instance. For details, refer to <a href="/docs/ar/milvus-webui.md">Milvus WebUI</a>.</p>
+<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Optional) Update Milvus configurations<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,24 +112,24 @@ milvus-standalone   …       &quot;/tini -- milvus run…&quot;   standalone   
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>لتحديث إعدادات Milvus لتناسب احتياجاتك، تحتاج إلى تعديل ملف <code translate="no">/milvus/configs/user.yaml</code> الموجود داخل حاوية <code translate="no">milvus-standalone</code>.</p>
+    </button></h2><p>To update Milvus configuration to suit your needs, you need to modify the <code translate="no">/milvus/configs/user.yaml</code> file within the <code translate="no">milvus-standalone</code> container.</p>
 <ol>
-<li><p>قم بالوصول إلى الحاوية <code translate="no">milvus-standalone</code>.</p>
+<li><p>Access the <code translate="no">milvus-standalone</code> container.</p>
 <pre><code translate="no" class="language-shell">docker exec -it milvus-standalone bash
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>أضف إعدادات إضافية لتجاوز الإعدادات الافتراضية.
-يفترض ما يلي أنك بحاجة إلى تجاوز ملف <code translate="no">proxy.healthCheckTimeout</code> الافتراضي. للاطلاع على عناصر التكوين القابلة للتطبيق، راجع <a href="/docs/ar/system_configuration.md">«تكوين النظام</a>».</p>
+<li><p>Add extra configurations to override the default ones.
+The following assumes that you need to override the default <code translate="no">proxy.healthCheckTimeout</code>. For applicable configuration items, refer to <a href="/docs/ar/system_configuration.md">System Configuration</a>.</p>
 <pre><code translate="no" class="language-shell">cat &lt;&lt; EOF &gt; /milvus/configs/user.yaml
 <span class="hljs-meta prompt_"># </span><span class="language-bash">Extra config to override default milvus.yaml</span>
 proxy:
   healthCheckTimeout: 1000 # ms, the interval that to do component healthy check
 EOF
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>أعد تشغيل حاوية <code translate="no">milvus-standalone</code> لتطبيق التغييرات.</p>
+<li><p>Restart the <code translate="no">milvus-standalone</code> container to apply the changes.</p>
 <pre><code translate="no" class="language-shell">docker restart milvus-standalone
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h2 id="Stop-and-delete-Milvus" class="common-anchor-header">إيقاف وحذف Milvus<button data-href="#Stop-and-delete-Milvus" class="anchor-icon" translate="no">
+<h2 id="Stop-and-delete-Milvus" class="common-anchor-header">Stop and delete Milvus<button data-href="#Stop-and-delete-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,14 +144,14 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك إيقاف هذا الحاوية وحذفها على النحو التالي</p>
+    </button></h2><p>You can stop and delete this container as follows</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Stop Milvus</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> docker compose down</span>
 <span class="hljs-meta prompt_">
 # </span><span class="language-bash">Delete service data</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">rm</span> -rf volumes</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upgrading-from-Milvus-25x-to-26x" class="common-anchor-header">الترقية من Milvus 2.5.x إلى 2.6.x<button data-href="#Upgrading-from-Milvus-25x-to-26x" class="anchor-icon" translate="no">
+<h2 id="Upgrading-from-Milvus-25x-to-26x" class="common-anchor-header">Upgrading from Milvus 2.5.x to 2.6.x<button data-href="#Upgrading-from-Milvus-25x-to-26x" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -166,14 +166,14 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>قيود قائمة انتظار الرسائل</strong>: عند الترقية إلى Milvus v3.0.1، يجب الحفاظ على اختيارك الحالي لقائمة انتظار الرسائل. لا يُدعم التبديل بين أنظمة قوائم انتظار الرسائل المختلفة أثناء الترقية. سيتوفر دعم تغيير أنظمة قوائم انتظار الرسائل في الإصدارات المستقبلية.</p>
-<p>نظرًا لأن الإصدار 2.6.x يغير قائمة انتظار الرسائل الافتراضية إلى Woodpecker، يجب على المثيل الذي يعمل <strong>بنظام RocksMQ</strong> على الإصدار 2.5.x <strong>تثبيت RocksMQ بشكل صريح قبل الترقية</strong> — وإلا فستحاول عملية الترقية تغيير قائمة انتظار الرسائل، وهو أمر غير مدعوم. بعد تنزيل ملف Docker Compose الخاص بالإصدار 2.6.x، أعد تعيين نوع قائمة انتظار الرسائل إلى « <code translate="no">rocksmq</code> » في ملف التجاوز الخاص بـ ` <code translate="no">user.yaml</code> `، ثم قم بالترقية:</p>
+    </button></h2><p><strong>Message Queue limitations</strong>: When upgrading to Milvus v3.0.1, you must maintain your current message queue choice. Switching between different message queue systems during the upgrade is not supported. Support for changing message queue systems will be available in future versions.</p>
+<p>Because 2.6.x changes the default message queue to Woodpecker, an instance running <strong>RocksMQ</strong> on 2.5.x must <strong>explicitly pin RocksMQ before upgrading</strong> — otherwise the upgrade would attempt to change the message queue, which is not supported. After downloading the 2.6.x Docker Compose file, set the message-queue type back to <code translate="no">rocksmq</code> in your <code translate="no">user.yaml</code> override, then upgrade:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># user.yaml — keep RocksMQ across the 2.5.x → 2.6.x upgrade</span>
 <span class="hljs-attr">mq:</span>
   <span class="hljs-attr">type:</span> <span class="hljs-string">rocksmq</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لتغيير قائمة انتظار الرسائل <em>بعد</em> الترقية، راجع <a href="/docs/ar/switch-mq-type.md">«تغيير قائمة انتظار الرسائل</a>».</p>
-<h2 id="Optional-dependencies" class="common-anchor-header">التبعيات الاختيارية<button data-href="#Optional-dependencies" class="anchor-icon" translate="no">
+<p>To switch the message queue <em>after</em> upgrading, see <a href="/docs/ar/switch-mq-type.md">Switch Message Queue</a>.</p>
+<h2 id="Optional-dependencies" class="common-anchor-header">Optional dependencies<button data-href="#Optional-dependencies" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -188,16 +188,16 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يعمل هذا النشر على <strong>Woodpecker</strong> (مُدمج، خلفية MinIO WAL) للمراسلة، <strong>وetcd</strong> للبيانات الوصفية، <strong>وMinIO</strong> لتخزين الكائنات. لاستخدام قائمة انتظار رسائل مختلفة أو توصيل تخزين كائنات خارجي/بيانات وصفية خارجية، راجع:</p>
+    </button></h2><p>This deployment runs <strong>Woodpecker</strong> (embedded, MinIO WAL backend) for messaging, <strong>etcd</strong> for metadata, and <strong>MinIO</strong> for object storage. To use a different message queue or connect external object storage / metadata, see:</p>
 <ul>
-<li>قائمة انتظار الرسائل: <a href="/docs/ar/woodpecker.md">Woodpecker</a> (افتراضي) · <a href="/docs/ar/mq_pulsar.md">Pulsar</a> · <a href="/docs/ar/mq_kafka.md">Kafka</a> · <a href="/docs/ar/mq_rocksmq.md">RocksMQ</a></li>
-<li>تخزين الكائنات: <a href="/docs/ar/deploy_s3.md">MinIO</a> (افتراضي) · <a href="/docs/ar/deploy_s3.md">AWS S3</a> · <a href="/docs/ar/abs.md">Azure Blob</a> · <a href="/docs/ar/gcs.md">GCP Cloud Storage</a> · <a href="/docs/ar/deploy_s3.md">Aliyun OSS</a> · <a href="/docs/ar/deploy_s3.md">Tencent COS</a> · <a href="/docs/ar/deploy_s3.md">Huawei OBS</a> · <a href="/docs/ar/deploy_s3.md">متوافق مع S3</a></li>
-<li>البيانات الوصفية: <a href="/docs/ar/deploy_etcd.md">etcd</a></li>
+<li>Message queue: <a href="/docs/ar/woodpecker.md">Woodpecker</a> (default) · <a href="/docs/ar/mq_pulsar.md">Pulsar</a> · <a href="/docs/ar/mq_kafka.md">Kafka</a> · <a href="/docs/ar/mq_rocksmq.md">RocksMQ</a></li>
+<li>Object storage: <a href="/docs/ar/deploy_s3.md">MinIO</a> (default) · <a href="/docs/ar/deploy_s3.md">AWS S3</a> · <a href="/docs/ar/abs.md">Azure Blob</a> · <a href="/docs/ar/gcs.md">GCP Cloud Storage</a> · <a href="/docs/ar/deploy_s3.md">Aliyun OSS</a> · <a href="/docs/ar/deploy_s3.md">Tencent COS</a> · <a href="/docs/ar/deploy_s3.md">Huawei OBS</a> · <a href="/docs/ar/deploy_s3.md">S3-compatible</a></li>
+<li>Metadata: <a href="/docs/ar/deploy_etcd.md">etcd</a></li>
 </ul>
 <div class="alert note">
-<p>يتم تعطيل التخزين V3 افتراضيًا. قم بتمكينه قبل استخدام الميزات التي تعتمد عليه. للاطلاع على المتطلبات واعتبارات التوافق، راجع <a href="/docs/ar/storage-v3.md">التخزين V3</a>.</p>
+<p>Storage V3 is disabled by default. Enable it before using features that depend on it. For requirements and compatibility considerations, see <a href="/docs/ar/storage-v3.md">Storage V3</a>.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">الخطوة التالية<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -212,29 +212,29 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>بعد تثبيت Milvus في Docker، يمكنك:</p>
+    </button></h2><p>Having installed Milvus in Docker, you can:</p>
 <ul>
-<li><p>الاطلاع على <a href="/docs/ar/quickstart.md">«البدء السريع»</a> لمعرفة ما يمكن لـ Milvus القيام به.</p></li>
-<li><p>تعلم العمليات الأساسية لـ Milvus:</p>
+<li><p>Check <a href="/docs/ar/quickstart.md">Quickstart</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/ar/manage_databases.md">إدارة قواعد البيانات</a></li>
-<li><a href="/docs/ar/manage-collections.md">إدارة المجموعات</a></li>
-<li><a href="/docs/ar/manage-partitions.md">إدارة الأقسام</a></li>
-<li><a href="/docs/ar/insert-update-delete.md">الإدراج والتحديث والحذف</a></li>
-<li><a href="/docs/ar/single-vector-search.md">البحث أحادي المتجه</a></li>
-<li><a href="/docs/ar/multi-vector-search.md">البحث الهجين</a></li>
+<li><a href="/docs/ar/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/ar/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/ar/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/ar/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/ar/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/ar/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p><a href="/docs/ar/upgrade_milvus_cluster-helm.md">ترقية Milvus باستخدام مخطط Helm</a>.</p></li>
-<li><p><a href="/docs/ar/scaleout.md">توسيع نطاق مجموعة Milvus الخاصة بك</a>.</p></li>
-<li><p>نشر مجموعة Milvus الخاصة بك على السحابة:</p>
+<li><p><a href="/docs/ar/upgrade_milvus_cluster-helm.md">Upgrade Milvus Using Helm Chart</a>.</p></li>
+<li><p><a href="/docs/ar/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvus cluster on clouds:</p>
 <ul>
 <li><a href="/docs/ar/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/ar/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/ar/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>استكشف <a href="/docs/ar/milvus-webui.md">Milvus WebUI،</a> وهي واجهة ويب سهلة الاستخدام لمراقبة وإدارة Milvus.</p></li>
-<li><p>اكتشف <a href="/docs/ar/milvus_backup_overview.md">Milvus Backup</a>، وهي أداة مفتوحة المصدر لنسخ بيانات Milvus احتياطيًا.</p></li>
-<li><p>اكتشف <a href="/docs/ar/birdwatcher_overview.md">Birdwatcher،</a> وهي أداة مفتوحة المصدر لتصحيح أخطاء Milvus وتحديثات التكوين الديناميكية.</p></li>
-<li><p>اكتشف <a href="https://github.com/zilliztech/attu">Attu،</a> وهي أداة واجهة مستخدم رسومية مفتوحة المصدر لإدارة Milvus بطريقة بديهية.</p></li>
-<li><p><a href="/docs/ar/monitor.md">راقب Milvus باستخدام Prometheus</a>.</p></li>
+<li><p>Explore <a href="/docs/ar/milvus-webui.md">Milvus WebUI</a>, an intuitive web interface for Milvus observability and management.</p></li>
+<li><p>Explore <a href="/docs/ar/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/ar/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/ar/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

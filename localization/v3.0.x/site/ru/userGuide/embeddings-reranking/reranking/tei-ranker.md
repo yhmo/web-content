@@ -2,10 +2,10 @@
 id: tei-ranker.md
 title: TEI RankerCompatible with Milvus 2.6.x
 summary: >-
-  TEI Ranker использует сервис Text Embedding Inference (TEI) от Hugging Face
-  для повышения релевантности поиска путем семантического ранжирования. Он
-  представляет собой продвинутый подход к упорядочиванию результатов поиска,
-  выходящий за рамки традиционного векторного сходства.
+  The TEI Ranker leverages the Text Embedding Inference (TEI) service from
+  Hugging Face to enhance search relevance through semantic reranking. It
+  represents an advanced approach to search result ordering that goes beyond
+  traditional vector similarity.
 beta: Milvus 2.6.x
 ---
 <h1 id="TEI-Ranker" class="common-anchor-header">TEI Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#TEI-Ranker" class="anchor-icon" translate="no">
@@ -23,8 +23,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>TEI Ranker использует сервис <a href="https://huggingface.co/docs/text-embeddings-inference/index">Text Embedding Inference (TEI)</a> от Hugging Face для повышения релевантности поиска путем семантического ранжирования. Он представляет собой продвинутый подход к упорядочиванию результатов поиска, выходящий за рамки традиционного векторного сходства.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Предварительные условия<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>The TEI Ranker leverages the <a href="https://huggingface.co/docs/text-embeddings-inference/index">Text Embedding Inference (TEI)</a> service from Hugging Face to enhance search relevance through semantic reranking. It represents an advanced approach to search result ordering that goes beyond traditional vector similarity.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,12 +39,12 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Прежде чем внедрять TEI Ranker в Milvus, убедитесь, что у вас есть:</p>
+    </button></h2><p>Before implementing TEI Ranker in Milvus, ensure you have:</p>
 <ul>
-<li><p>Коллекция Milvus с полем <code translate="no">VARCHAR</code>, содержащим текст, подлежащий повторному ранжированию.</p></li>
-<li><p>работающая служба TEI с возможностью ранжирования. Подробные инструкции по настройке службы TEI см. в <a href="https://huggingface.co/docs/text-embeddings-inference/en/quick_tour">официальной документации TEI</a>.</p></li>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A running TEI service with reranking capabilities. For detailed instructions on setting up a TEI service, refer to the <a href="https://huggingface.co/docs/text-embeddings-inference/en/quick_tour">official TEI documentation</a>.</p></li>
 </ul>
-<h2 id="Create-a-TEI-ranker-function" class="common-anchor-header">Создание функции ранжирования TEI<button data-href="#Create-a-TEI-ranker-function" class="anchor-icon" translate="no">
+<h2 id="Create-a-TEI-ranker-function" class="common-anchor-header">Create a TEI ranker function<button data-href="#Create-a-TEI-ranker-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,9 +59,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Чтобы использовать TEI Ranker в своем приложении Milvus, создайте объект Function, который определяет, как должно работать повторное ранжирование. Эта функция будет передаваться в поисковые операции Milvus для улучшения ранжирования результатов.</p>
+    </button></h2><p>To use TEI Ranker in your Milvus application, create a Function object that specifies how the reranking should operate. This function will be passed to Milvus search operations to enhance result ranking.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -114,7 +119,7 @@ searchWithRanker(scientists, ranker);
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="TEI-ranker-specific-parameters" class="common-anchor-header">Специфические параметры ранжировщика TEI<button data-href="#TEI-ranker-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="TEI-ranker-specific-parameters" class="common-anchor-header">TEI ranker-specific parameters<button data-href="#TEI-ranker-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,61 +134,61 @@ searchWithRanker(scientists, ranker);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Следующие параметры специфичны для ранжировщика TEI:</p>
+    </button></h3><p>The following parameters are specific to the TEI ranker:</p>
 <table>
    <tr>
-     <th><p>Параметр</p></th>
-     <th><p>Требуемый?</p></th>
-     <th><p>Описание</p></th>
-     <th><p>Значение / Пример</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value / Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reranker</code></p></td>
-     <td><p>Да</p></td>
-     <td><p>Должно быть установлено значение <code translate="no">"model"</code>, чтобы включить повторное ранжирование моделей.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>Да</p></td>
-     <td><p>Поставщик услуг модели, который будет использоваться для повторного ранжирования.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"tei"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queries</code></p></td>
-     <td><p>Да</p></td>
-     <td><p>Список строк запросов, используемых моделью ранжирования для расчета баллов релевантности. Количество строк запросов должно точно соответствовать количеству запросов в поисковой операции (даже при использовании векторов запросов вместо текста), иначе будет выдано сообщение об ошибке.</p></td>
-     <td><p><em>["поисковый запрос"].</em></p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the rerank model to calculate relevance scores. The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
+     <td><p><em>["search query"]</em></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">endpoint</code></p></td>
-     <td><p>Да</p></td>
-     <td><p>URL-адрес вашего сервиса TEI.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Your TEI service URL.</p></td>
      <td><p><code translate="no">"http://localhost:8080"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>Нет</p></td>
-     <td><p>Поскольку службы моделей могут обрабатывать не все данные сразу, здесь задается размер пакета для обращения к службе моделей при нескольких запросах.</p></td>
-     <td><p><code translate="no">32</code> (по умолчанию)</p></td>
+     <td><p>No</p></td>
+     <td><p>Since model services may not process all data at once, this sets the batch size for accessing the model service in multiple requests.</p></td>
+     <td><p><code translate="no">32</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">truncate</code></p></td>
-     <td><p>Нет</p></td>
-     <td><p>Нужно ли усекать вводимые данные, превышающие максимальную длину последовательности. Если <code translate="no">False</code>, то длинные входы вызывают ошибки.</p></td>
-     <td><p><code translate="no">True</code> или <code translate="no">False</code></p></td>
+     <td><p>No</p></td>
+     <td><p>Whether to truncate inputs exceeding max sequence length. If <code translate="no">False</code>, long inputs raise errors.</p></td>
+     <td><p><code translate="no">True</code> or <code translate="no">False</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">truncation_direction</code></p></td>
-     <td><p>Нет</p></td>
-     <td><p>Направление усечения, если входные данные слишком длинные:</p><ul><li><p><code translate="no">"Right"</code> (по умолчанию):  Токены удаляются из конца последовательности до тех пор, пока не будет достигнут максимальный поддерживаемый размер.</p></li><li><p><code translate="no">"Left"</code>: Токены удаляются из начала последовательности.</p></li></ul></td>
-     <td><p><code translate="no">"Right"</code> или <code translate="no">"Left"</code></p></td>
+     <td><p>No</p></td>
+     <td><p>Direction to truncate from when input is too long:</p><ul><li><p><code translate="no">"Right"</code> (default):  Tokens are removed from the end of the sequence until the maximum supported size is matched.</p></li><li><p><code translate="no">"Left"</code>: Tokens are removed from the beginning of the sequence.</p></li></ul></td>
+     <td><p><code translate="no">"Right"</code> or <code translate="no">"Left"</code></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>Общие параметры, общие для всех ранжировщиков моделей (например, <code translate="no">provider</code>, <code translate="no">queries</code>), см. в разделе <a href="/docs/ru/model-ranker-overview.md#Create-a-model-ranker">Создание ранжировщика моделей</a>.</p>
+<p>For general parameters shared across all model rankers (e.g., <code translate="no">provider</code>, <code translate="no">queries</code>), refer to <a href="/docs/ru/model-ranker-overview.md#Create-a-model-ranker">Create a model ranker</a>.</p>
 </div>
-<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Применение к стандартному векторному поиску<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -198,9 +203,14 @@ searchWithRanker(scientists, ranker);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Чтобы применить TEI Ranker к стандартному векторному поиску:</p>
+    </button></h2><p>To apply TEI Ranker to a standard vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Execute search with vLLM reranking</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;your_collection&quot;</span>,

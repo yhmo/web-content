@@ -4,11 +4,11 @@ label: Milvus Operator
 order: 0
 group: upgrade_milvus_cluster-operator.md
 related_key: upgrade Milvus Cluster
-summary: 瞭解如何使用 Milvus Operator 升級 Milvus 叢集。
-title: 使用 Milvus Operator 升級 Milvus 叢集
+summary: Learn how to upgrade Milvus cluster with Milvus Operator.
+title: Upgrade Milvus Cluster with Milvus Operator
 ---
-<div class="tab-wrapper"><a href="/docs/zh-hant/upgrade_milvus_cluster-operator.md" class='active '>Milvus</a><a href="/docs/zh-hant/upgrade_milvus_cluster-helm.md" class=''>OperatorHelm</a></div>
-<h1 id="Upgrade-Milvus-Cluster-with-Milvus-Operator" class="common-anchor-header">使用 Milvus Operator 升級 Milvus 叢集<button data-href="#Upgrade-Milvus-Cluster-with-Milvus-Operator" class="anchor-icon" translate="no">
+<div class="tab-wrapper"><a href="/docs/zh-hant/upgrade_milvus_cluster-operator.md" class='active '>Milvus Operator</a><a href="/docs/zh-hant/upgrade_milvus_cluster-helm.md" class=''>Helm</a></div>
+<h1 id="Upgrade-Milvus-Cluster-with-Milvus-Operator" class="common-anchor-header">Upgrade Milvus Cluster with Milvus Operator<button data-href="#Upgrade-Milvus-Cluster-with-Milvus-Operator" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,11 +23,11 @@ title: 使用 Milvus Operator 升級 Milvus 叢集
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>本指南說明如何使用 Milvus Operator 將 Milvus 2.6.x 叢集升級至 v3.0.1。</p>
+    </button></h1><p>This guide describes how to upgrade a Milvus 2.6.x cluster to v3.0.1 with Milvus Operator.</p>
 <div class="alert note">
-<p>此程序已通過驗證，適用於從 Milvus 2.6.20 升級至 Milvus v3.0.1，並搭配 Milvus Operator 1.3.0、MixCoord、StreamingNode、Woodpecker、叢集內 etcd 以及叢集內 MinIO。 若您使用其他 Milvus 2.6.x 修補版本、Operator 版本、元件拓撲、訊息佇列或依賴項配置，請先在非生產環境中驗證升級流程。</p>
+<p>This procedure has been validated from Milvus 2.6.20 to Milvus v3.0.1 with Milvus Operator 1.3.0, MixCoord, StreamingNode, Woodpecker, in-cluster etcd, and in-cluster MinIO. If you use another Milvus 2.6.x patch release, Operator version, component topology, message queue, or dependency configuration, validate the upgrade in a non-production environment first.</p>
 </div>
-<h2 id="Prerequisites" class="common-anchor-header">先決條件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,18 +43,18 @@ title: 使用 Milvus Operator 升級 Milvus 叢集
         ></path>
       </svg>
     </button></h2><ul>
-<li>一個由 Milvus Operator 管理的、包含 Milvus 2.6.x 叢集的 Kubernetes 叢集</li>
-<li><code translate="no">kubectl</code> 可存取該叢集</li>
-<li>用於現有部署的完整 Milvus 自訂資源 (CR) 清單</li>
-<li>現有 Milvus Operator 所使用的安裝方法與清單</li>
-<li>Milvus 元資料與持久化資料的最新備份</li>
+<li>A Kubernetes cluster with a Milvus 2.6.x cluster managed by Milvus Operator</li>
+<li><code translate="no">kubectl</code> access to the cluster</li>
+<li>The complete Milvus custom resource (CR) manifest used for the existing deployment</li>
+<li>The installation method and manifests used for the existing Milvus Operator</li>
+<li>A current backup of Milvus metadata and persistent data</li>
 </ul>
-<p><strong>訊息佇列限制</strong>：升級至 Milvus v3.0.1 時，您必須維持當前的訊息佇列選擇。升級過程中不支援在不同的訊息佇列系統之間切換。未來版本將支援變更訊息佇列系統。</p>
+<p><strong>Message Queue limitations</strong>: When upgrading to Milvus v3.0.1, you must maintain your current message queue choice. Switching between different message queue systems during the upgrade is not supported. Support for changing message queue systems will be available in future versions.</p>
 <div class="alert warning">
-<p>請針對此次升級套用完整的 Milvus CR。請勿使用僅包含映像檔的合併修補程式。Operator 可能會預設填入省略的零複本元件欄位，這可能會重新啟用現有 2.6.x 部署中已停用的元件。</p>
-<p>此程序不支援透過將 Milvus 映像檔還原至 2.6.x 版本來進行降級或回滾。 在 v3.0.1 寫入資料後，僅套用映像檔的回滾操作可能會無法讀取已更新的狀態。若升級失敗，請停止寫入操作，並採用能還原升級前元資料及持久資料備份的復原方案。請先在非生產環境中驗證該復原方案。</p>
+<p>Apply the complete Milvus CR for this upgrade. Do not use an image-only merge patch. The Operator can default omitted zero-replica component fields, which can re-enable a component that the existing 2.6.x deployment disabled.</p>
+<p>This procedure does not validate a downgrade or rollback by changing the Milvus image back to 2.6.x. After v3.0.1 writes data, an image-only rollback can fail to read the updated state. If the upgrade fails, stop writes and use a recovery plan that restores the pre-upgrade metadata and persistent data backups. Validate the recovery plan in a non-production environment first.</p>
 </div>
-<h2 id="Upgrade-process" class="common-anchor-header">升級流程<button data-href="#Upgrade-process" class="anchor-icon" translate="no">
+<h2 id="Upgrade-process" class="common-anchor-header">Upgrade process<button data-href="#Upgrade-process" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -69,7 +69,7 @@ title: 使用 Milvus Operator 升級 Milvus 叢集
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Back-up-the-current-Milvus-CR" class="common-anchor-header">步驟 1：備份當前的 Milvus CR<button data-href="#Step-1-Back-up-the-current-Milvus-CR" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Back-up-the-current-Milvus-CR" class="common-anchor-header">Step 1: Back up the current Milvus CR<button data-href="#Step-1-Back-up-the-current-Milvus-CR" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,13 +84,13 @@ title: 使用 Milvus Operator 升級 Milvus 叢集
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在變更部署前，請先儲存當前的 CR：</p>
+    </button></h3><p>Save the current CR before changing the deployment:</p>
 <pre><code translate="no" class="language-bash">kubectl get milvus &lt;instance-name&gt; \
   --namespace &lt;namespace&gt; \
   --output yaml &gt; milvus-before-upgrade.yaml
 <button class="copy-code-btn"></button></code></pre>
-<p>請使用現有部署的來源清單作為升級清單。切勿在未先移除伺服器管理的元資料及狀態欄位的情況下，直接套用匯出的備份檔案。</p>
-<h3 id="Step-2-Confirm-the-Milvus-Operator-version" class="common-anchor-header">步驟 2：確認 Milvus Operator 版本<button data-href="#Step-2-Confirm-the-Milvus-Operator-version" class="anchor-icon" translate="no">
+<p>Use the source manifest for your existing deployment as the upgrade manifest. Do not apply the exported backup file directly without first removing server-managed metadata and status fields.</p>
+<h3 id="Step-2-Confirm-the-Milvus-Operator-version" class="common-anchor-header">Step 2: Confirm the Milvus Operator version<button data-href="#Step-2-Confirm-the-Milvus-Operator-version" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -105,13 +105,13 @@ title: 使用 Milvus Operator 升級 Milvus 叢集
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>檢查已安裝的 Milvus Operator 所使用的映像檔：</p>
+    </button></h3><p>Check the image used by the installed Milvus Operator:</p>
 <pre><code translate="no" class="language-bash">kubectl get deployments --all-namespaces \
   -o jsonpath=<span class="hljs-string">&#x27;{range .items[*]}{.metadata.namespace}{&quot;\t&quot;}{.metadata.name}{&quot;\t&quot;}{range .spec.template.spec.containers[*]}{.image}{&quot; &quot;}{end}{&quot;\n&quot;}{end}&#x27;</span> \
   | grep milvus-operator
 <button class="copy-code-btn"></button></code></pre>
-<p>經過驗證的升級方案將 Milvus Operator 維持在 1.3.0 版本。除非您的支援政策要求進行獨立的 Operator 升級，否則請保留目前管理您的 Milvus 2.6.x 部署的 Operator 版本。 請勿將較新的 Operator 降級至已測試的版本。若需變更 Operator 版本，請使用與現有安裝相同的 Helm 或<code translate="no">kubectl</code> 安裝方式，並採用相同的發行版本名稱和命名空間，然後在更新 Milvus CR 之前驗證 Operator 的變更。</p>
-<h3 id="Step-3-Update-the-Milvus-image" class="common-anchor-header">步驟 3：更新 Milvus 映像檔<button data-href="#Step-3-Update-the-Milvus-image" class="anchor-icon" translate="no">
+<p>The validated upgrade kept Milvus Operator at version 1.3.0. Keep the Operator version that currently manages your Milvus 2.6.x deployment unless your support policy requires a separate Operator upgrade. Do not downgrade a newer Operator to the tested version. If you need to change the Operator version, use the same Helm or <code translate="no">kubectl</code> installation method and the same release name and namespace as the existing installation, then validate the Operator change before updating the Milvus CR.</p>
+<h3 id="Step-3-Update-the-Milvus-image" class="common-anchor-header">Step 3: Update the Milvus image<button data-href="#Step-3-Update-the-Milvus-image" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -126,8 +126,8 @@ title: 使用 Milvus Operator 升級 Milvus 叢集
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在完整的 Milvus CR 清單中，將<code translate="no">spec.components.image</code> 更改為目標版本。保留當前的運作模式、元件拓撲、訊息佇列、etcd、儲存空間及其他依賴項設定。以下摘錄顯示了需確認的欄位；請勿以此摘錄取代您的完整 CR。</p>
-<p>在套用目標 CR 之前，請確認<code translate="no">indexNode.replicas</code> 為<code translate="no">0</code> 。已驗證的 Milvus 2.6.20 配置已使用此設定。請在目標 CR 中保留明確的零副本設定。</p>
+    </button></h3><p>In the complete Milvus CR manifest, change <code translate="no">spec.components.image</code> to the target version. Preserve the current mode, component topology, message queue, etcd, storage, and other dependency settings. The following excerpt shows the fields to confirm; do not replace your complete CR with this excerpt.</p>
+<p>Before applying the target CR, confirm that <code translate="no">indexNode.replicas</code> is <code translate="no">0</code>. The validated Milvus 2.6.20 configuration already used this setting. Keep the explicit zero-replica setting in the target CR.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">milvus.io/v1beta1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Milvus</span>
 <span class="hljs-attr">metadata:</span>
@@ -139,10 +139,10 @@ title: 使用 Milvus Operator 升級 Milvus 叢集
     <span class="hljs-attr">indexNode:</span>
       <span class="hljs-attr">replicas:</span> <span class="hljs-number">0</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>套用完整的 CR 清單：</p>
+<p>Apply the complete CR manifest:</p>
 <pre><code translate="no" class="language-bash">kubectl apply --filename milvus.yaml
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Verify-the-upgrade" class="common-anchor-header">驗證升級<button data-href="#Verify-the-upgrade" class="anchor-icon" translate="no">
+<h2 id="Verify-the-upgrade" class="common-anchor-header">Verify the upgrade<button data-href="#Verify-the-upgrade" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,7 +157,7 @@ title: 使用 Milvus Operator 升級 Milvus 叢集
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>檢查 CR 狀態、Pod 狀態及容器映像檔：</p>
+    </button></h2><p>Check the CR status, Pod status, and container images:</p>
 <pre><code translate="no" class="language-bash">kubectl get milvus &lt;instance-name&gt; \
   --namespace &lt;namespace&gt; \
   --output jsonpath=<span class="hljs-string">&#x27;{.status.status}{&quot;\t&quot;}{.status.currentImage}{&quot;\n&quot;}&#x27;</span>
@@ -167,4 +167,4 @@ kubectl get pods --namespace &lt;namespace&gt;
 kubectl get pods --namespace &lt;namespace&gt; \
   -o jsonpath=<span class="hljs-string">&#x27;{range .items[*]}{.metadata.name}{&quot;\t&quot;}{range .spec.containers[*]}{.image}{&quot; &quot;}{end}{&quot;\n&quot;}{end}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>確認 Milvus CR 報告的<code translate="no">Healthy</code> 為<code translate="no">milvusdb/milvus:v3.0.1</code> ，所有 Milvus 元件均使用 ，且沒有任何 IndexNode Pod 正在運行，同時現有的集合仍可進行查詢與搜尋。在啟用任何 v3.0.1 專屬功能之前，請先完成這些檢查。</p>
+<p>Verify that the Milvus CR reports <code translate="no">Healthy</code>, all Milvus components use <code translate="no">milvusdb/milvus:v3.0.1</code>, no IndexNode Pod is running, and the existing collections remain queryable and searchable. Complete these checks before you enable any v3.0.1-specific feature.</p>

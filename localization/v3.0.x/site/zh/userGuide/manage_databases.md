@@ -1,9 +1,11 @@
 ---
 id: manage_databases.md
-title: 数据库
-summary: Milvus 在 Collections 的上方引入了一个数据库层，为管理和组织数据提供了一种更有效的方式，同时支持多租户。
+title: Database
+summary: >-
+  Milvus introduces a database layer above collections, providing a more
+  efficient way to manage and organize your data while supporting multi-tenancy.
 ---
-<h1 id="Database" class="common-anchor-header">数据库<button data-href="#Database" class="anchor-icon" translate="no">
+<h1 id="Database" class="common-anchor-header">Database<button data-href="#Database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: Milvus 在 Collections 的上方引入了一个数据库层，为管理
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 在集合之上引入了一个<strong>数据库</strong>层，为管理和组织数据提供了一种更有效的方式，同时支持多租户。</p>
-<h2 id="What-is-a-database" class="common-anchor-header">什么是数据库<button data-href="#What-is-a-database" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus introduces a <strong>database</strong> layer above collections, providing a more efficient way to manage and organize your data while supporting multi-tenancy.</p>
+<h2 id="What-is-a-database" class="common-anchor-header">What is a database<button data-href="#What-is-a-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,8 +36,8 @@ summary: Milvus 在 Collections 的上方引入了一个数据库层，为管理
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在 Milvus 中，数据库是组织和管理数据的逻辑单元。为了提高数据安全性并实现多租户，你可以创建多个数据库，为不同的应用程序或租户从逻辑上隔离数据。例如，创建一个数据库用于存储用户 A 的数据，另一个数据库用于存储用户 B 的数据。</p>
-<h2 id="Create-database" class="common-anchor-header">创建数据库<button data-href="#Create-database" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, a database serves as a logical unit for organizing and managing data. To enhance data security and achieve multi-tenancy, you can create multiple databases to logically isolate data for different applications or tenants. For example, you create a database to store the data of user A and another database for user B.</p>
+<h2 id="Create-database" class="common-anchor-header">Create database<button data-href="#Create-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -50,9 +52,14 @@ summary: Milvus 在 Collections 的上方引入了一个数据库层，为管理
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您可以使用 Milvus RESTful API 或 SDK 以编程方式创建数据。</p>
+    </button></h2><p>You can use the Milvus RESTful API or SDKs to create data programmatically.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -115,9 +122,14 @@ curl --request POST \
     &quot;dbName&quot;: &quot;my_database_1&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>您还可以在创建数据库时为其设置属性。下面的示例设置了数据库的副本数量。</p>
+<p>You can also set properties for the database when you create it. The following example sets the number of replicas of the database.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.create_database(
     db_name=<span class="hljs-string">&quot;my_database_2&quot;</span>,
     properties={
@@ -160,7 +172,7 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="View-databases" class="common-anchor-header">查看数据库<button data-href="#View-databases" class="anchor-icon" translate="no">
+<h2 id="View-databases" class="common-anchor-header">View databases<button data-href="#View-databases" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -175,9 +187,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您可以使用 Milvus RESTful API 或 SDK 列出所有现有数据库并查看其详细信息。</p>
+    </button></h2><p>You can use the Milvus RESTful API or SDKs to list all existing databases and view their details.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># List all existing databases</span>
 client.list_databases()
 
@@ -229,7 +246,7 @@ curl --request POST \
     &quot;dbName&quot;: &quot;default&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Manage-database-properties" class="common-anchor-header">管理数据库属性<button data-href="#Manage-database-properties" class="anchor-icon" translate="no">
+<h2 id="Manage-database-properties" class="common-anchor-header">Manage database properties<button data-href="#Manage-database-properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -244,51 +261,51 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>每个数据库都有自己的属性，您可以在<a href="/docs/zh/manage_databases.md#Create-database">创建数据库</a>时设置数据库属性（如<a href="/docs/zh/manage_databases.md#Create-database">创建数据库</a>中所述），也可以更改和删除任何现有数据库的属性。</p>
-<p>下表列出了可能的数据库属性。</p>
+    </button></h2><p>Each database has its own properties, you can set the properties of a database when you create the database as described in <a href="/docs/zh/manage_databases.md#Create-database">Create database</a> or you can alter and drop the properties of any existing database.</p>
+<p>The following table lists possible database properties.</p>
 <table>
    <tr>
-     <th><p>属性名称</p></th>
-     <th><p>类型</p></th>
-     <th><p>属性描述</p></th>
+     <th><p>Property Name</p></th>
+     <th><p>Type</p></th>
+     <th><p>Property Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">database.replica.number</code></p></td>
-     <td><p>整数</p></td>
-     <td><p>指定数据库的副本数量。</p></td>
+     <td><p>integer</p></td>
+     <td><p>The number of replicas for the specified database.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.resource_groups</code></p></td>
-     <td><p>字符串</p></td>
-     <td><p>以逗号分隔的列表形式列出的与指定数据库相关的资源组名称。</p></td>
+     <td><p>string</p></td>
+     <td><p>The names of the resource groups associated with the specified database in a comma-separated list.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.diskQuota.mb</code></p></td>
-     <td><p>整数</p></td>
-     <td><p>指定数据库的最大磁盘空间大小（MB）。</p></td>
+     <td><p>integer</p></td>
+     <td><p>The maximum size of the disk space for the specified database, in megabytes (MB).</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.max.collections</code></p></td>
-     <td><p>整数</p></td>
-     <td><p>指定数据库中允许的最大 Collections 数量。</p></td>
+     <td><p>integer</p></td>
+     <td><p>The maximum number of collections allowed in the specified database.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.force.deny.writing</code></p></td>
-     <td><p>布尔</p></td>
-     <td><p>是否强制指定的数据库拒绝写操作。</p></td>
+     <td><p>boolean</p></td>
+     <td><p>Whether to force the specified database to deny writing operations.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">database.force.deny.reading</code></p></td>
-     <td><p>布尔</p></td>
-     <td><p>是否强制指定的数据库拒绝读取操作。</p></td>
+     <td><p>boolean</p></td>
+     <td><p>Whether to force the specified database to deny reading operations.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">timezone</code></p></td>
-     <td><p>字符串</p></td>
-     <td><p>指定应用于数据库内时间敏感操作的默认时区，尤其是<code translate="no">TIMESTAMPTZ</code> 字段。除非设置了集合级时区，否则集合将继承数据库时区。查询级时区参数可暂时覆盖数据库和 Collections 的默认时区。该值必须是有效的<a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANA 时区标识符</a>（例如，<strong>亚洲/上海</strong>、<strong>美国/芝加哥</strong>或<strong>UTC</strong>）。有关如何使用<code translate="no">TIMESTAMPTZ</code> 字段的详细信息，请参阅<a href="/docs/zh/timestamptz-field.md">TIMESTAMPTZ 字段</a>。</p></td>
+     <td><p>string</p></td>
+     <td><p>Specifies the default timezone applied to time-sensitive operations within the database, particularly for <code translate="no">TIMESTAMPTZ</code> fields. Collections inherit the database timezone unless a collection-level timezone is set. A query-level timezone parameter can temporarily override both database and collection defaults. The value must be a valid <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANA time zone identifier</a> (for example, <strong>Asia/Shanghai</strong>, <strong>America/Chicago</strong>, or <strong>UTC</strong>). For details on how to use a <code translate="no">TIMESTAMPTZ</code> field, refer to <a href="/docs/zh/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p></td>
    </tr>
 </table>
-<h3 id="Alter-database-properties" class="common-anchor-header">更改数据库属性<button data-href="#Alter-database-properties" class="anchor-icon" translate="no">
+<h3 id="Alter-database-properties" class="common-anchor-header">Alter database properties<button data-href="#Alter-database-properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -303,9 +320,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>您可以按以下方式更改现有数据库的属性。下面的示例限制了您可以在数据库中创建的 Collections 数量。</p>
+    </button></h3><p>You can alter the properties of an existing database as follows. The following example limits the number of collections you can create in the database.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.alter_database_properties(
     db_name=<span class="hljs-string">&quot;my_database_1&quot;</span>,
     properties={
@@ -344,7 +366,7 @@ curl --request POST \
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Drop-database-properties" class="common-anchor-header">删除数据库属性<button data-href="#Drop-database-properties" class="anchor-icon" translate="no">
+<h3 id="Drop-database-properties" class="common-anchor-header">Drop database properties<button data-href="#Drop-database-properties" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -359,9 +381,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>您还可以通过如下方式删除数据库属性来重置该属性。下面的示例删除了可以在数据库中创建的 Collection 数量限制。</p>
+    </button></h3><p>You can also reset a database property by dropping it as follows. The following example removes the limit on the number of collections you can create in the database.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.drop_database_properties(
     db_name=<span class="hljs-string">&quot;my_database_1&quot;</span>,
     property_keys=[
@@ -399,7 +426,7 @@ curl --request POST \
     ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Use-database" class="common-anchor-header">使用数据库<button data-href="#Use-database" class="anchor-icon" translate="no">
+<h2 id="Use-database" class="common-anchor-header">Use database<button data-href="#Use-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -414,12 +441,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>你可以在不断开与 Milvus 连接的情况下从一个数据库切换到另一个数据库。</p>
+    </button></h2><p>You can switch from one database to another without disconnecting from Milvus.</p>
 <div class="alert note">
-<p>RESTful API 不支持此操作符。</p>
+<p>RESTful API does not support this operation.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.use_database(
     db_name=<span class="hljs-string">&quot;my_database_2&quot;</span>
 )
@@ -438,7 +470,7 @@ curl --request POST \
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># This operation is unsupported because RESTful does not provide a persistent connection.</span>
 <span class="hljs-comment"># As a workaround, initiate the required request again with the target database.</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-database" class="common-anchor-header">删除数据库<button data-href="#Drop-database" class="anchor-icon" translate="no">
+<h2 id="Drop-database" class="common-anchor-header">Drop database<button data-href="#Drop-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -453,14 +485,19 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>一旦不再需要数据库，就可以删除数据库。请注意</p>
+    </button></h2><p>Once a database is no longer needed, you can drop the database. Note that:</p>
 <ul>
-<li><p>不能丢弃默认数据库。</p></li>
-<li><p>在删除数据库之前，需要先删除数据库中的所有 Collections。</p></li>
+<li><p>Default databases cannot be dropped.</p></li>
+<li><p>Before dropping a database, you need to drop all collections in the database first.</p></li>
 </ul>
-<p>你可以使用 Milvus RESTful API 或 SDK 以编程方式创建数据。</p>
+<p>You can use the Milvus RESTful API or SDKs to create data programmatically.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.drop_database(
     db_name=<span class="hljs-string">&quot;my_database_2&quot;</span>
 )
@@ -490,7 +527,7 @@ curl --request POST \
     &quot;dbName&quot;: &quot;my_database&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="FAQ" class="common-anchor-header">常见问题<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -505,7 +542,7 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="How-do-I-manage-permissions-for-a-database" class="common-anchor-header">如何管理数据库的权限？<button data-href="#How-do-I-manage-permissions-for-a-database" class="anchor-icon" translate="no">
+    </button></h2><h3 id="How-do-I-manage-permissions-for-a-database" class="common-anchor-header">How do I manage permissions for a database?<button data-href="#How-do-I-manage-permissions-for-a-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -520,8 +557,8 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 使用基于角色的访问控制（RBAC）来管理权限。您可以创建具有特定权限的角色，并将其分配给用户，从而控制他们对不同数据库的访问。有关详细信息，请参阅<a href="/docs/zh/rbac.md">RBAC 文档</a>。</p>
-<h3 id="Are-there-any-quota-limitations-for-a-database" class="common-anchor-header">数据库有配额限制吗？<button data-href="#Are-there-any-quota-limitations-for-a-database" class="anchor-icon" translate="no">
+    </button></h3><p>Milvus uses Role-Based Access Control (RBAC) to manage permissions. You can create roles with specific privileges and assign them to users, thus controlling their access to different databases. For more details, refer to the <a href="/docs/zh/rbac.md">RBAC documentation</a>.</p>
+<h3 id="Are-there-any-quota-limitations-for-a-database" class="common-anchor-header">Are there any quota limitations for a database?<button data-href="#Are-there-any-quota-limitations-for-a-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -536,4 +573,4 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>是的，Milvus 允许您为数据库设置配额限制，如收藏的最大数量。有关限制的全面列表，请参阅<a href="/docs/zh/limitations.md">Milvus 限制文档</a>。</p>
+    </button></h3><p>Yes, Milvus allows you to set quota limitations for a database, such as the maximum number of collections. For a comprehensive list of limitations, please refer to the <a href="/docs/zh/limitations.md">Milvus Limits documentation</a>.</p>

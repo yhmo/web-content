@@ -1,13 +1,12 @@
 ---
 id: roadmap.md
-title: Roadmap di Milvus
+title: Milvus Roadmap
 related_key: Milvus roadmap
 summary: >-
-  Milvus è un database vettoriale open source progettato per supportare le
-  applicazioni di intelligenza artificiale. Ecco la nostra roadmap, che guida il
-  nostro sviluppo.
+  Milvus is an open-source vector database built to power AI applications. Here
+  is our roadmap to guide our development.
 ---
-<h1 id="Milvus-Roadmap" class="common-anchor-header">Roadmap di Milvus<button data-href="#Milvus-Roadmap" class="anchor-icon" translate="no">
+<h1 id="Milvus-Roadmap" class="common-anchor-header">Milvus Roadmap<button data-href="#Milvus-Roadmap" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,7 +21,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><h2 id="🌌-Toward-the-Next-Gen-Multimodal-Database-and-Vector-Lakebase" class="common-anchor-header">🌌 Verso il database multimodale di nuova generazione e Vector Lakebase<button data-href="#🌌-Toward-the-Next-Gen-Multimodal-Database-and-Vector-Lakebase" class="anchor-icon" translate="no">
+    </button></h1><h2 id="🌌-Toward-the-Next-Gen-Multimodal-Database-and-Vector-Lakebase" class="common-anchor-header">🌌 Toward the Next-Gen Multimodal Database and Vector Lakebase<button data-href="#🌌-Toward-the-Next-Gen-Multimodal-Database-and-Vector-Lakebase" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,11 +36,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>Roadmap del prodotto Milvus</strong></p>
-<p>Benvenuti nella roadmap di Milvus!</p>
-<p>Stiamo accompagnando Milvus verso una nuova era: quella del database multimodale di nuova generazione, <strong>che spazia dai dati strutturati a quelli non strutturati, dal recupero in tempo reale all’analisi offline, dalle prestazioni su singolo cluster a</strong> <strong>un’architettura</strong> <strong>globale</strong> <strong>di Vector Lakebase.</strong></p>
-<p>Questa roadmap delinea gli obiettivi principali per <strong>Milvus v3.0 (beta pubblica)</strong> e <strong>Milvus v3.1 (sviluppo a lungo termine)</strong>, insieme al piano di evoluzione per <strong>Zilliz Vector Lakebase</strong>.</p>
-<h2 id="🌠-Milvus-v30-Public-Beta" class="common-anchor-header">🌠 Milvus v3.0 (beta pubblica)<button data-href="#🌠-Milvus-v30-Public-Beta" class="anchor-icon" translate="no">
+    </button></h2><p><strong>Milvus Product Roadmap</strong></p>
+<p>Welcome to the Milvus Roadmap!</p>
+<p>We are ushering Milvus into a new era — the next-generation multimodal database — <strong>spanning structured to unstructured data, real-time retrieval to offline analytics, and single-cluster performance to a global</strong> <strong>Vector Lakebase architecture.</strong></p>
+<p>This roadmap outlines the core objectives for <strong>Milvus v3.0 (public beta)</strong>, and <strong>Milvus v3.1 (long-term development)</strong>, along with the evolution plan for <strong>Zilliz Vector Lakebase</strong>.</p>
+<h2 id="🌠-Milvus-v30-Public-Beta" class="common-anchor-header">🌠 Milvus v3.0 (Public Beta)<button data-href="#🌠-Milvus-v30-Public-Beta" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,9 +55,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>Beta pubblica: maggio 2026</strong></p>
-<p>Obiettivo: Realizzazione di un <strong>motore di query semantico nativo</strong> con ordinamento, aggregazione e recupero multivettoriale integrati nel motore stesso, nonché delle <strong>fondamenta native del lake di Zilliz Vector Lakebase</strong>, affinché l’elaborazione raggiunga i dati senza necessità di migrazione.</p>
-<h3 id="🎯-Key-Highlights" class="common-anchor-header">🎯 Punti salienti<button data-href="#🎯-Key-Highlights" class="anchor-icon" translate="no">
+    </button></h2><p><strong>Public Beta: May 2026</strong></p>
+<p>Focus: Building a <strong>semantic-native query engine</strong> with in-engine sorting, aggregation, and multi-vector retrieval, and the <strong>lake-native foundation of Zilliz Vector Lakebase</strong> so compute reaches data without migration.</p>
+<h3 id="🎯-Key-Highlights" class="common-anchor-header">🎯 Key Highlights<button data-href="#🎯-Key-Highlights" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,34 +72,34 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><h4 id="🔹-Schema--Data-Type-Evolution" class="common-anchor-header">🔹 <strong>Evoluzione dello schema e dei tipi di dati</strong></h4><ul>
-<li>Supporta i comandi ALTER COLLECTION ADD COLUMN e DROP COLUMN in fase di esecuzione senza ricostruire gli indici né interrompere il servizio.</li>
-<li>Fornisce <strong>due percorsi di backfill</strong> per le nuove colonne: esterno tramite Spark Connector e interno con vettori sparsi BM25 generati automaticamente al momento della scrittura.</li>
-<li>Introduzione <strong>di TEXT</strong> come tipo di dati di prima classe che memorizza il testo originale insieme ai vettori, con supporto per BM25 e la corrispondenza testuale.</li>
+    </button></h3><h4 id="🔹-Schema--Data-Type-Evolution" class="common-anchor-header">🔹 <strong>Schema & Data Type Evolution</strong></h4><ul>
+<li>Support ALTER COLLECTION ADD COLUMN and DROP COLUMN at runtime without rebuilding indexes or interrupting serving.</li>
+<li>Provide <strong>two backfill paths</strong> for new columns: external via Spark Connector, and internal with BM25 sparse vectors auto-generated at write time.</li>
+<li>Introduce <strong>TEXT</strong> as a first-class data type that stores original text alongside vectors with BM25 and text-match support.</li>
 </ul>
-<h4 id="🔹-Query-Execution-Overhaul" class="common-anchor-header">🔹 <strong>Riorganizzazione dell’esecuzione</strong> <strong>delle query</strong> </h4><ul>
-<li>Integrazione di ` <strong>ORDER BY</strong> ` nel motore con ordinamento per segmento e ordinamento con fusione tra i nodi di query.</li>
-<li>Aggiungere <strong>l’aggregazione</strong> <strong>delle query</strong> in stile SQL (GROUP BY con COUNT, SUM, AVG, MIN, MAX) calcolata nel kernel.</li>
-<li>Introdurre <strong>filtri di ricerca</strong> sui risultati ANN con statistiche per bucket e sottofiltri annidati lato server.</li>
-<li>Supporto per <strong>dizionari personalizzati</strong> e tabelle di sinonimi registrati a livello di cluster per migliorare il recall per i caratteri CJK e per domini specifici.</li>
+<h4 id="🔹-Query-Execution-Overhaul" class="common-anchor-header">🔹 <strong>Query</strong> <strong>Execution Overhaul</strong></h4><ul>
+<li>Push <strong>Order By</strong> into the engine with per-segment sort and merge-sort across query nodes.</li>
+<li>Add SQL-style <strong>query</strong> <strong>aggregation</strong> (GROUP BY with COUNT, SUM, AVG, MIN, MAX) computed in the kernel.</li>
+<li>Introduce <strong>search facets</strong> over ANN results with per-bucket statistics and nested sub-facets server-side.</li>
+<li>Support <strong>custom dictionaries</strong> and synonym tables registered cluster-side for improved CJK and domain-specific recall.</li>
 </ul>
-<h4 id="🔹-Multi-Vector--Late-Interaction-Support" class="common-anchor-header">🔹 <strong>Supporto per vettori multipli e interazione tardiva</strong></h4><ul>
-<li>Introdurre <strong>StructList</strong> per rappresentare un'entità come una singola riga con molti vettori, con supporto nativo per l'interazione tardiva (ColBERT, ColPali) tramite MAX_SIM.</li>
-<li>Supporto <strong>della ricerca a livello di elemento e di entità</strong> sui campi StructList, con politiche di corrispondenza configurabili per i risultati a livello di entità.</li>
-<li>Aggiunte tre <strong>strategie di recupero multi-vettoriale</strong>: TokenANN (esaustiva), Muvera (basata su proiezione, senza addestramento) e Lemur (compressione appresa).</li>
+<h4 id="🔹-Multi-Vector--Late-Interaction-Support" class="common-anchor-header">🔹 <strong>Multi-Vector & Late-Interaction Support</strong></h4><ul>
+<li>Introduce <strong>StructList</strong> to represent one entity as a single row with many vectors, with native late-interaction support (ColBERT, ColPali) via MAX_SIM.</li>
+<li>Support <strong>element-level and entity-level search</strong> on StructList fields, with configurable match policies for entity-level results.</li>
+<li>Add three <strong>multi-vector retrieval strategies</strong>: TokenANN (exhaustive), Muvera (projection-based, no training), and Lemur (learned compression).</li>
 </ul>
-<h4 id="🔹-Retrieval--Index-Overhaul" class="common-anchor-header">🔹 <strong>Revisione del recupero e dell’indice</strong></h4><ul>
-<li>Riorganizzazione <strong>dell’indice invertito sparso</strong> con compressione a blocchi, quantizzazione dei pesi e un formato persistente; introduzione <strong>di SINDI</strong> come algoritmo IP sparso predefinito.</li>
-<li>Ampliamento della copertura dell’indice con l’intera <strong>famiglia Faiss</strong> (SVS, Panorama, PQ, IVFPQ, ScaNN) e <strong>MinHash DIDO</strong> per il rilevamento di quasi-duplicati.</li>
-<li>Supporto <strong>dei campi vettoriali nullabili</strong> per gli embedding asincroni e le modalità mancanti, con filtraggio automatico in fase di ricerca.</li>
+<h4 id="🔹-Retrieval--Index-Overhaul" class="common-anchor-header">🔹 <strong>Retrieval & Index Overhaul</strong></h4><ul>
+<li>Overhaul the <strong>sparse inverted index</strong> with block compression, weight quantization, and a persisted format; introduce <strong>SINDI</strong> as the default sparse IP algorithm.</li>
+<li>Expand index coverage with the full <strong>Faiss family</strong> (SVS, Panorama, PQ, IVFPQ, ScaNN) and <strong>MinHash DIDO</strong> for near-duplicate detection.</li>
+<li>Support <strong>nullable vector fields</strong> for async embeddings and missing modalities, with auto-filtering at search time.</li>
 </ul>
-<h4 id="🔹-Vector-Lakebase-Storage--Compute-Architecture" class="common-anchor-header">🔹 <strong>Architettura di archiviazione e calcolo vettoriale di Lakebase</strong></h4><ul>
-<li>Introduzione <strong>di External Collection</strong> per indicizzare ed eseguire query sui dati in S3 / GCS / Azure in loco, con supporto per i formati di tabella Lance, Parquet, Iceberg e Vortex.</li>
-<li>Aggiunta di <strong>Vortex</strong>, un formato colonnare aperto, e <strong>di Loon (Storage V3)</strong>, un livello di archiviazione a formato misto per letture puntuali efficienti dall’object storage.</li>
-<li>Supporto <strong>di snapshot puntuali</strong> con isolamento in stile MVCC per l’elaborazione in batch mentre il servizio continua a scrivere.</li>
-<li>Integrazione come <strong>Spark DataSource v2</strong> per la lettura e la scrittura su Milvus direttamente nelle pipeline Spark / Databricks / EMR.</li>
+<h4 id="🔹-Vector-Lakebase-Storage--Compute-Architecture" class="common-anchor-header">🔹 <strong>Vector Lakebase Storage & Compute Architecture</strong></h4><ul>
+<li>Introduce <strong>External Collection</strong> to index and query data in S3 / GCS / Azure in place, with support for Lance, Parquet, Iceberg, and Vortex table formats.</li>
+<li>Add <strong>Vortex</strong>, an open columnar format, and <strong>Loon (Storage V3)</strong>, a mixed-format storage layer for efficient point reads from object storage.</li>
+<li>Support <strong>point-in-time snapshots</strong> with MVCC-style isolation for batch processing while serving continues to write.</li>
+<li>Integrate as a <strong>Spark DataSource v2</strong> for reading from and writing to Milvus directly in Spark / Databricks / EMR pipelines.</li>
 </ul>
-<h2 id="🪐-Milvus-v31-Long-Term-Vision" class="common-anchor-header">🪐 Milvus v3.1 (Visione a lungo termine)<button data-href="#🪐-Milvus-v31-Long-Term-Vision" class="anchor-icon" translate="no">
+<h2 id="🪐-Milvus-v31-Long-Term-Vision" class="common-anchor-header">🪐 Milvus v3.1 (Long-Term Vision)<button data-href="#🪐-Milvus-v31-Long-Term-Vision" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -115,9 +114,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>Tempistica: fine 2026 e oltre</strong></p>
-<p>Obiettivi: <strong>intelligenza dello storage</strong>, <strong>integrità del percorso di scrittura</strong>, <strong>estensibilità di calcolo</strong> e <strong>maggiore</strong> <strong>interoperabilità</strong> <strong>con Vector Lakebase</strong>.</p>
-<h3 id="🎯-Key-Highlights" class="common-anchor-header">🎯 Punti salienti<button data-href="#🎯-Key-Highlights" class="anchor-icon" translate="no">
+    </button></h2><p><strong>Timeline: Late 2026 and beyond</strong></p>
+<p>Focus: <strong>Storage intelligence</strong>, <strong>write-path integrity</strong>, <strong>compute extensibility</strong>, and <strong>expanded</strong> <strong>Vector Lakebase</strong> <strong>interoperability</strong>.</p>
+<h3 id="🎯-Key-Highlights" class="common-anchor-header">🎯 Key Highlights<button data-href="#🎯-Key-Highlights" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,20 +131,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><h4 id="🔹-Storage--Write-Path" class="common-anchor-header">🔹 <strong>Archiviazione e percorso di scrittura</strong></h4><ul>
-<li>Aggiunta <strong>del pushdown dei predicati</strong> con potatura dell’indice delle pagine e del filtro Bloom a livello di archiviazione.</li>
-<li>Implementazione <strong>della deduplicazione della chiave primaria</strong> in fase di acquisizione per prevenire i duplicati in fase di scrittura.</li>
+    </button></h3><h4 id="🔹-Storage--Write-Path" class="common-anchor-header">🔹 <strong>Storage & Write Path</strong></h4><ul>
+<li>Add <strong>predicate pushdown</strong> with page-index and bloom-filter pruning at the storage layer.</li>
+<li>Implement <strong>primary-key dedup</strong> on ingest to prevent duplicates at write time.</li>
 </ul>
-<h4 id="🔹-Compute--Elasticity" class="common-anchor-header">🔹 <strong>Elaborazione ed elasticità</strong></h4><ul>
-<li>Supporto <strong>delle funzioni definite dall'utente (UDF)</strong> per l'esecuzione di logiche personalizzate nel motore, sul piano dati.</li>
-<li>Abilitare <strong>la suddivisione degli shard</strong> per ridistribuire gli shard man mano che i dati crescono, con supporto per chiavi di sharding personalizzate.</li>
+<h4 id="🔹-Compute--Elasticity" class="common-anchor-header">🔹 <strong>Compute & Elasticity</strong></h4><ul>
+<li>Support <strong>User-Defined Functions (UDFs)</strong> for running custom logic in the engine, on the data plane.</li>
+<li>Enable <strong>shard splitting</strong> to resplit shards as data grows, with custom sharding key support.</li>
 </ul>
-<h4 id="🔹-Spark--Vector-Lakebase-Expansion" class="common-anchor-header">🔹 <strong>Espansione di</strong> <strong>Spark e</strong> <strong>Vector Lakebase</strong> </h4><ul>
-<li>Ampliare il connettore Spark con una libreria più ricca di <strong>operatori batch nativi</strong>.</li>
-<li>Aggiunta di funzionalità <strong>relative al formato delle tabelle</strong>, tra cui time-travel, evoluzione dello schema e rollback degli snapshot.</li>
-<li>Ampliare l’interoperabilità di Vector Lakebase con <strong>indici esterni aggiornati tramite CDC</strong>, supporto per Apache Paimon e formati di dati aggiuntivi.</li>
+<h4 id="🔹-Spark--Vector-Lakebase-Expansion" class="common-anchor-header">🔹 <strong>Spark &</strong> <strong>Vector Lakebase</strong> <strong>Expansion</strong></h4><ul>
+<li>Expand the Spark connector with a richer library of <strong>native batch operators</strong>.</li>
+<li>Add <strong>table format</strong> capabilities including time-travel, schema evolution, and snapshot rollback.</li>
+<li>Expand Vector Lakebase interoperability with <strong>CDC-fresh external indexes</strong>, Apache Paimon support, and additional data formats.</li>
 </ul>
-<h2 id="🤝-Co-Building-the-Future-of-Milvus" class="common-anchor-header">🤝 Costruire insieme il futuro di Milvus<button data-href="#🤝-Co-Building-the-Future-of-Milvus" class="anchor-icon" translate="no">
+<h2 id="🤝-Co-Building-the-Future-of-Milvus" class="common-anchor-header">🤝 Co-Building the Future of Milvus<button data-href="#🤝-Co-Building-the-Future-of-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,16 +159,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus è un progetto open source guidato da una comunità globale di sviluppatori. Invitiamo tutti i membri della comunità a contribuire a plasmare il database multimodale di nuova generazione:</p>
+    </button></h2><p>Milvus is an open-source project driven by a global community of developers. We invite all community members to help shape the next-generation multimodal database:</p>
 <ul>
-<li><p>💬 <strong>Condividi il tuo feedback</strong>: proponi nuove funzionalità o idee di ottimizzazione su <a href="https://github.com/milvus-io/milvus/discussions">GitHub Discussions</a>.</p></li>
-<li><p>🐛 <strong>Segnalate i problemi</strong>: segnalate i bug tramite <a href="https://github.com/milvus-io/milvus/issues">GitHub Issues</a>.</p></li>
-<li><p>🔧 <strong>Contribuite con il codice</strong>: inviate pull request e aiutateci a sviluppare le funzionalità principali.</p>
+<li><p>💬 <strong>Share feedback</strong>: Propose new features or optimization ideas on <a href="https://github.com/milvus-io/milvus/discussions">GitHub Discussions</a>.</p></li>
+<li><p>🐛 <strong>Report issues</strong>: File bugs through <a href="https://github.com/milvus-io/milvus/issues">GitHub Issues</a>.</p></li>
+<li><p>🔧 <strong>Contribute code</strong>: Submit PRs and help build core features.</p>
 <ul>
-<li><strong>Pull request</strong>: contribuisci direttamente al nostro <a href="https://github.com/milvus-io/milvus/pulls">codice</a>. Che si tratti di correggere bug, aggiungere funzionalità o migliorare la documentazione, i tuoi contributi sono ben accetti.</li>
-<li><strong>Guida allo sviluppo</strong>: consulta <a href="https://github.com/milvus-io/milvus/blob/master/CONTRIBUTING.md">la</a> nostra <a href="https://github.com/milvus-io/milvus/blob/master/CONTRIBUTING.md">Guida per i contributori</a> per le linee guida sui contributi al codice.</li>
+<li><strong>Pull requests</strong>: Contribute directly to our <a href="https://github.com/milvus-io/milvus/pulls">codebase</a>. Whether you’re fixing bugs, adding features, or improving documentation, your contributions are welcome.</li>
+<li><strong>Development guide</strong>: Check our <a href="https://github.com/milvus-io/milvus/blob/master/CONTRIBUTING.md">Contributor’s Guide</a> for guidelines on code contributions.</li>
 </ul></li>
-<li><p>🗣️ <strong>Partecipa alla conversazione</strong>: fai domande e incontra i manutentori su <a href="https://milvus.io/discord">Discord</a>, durante <a href="https://meetings.hubspot.com/chloe-williams1/milvus-meeting">gli "Office Hours</a>" <a href="https://meetings.hubspot.com/chloe-williams1/milvus-meeting">di Milvus</a> o su <a href="https://milvus.io/community">tutti i canali della community</a>.</p></li>
-<li><p>⭐ <strong>Diffondi la notizia</strong>: condividi le migliori pratiche e le storie di successo e segui Milvus su <a href="https://twitter.com/milvusio">X</a>, <a href="https://www.linkedin.com/company/the-milvus-project/">LinkedIn</a> e <a href="https://www.youtube.com/c/MilvusVectorDatabase">YouTube</a>.</p></li>
+<li><p>🗣️ <strong>Join the conversation</strong>: Ask questions and meet maintainers on <a href="https://milvus.io/discord">Discord</a>, at <a href="https://meetings.hubspot.com/chloe-williams1/milvus-meeting">Milvus Office Hours</a>, or across <a href="https://milvus.io/community">all community channels</a>.</p></li>
+<li><p>⭐ <strong>Spread the word</strong>: Share best practices and success stories, and follow Milvus on <a href="https://twitter.com/milvusio">X</a>, <a href="https://www.linkedin.com/company/the-milvus-project/">LinkedIn</a>, and <a href="https://www.youtube.com/c/MilvusVectorDatabase">YouTube</a>.</p></li>
 </ul>
 <p>👉 <strong>GitHub:</strong> <a href="https://github.com/milvus-io/milvus">milvus-io/milvus</a></p>

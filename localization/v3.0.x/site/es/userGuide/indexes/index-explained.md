@@ -1,17 +1,16 @@
 ---
 id: index-explained.md
-title: Explicación de los índices
+title: Index Explained
 summary: >-
-  Un índice es una estructura adicional que se crea sobre los datos. Su
-  estructura interna depende del algoritmo de búsqueda de vecinos más cercanos
-  que se utilice. Un índice agiliza la búsqueda, pero conlleva un gasto
-  adicional de tiempo de preprocesamiento, espacio y memoria RAM durante la
-  búsqueda. Además, el uso de un índice suele reducir la tasa de recuperación
-  (aunque el efecto es insignificante, sigue siendo relevante). Por lo tanto,
-  este artículo explica cómo minimizar los costes derivados del uso de un índice
-  y, al mismo tiempo, maximizar sus beneficios.
+  An index is an additional structure built on top of data. Its internal
+  structure depends on the approximate nearest neighbor search algorithm in use.
+  An index speeds up the search, but incurs additional preprocessing time,
+  space, and RAM during the search. Moreover, using an index typically lowers
+  the recall rate (though the effect is negligible, it still matters).
+  Therefore, this article explains how to minimize the costs of using an index
+  while maximizing the benefits.
 ---
-<h1 id="Index-Explained" class="common-anchor-header">Explicación de los índices<button data-href="#Index-Explained" class="anchor-icon" translate="no">
+<h1 id="Index-Explained" class="common-anchor-header">Index Explained<button data-href="#Index-Explained" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,8 +25,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Un índice es una estructura adicional creada a partir de los datos. Su estructura interna depende del algoritmo de búsqueda del vecino más cercano que se utilice. Un índice agiliza la búsqueda, pero conlleva un mayor consumo de tiempo de preprocesamiento, espacio y memoria RAM durante la búsqueda. Además, el uso de un índice suele reducir la tasa de recuperación (aunque el efecto es insignificante, sigue siendo relevante). Por lo tanto, este artículo explica cómo minimizar los costes del uso de un índice y, al mismo tiempo, maximizar sus beneficios.</p>
-<h2 id="Overview" class="common-anchor-header">Descripción general<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>An index is an additional structure built on top of data. Its internal structure depends on the approximate nearest neighbor search algorithm in use. An index speeds up the search, but incurs additional preprocessing time, space, and RAM during the search. Moreover, using an index typically lowers the recall rate (though the effect is negligible, it still matters). Therefore, this article explains how to minimize the costs of using an index while maximizing the benefits.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,61 +41,61 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>En Milvus, los índices son específicos para cada campo, y los tipos de índice aplicables varían en función de los tipos de datos de los campos de destino. Como base de datos vectorial profesional, Milvus se centra en mejorar tanto el rendimiento de las búsquedas vectoriales como el filtrado escalar, por lo que ofrece diversos tipos de índices.</p>
-<p>La siguiente tabla muestra la relación de correspondencia entre los tipos de datos de los campos y los tipos de índice aplicables.</p>
+    </button></h2><p>In Milvus, indexes are specific to fields, and the applicable index types vary according to the data types of the target fields. As a professional vector database, Milvus focuses on enhancing both the performance of vector searches and scalar filtering, which is why it offers various index types.</p>
+<p>The following table lists the mapping relationship between field data types and applicable index types.</p>
 <table>
    <tr>
-     <th><p>Tipo de datos del campo</p></th>
-     <th><p>Tipos de índice aplicables</p></th>
+     <th><p>Field Data Type</p></th>
+     <th><p>Applicable Index Types</p></th>
    </tr>
    <tr>
      <td><p>FLOAT_VECTOR</p></td>
-     <td><ul><li><p>FLAT</p></li><li><p>IVF_FLAT</p></li><li><p>IVF_SQ8</p></li><li><p>IVF_PQ</p></li><li><p>IVF_RABITQ</p></li><li><p>HNSW</p></li><li><p>HNSW_SQ</p></li><li><p>HNSW_PQ</p></li><li><p>HNSW_PRQ</p></li><li><p>DISKANN</p></li><li><p>SCANN</p></li><li><p>AISAQ</p></li><li><p>FAISS</p></li><li><p>GPU_CAGRA</p></li><li><p>GPU_IVF_FLAT</p></li><li><p>GPU_IVF_PQ</p></li><li><p>GPU_FUERZA BRUTA</p></li></ul></td>
+     <td><ul><li><p>FLAT</p></li><li><p>IVF_FLAT</p></li><li><p>IVF_SQ8</p></li><li><p>IVF_PQ</p></li><li><p>IVF_RABITQ</p></li><li><p>HNSW</p></li><li><p>HNSW_SQ</p></li><li><p>HNSW_PQ</p></li><li><p>HNSW_PRQ</p></li><li><p>DISKANN</p></li><li><p>SCANN</p></li><li><p>AISAQ</p></li><li><p>FAISS</p></li><li><p>GPU_CAGRA</p></li><li><p>GPU_IVF_FLAT</p></li><li><p>GPU_IVF_PQ</p></li><li><p>GPU_BRUTE_FORCE</p></li></ul></td>
    </tr>
    <tr>
      <td><ul><li><p>FLOAT16_VECTOR</p></li><li><p>BFLOAT16_VECTOR</p></li><li><p>INT8_VECTOR</p></li></ul></td>
-     <td><ul><li><p>FLAT</p></li><li><p>IVF_FLAT</p></li><li><p>IVF_SQ8</p></li><li><p>IVF_PQ</p></li><li><p>IVF_RABITQ</p></li><li><p>HNSW</p></li><li><p>HNSW_SQ</p></li><li><p>HNSW_PQ</p></li><li><p>HNSW_PRQ</p></li><li><p>DISKANN</p></li><li><p>SCANN</p></li><li><p>AISAQ</p></li><li><p>GPU_CAGRA</p></li><li><p>GPU_IVF_FLAT</p></li><li><p>GPU_IVF_PQ</p></li><li><p>GPU_FUERZA BRUTA</p></li></ul></td>
+     <td><ul><li><p>FLAT</p></li><li><p>IVF_FLAT</p></li><li><p>IVF_SQ8</p></li><li><p>IVF_PQ</p></li><li><p>IVF_RABITQ</p></li><li><p>HNSW</p></li><li><p>HNSW_SQ</p></li><li><p>HNSW_PQ</p></li><li><p>HNSW_PRQ</p></li><li><p>DISKANN</p></li><li><p>SCANN</p></li><li><p>AISAQ</p></li><li><p>GPU_CAGRA</p></li><li><p>GPU_IVF_FLAT</p></li><li><p>GPU_IVF_PQ</p></li><li><p>GPU_BRUTE_FORCE</p></li></ul></td>
    </tr>
    <tr>
-     <td><p>VECTOR_BINARIO</p></td>
+     <td><p>BINARY_VECTOR</p></td>
      <td><ul><li><p>BIN_FLAT</p></li><li><p>BIN_IVF_FLAT</p></li><li><p>MINHASH_LSH</p></li><li><p>FAISS</p></li></ul></td>
    </tr>
    <tr>
      <td><p>SPARSE_FLOAT_VECTOR</p></td>
-     <td><p>ÍNDICE_INVERTIDO_DISPARSE</p></td>
+     <td><p>SPARSE_INVERTED_INDEX</p></td>
    </tr>
    <tr>
      <td><p>VARCHAR</p></td>
-     <td><ul><li><p>INVERTIDO (recomendado)</p></li><li><p>BITMAP</p></li><li><p>Trie</p></li></ul></td>
+     <td><ul><li><p>INVERTED (Recommended)</p></li><li><p>BITMAP</p></li><li><p>Trie</p></li></ul></td>
    </tr>
    <tr>
      <td><p>BOOL</p></td>
-     <td><ul><li><p>BITMAP (Recomendado)</p></li><li><p>INVERTIDO</p></li></ul></td>
+     <td><ul><li><p>BITMAP (Recommended)</p></li><li><p>INVERTED</p></li></ul></td>
    </tr>
    <tr>
      <td><ul><li><p>INT8</p></li><li><p>INT16</p></li><li><p>INT32</p></li><li><p>INT64</p></li></ul></td>
-     <td><ul><li><p>INVERTIDO</p></li><li><p>STL_SORT</p></li></ul></td>
+     <td><ul><li><p>INVERTED</p></li><li><p>STL_SORT</p></li></ul></td>
    </tr>
    <tr>
-     <td><ul><li><p>FLOAT</p></li><li><p>DOBLE</p></li></ul></td>
-     <td><p>INVERTIDO</p></td>
+     <td><ul><li><p>FLOAT</p></li><li><p>DOUBLE</p></li></ul></td>
+     <td><p>INVERTED</p></td>
    </tr>
    <tr>
-     <td><p>ARRAY <sup>(elementos de los tipos BOOL, INT8/16/32/64 y VARCHAR)</sup></p></td>
-     <td><p>BITMAP (recomendado)</p></td>
+     <td><p>ARRAY <sup>(elements of the BOOL, INT8/16/32/64, and VARCHAR types)</sup></p></td>
+     <td><p>BITMAP (Recommended)</p></td>
    </tr>
    <tr>
-     <td><p>ARRAY <sup>(elementos de los tipos BOOL, INT8/16/32/64, FLOAT, DOUBLE y VARCHAR)</sup></p></td>
-     <td><p>INVERTIDO</p></td>
+     <td><p>ARRAY <sup>(elements of the BOOL, INT8/16/32/64, FLOAT, DOUBLE, and VARCHAR types)</sup></p></td>
+     <td><p>INVERTED</p></td>
    </tr>
    <tr>
      <td><p>JSON</p></td>
-     <td><p>INVERTIDO</p></td>
+     <td><p>INVERTED</p></td>
    </tr>
 </table>
-<p>Este artículo se centra en cómo seleccionar los índices vectoriales adecuados. Para los campos escalares, siempre se puede utilizar el tipo de índice recomendado.</p>
-<p>La selección de un tipo de índice adecuado para una búsqueda vectorial puede influir significativamente en el rendimiento y el uso de recursos. A la hora de elegir un tipo de índice para un campo vectorial, es fundamental tener en cuenta diversos factores, como la estructura de datos subyacente, el uso de memoria y los requisitos de rendimiento.</p>
-<h2 id="Vector-Index-anatomy" class="common-anchor-header">Anatomía de un índice vectorial<button data-href="#Vector-Index-anatomy" class="anchor-icon" translate="no">
+<p>This article focuses on how to select appropriate vector indexes. For scalar fields, you can always use the recommended index type.</p>
+<p>Selecting an appropriate index type for a vector search can significantly impact performance and resource usage. When choosing an index type for a vector field, it is essential to consider various factors, including the underlying data structure, memory usage, and performance requirements.</p>
+<h2 id="Vector-Index-anatomy" class="common-anchor-header">Vector Index anatomy<button data-href="#Vector-Index-anatomy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -111,15 +110,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Tal y como se muestra en el diagrama siguiente, un tipo de índice en Milvus consta de tres componentes principales: <strong>la estructura de datos</strong>, <strong>la cuantificación</strong> y <strong>el refinador</strong>. La cuantificación y el refinador son opcionales, pero se utilizan ampliamente debido a su excelente relación entre beneficios y costes.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/vector-index-anatomy.png" alt="Vector Index Anatomy" class="doc-image" id="vector-index-anatomy" /> 
-   <span>Anatomía del índice vectorial</span>
-  
- </span></p>
-<p>Durante la creación del índice, Milvus combina la estructura de datos y el método de cuantificación elegidos para determinar una <strong>tasa de expansión</strong> óptima. En el momento de la consulta, el sistema recupera un <code translate="no">topK × expansion rate</code> e de vectores candidatos, aplica el refinador para recalcular las distancias con mayor precisión y, finalmente, devuelve los resultados más precisos <code translate="no">topK</code>. Este enfoque híbrido equilibra la velocidad y la precisión al restringir el refinamiento, que consume muchos recursos, a un subconjunto filtrado de candidatos.</p>
-<h3 id="Data-structure" class="common-anchor-header">Estructura de datos<button data-href="#Data-structure" class="anchor-icon" translate="no">
+    </button></h2><p>As demonstrated in the diagram below, an index type in Milvus consists of three core components, namely <strong>data structure</strong>, <strong>quantization</strong>, and <strong>refiner</strong>. Quantization and refiner are optional, but are widely used because of a significant gains-better-than-costs balance.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/vector-index-anatomy.png" alt="Vector Index Anatomy" class="doc-image" id="vector-index-anatomy" />
+    <span>Vector Index Anatomy</span>
+  </span>
+</p>
+<p>During index creation, Milvus combines the chosen data structure and quantization method to determine an optimal <strong>expansion rate</strong>. At query time, the system retrieves <code translate="no">topK × expansion rate</code> candidate vectors, applies the refiner to recalculate distances with higher precision, and finally returns the most accurate <code translate="no">topK</code> results. This hybrid approach balances speed and accuracy by restricting resource-intensive refinement to a filtered subset of candidates.</p>
+<h3 id="Data-structure" class="common-anchor-header">Data structure<button data-href="#Data-structure" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,16 +133,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La estructura de datos constituye la capa fundamental del índice. Entre los tipos más comunes se incluyen:</p>
+    </button></h3><p>The data structure forms the foundational layer of the index. Common types include:</p>
 <ul>
-<li><p><strong>Archivo invertido (IVF)</strong></p>
-<p>Los tipos de índice de la serie IVF permiten a Milvus agrupar vectores en compartimentos mediante una partición basada en centroides. Por lo general, es seguro suponer que todos los vectores de un compartimento probablemente estén cerca del vector de consulta si el centroide del compartimento está cerca de dicho vector. Partiendo de esta premisa, Milvus solo analiza las representaciones vectoriales de aquellos compartimentos cuyos centroides se encuentran cerca del vector de consulta, en lugar de examinar todo el conjunto de datos. Esta estrategia reduce los costes computacionales al tiempo que mantiene una precisión aceptable.</p>
-<p>Este tipo de estructura de datos de índice es ideal para conjuntos de datos a gran escala que requieren un rendimiento rápido.</p></li>
-<li><p><strong>Estructura basada en grafos</strong></p>
-<p>Una estructura de datos basada en grafos para la búsqueda vectorial, como Hierarchical Navigable Small World (<a href="https://arxiv.org/abs/1603.09320">HNSW</a>), construye un grafo en capas en el que cada vector se conecta con sus vecinos más cercanos. Las consultas navegan por esta jerarquía, partiendo de las capas superiores más generales y pasando a las capas inferiores, lo que permite una complejidad de búsqueda eficiente en tiempo logarítmico.</p>
-<p>Este tipo de estructura de datos de índice destaca en espacios de alta dimensión y en escenarios que exigen consultas de baja latencia.</p></li>
+<li><p><strong>Inverted File (IVF)</strong></p>
+<p>IVF-series index types allow Milvus to cluster vectors into buckets through centroid-based partitioning. It is generally safe to assume that all vectors in a bucket are likely to be close to the query vector if the bucket centroid is close to the query vector. Based on this premise, Milvus scans only the vector embeddings in those buckets where the centroids are near the query vector, rather than examining the entire dataset. This strategy reduces computational costs while maintaining acceptable accuracy.</p>
+<p>This type of index data structure is ideal for large-scale datasets requiring fast throughput.</p></li>
+<li><p><strong>Graph-based structure</strong></p>
+<p>A graph-based data structure for vector search, such as Hierarchical Navigable Small World (<a href="https://arxiv.org/abs/1603.09320">HNSW</a>), constructs a layered graph where each vector connects to its nearest neighbors. Queries navigate this hierarchy, starting from coarse upper layers and switching through lower layers, enabling efficient logarithmic-time search complexity.</p>
+<p>This type of index data structure excels in high-dimensional spaces and scenarios demanding low-latency queries.</p></li>
 </ul>
-<h3 id="Quantization" class="common-anchor-header">Cuantificación<button data-href="#Quantization" class="anchor-icon" translate="no">
+<h3 id="Quantization" class="common-anchor-header">Quantization<button data-href="#Quantization" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -158,12 +157,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La cuantificación reduce el consumo de memoria y los costes computacionales mediante una representación más simplificada:</p>
+    </button></h3><p>Quantization reduces memory footprint and computational costs through a coarser representation:</p>
 <ul>
-<li><p><strong>La cuantización escalar</strong> (por ejemplo, <strong>SQ8</strong>) permite a Milvus comprimir cada dimensión del vector en un solo byte (8 bits), lo que reduce el uso de memoria en un 75 % en comparación con los números flotantes de 32 bits, al tiempo que se conserva una precisión razonable.</p></li>
-<li><p><strong>La cuantización de productos</strong> (<strong>PQ</strong>) permite a Milvus dividir los vectores en subvectores y codificarlos mediante agrupamiento basado en un libro de códigos. De este modo se consiguen mayores ratios de compresión (p. ej., de 4 a 32 veces) a costa de una reducción marginal de la recuperación, lo que la hace adecuada para entornos con limitaciones de memoria.</p></li>
+<li><p><strong>Scalar Quantization</strong> (e.g. <strong>SQ8</strong>) enables Milvus to compress each vector dimension into a single byte (8-bit), reducing memory usage by 75% compared to 32-bit floats while preserving reasonable accuracy.</p></li>
+<li><p><strong>Product Quantization</strong> (<strong>PQ</strong>) enables Milvus to split vectors into subvectors and encode them using codebook-based clustering. This achieves higher compression ratios (e.g., 4-32x) at the cost of marginally reduced recall, making it suitable for memory-constrained environments.</p></li>
 </ul>
-<h3 id="Refiner" class="common-anchor-header">Refinador<button data-href="#Refiner" class="anchor-icon" translate="no">
+<h3 id="Refiner" class="common-anchor-header">Refiner<button data-href="#Refiner" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -178,10 +177,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La cuantificación conlleva pérdidas inherentes. Para mantener la tasa de recuperación, la cuantificación genera sistemáticamente más candidatos «top-K» de los necesarios, lo que permite a los refinadores utilizar una mayor precisión para seleccionar posteriormente los resultados «top-K» entre estos candidatos, mejorando así la tasa de recuperación.</p>
-<p>Por ejemplo, el refinador FP32 opera sobre los candidatos a resultados de búsqueda devueltos por la cuantificación, recalculando las distancias con precisión FP32 en lugar de utilizar los valores cuantificados.</p>
-<p>Esto resulta fundamental para aplicaciones que requieren un equilibrio entre la eficiencia de la búsqueda y la precisión, como la búsqueda semántica o los sistemas de recomendación, en los que pequeñas variaciones en la distancia afectan significativamente a la calidad de los resultados.</p>
-<h3 id="Summary" class="common-anchor-header">Resumen<button data-href="#Summary" class="anchor-icon" translate="no">
+    </button></h3><p>Quantization is inherently lossy. To maintain the recall rate, quantization consistently produces more top-K candidates than necessary, allowing refiners to use higher precision to further select the top-K results from these candidates, enhancing the recall rate.</p>
+<p>For instance, the FP32 refiner operates on the search result candidates returned by quantization by recalculating distances using FP32 precision rather than the quantized values.</p>
+<p>This is critical for applications requiring a tradeoff between search efficiency and precision, such as semantic search or recommendation systems, where minor distance variations significantly impact result quality.</p>
+<h3 id="Summary" class="common-anchor-header">Summary<button data-href="#Summary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -196,8 +195,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Esta arquitectura por niveles —filtrado grueso mediante estructuras de datos, cálculo eficiente a través de la cuantificación y ajuste de la precisión mediante el refinamiento— permite a Milvus optimizar de forma adaptativa el equilibrio entre precisión y rendimiento.</p>
-<h2 id="Performance-trade-offs" class="common-anchor-header">Compromisos de rendimiento<button data-href="#Performance-trade-offs" class="anchor-icon" translate="no">
+    </button></h3><p>This tiered architecture – coarse filtering via data structures, efficient computation through quantization, and precision tuning via refinement – allows Milvus to optimize the accuracy-performance tradeoff adaptively.</p>
+<h2 id="Performance-trade-offs" class="common-anchor-header">Performance trade-offs<button data-href="#Performance-trade-offs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -212,14 +211,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>A la hora de evaluar el rendimiento, es fundamental equilibrar <strong>el tiempo de creación</strong>, <strong>las consultas por segundo (QPS)</strong> y <strong>la tasa de recuperación</strong>. Las reglas generales son las siguientes:</p>
+    </button></h2><p>When evaluating performance, it is crucial to balance <strong>build time</strong>, <strong>query per second (QPS)</strong>, and <strong>recall rate</strong>. The general rules are as follows:</p>
 <ul>
-<li><p><strong>Los tipos de índice basados en grafos</strong> suelen superar a <strong>las variantes IVF</strong> en términos de <strong>QPS</strong>.</p></li>
-<li><p><strong>Las variantes IVF</strong> se adaptan especialmente bien a escenarios con <strong>un topK elevado (por ejemplo, superior a 2.000)</strong>.</p></li>
-<li><p><strong>PQ</strong> suele ofrecer una mejor tasa de recuperación con tasas de compresión similares en comparación con <strong>SQ</strong>, aunque este último proporciona un rendimiento más rápido.</p></li>
-<li><p>El uso de discos duros para parte del índice (como en <strong>DiskANN</strong>) ayuda a gestionar grandes conjuntos de datos, pero también introduce posibles cuellos de botella en las IOPS.</p></li>
+<li><p><strong>Graph-based index types</strong> usually outperform <strong>IVF variants</strong> in terms of <strong>QPS</strong>.</p></li>
+<li><p><strong>IVF variants</strong> particularly fit in the scenarios with <strong>a large topK (for example, over 2,000)</strong>.</p></li>
+<li><p><strong>PQ</strong> typically offers a better recall rate at similar compression rates when compared to <strong>SQ</strong>, though the latter provides faster performance.</p></li>
+<li><p>Using hard drives for part of the index (as in <strong>DiskANN</strong>) helps manage large datasets, but it also introduces potential IOPS bottlenecks.</p></li>
 </ul>
-<h3 id="Capacity" class="common-anchor-header">Capacidad<button data-href="#Capacity" class="anchor-icon" translate="no">
+<h3 id="Capacity" class="common-anchor-header">Capacity<button data-href="#Capacity" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -234,40 +233,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La capacidad suele implicar la relación entre el tamaño de los datos y la RAM disponible. A la hora de abordar la capacidad, ten en cuenta lo siguiente:</p>
+    </button></h3><p>Capacity usually involves the relationship between data size and available RAM. When dealing with capacity, consider the following:</p>
 <ul>
-<li><p>Si una cuarta parte de los datos sin procesar cabe en la memoria, plantéate utilizar DiskANN por su latencia estable.</p></li>
-<li><p>Si todos los datos sin procesar caben en la memoria, plantéate utilizar tipos de índice basados en memoria y mmap.</p></li>
-<li><p>Puede utilizar los tipos de índice con cuantificación aplicada y mmap para sacrificar precisión a cambio de la máxima capacidad.</p></li>
-</ul>
-<div class="alert note">
-<p>Mmap no siempre es la solución. Cuando la mayor parte de los datos se encuentra en el disco, DiskANN ofrece una mejor latencia.</p>
-</div>
-<h3 id="Recall" class="common-anchor-header">Recuperación<button data-href="#Recall" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h3><p>La recuperación suele estar relacionada con la tasa de filtrado, que se refiere a los datos que se descartan antes de las búsquedas. A la hora de abordar la recuperación, ten en cuenta lo siguiente:</p>
-<ul>
-<li><p>Si la tasa de filtrado es inferior al 85 %, los tipos de índice basados en grafos superan a las variantes de IVF.</p></li>
-<li><p>Si la tasa de filtrado está entre el 85 % y el 95 %, utiliza variantes de IVF.</p></li>
-<li><p>Si la tasa de filtrado es superior al 98 %, utiliza Brute-Force (FLAT) para obtener los resultados de búsqueda más precisos.</p></li>
+<li><p>If a quarter of your raw data fits into memory, consider DiskANN for its stable latency.</p></li>
+<li><p>If all your raw data fits into memory, consider memory-based index types and mmap.</p></li>
+<li><p>You can use the quantization-applied index types and mmap to trade accuracy for the maximum capacity.</p></li>
 </ul>
 <div class="alert note">
-<p>Los puntos anteriores no siempre son correctos. Se recomienda ajustar la recuperación con diferentes tipos de índice para determinar cuál funciona mejor.</p>
+<p>Mmap is not always the solution. When most of your data is on disk, DiskANN provides better latency.</p>
 </div>
-<h3 id="Performance" class="common-anchor-header">Rendimiento<button data-href="#Performance" class="anchor-icon" translate="no">
+<h3 id="Recall" class="common-anchor-header">Recall<button data-href="#Recall" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -282,13 +257,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>El rendimiento de una búsqueda suele estar relacionado con el «top-K», que se refiere al número de registros que devuelve la búsqueda. A la hora de evaluar el rendimiento, ten en cuenta lo siguiente:</p>
+    </button></h3><p>The recall usually involves the filter ratio, which refers to the data that is filtered out before searches. When dealing with recall, consider the following:</p>
 <ul>
-<li><p>Para una búsqueda con un «top-K» reducido (por ejemplo, 2 000) que requiera una alta tasa de recuperación, los tipos de índice basados en grafos superan a las variantes de IVF.</p></li>
-<li><p>Para una búsqueda con un «top-K» elevado (en comparación con el número total de incrustaciones vectoriales), las variantes de IVF son una mejor opción que los tipos de índice basados en grafos.</p></li>
-<li><p>Para una búsqueda con un «top-K» de tamaño medio y una alta tasa de filtrado, las variantes de IVF son la mejor opción.</p></li>
+<li><p>If the filter ratio is less than 85%, graph-based index types outperform IVF variants.</p></li>
+<li><p>If the filter ratio is between 85% and 95%, use IVF variants.</p></li>
+<li><p>If the filter ratio is over 98%, use Brute-Force (FLAT) for the most accurate search results.</p></li>
 </ul>
-<h3 id="Decision-Matrix-Choosing-the-most-appropriate-index-type" class="common-anchor-header">Matriz de decisión: elección del tipo de índice más adecuado<button data-href="#Decision-Matrix-Choosing-the-most-appropriate-index-type" class="anchor-icon" translate="no">
+<div class="alert note">
+<p>The above items are not always correct. You are advised to tune the recall with different index types to determine which index type works.</p>
+</div>
+<h3 id="Performance" class="common-anchor-header">Performance<button data-href="#Performance" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -303,45 +281,66 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La siguiente tabla es una matriz de decisión a la que puede recurrir a la hora de elegir un tipo de índice adecuado.</p>
+    </button></h3><p>The performance of a search usually involves the top-K, which refers to the number of records that the search returns. When dealing with performance, consider the following:</p>
+<ul>
+<li><p>For a search with a small top-K (e.g., 2,000) requiring a high recall rate, graph-based index types outperform IVF variants.</p></li>
+<li><p>For a search with a great top-K (compared with the total number of vector embeddings), IVF variants are a better choice than graph-based index types.</p></li>
+<li><p>For a search with a medium-sized top-K and a high filter ratio, IVF variants are better choices.</p></li>
+</ul>
+<h3 id="Decision-Matrix-Choosing-the-most-appropriate-index-type" class="common-anchor-header">Decision Matrix: Choosing the most appropriate index type<button data-href="#Decision-Matrix-Choosing-the-most-appropriate-index-type" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>The following table is a decision matrix for you to refer to when choosing an appropriate index type.</p>
 <table>
    <tr>
-     <th><p>Escenario</p></th>
-     <th><p>Índice recomendado</p></th>
-     <th><p>Notas</p></th>
+     <th><p>Scenario</p></th>
+     <th><p>Recommended Index</p></th>
+     <th><p>Notes</p></th>
    </tr>
    <tr>
-     <td><p>Los datos sin procesar caben en la memoria</p></td>
-     <td><p>HNSW, IVF + Refinamiento</p></td>
-     <td><p>Utiliza HNSW para un bajo<code translate="no">k</code> o y un alto recall.</p></td>
+     <td><p>Raw data fits in memory</p></td>
+     <td><p>HNSW, IVF + Refinement</p></td>
+     <td><p>Use HNSW for low-<code translate="no">k</code>/high recall.</p></td>
    </tr>
    <tr>
-     <td><p>Datos sin procesar en disco, SSD</p></td>
+     <td><p>Raw data on disk, SSD</p></td>
      <td><p>DiskANN</p></td>
-     <td><p>Óptimo para consultas sensibles a la latencia.</p></td>
+     <td><p>Optimal for latency-sensitive queries.</p></td>
    </tr>
    <tr>
-     <td><p>Datos sin procesar en disco, RAM limitada</p></td>
+     <td><p>Raw data on disk, limited RAM</p></td>
      <td><p>IVFPQ/SQ + mmap</p></td>
-     <td><p>Equilibra el acceso a la memoria y al disco.</p></td>
+     <td><p>Balances memory and disk access.</p></td>
    </tr>
    <tr>
-     <td><p>Alta tasa de filtrado (&gt;95 %)</p></td>
-     <td><p>Fuerza bruta (FLAT)</p></td>
-     <td><p>Evita la sobrecarga del índice para conjuntos de candidatos muy pequeños.</p></td>
+     <td><p>High filter ratio (&gt;95%)</p></td>
+     <td><p>Brute-Force (FLAT)</p></td>
+     <td><p>Avoids index overhead for tiny candidate sets.</p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">k</code> e grande (≥1 % del conjunto de datos)</p></td>
+     <td><p>Large <code translate="no">k</code> (≥1% of dataset)</p></td>
      <td><p>IVF</p></td>
-     <td><p>La poda de clústeres reduce la carga computacional.</p></td>
+     <td><p>Cluster pruning reduces computation.</p></td>
    </tr>
    <tr>
-     <td><p>Tasa de recuperación extremadamente alta (&gt;99 %)</p></td>
-     <td><p>Fuerza bruta (FLAT) + GPU</p></td>
+     <td><p>Extremely high recall rate (&gt;99%)</p></td>
+     <td><p>Brute-Force (FLAT) + GPUs</p></td>
      <td><p>--</p></td>
    </tr>
 </table>
-<h2 id="Memory-usage-estimation" class="common-anchor-header">Estimación del uso de memoria<button data-href="#Memory-usage-estimation" class="anchor-icon" translate="no">
+<h2 id="Memory-usage-estimation" class="common-anchor-header">Memory usage estimation<button data-href="#Memory-usage-estimation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -357,11 +356,11 @@ summary: >-
         ></path>
       </svg>
     </button></h2><div class="alert note">
-<p>Esta sección se centra en el cálculo del consumo de memoria de un tipo de índice específico e incluye numerosos detalles técnicos. Puedes saltarte esta sección sin problema si no te interesa.</p>
+<p>This section focuses on calculating the memory consumption of a specific index type and includes many technical details. You can skip this section safely if it does not align with your interests.</p>
 </div>
-<p>El consumo de memoria de un índice viene determinado por su estructura de datos, la tasa de compresión mediante cuantificación y el refinador utilizado. En términos generales, los índices basados en grafos suelen tener una mayor huella de memoria debido a la estructura del grafo (por ejemplo, <strong>HNSW</strong>), lo que normalmente implica una sobrecarga notable por espacio vectorial. Por el contrario, IVF y sus variantes son más eficientes en cuanto a memoria, ya que la sobrecarga por espacio vectorial es menor. Sin embargo, técnicas avanzadas como <strong>DiskANN</strong> permiten que partes del índice, como el grafo o el refinador, residan en el disco, lo que reduce la carga de memoria sin mermar el rendimiento.</p>
-<p>Concretamente, el uso de memoria de un índice se puede calcular de la siguiente manera:</p>
-<h3 id="IVF-index-memory-usage" class="common-anchor-header">Uso de memoria de los índices IVF<button data-href="#IVF-index-memory-usage" class="anchor-icon" translate="no">
+<p>The memory consumption of an index is influenced by its data structure, compression rate through quantization, and the refiner in use. Generally speaking, graph-based indices typically have a higher memory footprint due to the graph’s structure (e.g., <strong>HNSW</strong>), which usually implies a noticeable per-vector space overhead. In contrast, IVF and its variants are more memory-efficient because less per-vector space overhead applies. However, advanced techniques such as <strong>DiskANN</strong> allow parts of the index, like the graph or the refiner, to reside on disk, reducing memory load while maintaining performance.</p>
+<p>Specifically, the memory usage of an index can be calculated as follows:</p>
+<h3 id="IVF-index-memory-usage" class="common-anchor-header">IVF index memory usage<button data-href="#IVF-index-memory-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -376,61 +375,61 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Los índices IVF equilibran la eficiencia de memoria con el rendimiento de la búsqueda mediante la partición de los datos en clústeres. A continuación se muestra un desglose de la memoria utilizada por un millón de vectores de 128 dimensiones indexados mediante variantes de IVF.</p>
+    </button></h3><p>IVF indexes balance memory efficiency with search performance by partitioning data into clusters. Below is a breakdown of the memory used by 1 million 128-dimensional vectors indexed using IVF variants.</p>
 <ol>
-<li><p><strong>Cálculo de la memoria utilizada por los centroides.</strong></p>
-<p>Los tipos de índice de la serie IVF permiten a Milvus agrupar vectores en compartimentos mediante una partición basada en centroides. Cada centroide se incluye en el índice en forma de incrustación vectorial sin procesar. Al dividir los vectores en 2.000 clústeres, el uso de memoria se puede calcular de la siguiente manera:</p>
+<li><p><strong>Calculate the memory used by centroids.</strong></p>
+<p>IVF-series index types enable Milvus to cluster vectors into buckets using centroid-based partitioning. Each centroid is included in the index in raw vector embedding. When you divide the vectors into 2,000 clusters, the memory usage can be calculated as follows:</p>
 <pre><code translate="no" class="language-plaintext">2,000 clusters × 128 dimensions × 4 bytes = 1.0 MB
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Calcular la memoria utilizada por las asignaciones a clústeres.</strong></p>
-<p>Cada incrustación de vector se asigna a un clúster y se almacena como un identificador entero. Para 2.000 clústeres, basta con un entero de 2 bytes. El uso de memoria se puede calcular de la siguiente manera:</p>
+<li><p><strong>Calculate the memory used by cluster assignments.</strong></p>
+<p>Each vector embedding is assigned to a cluster and stored as integer IDs. For 2,000 clusters, a 2-byte integer suffices. The memory usage can be calculated as follows:</p>
 <pre><code translate="no" class="language-plaintext">1,000,000 vectors × 2 bytes = 2.0 MB
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Calcular la compresión provocada por la cuantificación.</strong></p>
-<p>Las variantes de IVF suelen utilizar PQ y SQ8, y el consumo de memoria se puede estimar de la siguiente manera:</p>
+<li><p><strong>Calculate the compression caused by quantization.</strong></p>
+<p>IVF variants typically use PQ and SQ8, and the memory usage can be estimated as follows:</p>
 <ul>
-<li><p>Uso de PQ con 8 subcuantificadores</p>
+<li><p>Using PQ with 8 subquantizers</p>
 <pre><code translate="no" class="language-plaintext">1,000,000 vectors × 8 bytes = 8.0 MB
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Utilizando SQ8</p>
+<li><p>Using SQ8</p>
 <pre><code translate="no" class="language-plaintext">1,000,000 vectors × 128 dimensions × 1 byte = 128 MB 
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<p>La siguiente tabla recoge el consumo de memoria estimado con diferentes configuraciones:</p>
+<p>The following table lists the estimated memory usage with different configurations:</p>
 <p><table>
 <tr>
-<th><p>Configuración</p></th>
-<th><p>Estimación de memoria</p></th>
-<th><p>Memoria total</p></th>
+<th><p>Configuration</p></th>
+<th><p>Memory Estimation</p></th>
+<th><p>Total Memory</p></th>
 </tr>
 <tr>
-<td><p>IVF-PQ (sin refinamiento)</p></td>
-<td><p>1,0 MB + 2,0 MB + 8,0 MB</p></td>
-<td><p>11,0 MB</p></td>
+<td><p>IVF-PQ (no refinement)</p></td>
+<td><p>1.0 MB + 2.0 MB + 8.0 MB</p></td>
+<td><p>11.0 MB</p></td>
 </tr>
 <tr>
-<td><p>IVF-PQ + 10 % de refinamiento bruto</p></td>
-<td><p>1,0 MB + 2,0 MB + 8,0 MB + 51,2 MB</p></td>
-<td><p>62,2 MB</p></td>
+<td><p>IVF-PQ + 10% raw refinement</p></td>
+<td><p>1.0 MB + 2.0 MB + 8.0 MB + 51.2 MB</p></td>
+<td><p>62.2 MB</p></td>
 </tr>
 <tr>
-<td><p>IVF-SQ8 (sin refinamiento)</p></td>
-<td><p>1,0 MB + 2,0 MB + 128 MB</p></td>
-<td><p>131,0 MB</p></td>
+<td><p>IVF-SQ8 (no refinement)</p></td>
+<td><p>1.0 MB + 2.0 MB + 128 MB</p></td>
+<td><p>131.0 MB</p></td>
 </tr>
 <tr>
-<td><p>IVF-FLAT (vectores sin procesar completos)</p></td>
-<td><p>1,0 MB + 2,0 MB + 512 MB</p></td>
-<td><p>515,0 MB</p></td>
+<td><p>IVF-FLAT (full raw vectors)</p></td>
+<td><p>1.0 MB + 2.0 MB + 512 MB</p></td>
+<td><p>515.0 MB</p></td>
 </tr>
 </table></p></li>
-<li><p><strong>Calcular la sobrecarga del refinamiento.</strong></p>
-<p>Las variantes de IVF suelen combinarse con un refinador para volver a clasificar los candidatos. Para una búsqueda que recupere los 10 primeros resultados con una tasa de expansión de 5, la sobrecarga de refinamiento puede estimarse de la siguiente manera:</p>
+<li><p><strong>Calculate the refinement overhead.</strong></p>
+<p>IVF variants often pair with a refiner to re-rank candidates. For a search retrieving the top 10 results with an expansion rate of 5, the refinement overhead can be estimated as follows:</p>
 <pre><code translate="no" class="language-plaintext">10 (topK) x 5 (expansion rate) = 50 candidates
 50 candidates x 128 dimensions x 4 bytes = 25.6 KB
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h3 id="Graph-based-index-memory-usage" class="common-anchor-header">Uso de memoria de los índices basados en grafos<button data-href="#Graph-based-index-memory-usage" class="anchor-icon" translate="no">
+<h3 id="Graph-based-index-memory-usage" class="common-anchor-header">Graph-based index memory usage<button data-href="#Graph-based-index-memory-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -445,29 +444,29 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Los tipos de índice basados en grafos, como HNSW, requieren una cantidad significativa de memoria para almacenar tanto la estructura del grafo como las incrustaciones vectoriales sin procesar. A continuación se muestra un desglose detallado de la memoria consumida por un millón de vectores de 128 dimensiones indexados utilizando el tipo de índice HNSW.</p>
+    </button></h3><p>Graph-based index types like HNSW require significant memory to store both the graph structure and raw vector embeddings. Below is a detailed breakdown of the memory consumed by 1 million 128-dimensional vectors indexed using the HNSW index type.</p>
 <ol>
-<li><p><strong>Cálculo de la memoria utilizada por la estructura del grafo.</strong></p>
-<p>Cada vector en HNSW mantiene conexiones con sus vecinos. Con un grado del grafo (aristas por nodo) de 32, la memoria consumida se puede calcular de la siguiente manera:</p>
+<li><p><strong>Calculate the memory used by the graph structure.</strong></p>
+<p>Each vector in HNSW maintains connections to its neighbors. With a graph degree (edges per node) of 32, the memory consumed can be calculated as follows:</p>
 <pre><code translate="no" class="language-plaintext">1,000,000 vectors × 32 links × 4 bytes (for 32-bit integer storage) = 128 MB  
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Calcular la memoria utilizada por las representaciones vectoriales sin procesar.</strong></p>
-<p>La memoria consumida al almacenar vectores FP32 sin comprimir se puede calcular de la siguiente manera:</p>
+<li><p><strong>Calculate the memory used by the raw vector embeddings.</strong></p>
+<p>The memory consumed by storing uncompressed FP32 vectors can be calculated as follows:</p>
 <pre><code translate="no" class="language-plaintext">1,000,000 vectors × 128 dimensions × 4 bytes = 512 MB  
 <button class="copy-code-btn"></button></code></pre>
-<p>Al utilizar HNSW para indexar el millón de representaciones vectoriales de 128 dimensiones, la memoria total en uso sería de <strong>128 MB (grafo) + 512 MB (vectores) = 640 MB</strong>.</p></li>
-<li><p><strong>Calcular la compresión provocada por la cuantificación.</strong></p>
-<p>La cuantificación reduce el tamaño de los vectores. Por ejemplo, el uso de PQ con 8 subcuantificadores (8 bytes por vector) da lugar a una compresión drástica. La memoria consumida por las representaciones vectoriales comprimidas se puede calcular de la siguiente manera:</p>
+<p>When you use HNSW to index the 1 million 128-dimensional vector embeddings, the total memory in use would be <strong>128 MB (graph) + 512 MB (vectors) = 640 MB</strong>.</p></li>
+<li><p><strong>Calculate the compression caused by quantization.</strong></p>
+<p>Quantization reduces vector size. For example, using PQ with 8 subquantizers (8 bytes per vector) leads to a drastic compression. The memory consumed by the compressed vector embeddings can be calculated as follows:</p>
 <pre><code translate="no" class="language-plaintext">1,000,000 vectors × 8 bytes = 8 MB
 <button class="copy-code-btn"></button></code></pre>
-<p>Esto supone una tasa de compresión de 64 veces en comparación con las representaciones vectoriales sin procesar, y la memoria total utilizada por el tipo de índice <strong>HNSWPQ</strong> sería de <strong>128 MB (grafo) + 8 MB (vector comprimido) = 136 MB</strong>.</p></li>
-<li><p><strong>Calcular la sobrecarga del refinamiento.</strong></p>
-<p>El refinamiento, como la reordenación con vectores sin procesar, carga temporalmente datos de alta precisión en la memoria. Para una búsqueda que recupere los 10 primeros resultados con una tasa de expansión de 5, la sobrecarga de refinamiento puede estimarse de la siguiente manera:</p>
+<p>This achieves a 64-times compression rate when compared to the raw vector embeddings, and the total memory used by the <strong>HNSWPQ</strong> index type would be <strong>128 MB (graph) + 8 MB (compressed vector) = 136 MB</strong>.</p></li>
+<li><p><strong>Calculate the refinement overhead.</strong></p>
+<p>Refinement, such as re-ranking with raw vectors, temporarily loads high-precision data into memory. For a search retrieving the top 10 results with an expansion rate of 5, the refinement overhead can be estimated as follows:</p>
 <pre><code translate="no" class="language-plaintext">10 (topK) x 5 (expansion rate) = 50 candidates
 50 candidates x 128 dimensions x 4 bytes = 25.6 KB
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h3 id="Other-considerations" class="common-anchor-header">Otras consideraciones<button data-href="#Other-considerations" class="anchor-icon" translate="no">
+<h3 id="Other-considerations" class="common-anchor-header">Other considerations<button data-href="#Other-considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -482,8 +481,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Mientras que los índices IVF y basados en grafos optimizan el uso de la memoria mediante la cuantificación, los archivos mapeados en memoria (mmap) y DiskANN abordan situaciones en las que los conjuntos de datos superan la memoria de acceso aleatorio (RAM) disponible.</p>
-<h4 id="DiskANN" class="common-anchor-header">DiskANN</h4><p>DiskANN es un índice basado en el grafo de Vamana que conecta puntos de datos para permitir una navegación eficiente durante la búsqueda, al tiempo que aplica PQ para reducir el tamaño de los vectores y permitir un cálculo rápido y aproximado de la distancia entre ellos.</p>
-<p>El grafo de Vamana se almacena en disco, lo que permite a DiskANN gestionar grandes conjuntos de datos que, de otro modo, serían demasiado grandes para caber en la memoria. Esto resulta especialmente útil para conjuntos de datos de miles de millones de puntos.</p>
-<h4 id="Memory-mapped-files-mmap" class="common-anchor-header">Archivos mapeados en memoria (mmap)</h4><p>El mapeo de memoria (mmap) permite el acceso directo a la memoria de archivos de gran tamaño en el disco, lo que permite a Milvus almacenar índices y datos tanto en la memoria como en los discos duros. Este enfoque ayuda a optimizar las operaciones de E/S al reducir la sobrecarga de las llamadas de E/S en función de la frecuencia de acceso, ampliando así la capacidad de almacenamiento de las colecciones sin afectar significativamente al rendimiento de la búsqueda.</p>
-<p>En concreto, puedes configurar Milvus para que asigne a memoria los datos sin procesar de determinados campos, en lugar de cargarlos íntegramente en la memoria. De este modo, puedes obtener acceso directo a la memoria de dichos campos sin preocuparte por problemas de memoria y ampliar la capacidad de la colección.</p>
+    </button></h3><p>While IVF and graph-based indexes optimize memory usage through quantization, memory-mapped files (mmap) and DiskANN address scenarios where datasets exceed available random access memory (RAM).</p>
+<h4 id="DiskANN" class="common-anchor-header">DiskANN</h4><p>DiskANN is a Vamana graph-based index that connects data points for efficient navigation during search while applying PQ to reduce the size of vectors and enable quick approximate distance calculation between vectors.</p>
+<p>The Vamana graph is stored on disk, which allows DiskANN to handle large datasets that would otherwise be too big to fit in memory. This is particularly useful for billion-point datasets.</p>
+<h4 id="Memory-mapped-files-mmap" class="common-anchor-header">Memory-mapped files (mmap)</h4><p>Memory mapping (Mmap) enables direct memory access to large files on disk, allowing Milvus to store indexes and data in both memory and hard drives. This approach helps optimize I/O operations by reducing the overhead of I/O calls based on access frequency, thereby expanding storage capacity for collections without significantly impacting search performance.</p>
+<p>Specifically, you can configure Milvus to memory-map the raw data in certain fields instead of fully loading them into memory. This way, you can gain direct memory access to the fields without worrying about memory issues and extend the collection capacity.</p>

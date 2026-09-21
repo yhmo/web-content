@@ -1,12 +1,15 @@
 ---
 id: json-field-overview.md
-title: JSON 字段概述
+title: JSON Field Overview
 summary: >-
-  在构建产品目录、内容管理系统或用户偏好引擎等应用程序时，您通常需要将灵活的元数据与向量 Embeddings
-  一起存储。产品属性因类别而异，用户偏好会随时间变化，而文档属性则具有复杂的嵌套结构。Milvus 中的 JSON
-  字段通过允许您在不牺牲性能的前提下存储和查询灵活的结构化数据，从而解决了这一挑战。
+  When building applications like product catalogs, content management systems,
+  or user preference engines, you often need to store flexible metadata
+  alongside your vector embeddings. Product attributes vary by category, user
+  preferences evolve over time, and document properties have complex nested
+  structures. JSON fields in Milvus solve this challenge by allowing you to
+  store and query flexible structured data without sacrificing performance.
 ---
-<h1 id="JSON-Field-Overview" class="common-anchor-header">JSON 字段概述<button data-href="#JSON-Field-Overview" class="anchor-icon" translate="no">
+<h1 id="JSON-Field-Overview" class="common-anchor-header">JSON Field Overview<button data-href="#JSON-Field-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,8 +24,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在构建产品目录、内容管理系统或用户偏好引擎等应用程序时，您通常需要将灵活的元数据与向量 Embeddings 一起存储。产品属性因类别而异，用户偏好会随时间变化，而文档属性则具有复杂的嵌套结构。Milvus 中的 JSON 字段通过允许您在不牺牲性能的前提下存储和查询灵活的结构化数据，从而解决了这一挑战。</p>
-<h2 id="What-is-a-JSON-field" class="common-anchor-header">什么是 JSON 字段？<button data-href="#What-is-a-JSON-field" class="anchor-icon" translate="no">
+    </button></h1><p>When building applications like product catalogs, content management systems, or user preference engines, you often need to store flexible metadata alongside your vector embeddings. Product attributes vary by category, user preferences evolve over time, and document properties have complex nested structures. JSON fields in Milvus solve this challenge by allowing you to store and query flexible structured data without sacrificing performance.</p>
+<h2 id="What-is-a-JSON-field" class="common-anchor-header">What is a JSON field?<button data-href="#What-is-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,8 +40,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>JSON 字段是 Milvus 中一种基于 Schema 定义的数据类型（<code translate="no">DataType.JSON</code> ），用于存储结构化的键值对数据。与传统 rigid 数据库列不同，JSON 字段支持嵌套对象、数组和混合数据类型，同时提供多种索引选项以实现快速查询。</p>
-<p>JSON 字段结构示例：</p>
+    </button></h2><p>A JSON field is a schema-defined data type (<code translate="no">DataType.JSON</code>) in Milvus that stores structured key-value data. Unlike traditional rigid database columns, JSON fields accommodate nested objects, arrays, and mixed data types while providing multiple indexing options for fast queries.</p>
+<p>Example JSON field structure:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> 
     <span class="hljs-attr">&quot;category&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;electronics&quot;</span><span class="hljs-punctuation">,</span>
@@ -58,11 +61,11 @@ summary: >-
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此示例中，<code translate="no">metadata</code> 是一个单一的 JSON 字段，其中包含扁平值（例如<code translate="no">category</code> 、<code translate="no">in_stock</code> ）、数组（<code translate="no">tags</code> ）和嵌套对象（<code translate="no">supplier</code> ）的混合。</p>
+<p>In this example, <code translate="no">metadata</code> is a single JSON field that contains a mix of flat values (e.g. <code translate="no">category</code>, <code translate="no">in_stock</code>), arrays (<code translate="no">tags</code>), and nested objects (<code translate="no">supplier</code>).</p>
 <div class="alert note">
-<p><strong>命名规范：</strong>JSON 键名中仅允许使用字母、数字和下划线。请避免使用特殊字符、空格或句点，因为它们可能会导致查询中的解析问题。</p>
+<p><strong>Naming convention:</strong> Use only letters, numbers, and underscores in JSON keys. Avoid special characters, spaces, or dots as they may cause parsing issues in queries.</p>
 </div>
-<h2 id="JSON-field-vs-dynamic-field" class="common-anchor-header">JSON 字段与 Dynamic Field<button data-href="#JSON-field-vs-dynamic-field" class="anchor-icon" translate="no">
+<h2 id="JSON-field-vs-dynamic-field" class="common-anchor-header">JSON field vs. dynamic field<button data-href="#JSON-field-vs-dynamic-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -77,36 +80,36 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>一个常见的混淆点是 JSON 字段与<a href="/docs/zh/enable-dynamic-field.md">Dynamic Field</a> 之间的区别。虽然两者都与 JSON 相关，但它们的作用不同。</p>
-<p>下表总结了 JSON 字段与 Dynamic Field 之间的主要区别：</p>
+    </button></h2><p>A common point of confusion is the difference between a JSON field and the <a href="/docs/zh/enable-dynamic-field.md">dynamic field</a>. While both are related to JSON, they serve different purposes.</p>
+<p>The table below summarizes the key differences between a JSON field and the dynamic field:</p>
 <table>
    <tr>
-     <th><p>特性</p></th>
-     <th><p>JSON字段</p></th>
+     <th><p>Feature</p></th>
+     <th><p>JSON Field</p></th>
      <th><p>Dynamic Field</p></th>
    </tr>
    <tr>
-     <td><p>Schema定义</p></td>
-     <td><p>必须在Collection Schema中显式声明的标量字段，类型为<code translate="no">DataType.JSON</code> 。</p></td>
-     <td><p>一个隐藏的 JSON 字段（名为<code translate="no">$meta</code> ），用于自动存储未声明的字段。</p></td>
+     <td><p>Schema definition</p></td>
+     <td><p>A scalar field that must be explicitly declared in the collection schema with the <code translate="no">DataType.JSON</code> type.</p></td>
+     <td><p>A hidden JSON field (named <code translate="no">$meta</code>) that automatically stores undeclared fields.</p></td>
    </tr>
    <tr>
-     <td><p>用例</p></td>
-     <td><p>用于存储Schema已知且一致的结构化数据。</p></td>
-     <td><p>用于存储不符合固定Schema的灵活、不断演变或半结构化数据。</p></td>
+     <td><p>Use case</p></td>
+     <td><p>Stores structured data where the schema is known and consistent.</p></td>
+     <td><p>Stores flexible, evolving, or semi-structured data that doesn't fit a fixed schema.</p></td>
    </tr>
    <tr>
-     <td><p>控制</p></td>
-     <td><p>您可以控制字段名称和结构。</p></td>
-     <td><p>对于未定义的字段，由系统进行管理。</p></td>
+     <td><p>Control</p></td>
+     <td><p>You control the field name and structure.</p></td>
+     <td><p>System-managed for undefined fields.</p></td>
    </tr>
    <tr>
-     <td><p>查询</p></td>
-     <td><p>使用您的字段名称或 JSON 字段中的目标键进行查询：<code translate="no">metadata["key"]</code> 。</p></td>
-     <td><p>使用 Dynamic Field 字段键直接查询：<code translate="no">"dynamic_key"</code> ，或通过<code translate="no">$meta</code> 进行查询：<code translate="no">$meta["dynamic_key"]</code></p></td>
+     <td><p>Querying</p></td>
+     <td><p>Query using your field name or target key inside the JSON field: <code translate="no">metadata["key"]</code>.</p></td>
+     <td><p>Query directly using the dynamic field key: <code translate="no">"dynamic_key"</code> or via <code translate="no">$meta</code>: <code translate="no">$meta["dynamic_key"]</code></p></td>
    </tr>
 </table>
-<h2 id="Basic-operations" class="common-anchor-header">基本操作<button data-href="#Basic-operations" class="anchor-icon" translate="no">
+<h2 id="Basic-operations" class="common-anchor-header">Basic operations<button data-href="#Basic-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -121,8 +124,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用 JSON 字段的基本工作流包括在 Schema 中定义该字段、插入数据，然后使用特定的过滤表达式查询数据。</p>
-<h3 id="Define-a-JSON-field" class="common-anchor-header">定义 JSON 字段<button data-href="#Define-a-JSON-field" class="anchor-icon" translate="no">
+    </button></h2><p>The fundamental workflow for using a JSON field involves defining it in your schema, inserting data, and then querying the data using specific filter expressions.</p>
+<h3 id="Define-a-JSON-field" class="common-anchor-header">Define a JSON field<button data-href="#Define-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -137,7 +140,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要使用 JSON 字段，请在创建 Collection 时在 Schema 中明确定义该字段。以下示例演示了如何创建一个包含类型为<code translate="no">DataType.JSON</code> 的<code translate="no">metadata</code> 字段的 Collection：</p>
+    </button></h3><p>To use a JSON field, explicitly define it in your collection schema when creating the collection. The following example demonstrates how to create a collection with a <code translate="no">metadata</code> field of type <code translate="no">DataType.JSON</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your server address </span>
@@ -156,9 +159,9 @@ client.create_collection(
 )
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>在此示例中，Schema 中定义的 JSON 字段允许<code translate="no">nullable=True</code> 为空值。有关详细信息，请参阅<a href="/docs/zh/nullable-and-default.md">“可为空与默认值</a>”。</p>
+<p>In this example, the JSON field defined in the collection schema allows null values with <code translate="no">nullable=True</code>. For details, refer to <a href="/docs/zh/nullable-and-default.md">Nullable & Default</a>.</p>
 </div>
-<h3 id="Insert-data" class="common-anchor-header">插入数据<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h3 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -173,7 +176,7 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>创建 Collection 后，请向指定 JSON 字段中插入包含结构化 JSON 对象的实体。您的数据应以字典列表的形式进行格式化。</p>
+    </button></h3><p>Once the collection is created, insert entities that contain structured JSON objects in your designated JSON field. Your data should be formatted as a list of dictionaries.</p>
 <pre><code translate="no" class="language-python">entities = [
     {
         <span class="hljs-string">&quot;product_id&quot;</span>: <span class="hljs-number">1</span>,
@@ -199,7 +202,7 @@ client.create_collection(
 
 client.insert(collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>, data=entities)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Filtering-operations" class="common-anchor-header">筛选操作<button data-href="#Filtering-operations" class="anchor-icon" translate="no">
+<h3 id="Filtering-operations" class="common-anchor-header">Filtering operations<button data-href="#Filtering-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,13 +217,13 @@ client.insert(collection_name=<span class="hljs-string">&quot;product_catalog&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在对 JSON 字段执行筛选操作之前，请确保：</p>
+    </button></h3><p>Before you can perform filtering operations on JSON fields, make sure:</p>
 <ul>
-<li><p>已在每个向量字段上创建了索引。</p></li>
-<li><p>Collection已加载到内存中。</p></li>
+<li><p>You have created an index on each vector field.</p></li>
+<li><p>The collection is loaded into memory.</p></li>
 </ul>
 <p><details></p>
-<p><summary>显示代码</summary></p>
+<p><summary>Show code</summary></p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;vector&quot;</span>,
@@ -234,9 +237,9 @@ client.create_index(collection_name=<span class="hljs-string">&quot;product_cata
 client.load_collection(collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>满足这些要求后，您可以使用以下表达式，根据 JSON 字段中的值对 Collection 进行筛选。这些筛选表达式利用了特定的 JSON 路径语法和专用操作符。</p>
-<h4 id="Filtering-with-JSON-path-syntax" class="common-anchor-header">使用 JSON 路径语法进行筛选</h4><p>要查询特定键，请使用方括号表示法访问 JSON 键：<code translate="no">json_field_name[&quot;key&quot;]</code> 。对于嵌套键，请将它们串联起来：<code translate="no">json_field_name[&quot;key1&quot;][&quot;key2&quot;]</code> 。</p>
-<p>若要筛选<code translate="no">category</code> 值为<code translate="no">&quot;electronics&quot;</code> 的实体：</p>
+<p>Once these requirements are met, you can use the expressions below to filter on your collection based on the values within the JSON field. These filter expressions leverage specific JSON path syntax and dedicated operators.</p>
+<h4 id="Filtering-with-JSON-path-syntax" class="common-anchor-header">Filtering with JSON path syntax</h4><p>To query a specific key, use bracket notation to access JSON keys: <code translate="no">json_field_name[&quot;key&quot;]</code>. For nested keys, chain them together: <code translate="no">json_field_name[&quot;key1&quot;][&quot;key2&quot;]</code>.</p>
+<p>To filter for entities where the <code translate="no">category</code> is <code translate="no">&quot;electronics&quot;</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata[&quot;category&quot;] == &quot;electronics&quot;&#x27;</span>
 
@@ -248,7 +251,7 @@ client.search(
     output_fields=[<span class="hljs-string">&quot;product_id&quot;</span>, <span class="hljs-string">&quot;metadata&quot;</span>]   <span class="hljs-comment"># Fields to include in the search results</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>要筛选嵌套键<code translate="no">supplier[&quot;country&quot;]</code> 值为<code translate="no">&quot;USA&quot;</code> 的实体：</p>
+<p>To filter for entities where the nested key <code translate="no">supplier[&quot;country&quot;]</code> is <code translate="no">&quot;USA&quot;</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata[&quot;supplier&quot;][&quot;country&quot;] == &quot;USA&quot;&#x27;</span>
 
@@ -262,13 +265,13 @@ res = client.search(
 
 <span class="hljs-built_in">print</span>(res)
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Filtering-with-JSON-specific-operators" class="common-anchor-header">使用 JSON 专用操作符进行筛选</h4><p>Milvus 还提供了用于查询特定 JSON 字段键下数组值的特殊操作符。例如：</p>
+<h4 id="Filtering-with-JSON-specific-operators" class="common-anchor-header">Filtering with JSON-specific operators</h4><p>Milvus also provides special operators for querying array values on specific JSON field keys. For example:</p>
 <ul>
-<li><p><code translate="no">json_contains(identifier, expr)</code>: 检查 JSON 数组中是否存在特定元素或子数组</p></li>
-<li><p><code translate="no">json_contains_all(identifier, expr)</code>: 确保指定 JSON 表达式中的所有元素均存在于该字段中</p></li>
-<li><p><code translate="no">json_contains_any(identifier, expr)</code>: 筛选该字段中至少包含 JSON 表达式中一个成员的实体</p></li>
+<li><p><code translate="no">json_contains(identifier, expr)</code>: Checks if a specific element or sub-array exists within a JSON array</p></li>
+<li><p><code translate="no">json_contains_all(identifier, expr)</code>: Ensures that all elements of the specified JSON expression are present in the field</p></li>
+<li><p><code translate="no">json_contains_any(identifier, expr)</code>: Filters entities where at least one member of the JSON expression exists within the field</p></li>
 </ul>
-<p>要查找在<code translate="no">tags</code> 键下具有<code translate="no">&quot;summer_sale&quot;</code> 值的产品：</p>
+<p>To find a product that has the <code translate="no">&quot;summer_sale&quot;</code> value under the <code translate="no">tags</code> key:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot;], &quot;summer_sale&quot;)&#x27;</span>
 
@@ -282,7 +285,7 @@ res = client.search(
 
 <span class="hljs-built_in">print</span>(res)
 <button class="copy-code-btn"></button></code></pre>
-<p>要查找在<code translate="no">tags</code> 键下至少包含<code translate="no">&quot;electronics&quot;</code> 、<code translate="no">&quot;new&quot;</code> 或<code translate="no">&quot;clearance&quot;</code> 其中一个值的产品：</p>
+<p>To find a product that has at least one of the <code translate="no">&quot;electronics&quot;</code>, <code translate="no">&quot;new&quot;</code>, or <code translate="no">&quot;clearance&quot;</code> values under the <code translate="no">tags</code> key:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;json_contains_any(metadata[&quot;tags&quot;], [&quot;electronics&quot;, &quot;new&quot;, &quot;clearance&quot;])&#x27;</span>
 
@@ -296,8 +299,8 @@ res = client.search(
 
 <span class="hljs-built_in">print</span>(res)
 <button class="copy-code-btn"></button></code></pre>
-<p>有关 JSON 特定操作符的更多信息，请参阅<a href="/docs/zh/json-operators.md">JSON 操作符</a>。</p>
-<h2 id="Next-Accelerate-JSON-queries" class="common-anchor-header">下一节：加速 JSON 查询<button data-href="#Next-Accelerate-JSON-queries" class="anchor-icon" translate="no">
+<p>For more information about JSON-specific operators, refer to <a href="/docs/zh/json-operators.md">JSON Operators</a>.</p>
+<h2 id="Next-Accelerate-JSON-queries" class="common-anchor-header">Next: Accelerate JSON queries<button data-href="#Next-Accelerate-JSON-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -312,45 +315,45 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>默认情况下，未启用加速的 JSON 字段查询将对所有行进行全表扫描，这在处理大型数据集时可能导致速度较慢。为了加快 JSON 查询速度，Milvus 提供了高级索引和存储优化功能。</p>
+    </button></h2><p>By default, queries on JSON fields without acceleration will perform a full scan of all rows, which can be slow on large datasets. To speed up JSON queries, Milvus provides advanced indexing and storage optimization features.</p>
 <div class="alert warning">
-<p>从 Milvus 3.0.0 开始，全对象 JSON 索引（<code translate="no">json_cast_type=&quot;JSON&quot;</code> ），也称为 JSON 平面索引，已被废弃。出于兼容性考虑，现有索引和新创建索引的请求仍受支持，但不再建议在新工作负载中使用此模式。 对于已知的查询路径，请使用 JSON 路径索引；若需针对复杂或不断演变的文档实现广泛的查询加速，请考虑使用<a href="/docs/zh/json-shredding.md">JSON 分片</a>。</p>
+<p>Starting in Milvus 3.0.0, whole-object JSON indexing (<code translate="no">json_cast_type=&quot;JSON&quot;</code>), also known as JSON flat indexing, is deprecated. Existing indexes and new index-creation requests remain supported for compatibility, but this mode is no longer recommended for new workloads. Use JSON path indexing for known query paths, or consider <a href="/docs/zh/json-shredding.md">JSON Shredding</a> for broad query acceleration across complex or evolving documents.</p>
 </div>
-<p>下表总结了它们的区别及最佳使用场景：</p>
+<p>The table below summarizes their differences and best-use scenarios:</p>
 <table>
    <tr>
-     <th><p>技术</p></th>
-     <th><p>最适合</p></th>
-     <th><p>数组加速</p></th>
-     <th><p>备注</p></th>
+     <th><p>Technique</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Arrays Acceleration</p></th>
+     <th><p>Notes</p></th>
    </tr>
    <tr>
-     <td><p>JSON 索引</p></td>
-     <td><p>少量频繁访问的键，基于特定数组键的数组</p></td>
-     <td><p>是（针对已建立索引的数组键）</p></td>
-     <td><p>必须预先选择键，若Schema发生变化则需进行维护</p></td>
+     <td><p>JSON Indexing</p></td>
+     <td><p>Small set of frequently accessed keys, arrays on a specific array key</p></td>
+     <td><p>Yes (on indexed array key)</p></td>
+     <td><p>Must preselect keys, maintenance needed if schema evolves</p></td>
    </tr>
    <tr>
-     <td><p>JSON 拆分</p></td>
-     <td><p>可针对众多键实现整体提速，对各类查询具有灵活性</p></td>
-     <td><p>否（无法加速数组内部的值）</p></td>
-     <td><p>需额外存储配置，数组仍需按键创建索引</p></td>
+     <td><p>JSON Shredding</p></td>
+     <td><p>General speed-up across many keys, flexible for varied queries</p></td>
+     <td><p>No (does not accelerate values inside arrays)</p></td>
+     <td><p>Extra storage config, arrays still need per-key index</p></td>
    </tr>
    <tr>
-     <td><p>NGRAM索引</p></td>
-     <td><p>通配符搜索，文本字段中的子字符串匹配</p></td>
-     <td><p>不适用</p></td>
-     <td><p>不适用于数值/范围过滤器</p></td>
+     <td><p>NGRAM Index</p></td>
+     <td><p>Wildcard searches, substring matching in text fields</p></td>
+     <td><p>N/A</p></td>
+     <td><p>Not for numeric/range filters</p></td>
    </tr>
 </table>
-<p><strong>提示：</strong>您可以结合使用这些方法——例如，使用 JSON 分片来加速广泛查询，使用 JSON 索引处理高频数组键，并使用 NGRAM 索引实现灵活的文本搜索。</p>
-<p>有关实现细节，请参阅：</p>
+<p><strong>Tip:</strong> You can combine these approaches—for example, use JSON shredding for broad query acceleration, JSON indexing for high-frequency array keys, and NGRAM indexing for flexible text search.</p>
+<p>For implementation details, refer to:</p>
 <ul>
-<li><p><a href="/docs/zh/json-indexing.md">JSON 索引</a></p></li>
-<li><p><a href="/docs/zh/json-shredding.md">JSON 拆分</a></p></li>
+<li><p><a href="/docs/zh/json-indexing.md">JSON Indexing</a></p></li>
+<li><p><a href="/docs/zh/json-shredding.md">JSON Shredding</a></p></li>
 <li><p><a href="/docs/zh/ngram.md">NGRAM</a></p></li>
 </ul>
-<h2 id="FAQ" class="common-anchor-header">常见问题<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -365,7 +368,7 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Are-there-any-limitations-on-the-size-of-a-JSON-field" class="common-anchor-header">JSON 字段的大小是否有任何限制？<button data-href="#Are-there-any-limitations-on-the-size-of-a-JSON-field" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Are-there-any-limitations-on-the-size-of-a-JSON-field" class="common-anchor-header">Are there any limitations on the size of a JSON field?<button data-href="#Are-there-any-limitations-on-the-size-of-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -380,8 +383,8 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>有。每个 JSON 字段的大小上限为 65,536 字节。</p>
-<h3 id="Does-a-JSON-field-support-setting-a-default-value" class="common-anchor-header">JSON 字段是否支持设置默认值？<button data-href="#Does-a-JSON-field-support-setting-a-default-value" class="anchor-icon" translate="no">
+    </button></h3><p>Yes. Each JSON field is limited to 65,536 bytes.</p>
+<h3 id="Does-a-JSON-field-support-setting-a-default-value" class="common-anchor-header">Does a JSON field support setting a default value?<button data-href="#Does-a-JSON-field-support-setting-a-default-value" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -396,9 +399,9 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>不支持，JSON字段不支持默认值。不过，您可以在定义字段时设置<code translate="no">nullable=True</code> ，以允许空值。</p>
-<p>详情请参阅<a href="/docs/zh/nullable-and-default.md">“可为空与默认值</a>”。</p>
-<h3 id="Are-there-any-naming-conventions-for-JSON-field-keys" class="common-anchor-header">JSON 字段键名是否有命名规范？<button data-href="#Are-there-any-naming-conventions-for-JSON-field-keys" class="anchor-icon" translate="no">
+    </button></h3><p>No, JSON fields do not support default values. However, you can set <code translate="no">nullable=True</code> when defining the field to allow empty entries.</p>
+<p>Refer to <a href="/docs/zh/nullable-and-default.md">Nullable & Default</a> for details.</p>
+<h3 id="Are-there-any-naming-conventions-for-JSON-field-keys" class="common-anchor-header">Are there any naming conventions for JSON field keys?<button data-href="#Are-there-any-naming-conventions-for-JSON-field-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -413,13 +416,13 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>是的，为确保与查询和索引的兼容性：</p>
+    </button></h3><p>Yes, to ensure compatibility with queries and indexing:</p>
 <ul>
-<li><p>JSON 键名中仅可使用字母、数字和下划线。</p></li>
-<li><p>请避免使用特殊字符、空格或点（<code translate="no">.</code> 、<code translate="no">/</code> 等）。</p></li>
-<li><p>不兼容的键可能会在过滤表达式中引发解析问题。</p></li>
+<li><p>Use only letters, numbers, and underscores in JSON keys.</p></li>
+<li><p>Avoid using special characters, spaces, or dots (<code translate="no">.</code>, <code translate="no">/</code>, etc.).</p></li>
+<li><p>Incompatible keys may cause parsing issues in filter expressions.</p></li>
 </ul>
-<h3 id="How-does-Milvus-handle-string-values-in-JSON-fields" class="common-anchor-header">Milvus 如何处理 JSON 字段中的字符串值？<button data-href="#How-does-Milvus-handle-string-values-in-JSON-fields" class="anchor-icon" translate="no">
+<h3 id="How-does-Milvus-handle-string-values-in-JSON-fields" class="common-anchor-header">How does Milvus handle string values in JSON fields?<button data-href="#How-does-Milvus-handle-string-values-in-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -434,10 +437,10 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 会将字符串值原样存储为 JSON 输入中的形式，不会进行语义转换。引号使用不当的字符串可能会导致解析错误。</p>
-<p><strong>有效字符串示例</strong>：</p>
+    </button></h3><p>Milvus stores string values exactly as they appear in the JSON input—without semantic transformation. Improperly quoted strings may result in errors during parsing.</p>
+<p><strong>Examples of valid strings</strong>:</p>
 <pre><code translate="no" class="language-plaintext">&quot;a\&quot;b&quot;, &quot;a&#x27;b&quot;, &quot;a\\b&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>无效字符串示例</strong>：</p>
+<p><strong>Examples of invalid strings</strong>:</p>
 <pre><code translate="no" class="language-plaintext">&#x27;a&quot;b&#x27;, &#x27;a\&#x27;b&#x27;
 <button class="copy-code-btn"></button></code></pre>

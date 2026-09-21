@@ -1,15 +1,14 @@
 ---
 id: everos_with_milvus.md
 summary: >-
-  In questo tutorial realizzeremo un assistente di progetto in grado di
-  ricordare le decisioni relative ai rilasci anche in conversazioni distinte.
-  Aggiungeremo conversazioni sul lancio di Project Atlas insieme a conversazioni
-  non correlate relative ad altri progetti. EverOS utilizzerà un modello di
-  linguaggio di grandi dimensioni (LLM) per estrarre i ricordi, mentre Milvus
-  memorizzerà gli indici BM25 e vettoriali utilizzati per la ricerca ibrida.
-title: Creare una memoria a lungo termine per gli agenti con EverOS e Milvus
+  In this tutorial, we will build a project assistant that remembers release
+  decisions across separate conversations. We will add conversations about the
+  Project Atlas launch alongside unrelated conversations about other projects.
+  EverOS will use an LLM to extract the memories, while Milvus stores the BM25
+  and vector indexes used for hybrid search.
+title: Build Long-Term Agent Memory with EverOS and Milvus
 ---
-<h1 id="Build-Long-Term-Agent-Memory-with-EverOS-and-Milvus" class="common-anchor-header">Creare una memoria a lungo termine per gli agenti con EverOS e Milvus<button data-href="#Build-Long-Term-Agent-Memory-with-EverOS-and-Milvus" class="anchor-icon" translate="no">
+<h1 id="Build-Long-Term-Agent-Memory-with-EverOS-and-Milvus" class="common-anchor-header">Build Long-Term Agent Memory with EverOS and Milvus<button data-href="#Build-Long-Term-Agent-Memory-with-EverOS-and-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,8 +23,8 @@ title: Creare una memoria a lungo termine per gli agenti con EverOS e Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><a href="https://github.com/EverMind-AI/EverOS">EverOS</a> è un sistema di memoria "Markdown-first" per agenti di intelligenza artificiale. Estrae memorie durature dalle conversazioni, mantiene il Markdown come fonte di verità e crea un indice derivato ricercabile.</p>
-<p>In questo tutorial, realizzeremo un assistente di progetto in grado di ricordare le decisioni relative al rilascio tra conversazioni separate. Aggiungeremo conversazioni sul lancio di Project Atlas insieme a conversazioni non correlate su altri progetti. EverOS utilizzerà un LLM per estrarre i ricordi, mentre <a href="https://milvus.io/">Milvus</a> memorizzerà gli indici BM25 e vettoriali utilizzati per la ricerca ibrida.</p>
+    </button></h1><p><a href="https://github.com/EverMind-AI/EverOS">EverOS</a> is a Markdown-first memory system for AI agents. It extracts durable memories from conversations, keeps Markdown as the source of truth, and builds a searchable derived index.</p>
+<p>In this tutorial, we will build a project assistant that remembers release decisions across separate conversations. We will add conversations about the Project Atlas launch alongside unrelated conversations about other projects. EverOS will use an LLM to extract the memories, while <a href="https://milvus.io/">Milvus</a> stores the BM25 and vector indexes used for hybrid search.</p>
 <pre><code translate="no" class="language-text">Conversations
       |
       v
@@ -35,8 +34,8 @@ EverOS + LLM ------&gt; Markdown memory files
       v
 Milvus ------&gt; BM25 + vector hybrid search
 <button class="copy-code-btn"></button></code></pre>
-<p>L’LLM e il modello di embedding hanno responsabilità diverse. L’LLM trasforma una conversazione in memorie strutturate. Il modello di embedding converte tali memorie e le successive query di ricerca in vettori. La ricerca ibrida di base in questo tutorial non richiede un modello di riclassificazione.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Prerequisiti<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>The LLM and embedding model have different responsibilities. The LLM turns a conversation into structured memories. The embedding model converts those memories and later search queries into vectors. The basic hybrid search in this tutorial does not require a reranking model.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,15 +50,15 @@ Milvus ------&gt; BM25 + vector hybrid search
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>È necessario:</p>
+    </button></h2><p>You need:</p>
 <ul>
-<li>Python 3.12 o versioni successive</li>
+<li>Python 3.12 or later</li>
 <li><a href="https://docs.astral.sh/uv/"><code translate="no">uv</code></a></li>
-<li>Un <a href="https://milvus.io/docs/install-overview.md">server Milvus</a> in esecuzione</li>
-<li>Una <a href="https://platform.openai.com/api-keys">chiave API OpenAI</a></li>
+<li>A running <a href="https://milvus.io/docs/install-overview.md">Milvus Server</a></li>
+<li>An <a href="https://platform.openai.com/api-keys">OpenAI API key</a></li>
 </ul>
-<p>Questo tutorial si connette al server Milvus all'indirizzo <code translate="no">http://localhost:19530</code>. EverOS supporta anche <a href="https://zilliz.com/cloud">Zilliz Cloud</a> tramite le stesse impostazioni URI e token. Il suo backend Milvus richiede un endpoint remoto e non accetta un percorso di file Milvus Lite.</p>
-<h2 id="Install-EverOS" class="common-anchor-header">Installare EverOS<button data-href="#Install-EverOS" class="anchor-icon" translate="no">
+<p>This tutorial connects to Milvus Server at <code translate="no">http://localhost:19530</code>. EverOS also supports <a href="https://zilliz.com/cloud">Zilliz Cloud</a> through the same URI and token settings. Its Milvus backend expects a remote endpoint and does not accept a Milvus Lite file path.</p>
+<h2 id="Install-EverOS" class="common-anchor-header">Install EverOS<button data-href="#Install-EverOS" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -74,20 +73,20 @@ Milvus ------&gt; BM25 + vector hybrid search
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Creare un progetto locale e installare EverOS con le dipendenze opzionali di Milvus:</p>
+    </button></h2><p>Create a local project and install EverOS with its optional Milvus dependencies:</p>
 <pre><code translate="no" class="language-shell">mkdir everos-milvus-demo
 cd everos-milvus-demo
 
 uv init --bare --python 3.12
 uv add &quot;everos[milvus]&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Il comando non specifica intenzionalmente una versione, quindi una nuova installazione installerà l’ultima versione compatibile di EverOS.</p>
-<p>Inizializza una radice di memoria separata per il tutorial:</p>
+<p>The command intentionally does not pin a version, so a new installation resolves the latest compatible EverOS release.</p>
+<p>Initialize a separate memory root for the tutorial:</p>
 <pre><code translate="no" class="language-shell">export EVEROS_ROOT=&quot;$PWD/everos-data&quot;
 uv run everos init --root &quot;$EVEROS_ROOT&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>EverOS crea <code translate="no">everos.toml</code> e <code translate="no">ome.toml</code> in questa directory. Scriverà qui anche le memorie estratte.</p>
-<h2 id="Configure-OpenAI-and-Milvus" class="common-anchor-header">Configurare OpenAI e Milvus<button data-href="#Configure-OpenAI-and-Milvus" class="anchor-icon" translate="no">
+<p>EverOS creates <code translate="no">everos.toml</code> and <code translate="no">ome.toml</code> under this directory. It will also write the extracted memories here.</p>
+<h2 id="Configure-OpenAI-and-Milvus" class="common-anchor-header">Configure OpenAI and Milvus<button data-href="#Configure-OpenAI-and-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,7 +101,7 @@ uv run everos init --root &quot;$EVEROS_ROOT&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Impostare la chiave API di OpenAI e configurare EverOS tramite variabili d’ambiente:</p>
+    </button></h2><p>Set the OpenAI API key and configure EverOS through environment variables:</p>
 <pre><code translate="no" class="language-shell">export OPENAI_API_KEY=&quot;YOUR_OPENAI_API_KEY&quot;
 export MILVUS_URI=&quot;http://localhost:19530&quot;
 
@@ -121,9 +120,9 @@ export EVEROS_EMBEDDING__DIMENSIONS=&quot;1024&quot;
 
 export EVEROS_MEMORIZE__MODE=&quot;chat&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>EverOS utilizza OpenAI sia per l’estrazione della memoria che per gli embedding. Per impostazione predefinita, <code translate="no">text-embedding-3-small</code> restituisce dimensioni <code translate="no">1536</code>, ma EverOS inoltra a OpenAI il valore configurato per <code translate="no">dimensions</code>. Questo tutorial richiede dimensioni <code translate="no">1024</code> per allinearsi agli schemi Milvus gestiti da EverOS.</p>
-<p>La modalità di memoria <code translate="no">chat</code> mantiene questo esempio incentrato sulle memorie utente. EverOS gestisce le collezioni Milvus e i relativi schemi, quindi non è necessario crearli manualmente.</p>
-<h2 id="Start-EverOS" class="common-anchor-header">Avvia EverOS<button data-href="#Start-EverOS" class="anchor-icon" translate="no">
+<p>EverOS uses OpenAI for both memory extraction and embeddings. <code translate="no">text-embedding-3-small</code> returns <code translate="no">1536</code> dimensions by default, but EverOS forwards the configured <code translate="no">dimensions</code> value to OpenAI. This tutorial requests <code translate="no">1024</code> dimensions to match the Milvus schemas managed by EverOS.</p>
+<p>The <code translate="no">chat</code> memory mode keeps this example focused on user memories. EverOS manages the Milvus collections and their schemas, so you do not need to create them yourself.</p>
+<h2 id="Start-EverOS" class="common-anchor-header">Start EverOS<button data-href="#Start-EverOS" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -138,14 +137,14 @@ export EVEROS_MEMORIZE__MODE=&quot;chat&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Avvia il server HTTP di EverOS:</p>
+    </button></h2><p>Start the EverOS HTTP server:</p>
 <pre><code translate="no" class="language-shell">uv run everos server start --root &quot;$EVEROS_ROOT&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Lascia aperto questo terminale. Durante l’avvio, EverOS si connette a Milvus e crea sette collezioni di indici derivati con il prefisso configurato.</p>
-<p>Aprire un altro terminale nella stessa directory del progetto e verificare il servizio:</p>
+<p>Keep this terminal open. EverOS connects to Milvus and creates seven derived-index collections with the configured prefix during startup.</p>
+<p>Open another terminal in the same project directory and check the service:</p>
 <pre><code translate="no" class="language-shell">curl http://127.0.0.1:8000/health
 <button class="copy-code-btn"></button></code></pre>
-<p>Output di riferimento:</p>
+<p>Reference output:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ok&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.3.0&quot;</span><span class="hljs-punctuation">,</span>
@@ -162,8 +161,8 @@ export EVEROS_MEMORIZE__MODE=&quot;chat&quot;
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>La risposta contiene campi aggiuntivi relativi allo stato di salute. I valori importanti per questo tutorial sono <code translate="no">status: &quot;ok&quot;</code>, <code translate="no">llm: true</code>, <code translate="no">embed: true</code> e <code translate="no">cascade.healthy: true</code>.</p>
-<h2 id="Add-project-conversations" class="common-anchor-header">Aggiungere conversazioni relative al progetto<button data-href="#Add-project-conversations" class="anchor-icon" translate="no">
+<p>The response contains additional health fields. The important values for this tutorial are <code translate="no">status: &quot;ok&quot;</code>, <code translate="no">llm: true</code>, <code translate="no">embed: true</code>, and <code translate="no">cascade.healthy: true</code>.</p>
+<h2 id="Add-project-conversations" class="common-anchor-header">Add project conversations<button data-href="#Add-project-conversations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -178,8 +177,8 @@ export EVEROS_MEMORIZE__MODE=&quot;chat&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Il seguente programma Python invia dieci conversazioni indipendenti a EverOS. Atlas presenta discussioni separate relative al lancio e al rollback. Otto conversazioni su altri progetti fungono da distrattori, in modo che la ricerca successiva debba identificare le memorie relative al progetto corretto.</p>
-<p>Salvare il codice seguente come <code translate="no">add_memories.py</code>:</p>
+    </button></h2><p>The following Python program sends ten independent conversations to EverOS. Atlas has separate launch and rollback discussions. Eight conversations about other projects provide distractors so that the later search has to identify the correct project memories.</p>
+<p>Save the following code as <code translate="no">add_memories.py</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">from</span> urllib.request <span class="hljs-keyword">import</span> Request, urlopen
@@ -468,10 +467,10 @@ conversations = [
     )
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">{session_id}</span>: <span class="hljs-subst">{added[<span class="hljs-string">&#x27;status&#x27;</span>]}</span> -&gt; <span class="hljs-subst">{flushed[<span class="hljs-string">&#x27;status&#x27;</span>]}</span>&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Eseguirlo dalla directory del progetto:</p>
+<p>Run it from the project directory:</p>
 <pre><code translate="no" class="language-shell">uv run python add_memories.py
 <button class="copy-code-btn"></button></code></pre>
-<p>Output di riferimento:</p>
+<p>Reference output:</p>
 <pre><code translate="no" class="language-text">atlas-release: accumulated -&gt; extracted
 atlas-rollback: accumulated -&gt; extracted
 orion-pricing: accumulated -&gt; extracted
@@ -483,8 +482,8 @@ aurora-observability: accumulated -&gt; extracted
 comet-invoices: accumulated -&gt; extracted
 solstice-research: accumulated -&gt; extracted
 <button class="copy-code-btn"></button></code></pre>
-<p>Impostando ` <code translate="no">defer_extraction</code> ` su ` <code translate="no">true</code> `, ogni conversazione viene memorizzata nel buffer permanente senza richiedere all'LLM di rilevare un confine. La seguente chiamata ` <code translate="no">/flush</code> ` segna la fine di quella sessione e innesca un'estrazione. EverOS scrive quindi l'episodio estratto in Markdown e lo incorpora in modo asincrono nell'indice Milvus.</p>
-<h2 id="Inspect-the-Markdown-memory" class="common-anchor-header">Esamina la memoria Markdown<button data-href="#Inspect-the-Markdown-memory" class="anchor-icon" translate="no">
+<p>Setting <code translate="no">defer_extraction</code> to <code translate="no">true</code> stores each conversation in the durable buffer without asking the LLM to detect a boundary. The following <code translate="no">/flush</code> call marks the end of that session and triggers one extraction. EverOS then writes the extracted episode to Markdown and asynchronously embeds it for the Milvus index.</p>
+<h2 id="Inspect-the-Markdown-memory" class="common-anchor-header">Inspect the Markdown memory<button data-href="#Inspect-the-Markdown-memory" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -499,14 +498,14 @@ solstice-research: accumulated -&gt; extracted
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Il file dell'episodio generato viene memorizzato nei contesti dell'applicazione, del progetto e dell'utente:</p>
+    </button></h2><p>The generated episode file is stored under the application, project, and user scopes:</p>
 <pre><code translate="no" class="language-shell">find &quot;$EVEROS_ROOT/project-assistant/launch-planning/users/maya/episodes&quot; \
   -type f -name &quot;*.md&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Output di riferimento (la data nel nome del file riflette il momento in cui si esegue l’esempio):</p>
+<p>Reference output (the filename date reflects when you run the example):</p>
 <pre><code translate="no" class="language-text">everos-data/project-assistant/launch-planning/users/maya/episodes/episode-2026-09-08.md
 <button class="copy-code-btn"></button></code></pre>
-<p>Apri il file per visualizzare i ricordi estratti dall’LLM. Un estratto abbreviato si presenta così:</p>
+<p>Open the file to see the LLM-extracted memories. A shortened excerpt looks like this:</p>
 <pre><code translate="no" class="language-markdown"><span class="hljs-section">## ep<span class="hljs-emphasis">_20260908_</span>00000001</span>
 
 <span class="hljs-strong">**owner<span class="hljs-emphasis">_id**: maya
@@ -521,8 +520,8 @@ Maya decided that Project Atlas would launch with a 10% canary on September 30.
 The promotion to all users would occur only after the checkout error rate remained
 below 1% for 30 minutes.
 </span></span><button class="copy-code-btn"></button></code></pre>
-<p>La formulazione esatta, gli identificatori e i timestamp possono variare poiché la memoria viene estratta dall’LLM. I file Markdown originali rimangono la fonte di riferimento definitiva; l’indice Milvus può essere ricostruito a partire da essi.</p>
-<h2 id="Search-the-memories" class="common-anchor-header">Cerca nei ricordi<button data-href="#Search-the-memories" class="anchor-icon" translate="no">
+<p>Exact wording, identifiers, and timestamps can vary because the memory is extracted by the LLM. The original Markdown files remain the durable source of truth; the Milvus index can be rebuilt from them.</p>
+<h2 id="Search-the-memories" class="common-anchor-header">Search the memories<button data-href="#Search-the-memories" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -537,7 +536,7 @@ below 1% for 30 minutes.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilizza la ricerca ibrida per verificare cosa dovrebbe essere memorizzato prima che Atlas diventi operativo. Salva il codice seguente come <code translate="no">search_memories.py</code>:</p>
+    </button></h2><p>Use hybrid search to ask what should be remembered before Atlas goes live. Save the following code as <code translate="no">search_memories.py</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">from</span> urllib.request <span class="hljs-keyword">import</span> Request, urlopen
@@ -580,17 +579,17 @@ expected_sessions = {<span class="hljs-string">&quot;atlas-release&quot;</span>,
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">{rank}</span>. <span class="hljs-subst">{episode[<span class="hljs-string">&#x27;session_id&#x27;</span>]}</span> | score=<span class="hljs-subst">{episode[<span class="hljs-string">&#x27;score&#x27;</span>]:<span class="hljs-number">.3</span>f}</span>&quot;</span>)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;   <span class="hljs-subst">{episode[<span class="hljs-string">&#x27;subject&#x27;</span>]}</span>&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Esegui la ricerca:</p>
+<p>Run the search:</p>
 <pre><code translate="no" class="language-shell">uv run python search_memories.py
 <button class="copy-code-btn"></button></code></pre>
-<p>Risultato di riferimento (i punteggi e la formulazione possono variare):</p>
+<p>Reference output (scores and wording may vary):</p>
 <pre><code translate="no" class="language-text">1. atlas-release | score=0.492
    Project Atlas Launch Plan: 10% Canary Rollout on September 30 with Error Rate Gate
 2. atlas-rollback | score=0.400
    Atlas Rollback Plan Details: Priya as Owner, 2% Error Trigger, 24-Hour Image Retention
 <button class="copy-code-btn"></button></code></pre>
-<p>Entrambe le conversazioni di Atlas vengono restituite prima delle otto conversazioni non correlate. EverOS invia la query all’endpoint di embedding di OpenAI, richiede a Milvus i candidati BM25 e vettoriali all’interno dell’ambito dell’applicazione e del progetto di Maya, quindi fonde i due elenchi di risultati.</p>
-<h2 id="Inspect-the-Milvus-collections" class="common-anchor-header">Esamina le collezioni di Milvus<button data-href="#Inspect-the-Milvus-collections" class="anchor-icon" translate="no">
+<p>Both Atlas conversations are returned ahead of the eight unrelated conversations. EverOS sends the query to the OpenAI embedding endpoint, asks Milvus for BM25 and vector candidates within Maya’s application and project scope, and fuses the two result lists.</p>
+<h2 id="Inspect-the-Milvus-collections" class="common-anchor-header">Inspect the Milvus collections<button data-href="#Inspect-the-Milvus-collections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -605,7 +604,7 @@ expected_sessions = {<span class="hljs-string">&quot;atlas-release&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>EverOS crea una collezione per ogni tipo di memoria derivata supportato. Usa <code translate="no">MilvusClient</code> per elencare il numero di righe:</p>
+    </button></h2><p>EverOS creates one collection for each supported derived memory kind. Use <code translate="no">MilvusClient</code> to list their row counts:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
@@ -636,7 +635,7 @@ memory_kinds = [
 
 client.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>Output di riferimento dall’esecuzione convalidata:</p>
+<p>Reference output from the validated run:</p>
 <pre><code translate="no" class="language-text">agent_case: 0 rows
 agent_skill: 0 rows
 atomic_fact: 50 rows
@@ -645,8 +644,8 @@ foresight: 0 rows
 knowledge_topic: 0 rows
 user_profile: 1 rows
 <button class="copy-code-btn"></button></code></pre>
-<p>Il numero esatto di fatti atomici può variare a seconda dell’output dell’LLM. Le dieci righe di episodi corrispondono alle dieci conversazioni salvate. Le altre collezioni sono disponibili per le modalità di memoria e le funzionalità di EverOS che questo esempio specifico non utilizza.</p>
-<h2 id="Use-another-Milvus-deployment" class="common-anchor-header">Utilizzare un’altra distribuzione Milvus<button data-href="#Use-another-Milvus-deployment" class="anchor-icon" translate="no">
+<p>The exact number of atomic facts may vary with the LLM output. The ten episode rows correspond to the ten flushed conversations. The other collections are available for EverOS memory modes and features that this focused example does not exercise.</p>
+<h2 id="Use-another-Milvus-deployment" class="common-anchor-header">Use another Milvus deployment<button data-href="#Use-another-Milvus-deployment" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -661,8 +660,8 @@ user_profile: 1 rows
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Per utilizzare un altro endpoint di Milvus Server o <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, aggiorna <code translate="no">EVEROS_MILVUS__URI</code>. Imposta <code translate="no">EVEROS_MILVUS__TOKEN</code> quando l’endpoint richiede l’autenticazione. Il codice di acquisizione e ricerca rimane invariato.</p>
-<h2 id="Conclusion" class="common-anchor-header">Conclusione<button data-href="#Conclusion" class="anchor-icon" translate="no">
+    </button></h2><p>To use another Milvus Server endpoint or <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, update <code translate="no">EVEROS_MILVUS__URI</code>. Set <code translate="no">EVEROS_MILVUS__TOKEN</code> when the endpoint requires authentication. The ingestion and search code remains unchanged.</p>
+<h2 id="Conclusion" class="common-anchor-header">Conclusion<button data-href="#Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -677,4 +676,4 @@ user_profile: 1 rows
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Combinando EverOS con Milvus, è possibile trasformare le conversazioni in memorie durature e recuperarle tramite parole chiave e segnali semantici. È possibile adattare lo stesso modello per dotare gli assistenti e altre applicazioni agentiche di una memoria a lungo termine per i propri utenti, progetti e flussi di lavoro.</p>
+    </button></h2><p>By combining EverOS with Milvus, you can turn conversations into durable memories and retrieve them through keyword and semantic signals. You can adapt the same pattern to give assistants and other agentic applications long-term memory for your own users, projects, and workflows.</p>

@@ -1,14 +1,13 @@
 ---
 id: range-search-with-structarray.md
-title: البحث في النطاق باستخدام StructArray
+title: Range Search with StructArray
 summary: >-
-  استخدم هذه الصفحة لإجراء «البحث في النطاق» على الحقول الفرعية المتجهة في
-  StructArray. يُرجع «البحث في النطاق» النتائج المتجهة التي تقع درجاتها أو
-  مسافاتها ضمن الحدود المحددة. بالنسبة لحقول StructArray، استخدم «البحث في
-  النطاق» مع «البحث المتجه على مستوى العناصر»، حيث يتم البحث في كل عنصر من عناصر
-  Struct بشكل مستقل.
+  Use this page to run range search on StructArray vector subfields. Range
+  search returns vector hits whose score or distance falls within a specified
+  boundary. For StructArray fields, use range search with element-level vector
+  search, where each Struct element is searched independently.
 ---
-<h1 id="Range-Search-with-StructArray" class="common-anchor-header">البحث في النطاق باستخدام StructArray<button data-href="#Range-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Range-Search-with-StructArray" class="common-anchor-header">Range Search with StructArray<button data-href="#Range-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>استخدم هذه الصفحة لإجراء بحث النطاق على الحقول الفرعية للمتجه StructArray. يُرجع بحث النطاق نتائج المتجهات التي تقع درجاتها أو مسافاتها ضمن حدود محددة. بالنسبة لحقول StructArray، استخدم بحث النطاق مع بحث المتجهات على مستوى العناصر، حيث يتم البحث في كل عنصر من عناصر Struct بشكل مستقل.</p>
-<p>تستخدم هذه الصفحة المجموعة « <code translate="no">tech_articles</code> » من <a href="/docs/ar/create-structarray-field.md">«إنشاء حقل StructArray</a>». تحتوي المجموعة على حقل StructArray باسم « <code translate="no">chunks</code> ». يتم فهرسة الحقل الفرعي المتجه « <code translate="no">chunks[emb]</code> » للبحث على مستوى العناصر باستخدام مقياس متجه عادي مثل « <code translate="no">COSINE</code> » أو « <code translate="no">IP</code> » أو « <code translate="no">L2</code> ».</p>
-<h2 id="How-range-search-applies-to-StructArray" class="common-anchor-header">كيفية تطبيق البحث عن النطاق على StructArray<button data-href="#How-range-search-applies-to-StructArray" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to run range search on StructArray vector subfields. Range search returns vector hits whose score or distance falls within a specified boundary. For StructArray fields, use range search with element-level vector search, where each Struct element is searched independently.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/ar/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>. The <code translate="no">chunks[emb]</code> vector subfield is indexed for element-level search with a regular vector metric such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</p>
+<h2 id="How-range-search-applies-to-StructArray" class="common-anchor-header">How range search applies to StructArray<button data-href="#How-range-search-applies-to-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,18 +41,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>وضع البحث</th><th>سلوك البحث عن النطاق</th><th>دقة النتائج</th></tr>
+<tr><th>Search mode</th><th>Range search behavior</th><th>Result granularity</th></tr>
 </thead>
 <tbody>
-<tr><td>البحث في EmbeddingList</td><td>غير مدعوم.</td><td>غير قابل للتطبيق.</td></tr>
-<tr><td>البحث على مستوى العناصر</td><td>استخدم استعلام متجه عادي باستخدام <code translate="no">radius</code> ، واختياريًا، <code translate="no">range_filter</code>.</td><td>مستوى عنصر البنية.</td></tr>
-<tr><td>البحث المختلط</td><td>يتم دعمه عندما يستهدف طلب StructArray حقل متجه على مستوى العنصر. لا تدعم الطلبات على مستوى EmbeddingList البحث عن النطاق.</td><td>البحث الفرعي على مستوى العناصر، ثم إعادة الترتيب الهجين.</td></tr>
+<tr><td>EmbeddingList search</td><td>Not supported.</td><td>Not applicable.</td></tr>
+<tr><td>Element-level search</td><td>Use a regular vector query with <code translate="no">radius</code> and, optionally, <code translate="no">range_filter</code>.</td><td>Struct element level.</td></tr>
+<tr><td>Hybrid search</td><td>Supported when the StructArray request targets an element-level vector field. EmbeddingList-level requests do not support range search.</td><td>Element-level sub-search, then hybrid reranking.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>إذا كنت بحاجة إلى عناصر Struct الأقرب فقط، فابدأ <a href="/docs/ar/basic-vector-search-with-structarray.md">بالبحث المتجه الأساسي باستخدام StructArray</a>. استخدم البحث عن النطاق عندما يجب أن تستوفي النتيجة حدًا معينًا للدرجة أو المسافة بدلاً من مجرد ترتيب أعلى K.</p>
+<p>If you only need the nearest Struct elements, start with <a href="/docs/ar/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>. Use range search when the result must satisfy a score or distance boundary instead of only a top-K ranking.</p>
 </div>
-<h2 id="Before-you-begin" class="common-anchor-header">قبل البدء<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,20 +67,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>قم بإعداد المجموعة والبيانات والفهارس قبل تشغيل البحث في النطاق.</p>
+    </button></h2><p>Prepare the collection, data, and indexes before running range search.</p>
 <table>
 <thead>
-<tr><th>المتطلبات</th><th>التفاصيل</th></tr>
+<tr><th>Requirement</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>حقل StructArray</td><td>تحتوي المجموعة على حقل StructArray مثل <code translate="no">chunks</code>.</td></tr>
-<tr><td>الحقل الفرعي للمتجه على مستوى العنصر</td><td>الحقل الفرعي للمتجه المستهدف هو <code translate="no">chunks[emb]</code> ، وليس <code translate="no">chunks[emb_list_vector]</code>.</td></tr>
-<tr><td>مقياس الفهرسة</td><td>يتم فهرسة الحقل الفرعي للمتجه باستخدام مقياس متجه عادي، مثل <code translate="no">COSINE</code> أو <code translate="no">IP</code> أو <code translate="no">L2</code>.</td></tr>
-<tr><td>بيانات الاستعلام</td><td>الاستعلام هو متجه عادي، وليس <code translate="no">EmbeddingList</code>.</td></tr>
+<tr><td>StructArray field</td><td>The collection contains a StructArray field such as <code translate="no">chunks</code>.</td></tr>
+<tr><td>Element-level vector subfield</td><td>The target vector subfield is <code translate="no">chunks[emb]</code>, not <code translate="no">chunks[emb_list_vector]</code>.</td></tr>
+<tr><td>Index metric</td><td>The vector subfield is indexed with a regular vector metric, such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</td></tr>
+<tr><td>Query data</td><td>The query is a regular vector, not an <code translate="no">EmbeddingList</code>.</td></tr>
 </tbody>
 </table>
-<p>لإعداد الفهرس، راجع <a href="/docs/ar/index-structarray-fields.md">حقول StructArray في الفهرس</a>.</p>
-<h2 id="Use-radius-and-rangefilter" class="common-anchor-header">استخدم radius و range_filter<button data-href="#Use-radius-and-rangefilter" class="anchor-icon" translate="no">
+<p>For index setup, see <a href="/docs/ar/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Use-radius-and-rangefilter" class="common-anchor-header">Use radius and range_filter<button data-href="#Use-radius-and-rangefilter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,18 +95,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>اضبط <code translate="no">radius</code> لتحديد حدود البحث. اضبط <code translate="no">range_filter</code> عندما تحتاج إلى حدود داخلية أيضًا. يعتمد الاتجاه على ما إذا كانت المسافة الأصغر هي الأفضل أم أن درجة التشابه الأكبر هي الأفضل.</p>
+    </button></h2><p>Set <code translate="no">radius</code> to define the search boundary. Set <code translate="no">range_filter</code> when you need an inner boundary as well. The direction depends on whether a smaller distance is better or a larger similarity score is better.</p>
 <table>
 <thead>
-<tr><th>نوع المقياس</th><th>هل الدرجة الأعلى هي الأفضل؟</th><th>شرط النطاق عند استخدام <code translate="no">range_filter</code> </th></tr>
+<tr><th>Metric type</th><th>Higher score is better?</th><th>Range condition when <code translate="no">range_filter</code> is used</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">L2</code></td><td>لا. المسافة الأقصر هي الأفضل.</td><td><code translate="no">range_filter &lt;= distance &lt; radius</code></td></tr>
-<tr><td><code translate="no">IP</code>، <code translate="no">COSINE</code></td><td>نعم. كلما زادت النتيجة، كان ذلك أفضل.</td><td><code translate="no">radius &lt; distance &lt;= range_filter</code></td></tr>
+<tr><td><code translate="no">L2</code></td><td>No. Smaller distance is better.</td><td><code translate="no">range_filter &lt;= distance &lt; radius</code></td></tr>
+<tr><td><code translate="no">IP</code>, <code translate="no">COSINE</code></td><td>Yes. Larger score is better.</td><td><code translate="no">radius &lt; distance &lt;= range_filter</code></td></tr>
 </tbody>
 </table>
-<p>عند تعيين " <code translate="no">radius</code> " فقط، يُرجع البحث عن النطاق النتائج التي تستوفي الحد الخارجي للمقياس. اختر القيم وفقًا لمقياس الدرجة أو المسافة الخاص بعمليات التضمين الخاصة بك.</p>
-<h2 id="Run-element-level-range-search" class="common-anchor-header">تشغيل البحث في النطاق على مستوى العناصر<button data-href="#Run-element-level-range-search" class="anchor-icon" translate="no">
+<p>When only <code translate="no">radius</code> is set, the range search returns hits that satisfy the outer boundary for the metric. Choose values according to the score or distance scale of your embeddings.</p>
+<h2 id="Run-element-level-range-search" class="common-anchor-header">Run element-level range search<button data-href="#Run-element-level-range-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,7 +121,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يبحث المثال التالي عن المجموعات الفردية التي تكون متجهات <code translate="no">chunks[emb]</code> الخاصة بها مشابهة بدرجة كافية لمتجه الاستعلام. تمثل كل نتيجة مطابقة عنصر Struct مطابقًا.</p>
+    </button></h2><p>The following example searches individual chunks whose <code translate="no">chunks[emb]</code> vectors are similar enough to the query vector. Each result hit represents a matched Struct element.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -162,8 +161,8 @@ results = client.search(
             <span class="hljs-string">&quot;entity:&quot;</span>, hit[<span class="hljs-string">&quot;entity&quot;</span>],
         )
 <button class="copy-code-btn"></button></code></pre>
-<p>في هذا المثال، يُعد « <code translate="no">COSINE</code> » مقياسًا من نوع التشابه، لذا فإن نطاق النتائج أكبر من <code translate="no">radius</code> وأصغر من أو يساوي <code translate="no">range_filter</code>. تحدد قيمة « <code translate="no">offset</code> » عنصر Struct المطابق في المصفوفة <code translate="no">chunks</code> عند إرجاعها.</p>
-<h2 id="Add-scalar-filters" class="common-anchor-header">إضافة عوامل تصفية قياسية<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
+<p>In this example, <code translate="no">COSINE</code> is a similarity-style metric, so the result range is greater than <code translate="no">radius</code> and less than or equal to <code translate="no">range_filter</code>. The <code translate="no">offset</code> value identifies the matched Struct element in the <code translate="no">chunks</code> array when returned.</p>
+<h2 id="Add-scalar-filters" class="common-anchor-header">Add scalar filters<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -178,7 +177,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك الجمع بين البحث عن النطاق على مستوى العناصر والتصفية القياسية لـ StructArray. استخدم مسندًا من المستوى الأعلى لحقول الكيان الأصلي، واستخدم <code translate="no">element_filter</code> لتقييد عناصر Struct التي تشارك في البحث عن نطاق المتجه.</p>
+    </button></h2><p>You can combine element-level range search with StructArray scalar filtering. Use a top-level predicate for parent-entity fields, and use <code translate="no">element_filter</code> to constrain which Struct elements participate in the vector range search.</p>
 <pre><code translate="no" class="language-python">filter_expr = (
     <span class="hljs-string">&#x27;category == &quot;search&quot; &amp;&amp; &#x27;</span>
     <span class="hljs-string">&#x27;element_filter(chunks, &#x27;</span>
@@ -208,8 +207,8 @@ results = client.search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>تقوم المسلمة ذات المستوى الأعلى باختيار الكيانات المرشحة. أما مسلمة <code translate="no">element_filter</code> فتقصر البحث عن النطاق المتجه على عناصر Struct المطابقة. لمزيد من أمثلة التصفية، راجع <a href="/docs/ar/filtered-search-with-structarray.md">البحث المُصفى باستخدام StructArray</a>.</p>
-<h2 id="Use-range-search-in-hybrid-search" class="common-anchor-header">استخدام البحث عن النطاق في البحث المختلط<button data-href="#Use-range-search-in-hybrid-search" class="anchor-icon" translate="no">
+<p>The top-level predicate selects candidate entities. The <code translate="no">element_filter</code> predicate restricts vector range search to matching Struct elements. For more filtering examples, see <a href="/docs/ar/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p>
+<h2 id="Use-range-search-in-hybrid-search" class="common-anchor-header">Use range search in hybrid search<button data-href="#Use-range-search-in-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -224,7 +223,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>تدعم حقول المتجهات على مستوى العناصر في StructArray البحث عن النطاق في البحث المختلط. أضف <code translate="no">radius</code> و، اختياريًا، <code translate="no">range_filter</code> إلى <code translate="no">AnnSearchRequest</code> الذي يستهدف حقل المتجهات على مستوى العناصر في StructArray.</p>
+    </button></h2><p>StructArray element-level vector fields support range search in hybrid search. Add <code translate="no">radius</code> and, optionally, <code translate="no">range_filter</code> to the <code translate="no">AnnSearchRequest</code> that targets the StructArray element-level vector field.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> AnnSearchRequest, RRFRanker
 
 title_req = AnnSearchRequest(
@@ -260,8 +259,8 @@ results = client.hybrid_search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>في هذا المثال، يستخدم الطلب الفرعي <code translate="no">chunks[emb]</code> فقط معلمات البحث عن النطاق. ولا يزال طلب StructArray يتبع دلالات مستوى العنصر: حيث تنطبق حدود النطاق على نتائج عنصر Struct قبل أن يقوم البحث الهجين بدمج النتائج وإعادة ترتيبها.</p>
-<h2 id="Interpret-range-results" class="common-anchor-header">تفسير نتائج النطاق<button data-href="#Interpret-range-results" class="anchor-icon" translate="no">
+<p>In this example, only the <code translate="no">chunks[emb]</code> sub-request uses range-search parameters. The StructArray request still follows element-level semantics: the range boundary applies to Struct element hits before the hybrid search combines and reranks results.</p>
+<h2 id="Interpret-range-results" class="common-anchor-header">Interpret range results<button data-href="#Interpret-range-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -278,17 +277,17 @@ results = client.hybrid_search(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>عنصر النتيجة</th><th>المعنى</th></tr>
+<tr><th>Result item</th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">id</code></td><td>المفتاح الأساسي للكيان الذي يحتوي على عنصر Struct المطابق.</td></tr>
-<tr><td><code translate="no">distance</code> أو النتيجة</td><td>النتيجة أو المسافة بين متجه الاستعلام ومتجه عنصر Struct المطابق.</td></tr>
-<tr><td><code translate="no">offset</code></td><td>الموضع الذي يبدأ من الصفر لعنصر Struct المطابق في حقل StructArray عند إرجاعه.</td></tr>
-<tr><td>المفاتيح الأساسية المتكررة</td><td>ممكن. يمكن أن يقع أكثر من عنصر Struct واحد في نفس الكيان ضمن النطاق المحدد.</td></tr>
-<tr><td><code translate="no">limit</code></td><td>ينطبق على نتائج العناصر، وليس على الكيانات الأصلية الفريدة.</td></tr>
+<tr><td><code translate="no">id</code></td><td>Primary key of the entity that contains the matched Struct element.</td></tr>
+<tr><td><code translate="no">distance</code> or score</td><td>The score or distance between the query vector and the matched Struct element vector.</td></tr>
+<tr><td><code translate="no">offset</code></td><td>Zero-based position of the matched Struct element in the StructArray field when returned.</td></tr>
+<tr><td>Repeated primary keys</td><td>Possible. More than one Struct element in the same entity can fall within the specified range.</td></tr>
+<tr><td><code translate="no">limit</code></td><td>Applies to element hits, not unique parent entities.</td></tr>
 </tbody>
 </table>
-<h2 id="Limitations" class="common-anchor-header">القيود<button data-href="#Limitations" class="anchor-icon" translate="no">
+<h2 id="Limitations" class="common-anchor-header">Limitations<button data-href="#Limitations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -304,11 +303,11 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>لا تستخدم استعلام " <code translate="no">EmbeddingList</code> " أو مقياس " <code translate="no">MAX_SIM*</code> " للبحث عن النطاق في الحقول الفرعية للمتجه StructArray. لا يدعم البحث على مستوى EmbeddingList البحث عن النطاق.</p></li>
-<li><p>لا تجمع بين البحث النطاقي والبحث التجميعي. إذا كنت بحاجة إلى نتيجة واحدة لكل كيان أبوي، فقم بتشغيل بحث على مستوى العناصر بدون معلمات النطاق واستخدم التجميع حيثما كان ذلك مدعومًا.</p></li>
-<li><p>يتم دعم البحث النطاقي المختلط لحقول المتجهات على مستوى العناصر في StructArray. ولا يتم دعمه لطلبات StructArray على مستوى EmbeddingList.</p></li>
+<li><p>Do not use an <code translate="no">EmbeddingList</code> query or a <code translate="no">MAX_SIM*</code> metric for range search on StructArray vector subfields. EmbeddingList-level search does not support range search.</p></li>
+<li><p>Do not combine range search with grouping search. If you need one result per parent entity, run an element-level search without range parameters and use grouping where supported.</p></li>
+<li><p>Hybrid range search is supported for StructArray element-level vector fields. It is not supported for EmbeddingList-level StructArray requests.</p></li>
 </ul>
-<h2 id="Common-mistakes" class="common-anchor-header">الأخطاء الشائعة<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -324,13 +323,13 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>تشغيل البحث النطاقي على <code translate="no">chunks[emb_list_vector]</code> ، وهو مخصص للبحث على مستوى EmbeddingList.</p></li>
-<li><p>استخدام <code translate="no">MAX_SIM_COSINE</code> بدلاً من مقياس عادي مثل <code translate="no">COSINE</code> للبحث في النطاق على مستوى العنصر.</p></li>
-<li><p>استخدام استعلام <code translate="no">EmbeddingList</code> بدلاً من استعلام متجه عادي.</p></li>
-<li><p>توقع أن تكون نتائج البحث عن النطاق فريدة لكل كيان أبوي. يعرض البحث عن النطاق نتائج مطابقة لعناصر Struct.</p></li>
-<li><p>استخدام <code translate="no">chunks.emb</code> بدلاً من صيغة مسار الحقل الفرعي المطلوبة <code translate="no">chunks[emb]</code>.</p></li>
+<li><p>Running range search against <code translate="no">chunks[emb_list_vector]</code>, which is intended for EmbeddingList search.</p></li>
+<li><p>Using <code translate="no">MAX_SIM_COSINE</code> instead of a regular metric such as <code translate="no">COSINE</code> for element-level range search.</p></li>
+<li><p>Using an <code translate="no">EmbeddingList</code> query instead of a regular vector query.</p></li>
+<li><p>Expecting range search results to be unique by parent entity. Range search returns matching Struct element hits.</p></li>
+<li><p>Using <code translate="no">chunks.emb</code> instead of the required subfield path syntax <code translate="no">chunks[emb]</code>.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">الخطوات التالية<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -346,8 +345,8 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>لمعرفة وضعي البحث المتجهي الأساسيين لـ StructArray، اقرأ <a href="/docs/ar/basic-vector-search-with-structarray.md">«البحث المتجهي الأساسي باستخدام StructArray</a>».</p></li>
-<li><p>لإضافة عوامل تصفية قياسية إلى البحث في النطاق، اقرأ <a href="/docs/ar/filtered-search-with-structarray.md">«البحث المُصفى باستخدام StructArray</a>».</p></li>
-<li><p>لإرجاع نتيجة واحدة على الأكثر لكل كيان أساسي حيثما كان ذلك مدعومًا، اقرأ " <a href="/docs/ar/grouping-search-with-structarray.md">البحث المجمّع باستخدام StructArray</a>".</p></li>
-<li><p>للتحقق من حدود البحث الخاصة بالإصدار، اقرأ " <a href="/docs/ar/structarray-limits.md">حدود StructArray</a>".</p></li>
+<li><p>To learn the two basic StructArray vector search modes, read <a href="/docs/ar/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To add scalar filters to range search, read <a href="/docs/ar/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
+<li><p>To return at most one result per parent entity where supported, read <a href="/docs/ar/grouping-search-with-structarray.md">Grouping Search with StructArray</a>.</p></li>
+<li><p>To check version-specific search limits, read <a href="/docs/ar/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

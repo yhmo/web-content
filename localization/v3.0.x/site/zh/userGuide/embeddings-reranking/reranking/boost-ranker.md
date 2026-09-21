@@ -1,10 +1,14 @@
 ---
 id: boost-ranker.md
-title: 提升排名器Compatible with Milvus v2.6.2+
-summary: Boost Rankers 并不完全依赖基于向量距离计算的语义相似性，而是让您以有意义的方式影响搜索结果。它是使用元数据过滤快速调整搜索结果的理想选择。
+title: Boost RankerCompatible with Milvus v2.6.2+
+summary: >-
+  Instead of relying solely on semantic similarity calculated based on vector
+  distances, Boost Rankers allow you to influence search results in a meaningful
+  way. It is ideal for quickly adjusting search results using metadata
+  filtering.
 beta: Milvus v2.6.2+
 ---
-<h1 id="Boost-Ranker" class="common-anchor-header">提升排名器<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Boost-Ranker" class="anchor-icon" translate="no">
+<h1 id="Boost-Ranker" class="common-anchor-header">Boost Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +23,9 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Boost Ranker 并不完全依赖基于向量距离计算的语义相似性，而是让您以有意义的方式影响搜索结果。它是使用元数据过滤快速调整搜索结果的理想选择。</p>
-<p>当搜索请求中包含提升排名器功能时，Milvus 会使用该功能中的可选过滤条件，在搜索结果候选项中查找匹配项，并通过应用指定权重来提升这些匹配项的分数，从而帮助提升或降低匹配实体在最终结果中的排名。</p>
-<h2 id="When-to-use-Boost-Ranker" class="common-anchor-header">何时使用提升排名器<button data-href="#When-to-use-Boost-Ranker" class="anchor-icon" translate="no">
+    </button></h1><p>Instead of relying solely on semantic similarity calculated based on vector distances, Boost Rankers allow you to influence search results in a meaningful way. It is ideal for quickly adjusting search results using metadata filtering.</p>
+<p>When a search request includes a Boost Ranker function, Milvus uses the optional filtering condition within the function to find matches among search result candidates and boosts the scores of those matches by applying the specified weight, helping promote or demote the rankings of the matched entities in the final result.</p>
+<h2 id="When-to-use-Boost-Ranker" class="common-anchor-header">When to use Boost Ranker<button data-href="#When-to-use-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,25 +40,25 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>与其他依赖交叉编码器模型或融合算法的排名器不同，Boost Ranker 直接将可选的元数据驱动规则注入排名过程，因此更适用于以下情况。</p>
+    </button></h2><p>Unlike other rankers that rely on cross-encoder models or fusion algorithms, a Boost Ranker directly injects optional metadata-driven rules into the ranking process, which makes it more suitable in the following scenarios.</p>
 <table>
    <tr>
-     <th><p>使用案例</p></th>
-     <th><p>实例</p></th>
-     <th><p>为什么 Boost Ranker 运行良好</p></th>
+     <th><p>Use Case</p></th>
+     <th><p>Examples</p></th>
+     <th><p>Why Boost Ranker Works Well</p></th>
    </tr>
    <tr>
-     <td><p>业务驱动的内容优先级排序</p></td>
-     <td><ul><li><p>在电子商务搜索结果中突出显示优质产品</p></li><li><p>提高具有高用户参与指标（如浏览量、点赞和分享）的内容的可见度</p></li><li><p>在时效性强的搜索应用中突出近期内容</p></li><li><p>优先搜索经过验证或可信来源的内容</p></li><li><p>提升与精确短语或高相关度关键词相匹配的结果</p></li></ul></td>
-     <td rowspan="2"><p>无需重建索引或修改向量 Embeddings 模型（操作符可能会耗费大量时间），您就可以通过实时应用可选元数据过滤器，在搜索结果中即时提升或降低特定项目的排名。这种机制可实现灵活、动态的搜索排名，轻松适应不断变化的业务需求。</p></td>
+     <td><p>Business-driven content prioritization</p></td>
+     <td><ul><li><p>Highlight premium products in e-commerce search results</p></li><li><p>Increase visibility of content with high user engagement metrics (such as views, likes, and shares)</p></li><li><p>Elevating recent content in time-sensitive search applications</p></li><li><p>Prioritizing content from verified or trusted sources</p></li><li><p>Boosting results that match exact phrases or high-relevance keywords</p></li></ul></td>
+     <td rowspan="2"><p>Without the need to rebuild indexes or modify vector embedding models—operations that can be time-consuming—you can instantly promote or demote specific items in search results by applying optional metadata filters in real time. This mechanism enables flexible, dynamic search rankings that easily adapt to evolving business requirements.</p></td>
    </tr>
    <tr>
-     <td><p>战略性内容降级</p></td>
-     <td><ul><li><p>在不完全删除低库存项目的情况下，降低其显著性</p></li><li><p>在不进行审查的情况下，降低含有潜在不良词汇的内容的排名</p></li><li><p>降低旧文档的排名，同时保持其在技术搜索中的可访问性</p></li><li><p>在市场搜索中巧妙降低竞争对手产品的可见度</p></li><li><p>降低具有较低质量指标（如格式问题、较短篇幅等）的内容的相关性</p></li></ul></td>
+     <td><p>Strategic content downranking</p></td>
+     <td><ul><li><p>Reducing the prominence of items with low inventory without removing them completely</p></li><li><p>Lowering the rank of content with potentially objectionable terms without censorship</p></li><li><p>Demoting older documentation while keeping it accessible in technical searches</p></li><li><p>Subtly reducing the visibility of competitor products in marketplace searches</p></li><li><p>Decreasing relevance of content with lower quality indications (such as formatting issues, shorter length, etc.)</p></li></ul></td>
    </tr>
 </table>
-<p>您还可以将多个提升排名器结合起来，实施更动态、更强大的基于权重的排名策略。</p>
-<h2 id="Mechanism-of-Boost-Ranker" class="common-anchor-header">提升排名器的机制<button data-href="#Mechanism-of-Boost-Ranker" class="anchor-icon" translate="no">
+<p>You can also combine multiple Boost Rankers to implement a more dynamic and robust weight-based ranking strategy.</p>
+<h2 id="Mechanism-of-Boost-Ranker" class="common-anchor-header">Mechanism of Boost Ranker<button data-href="#Mechanism-of-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -69,21 +73,23 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>下图说明了提升排名器的主要工作流程。</p>
+    </button></h2><p>The following diagram illustrates the main workflow of Boost Rankers.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/boost-ranker-mechanism.png" alt="Boost Ranker Mechanism" class="doc-image" id="boost-ranker-mechanism" />
-   </span> <span class="img-wrapper"> <span>提升排名器机制</span> </span></p>
-<p>插入数据时，Milvus 会将数据分布到各个分段。在搜索过程中，每个分段都会返回一组候选数据，Milvus 会对这些来自所有分段的候选数据进行排名，从而产生最终结果。当搜索请求中包含提升排名器时，Milvus 会将其应用到每个分段的候选结果中，以防止潜在的精度损失并提高召回率。</p>
-<p>在最终确定结果之前，Milvus 会使用提升排名器对这些候选结果进行如下处理：</p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/boost-ranker-mechanism.png" alt="Boost Ranker Mechanism" class="doc-image" id="boost-ranker-mechanism" />
+    <span>Boost Ranker Mechanism</span>
+  </span>
+</p>
+<p>When you insert data, Milvus distributes it across segments. During a search, each segment returns a set of candidates, and Milvus ranks these candidates from all segments to produce the final results. When a search request includes a Boost Ranker, Milvus applies it to the candidate results from each segment to prevent potential precision loss and improve recall.</p>
+<p>Before finalizing the results, Milvus processes these candidates with the Boost Ranker as follows:</p>
 <ol>
-<li><p>应用 Boost Ranker 中指定的可选过滤表达式，以识别与表达式匹配的实体。</p></li>
-<li><p>应用提升排名器中指定的权重来提升已识别实体的分数。</p></li>
+<li><p>Applies the optional filtering expression specified in the Boost Ranker to identify the entities that match the expression.</p></li>
+<li><p>Applies the weight specified in the Boost Ranker to boost the scores of the identified entities.</p></li>
 </ol>
 <div class="alert note">
-<p>在多向量混合搜索中，不能将 Boost Ranker 用作排序器。不过，您可以在任何子请求中使用它作为排序器 (<code translate="no">AnnSearchRequest</code>)。</p>
+<p>You cannot use Boost Ranker as the ranker in a multi-vector hybrid search. However, you can use it as the ranker in any of its sub-requests (<code translate="no">AnnSearchRequest</code>).</p>
 </div>
-<h2 id="Examples-of-Boost-Ranker" class="common-anchor-header">Boost Ranker 示例<button data-href="#Examples-of-Boost-Ranker" class="anchor-icon" translate="no">
+<h2 id="Examples-of-Boost-Ranker" class="common-anchor-header">Examples of Boost Ranker<button data-href="#Examples-of-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,184 +104,184 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>下面的示例说明了 Boost Ranker 在单向量搜索中的使用，该搜索要求返回前五个最相关的实体，并为具有抽象文档类型的实体的得分添加权重。</p>
+    </button></h2><p>The following example illustrates the use of a Boost Ranker in a single-vector search that requires returning the top five most relevant entities and adding weights to the scores of entities with the abstract doc type.</p>
 <ol>
-<li><p><strong>分段收集搜索结果候选。</strong></p>
-<p>下表假定 Milvus 将实体 Distributed 为两个分段<strong>（0001</strong>和<strong>0002</strong>），每个分段返回五个候选实体。</p>
+<li><p><strong>Collect search result candidates in segments.</strong></p>
+<p>The following table assumes Milvus distributes entities into two segments (<strong>0001</strong> and <strong>0002</strong>), with each segment returning five candidates.</p>
 <p><table>
 <tr>
 <th><p>ID</p></th>
-<th><p>文档类型</p></th>
-<th><p>得分</p></th>
-<th><p>等级</p></th>
-<th><p>段</p></th>
+<th><p>DocType</p></th>
+<th><p>Score</p></th>
+<th><p>Rank</p></th>
+<th><p>segment</p></th>
 </tr>
 <tr>
 <td><p>117</p></td>
-<td><p>抽象</p></td>
+<td><p>abstract</p></td>
 <td><p>0.344</p></td>
 <td><p>1</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>89</p></td>
-<td><p>摘要</p></td>
+<td><p>abstract</p></td>
 <td><p>0.456</p></td>
 <td><p>2</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>257</p></td>
-<td><p>身体</p></td>
+<td><p>body</p></td>
 <td><p>0.578</p></td>
 <td><p>3</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>358</p></td>
-<td><p>标题</p></td>
+<td><p>title</p></td>
 <td><p>0.788</p></td>
 <td><p>4</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>168</p></td>
-<td><p>身体</p></td>
+<td><p>body</p></td>
 <td><p>0.899</p></td>
 <td><p>5</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>身体</p></td>
+<td><p>body</p></td>
 <td><p>0.189</p></td>
 <td><p>1</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>48</p></td>
-<td><p>主体</p></td>
+<td><p>body</p></td>
 <td><p>0265</p></td>
 <td><p>2</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>561</p></td>
-<td><p>摘要</p></td>
+<td><p>abstract</p></td>
 <td><p>0.366</p></td>
 <td><p>3</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>344</p></td>
-<td><p>摘要</p></td>
+<td><p>abstract</p></td>
 <td><p>0.444</p></td>
 <td><p>4</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>276</p></td>
-<td><p>摘要</p></td>
+<td><p>abstract</p></td>
 <td><p>0.845</p></td>
 <td><p>5</p></td>
 <td><p>0002</p></td>
 </tr>
 </table></p></li>
-<li><p><strong>应用 Boost Ranker (</strong><code translate="no">doctype='abstract'</code><strong>) 中指定的过滤表达式</strong>。</p>
-<p>如下表中<code translate="no">DocType</code> 字段所示，Milvus 将标记所有<code translate="no">doctype</code> 设置为<code translate="no">abstract</code> 的实体，以便进一步处理。</p>
+<li><p><strong>Apply the filtering expression specified in the Boost Ranker</strong> (<code translate="no">doctype='abstract'</code>).</p>
+<p>As denoted by the <code translate="no">DocType</code> field in the following table, Milvus will mark all entities with their <code translate="no">doctype</code> set to <code translate="no">abstract</code> for further processing.</p>
 <p><table>
 <tr>
 <th><p>ID</p></th>
-<th><p>文件类型</p></th>
-<th><p>得分</p></th>
-<th><p>排名</p></th>
-<th><p>段</p></th>
+<th><p>DocType</p></th>
+<th><p>Score</p></th>
+<th><p>Rank</p></th>
+<th><p>segment</p></th>
 </tr>
 <tr>
 <td><p><strong>117</strong></p></td>
-<td><p><strong>抽象</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.344</strong></p></td>
 <td><p><strong>1</strong></p></td>
 <td><p><strong>0001</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>89</strong></p></td>
-<td><p><strong>摘要</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.456</strong></p></td>
 <td><p><strong>2</strong></p></td>
 <td><p><strong>0001</strong></p></td>
 </tr>
 <tr>
 <td><p>257</p></td>
-<td><p>身体</p></td>
+<td><p>body</p></td>
 <td><p>0.578</p></td>
 <td><p>3</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>358</p></td>
-<td><p>标题</p></td>
+<td><p>title</p></td>
 <td><p>0.788</p></td>
 <td><p>4</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>168</p></td>
-<td><p>身体</p></td>
+<td><p>body</p></td>
 <td><p>0.899</p></td>
 <td><p>5</p></td>
 <td><p>0001</p></td>
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>身体</p></td>
+<td><p>body</p></td>
 <td><p>0.189</p></td>
 <td><p>1</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p>48</p></td>
-<td><p>主体</p></td>
+<td><p>body</p></td>
 <td><p>0265</p></td>
 <td><p>2</p></td>
 <td><p>0002</p></td>
 </tr>
 <tr>
 <td><p><strong>561</strong></p></td>
-<td><p><strong>摘要</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.366</strong></p></td>
 <td><p><strong>3</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>344</strong></p></td>
-<td><p><strong>摘要</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.444</strong></p></td>
 <td><p><strong>4</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 <tr>
 <td><p><strong>276</strong></p></td>
-<td><p><strong>摘要</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.845</strong></p></td>
 <td><p><strong>5</strong></p></td>
 <td><p><strong>0002</strong></p></td>
 </tr>
 </table></p></li>
-<li><p><strong>应用提升排名器 (</strong><code translate="no">weight=0.5</code><strong>) 中指定的权重</strong>。</p>
-<p>上一步中确定的所有实体都将乘以提升排名器中指定的权重，从而改变其排名。</p>
+<li><p><strong>Apply the weight specified in the Boost Ranker</strong> (<code translate="no">weight=0.5</code>).</p>
+<p>All identified entities in the previous step will be multiplied by the weight specified in the Boost Ranker, resulting in changes in their ranks.</p>
 <p><table>
 <tr>
 <th><p>ID</p></th>
-<th><p>文件类型</p></th>
-<th><p>得分</p></th>
-<th><p>加权得分 </p><p>(= 分数 x 权重）</p></th>
-<th><p>等级</p></th>
-<th><p>分段</p></th>
+<th><p>DocType</p></th>
+<th><p>Score</p></th>
+<th><p>Weighted Score </p><p>(= score x weight)</p></th>
+<th><p>Rank</p></th>
+<th><p>segment</p></th>
 </tr>
 <tr>
 <td><p><strong>117</strong></p></td>
-<td><p><strong>抽象</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.344</strong></p></td>
 <td><p><strong>0.172</strong></p></td>
 <td><p><strong>1</strong></p></td>
@@ -283,7 +289,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>89</strong></p></td>
-<td><p><strong>抽象</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.456</strong></p></td>
 <td><p><strong>0.228</strong></p></td>
 <td><p><strong>2</strong></p></td>
@@ -291,7 +297,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>257</p></td>
-<td><p>身体</p></td>
+<td><p>body</p></td>
 <td><p>0.578</p></td>
 <td><p>0.578</p></td>
 <td><p>3</p></td>
@@ -299,7 +305,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>358</p></td>
-<td><p>标题</p></td>
+<td><p>title</p></td>
 <td><p>0.788</p></td>
 <td><p>0.788</p></td>
 <td><p>4</p></td>
@@ -307,7 +313,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>168</p></td>
-<td><p>身体</p></td>
+<td><p>body</p></td>
 <td><p>0.899</p></td>
 <td><p>0.899</p></td>
 <td><p>5</p></td>
@@ -315,7 +321,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>561</strong></p></td>
-<td><p><strong>抽象</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.366</strong></p></td>
 <td><p><strong>0.183</strong></p></td>
 <td><p><strong>1</strong></p></td>
@@ -323,7 +329,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>身体</p></td>
+<td><p>body</p></td>
 <td><p>0.189</p></td>
 <td><p>0.189</p></td>
 <td><p>2</p></td>
@@ -331,7 +337,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>344</strong></p></td>
-<td><p><strong>抽象</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.444</strong></p></td>
 <td><p><strong>0.222</strong></p></td>
 <td><p><strong>3</strong></p></td>
@@ -339,7 +345,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>48</p></td>
-<td><p>身体</p></td>
+<td><p>body</p></td>
 <td><p>0.265</p></td>
 <td><p>0.265</p></td>
 <td><p>4</p></td>
@@ -347,7 +353,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>276</strong></p></td>
-<td><p><strong>抽象</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.845</strong></p></td>
 <td><p><strong>0.423</strong></p></td>
 <td><p><strong>5</strong></p></td>
@@ -355,21 +361,21 @@ beta: Milvus v2.6.2+
 </tr>
 </table></p>
 <p><div class="alert note"></p>
-<p>权重必须是您选择的浮点数。在上例中，分数越小表示相关性越大，因此权重应小于<strong>1</strong>，否则权重应大于<strong>1</strong>。</p>
+<p>The weight must be a floating-point number that you choose. In cases like the above example, where a smaller score indicates greater relevance, use a weight less than <strong>1</strong>. Otherwise, use a weight greater than <strong>1</strong>.</p>
 <p></div></p></li>
-<li><p><strong>根据加权分数汇总所有分段的候选信息，最终确定结果。</strong></p>
+<li><p><strong>Aggregate the candidates from all segments based on the weighted scores to finalize the results.</strong></p>
 <p><table>
 <tr>
 <th><p>ID</p></th>
-<th><p>文档类型</p></th>
-<th><p>得分</p></th>
-<th><p>加权得分</p></th>
-<th><p>排名</p></th>
-<th><p>段</p></th>
+<th><p>DocType</p></th>
+<th><p>Score</p></th>
+<th><p>Weighted Score</p></th>
+<th><p>Rank</p></th>
+<th><p>segment</p></th>
 </tr>
 <tr>
 <td><p><strong>117</strong></p></td>
-<td><p><strong>抽象</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.344</strong></p></td>
 <td><p><strong>0.172</strong></p></td>
 <td><p><strong>1</strong></p></td>
@@ -377,7 +383,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>561</strong></p></td>
-<td><p><strong>抽象</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.366</strong></p></td>
 <td><p><strong>0.183</strong></p></td>
 <td><p><strong>2</strong></p></td>
@@ -385,7 +391,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p>46</p></td>
-<td><p>身体</p></td>
+<td><p>body</p></td>
 <td><p>0.189</p></td>
 <td><p>0.189</p></td>
 <td><p>3</p></td>
@@ -393,7 +399,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>344</strong></p></td>
-<td><p><strong>抽象</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.444</strong></p></td>
 <td><p><strong>0.222</strong></p></td>
 <td><p><strong>4</strong></p></td>
@@ -401,7 +407,7 @@ beta: Milvus v2.6.2+
 </tr>
 <tr>
 <td><p><strong>89</strong></p></td>
-<td><p><strong>抽象</strong></p></td>
+<td><p><strong>abstract</strong></p></td>
 <td><p><strong>0.456</strong></p></td>
 <td><p><strong>0.228</strong></p></td>
 <td><p><strong>5</strong></p></td>
@@ -409,7 +415,7 @@ beta: Milvus v2.6.2+
 </tr>
 </table></p></li>
 </ol>
-<h2 id="Usage-of-Boost-Ranker" class="common-anchor-header">Boost Ranker 的使用<button data-href="#Usage-of-Boost-Ranker" class="anchor-icon" translate="no">
+<h2 id="Usage-of-Boost-Ranker" class="common-anchor-header">Usage of Boost Ranker<button data-href="#Usage-of-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -424,8 +430,8 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在本节中，您将看到如何使用 Boost Ranker 影响单向量搜索结果的示例。</p>
-<h3 id="Create-a-Boost-Ranker" class="common-anchor-header">创建 Boost Ranker<button data-href="#Create-a-Boost-Ranker" class="anchor-icon" translate="no">
+    </button></h2><p>In this section, you will see examples of how to use Boost Ranker to influence the results of a single-vector search.</p>
+<h3 id="Create-a-Boost-Ranker" class="common-anchor-header">Create a Boost Ranker<button data-href="#Create-a-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -440,9 +446,14 @@ beta: Milvus v2.6.2+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在将 Boost Ranker 传递给搜索请求的 Ranker 之前，应将 Boost Ranker 正确定义为一个 Ranker 函数，如下所示：</p>
+    </button></h3><p>Before passing a Boost Ranker as the reranker of a search request, you should properly define the Boost Ranker as a reranking function as follows:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> Function, FunctionType
 
 ranker = Function(
@@ -494,55 +505,55 @@ ranker = Function(
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>参数</p></th>
-     <th><p>是否需要？</p></th>
-     <th><p>描述</p></th>
-     <th><p>值/示例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>是</p></td>
-     <td><p>此功能的唯一标识符</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Unique identifier for this Function</p></td>
      <td><p><code translate="no">"boost"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>是</p></td>
-     <td><p>要应用该函数的向量字段列表（对于 Boost Ranker，必须为空）</p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of vector fields to apply the function to (must be empty for Boost Ranker)</p></td>
      <td><p><code translate="no">[]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>是</p></td>
-     <td><p>要调用的函数类型；使用<code translate="no">RERANK</code> 指定重新排名策略</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The type of Function to invoke; use <code translate="no">RERANK</code> to specify a reranking strategy</p></td>
      <td><p><code translate="no">FunctionType.RERANK</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.reranker</code></p></td>
-     <td><p>是</p></td>
-     <td><p>指定 Reranker 的类型。</p><p>使用 Boost Ranker 时必须设置为<code translate="no">boost</code> 。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the type of the reranker.</p><p>Must be set to <code translate="no">boost</code> to use Boost Ranker.</p></td>
      <td><p><code translate="no">"boost"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.weight</code></p></td>
-     <td><p>是</p></td>
-     <td><p>指定原始搜索结果中任何匹配实体的得分所乘以的权重。</p><p>该值应为浮点数。 </p><ul><li><p>若要强调匹配实体的重要性，可将其设置为提高分数的值。</p></li><li><p>若要降低匹配实体的重要性，可将该参数设置为降低其分数的值。</p></li></ul></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the weight that will be multiplied by the scores of any matching entities in the raw search results.</p><p>The value should be a floating-point number. </p><ul><li><p>To emphasize the importance of matching entities, set it to a value that boosts the scores.</p></li><li><p>To demote matching entities, assign this parameter a value that lowers their scores.</p></li></ul></td>
      <td><p><code translate="no">1</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.filter</code></p></td>
-     <td><p>无</p></td>
-     <td><p>指定用于在搜索结果实体中匹配实体的过滤表达式。它可以是 "<a href="/docs/zh/boolean.md">筛选说明 "</a>中提到的任何有效的基本筛选表达式。</p><p><strong>注意</strong>：只能使用基本操作符，如<code translate="no">==</code>,<code translate="no">&gt;</code>, 或<code translate="no">&lt;</code> 。使用高级操作符，如<code translate="no">text_match</code> 或<code translate="no">phrase_match</code> ，会降低搜索性能。</p></td>
+     <td><p>No</p></td>
+     <td><p>Specifies the filter expression that will be used to match entities among search result entities. It can be any valid basic filter expression mentioned in <a href="/docs/zh/boolean.md">Filtering Explained</a>.</p><p><strong>Note</strong>: Only use basic operators, such as <code translate="no">==</code>, <code translate="no">&gt;</code>, or <code translate="no">&lt;</code>. Using advanced operators, such as <code translate="no">text_match</code> or <code translate="no">phrase_match</code>, will degrade search performance.</p></td>
      <td><p><code translate="no">"doctype == 'abstract'"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.random_score</code></p></td>
-     <td><p>无</p></td>
-     <td><p>指定随机函数，随机生成一个介于<code translate="no">0</code> 和<code translate="no">1</code> 之间的值。它有以下两个可选参数：</p><ul><li><p><code translate="no">seed</code> (number）指定用于启动伪随机数生成器（PRNG）的初始值。</p></li><li><p><code translate="no">field</code> (字符串）指定字段名称，其值将用作生成随机数的随机因子。具有唯一值的字段即可。</p><p>建议同时设置<code translate="no">seed</code> 和<code translate="no">field</code> ，以便通过使用相同的种子和字段值确保各代之间的一致性。</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Specifies the random function that generates a value between <code translate="no">0</code> and <code translate="no">1</code> randomly. It has the following two optional arguments:</p><ul><li><p><code translate="no">seed</code> (number) Specifies an initial value used to start a pseudorandom number generator (PRNG).</p></li><li><p><code translate="no">field</code> (string) Specifies the name of a field whose value will be used as a random factor in generating the random number. A field with unique values will suffice.</p><p>You are advised to set both <code translate="no">seed</code> and <code translate="no">field</code> to ensure consistency across generations by using the same seed and field values.</p></li></ul></td>
      <td><p><code translate="no">{"seed": 126, "field": "id"}</code></p></td>
    </tr>
 </table>
-<h3 id="Search-with-a-single-Boost-Ranker" class="common-anchor-header">使用单个提升排名器搜索<button data-href="#Search-with-a-single-Boost-Ranker" class="anchor-icon" translate="no">
+<h3 id="Search-with-a-single-Boost-Ranker" class="common-anchor-header">Search with a single Boost Ranker<button data-href="#Search-with-a-single-Boost-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -557,9 +568,14 @@ ranker = Function(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>一旦 Boost Ranker 函数准备就绪，您就可以在搜索请求中引用它。下面的示例假定您已经创建了一个 Collection，该 Collection 有以下字段：<strong>ID</strong>、<strong>向量</strong>和<strong>doctype</strong>。</p>
+    </button></h3><p>Once the Boost Ranker function is ready, you can reference it in a search request. The following example assumes that you have already created a collection that has the following fields: <strong>id</strong>, <strong>vector</strong>, and <strong>doctype</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Connect to the Milvus server</span>
@@ -627,7 +643,7 @@ client.search(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Search-with-multiple-Boost-Rankers" class="common-anchor-header">使用多个 Boost Ranker 进行搜索<button data-href="#Search-with-multiple-Boost-Rankers" class="anchor-icon" translate="no">
+<h3 id="Search-with-multiple-Boost-Rankers" class="common-anchor-header">Search with multiple Boost Rankers<button data-href="#Search-with-multiple-Boost-Rankers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -642,10 +658,15 @@ client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>您可以在一次搜索中结合多个 Boost Ranker 来影响搜索结果。为此，请创建多个 Boost Ranker，在<strong>FunctionScore</strong>实例中引用它们，并在搜索请求中使用<strong>FunctionScore</strong>实例作为排名器。</p>
-<p>下面的示例展示了如何通过应用介于<strong>0.8</strong>和<strong>1.2</strong> 之间的权重来修改所有已识别实体的得分。</p>
+    </button></h3><p>You can combine multiple Boost Rankers in a single search to influence the search results. To do so, create several Boost Rankers, reference them in a <strong>FunctionScore</strong> instance, and use the <strong>FunctionScore</strong> instance as the ranker in the search request.</p>
+<p>The following example shows how to modify the scores of all identified entities by applying a weight between <strong>0.8</strong> and <strong>1.2</strong>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType, FunctionScore
 
 <span class="hljs-comment"># Create a Boost Ranker with a fixed weight</span>
@@ -778,31 +799,31 @@ params.put(<span class="hljs-string">&quot;function_mode&quot;</span>,<span clas
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>具体来说，有两个 Boost Ranker：一个给所有找到的实体应用固定权重，而另一个则给它们分配随机权重。然后，我们在一个<strong>FunctionScore</strong> 中引用这两个排名器，它还定义了权重如何影响找到的实体的得分。</p>
-<p>下表列出了创建<strong>FunctionScore</strong>实例所需的参数。</p>
+<p>Specifically, there are two Boost Rankers: one applies a fixed weight to all found entities, while the other assigns a random weight to them. Then, we reference these two rankers in a <strong>FunctionScore</strong>, which also defines how the weights influence the scores of the found entities.</p>
+<p>The following table lists the parameters required to create a <strong>FunctionScore</strong> instance.</p>
 <table>
    <tr>
-     <th><p>参数</p></th>
-     <th><p>是否需要？</p></th>
-     <th><p>说明</p></th>
-     <th><p>值/示例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value/Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">functions</code></p></td>
-     <td><p>是</p></td>
-     <td><p>在列表中指定目标排序器的名称。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Specifies the names of the target rankers in a list.</p></td>
      <td><p><code translate="no">["fix_weight_ranker", "random_weight_ranker"]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.boost_mode</code></p></td>
-     <td><p>否</p></td>
-     <td><p>指定权重如何影响任何匹配实体的得分。</p><p>可能的值有</p><ul><li><p><code translate="no">Multiply</code></p><p>表示加权值等于匹配实体的原始分数乘以指定权重。 </p><p>这是默认值。</p></li><li><p><code translate="no">Sum</code></p><p>表示加权值等于匹配实体的原始分数与指定权重之和</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Specifies how the specified weights influence the scores of any matching entities.</p><p>Possible values are:</p><ul><li><p><code translate="no">Multiply</code></p><p>Indicates that the weighted value is equal to the original score of a matching entity multiplied by the specified weight. </p><p>This is the default value.</p></li><li><p><code translate="no">Sum</code></p><p>Indicates that the weighted value is equal to the sum of the original score of a matching entity and the specified weight</p></li></ul></td>
      <td><p><code translate="no">"Sum"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.function_mode</code></p></td>
-     <td><p>无</p></td>
-     <td><p>指定如何处理来自不同提升排名器的加权值。</p><p>可能的值有</p><ul><li><p><code translate="no">Multiply</code></p><p>表示匹配实体的最终得分等于来自所有提升排名器的加权值的乘积。</p><p>这是默认值。</p></li><li><p><code translate="no">Sum</code></p><p>表示匹配实体的最终得分等于所有提升排名器的加权值之和。</p></li></ul></td>
+     <td><p>No</p></td>
+     <td><p>Specifies how the weighted values from various Boost Rankers are processed.</p><p>Possible values are:</p><ul><li><p><code translate="no">Multiply</code></p><p>Indicates that the final score of a matching entity is equal to the product of the weighted values from all Boost Rankers.</p><p>This is the default value.</p></li><li><p><code translate="no">Sum</code></p><p>Indicates that the final score of a matching entity is equal to the sum of the weighted values from all Boost Rankers.</p></li></ul></td>
      <td><p><code translate="no">"Sum"</code></p></td>
    </tr>
 </table>

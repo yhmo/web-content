@@ -4,11 +4,11 @@ label: Helm
 order: 1
 group: upgrade_milvus_standalone-operator.md
 related_key: upgrade Milvus Standalone
-summary: Helmチャートを使用してMilvusスタンドアロンをアップグレードする方法について学びましょう。
-title: Helmチャートを使用したMilvusスタンドアロンのアップグレード
+summary: Learn how to upgrade Milvus standalone with Helm Chart.
+title: Upgrade Milvus Standalone with Helm Chart
 ---
-<div class="tab-wrapper"><a href="/docs/ja/v2.6.x/upgrade_milvus_standalone-operator.md" class=''>Milvus</a><a href="/docs/ja/v2.6.x/upgrade_milvus_standalone-docker.md" class=''>Operator</a>、Helm、Docker<a href="/docs/ja/v2.6.x/upgrade_milvus_standalone-docker.md" class=''>Compose</a></div>
-<h1 id="Upgrade-Milvus-Standalone-with-Helm-Chart" class="common-anchor-header">Helmチャートを使用したMilvusスタンドアロンのアップグレード<button data-href="#Upgrade-Milvus-Standalone-with-Helm-Chart" class="anchor-icon" translate="no">
+<div class="tab-wrapper"><a href="/docs/ja/v2.6.x/upgrade_milvus_standalone-operator.md" class=''>Milvus Operator</a><a href="/docs/ja/v2.6.x/upgrade_milvus_standalone-helm.md" class='active '>Helm</a><a href="/docs/ja/v2.6.x/upgrade_milvus_standalone-docker.md" class=''>Docker Compose</a></div>
+<h1 id="Upgrade-Milvus-Standalone-with-Helm-Chart" class="common-anchor-header">Upgrade Milvus Standalone with Helm Chart<button data-href="#Upgrade-Milvus-Standalone-with-Helm-Chart" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,8 +23,8 @@ title: Helmチャートを使用したMilvusスタンドアロンのアップグ
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>このガイドでは、Helmチャートを使用してMilvusスタンドアロン環境をv2.5.xからv2.6.23にアップグレードする方法について説明します。</p>
-<h2 id="Before-you-start" class="common-anchor-header">開始する前に<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+    </button></h1><p>This guide describes how to upgrade your Milvus standalone deployment from v2.5.x to v2.6.24 using Helm Chart.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,7 +39,7 @@ title: Helmチャートを使用したMilvusスタンドアロンのアップグ
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Whats-new-in-v2623" class="common-anchor-header">v2.6.23 の新機能<button data-href="#Whats-new-in-v2623" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Whats-new-in-v2624" class="common-anchor-header">What’s new in v2.6.24<button data-href="#Whats-new-in-v2624" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -54,14 +54,14 @@ title: Helmチャートを使用したMilvusスタンドアロンのアップグ
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 2.5.x から 2.6.23 へのアップグレードには、以下の重要なアーキテクチャの変更が含まれます：</p>
+    </button></h3><p>Upgrading from Milvus 2.5.x to 2.6.24 involves significant architectural changes:</p>
 <ul>
-<li><strong>コーディネーターの統合</strong>：従来別々に存在していたコーディネーター（<code translate="no">dataCoord</code> 、<code translate="no">queryCoord</code> 、<code translate="no">indexCoord</code> ）が1つに統合されました<code translate="no">mixCoord</code></li>
-<li><strong>新コンポーネント</strong>：データ処理機能を強化するためのストリーミングノードの導入</li>
-<li><strong>コンポーネントの削除</strong>：<code translate="no">indexNode</code> が削除され、統合されました</li>
+<li><strong>Coordinator consolidation</strong>: Legacy separate coordinators (<code translate="no">dataCoord</code>, <code translate="no">queryCoord</code>, <code translate="no">indexCoord</code>) have been consolidated into a single <code translate="no">mixCoord</code></li>
+<li><strong>New components</strong>: Introduction of Streaming Node for enhanced data processing</li>
+<li><strong>Component removal</strong>: <code translate="no">indexNode</code> removed and consolidated</li>
 </ul>
-<p>このアップグレードプロセスにより、新しいアーキテクチャへの適切な移行が保証されます。アーキテクチャの変更に関する詳細については、『<a href="/docs/ja/v2.6.x/architecture_overview.md">Milvus アーキテクチャ概要</a>』を参照してください。</p>
-<h3 id="Requirements" class="common-anchor-header">要件<button data-href="#Requirements" class="anchor-icon" translate="no">
+<p>This upgrade process ensures proper migration to the new architecture. For more information on architecture changes, refer to <a href="/docs/ja/v2.6.x/architecture_overview.md">Milvus Architecture Overview</a>.</p>
+<h3 id="Requirements" class="common-anchor-header">Requirements<button data-href="#Requirements" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,23 +76,23 @@ title: Helmチャートを使用したMilvusスタンドアロンのアップグ
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>システム要件：</strong></p>
+    </button></h3><p><strong>System requirements:</strong></p>
 <ul>
-<li>Helm バージョン 3.14.0 以上</li>
-<li>Kubernetes バージョン &gt;= 1.20.0</li>
-<li>Helm Chart 経由でデプロイされた Milvus スタンドアロン環境</li>
+<li>Helm version >= 3.14.0</li>
+<li>Kubernetes version >= 1.20.0</li>
+<li>Milvus standalone deployed via Helm Chart</li>
 </ul>
-<p><strong>互換性に関する要件：</strong></p>
+<p><strong>Compatibility requirements:</strong></p>
 <ul>
-<li>Milvus v2.6.0-rc1 は v2.6.23<strong>と互換性がありません</strong>。リリース候補版からの直接アップグレードはサポートされていません。</li>
-<li>現在 v2.6.0-rc1 を実行しており、データを保持する必要がある場合は、移行の支援について<a href="https://github.com/milvus-io/milvus/issues/43538#issuecomment-3112808997">こちらのコミュニティガイド</a>を参照してください。</li>
-<li>v2.6.23 へアップグレードする前に、v2.5.16 以降にアップグレード<strong>する必要があります</strong>。</li>
+<li>Milvus v2.6.0-rc1 is <strong>not compatible</strong> with v2.6.24. Direct upgrades from release candidates are not supported.</li>
+<li>If you are currently running v2.6.0-rc1 and need to preserve your data, please refer to <a href="https://github.com/milvus-io/milvus/issues/43538#issuecomment-3112808997">this community guide</a> for migration assistance.</li>
+<li>You <strong>must</strong> upgrade to v2.5.16 or later before upgrading to v2.6.24.</li>
 </ul>
-<p><strong>メッセージキューの制限事項</strong>:Milvus v2.6.23 へアップグレードする際は、現在のメッセージキューの設定を維持する必要があります。アップグレード中に異なるメッセージキューシステムへ切り替えることはサポートされていません。メッセージキューシステムの変更機能は、将来のバージョンで提供される予定です。</p>
+<p><strong>Message Queue limitations</strong>: When upgrading to Milvus v2.6.24, you must maintain your current message queue choice. Switching between different message queue systems during the upgrade is not supported. Support for changing message queue systems will be available in future versions.</p>
 <div class="alert note">
-Milvus Helmチャートバージョン4.2.21以降、依存関係としてpulsar-v3.xチャートが導入されました。下位互換性を確保するため、Helmをv3.14以降のバージョンにアップグレードし、<code translate="no">helm upgrade</code> を使用する際は必ず<code translate="no">--reset-then-reuse-values</code> オプションを追加してください。
+Since Milvus Helm chart version 4.2.21, we introduced pulsar-v3.x chart as dependency. For backward compatibility, please upgrade your Helm to v3.14 or later version, and be sure to add the <code translate="no">--reset-then-reuse-values</code> option whenever you use <code translate="no">helm upgrade</code>.
 </div>
-<h2 id="Upgrade-process" class="common-anchor-header">アップグレード手順<button data-href="#Upgrade-process" class="anchor-icon" translate="no">
+<h2 id="Upgrade-process" class="common-anchor-header">Upgrade process<button data-href="#Upgrade-process" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,7 +107,7 @@ Milvus Helmチャートバージョン4.2.21以降、依存関係としてpulsar
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Upgrade-Helm-Chart" class="common-anchor-header">ステップ 1: Helm チャートのアップグレード<button data-href="#Step-1-Upgrade-Helm-Chart" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Upgrade-Helm-Chart" class="common-anchor-header">Step 1: Upgrade Helm Chart<button data-href="#Step-1-Upgrade-Helm-Chart" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,17 +122,18 @@ Milvus Helmチャートバージョン4.2.21以降、依存関係としてpulsar
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>まず、Milvus Helmチャートをバージョン5.0.22にアップグレードしてください：</p>
+    </button></h3><p>First, upgrade your Milvus Helm chart to version 5.0.22:</p>
 <pre><code translate="no" class="language-bash">helm repo add zilliztech https://zilliztech.github.io/milvus-helm
 helm repo update zilliztech
 <button class="copy-code-btn"></button></code></pre>
-<div class="alert note"><code translate="no">https://milvus-io.github.io/milvus-helm/</code> にある Milvus Helm チャートリポジトリはアーカイブ化されました。バージョン 4.0.31 以降のチャートについては、新しいリポジトリ<code translate="no">https://zilliztech.github.io/milvus-helm/</code> をご利用ください。
+<div class="alert note">
+The Milvus Helm Charts repo at <code translate="no">https://milvus-io.github.io/milvus-helm/</code> has been archived. Use the new repo <code translate="no">https://zilliztech.github.io/milvus-helm/</code> for chart versions 4.0.31 and later.
 </div>
-<p>HelmチャートのバージョンとMilvusのバージョンとの互換性を確認するには：</p>
+<p>To check Helm chart version compatibility with Milvus versions:</p>
 <pre><code translate="no" class="language-bash">helm search repo zilliztech/milvus --versions
 <button class="copy-code-btn"></button></code></pre>
-<p>このガイドでは、最新バージョンをインストールすることを前提としています。特定のバージョンをインストールする必要がある場合は、<code translate="no">--version</code> パラメータを適宜指定してください。</p>
-<h3 id="Step-2-Upgrade-to-v2516" class="common-anchor-header">ステップ 2: v2.5.16 へのアップグレード<button data-href="#Step-2-Upgrade-to-v2516" class="anchor-icon" translate="no">
+<p>This guide assumes you are installing the latest version. If you need to install a specific version, specify the <code translate="no">--version</code> parameter accordingly.</p>
+<h3 id="Step-2-Upgrade-to-v2516" class="common-anchor-header">Step 2: Upgrade to v2.5.16<button data-href="#Step-2-Upgrade-to-v2516" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -148,19 +149,19 @@ helm repo update zilliztech
         ></path>
       </svg>
     </button></h3><div class="alert-note">
-<p>スタンドアロン展開がすでに v2.5.16 以降を実行している場合は、この手順をスキップしてください。</p>
+<p>Skip this step if your standalone deployment is already running v2.5.16 or higher.</p>
 </div>
-<p>Milvusスタンドアロンをv2.5.16にアップグレードします:</p>
+<p>Upgrade your Milvus standalone to v2.5.16:</p>
 <pre><code translate="no" class="language-bash">helm upgrade my-release zilliztech/milvus \
   --<span class="hljs-built_in">set</span> image.all.tag=<span class="hljs-string">&quot;v2.5.16&quot;</span> \
   --reset-then-reuse-values \
   --version=4.2.58
 <button class="copy-code-btn"></button></code></pre>
-<p>アップグレードが完了するまで待ちます：</p>
+<p>Wait for the upgrade to complete:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># Verify all pods are ready</span>
 kubectl get pods
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Upgrade-to-v2623" class="common-anchor-header">ステップ 3: v2.6.23 へのアップグレード<button data-href="#Step-3-Upgrade-to-v2623" class="anchor-icon" translate="no">
+<h3 id="Step-3-Upgrade-to-v2624" class="common-anchor-header">Step 3: Upgrade to v2.6.24<button data-href="#Step-3-Upgrade-to-v2624" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -175,13 +176,13 @@ kubectl get pods
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>v2.5.16が正常に動作したら、v2.6.23にアップグレードします：</p>
+    </button></h3><p>Once v2.5.16 is running successfully, upgrade to v2.6.24:</p>
 <pre><code translate="no" class="language-bash">helm upgrade my-release zilliztech/milvus \
-  --<span class="hljs-built_in">set</span> image.all.tag=<span class="hljs-string">&quot;v2.6.23&quot;</span> \
+  --<span class="hljs-built_in">set</span> image.all.tag=<span class="hljs-string">&quot;v2.6.24&quot;</span> \
   --reset-then-reuse-values \
   --version=5.0.22
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Verify-the-upgrade" class="common-anchor-header">アップグレードの確認<button data-href="#Verify-the-upgrade" class="anchor-icon" translate="no">
+<h2 id="Verify-the-upgrade" class="common-anchor-header">Verify the upgrade<button data-href="#Verify-the-upgrade" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -196,8 +197,8 @@ kubectl get pods
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>スタンドアロン環境が新しいバージョンで実行されていることを確認してください:</p>
+    </button></h2><p>Confirm your standalone deployment is running the new version:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># Check pod status</span>
 kubectl get pods
 <button class="copy-code-btn"></button></code></pre>
-<p>さらにサポートが必要な場合は、<a href="https://milvus.io/docs">Milvusのドキュメント</a>または<a href="https://github.com/milvus-io/milvus/discussions">コミュニティフォーラム</a>をご参照ください。</p>
+<p>For additional support, consult the <a href="https://milvus.io/docs">Milvus documentation</a> or <a href="https://github.com/milvus-io/milvus/discussions">community forum</a>.</p>

@@ -1,11 +1,11 @@
 ---
 id: data-infra-integration-overview.md
-title: Infrastruktur Data
+title: Data Infrastructure
 summary: >-
-  Gambaran umum mengenai penyimpanan metadata, penyimpanan objek, dan antrian
-  pesan yang digunakan oleh Milvus.
+  Overview of the metadata storage, object storage, and message queues that
+  Milvus uses.
 ---
-<h1 id="Data-Infrastructure" class="common-anchor-header">Infrastruktur Data<button data-href="#Data-Infrastructure" class="anchor-icon" translate="no">
+<h1 id="Data-Infrastructure" class="common-anchor-header">Data Infrastructure<button data-href="#Data-Infrastructure" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,10 +20,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus mengandalkan penyimpanan metadata, penyimpanan objek, dan antrian pesan sebagai infrastruktur data intinya. Bab ini membahas komponen-komponen yang dapat Anda konfigurasikan:</p>
+    </button></h1><p>Milvus relies on metadata storage, object storage, and a message queue for its core data infrastructure. This chapter covers the components you can configure:</p>
 <ul>
-<li><strong><a href="/docs/id/etcd.md">Metadata</a></strong> — Milvus menyimpan metadata (skema koleksi, status node, titik pemeriksaan konsumsi) di etcd.</li>
-<li><strong><a href="/docs/id/object-storage.md">Penyimpanan Objek</a></strong> — Milvus menyimpan berkas indeks dan log biner di MinIO, AWS S3, atau penyimpanan objek cloud lain yang kompatibel dengan S3.</li>
-<li><strong><a href="/docs/id/mqtype-overview.md">Antrian Pesan</a></strong> — Milvus menggunakan log penulisan di muka (WAL): Woodpecker (default), Pulsar, Kafka, atau RocksMQ.</li>
+<li><strong><a href="/docs/id/etcd.md">Metadata</a></strong> — Milvus stores metadata (collection schemas, node status, consumption checkpoints) in etcd.</li>
+<li><strong><a href="/docs/id/object-storage.md">Object Storage</a></strong> — Milvus stores index files and binary logs in MinIO, AWS S3, or other S3-compatible / cloud object storage.</li>
+<li><strong><a href="/docs/id/mqtype-overview.md">Message Queue</a></strong> — Milvus uses a write-ahead log (WAL): Woodpecker (default), Pulsar, Kafka, or RocksMQ.</li>
 </ul>
-<p>Secara default, deployment Milvus 3.x baru berjalan dengan <strong>Woodpecker</strong> sebagai antrian pesan, <strong>etcd</strong> untuk metadata, dan <strong>MinIO</strong> untuk penyimpanan objek — tidak diperlukan infrastruktur pesan tambahan.</p>
+<p>By default, a new Milvus 3.x deployment runs with <strong>Woodpecker</strong> as the message queue, <strong>etcd</strong> for metadata, and <strong>MinIO</strong> for object storage — no extra messaging infrastructure required.</p>

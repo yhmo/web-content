@@ -1,9 +1,11 @@
 ---
 id: data-infra-integration-overview.md
-title: 数据基础设施
-summary: Milvus 所使用的元数据存储、对象存储和消息队列概述。
+title: Data Infrastructure
+summary: >-
+  Overview of the metadata storage, object storage, and message queues that
+  Milvus uses.
 ---
-<h1 id="Data-Infrastructure" class="common-anchor-header">数据基础设施<button data-href="#Data-Infrastructure" class="anchor-icon" translate="no">
+<h1 id="Data-Infrastructure" class="common-anchor-header">Data Infrastructure<button data-href="#Data-Infrastructure" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,10 +20,10 @@ summary: Milvus 所使用的元数据存储、对象存储和消息队列概述�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 的核心数据基础设施依赖于元数据存储、对象存储和消息队列。本章介绍了您可以配置的组件：</p>
+    </button></h1><p>Milvus relies on metadata storage, object storage, and a message queue for its core data infrastructure. This chapter covers the components you can configure:</p>
 <ul>
-<li><strong><a href="/docs/zh/etcd.md">元数据</a></strong>— Milvus 将元数据（Collection 模式、节点状态、消费检查点）存储在 etcd 中。</li>
-<li><strong><a href="/docs/zh/object-storage.md">对象存储</a></strong>— Milvus 将索引文件和二进制日志存储在 MinIO、AWS S3 或其他兼容 S3 的云对象存储中。</li>
-<li><strong><a href="/docs/zh/mqtype-overview.md">消息队列</a></strong>— Milvus 使用写前日志（WAL）：Woodpecker（默认）、Pulsar、Kafka 或 RocksMQ。</li>
+<li><strong><a href="/docs/zh/etcd.md">Metadata</a></strong> — Milvus stores metadata (collection schemas, node status, consumption checkpoints) in etcd.</li>
+<li><strong><a href="/docs/zh/object-storage.md">Object Storage</a></strong> — Milvus stores index files and binary logs in MinIO, AWS S3, or other S3-compatible / cloud object storage.</li>
+<li><strong><a href="/docs/zh/mqtype-overview.md">Message Queue</a></strong> — Milvus uses a write-ahead log (WAL): Woodpecker (default), Pulsar, Kafka, or RocksMQ.</li>
 </ul>
-<p>默认情况下，新的 Milvus 3.x 部署将使用<strong>Woodpecker</strong>作为消息队列、<strong>etcd</strong>作为元数据存储，以及<strong>MinIO</strong>作为对象存储——无需额外消息传递基础设施。</p>
+<p>By default, a new Milvus 3.x deployment runs with <strong>Woodpecker</strong> as the message queue, <strong>etcd</strong> for metadata, and <strong>MinIO</strong> for object storage — no extra messaging infrastructure required.</p>

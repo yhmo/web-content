@@ -1,14 +1,13 @@
 ---
 id: eviction.md
-title: PenggusuranCompatible with Milvus 2.6.4+
+title: EvictionCompatible with Milvus 2.6.4+
 summary: >-
-  Eviction mengelola sumber daya cache dari setiap QueryNode di Milvus. Ketika
-  diaktifkan, secara otomatis menghapus data yang di-cache setelah ambang batas
-  sumber daya tercapai, memastikan kinerja yang stabil dan mencegah kehabisan
-  memori atau disk.
+  Eviction manages the cache resources of each QueryNode in Milvus. When
+  enabled, it automatically removes cached data once resource thresholds are
+  reached, ensuring stable performance and preventing memory or disk exhaustion.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Eviction" class="common-anchor-header">Penggusuran<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Eviction" class="anchor-icon" translate="no">
+<h1 id="Eviction" class="common-anchor-header">Eviction<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Eviction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,12 +22,12 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Eviction mengelola sumber daya cache dari setiap QueryNode di Milvus. Ketika diaktifkan, fitur ini secara otomatis menghapus data yang ditembolok setelah ambang batas sumber daya tercapai, memastikan kinerja yang stabil dan mencegah kehabisan memori atau disk.</p>
-<p>Penggusuran menggunakan kebijakan <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies">Least Recently Used (LRU</a> ) untuk mendapatkan kembali ruang cache. Metadata selalu di-cache dan tidak pernah digusur, karena metadata sangat penting untuk perencanaan kueri dan biasanya berukuran kecil.</p>
+    </button></h1><p>Eviction manages the cache resources of each QueryNode in Milvus. When enabled, it automatically removes cached data once resource thresholds are reached, ensuring stable performance and preventing memory or disk exhaustion.</p>
+<p>Eviction uses a <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies">Least Recently Used (LRU)</a> policy to reclaim cache space. Metadata is always cached and never evicted, as it is essential for query planning and typically small.</p>
 <div class="alert note">
-<p>Penggusuran harus diaktifkan secara eksplisit. Tanpa konfigurasi, data yang ditembolok akan terus terakumulasi hingga sumber daya habis.</p>
+<p>Eviction must be explicitly enabled. Without configuration, cached data will continue to accumulate until resources are depleted.</p>
 </div>
-<h2 id="Eviction-types" class="common-anchor-header">Jenis-jenis penggusuran<button data-href="#Eviction-types" class="anchor-icon" translate="no">
+<h2 id="Eviction-types" class="common-anchor-header">Eviction types<button data-href="#Eviction-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,48 +42,48 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus mendukung dua mode penggusuran yang saling melengkapi<strong>(sinkronisasi</strong> dan <strong>asinkronisasi</strong>) yang bekerja bersama untuk manajemen sumber daya yang optimal:</p>
+    </button></h2><p>Milvus supports two complementary eviction modes (<strong>sync</strong> and <strong>async</strong>) that work together for optimal resource management:</p>
 <table>
    <tr>
-     <th><p>Aspek</p></th>
-     <th><p>Penggusuran Sinkronisasi</p></th>
-     <th><p>Penggusuran Asinkron</p></th>
+     <th><p>Aspect</p></th>
+     <th><p>Sync Eviction</p></th>
+     <th><p>Async Eviction</p></th>
    </tr>
    <tr>
-     <td><p>Pemicu</p></td>
-     <td><p>Terjadi selama kueri atau pencarian ketika penggunaan memori atau disk melebihi batas internal.</p></td>
-     <td><p>Dipicu oleh thread latar belakang saat penggunaan melebihi batas tinggi atau saat data yang di-cache mencapai time-to-live (TTL).</p></td>
+     <td><p>Trigger</p></td>
+     <td><p>Occurs during query or search when memory or disk usage exceeds internal limits.</p></td>
+     <td><p>Triggered by a background thread when usage exceeds the high watermark or when cached data reaches its time-to-live (TTL).</p></td>
    </tr>
    <tr>
-     <td><p>Perilaku</p></td>
-     <td><p>Operasi kueri atau pencarian berhenti sementara saat QueryNode mendapatkan kembali ruang cache. Penggusuran berlanjut hingga penggunaan turun di bawah watermark rendah atau terjadi timeout. Jika batas waktu tercapai dan data tidak mencukupi untuk diambil kembali, kueri atau pencarian mungkin gagal.</p></td>
-     <td><p>Berjalan secara berkala di latar belakang, secara proaktif mengusir data yang ditembolok ketika penggunaan melebihi tanda air tinggi atau ketika data kedaluwarsa berdasarkan TTL. Pengusiran berlanjut hingga penggunaan turun di bawah tanda air rendah. Kueri tidak diblokir.</p></td>
+     <td><p>Behavior</p></td>
+     <td><p>Query or search operations pause temporarily while the QueryNode reclaims cache space. Eviction continues until usage drops below the low watermark or a timeout occurs. If timeout is reached and insufficient data can be reclaimed, the query or search may fail.</p></td>
+     <td><p>Runs periodically in the background, proactively evicting cached data when usage exceeds the high watermark or when data expires based on TTL. Eviction continues until usage drops below the low watermark. Queries are not blocked.</p></td>
    </tr>
    <tr>
-     <td><p>Paling cocok untuk</p></td>
-     <td><p>Beban kerja yang dapat mentoleransi lonjakan latensi singkat atau jeda sementara selama penggunaan puncak. Berguna ketika penggusuran asinkronisasi tidak dapat mendapatkan kembali ruang dengan cukup cepat.</p></td>
-     <td><p>Beban kerja yang sensitif terhadap latensi yang membutuhkan kinerja kueri yang lancar dan dapat diprediksi. Ideal untuk manajemen sumber daya yang proaktif.</p></td>
+     <td><p>Best For</p></td>
+     <td><p>Workloads that can tolerate brief latency spikes or temporary pauses during peak usage. Useful when async eviction cannot reclaim space fast enough.</p></td>
+     <td><p>Latency-sensitive workloads that require smooth and predictable query performance. Ideal for proactive resource management.</p></td>
    </tr>
    <tr>
-     <td><p>Perhatian</p></td>
-     <td><p>Dapat menyebabkan penundaan kueri singkat atau waktu habis jika data yang dapat digusur tidak mencukupi.</p></td>
-     <td><p>Membutuhkan pengaturan tanda air tinggi/rendah dan TTL yang disetel dengan benar. Sedikit overhead dari utas latar belakang.</p></td>
+     <td><p>Cautions</p></td>
+     <td><p>Can cause short query delays or timeouts if insufficient evictable data is available.</p></td>
+     <td><p>Requires properly tuned high/low watermarks and TTL settings. Slight overhead from the background thread.</p></td>
    </tr>
    <tr>
-     <td><p>Konfigurasi</p></td>
-     <td><p>Diaktifkan melalui <code translate="no">evictionEnabled: true</code></p></td>
-     <td><p>Diaktifkan melalui <code translate="no">backgroundEvictionEnabled: true</code> (memerlukan <code translate="no">evictionEnabled: true</code> pada saat yang sama)</p></td>
+     <td><p>Configuration</p></td>
+     <td><p>Enabled via <code translate="no">evictionEnabled: true</code></p></td>
+     <td><p>Enabled via <code translate="no">backgroundEvictionEnabled: true</code> (requires <code translate="no">evictionEnabled: true</code> at the same time)</p></td>
    </tr>
 </table>
-<p><strong>Penyiapan</strong> yang<strong>disarankan</strong>:</p>
+<p><strong>Recommended setup</strong>:</p>
 <ul>
-<li><p>Kedua mode penggusuran dapat diaktifkan bersamaan untuk keseimbangan optimal, asalkan beban kerja Anda mendapat manfaat dari Penyimpanan Berjenjang dan dapat mentolerir latensi pengambilan terkait penggusuran.</p></li>
-<li><p>Untuk pengujian performa atau skenario yang sangat penting, pertimbangkan untuk menonaktifkan penggusuran sepenuhnya untuk menghindari overhead pengambilan jaringan setelah penggusuran.</p></li>
+<li><p>Both eviction modes can be enabled together for optimal balance, provided your workload benefits from Tiered Storage and can tolerate eviction-related fetch latency.</p></li>
+<li><p>For performance testing or latency-critical scenarios, consider disabling eviction entirely to avoid network fetch overhead after eviction.</p></li>
 </ul>
 <div class="alert note">
-<p>Untuk bidang dan indeks yang dapat digusur, unit penggusuran sesuai dengan perincian pemuatan-bidang skalar/vektor digusur berdasarkan potongan, dan indeks skalar/vektor digusur berdasarkan segmen.</p>
+<p>For evictable fields and indexes, the eviction unit matches the loading granularity—scalar/vector fields are evicted by chunk, and scalar/vector indexes are evicted by segment.</p>
 </div>
-<h2 id="Enable-eviction" class="common-anchor-header">Mengaktifkan penggusuran<button data-href="#Enable-eviction" class="anchor-icon" translate="no">
+<h2 id="Enable-eviction" class="common-anchor-header">Enable eviction<button data-href="#Enable-eviction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,7 +98,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Konfigurasikan penggusuran di bawah <code translate="no">queryNode.segcore.tieredStorage</code> di <code translate="no">milvus.yaml</code>:</p>
+    </button></h2><p>Configure eviction under <code translate="no">queryNode.segcore.tieredStorage</code> in <code translate="no">milvus.yaml</code>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
     <span class="hljs-attr">tieredStorage:</span>
@@ -109,27 +108,27 @@ beta: Milvus 2.6.4+
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Jenis</p></th>
-     <th><p>Nilai</p></th>
-     <th><p>Deskripsi</p></th>
-     <th><p>Kasus penggunaan yang disarankan</p></th>
+     <th><p>Type</p></th>
+     <th><p>Values</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended use case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">evictionEnabled</code></p></td>
      <td><p>bool</p></td>
      <td><p><code translate="no">true</code>/<code translate="no">false</code></p></td>
-     <td><p>Sakelar utama untuk strategi penggusuran. Default ke <code translate="no">false</code>. Mengaktifkan mode penggusuran sinkronisasi.</p></td>
-     <td><p>Selalu setel ke <code translate="no">true</code> di Penyimpanan Berjenjang.</p></td>
+     <td><p>Master switch for eviction strategy. Defaults to <code translate="no">false</code>. Enables sync eviction mode.</p></td>
+     <td><p>Always set to <code translate="no">true</code> in Tiered Storage.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">backgroundEvictionEnabled</code></p></td>
      <td><p>bool</p></td>
      <td><p><code translate="no">true</code>/<code translate="no">false</code></p></td>
-     <td><p>Menjalankan penggusuran secara asinkron di latar belakang. Memerlukan <code translate="no">evictionEnabled: true</code>. Setelan default ke <code translate="no">false</code>.</p></td>
-     <td><p>Gunakan <code translate="no">true</code> untuk kinerja kueri yang lebih lancar; ini mengurangi frekuensi penggusuran sinkronisasi.</p></td>
+     <td><p>Run eviction asynchronously in the background. Requires <code translate="no">evictionEnabled: true</code>. Defaults to <code translate="no">false</code>.</p></td>
+     <td><p>Use <code translate="no">true</code> for smoother query performance; it reduces sync eviction frequency.</p></td>
    </tr>
 </table>
-<h2 id="Configure-watermarks" class="common-anchor-header">Mengonfigurasi tanda air<button data-href="#Configure-watermarks" class="anchor-icon" translate="no">
+<h2 id="Configure-watermarks" class="common-anchor-header">Configure watermarks<button data-href="#Configure-watermarks" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,15 +143,15 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Tanda air menentukan kapan penggusuran cache dimulai dan diakhiri untuk memori dan disk. Setiap jenis sumber daya memiliki dua ambang batas:</p>
+    </button></h2><p>Watermarks define when cache eviction begins and ends for both memory and disk. Each resource type has two thresholds:</p>
 <ul>
-<li><p><strong>Tanda air tinggi</strong>: Penggusuran dimulai saat penggunaan melebihi nilai ini.</p></li>
-<li><p><strong>Tanda air rendah</strong>: Penggusuran berlanjut hingga penggunaan turun di bawah nilai ini.</p></li>
+<li><p><strong>High watermark</strong>: Eviction starts when usage exceeds this value.</p></li>
+<li><p><strong>Low watermark</strong>: Eviction continues until usage falls below this value.</p></li>
 </ul>
 <div class="alert note">
-<p>Konfigurasi ini hanya berlaku ketika <a href="/docs/id/eviction.md#Enable-eviction">penggusuran diaktifkan</a>.</p>
+<p>This configuration takes effect only when <a href="/docs/id/eviction.md#Enable-eviction">eviction is enabled</a>.</p>
 </div>
-<p><strong>Contoh YAML</strong>:</p>
+<p><strong>Example YAML</strong>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
     <span class="hljs-attr">tieredStorage:</span>
@@ -167,46 +166,46 @@ beta: Milvus 2.6.4+
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Jenis</p></th>
-     <th><p>Rentang</p></th>
-     <th><p>Deskripsi</p></th>
-     <th><p>Kasus penggunaan yang disarankan</p></th>
+     <th><p>Type</p></th>
+     <th><p>Range</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended use case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">memoryLowWatermarkRatio</code></p></td>
-     <td><p>mengambang</p></td>
+     <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>Tingkat penggunaan memori di mana penggusuran berhenti.</p></td>
-     <td><p>Mulai dari <code translate="no">0.75</code>. Turunkan sedikit jika memori QueryNode terbatas.</p></td>
+     <td><p>Memory usage level where eviction stops.</p></td>
+     <td><p>Start at <code translate="no">0.75</code>. Lower slightly if QueryNode memory is limited.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">memoryHighWatermarkRatio</code></p></td>
      <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>Tingkat penggunaan memori di mana penggusuran asinkron dimulai.</p></td>
-     <td><p>Mulai dari <code translate="no">0.8</code>. Jaga jarak yang masuk akal dari watermark rendah (misalnya, 0.05-0.10) untuk mencegah pemicu yang sering terjadi.</p></td>
+     <td><p>Memory usage level where async eviction starts.</p></td>
+     <td><p>Start at <code translate="no">0.8</code>. Keep a sensible gap from low watermark (e.g., 0.05–0.10) to prevent frequent triggers.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">diskLowWatermarkRatio</code></p></td>
-     <td><p>mengambang</p></td>
+     <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>Tingkat penggunaan disk di mana penggusuran berhenti.</p></td>
-     <td><p>Mulai di <code translate="no">0.75</code>. Sesuaikan lebih rendah jika I / O disk terbatas.</p></td>
+     <td><p>Disk usage level where eviction stops.</p></td>
+     <td><p>Start at <code translate="no">0.75</code>. Adjust lower if disk I/O is limited.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">diskHighWatermarkRatio</code></p></td>
      <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>Tingkat penggunaan disk di mana penggusuran asinkron dimulai.</p></td>
-     <td><p>Mulai di <code translate="no">0.8</code>. Jaga jarak yang masuk akal dari tanda air yang rendah (mis., 0,05-0,10) untuk mencegah pemicu yang sering terjadi.</p></td>
+     <td><p>Disk usage level where async eviction starts.</p></td>
+     <td><p>Start at <code translate="no">0.8</code>. Keep a sensible gap from low watermark (e.g., 0.05–0.10) to prevent frequent triggers.</p></td>
    </tr>
 </table>
-<p><strong>Praktik terbaik</strong>:</p>
+<p><strong>Best practices</strong>:</p>
 <ul>
-<li><p>Jangan menetapkan watermark tinggi atau rendah di atas ~0,80 untuk menyisakan ruang untuk penggunaan statis QueryNode dan ledakan waktu kueri.</p></li>
-<li><p>Hindari kesenjangan yang besar antara watermark tinggi dan rendah; kesenjangan yang besar akan memperpanjang setiap siklus penggusuran dan dapat menambah latensi.</p></li>
+<li><p>Do not set high or low watermarks above ~0.80 to leave headroom for QueryNode static usage and query-time bursts.</p></li>
+<li><p>Avoid large gaps between high and low watermarks; big gaps prolong each eviction cycle and can add latency.</p></li>
 </ul>
-<h2 id="Configure-cache-TTL" class="common-anchor-header">Mengonfigurasi TTL cache<button data-href="#Configure-cache-TTL" class="anchor-icon" translate="no">
+<h2 id="Configure-cache-TTL" class="common-anchor-header">Configure cache TTL<button data-href="#Configure-cache-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -221,11 +220,11 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>Cache Time-to-Live (TTL)</strong> secara otomatis menghapus data yang ditembolok setelah durasi yang ditetapkan, meskipun ambang batas sumber daya tidak tercapai. TTL bekerja bersama penggusuran LRU untuk mencegah data yang sudah basi menempati cache tanpa batas waktu.</p>
+    </button></h2><p><strong>Cache Time-to-Live (TTL)</strong> automatically removes cached data after a set duration, even if resource thresholds are not reached. It works alongside LRU eviction to prevent stale data from occupying cache indefinitely.</p>
 <div class="alert note">
-<p>Cache TTL membutuhkan <code translate="no">backgroundEvictionEnabled: true</code>, karena berjalan pada thread latar belakang yang sama.</p>
+<p>Cache TTL requires <code translate="no">backgroundEvictionEnabled: true</code>, as it runs on the same background thread.</p>
 </div>
-<p><strong>Contoh YAML</strong>:</p>
+<p><strong>Example YAML</strong>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
     <span class="hljs-attr">tieredStorage:</span>
@@ -238,16 +237,16 @@ beta: Milvus 2.6.4+
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Tipe</p></th>
-     <th><p>Satuan</p></th>
-     <th><p>Deskripsi</p></th>
-     <th><p>Kasus penggunaan yang disarankan</p></th>
+     <th><p>Type</p></th>
+     <th><p>Unit</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended use case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">cacheTtl</code></p></td>
-     <td><p>bilangan bulat</p></td>
-     <td><p>detik</p></td>
-     <td><p>Durasi sebelum data yang di-cache kedaluwarsa. Item yang kedaluwarsa akan dihapus di latar belakang.</p></td>
-     <td><p>Gunakan TTL pendek (jam) untuk data yang sangat dinamis; gunakan TTL panjang (hari) untuk kumpulan data yang stabil. Tetapkan 0 untuk menonaktifkan kedaluwarsa berbasis waktu.</p></td>
+     <td><p>integer</p></td>
+     <td><p>seconds</p></td>
+     <td><p>Duration before cached data expires. Expired items are removed in the background.</p></td>
+     <td><p>Use a short TTL (hours) for highly dynamic data; use a long TTL (days) for stable datasets. Set 0 to disable time-based expiration.</p></td>
    </tr>
 </table>

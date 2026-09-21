@@ -1,11 +1,11 @@
 ---
 id: connect-to-milvus-server.md
-title: Conectarse a un servidor Milvus
+title: Connect to Milvus Server
 summary: >-
-  Este tema describe cómo establecer una conexión cliente a un servidor Milvus y
-  configurar las opciones comunes de conexión.
+  This topic describes how to establish a client connection to a Milvus server
+  and configure common connection options.
 ---
-<h1 id="Connect-to-Milvus-Server" class="common-anchor-header">Conectarse a un servidor Milvus<button data-href="#Connect-to-Milvus-Server" class="anchor-icon" translate="no">
+<h1 id="Connect-to-Milvus-Server" class="common-anchor-header">Connect to Milvus Server<button data-href="#Connect-to-Milvus-Server" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Este tema describe cómo establecer una conexión cliente a un servidor Milvus y configurar las opciones comunes de conexión.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Requisitos previos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This topic describes how to establish a client connection to a Milvus server and configure common connection options.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,11 +37,11 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>El SDK de su lenguaje instalado. Para más detalles, consulte <a href="/docs/es/v2.6.x/install-pymilvus.md">Python SDK</a>, <a href="/docs/es/v2.6.x/install-java.md">Java SDK</a>, <a href="/docs/es/v2.6.x/install-go.md">Go SDK</a>, o <a href="/docs/es/v2.6.x/install-node.md">Nodejs SDK</a>.</p></li>
-<li><p>Una dirección de servidor Milvus (para local por defecto: <code translate="no">http://localhost:19530</code>, puerto proxy <strong>19530</strong>).</p></li>
-<li><p>Si <a href="/docs/es/v2.6.x/authenticate.md">la autenticación está activada</a>, proporcione un <strong>token</strong> o un <strong>nombre de usuario + contraseña</strong>. Un token puede ser <code translate="no">username:password</code> (por ejemplo, <code translate="no">root:Milvus</code>). Consulte <a href="/docs/es/v2.6.x/authenticate.md">Autenticar el acceso de usuarios</a> y <a href="/docs/es/v2.6.x/users_and_roles.md">Crear usuarios y funciones</a> para obtener más información.</p></li>
+<li><p>The SDK of your language installed. For details, refer to <a href="/docs/es/v2.6.x/install-pymilvus.md">Python SDK</a>, <a href="/docs/es/v2.6.x/install-java.md">Java SDK</a>, <a href="/docs/es/v2.6.x/install-go.md">Go SDK</a>, or <a href="/docs/es/v2.6.x/install-node.md">Nodejs SDK</a>.</p></li>
+<li><p>A Milvus server address (for local default: <code translate="no">http://localhost:19530</code>, proxy port <strong>19530</strong>).</p></li>
+<li><p>If <a href="/docs/es/v2.6.x/authenticate.md">authentication is enabled</a>, provide either a <strong>token</strong> or a <strong>username + password</strong>. A token can be <code translate="no">username:password</code> (e.g., <code translate="no">root:Milvus</code>). See <a href="/docs/es/v2.6.x/authenticate.md">Authenticate User Access</a> and <a href="/docs/es/v2.6.x/users_and_roles.md">Create Users & Roles</a> for details.</p></li>
 </ul>
-<h2 id="Connect-by-URI-authentication-disabled" class="common-anchor-header">Conectar por URI (autenticación desactivada)<button data-href="#Connect-by-URI-authentication-disabled" class="anchor-icon" translate="no">
+<h2 id="Connect-by-URI-authentication-disabled" class="common-anchor-header">Connect by URI (authentication disabled)<button data-href="#Connect-by-URI-authentication-disabled" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,9 +56,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilice la dirección del servidor Milvus (por ejemplo <code translate="no">http://localhost:19530</code>) para establecer una conexión.</p>
+    </button></h2><p>Use the Milvus server address (e.g. <code translate="no">http://localhost:19530</code>) to establish a connection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -93,7 +98,7 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     -H <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
     -d <span class="hljs-string">&#x27;{}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Connect-with-credentials-authentication-enabled" class="common-anchor-header">Conectar con credenciales (autenticación activada)<button data-href="#Connect-with-credentials-authentication-enabled" class="anchor-icon" translate="no">
+<h2 id="Connect-with-credentials-authentication-enabled" class="common-anchor-header">Connect with credentials (authentication enabled)<button data-href="#Connect-with-credentials-authentication-enabled" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -108,9 +113,14 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Proporcione un <strong>token</strong> de la forma <code translate="no">&quot;username:password&quot;</code> o por separado <code translate="no">user</code> y <code translate="no">password</code>. El admin incorporado por defecto es <code translate="no">root:Milvus</code> (cámbialo para producción).</p>
+    </button></h2><p>Provide either a <strong>token</strong> in the form <code translate="no">&quot;username:password&quot;</code> or separate <code translate="no">user</code> and <code translate="no">password</code>. The default built-in admin is <code translate="no">root:Milvus</code> (change this for production).</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Token form</span>
@@ -162,9 +172,9 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     -d <span class="hljs-string">&#x27;{}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>El formato del token es <code translate="no">&quot;&lt;username&gt;:&lt;password&gt;&quot;</code>. En la documentación se indica explícitamente que <code translate="no">root:Milvus</code> es la credencial predeterminada, y en la guía <a href="/docs/es/v2.6.x/users_and_roles.md">Crear usuarios y funciones</a> se trata la gestión de usuarios.</p>
+<p>Token format is <code translate="no">&quot;&lt;username&gt;:&lt;password&gt;&quot;</code>. The docs explicitly note <code translate="no">root:Milvus</code> as the default credential, and the <a href="/docs/es/v2.6.x/users_and_roles.md">Create Users & Roles</a> guide covers managing users.</p>
 </div>
-<h2 id="Configure-a-timeout" class="common-anchor-header">Configurar un tiempo de espera<button data-href="#Configure-a-timeout" class="anchor-icon" translate="no">
+<h2 id="Configure-a-timeout" class="common-anchor-header">Configure a timeout<button data-href="#Configure-a-timeout" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -179,9 +189,14 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Establece un tiempo de espera por defecto en la conexión del cliente:</p>
+    </button></h2><p>Set a default timeout on the client connection:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>, timeout=<span class="hljs-number">1000</span>) <span class="hljs-comment"># If not set, the timeout defaults to 10s</span>
@@ -229,11 +244,11 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
 <ul>
-<li><p>Para los SDK enumerados anteriormente, este tiempo de espera sólo se utiliza al establecer conexiones y no sirve como tiempo de espera predeterminado para otras operaciones de la API.</p></li>
-<li><p>Para la API RESTful, <code translate="no">Request-Timeout</code> es un plazo por petición en segundos (a diferencia de <code translate="no">rpcDeadlineMs</code> de Java y <code translate="no">timeout</code> de Node.js , que están en milisegundos), así que inclúyalo en cada llamada que necesite un plazo.</p></li>
+<li><p>For the SDKs listed above, this timeout is used only when establishing connections and does not serve as a default timeout for other API operations.</p></li>
+<li><p>For the RESTful API, <code translate="no">Request-Timeout</code> is a per-request deadline in seconds (unlike Java’s <code translate="no">rpcDeadlineMs</code> and the Node.js <code translate="no">timeout</code>, which are in milliseconds), so include it on every call that needs a deadline.</p></li>
 </ul>
 </div>
-<h2 id="Connect-to-a-specific-database" class="common-anchor-header">Conectarse a una base de datos específica<button data-href="#Connect-to-a-specific-database" class="anchor-icon" translate="no">
+<h2 id="Connect-to-a-specific-database" class="common-anchor-header">Connect to a specific database<button data-href="#Connect-to-a-specific-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -248,9 +263,14 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Elige la base de datos de destino durante la construcción con <code translate="no">db_name</code>. También puedes cambiar más tarde usando <code translate="no">using_database()</code>.</p>
+    </button></h2><p>Choose the target database during construction with <code translate="no">db_name</code>. You can also switch later using <code translate="no">using_database()</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Set the database when creating the client</span>
@@ -312,9 +332,9 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Consulta la guía de <a href="/docs/es/v2.6.x/manage_databases.md">bases</a> de datos para crear, listar y describir bases de datos, y para tareas más amplias de gestión de bases de datos.</p>
+<p>See the <a href="/docs/es/v2.6.x/manage_databases.md">Database</a> guide for creating, listing, and describing databases, and for broader database management tasks.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">Lo que sigue<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -330,7 +350,7 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><a href="/docs/es/v2.6.x/create-collection.md">Crear Colección</a></p></li>
-<li><p><a href="/docs/es/v2.6.x/insert-update-delete.md">Insertar entidades</a></p></li>
-<li><p><a href="/docs/es/v2.6.x/single-vector-search.md">Búsqueda vectorial básica</a></p></li>
+<li><p><a href="/docs/es/v2.6.x/create-collection.md">Create Collection</a></p></li>
+<li><p><a href="/docs/es/v2.6.x/insert-update-delete.md">Insert Entities</a></p></li>
+<li><p><a href="/docs/es/v2.6.x/single-vector-search.md">Basic Vector Search</a></p></li>
 </ul>

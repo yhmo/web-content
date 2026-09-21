@@ -2,10 +2,9 @@
 id: stl-sort.md
 title: STL_SORT
 summary: >-
-  Der STL_SORT-Index ist ein Indextyp, der speziell entwickelt wurde, um die
-  Abfrageleistung für numerische Felder (INT8, INT16 usw.), VARCHAR-Felder oder
-  TIMESTAMPTZ-Felder innerhalb von Milvus zu verbessern, indem die Daten in
-  einer sortierten Reihenfolge organisiert werden.
+  The STL_SORT index is an index type specifically designed to enhance query
+  performance on numeric fields (INT8, INT16, etc.), VARCHAR fields, or
+  TIMESTAMPTZ fields within Milvus by organizing the data in a sorted order.
 ---
 <h1 id="STLSORT" class="common-anchor-header">STL_SORT<button data-href="#STLSORT" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -22,13 +21,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Der <code translate="no">STL_SORT</code> Index ist ein Indextyp, der speziell dafür entwickelt wurde, die Abfrageleistung für numerische Felder (INT8, INT16, etc.), <code translate="no">VARCHAR</code> Felder oder <code translate="no">TIMESTAMPTZ</code> Felder innerhalb von Milvus zu verbessern, indem die Daten in einer sortierten Reihenfolge organisiert werden.</p>
-<p>Verwenden Sie den <code translate="no">STL_SORT</code> Index, wenn Sie häufig Abfragen mit:</p>
+    </button></h1><p>The <code translate="no">STL_SORT</code> index is an index type specifically designed to enhance query performance on numeric fields (INT8, INT16, etc.), <code translate="no">VARCHAR</code> fields, or <code translate="no">TIMESTAMPTZ</code> fields within Milvus by organizing the data in a sorted order.</p>
+<p>Use the <code translate="no">STL_SORT</code> index if you frequently run queries with:</p>
 <ul>
-<li><p>Vergleichsfilterung mit den Operatoren <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, und <code translate="no">&lt;=</code> </p></li>
-<li><p>Bereichsfilterung mit den Operatoren <code translate="no">IN</code> und <code translate="no">LIKE</code> </p></li>
+<li><p>Comparison filtering with <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, and <code translate="no">&lt;=</code> operators</p></li>
+<li><p>Range filtering with <code translate="no">IN</code> and <code translate="no">LIKE</code> operators</p></li>
 </ul>
-<h2 id="Supported-data-types" class="common-anchor-header">Unterstützte Datentypen<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
+<h2 id="Supported-data-types" class="common-anchor-header">Supported data types<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,11 +43,11 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Numerische Felder (z. B. <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>). Einzelheiten finden Sie unter <a href="/docs/de/number.md">Boolesche &amp; Zahlen</a>.</p></li>
-<li><p><code translate="no">VARCHAR</code> Felder. Weitere Informationen finden Sie unter <a href="/docs/de/string.md">String-Feld</a>.</p></li>
-<li><p><code translate="no">TIMESTAMPTZ</code> Felder. Weitere Informationen finden Sie unter <a href="/docs/de/timestamptz-field.md">TIMESTAMPTZ-Feld</a>.</p></li>
+<li><p>Numeric fields (e.g., <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>). For details, refer to <a href="/docs/de/v2.6.x/number.md">Boolean & Number</a>.</p></li>
+<li><p><code translate="no">VARCHAR</code> fields. For details, refer to <a href="/docs/de/v2.6.x/string.md">String Field</a>.</p></li>
+<li><p><code translate="no">TIMESTAMPTZ</code> fields. For details, refer to <a href="/docs/de/v2.6.x/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">Wie es funktioniert<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -63,24 +62,24 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus implementiert <code translate="no">STL_SORT</code> in zwei Phasen:</p>
+    </button></h2><p>Milvus implements <code translate="no">STL_SORT</code> in two phases:</p>
 <ol>
-<li><p><strong>Index aufbauen</strong></p>
+<li><p><strong>Build index</strong></p>
 <ul>
-<li><p>Während der Aufnahme sammelt Milvus alle Werte für das indizierte Feld.</p></li>
-<li><p>Die Werte werden in aufsteigender Reihenfolge mit <a href="https://en.cppreference.com/w/cpp/algorithm/sort.html">std::sort</a> der C++ STL sortiert.</p></li>
-<li><p>Jeder Wert wird mit seiner Entitäts-ID gepaart, und das sortierte Array wird als Index persistiert.</p></li>
+<li><p>During ingestion, Milvus collects all values for the indexed field.</p></li>
+<li><p>The values are sorted in ascending order using C++ STL’s <a href="https://en.cppreference.com/w/cpp/algorithm/sort.html">std::sort</a>.</p></li>
+<li><p>Each value is paired with its entity ID, and the sorted array is persisted as the index.</p></li>
 </ul></li>
-<li><p><strong>Abfragen bescheunigen</strong></p>
+<li><p><strong>Accelerate queries</strong></p>
 <ul>
-<li><p>Zur Abfragezeit verwendet Milvus eine <strong>binäre Suche</strong><a href="https://en.cppreference.com/w/cpp/algorithm/lower_bound.html">(std::lower_bound</a> und <a href="https://en.cppreference.com/w/cpp/algorithm/upper_bound.html">std::upper_bound</a>) für das sortierte Array.</p></li>
-<li><p>Bei Gleichheit findet Milvus schnell alle übereinstimmenden Werte.</p></li>
-<li><p>Bei Bereichen findet Milvus die Start- und Endpositionen und gibt alle Werte dazwischen zurück.</p></li>
-<li><p>Die übereinstimmenden Entitäts-IDs werden zur endgültigen Zusammenstellung der Ergebnisse an den Abfrageexecutor weitergeleitet.</p></li>
+<li><p>At query time, Milvus uses <strong>binary search</strong> (<a href="https://en.cppreference.com/w/cpp/algorithm/lower_bound.html">std::lower_bound</a> and <a href="https://en.cppreference.com/w/cpp/algorithm/upper_bound.html">std::upper_bound</a>) on the sorted array.</p></li>
+<li><p>For equality, Milvus quickly finds all matching values.</p></li>
+<li><p>For ranges, Milvus locates the start and end positions and returns all values in between.</p></li>
+<li><p>Matching entity IDs are passed to the query executor for final result assembly.</p></li>
 </ul></li>
 </ol>
-<p>Dies reduziert die Abfragekomplexität von <strong>O(n)</strong> (vollständiger Scan) auf <strong>O(log n + m)</strong>, wobei <em>m</em> die Anzahl der Übereinstimmungen ist.</p>
-<h2 id="Create-an-STLSORT-index" class="common-anchor-header">Einen STL_SORT-Index erstellen<button data-href="#Create-an-STLSORT-index" class="anchor-icon" translate="no">
+<p>This reduces query complexity from <strong>O(n)</strong> (full scan) to <strong>O(log n + m)</strong>, where <em>m</em> is the number of matches.</p>
+<h2 id="Create-an-STLSORT-index" class="common-anchor-header">Create an STL_SORT index<button data-href="#Create-an-STLSORT-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,8 +94,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sie können einen <code translate="no">STL_SORT</code> Index für ein numerisches oder <code translate="no">TIMESTAMPTZ</code> Feld erstellen. Es sind keine zusätzlichen Parameter erforderlich.</p>
-<p>Das folgende Beispiel zeigt, wie Sie einen <code translate="no">STL_SORT</code> Index für ein <code translate="no">TIMESTAMPTZ</code> Feld erstellen:</p>
+    </button></h2><p>You can create an <code translate="no">STL_SORT</code> index on a numeric or <code translate="no">TIMESTAMPTZ</code> field. No extra parameters are required.</p>
+<p>The example below shows how to create an <code translate="no">STL_SORT</code> index on a <code translate="no">TIMESTAMPTZ</code> field:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your server address</span>
@@ -120,7 +119,7 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-an-index" class="common-anchor-header">Löschen eines Index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -135,7 +134,7 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Verwenden Sie die Methode <code translate="no">drop_index()</code>, um einen bestehenden Index aus einer Sammlung zu entfernen.</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
@@ -143,7 +142,7 @@ client.create_index(
     index_name=<span class="hljs-string">&quot;tsz_index&quot;</span> <span class="hljs-comment"># Name of the index to drop</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Usage-notes" class="common-anchor-header">Hinweise zur Verwendung<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<h2 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -159,7 +158,7 @@ client.create_index(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Feldtypen:</strong> Funktioniert mit numerischen und <code translate="no">TIMESTAMPTZ</code> Feldern. Weitere Informationen zu den Datentypen finden Sie unter <a href="/docs/de/number.md">Boolesche und numerische</a> <a href="/docs/de/timestamptz-field.md">Felder</a> und <a href="/docs/de/timestamptz-field.md">TIMESTAMPTZ-Felder</a>.</p></li>
-<li><p><strong>Parameter:</strong> Es werden keine Indexparameter benötigt.</p></li>
-<li><p><strong>Mmap nicht unterstützt:</strong> Der Modus "Memory-mapped" ist für <code translate="no">STL_SORT</code> nicht verfügbar.</p></li>
+<li><p><strong>Field types:</strong> Works with numeric and <code translate="no">TIMESTAMPTZ</code> fields. For more information on data types, refer to <a href="/docs/de/v2.6.x/number.md">Boolean & Number</a> and <a href="/docs/de/v2.6.x/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p></li>
+<li><p><strong>Parameters:</strong> No index parameters are needed.</p></li>
+<li><p><strong>Mmap not supported:</strong> Memory-mapped mode is not available for <code translate="no">STL_SORT</code>.</p></li>
 </ul>

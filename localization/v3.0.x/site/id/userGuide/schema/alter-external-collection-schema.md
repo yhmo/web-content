@@ -1,12 +1,12 @@
 ---
 id: alter-external-collection-schema.md
-title: Mengubah Skema Koleksi EksternalCompatible with Milvus 3.0.x
+title: Alter External Collection SchemaCompatible with Milvus 3.0.x
 summary: >-
-  Pelajari cara menampilkan bidang tambahan dari sumber data eksternal dalam
-  koleksi eksternal yang sudah ada.
+  Learn how to expose an additional field from an external data source in an
+  existing external collection.
 beta: Milvus 3.0.x
 ---
-<h1 id="Alter-External-Collection-Schema" class="common-anchor-header">Mengubah Skema Koleksi Eksternal<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Alter-External-Collection-Schema" class="anchor-icon" translate="no">
+<h1 id="Alter-External-Collection-Schema" class="common-anchor-header">Alter External Collection Schema<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Alter-External-Collection-Schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,9 +21,9 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Sumber data eksternal sering kali mengalami perubahan setelah Anda membuat koleksi eksternal. Misalnya, tabel Lakehouse yang sudah menyimpan embeddings mungkin nantinya akan mencakup bidang skalar baru, seperti skor, kategori, atau cap waktu, yang ingin Anda tampilkan dalam hasil kueri atau gunakan dalam filter.</p>
-<p>Daripada membuat ulang koleksi eksternal atau menyalin data sumber ke Milvus, tambahkan bidang Milvus yang dipetakan ke bidang yang sudah ada di sumber data eksternal. Setelah menambahkan bidang tersebut, segarkan koleksi eksternal agar bidang baru tersebut dapat digunakan dalam kueri dan pencarian.</p>
-<h2 id="Limits" class="common-anchor-header">Batasan<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>External data sources often evolve after you create an external collection. For example, a lakehouse table that already stores embeddings might later include a new scalar field, such as a score, category, or timestamp, that you want to return in query results or use in filters.</p>
+<p>Instead of recreating the external collection or copying the source data into Milvus, add a Milvus field that maps to the existing field in the external data source. After adding the field, refresh the external collection so the new field can be used in queries and searches.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,12 +39,12 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Koleksi eksternal saat ini mendukung penambahan bidang setelah pembuatan. Perubahan skema lainnya, seperti menghapus bidang, mengganti nama bidang, mengubah tipe data bidang, mengubah dimensi vektor, atau memetakan ulang <code translate="no">external_field</code>, tidak didukung.</p></li>
-<li><p>Anda hanya dapat menambahkan bidang yang sudah ada di sumber data eksternal. Operasi ini memetakan bidang eksternal yang sudah ada ke bidang Milvus. Operasi ini tidak membuat bidang baru di sumber data eksternal atau mengisi ulang data sumber.</p></li>
-<li><p>Penambahan bidang <code translate="no">SPARSE_FLOAT_VECTOR</code> ke koleksi eksternal yang sudah ada tidak didukung.</p></li>
-<li><p>Menambahkan bidang StructArray ke koleksi eksternal yang sudah ada tidak didukung. Jika koleksi eksternal Anda memerlukan bidang StructArray, tentukan bidang tersebut dalam skema koleksi saat Anda membuat koleksi.</p></li>
+<li><p>External collections currently support adding fields after creation. Other schema changes, such as dropping fields, renaming fields, changing field data types, changing vector dimensions, or remapping <code translate="no">external_field</code>, are not supported.</p></li>
+<li><p>You can only add a field that already exists in the external data source. This operation maps an existing external field to a Milvus field. It does not create a new field in the external data source or backfill source data.</p></li>
+<li><p>Adding <code translate="no">SPARSE_FLOAT_VECTOR</code> fields to an existing external collection is not supported.</p></li>
+<li><p>Adding StructArray fields to an existing external collection is not supported. If your external collection needs a StructArray field, define it in the collection schema when you create the collection.</p></li>
 </ul>
-<h2 id="Add-a-field" class="common-anchor-header">Menambahkan bidang<button data-href="#Add-a-field" class="anchor-icon" translate="no">
+<h2 id="Add-a-field" class="common-anchor-header">Add a field<button data-href="#Add-a-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,9 +59,9 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sebelum menambahkan bidang ke koleksi eksternal, pastikan bidang tersebut sudah ada di sumber data eksternal. Kemudian panggil ` <code translate="no">add_collection_field()</code> ` untuk menampilkan bidang tersebut di Milvus dengan mengatur ` <code translate="no">external_field</code> ` ke nama bidang di sumber data eksternal. Atur ` <code translate="no">data_type</code> ` ke tipe data Milvus yang sesuai dengan bidang di sumber data eksternal. Misalnya, jika bidang yang dipetakan menyimpan nilai presisi ganda, gunakan ` <code translate="no">DataType.DOUBLE</code>`.</p>
-<p>Berbeda dengan koleksi terkelola, nilai untuk kolom yang ditambahkan dibaca dari sumber data eksternal setelah Anda menyegarkan koleksi eksternal.</p>
-<h3 id="Add-a-scalar-field" class="common-anchor-header">Menambahkan bidang skalar<button data-href="#Add-a-scalar-field" class="anchor-icon" translate="no">
+    </button></h2><p>Before adding a field to an external collection, verify that the field already exists in the external data source. Then call <code translate="no">add_collection_field()</code> to expose that field in Milvus by setting <code translate="no">external_field</code> to the field name in the external data source. Set <code translate="no">data_type</code> to the Milvus data type that matches the field in the external data source. For example, if the mapped field stores double-precision values, use <code translate="no">DataType.DOUBLE</code>.</p>
+<p>Unlike managed collections, values for the added field are read from the external data source after you refresh the external collection.</p>
+<h3 id="Add-a-scalar-field" class="common-anchor-header">Add a scalar field<button data-href="#Add-a-scalar-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,7 +76,7 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Gunakan ` <code translate="no">add_collection_field()</code> ` untuk menambahkan bidang skalar jika Anda ingin menampilkan bidang tersebut dalam hasil kueri atau menggunakannya dalam filter. Contoh berikut menambahkan bidang ` <code translate="no">score</code> ` yang dipetakan ke bidang ` <code translate="no">score</code> ` di sumber data eksternal.</p>
+    </button></h3><p>Use <code translate="no">add_collection_field()</code> to add a scalar field when you want to return the field in query results or use it in filters. The following example adds a <code translate="no">score</code> field that maps to the <code translate="no">score</code> field in the external data source.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
 
 client = MilvusClient(
@@ -92,8 +92,8 @@ client.add_collection_field(
 <span class="highlighted-wrapper-line">    external_field=<span class="hljs-string">&quot;score&quot;</span>,</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam contoh ini, ` <code translate="no">score</code> ` adalah nama bidang Milvus dan ` <code translate="no">external_field=&quot;score&quot;</code> ` memetakan bidang tersebut ke bidang ` <code translate="no">score</code> ` di sumber data eksternal. Tetapkan ` <code translate="no">nullable=True</code> ` karena bidang tersebut ditambahkan setelah koleksi telah dibuat.</p>
-<h3 id="Add-a-vector-field" class="common-anchor-header">Menambahkan bidang vektor<button data-href="#Add-a-vector-field" class="anchor-icon" translate="no">
+<p>In this example, <code translate="no">score</code> is the Milvus field name and <code translate="no">external_field=&quot;score&quot;</code> maps it to the <code translate="no">score</code> field in the external data source. Set <code translate="no">nullable=True</code> because the field is added after the collection has already been created.</p>
+<h3 id="Add-a-vector-field" class="common-anchor-header">Add a vector field<button data-href="#Add-a-vector-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -108,8 +108,8 @@ client.add_collection_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Anda juga dapat menambahkan bidang vektor jika sumber data eksternal sudah berisi nilai-nilai vektor. Atur vektor <code translate="no">data_type</code> dan <code translate="no">dim</code> agar sesuai dengan bidang vektor di sumber data eksternal.</p>
-<p>Contoh berikut menambahkan bidang vektor padat bernama <code translate="no">image_embedding_v2</code>.</p>
+    </button></h3><p>You can also add a vector field if the external data source already contains the vector values. Set the vector <code translate="no">data_type</code> and <code translate="no">dim</code> to match the vector field in the external data source.</p>
+<p>The following example adds a dense vector field named <code translate="no">image_embedding_v2</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
 
 client = MilvusClient(
@@ -126,7 +126,7 @@ client.add_collection_field(
 <span class="highlighted-wrapper-line">    external_field=<span class="hljs-string">&quot;image_embedding_v2&quot;</span>,</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Jika Anda berencana menjalankan pencarian vektor pada bidang vektor yang ditambahkan, buatlah indeks untuk bidang tersebut sebelum menyegarkan koleksi eksternal.</p>
+<p>If you plan to run vector search on the added vector field, create an index for the field before refreshing the external collection.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
 index_params.add_index(
@@ -140,7 +140,7 @@ client.create_index(
     index_params=index_params,
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Refresh-the-external-collection" class="common-anchor-header">Segarkan koleksi eksternal<button data-href="#Refresh-the-external-collection" class="anchor-icon" translate="no">
+<h2 id="Refresh-the-external-collection" class="common-anchor-header">Refresh the external collection<button data-href="#Refresh-the-external-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -155,7 +155,7 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Setelah mengubah skema koleksi eksternal, segarkan koleksi eksternal agar Milvus memperbarui metadata koleksi eksternal dan menerapkan perubahan skema tersebut pada hasil kueri, pencarian, dan penyaringan.</p>
+    </button></h2><p>After altering an external collection schema, refresh the external collection so Milvus updates the external collection metadata and makes the schema change effective in query, search, and filter results.</p>
 <pre><code translate="no" class="language-python">client.refresh_external_collection(
     collection_name=<span class="hljs-string">&quot;product_embeddings&quot;</span>
 )

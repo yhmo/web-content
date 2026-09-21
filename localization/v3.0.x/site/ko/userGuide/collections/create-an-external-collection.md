@@ -1,13 +1,14 @@
 ---
 id: create-an-external-collection.md
-title: 외부 컬렉션 생성Compatible with Milvus 3.0.x
+title: Create an External CollectionCompatible with Milvus 3.0.x
 summary: >-
-  외부 컬렉션은 Milvus의 데이터 컬렉션 유형 중 하나로, AWS S3 및 Iceberg와 같은 외부 스토리지 시스템이나 데이터베이스
-  테이블의 데이터에 Milvus로 복사하지 않고 직접 액세스합니다. 이는 데이터 레이크 위에 쿼리 계층 역할을 수행하면서 Milvus 쿼리
-  인터페이스와의 호환성을 유지합니다.
+  An external collection is a type of data collection in Milvus that accesses
+  data from external storage systems or database tables such as AWS S3 and
+  Iceberg without copying it into Milvus. It acts as a query layer over data
+  lakes while maintaining compatibility with Milvus query interfaces.
 beta: Milvus 3.0.x
 ---
-<h1 id="Create-an-External-Collection" class="common-anchor-header">외부 컬렉션 생성<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Create-an-External-Collection" class="anchor-icon" translate="no">
+<h1 id="Create-an-External-Collection" class="common-anchor-header">Create an External Collection<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Create-an-External-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,11 +23,11 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>외부 컬렉션은 Milvus의 데이터 컬렉션 유형 중 하나로, AWS S3 및 Iceberg와 같은 외부 스토리지 시스템이나 데이터베이스 테이블의 데이터에 Milvus로 복사하지 않고 직접 액세스합니다. 이 기능은 데이터 레이크 위에 쿼리 계층 역할을 수행하면서 Milvus 쿼리 인터페이스와의 호환성을 유지합니다.</p>
+    </button></h1><p>An external collection is a type of data collection in Milvus that accesses data from external storage systems or database tables such as AWS S3 and Iceberg without copying it into Milvus. It acts as a query layer over data lakes while maintaining compatibility with Milvus query interfaces.</p>
 <div class="alert note">
-<p>이 기능을 사용하려면 Storage V3가 필요합니다. 활성화 방법 및 호환성 고려 사항에 대해서는 <a href="/docs/ko/storage-v3.md">Storage V3를</a> 참조하십시오.</p>
+<p>This feature requires Storage V3. For enablement instructions and compatibility considerations, see <a href="/docs/ko/storage-v3.md">Storage V3</a>.</p>
 </div>
-<h2 id="Overview" class="common-anchor-header">개요<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,24 +42,24 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>일반적인 AI 데이터 파이프라인에서 사용자는 이미 AWS S3와 같은 스토리지 시스템에 Parquet 또는 기타 형식으로 데이터를 저장해 놓은 경우가 많습니다. Milvus가 이러한 외부 저장 데이터를 활용할 수 있도록 하려면, 사용자는 일반적으로 ETL(Extract-Transform-Load) 파이프라인을 사용하여 해당 데이터를 Milvus 자체 스토리지로 가져와야 합니다.</p>
-<p>이러한 ‘데이터를 Milvus로 가져오기’ 워크플로우는 동기화하기 어려운 중복 데이터를 생성하며, 데이터 일관성을 보장하기 위한 엔지니어링 유지 관리 부담을 가중시킵니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/external-collection-bring-data-to-compute.png" alt="Bring data to compute workflow" class="doc-image" id="bring-data-to-compute-workflow" /> 
-   <span>데이터를 컴퓨팅 워크플로우로 가져오기</span>
-  
- </span></p>
-<p>이러한 문제를 해결하기 위해 Milvus는 데이터 동기화나 ETL 파이프라인에 대한 걱정 없이 Milvus에서 외부 저장 데이터를 직접 액세스할 수 있는 ‘외부 컬렉션’ 기능을 제공합니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/external-collection-bring-compute-to-data.png" alt="Bring compute to data workflow" class="doc-image" id="bring-compute-to-data-workflow" /> 
-   <span>'데이터로 컴퓨팅을 가져오는' 워크플로우</span>
-  
- </span></p>
-<p>외부 컬렉션을 생성하면 해당 컬렉션이 데이터에 직접 액세스할 수 있으며, 데이터는 사용자가 저장해 둔 위치 그대로 유지됩니다. 백그라운드에서 Milvus는 Milvus 메타데이터와 외부 데이터 파일의 행 간의 매핑을 기록하는 매니페스트 파일을 생성합니다. 매니페스트 파일이 준비되면, 관리형 컬렉션에서와 마찬가지로 외부 컬렉션에 인덱스를 생성할 수 있습니다.</p>
-<p>데이터가 변경되면 1초 미만의 시간 내에 수동으로 새로 고침을 실행하여 메타데이터를 업데이트함으로써 Milvus를 항상 최신 상태로 유지할 수 있습니다.</p>
-<h2 id="Step-1-Create-schema" class="common-anchor-header">1단계: 스키마 생성<button data-href="#Step-1-Create-schema" class="anchor-icon" translate="no">
+    </button></h2><p>In a typical AI data pipeline, users may already have stored their data in Parquet or other formats on their storage system, such as AWS S3. To make Milvus consume this externally stored data, users usually need to import it into Milvus’ own storage using Extract-Transform-Load (ETL) pipelines.</p>
+<p>This bring-your-data-to-Milvus workflow creates redundant data that is hard to synchronize and adds to the engineering maintenance burden to ensure data consistency.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/external-collection-bring-data-to-compute.png" alt="Bring data to compute workflow" class="doc-image" id="bring-data-to-compute-workflow" />
+    <span>Bring data to compute workflow</span>
+  </span>
+</p>
+<p>To resolve these issues, Milvus delivers external collections that let you access your externally stored data from Milvus without worrying about data synchronization and ETL pipelines.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/external-collection-bring-compute-to-data.png" alt="Bring compute to data workflow" class="doc-image" id="bring-compute-to-data-workflow" />
+    <span>Bring compute to data workflow</span>
+  </span>
+</p>
+<p>Once created, an external collection can access your data directly and keep it in the same place where you store it. In the background, Milvus creates manifest files to record the mappings between the Milvus metadata and the rows in external data files. After the manifest files are ready, you can create indexes in the external collection as you would in any managed collection.</p>
+<p>When your data changes, manually triggering a sub-second refresh updates the metadata, keeping Milvus always up to date.</p>
+<h2 id="Step-1-Create-schema" class="common-anchor-header">Step 1: Create schema<button data-href="#Step-1-Create-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,13 +74,13 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>관리형 컬렉션을 생성할 때와 마찬가지로, 외부 컬렉션을 생성하기 전에 스키마를 생성해야 합니다. 다만, 이 스키마는 관리형 컬렉션의 스키마와 약간 다릅니다.</p>
+    </button></h2><p>As with creating a managed collection, you also need to create a schema before creating an external collection. However, the schema is slightly different from that of a managed collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -139,32 +140,32 @@ schema := entity.NewSchema().
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>외부 컬렉션의 스키마를 생성하려면 소스 데이터 URI, 데이터 형식 및 인증 설정을 지정해야 합니다.</p>
+<p>To create the schema for an external collection, you need to specify the source data URI, the data format, and authentication settings.</p>
 <table>
    <tr>
-     <th><p>매개변수 이름</p></th>
-     <th><p>매개변수 설명</p></th>
-     <th><p>예시 값</p></th>
+     <th><p>Parameter Name</p></th>
+     <th><p>Parameter Description</p></th>
+     <th><p>Example Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">format</code></p></td>
-     <td><p>대상 소스 데이터 파일의 형식.</p></td>
+     <td><p>Format of the target source data files.</p></td>
      <td><p><code translate="no">parquet</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">snapshot_id</code></p></td>
-     <td><p>유효한 Iceberg 테이블 스냅샷 ID입니다. 이 매개 변수는 <code translate="no">format</code> 를 <code translate="no">iceberg_table</code> 로 설정했을 때만 적용됩니다.</p></td>
+     <td><p>A valid Iceberg table snapshot ID. This parameter applies only when you set <code translate="no">format</code> to <code translate="no">iceberg_table</code>.</p></td>
      <td><p><code translate="no">473984310232959286</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs</code></p></td>
-     <td><p>문자열로 변환된 JSON 구조의 외부 파일 시스템 설정.</p></td>
+     <td><p>External file system settings in a stringified JSON structure.</p></td>
      <td><p>--</p></td>
    </tr>
 </table>
 <p><details summary="Authentication Options"></p>
-<p>인증 설정을 구성하려면 다음 옵션을 사용할 수 있습니다:</p>
-<h3 id="Use-AWS-AKSK" class="common-anchor-header">AWS AK/SK 사용<button data-href="#Use-AWS-AKSK" class="anchor-icon" translate="no">
+<p>You have the following options to set the authentication settings:</p>
+<h3 id="Use-AWS-AKSK" class="common-anchor-header">Use AWS AK/SK<button data-href="#Use-AWS-AKSK" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -179,7 +180,7 @@ schema := entity.NewSchema().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 옵션은 자체 호스팅 MinIO 또는 업무용으로 AK/SK를 보유하고 있는 경우에 적용됩니다.</p>
+    </button></h3><p>This option applies to self-hosted MinIO or the scenario where you have AK/SK for work.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;format&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;extfs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -194,42 +195,42 @@ schema := entity.NewSchema().
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>매개변수 이름</p></th>
-     <th><p>매개변수 설명</p></th>
-     <th><p>예시 값</p></th>
+     <th><p>Parameter Name</p></th>
+     <th><p>Parameter Description</p></th>
+     <th><p>Example Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.access_key_id</code></p></td>
-     <td><p>액세스 키 ID</p></td>
+     <td><p>Access key ID</p></td>
      <td><p><code translate="no">AKIA...</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.access_key_value</code></p></td>
-     <td><p>액세스 키 값</p></td>
+     <td><p>Access key value</p></td>
      <td><p><code translate="no">u7LH...</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.region</code></p></td>
-     <td><p>클라우드 리전 ID</p></td>
+     <td><p>Cloud region ID</p></td>
      <td><p><code translate="no">us-west-2</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.cloud_provider</code></p></td>
-     <td><p>클라우드 공급자 ID</p></td>
+     <td><p>Cloud provider ID</p></td>
      <td><p><code translate="no">aws</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.use_ssl</code></p></td>
-     <td><p>연결 설정에 SSL을 사용할지 여부.</p></td>
+     <td><p>Whether SSL is used to establish connections.</p></td>
      <td><p><code translate="no">true</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.use_virtual_host</code></p></td>
-     <td><p>버킷에 액세스할 때 가상 호스팅을 사용할지 여부.</p><p>자세한 내용은 <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html">이 문서를</a> 참조하십시오.</p></td>
+     <td><p>Whether to use virtual hosting for access to your bucket.</p><p>For details, refer to <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html">this article</a>.</p></td>
      <td><p><code translate="no">true</code></p></td>
    </tr>
 </table>
-<h3 id="Use-AWS-IAM" class="common-anchor-header">AWS IAM 사용<button data-href="#Use-AWS-IAM" class="anchor-icon" translate="no">
+<h3 id="Use-AWS-IAM" class="common-anchor-header">Use AWS IAM<button data-href="#Use-AWS-IAM" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -244,7 +245,7 @@ schema := entity.NewSchema().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 옵션은 Milvus가 EC2 인스턴스 또는 EKS 클러스터에서 실행되는 시나리오에 적용됩니다. 이 경우 AK/SK를 하드코딩할 필요가 없습니다.</p>
+    </button></h3><p>This option applies to the scenario where Milvus runs on an EC2 instance or an EKS cluster. In this case, you do not need to hardcode the AK/SK.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;format&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;extfs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -258,37 +259,37 @@ schema := entity.NewSchema().
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>매개변수 이름</p></th>
-     <th><p>매개변수 설명</p></th>
-     <th><p>예시 값</p></th>
+     <th><p>Parameter Name</p></th>
+     <th><p>Parameter Description</p></th>
+     <th><p>Example Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.use_iam</code></p></td>
-     <td><p>AWS IAM을 사용할지 여부입니다.</p><p>이 옵션을 사용하려면 이 값을 <code translate="no">"true"</code> 로 설정하십시오.</p></td>
+     <td><p>Whether to use AWS IAM.</p><p>Set this to <code translate="no">"true"</code> for this option.</p></td>
      <td><p><code translate="no">true</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.iam_endpoint</code></p></td>
-     <td><p>유효한 AWS STS 엔드포인트입니다. </p><p>자세한 내용은 <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_region-endpoints.html">이 문서를</a> 참조하십시오.</p></td>
+     <td><p>A valid AWS STS endpoint. </p><p>For details, refer to <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_region-endpoints.html">this article</a>.</p></td>
      <td><p><code translate="no">https:&ast;//&ast;sts.&lt;region&gt;.amazonaws.com</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.region</code></p></td>
-     <td><p>클라우드 리전 ID</p></td>
+     <td><p>Cloud region ID</p></td>
      <td><p><code translate="no">us-west-2</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.cloud_provider</code></p></td>
-     <td><p>클라우드 공급자 ID</p></td>
+     <td><p>Cloud provider ID</p></td>
      <td><p><code translate="no">aws</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.use_ssl</code></p></td>
-     <td><p>연결 설정에 SSL을 사용할지 여부.</p></td>
+     <td><p>Whether SSL is used to establish connections.</p></td>
      <td><p><code translate="no">true</code></p></td>
    </tr>
 </table>
-<h3 id="Use-Milvus-global-credentials" class="common-anchor-header">Milvus 글로벌 자격 증명 사용<button data-href="#Use-Milvus-global-credentials" class="anchor-icon" translate="no">
+<h3 id="Use-Milvus-global-credentials" class="common-anchor-header">Use Milvus global credentials<button data-href="#Use-Milvus-global-credentials" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -303,7 +304,7 @@ schema := entity.NewSchema().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 옵션은 외부 데이터를 Milvus 버킷에 저장할 때 적용되며, <code translate="no">milvus.yaml</code> 에 지정된 글로벌 MinIO 설정을 사용하여 데이터에 직접 액세스할 수 있습니다.</p>
+    </button></h3><p>This option applies when you store external data in the Milvus bucket, and the global MinIO settings specified in <code translate="no">milvus.yaml</code> can be used directly to access the data.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;format&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;extfs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -311,7 +312,7 @@ schema := entity.NewSchema().
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Use-IAM-Role-ARN" class="common-anchor-header">IAM 역할 ARN 사용<button data-href="#Use-IAM-Role-ARN" class="anchor-icon" translate="no">
+<h3 id="Use-IAM-Role-ARN" class="common-anchor-header">Use IAM Role ARN<button data-href="#Use-IAM-Role-ARN" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -326,14 +327,14 @@ schema := entity.NewSchema().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 옵션은 조직에서 Milvus 클러스터와 대상 데이터 파일이 저장된 버킷을 관리하기 위해 서로 다른 AWS 계정을 사용하는 경우에 적용됩니다.</p>
-<p>이 경우, 버킷 소유자는 다음을 수행하는 IAM 역할을 생성해야 합니다.</p>
+    </button></h3><p>This option applies when your organization uses different AWS accounts to manage the Milvus cluster and the bucket that holds the target data files.</p>
+<p>In this case, the bucket owner should create an IAM role that</p>
 <ul>
-<li><p><code translate="no">AmazonS3FullAccess</code> 또는 버킷 액세스를 위한 보다 세분화된 정책을 연결해야 합니다.</p></li>
-<li><p>역할의 신뢰 정책(Trust Policy)의 조건(Condition) 필드에 자체 정의한 <code translate="no">sts:ExternalId</code> 를 포함합니다.</p></li>
+<li><p>Attaches <code translate="no">AmazonS3FullAccess</code> or a more fine-grained policy for bucket access.</p></li>
+<li><p>Includes a self-defined <code translate="no">sts:ExternalId</code> in the Condition field of the role’s Trust Policy.</p></li>
 </ul>
-<p>그런 다음, 버킷 소유자는 귀하에게 IAM 역할 ARN과 외부 ID를 제공해야 하며, 귀하는 해당 값을 사용하여 <code translate="no">sts:AssumeRole</code> 를 호출함으로써 IAM 역할을 인수할 수 있습니다.</p>
-<p>다음은 허용된 권한이 포함된 IAM 역할에 첨부할 권한 정책의 예시입니다. 요구 사항에 맞게 조정할 수 있습니다.</p>
+<p>Then, the bucket owner should provide you with the IAM role ARN and the External ID so you can call <code translate="no">sts:AssumeRole</code> with those values to assume the IAM Role.</p>
+<p>The following is an example permission policy to be attached to the IAM role with the allowed permissions. You can adjust this to meet your requirements.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;Version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2012-10-17&quot;</span><span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;Statement&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
@@ -357,7 +358,7 @@ schema := entity.NewSchema().
     <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>또한 IAM 역할과 연결된 신뢰 정책은 누가 해당 역할을 인수할 수 있는지를 정의합니다.</p>
+<p>And the trust policy associated with the IAM role defines who is allowed to assume it.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;Version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2012-10-17&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;Statement&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
@@ -376,7 +377,7 @@ schema := entity.NewSchema().
   <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>IAM 역할의 ARN과 외부 ID를 확보한 후에는 다음과 같이 <code translate="no">external_spec</code> 매개변수를 설정할 수 있습니다.</p>
+<p>Once you have obtained the IAM Role ARN and the External ID, you can set up the <code translate="no">external_spec</code> parameter as follows:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;format&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;extfs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -393,48 +394,48 @@ schema := entity.NewSchema().
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>매개변수 이름</p></th>
-     <th><p>매개변수 설명</p></th>
-     <th><p>예시 값</p></th>
+     <th><p>Parameter Name</p></th>
+     <th><p>Parameter Description</p></th>
+     <th><p>Example Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.cloud_provider</code></p></td>
-     <td><p>클라우드 공급자 ID</p></td>
+     <td><p>Cloud provider ID</p></td>
      <td><p><code translate="no">aws</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.region</code></p></td>
-     <td><p>클라우드 리전 ID</p></td>
+     <td><p>Cloud region ID</p></td>
      <td><p><code translate="no">us-west-2</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.use_ssl</code></p></td>
-     <td><p>연결 설정에 SSL을 사용할지 여부.</p></td>
+     <td><p>Whether SSL is used to establish connections.</p></td>
      <td><p><code translate="no">true</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.use_iam</code></p></td>
-     <td><p>AWS IAM을 사용할지 여부.</p><p>이 옵션의 경우 이 값을 <code translate="no">"true"</code> 로 설정하십시오.</p></td>
+     <td><p>Whether to use AWS IAM.</p><p>Set this to <code translate="no">"true"</code> for this option.</p></td>
      <td><p><code translate="no">true</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.role_arn</code></p></td>
-     <td><p>버킷 소유자로부터 받은 IAM 역할 ARN.</p></td>
+     <td><p>IAM Role ARN obtained from the bucket owner.</p></td>
      <td><p><code translate="no">arn:aws:iam::306787000000:role/...</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.external_id</code></p></td>
-     <td><p>버킷 소유자로부터 받은 외부 ID.</p></td>
+     <td><p>External ID obtained from the bucket owner.</p></td>
      <td><p>--</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">extfs.load_frequency</code></p></td>
-     <td><p>Milvus가 임시 인증 자격 증명을 가져오는 간격(초 단위).</p></td>
+     <td><p>Interval at which Milvus retrieves temporary authentication credentials in seconds.</p></td>
      <td><p><code translate="no">900</code></p></td>
    </tr>
 </table>
 <p></details></p>
-<h2 id="Step-2-Add-fields" class="common-anchor-header">2단계: 필드 추가<button data-href="#Step-2-Add-fields" class="anchor-icon" translate="no">
+<h2 id="Step-2-Add-fields" class="common-anchor-header">Step 2: Add fields<button data-href="#Step-2-Add-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -449,13 +450,13 @@ schema := entity.NewSchema().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>스키마 준비가 완료되면 다음과 같이 필드를 추가할 수 있습니다:</p>
+    </button></h2><p>Once the schema is ready, you can add fields as follows:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;product_id&quot;</span>,
@@ -531,7 +532,7 @@ schema = schema.
     \&quot;fields\&quot;: <span class="hljs-variable">$fields</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-3-Create-a-collection" class="common-anchor-header">3단계: 컬렉션 생성<button data-href="#Step-3-Create-a-collection" class="anchor-icon" translate="no">
+<h2 id="Step-3-Create-a-collection" class="common-anchor-header">Step 3: Create a collection<button data-href="#Step-3-Create-a-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -546,13 +547,13 @@ schema = schema.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>스키마에 모든 필드를 추가한 후, 외부 컬렉션을 생성할 수 있습니다.</p>
+    </button></h2><p>After adding all the fields to the schema, you can create the external collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client = MilvusClient(
     uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>,
@@ -616,7 +617,7 @@ err = client.CreateCollection(ctx, milvusclient.NewCreateCollectionOption(<span 
     \&quot;schema\&quot;: <span class="hljs-variable">$schema</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-4-Create-indexes" class="common-anchor-header">4단계: 인덱스 생성<button data-href="#Step-4-Create-indexes" class="anchor-icon" translate="no">
+<h2 id="Step-4-Create-indexes" class="common-anchor-header">Step 4: Create indexes<button data-href="#Step-4-Create-indexes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -631,13 +632,13 @@ err = client.CreateCollection(ctx, milvusclient.NewCreateCollectionOption(<span 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>관리형 컬렉션에서와 마찬가지로 외부 컬렉션 필드에 대한 인덱스를 생성할 수 있습니다.</p>
+    </button></h2><p>You can create indexes for external collection fields as you do in managed collections.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 <span class="hljs-comment"># Add indexes</span>
@@ -737,7 +738,7 @@ curl --request POST \
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-5-Refresh-data" class="common-anchor-header">5단계: 데이터 새로 고침<button data-href="#Step-5-Refresh-data" class="anchor-icon" translate="no">
+<h2 id="Step-5-Refresh-data" class="common-anchor-header">Step 5: Refresh data<button data-href="#Step-5-Refresh-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -752,13 +753,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>컬렉션 준비가 완료되면, 데이터를 새로 고침하여 데이터에 대한 메타데이터와 인덱스를 생성하십시오.</p>
+    </button></h2><p>Once the collection is ready, refresh it to create the metadata and indexes for your data.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">job_id = client.refresh_external_collection(
     db_name=<span class="hljs-string">&quot;my_database&quot;</span>,
@@ -832,16 +833,16 @@ jobID := refreshResult.JobID
     \&quot;externalSpec\&quot;: \&quot;{\\\&quot;format\\\&quot;: \\\&quot;parquet\\\&quot;}\&quot;
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>새로 고침 작업은 비동기식으로 수행되므로 진행 상황을 모니터링하기 위해 반복 처리를 설정해야 합니다.</p>
+<p>The refresh operation is asynchronous, so you need to set up an iteration to monitor its progress.</p>
 <div class="alert note">
 <ul>
-<li><p>갱신 작업은 데이터 파일의 메타데이터를 스캔하고 이에 따라 매니페스트 파일을 생성합니다. 일반적으로 150~250ms가 소요됩니다.</p></li>
-<li><p>매니페스트 파일은 Milvus의 메타데이터와 외부 파일의 행 간의 매핑 관계를 기록합니다.</p></li>
-<li><p>소스 데이터가 업데이트된 경우, Milvus를 최신 상태로 유지하려면 수동으로 새로 고침 작업을 다시 호출해야 합니다.</p></li>
-<li><p>삽입 작업 없이 모든 활성 메타데이터를 제거해야 하는 새로고침 요청은 거부됩니다.</p></li>
+<li><p>The refresh operation scans the metadata of the data files and generates the manifest files accordingly. It usually takes 150-250 ms.</p></li>
+<li><p>The manifest files record the mapping between the metadata in Milvus and the rows in external files.</p></li>
+<li><p>If there is an update to your source data, you need to manually call refresh again to keep Milvus up to date.</p></li>
+<li><p>A refresh that requires removing all active metadata without any insertions results in a denial.</p></li>
 </ul>
 </div>
-<h2 id="Next-steps" class="common-anchor-header">다음 단계<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -856,6 +857,6 @@ jobID := refreshResult.JobID
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>외부 컬렉션을 새로 고친 후에는 컬렉션을 로드 및 해제하고, 온디맨드 컴퓨팅용 데이터베이스에 있는 컬렉션은 검색 및 쿼리를 위해 온디맨드 클러스터에 연결되어야 한다는 점을 제외하면, 관리형 컬렉션에서와 마찬가지로 외부 컬렉션에서 유사도 검색 및 쿼리를 수행할 수 있습니다.</p>
-<p>검색, 쿼리, 가져오기 및 하이브리드 검색과 같은 DQL 작업을 수행하기 전에, 온디맨드 클러스터의 컴퓨팅 리소스를 연결하기 위해 세션을 생성해야 합니다.</p>
-<p>나중에 외부 데이터 소스에 Milvus에서 노출하고자 하는 다른 필드가 포함된 경우, 외부 컬렉션 스키마에 필드를 추가하고 외부 컬렉션을 다시 새로 고침하십시오. 자세한 내용은 <a href="/docs/ko/alter-external-collection-schema.md">‘외부 컬렉션 스키마 변경’을</a> 참조하십시오.</p>
+    </button></h2><p>Once you have refreshed the external collection, you can load and release the collection and perform similarity searches and queries in the external collection as you would in any managed collection, except that collections in a database for on-demand computing must be attached to an on-demand cluster for searches and queries.</p>
+<p>Before conducting DQL operations, such as search, query, get, and hybrid search, you need to create a session to attach the compute resources of an on-demand cluster.</p>
+<p>If the external data source later contains another field that you want to expose in Milvus, add a field to the external collection schema and refresh the external collection again. For details, refer to <a href="/docs/ko/alter-external-collection-schema.md">Alter External Collection Schema</a>.</p>

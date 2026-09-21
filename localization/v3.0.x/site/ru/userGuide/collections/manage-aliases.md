@@ -1,11 +1,11 @@
 ---
 id: manage-aliases.md
-title: Управление псевдонимами
+title: Manage Aliases
 summary: >-
-  Milvus предоставляет возможности управления псевдонимами. На этой странице
-  показаны процедуры создания, перечисления, изменения и удаления псевдонимов.
+  Milvus provides alias management capabilities. This page demonstrates the
+  procedures to create, list, alter, and drop aliases.
 ---
-<h1 id="Manage-Aliases" class="common-anchor-header">Управление псевдонимами<button data-href="#Manage-Aliases" class="anchor-icon" translate="no">
+<h1 id="Manage-Aliases" class="common-anchor-header">Manage Aliases<button data-href="#Manage-Aliases" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +20,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>В Milvus псевдоним - это вторичное, изменяемое имя коллекции. Использование псевдонимов обеспечивает уровень абстракции, позволяющий динамически переключаться между коллекциями без внесения изменений в код приложения. Это особенно полезно в производственных средах для бесперебойного обновления данных, A/B-тестирования и других операционных задач.</p>
-<p>На этой странице показано, как создавать, перечислять, переназначать и удалять псевдонимы коллекций.</p>
-<h2 id="Why-Use-an-Alias" class="common-anchor-header">Зачем использовать псевдоним?<button data-href="#Why-Use-an-Alias" class="anchor-icon" translate="no">
+    </button></h1><p>In Milvus, an alias is a secondary, mutable name for a collection. Using aliases provides a layer of abstraction that allows you to dynamically switch between collections without modifying your application code. This is particularly useful in production environments for seamless data updates, A/B testing, and other operational tasks.</p>
+<p>This page demonstrates how to create, list, reassign, and drop collection aliases.</p>
+<h2 id="Why-Use-an-Alias" class="common-anchor-header">Why Use an Alias?<button data-href="#Why-Use-an-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,21 +37,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Основное преимущество использования псевдонимов заключается в том, чтобы отвязать клиентское приложение от конкретного физического имени коллекции.</p>
-<p>Представьте, что у вас есть приложение, которое запрашивает коллекцию с именем <code translate="no">prod_data</code>. Когда вам нужно обновить базовые данные, вы можете выполнить обновление без прерывания обслуживания. Рабочий процесс будет выглядеть следующим образом:</p>
+    </button></h2><p>The primary benefit of using an alias is to decouple your client application from a specific, physical collection name.</p>
+<p>Imagine you have a live application that queries a collection named <code translate="no">prod_data</code>. When you need to update the underlying data, you can perform the update without any service interruption. The workflow would be:</p>
 <ol>
-<li><strong>Создание новой коллекции</strong>: Создайте новую коллекцию, например <code translate="no">prod_data_v2</code>.</li>
-<li><strong>Подготовить данные</strong>: Загрузите и проиндексируйте новые данные в <code translate="no">prod_data_v2</code>.</li>
-<li><strong>Сменить псевдоним</strong>: Как только новая коллекция будет готова к работе, атомарно переназначьте псевдоним <code translate="no">prod_data</code> из старой коллекции на <code translate="no">prod_data_v2</code>.</li>
+<li><strong>Create a New Collection</strong>: Create a new collection, for instance, <code translate="no">prod_data_v2</code>.</li>
+<li><strong>Prepare Data</strong>: Load and index the new data in <code translate="no">prod_data_v2</code>.</li>
+<li><strong>Switch the Alias</strong>: Once the new collection is ready for service, atomically reassign the alias <code translate="no">prod_data</code> from the old collection to <code translate="no">prod_data_v2</code>.</li>
 </ol>
-<p>Ваше приложение продолжает отправлять запросы к псевдониму <code translate="no">prod_data</code>, не испытывая при этом никаких простоев. Этот механизм обеспечивает бесперебойное обновление и упрощает такие операции, как развертывание "сине-зеленых", для вашей службы векторного поиска.</p>
-<p><strong>Ключевые свойства псевдонимов:</strong></p>
+<p>Your application continues to send requests to the alias <code translate="no">prod_data</code>, experiencing zero downtime. This mechanism enables seamless updates and simplifies operations like blue-green deployments for your vector search service.</p>
+<p><strong>Key Properties of Aliases:</strong></p>
 <ul>
-<li>Коллекция может иметь несколько псевдонимов.</li>
-<li>Одновременно псевдоним может указывать только на одну коллекцию.</li>
-<li>При обработке запроса Milvus сначала проверяет, существует ли коллекция с указанным именем. Если нет, то проверяется, является ли это имя псевдонимом коллекции.</li>
+<li>A collection can have multiple aliases.</li>
+<li>An alias can only point to one collection at a time.</li>
+<li>When processing a request, Milvus first checks if a collection with the provided name exists. If not, it then checks if the name is an alias for a collection.</li>
 </ul>
-<h2 id="Create-Alias" class="common-anchor-header">Создание псевдонима<button data-href="#Create-Alias" class="anchor-icon" translate="no">
+<h2 id="Create-Alias" class="common-anchor-header">Create Alias<button data-href="#Create-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -66,9 +66,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Следующий фрагмент кода демонстрирует, как создать псевдоним для коллекции.</p>
+    </button></h2><p>The following code snippet demonstrates how to create an alias for a collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -216,7 +221,7 @@ curl --request POST \
 <span class="hljs-comment">#     &quot;data&quot;: {}</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="List-Aliases" class="common-anchor-header">Список псевдонимов<button data-href="#List-Aliases" class="anchor-icon" translate="no">
+<h2 id="List-Aliases" class="common-anchor-header">List Aliases<button data-href="#List-Aliases" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -231,9 +236,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Следующий фрагмент кода демонстрирует процедуру составления списка псевдонимов, выделенных для определенной коллекции.</p>
+    </button></h2><p>The following code snippet demonstrates the procedure to list the aliases allocated to a specific collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 9.2. List aliases</span>
 res = client.list_aliases(
     collection_name=<span class="hljs-string">&quot;my_collection_1&quot;</span>
@@ -304,7 +314,7 @@ curl --request POST \
 <span class="hljs-comment">#     ]</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Describe-Alias" class="common-anchor-header">Описать псевдоним<button data-href="#Describe-Alias" class="anchor-icon" translate="no">
+<h2 id="Describe-Alias" class="common-anchor-header">Describe Alias<button data-href="#Describe-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -319,9 +329,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Следующий фрагмент кода подробно описывает конкретный псевдоним, включая имя коллекции, которой он был присвоен.</p>
+    </button></h2><p>The following code snippet describes a specific alias in detail, including the name of the collection to which it has been allocated.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 9.3. Describe aliases</span>
 res = client.describe_alias(
     alias=<span class="hljs-string">&quot;bob&quot;</span>
@@ -405,7 +420,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Alter-Alias" class="common-anchor-header">Изменить псевдоним<button data-href="#Alter-Alias" class="anchor-icon" translate="no">
+<h2 id="Alter-Alias" class="common-anchor-header">Alter Alias<button data-href="#Alter-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -420,9 +435,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете перераспределить псевдоним, уже выделенный для определенной коллекции, на другой.</p>
+    </button></h2><p>You can reallocate the alias already allocated to a specific collection to another.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 9.4 Reassign aliases to other collections</span>
 client.alter_alias(
     collection_name=<span class="hljs-string">&quot;my_collection_2&quot;</span>,
@@ -600,7 +620,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-Alias" class="common-anchor-header">Убрать псевдоним<button data-href="#Drop-Alias" class="anchor-icon" translate="no">
+<h2 id="Drop-Alias" class="common-anchor-header">Drop Alias<button data-href="#Drop-Alias" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -615,9 +635,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Следующий фрагмент кода демонстрирует процедуру удаления псевдонима.</p>
+    </button></h2><p>The following code snippet demonstrates the procedure to drop an alias.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 9.5 Drop aliases</span>
 client.drop_alias(
     alias=<span class="hljs-string">&quot;bob&quot;</span>

@@ -1,9 +1,12 @@
 ---
 id: primary-field.md
-title: 主字段和自動識別
-summary: Milvus 中的每個集合都必須有一個主字段來唯一識別每個實體。這個欄位確保每個實體都能被插入、更新、查詢或刪除，而不會產生歧義。
+title: Primary Field & AutoID
+summary: >-
+  Every collection in Milvus must have a primary field to uniquely identify each
+  entity. This field ensures that every entity can be inserted, updated,
+  queried, or deleted without ambiguity.
 ---
-<h1 id="Primary-Field--AutoID" class="common-anchor-header">主字段和自動識別<button data-href="#Primary-Field--AutoID" class="anchor-icon" translate="no">
+<h1 id="Primary-Field--AutoID" class="common-anchor-header">Primary Field & AutoID<button data-href="#Primary-Field--AutoID" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,9 +21,9 @@ summary: Milvus 中的每個集合都必須有一個主字段來唯一識別每�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 中的每個集合都必須有一個主字段來唯一識別每個實體。這個欄位確保每個實體都可以被插入、更新、查詢或刪除，而不會產生歧義。</p>
-<p>根據您的使用情況，您可以讓 Milvus 自動產生 ID（AutoID）或手動分配您自己的 ID。</p>
-<h2 id="What-is-a-primary-field" class="common-anchor-header">什麼是主字段？<button data-href="#What-is-a-primary-field" class="anchor-icon" translate="no">
+    </button></h1><p>Every collection in Milvus must have a primary field to uniquely identify each entity. This field ensures that every entity can be inserted, updated, queried, or deleted without ambiguity.</p>
+<p>Depending on your use case, you can either let Milvus automatically generate IDs (AutoID) or assign your own IDs manually.</p>
+<h2 id="What-is-a-primary-field" class="common-anchor-header">What is a primary field?<button data-href="#What-is-a-primary-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,14 +38,14 @@ summary: Milvus 中的每個集合都必須有一個主字段來唯一識別每�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>主字段是集合中每個實體的唯一鍵，類似於傳統數據庫中的主鍵。Milvus 在插入、上移、刪除和查詢操作中使用主字段來管理實體。</p>
-<p>關鍵要求：</p>
+    </button></h2><p>A primary field acts as the unique key for each entity in a collection, similar to a primary key in a traditional database. Milvus uses the primary field to manage entities during insert, upsert, delete, and query operations.</p>
+<p>Key requirements:</p>
 <ul>
-<li><p>每個集合必須有<strong>一個</strong>主字段。</p></li>
-<li><p>主字段值不能為空。</p></li>
-<li><p>資料類型必須在建立時指定，且不能在之後更改。</p></li>
+<li><p>Each collection must have <strong>exactly one</strong> primary field.</p></li>
+<li><p>Primary field values cannot be null.</p></li>
+<li><p>The data type must be specified at creation and cannot be changed later.</p></li>
 </ul>
-<h2 id="Supported-data-types" class="common-anchor-header">支援的資料類型<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
+<h2 id="Supported-data-types" class="common-anchor-header">Supported data types<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,22 +60,22 @@ summary: Milvus 中的每個集合都必須有一個主字段來唯一識別每�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>主欄位必須使用可唯一識別實體的支援標量資料類型。</p>
+    </button></h2><p>The primary field must use a supported scalar data type that can uniquely identify entities.</p>
 <table>
    <tr>
-     <th><p>資料類型</p></th>
-     <th><p>說明</p></th>
+     <th><p>Data Type</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">INT64</code></p></td>
-     <td><p>64 位整數類型，通常與 AutoID 一起使用。這是大多數使用個案的建議選項。</p></td>
+     <td><p>64-bit integer type, commonly used with AutoID. This is the recommended option for most use cases.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">VARCHAR</code></p></td>
-     <td><p>可變長度字串類型。如果實體識別碼來自外部系統（例如，產品代碼或使用者 ID），請使用此類型。需要<code translate="no">max_length</code> 屬性來定義允許每個值的最大位元組數。</p></td>
+     <td><p>Variable-length string type. Use this when entity identifiers come from external systems (for example, product codes or user IDs). Requires the <code translate="no">max_length</code> property to define the maximum number of bytes allowed per value.</p></td>
    </tr>
 </table>
-<h2 id="Choose-between-AutoID-and-Manual-IDs" class="common-anchor-header">選擇自動識別碼和手動識別碼<button data-href="#Choose-between-AutoID-and-Manual-IDs" class="anchor-icon" translate="no">
+<h2 id="Choose-between-AutoID-and-Manual-IDs" class="common-anchor-header">Choose between AutoID and Manual IDs<button data-href="#Choose-between-AutoID-and-Manual-IDs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -87,31 +90,31 @@ summary: Milvus 中的每個集合都必須有一個主字段來唯一識別每�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 支援兩種模式來指定主鍵值。</p>
+    </button></h2><p>Milvus supports two modes for assigning primary key values.</p>
 <table>
    <tr>
-     <th><p>模式</p></th>
-     <th><p>說明</p></th>
-     <th><p>建議</p></th>
+     <th><p>Mode</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended For</p></th>
    </tr>
    <tr>
-     <td><p>自動識別</p></td>
-     <td><p>Milvus 自動為插入或匯入的實體產生唯一的 ID。</p></td>
-     <td><p>不需要手動管理 ID 的大多數情況。</p></td>
+     <td><p>AutoID</p></td>
+     <td><p>Milvus automatically generates unique identifiers for inserted or imported entities.</p></td>
+     <td><p>Most scenarios where you don’t need to manage IDs manually.</p></td>
    </tr>
    <tr>
-     <td><p>手動 ID</p></td>
-     <td><p>當插入或匯入資料時，您自己提供唯一的 ID。</p></td>
-     <td><p>當 ID 必須與外部系統或預先存在的資料集一致時。</p></td>
+     <td><p>Manual ID</p></td>
+     <td><p>You provide unique IDs yourself when inserting or importing data.</p></td>
+     <td><p>When IDs must align with external systems or pre-existing datasets.</p></td>
    </tr>
 </table>
 <div class="alert note">
 <ul>
-<li><p>如果您不確定要選擇哪種模式，請<a href="/docs/zh-hant/v2.6.x/primary-field.md#Quickstart-Use-AutoID">從 AutoID 開始</a>，因為它能讓擷取更簡單，並保證唯一性。</p></li>
-<li><p>除非手動設定主鍵有好處，否則建議您在所有情況下都依賴<code translate="no">autoId</code> 。</p></li>
+<li><p>If you are unsure which mode to choose, <a href="/docs/zh-hant/v2.6.x/primary-field.md#Quickstart-Use-AutoID">start with AutoID</a> for simpler ingestion and guaranteed uniqueness.</p></li>
+<li><p>You are advised to rely on <code translate="no">autoId</code> in all cases unless manually setting primary keys is beneficial.</p></li>
 </ul>
 </div>
-<h2 id="Quickstart-Use-AutoID" class="common-anchor-header">快速入門：使用自動識別<button data-href="#Quickstart-Use-AutoID" class="anchor-icon" translate="no">
+<h2 id="Quickstart-Use-AutoID" class="common-anchor-header">Quickstart: Use AutoID<button data-href="#Quickstart-Use-AutoID" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -126,8 +129,8 @@ summary: Milvus 中的每個集合都必須有一個主字段來唯一識別每�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>你可以讓 Milvus 自動處理 ID 的產生。</p>
-<h3 id="Step-1-Create-a-collection-with-AutoID" class="common-anchor-header">步驟 1: 使用 AutoID 建立一個集合<button data-href="#Step-1-Create-a-collection-with-AutoID" class="anchor-icon" translate="no">
+    </button></h2><p>You can let Milvus handle ID generation automatically.</p>
+<h3 id="Step-1-Create-a-collection-with-AutoID" class="common-anchor-header">Step 1: Create a collection with AutoID<button data-href="#Step-1-Create-a-collection-with-AutoID" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -142,9 +145,14 @@ summary: Milvus 中的每個集合都必須有一個主字段來唯一識別每�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在您的主欄位定義中啟用<code translate="no">auto_id=True</code> 。Milvus 會自動處理 ID 的產生。</p>
+    </button></h3><p>Enable <code translate="no">auto_id=True</code> in your primary field definition. Milvus will handle ID generation automatically.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -282,7 +290,7 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
     \&quot;schema\&quot;: <span class="hljs-variable">$SCHEMA</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Insert-Data" class="common-anchor-header">步驟 2：插入資料<button data-href="#Step-2-Insert-Data" class="anchor-icon" translate="no">
+<h3 id="Step-2-Insert-Data" class="common-anchor-header">Step 2: Insert Data<button data-href="#Step-2-Insert-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -297,9 +305,14 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>重要：</strong>請勿在您的資料中包含主欄位欄位。Milvus 會自動產生 ID。</p>
+    </button></h3><p><strong>Important:</strong> Do not include the primary field column in your data. Milvus generates IDs automatically.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">data = [
     {<span class="hljs-string">&quot;embedding&quot;</span>: [<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>], <span class="hljs-string">&quot;category&quot;</span>: <span class="hljs-string">&quot;book&quot;</span>},
     {<span class="hljs-string">&quot;embedding&quot;</span>: [<span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.5</span>], <span class="hljs-string">&quot;category&quot;</span>: <span class="hljs-string">&quot;toy&quot;</span>},
@@ -368,9 +381,9 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>使用現有實體時，請使用<code translate="no">upsert()</code> 而非<code translate="no">insert()</code> ，以避免 ID 重複錯誤。</p>
+<p>Use <code translate="no">upsert()</code> instead of <code translate="no">insert()</code> when working with existing entities to avoid duplicate ID errors.</p>
 </div>
-<h2 id="Use-manual-IDs" class="common-anchor-header">使用手動 ID<button data-href="#Use-manual-IDs" class="anchor-icon" translate="no">
+<h2 id="Use-manual-IDs" class="common-anchor-header">Use manual IDs<button data-href="#Use-manual-IDs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -385,8 +398,8 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>如果您需要手動控制 ID，請停用 AutoID 並提供您自己的值。</p>
-<h3 id="Step-1-Create-a-collection-without-AutoID" class="common-anchor-header">步驟 1：建立一個沒有 AutoID 的集合<button data-href="#Step-1-Create-a-collection-without-AutoID" class="anchor-icon" translate="no">
+    </button></h2><p>If you need to control IDs manually, disable AutoID and provide your own values.</p>
+<h3 id="Step-1-Create-a-collection-without-AutoID" class="common-anchor-header">Step 1: Create a collection without AutoID<button data-href="#Step-1-Create-a-collection-without-AutoID" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -402,7 +415,12 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -542,7 +560,7 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
     \&quot;schema\&quot;: <span class="hljs-variable">$SCHEMA</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Insert-data-with-your-IDs" class="common-anchor-header">步驟 2：使用您的 ID 插入資料<button data-href="#Step-2-Insert-data-with-your-IDs" class="anchor-icon" translate="no">
+<h3 id="Step-2-Insert-data-with-your-IDs" class="common-anchor-header">Step 2: Insert data with your IDs<button data-href="#Step-2-Insert-data-with-your-IDs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -557,9 +575,14 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>您必須在每次插入操作中包含主欄位欄位。</p>
+    </button></h3><p>You must include the primary field column in every insert operation.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Each entity must contain the primary field `product_id`</span>
 data = [
     {<span class="hljs-string">&quot;product_id&quot;</span>: <span class="hljs-string">&quot;PROD-001&quot;</span>, <span class="hljs-string">&quot;embedding&quot;</span>: [<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>], <span class="hljs-string">&quot;category&quot;</span>: <span class="hljs-string">&quot;book&quot;</span>},
@@ -634,13 +657,13 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
     \&quot;data\&quot;: <span class="hljs-variable">$INSERT_DATA</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>您的責任</p>
+<p>Your responsibilities:</p>
 <ul>
-<li><p>確保所有 ID 在所有實體中都是唯一的</p></li>
-<li><p>在每次插入/導入作業中包含主欄位</p></li>
-<li><p>自行處理 ID 衝突和重複檢測</p></li>
+<li><p>Ensure all IDs are unique across all entities</p></li>
+<li><p>Include the primary field in every insert/import operation</p></li>
+<li><p>Handle ID conflicts and duplicate detection yourself</p></li>
 </ul>
-<h2 id="Advanced-usage" class="common-anchor-header">進階用法<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
+<h2 id="Advanced-usage" class="common-anchor-header">Advanced usage<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -655,7 +678,7 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Migrate-data-with-existing-AutoIDs" class="common-anchor-header">使用現有的 AutoID 遷移資料<button data-href="#Migrate-data-with-existing-AutoIDs" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Migrate-data-with-existing-AutoIDs" class="common-anchor-header">Migrate data with existing AutoIDs<button data-href="#Migrate-data-with-existing-AutoIDs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -670,9 +693,9 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要在資料遷移過程中保留現有的 ID，請透過<code translate="no">alter_collection_properties</code> 呼叫啟用<code translate="no">allow_insert_auto_id</code> 屬性。當設定為 true 時，即使 AutoID 已啟用，Milvus 仍會接受使用者提供的 ID。</p>
-<p>有關設定的詳細資訊，請參閱<a href="/docs/zh-hant/v2.6.x/modify-collection.md#Example-5-Enable-allowinsertautoid">修改集合</a>。</p>
-<h3 id="Ensure-global-AutoID-uniqueness-across-clusters" class="common-anchor-header">確保全域 AutoID 在叢集間的唯一性<button data-href="#Ensure-global-AutoID-uniqueness-across-clusters" class="anchor-icon" translate="no">
+    </button></h3><p>To preserve existing IDs during data migration, enable the <code translate="no">allow_insert_auto_id</code> property by making the <code translate="no">alter_collection_properties</code> call. When set to true, Milvus accepts user-provided IDs even if AutoID is enabled.</p>
+<p>For configuration details, refer to <a href="/docs/zh-hant/v2.6.x/modify-collection.md#Example-5-Enable-allowinsertautoid">Modify Collection</a>.</p>
+<h3 id="Ensure-global-AutoID-uniqueness-across-clusters" class="common-anchor-header">Ensure global AutoID uniqueness across clusters<button data-href="#Ensure-global-AutoID-uniqueness-across-clusters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -687,16 +710,16 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>當執行多個 Milvus 集群時，為每個集群配置一個唯一的集群 ID，以確保 AutoID 永遠不會重疊。</p>
-<p><strong>配置：</strong>在初始化群集之前，編輯<code translate="no">milvus.yaml</code> 中的<code translate="no">common.clusterID</code> config：</p>
+    </button></h3><p>When running multiple Milvus clusters, configure a unique cluster ID for each to ensure AutoIDs never overlap.</p>
+<p><strong>Configuration:</strong> Edit the <code translate="no">common.clusterID</code> config in <code translate="no">milvus.yaml</code> before initializing your cluster:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">common:</span>
   <span class="hljs-attr">clusterID:</span> <span class="hljs-number">3</span>   <span class="hljs-comment"># Must be unique across all clusters (Range: 0-7)</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此配置中，<code translate="no">clusterID</code> 指定 AutoID 生成中使用的唯一标识符，范围从 0 到 7（最多支持 8 个群集）。</p>
+<p>In this config, <code translate="no">clusterID</code> specifies the unique identifier used in AutoID generation, ranging from 0 to 7 (supports up to eight clusters).</p>
 <div class="alert note">
-<p>Milvus 會在內部處理位元反轉，以便未來擴充時不會出現 ID 重疊的情況。除了設定群集 ID 外，不需要手動設定。</p>
+<p>Milvus handles bit-reversal internally to enable future expansion without ID overlap. No manual configuration needed beyond setting the cluster ID.</p>
 </div>
-<h2 id="Reference-How-AutoID-works" class="common-anchor-header">參考：AutoID 如何運作<button data-href="#Reference-How-AutoID-works" class="anchor-icon" translate="no">
+<h2 id="Reference-How-AutoID-works" class="common-anchor-header">Reference: How AutoID works<button data-href="#Reference-How-AutoID-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -711,32 +734,32 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>瞭解 AutoID 如何在內部產生唯一識別碼，可協助您正確<a href="/docs/zh-hant/v2.6.x/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">設定群集 ID</a>，並排除 ID 相關問題。</p>
-<p>AutoID 使用結構化的 64 位元格式來保證唯一性：</p>
+    </button></h2><p>Understanding how AutoID generates unique identifiers internally can help you <a href="/docs/zh-hant/v2.6.x/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">configure cluster IDs</a> correctly and troubleshoot ID-related issues.</p>
+<p>AutoID uses a structured 64-bit format to guarantee uniqueness:</p>
 <pre><code translate="no" class="language-plaintext">[sign_bit][cluster_id][physical_ts][logical_ts]
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>區段</p></th>
-     <th><p>說明</p></th>
+     <th><p>Segment</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">sign_bit</code></p></td>
-     <td><p>保留給內部使用</p></td>
+     <td><p>Reserved for internal use</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">cluster_id</code></p></td>
-     <td><p>識別產生 ID 的群集 (值範圍：0-7)</p></td>
+     <td><p>Identifies which cluster generated the ID (value range: 0-7)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">physical_ts</code></p></td>
-     <td><p>以毫秒為單位的 ID 產生時間戳記</p></td>
+     <td><p>Timestamp in milliseconds when the ID was generated</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">logical_ts</code></p></td>
-     <td><p>用來區分在同一毫秒內產生的 ID 的計數器</p></td>
+     <td><p>Counter to distinguish IDs created in the same millisecond</p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>即使啟用 AutoID 並以<code translate="no">VARCHAR</code> 作為資料類型，Milvus 仍會產生數值 ID。這些 ID 儲存為最大長度為 20 個字元（uint64 範圍）的數字字串。</p>
+<p>Even when AutoID is enabled with <code translate="no">VARCHAR</code> as the data type, Milvus still generates numeric IDs. These are stored as numeric strings with a maximum length of 20 characters (uint64 range).</p>
 </div>

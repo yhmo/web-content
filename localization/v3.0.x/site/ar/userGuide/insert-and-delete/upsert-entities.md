@@ -1,9 +1,11 @@
 ---
 id: upsert-entities.md
-title: إدراج أو تحديث الكيانات
-summary: توفر عملية «upsert» طريقة ملائمة لإدراج الكيانات في مجموعة أو تحديثها.
+title: Upsert Entities
+summary: >-
+  The upsert operation provides a convenient way to insert or update entities in
+  a collection.
 ---
-<h1 id="Upsert-Entities" class="common-anchor-header">إدراج أو تحديث الكيانات<button data-href="#Upsert-Entities" class="anchor-icon" translate="no">
+<h1 id="Upsert-Entities" class="common-anchor-header">Upsert Entities<button data-href="#Upsert-Entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: توفر عملية «upsert» طريقة ملائمة لإدراج ا�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>توفر عملية " <code translate="no">upsert</code> " طريقة ملائمة لإدراج الكيانات أو تحديثها في مجموعة.</p>
-<h2 id="Overview" class="common-anchor-header">نظرة عامة<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">upsert</code> operation provides a convenient way to insert or update entities in a collection.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,9 +36,9 @@ summary: توفر عملية «upsert» طريقة ملائمة لإدراج ا�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك استخدام " <code translate="no">upsert</code> " لإدراج كيان جديد أو تحديث كيان موجود، اعتمادًا على ما إذا كان المفتاح الأساسي المقدم في طلب "upsert" موجودًا في المجموعة أم لا. إذا لم يتم العثور على المفتاح الأساسي، تتم عملية الإدراج. وإلا، يتم تنفيذ عملية التحديث. وتعد التحديثات الجزئية على مجموعات " <code translate="no">autoID</code> " استثناءً: فهي تقوم بتحديث الكيانات الموجودة فقط، كما هو موضح أدناه.</p>
-<p>تعمل عملية upsert في Milvus إما في وضع <strong>التجاوز</strong> أو في وضع <strong>الدمج</strong>.</p>
-<h3 id="Upsert-in-override-mode" class="common-anchor-header">عملية «upsert» في وضع «التجاوز»<button data-href="#Upsert-in-override-mode" class="anchor-icon" translate="no">
+    </button></h2><p>You can use <code translate="no">upsert</code> to either insert a new entity or update an existing one, depending on whether the primary key provided in the upsert request exists in the collection. If the primary key is not found, an insert operation occurs. Otherwise, an update operation will be performed. Partial updates on <code translate="no">autoID</code> collections are an exception: they update existing entities only, as described below.</p>
+<p>An upsert in Milvus works in either <strong>override</strong> or <strong>merge</strong> mode.</p>
+<h3 id="Upsert-in-override-mode" class="common-anchor-header">Upsert in override mode<button data-href="#Upsert-in-override-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,16 +53,16 @@ summary: توفر عملية «upsert» طريقة ملائمة لإدراج ا�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يجمع طلب الإدراج أو التحديث الذي يعمل في وضع التجاوز بين عملية الإدراج والحذف. عند استلام طلب « <code translate="no">upsert</code> » لكيان موجود، يقوم Milvus بإدراج البيانات الموجودة في حمولة الطلب وحذف الكيان الموجود الذي يحمل المفتاح الأساسي الأصلي المحدد في البيانات في نفس الوقت.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/upsert-in-override-mode.png" alt="Upsert In Override Mode" class="doc-image" id="upsert-in-override-mode" /> 
-   </span>عملية " <span class="img-wrapper"> <span>Upsert" في وضع "التجاوز</span> </span>" <span class="img-wrapper">
-  
- </span></p>
-<p>إذا كانت ميزة " <code translate="no">autoID</code> " ممكّنة في الحقل الأساسي للمجموعة المستهدفة، فيجب أن يتضمن طلب " <code translate="no">upsert</code> " المفتاح الأساسي للكيان المستهدف. يستخدم Milvus المفتاح الأساسي المقدم لتحديد موقع الكيان المراد استبداله، ويقوم بإنشاء مفتاح أساسي جديد للبيانات الموجودة في حمولة الطلب قبل إدراجها.</p>
-<p>بالنسبة للحقول التي تم تمكين ميزة « <code translate="no">nullable</code> » (التحديث عند وجودها) لها، يمكنك حذفها من طلب « <code translate="no">upsert</code> » إذا لم تتطلب أي تحديثات.</p>
-<h3 id="Upsert-in-merge-mode" class="common-anchor-header">Eupsert في وضع الدمج<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-in-merge-mode" class="anchor-icon" translate="no">
+    </button></h3><p>An upsert request that works in override mode combines an insert and a delete. When an <code translate="no">upsert</code> request for an existing entity is received, Milvus inserts the data carried in the request payload and deletes the existing entity with the original primary key specified in the data at the same time.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/upsert-in-override-mode.png" alt="Upsert In Override Mode" class="doc-image" id="upsert-in-override-mode" />
+    <span>Upsert In Override Mode</span>
+  </span>
+</p>
+<p>If the target collection has <code translate="no">autoID</code> enabled on its primary field, the <code translate="no">upsert</code> request must still include the primary key of the target entity. Milvus uses the provided primary key to locate the entity to replace, and generates a new primary key for the data carried in the request payload before inserting it.</p>
+<p>For fields with <code translate="no">nullable</code> enabled, you can omit them in the <code translate="no">upsert</code> request if they do not require any updates.</p>
+<h3 id="Upsert-in-merge-mode" class="common-anchor-header">Upsert in merge mode<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-in-merge-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,24 +77,24 @@ summary: توفر عملية «upsert» طريقة ملائمة لإدراج ا�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>استخدم وضع الدمج لتحديث حقول محددة في كيان موجود مع الحفاظ على الحقول الأخرى دون تغيير.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/upsert-in-merge-mode.png" alt="Upsert In Merge Mode" class="doc-image" id="upsert-in-merge-mode" /> 
-   <span>Upsert في وضع الدمج</span>
-  
- </span></p>
-<p>قم بتعيين " <code translate="no">partial_update=True</code> " (إدراج أو تحديث) وحدد المفتاح الأساسي والحقول التي تريد تحديثها.</p>
-<p>يسترد Milvus الكيان الموجود باستخدام استعلام ذي اتساق قوي، ويدمج التغييرات التي أجريتها مع البيانات المخزنة، ويدرج الكيان المدمج، ويحذف الكيان القديم.</p>
-<p>إذا لم يكن المفتاح الأساسي موجودًا، فستعتمد النتيجة على ما إذا كان " <code translate="no">autoID</code> " ممكّنًا أم لا:</p>
+    </button></h3><p>Use merge mode to update specific fields of an existing entity while keeping the other fields unchanged.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/upsert-in-merge-mode.png" alt="Upsert In Merge Mode" class="doc-image" id="upsert-in-merge-mode" />
+    <span>Upsert In Merge Mode</span>
+  </span>
+</p>
+<p>Set <code translate="no">partial_update=True</code> and provide the primary key and the fields you want to update.</p>
+<p>Milvus retrieves the existing entity with a strong-consistency query, merges your changes with the stored data, inserts the merged entity, and deletes the old entity.</p>
+<p>If the primary key does not exist, the result depends on whether <code translate="no">autoID</code> is enabled:</p>
 <ul>
-<li><strong>عند تعطيل " <code translate="no">autoID</code> "</strong>، يحاول Milvus إدراج كيان جديد بالمفتاح الأساسي الذي قدمته. ينجح الطلب إذا استوفى متطلبات الإدراج العادية. إذا كان هناك حقل مطلوب مفقود، يفشل الطلب مع ظهور خطأ "حقل مفقود". يمكن تجاهل الحقول القابلة للفراغ والحقول ذات القيم الافتراضية، تمامًا كما هو الحال في عملية الإدراج العادية.</li>
-<li><strong>عند تمكين وضع الدمج ( <code translate="no">autoID</code> )</strong>، يجب أن يكون كل مفتاح أساسي في الطلب موجودًا بالفعل. يرفض Milvus الطلب في حالة فقدان أي مفتاح أساسي، حتى لو قمت بتوفير جميع الحقول المطلوبة للإدراج. بالنسبة للكيانات الموجودة، يحافظ وضع الدمج على المفتاح الأساسي دون تغيير.</li>
+<li><strong>With <code translate="no">autoID</code> disabled</strong>, Milvus attempts to insert a new entity with the primary key you supplied. The request succeeds if it meets the normal insertion requirements. If a required field is missing, the request fails with a missing-field error. Nullable fields and fields with default values can be omitted, just as in a normal insert.</li>
+<li><strong>With <code translate="no">autoID</code> enabled</strong>, every primary key in the request must already exist. Milvus rejects the request if any primary key is missing, even if you provide all fields required for insertion. For existing entities, merge mode keeps the primary key unchanged.</li>
 </ul>
-<p>إذا فشل التحديث الجزئي وظهرت رسالة خطأ تفيد بوجود حقل مفقود، فتحقق من وجود الكيان المستهدف. فبدون وجود كيان موجود، لا يمكن لـ Milvus استرداد قيم الحقول التي حذفتها.</p>
-<p>بالنسبة للكيانات الجديدة، استخدم « <code translate="no">insert</code> » أو «upsert» في وضع التجاوز (override mode). استخدم وضع الدمج (merge mode) للتحديثات اللاحقة للحقول الفردية.</p>
-<p>بالنسبة لحقول « <code translate="no">ARRAY</code> »، يدعم وضع الدمج عاملين في Milvus v2.6.17 والإصدارات الأحدث: « <code translate="no">ARRAY_APPEND</code> » و« <code translate="no">ARRAY_REMOVE</code> ». تتيح لك هذان العاملان إضافة عناصر إلى حقل « <code translate="no">ARRAY</code> » موجود أو إزالة العناصر المطابقة منه، دون الحاجة أولًا إلى الاستعلام عن الكيان لاسترداد قيمته الحالية. لمزيد من التفاصيل، راجع <a href="/docs/ar/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">«Upsert ARRAY fields in merge mode</a>».</p>
-<h3 id="Upsert-behaviors-special-notes" class="common-anchor-header">سلوكيات الإدراج أو التحديث: ملاحظات خاصة<button data-href="#Upsert-behaviors-special-notes" class="anchor-icon" translate="no">
+<p>If a partial update fails with a missing-field error, check whether the target entity exists. Without an existing entity, Milvus cannot retrieve the values of fields you omitted.</p>
+<p>For new entities, use <code translate="no">insert</code> or an upsert in override mode. Use merge mode for subsequent updates to individual fields.</p>
+<p>For <code translate="no">ARRAY</code> fields, merge mode supports two operators in Milvus v2.6.17 and later: <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code>. These operators let you append elements to or remove matching elements from an existing <code translate="no">ARRAY</code> field, without first querying the entity to retrieve its current value. For details, see <a href="/docs/ar/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">Upsert ARRAY fields in merge mode</a>.</p>
+<h3 id="Upsert-behaviors-special-notes" class="common-anchor-header">Upsert behaviors: special notes<button data-href="#Upsert-behaviors-special-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,38 +109,38 @@ summary: توفر عملية «upsert» طريقة ملائمة لإدراج ا�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>هناك عدة ملاحظات خاصة يجب أخذها في الاعتبار قبل استخدام ميزة الدمج. تفترض الحالات التالية أن لديك مجموعة تحتوي على حقلين عدديين اسمهما <code translate="no">title</code> و <code translate="no">issue</code> ، إلى جانب مفتاح أساسي <code translate="no">id</code> وحقل متجه يسمى <code translate="no">vector</code>.</p>
+    </button></h3><p>There are several special notes you should consider before using the merge feature. The following cases assume that you have a collection with two scalar fields named <code translate="no">title</code> and <code translate="no">issue</code>, along with a primary key <code translate="no">id</code> and a vector field called <code translate="no">vector</code>.</p>
 <ul>
-<li><p><strong>إجراء</strong> عملية «إدراج أو تحديث» (<strong>Upsert) للحقول مع</strong> <strong>تمكين</strong> « <code translate="no">nullable</code> <strong>».</strong></p>
-<p>لنفترض أن حقل <code translate="no">issue</code> يمكن أن يكون فارغًا. عند إجراء عملية «upsert» لهذه الحقول، لاحظ ما يلي:</p>
+<li><p><strong>Upsert fields with</strong> <code translate="no">nullable</code> <strong>enabled.</strong></p>
+<p>Suppose that the <code translate="no">issue</code> field can be null. When you upsert these fields, note that:</p>
 <ul>
-<li><p>إذا حذفت حقل <code translate="no">issue</code> في طلب <code translate="no">upsert</code> وقمت بتعطيل <code translate="no">partial_update</code> ، فسيتم تحديث حقل <code translate="no">issue</code> إلى <code translate="no">null</code> بدلاً من الاحتفاظ بقيمته الأصلية.</p></li>
-<li><p>للحفاظ على القيمة الأصلية لحقل <code translate="no">issue</code> ، عليك إما تمكين <code translate="no">partial_update</code> وحذف حقل <code translate="no">issue</code> أو تضمين حقل <code translate="no">issue</code> بقيمته الأصلية في طلب <code translate="no">upsert</code>.</p></li>
+<li><p>If you omit the <code translate="no">issue</code> field in the <code translate="no">upsert</code> request and disable <code translate="no">partial_update</code>, the <code translate="no">issue</code> field will be updated to <code translate="no">null</code> instead of retaining its original value.</p></li>
+<li><p>To preserve the original value of the <code translate="no">issue</code> field, you need either to enable <code translate="no">partial_update</code> and omit the <code translate="no">issue</code> field or include the <code translate="no">issue</code> field with its original value in the <code translate="no">upsert</code> request.</p></li>
 </ul></li>
-<li><p><strong>مفاتيح Upsert في الحقل الديناميكي</strong>.</p>
-<p>لنفترض أنك قمت بتمكين المفتاح الديناميكي في المجموعة المثال، وأن أزواج المفتاح والقيمة في الحقل الديناميكي لكيان ما مشابهة لـ <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>.</p>
-<p>عند إجراء عملية upsert للكيان باستخدام مفاتيح، مثل <code translate="no">author</code> أو <code translate="no">year</code> أو <code translate="no">tags</code> ، أو إضافة مفاتيح أخرى، لاحظ ما يلي:</p>
+<li><p><strong>Upsert keys in the dynamic field</strong>.</p>
+<p>Suppose that you have enabled the dynamic key in the example collection, and the key-value pairs in the dynamic field of an entity are similar to <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>.</p>
+<p>When you upsert the entity with keys, such as <code translate="no">author</code>, <code translate="no">year</code>, or <code translate="no">tags</code>, or add other keys, note that:</p>
 <ul>
-<li><p>إذا قمت بإجراء عملية «upsert» مع تعطيل <code translate="no">partial_update</code> ، فإن السلوك الافتراضي هو <strong>التجاوز</strong>. وهذا يعني أن قيمة الحقل الديناميكي سيتم تجاوزها بجميع الحقول غير المحددة في المخطط والمضمنة في الطلب وقيمها.</p>
-<p>على سبيل المثال، إذا كانت البيانات المضمنة في الطلب هي <code translate="no">{&quot;author&quot;: &quot;Jane&quot;, &quot;genre&quot;: &quot;fantasy&quot;}</code> ، فسيتم تحديث أزواج المفتاح والقيمة في الحقل الديناميكي للكيان الهدف وفقًا لذلك.</p></li>
-<li><p>إذا قمت بإجراء عملية upsert مع تمكين <code translate="no">partial_update</code> ، فإن السلوك الافتراضي هو <strong>الدمج</strong>. وهذا يعني أن قيمة الحقل الديناميكي ستندمج مع جميع الحقول غير المحددة في المخطط والمضمنة في الطلب وقيمها.</p>
-<p>على سبيل المثال، إذا كانت البيانات المضمنة في الطلب هي <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code> ، فستصبح أزواج المفتاح والقيمة في الحقل الديناميكي للكيان الهدف <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;], &quot;genre&quot;: &quot;fantasy&quot;}</code> بعد عملية "upsert".</p></li>
+<li><p>If you upsert with <code translate="no">partial_update</code> disabled, the default behavior is to <strong>override</strong>. It means that the value of the dynamic field will be overridden by all non-schema-defined fields included in the request and their values.</p>
+<p>For example, if the data included in the request is <code translate="no">{&quot;author&quot;: &quot;Jane&quot;, &quot;genre&quot;: &quot;fantasy&quot;}</code>, the key-value pairs in the dynamic field of the target entity will be updated to that.</p></li>
+<li><p>If you upsert with <code translate="no">partial_update</code> enabled, the default behavior is to <strong>merge</strong>. It means that the value of the dynamic field will merge with all non-schema-defined fields included in the request and their values.</p>
+<p>For example, if the data included in the request is <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>, the key-value pairs in the dynamic field of the target entity will become <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;], &quot;genre&quot;: &quot;fantasy&quot;}</code> after the upsert.</p></li>
 </ul></li>
-<li><p><strong>عملية «upsert» لحقل JSON.</strong></p>
-<p>لنفترض أن المجموعة المثال تحتوي على حقل JSON محدد في المخطط باسم <code translate="no">extras</code> ، وأن أزواج المفاتيح والقيم في حقل JSON هذا الخاص بكيان ما تشبه <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>.</p>
-<p>عند إجراء عملية upsert لحقل <code translate="no">extras</code> الخاص بكيان ما باستخدام بيانات JSON معدلة، لاحظ أن حقل JSON يُعامل ككل، ولا يمكنك تحديث مفاتيح فردية بشكل انتقائي. بعبارة أخرى، <strong>لا</strong> يدعم حقل JSON عملية upsert في وضع <strong>الدمج</strong>.</p></li>
-<li><p>إجراء عملية<strong>«Upsert</strong> » <strong>لحقل</strong> <code translate="no">ARRAY</code> <strong>.</strong></p>
-<p>بشكل افتراضي، يتبع حقل <code translate="no">ARRAY</code> في وضع الدمج دلالات <strong>REPLACE</strong>: حيث تقوم القيمة الموجودة في الطلب بالكتابة فوق المصفوفة الحالية. لإجراء تحديثات أكثر دقة، يدعم Milvus الإصدار 2.6.17 والإصدارات الأحدث أيضًا عاملين:</p>
+<li><p><strong>Upsert a JSON field.</strong></p>
+<p>Suppose that the example collection has a schema-defined JSON field named <code translate="no">extras</code>, and the key-value pairs in this JSON field of an entity are similar to <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>.</p>
+<p>When you upsert the <code translate="no">extras</code> field of an entity with modified JSON data, note that the JSON field is treated as a whole, and you cannot update individual keys selectively. In other words, the JSON field <strong>DOES NOT</strong> support upsert in <strong>merge</strong> mode.</p></li>
+<li><p><strong>Upsert an</strong> <code translate="no">ARRAY</code> <strong>field.</strong></p>
+<p>By default, an <code translate="no">ARRAY</code> field in merge mode follows <strong>REPLACE</strong> semantics: the value carried in the request overwrites the existing array. For finer-grained updates, Milvus v2.6.17 and later also supports two operators:</p>
 <ul>
-<li><p><code translate="no">ARRAY_APPEND</code> يُضيف العناصر الموجودة في حمولة الطلب إلى المصفوفة الحالية.</p></li>
-<li><p><code translate="no">ARRAY_REMOVE</code> إزالة كل عنصر من المصفوفة الحالية يطابق قيمة في حمولة الطلب.</p></li>
+<li><p><code translate="no">ARRAY_APPEND</code> appends the elements in the request payload to the existing array.</p></li>
+<li><p><code translate="no">ARRAY_REMOVE</code> removes every element from the existing array that matches a value in the request payload.</p></li>
 </ul>
-<p>للاطلاع على صيغة المشغل وأنواع العناصر المدعومة والقيود الأخرى، راجع <a href="/docs/ar/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">«إدراج أو تحديث حقول ARRAY في وضع الدمج</a>».</p></li>
-<li><p><strong>إجراء عملية Upsert لحقل StructArray.</strong></p>
-<p>يؤدي إجراء «Upsert» لحقل StructArray في كيان ما إلى استبدال قيمة الحقل. للقيام بذلك، تحتاج إلى توفير قائمة من القواميس، يحتوي كل منها على جميع الحقول الفرعية المحددة في مخطط البنية، حتى عند إجراء «Upsert» في وضع الدمج.</p>
-<p>للحصول على التفاصيل، راجع «إجراء عملية <a href="/docs/ar/upsert-entities.md#Upsert-StructArray-field-in-merge-mode">Upsert لحقل StructArray في وضع الدمج</a>».</p></li>
+<p>For operator syntax, supported element types, and other constraints, see <a href="/docs/ar/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">Upsert ARRAY fields in merge mode</a>.</p></li>
+<li><p><strong>Upsert a StructArray field.</strong></p>
+<p>Upserting a StructArray field in an entity overwrites the field value. To do so, you need to provide a list of dictionaries, each of which contains all subfields defined in the struct schema, even when you perform the upsert in merge mode.</p>
+<p>For details, refer to <a href="/docs/ar/upsert-entities.md#Upsert-StructArray-field-in-merge-mode">Upsert StructArray field in merge mode</a>.</p></li>
 </ul>
-<h3 id="Limits--Restrictions" class="common-anchor-header">الحدود والقيود<button data-href="#Limits--Restrictions" class="anchor-icon" translate="no">
+<h3 id="Limits--Restrictions" class="common-anchor-header">Limits & Restrictions<button data-href="#Limits--Restrictions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -153,19 +155,19 @@ summary: توفر عملية «upsert» طريقة ملائمة لإدراج ا�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>بناءً على المحتوى أعلاه، هناك عدة حدود وقيود يجب اتباعها:</p>
+    </button></h3><p>Based on the above content, there are several limits and restrictions to follow:</p>
 <ul>
-<li><p>يجب أن يتضمن طلب " <code translate="no">upsert</code> " دائمًا المفاتيح الأساسية للكيانات المستهدفة، حتى عند تمكين " <code translate="no">autoID</code> ". بالنسبة لمجموعات " <code translate="no">autoID</code> "، تعتمد معالجة المفتاح الأساسي على وضع الإدراج أو التحديث:</p>
+<li><p>The <code translate="no">upsert</code> request must always include the primary keys of the target entities, even when <code translate="no">autoID</code> is enabled. For <code translate="no">autoID</code> collections, primary-key handling depends on the upsert mode:</p>
 <ul>
-<li><p>في وضع التجاوز (override)، يحدد المفتاح الأساسي الكيان الموجود المراد استبداله، ويقوم Milvus بإنشاء مفتاح أساسي جديد للكيان البديل.</p></li>
-<li><p>في وضع الدمج (merge)، يحدد المفتاح الأساسي الكيان الموجود المراد تحديثه ويبقى دون تغيير. إذا لم يكن المفتاح الأساسي موجودًا، يفشل الطلب بدلاً من إدراج كيان جديد.</p></li>
+<li><p>In override mode, the primary key identifies the existing entity to replace, and Milvus generates a new primary key for the replacement entity.</p></li>
+<li><p>In merge mode, the primary key identifies the existing entity to update and remains unchanged. If the primary key does not exist, the request fails instead of inserting a new entity.</p></li>
 </ul></li>
-<li><p>يجب أن تكون المجموعة المستهدفة محملة ومتاحة للاستعلامات.</p></li>
-<li><p>يجب أن تكون جميع الحقول المحددة في الطلب موجودة في مخطط المجموعة المستهدفة.</p></li>
-<li><p>يجب أن تتطابق قيم جميع الحقول المحددة في الطلب مع أنواع البيانات المحددة في المخطط.</p></li>
-<li><p>بالنسبة لأي حقل مشتق من حقل آخر باستخدام الدوال، سيقوم Milvus بإزالة الحقل المشتق أثناء عملية الإدراج أو التحديث (upsert) للسماح بإعادة الحساب.</p></li>
+<li><p>The target collection must be loaded and available for queries.</p></li>
+<li><p>All fields specified in the request must exist in the schema of the target collection.</p></li>
+<li><p>The values of all fields specified in the request must match the data types defined in the schema.</p></li>
+<li><p>For any field derived from another using functions, Milvus will remove the derived field during the upsert to allow recalculation.</p></li>
 </ul>
-<h2 id="Upsert-entities-in-a-collection" class="common-anchor-header">إجراء عملية «Upsert» للكيانات في مجموعة<button data-href="#Upsert-entities-in-a-collection" class="anchor-icon" translate="no">
+<h2 id="Upsert-entities-in-a-collection" class="common-anchor-header">Upsert entities in a collection<button data-href="#Upsert-entities-in-a-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -180,14 +182,14 @@ summary: توفر عملية «upsert» طريقة ملائمة لإدراج ا�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في هذا القسم، سنقوم بعملية upsert للكيانات في مجموعة تسمى <code translate="no">my_collection</code>. تحتوي هذه المجموعة على حقلين فقط، هما <code translate="no">id</code> و <code translate="no">vector</code> و <code translate="no">title</code> و <code translate="no">issue</code>. الحقل <code translate="no">id</code> هو الحقل الأساسي، بينما الحقلان <code translate="no">title</code> و <code translate="no">issue</code> هما حقلان قياسيان.</p>
-<p>وإذا كانت هذه الكيانات الثلاثة موجودة في المجموعة، فسيتم استبدالها بتلك المضمنة في طلب «upsert».</p>
+    </button></h2><p>In this section, we will upsert entities into a collection named <code translate="no">my_collection</code>. This collection has only two fields, named <code translate="no">id</code>, <code translate="no">vector</code>, <code translate="no">title</code>, and <code translate="no">issue</code>. The <code translate="no">id</code> field is the primary field, while the <code translate="no">title</code> and <code translate="no">issue</code> fields are scalar fields.</p>
+<p>The three entities, if exists in the collection, will be overridden by those included the upsert request.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -354,7 +356,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-entities-in-a-partition" class="common-anchor-header">إدراج أو تحديث الكيانات في قسم<button data-href="#Upsert-entities-in-a-partition" class="anchor-icon" translate="no">
+<h2 id="Upsert-entities-in-a-partition" class="common-anchor-header">Upsert entities in a partition<button data-href="#Upsert-entities-in-a-partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -369,14 +371,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك أيضًا إجراء عملية upsert للكيانات في قسم محدد. تفترض مقتطفات الكود التالية أن لديك قسمًا باسم <strong>PartitionA</strong> في مجموعتك.</p>
-<p>في حالة وجود الكيانات الثلاثة في القسم، سيتم استبدالها بتلك المضمنة في الطلب.</p>
+    </button></h2><p>You can also upsert entities into a specified partition. The following code snippets assume that you have a partition named <strong>PartitionA</strong> in your collection.</p>
+<p>The three entities, if exists in the partition, will be overridden by those included in the request.</p>
 <div class="multipleCode">
-   <a href="#python">بايثون</a>
- <a href="#java">   جافا</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">data=[
     {
@@ -507,7 +509,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-entities-in-merge-mode" class="common-anchor-header">إدراج أو تحديث الكيانات في وضع الدمج<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-entities-in-merge-mode" class="anchor-icon" translate="no">
+<h2 id="Upsert-entities-in-merge-mode" class="common-anchor-header">Upsert entities in merge mode<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-entities-in-merge-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -522,16 +524,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يُحدّث المثال التالي حقل « <code translate="no">issue</code> » فقط للكيانات ذات المفاتيح الأساسية <code translate="no">1</code> و <code translate="no">2</code> في <code translate="no">my_collection</code>. قبل تشغيله، تأكد من وجود كلا الكيانين بالفعل. وتحتفظ الحقول الأخرى الخاصة بهما بقيمها الحالية.</p>
+    </button></h2><p>The following example updates only the <code translate="no">issue</code> field of the entities with primary keys <code translate="no">1</code> and <code translate="no">2</code> in <code translate="no">my_collection</code>. Before running it, ensure that both entities already exist. Their other fields retain their current values.</p>
 <div class="alert note">
-<p>عند إجراء عملية «upsert» في وضع الدمج، تأكد من أن الكيانات المعنية في الطلب تحتوي على نفس مجموعة الحقول. لنفترض وجود كيانين أو أكثر سيتم إجراء عملية «upsert» عليهما، كما هو موضح في مقتطف الشفرة التالي، فمن المهم أن تتضمن هذه الكيانات حقولًا متطابقة لمنع حدوث أخطاء والحفاظ على سلامة البيانات.</p>
+<p>When performing an upsert in merge mode, ensure that the entities involved in the request have the same set of fields. Suppose there are two or more entities to be upserted, as shown in the following code snippet, it is important that they include identical fields to prevent errors and maintain data integrity.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">data=[
     {
@@ -650,7 +652,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-ARRAY-fields-in-merge-mode" class="common-anchor-header">إجراء عملية «upsert» لحقول ARRAY في وضع الدمج<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.17+</span><button data-href="#Upsert-ARRAY-fields-in-merge-mode" class="anchor-icon" translate="no">
+<h2 id="Upsert-ARRAY-fields-in-merge-mode" class="common-anchor-header">Upsert ARRAY fields in merge mode<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.17+</span><button data-href="#Upsert-ARRAY-fields-in-merge-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -665,14 +667,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>قبل الإصدار Milvus v2.6.17، كان تحديث جزء من حقل من نوع « <code translate="no">ARRAY</code> » يتطلب تدفقًا من جانب العميل للقراءة والتعديل والكتابة: الاستعلام عن المصفوفة الموجودة، وتغييرها في كود التطبيق، وإجراء عملية «upsert» للقيمة البديلة الكاملة. تتيح لك عوامل التحديث الجزئي (<code translate="no">ARRAY_APPEND</code> و <code translate="no">ARRAY_REMOVE</code>) إرسال العناصر المراد إضافتها أو إزالتها فقط، مما يقلل من المنطق على جانب العميل ويتجنب القراءة الإضافية قبل الإدراج أو التحديث.</p>
-<p>لنفترض أن الكيان الذي يحمل المفتاح الأساسي <code translate="no">1</code> يحتوي بالفعل على <code translate="no">tags = [&quot;new&quot;, &quot;trial&quot;]</code>. قبل ظهور عوامل التحديث الجزئي، كانت إضافة العنصر <code translate="no">&quot;premium&quot;</code> إلى المصفوفة تتطلب إدراج المصفوفة البديلة بالكامل:</p>
+    </button></h2><p>Before Milvus v2.6.17, updating part of an <code translate="no">ARRAY</code> field required a client-side read-modify-write flow: query the existing array, change it in application code, and upsert the full replacement value. Partial-update operators (<code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code>) let you send only the elements to append or remove, which reduces client-side logic and avoids the extra read before the upsert.</p>
+<p>Suppose the entity with primary key <code translate="no">1</code> already has <code translate="no">tags = [&quot;new&quot;, &quot;trial&quot;]</code>. Before partial-update operators, adding element <code translate="no">&quot;premium&quot;</code> to an array required upserting the full replacement array:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.upsert(
     collection_name=<span class="hljs-string">&quot;users&quot;</span>,
@@ -696,13 +698,13 @@ client.upsert(UpsertReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>مع <code translate="no">ARRAY_APPEND</code> ، أرسل العنصر المراد إضافته فقط:</p>
+<p>With <code translate="no">ARRAY_APPEND</code>, send only the element to add:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.upsert(
     collection_name=<span class="hljs-string">&quot;users&quot;</span>,
@@ -731,13 +733,13 @@ client.upsert(UpsertReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>باستخدام <code translate="no">ARRAY_REMOVE</code> ، ما عليك سوى إرسال العنصر المطابق المراد إزالته:</p>
+<p>With <code translate="no">ARRAY_REMOVE</code>, send only the matching element to remove:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.upsert(
     collection_name=<span class="hljs-string">&quot;users&quot;</span>,
@@ -767,9 +769,9 @@ client.upsert(UpsertReq.builder()
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>يؤدي ربط أي من هذين العاملين بحقل عبر <code translate="no">field_ops</code> إلى تمكين دلالات التحديث الجزئي ضمناً. لذلك، <strong>لا</strong> تحتاج إلى تمرير <code translate="no">partial_update=True</code> إلى جانب <code translate="no">field_ops</code>.</p>
+<p>Attaching either operator to a field via <code translate="no">field_ops</code> implicitly enables partial-update semantics. Therefore, you do <strong>not</strong> need to pass <code translate="no">partial_update=True</code> alongside <code translate="no">field_ops</code>.</p>
 </div>
-<h3 id="Limits" class="common-anchor-header">القيود<button data-href="#Limits" class="anchor-icon" translate="no">
+<h3 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -785,12 +787,12 @@ client.upsert(UpsertReq.builder()
         ></path>
       </svg>
     </button></h3><ul>
-<li><p>يجب أن تتطابق قيم الحمولة مع <code translate="no">element_type</code> الخاص بحقل <code translate="no">ARRAY</code> المستهدف. على سبيل المثال، إذا كان الحقل المستهدف هو <code translate="no">ARRAY&lt;VARCHAR&gt;</code> ، فيجب أن تحتوي الحمولة على قيم سلاسل نصية.</p></li>
-<li><p>في Milvus الإصدار 2.6.17 والإصدارات الأحدث، يدعم كل من <code translate="no">ARRAY_APPEND</code> و <code translate="no">ARRAY_REMOVE</code> الحقول <code translate="no">ARRAY</code> التي يكون <code translate="no">element_type</code> الخاص بها هو <code translate="no">BOOL</code> أو <code translate="no">INT8</code> أو <code translate="no">INT16</code> أو <code translate="no">INT32</code> أو <code translate="no">INT64</code> أو <code translate="no">FLOAT</code> أو <code translate="no">DOUBLE</code> أو <code translate="no">VARCHAR</code>.</p></li>
-<li><p>بعد عملية " <code translate="no">ARRAY_APPEND</code> "، يجب ألا يتجاوز طول المصفوفة الناتجة الحد الأقصى المسموح به للحقل ( <code translate="no">max_capacity</code>).</p></li>
-<li><p>عمليات الإدراج والتحديث المتزامنة للكيان نفسه ليست متجانسة عبر الطلبات. إذا قام طلبان بتحديث الحقل نفسه <code translate="no">ARRAY</code> في نفس الوقت، فإن عملية الكتابة اللاحقة يمكن أن تحل محل السابقة. استخدم التنسيق على مستوى التطبيق إذا كنت بحاجة إلى الحفاظ على جميع التغييرات المتزامنة.</p></li>
+<li><p>The payload values must match the <code translate="no">element_type</code> of the target <code translate="no">ARRAY</code> field. For example, if the target field is <code translate="no">ARRAY&lt;VARCHAR&gt;</code>, the payload must contain string values.</p></li>
+<li><p>In Milvus v2.6.17 and later, <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> support <code translate="no">ARRAY</code> fields whose <code translate="no">element_type</code> is <code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, or <code translate="no">VARCHAR</code>.</p></li>
+<li><p>After an <code translate="no">ARRAY_APPEND</code> operation, the resulting array length must not exceed the field’s <code translate="no">max_capacity</code>.</p></li>
+<li><p>Concurrent upserts to the same entity are not atomic across requests. If two requests update the same <code translate="no">ARRAY</code> field at the same time, the later write can overwrite the earlier one. Use application-level coordination if you need to preserve all concurrent changes.</p></li>
 </ul>
-<h3 id="Example" class="common-anchor-header">مثال<button data-href="#Example" class="anchor-icon" translate="no">
+<h3 id="Example" class="common-anchor-header">Example<button data-href="#Example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -805,13 +807,13 @@ client.upsert(UpsertReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يستخدم المثال التالي مجموعة صغيرة من <code translate="no">users</code> ذات مفتاح أساسي <code translate="no">pk</code> ، وحقل <code translate="no">tags</code> من النوع <code translate="no">ARRAY&lt;VARCHAR&gt;</code> ، وحقل متجه <code translate="no">embedding</code>. يقوم أولاً بإدراج كيانين بقيم أولية <code translate="no">tags</code> ، ثم يستخدم <code translate="no">ARRAY_APPEND</code> و <code translate="no">ARRAY_REMOVE</code> لإظهار كيف يغير كل عامل الصفيف المخزن.</p>
+    </button></h3><p>The following example uses a small <code translate="no">users</code> collection with a primary key <code translate="no">pk</code>, a <code translate="no">tags</code> field of type <code translate="no">ARRAY&lt;VARCHAR&gt;</code>, and an <code translate="no">embedding</code> vector field. It first inserts two entities with initial <code translate="no">tags</code> values, then uses <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> to show how each operator changes the stored array.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, FieldOp, MilvusClient
 
@@ -908,7 +910,7 @@ res = client.query(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-StructArray-field-in-merge-mode" class="common-anchor-header">إدراج أو تحديث حقل StructArray في وضع الدمج<button data-href="#Upsert-StructArray-field-in-merge-mode" class="anchor-icon" translate="no">
+<h2 id="Upsert-StructArray-field-in-merge-mode" class="common-anchor-header">Upsert StructArray field in merge mode<button data-href="#Upsert-StructArray-field-in-merge-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -923,14 +925,14 @@ res = client.query(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يؤدي إجراء عملية Upsert لحقل StructArray في كيان ما إلى استبدال قيمة الحقل. وهذا يعني أنك تحتاج إلى تضمين جميع الحقول الفرعية المحددة في مخطط البنية (struct schema) عند إجراء عملية Upsert لحقل StructArray.</p>
-<p>يوضح المثال التالي كيفية إجراء عملية «upsert» لحقل « <code translate="no">chunks</code> » في وضع الدمج، وهو حقل StructArray يحتوي على 6 حقول فرعية. عند اكتمال العملية، يتم تعيين حقل « <code translate="no">chunks</code> » للكيان ذي المعرف 1 إلى المصفوفة التي تحتوي على الهياكل المكونة من عنصرين والمقدمة في الطلب.</p>
+    </button></h2><p>Upserting a StructArray field in an entity overwrites the field value. That means you need to include all subfields defined in the struct schema when you upsert a StructArray field.</p>
+<p>The following example demonstrates how to upsert the <code translate="no">chunks</code> field in merge mode, a StructArray field with 6 subfields. When the operation completes, the <code translate="no">chunks</code> field of the entity with id 1 is set to the array with the two-element structs provided in the request.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.upsert(
     collection_name=<span class="hljs-string">&quot;books&quot;</span>,

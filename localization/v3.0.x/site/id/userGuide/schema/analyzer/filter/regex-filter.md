@@ -1,12 +1,12 @@
 ---
 id: regex-filter.md
-title: Filter Regex AnalyzerCompatible with Milvus 2.5.11+
+title: Regex Analyzer FilterCompatible with Milvus 2.5.11+
 summary: >-
-  Filter penganalisis regex menyimpan token yang sesuai dengan ekspresi reguler
-  dan membuang sisanya.
+  The regex analyzer filter keeps tokens that match a regular expression and
+  discards the rest.
 beta: Milvus 2.5.11+
 ---
-<h1 id="Regex-Analyzer-Filter" class="common-anchor-header">Filter Regex Analyzer<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Regex-Analyzer-Filter" class="anchor-icon" translate="no">
+<h1 id="Regex-Analyzer-Filter" class="common-anchor-header">Regex Analyzer Filter<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Regex-Analyzer-Filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,11 +21,11 @@ beta: Milvus 2.5.11+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Filter " <code translate="no">regex</code> " adalah filter ekspresi reguler: setiap token yang dihasilkan oleh tokenizer hanya akan disimpan jika sesuai dengan ekspresi yang Anda berikan; sisanya akan dibuang.</p>
+    </button></h1><p>The <code translate="no">regex</code> filter is a regular expression filter: any token produced by the tokenizer is kept only if it matches the expression you provide; everything else is discarded.</p>
 <div class="alert note">
-<p>Halaman ini menjelaskan filter " <code translate="no">regex</code> " dalam alur kerja penganalisis. Filter ini menyaring token yang dihasilkan oleh tokenizer dan memengaruhi istilah yang dihasilkan selama analisis teks. Untuk menyaring entitas dengan ekspresi skalar seperti <code translate="no">field =~ &quot;pattern&quot;</code> atau <code translate="no">field !~ &quot;pattern&quot;</code> dalam pencarian <code translate="no">query</code>, <code translate="no">search</code>, atau pencarian hibrida, lihat <a href="/docs/id/pattern-matching.md">Pencocokan Pola</a>.</p>
+<p>This page describes the <code translate="no">regex</code> filter in the analyzer pipeline. It filters tokens produced by a tokenizer and affects the terms generated during text analysis. To filter entities with scalar expressions such as <code translate="no">field =~ &quot;pattern&quot;</code> or <code translate="no">field !~ &quot;pattern&quot;</code> in <code translate="no">query</code>, <code translate="no">search</code>, or hybrid search, refer to <a href="/docs/id/pattern-matching.md">Pattern Matching</a>.</p>
 </div>
-<h2 id="Configuration" class="common-anchor-header">Konfigurasi<button data-href="#Configuration" class="anchor-icon" translate="no">
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,13 +40,13 @@ beta: Milvus 2.5.11+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Filter " <code translate="no">regex</code> " adalah filter khusus di Milvus. Untuk menggunakannya, tentukan <code translate="no">&quot;type&quot;: &quot;regex&quot;</code> dalam konfigurasi filter, bersama dengan parameter <code translate="no">expr</code> untuk menentukan ekspresi reguler yang diinginkan.</p>
+    </button></h2><p>The <code translate="no">regex</code> filter is a custom filter in Milvus. To use it, specify <code translate="no">&quot;type&quot;: &quot;regex&quot;</code> in the filter configuration, along with an <code translate="no">expr</code> parameter to specify the desired regular expressions.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -75,21 +75,21 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># curl</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Filter ` <code translate="no">regex</code> ` menerima parameter-parameter yang dapat dikonfigurasi berikut ini.</p>
+<p>The <code translate="no">regex</code> filter accepts the following configurable parameters.</p>
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Deskripsi</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">expr</code></p></td>
-     <td><p>Pola ekspresi reguler yang diterapkan pada setiap token. Token yang cocok akan dipertahankan; yang tidak cocok akan dibuang.
-Untuk detail mengenai sintaks regex, lihat <a href="https://docs.rs/regex/latest/regex/#syntax">Sintaks</a>.</p></td>
+     <td><p>A regular‑expression pattern applied to each token. Tokens that match are retained; non‑matches are dropped.
+ For details on regex syntax, refer to <a href="https://docs.rs/regex/latest/regex/#syntax">Syntax</a>.</p></td>
    </tr>
 </table>
-<p>Filter ` <code translate="no">regex</code> ` beroperasi pada istilah yang dihasilkan oleh tokenizer, sehingga harus digunakan bersama dengan tokenizer.</p>
-<p>Setelah mendefinisikan ` <code translate="no">analyzer_params</code>`, Anda dapat menerapkannya pada bidang ` <code translate="no">VARCHAR</code> ` saat mendefinisikan skema koleksi. Hal ini memungkinkan Milvus memproses teks dalam bidang tersebut menggunakan analis yang ditentukan untuk tokenisasi dan penyaringan yang efisien. Untuk detailnya, lihat <a href="/docs/id/analyzer-overview.md#Example-use">Contoh Penggunaan</a>.</p>
-<h2 id="Examples" class="common-anchor-header">Contoh<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>The <code translate="no">regex</code> filter operates on the terms generated by the tokenizer, so it must be used in combination with a tokenizer.</p>
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/id/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -104,8 +104,8 @@ Untuk detail mengenai sintaks regex, lihat <a href="https://docs.rs/regex/latest
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sebelum menerapkan konfigurasi penganalisis ke skema koleksi Anda, verifikasi perilakunya menggunakan metode ` <code translate="no">run_analyzer</code> `.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">Konfigurasi penganalisis<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -121,11 +121,11 @@ Untuk detail mengenai sintaks regex, lihat <a href="https://docs.rs/regex/latest
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#plaintext">plaintext</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#plaintext">plaintext</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-plaintext">analyzer_params = {
     &quot;tokenizer&quot;: &quot;standard&quot;,
@@ -153,7 +153,7 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># curl</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verifikasi menggunakan <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -169,11 +169,11 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -239,7 +239,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># curl</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">Hasil yang diharapkan<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

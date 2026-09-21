@@ -1,36 +1,36 @@
 [
   {
-    "label": "О компании Milvus",
+    "label": "About Milvus",
     "id": "about",
     "isMenu": true,
     "order": 0,
     "children": [
       {
-        "label": "Что такое Milvus?",
+        "label": "What is Milvus",
         "id": "overview.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Усыновители Milvus",
+        "label": "Milvus Adopters",
         "id": "milvus_adopters.md",
         "order": 1,
         "children": []
       },
       {
-        "label": "План развития Milvus",
+        "label": "Milvus Roadmap",
         "id": "roadmap.md",
         "order": 2,
         "children": []
       },
       {
-        "label": "Пресс-релизы",
+        "label": "Releases",
         "id": "release_notes.md",
         "order": 3,
         "children": []
       },
       {
-        "label": "Сравнение",
+        "label": "Comparison",
         "id": "comparison.md",
         "order": 5,
         "children": []
@@ -38,43 +38,43 @@
     ]
   },
   {
-    "label": "Начать работу",
+    "label": "Get Started",
     "id": "getstarted",
     "isMenu": true,
     "order": 1,
     "children": [
       {
-        "label": "Быстрый старт",
+        "label": "Quickstart",
         "id": "quickstart.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Установить Milvus",
+        "label": "Install Milvus",
         "id": "install_milvus",
         "order": 1,
         "isMenu": true,
         "children": [
           {
-            "label": "Обзор",
+            "label": "Overview",
             "id": "install-overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Запустить Milvus Lite",
+            "label": "Run Milvus Lite",
             "id": "milvus_lite.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Запустить Milvus в автономном режиме",
+            "label": "Run Milvus Standalone",
             "id": "run_milvus_docker",
             "order": 2,
             "isMenu": true,
             "children": [
               {
-                "label": "Требования",
+                "label": "Requirements",
                 "id": "prerequisite-docker.md",
                 "order": 0,
                 "children": []
@@ -106,25 +106,25 @@
             ]
           },
           {
-            "label": "Запустить Milvus в распределенном режиме",
+            "label": "Run Milvus Distributed",
             "id": "run_milvus_k8s",
             "order": 3,
             "isMenu": true,
             "children": [
               {
-                "label": "Требования",
+                "label": "Requirements",
                 "id": "prerequisite-helm.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Оператор Milvus",
+                "label": "Milvus Operator",
                 "id": "install_cluster-milvusoperator.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Карта Хельма",
+                "label": "Helm Chart",
                 "id": "install_cluster-helm.md",
                 "order": 2,
                 "children": []
@@ -132,19 +132,19 @@
             ]
           },
           {
-            "label": "Запустить Milvus с использованием графического процессора",
+            "label": "Run Milvus with GPU",
             "id": "run_milvus_gpu",
             "order": 4,
             "isMenu": true,
             "children": [
               {
-                "label": "Требования",
+                "label": "Requirements",
                 "id": "prerequisite-gpu.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Карта Хельма",
+                "label": "Helm Chart",
                 "id": "install_cluster-helm-gpu.md",
                 "order": 1,
                 "children": []
@@ -160,7 +160,7 @@
         ]
       },
       {
-        "label": "Установить SDK",
+        "label": "Install SDKs",
         "id": "install_sdks",
         "order": 2,
         "children": [
@@ -183,7 +183,7 @@
             "children": []
           },
           {
-            "label": "SDK для Node.js",
+            "label": "Node.js SDK",
             "id": "install-node.md",
             "order": 3,
             "children": []
@@ -191,7 +191,7 @@
         ]
       },
       {
-        "label": "Подключиться к серверу Milvus",
+        "label": "Connect to Milvus Server",
         "id": "connect-to-milvus-server.md",
         "order": 3,
         "children": []
@@ -199,55 +199,55 @@
     ]
   },
   {
-    "label": "Понятия",
+    "label": "Concepts",
     "id": "concepts",
     "isMenu": true,
     "order": 2,
     "children": [
       {
-        "label": "Архитектура",
+        "label": "Architecture",
         "id": "architecture",
         "order": 0,
         "isMenu": true,
         "children": [
           {
-            "label": "Обзор",
+            "label": "Overview",
             "id": "architecture_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Основные компоненты",
+            "label": "Main Components",
             "id": "main_components.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Стриминговый сервис",
+            "label": "Streaming Service",
             "id": "streaming_service.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Обработка данных",
+            "label": "Data Processing",
             "id": "data_processing.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Хранение V3",
+            "label": "Storage V3",
             "id": "storage-v3.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "Дятел",
+            "label": "Woodpecker",
             "id": "woodpecker_architecture.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "Ноухер",
+            "label": "Knowhere",
             "id": "knowhere.md",
             "order": 6,
             "children": []
@@ -261,37 +261,37 @@
         "children": []
       },
       {
-        "label": "Многопользовательский режим",
+        "label": "Multi-tenancy",
         "id": "multi_tenancy.md",
         "order": 3,
         "children": []
       },
       {
-        "label": "Временная метка",
+        "label": "Timestamp",
         "id": "timestamp.md",
         "order": 4,
         "children": []
       },
       {
-        "label": "Синхронизация времени",
+        "label": "Time Synchronization",
         "id": "time_sync.md",
         "order": 6,
         "children": []
       },
       {
-        "label": "Типы метрических единиц",
+        "label": "Metric Types",
         "id": "metric.md",
         "order": 7,
         "children": []
       },
       {
-        "label": "Реплика в оперативной памяти",
+        "label": "In-memory Replica",
         "id": "replica.md",
         "order": 8,
         "children": []
       },
       {
-        "label": "Терминология",
+        "label": "Terminology",
         "id": "glossary.md",
         "order": 9,
         "children": []
@@ -299,84 +299,84 @@
     ]
   },
   {
-    "label": "Руководство пользователя",
+    "label": "User Guide",
     "id": "userguide",
     "isMenu": true,
     "order": 3,
     "children": [
       {
-        "label": "База данных",
+        "label": "Database",
         "id": "manage_databases.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Коллекции",
+        "label": "Collections",
         "id": "collections",
         "order": 1,
         "children": [
           {
-            "label": "Объяснение коллекции",
+            "label": "Collection Explained",
             "id": "manage-collections.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Создать коллекцию",
+            "label": "Create Collection",
             "id": "create-collection.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Создать внешнюю коллекцию",
+            "label": "Create an External Collection",
             "id": "create-an-external-collection.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Просмотреть коллекции",
+            "label": "View Collections",
             "id": "view-collections.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Изменить коллекцию",
+            "label": "Modify Collection",
             "id": "modify-collection.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "Загрузка и освобождение",
+            "label": "Load & Release",
             "id": "load-and-release.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "Установить время жизни коллекции (TTL)",
+            "label": "Set Collection TTL",
             "id": "set-collection-ttl.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "Установить уровень согласованности",
+            "label": "Set Consistency Level",
             "id": "tune_consistency.md",
             "order": 7,
             "children": []
           },
           {
-            "label": "Управление разделами",
+            "label": "Manage Partitions",
             "id": "manage-partitions.md",
             "order": 8,
             "children": []
           },
           {
-            "label": "Управление псевдонимами",
+            "label": "Manage Aliases",
             "id": "manage-aliases.md",
             "order": 9,
             "children": []
           },
           {
-            "label": "Сбор отправлений",
+            "label": "Drop Collection",
             "id": "drop-collection.md",
             "order": 10,
             "children": []
@@ -384,77 +384,77 @@
         ]
       },
       {
-        "label": "Схема и поля данных",
+        "label": "Schema & Data Fields",
         "id": "schema",
         "order": 2,
         "children": [
           {
-            "label": "Объяснение схемы",
+            "label": "Schema Explained",
             "id": "schema.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Основное поле и AutoID",
+            "label": "Primary Field & AutoID",
             "id": "primary-field.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Плотный вектор",
+            "label": "Dense Vector",
             "id": "dense-vector.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Двоичный вектор",
+            "label": "Binary Vector",
             "id": "binary-vector.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Разреженный вектор",
+            "label": "Sparse Vector",
             "id": "sparse_vector.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "Поле VarChar",
+            "label": "VarChar Field",
             "id": "string.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "Текстовое поле",
+            "label": "Text Field",
             "id": "text.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "Числовое поле",
+            "label": "Number Field",
             "id": "number.md",
             "order": 7,
             "children": []
           },
           {
-            "label": "Поле JSON",
+            "label": "JSON Field",
             "id": "json-field",
             "order": 8,
             "children": [
               {
-                "label": "Обзор полей JSON",
+                "label": "JSON Field Overview",
                 "id": "json-field-overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Индексирование JSON",
+                "label": "JSON Indexing",
                 "id": "json-indexing.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Разбор JSON",
+                "label": "JSON Shredding",
                 "id": "json-shredding.md",
                 "order": 2,
                 "children": []
@@ -462,7 +462,7 @@
             ]
           },
           {
-            "label": "Поле массива",
+            "label": "Array Field",
             "id": "array_data_type.md",
             "order": 9,
             "children": []
@@ -473,31 +473,31 @@
             "order": 10,
             "children": [
               {
-                "label": "Обзор StructArray",
+                "label": "StructArray Overview",
                 "id": "array-of-structs.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Создать поле типа StructArray",
+                "label": "Create a StructArray Field",
                 "id": "create-structarray-field.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Вставка данных в поля StructArray",
+                "label": "Insert Data into StructArray Fields",
                 "id": "insert-data-into-structarray-fields.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Поля массива структур Index",
+                "label": "Index StructArray Fields",
                 "id": "index-structarray-fields.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "Ограничения StructArray",
+                "label": "StructArray Limits",
                 "id": "structarray-limits.md",
                 "order": 4,
                 "children": []
@@ -505,77 +505,77 @@
             ]
           },
           {
-            "label": "Область геометрии",
+            "label": "Geometry Field",
             "id": "geometry-field.md",
             "order": 11,
             "children": []
           },
           {
-            "label": "Поле TIMESTAMPTZ",
+            "label": "TIMESTAMPTZ Field",
             "id": "timestamptz-field.md",
             "order": 12,
             "children": []
           },
           {
-            "label": "Динамическое поле",
+            "label": "Dynamic Field",
             "id": "enable-dynamic-field.md",
             "order": 13,
             "children": []
           },
           {
-            "label": "Поля, допускающие нулевые значения",
+            "label": "Nullable Fields",
             "id": "nullable-and-default.md",
             "order": 14,
             "children": []
           },
           {
-            "label": "Значения по умолчанию",
+            "label": "Default Values",
             "id": "default-values.md",
             "order": 15,
             "children": []
           },
           {
-            "label": "Анализатор",
+            "label": "Analyzer",
             "id": "analyzer",
             "order": 16,
             "children": [
               {
-                "label": "Обзор анализатора",
+                "label": "Analyzer Overview",
                 "id": "analyzer-overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Встроенные анализаторы",
+                "label": "Built-in Analyzers",
                 "id": "built-in-analyzers",
                 "order": 1,
                 "children": [
                   {
-                    "label": "Стандартный",
+                    "label": "Standard",
                     "id": "standard-analyzer.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "Английский",
+                    "label": "English",
                     "id": "english-analyzer.md",
                     "order": 1,
                     "children": []
                   },
                   {
-                    "label": "Китайский",
+                    "label": "Chinese",
                     "id": "chinese-analyzer.md",
                     "order": 2,
                     "children": []
                   },
                   {
-                    "label": "арабский",
+                    "label": "Arabic",
                     "id": "arabic-analyzer.md",
                     "order": 3,
                     "children": []
                   },
                   {
-                    "label": "Тайский",
+                    "label": "Thai",
                     "id": "thai-analyzer.md",
                     "order": 4,
                     "children": []
@@ -583,48 +583,48 @@
                 ]
               },
               {
-                "label": "Токенизаторы",
+                "label": "Tokenizers",
                 "id": "tokenizers",
                 "order": 2,
                 "children": [
                   {
-                    "label": "Стандартный",
+                    "label": "Standard",
                     "id": "standard-tokenizer.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "Пробел",
+                    "label": "Whitespace",
                     "id": "whitespace-tokenizer.md",
                     "order": 1,
                     "children": []
                   },
                   {
-                    "label": "Цзеба",
+                    "label": "Jieba",
                     "id": "jieba-tokenizer.md",
                     "order": 2,
                     "children": []
                   },
                   {
-                    "label": "Тайский",
+                    "label": "Thai",
                     "id": "thai-tokenizer.md",
                     "order": 3,
                     "children": []
                   },
                   {
-                    "label": "Линдер",
+                    "label": "Lindera",
                     "id": "lindera-tokenizer.md",
                     "order": 4,
                     "children": []
                   },
                   {
-                    "label": "отделение интенсивной терапии",
+                    "label": "ICU",
                     "id": "icu-tokenizer.md",
                     "order": 5,
                     "children": []
                   },
                   {
-                    "label": "Идентификатор языка",
+                    "label": "Language Identifier",
                     "id": "language-identifier.md",
                     "order": 6,
                     "children": []
@@ -632,36 +632,36 @@
                 ]
               },
               {
-                "label": "Фильтры",
+                "label": "Filters",
                 "id": "filters",
                 "order": 3,
                 "children": [
                   {
-                    "label": "Строчные буквы",
+                    "label": "Lowercase",
                     "id": "lowercase-filter.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "Сворачивание ASCII",
+                    "label": "ASCII Folding",
                     "id": "ascii-folding-filter.md",
                     "order": 1,
                     "children": []
                   },
                   {
-                    "label": "Нормализация арабо-арабских отношений",
+                    "label": "Arabic Normalization",
                     "id": "arabic-normalization-filter.md",
                     "order": 2,
                     "children": []
                   },
                   {
-                    "label": "Десятичная цифра",
+                    "label": "Decimal Digit",
                     "id": "decimaldigit-filter.md",
                     "order": 3,
                     "children": []
                   },
                   {
-                    "label": "Только буквы и цифры",
+                    "label": "Alphanumonly",
                     "id": "alphanumonly-filter.md",
                     "order": 4,
                     "children": []
@@ -679,49 +679,49 @@
                     "children": []
                   },
                   {
-                    "label": "Пиньинь",
+                    "label": "Pinyin",
                     "id": "pinyin-filter.md",
                     "order": 7,
                     "children": []
                   },
                   {
-                    "label": "Длина",
+                    "label": "Length",
                     "id": "length-filter.md",
                     "order": 8,
                     "children": []
                   },
                   {
-                    "label": "Стоп",
+                    "label": "Stop",
                     "id": "stop-filter.md",
                     "order": 9,
                     "children": []
                   },
                   {
-                    "label": "Устройство для удаления смеси",
+                    "label": "Decompounder",
                     "id": "decompounder-filter.md",
                     "order": 10,
                     "children": []
                   },
                   {
-                    "label": "Стеммер",
+                    "label": "Stemmer",
                     "id": "stemmer-filter.md",
                     "order": 11,
                     "children": []
                   },
                   {
-                    "label": "Удалить точку",
+                    "label": "Remove Punct",
                     "id": "removepunct-filter.md",
                     "order": 12,
                     "children": []
                   },
                   {
-                    "label": "Регулярные выражения",
+                    "label": "Regex",
                     "id": "regex-filter.md",
                     "order": 13,
                     "children": []
                   },
                   {
-                    "label": "Синоним",
+                    "label": "Synonym",
                     "id": "synonym-filter.md",
                     "order": 14,
                     "children": []
@@ -729,19 +729,19 @@
                 ]
               },
               {
-                "label": "Многоязычные анализаторы",
+                "label": "Multi-language Analyzers",
                 "id": "multi-language-analyzers.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "Выберите аналитический прибор, подходящий для ваших задач",
+                "label": "Choose the Right Analyzer for Your Use Case",
                 "id": "choose-the-right-analyzer-for-your-use-case.md",
                 "order": 5,
                 "children": []
               },
               {
-                "label": "Управление файловыми ресурсами",
+                "label": "Manage File Resources",
                 "id": "manage-file-resources.md",
                 "order": 6,
                 "children": []
@@ -749,37 +749,37 @@
             ]
           },
           {
-            "label": "Изменить поле коллекции",
+            "label": "Alter Collection Field",
             "id": "alter-collection-field.md",
             "order": 16,
             "children": []
           },
           {
-            "label": "Изменить схему коллекции",
+            "label": "Alter Collection Schema",
             "id": "add-fields-to-an-existing-collection.md",
             "order": 17,
             "children": []
           },
           {
-            "label": "Изменить схему внешней коллекции",
+            "label": "Alter External Collection Schema",
             "id": "alter-external-collection-schema.md",
             "order": 18,
             "children": []
           },
           {
-            "label": "Передовой опыт",
+            "label": "Best Practices",
             "id": "best-practices",
             "isMenu": true,
             "order": 19,
             "children": [
               {
-                "label": "Проектирование модели данных для поиска",
+                "label": "Data Model Design for Search",
                 "id": "schema-hands-on.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Проектирование модели данных с использованием массива структур",
+                "label": "Data Model Design with an Array of Structs",
                 "id": "best-practices-for-array-of-structs.md",
                 "order": 1,
                 "children": []
@@ -789,24 +789,24 @@
         ]
       },
       {
-        "label": "Вставка и удаление",
+        "label": "Insert & Delete",
         "id": "insert-and-delete",
         "order": 3,
         "children": [
           {
-            "label": "Вставить объекты",
+            "label": "Insert Entities",
             "id": "insert-update-delete.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Объекты с операцией «Upsert»",
+            "label": "Upsert Entities",
             "id": "upsert-entities.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Удалить объекты",
+            "label": "Delete Entities",
             "id": "delete-entities.md",
             "order": 2,
             "children": []
@@ -814,13 +814,13 @@
         ]
       },
       {
-        "label": "Указатели",
+        "label": "Indexes",
         "id": "manage_indexes",
         "order": 4,
         "isMenu": true,
         "children": [
           {
-            "label": "Объяснение индекса",
+            "label": "Index Explained",
             "id": "index-explained.md",
             "order": 0,
             "children": []
@@ -832,13 +832,13 @@
             "children": []
           },
           {
-            "label": "Плавающие векторные индексы",
+            "label": "Floating Vector Indexes",
             "id": "floating-vector-indexes",
             "order": 2,
             "isMenu": true,
             "children": [
               {
-                "label": "КВАРТИРА",
+                "label": "FLAT",
                 "id": "flat.md",
                 "order": 0,
                 "children": []
@@ -912,7 +912,7 @@
             ]
           },
           {
-            "label": "Индексы двоичных векторов",
+            "label": "Binary Vector Indexes",
             "id": "binary-vector-indexes",
             "order": 3,
             "isMenu": true,
@@ -938,7 +938,7 @@
             ]
           },
           {
-            "label": "Индексы разреженных векторов",
+            "label": "Sparse Vector Indexes",
             "id": "sparse-vector-indexes",
             "order": 4,
             "isMenu": true,
@@ -952,7 +952,7 @@
             ]
           },
           {
-            "label": "Скалярные индексы",
+            "label": "Scalar Indexes",
             "id": "scalar-indexes",
             "order": 5,
             "isMenu": true,
@@ -964,7 +964,7 @@
                 "children": []
               },
               {
-                "label": "ПЕРЕВЕРНУТОЕ",
+                "label": "INVERTED",
                 "id": "inverted.md",
                 "order": 1,
                 "children": []
@@ -990,12 +990,12 @@
             ]
           },
           {
-            "label": "Индексы с поддержкой GPU",
+            "label": "GPU-enabled Indexes",
             "id": "gpu-enabled-indexes",
             "order": 6,
             "children": [
               {
-                "label": "Обзор индекса GPU",
+                "label": "GPU Index Overview",
                 "id": "gpu-index-overview.md",
                 "order": 0,
                 "children": []
@@ -1029,114 +1029,114 @@
         ]
       },
       {
-        "label": "Поиск",
+        "label": "Search",
         "id": "search-rerank",
         "order": 5,
         "isMenu": true,
         "children": [
           {
-            "label": "Базовый поиск с использованием нейронных сетей",
+            "label": "Basic ANN Search",
             "id": "single-vector-search.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Поиск с фильтрами",
+            "label": "Filtered Search",
             "id": "filtered-search.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Поиск по диапазону",
+            "label": "Range Search",
             "id": "range-search.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Поиск по группам",
+            "label": "Grouping Search",
             "id": "grouping-search.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Агрегация результатов поиска",
+            "label": "Search Aggregation",
             "id": "search-aggregation.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "Поиск по первичному ключу",
+            "label": "Primary-Key Search",
             "id": "primary-key-search.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "Гибридный поиск",
+            "label": "Hybrid Search",
             "id": "multi-vector-search.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "Запрос",
+            "label": "Query",
             "id": "get-and-scalar-query.md",
             "order": 7,
             "children": []
           },
           {
-            "label": "Фильтрация",
+            "label": "Filtering",
             "id": "filtering",
             "order": 8,
             "children": [
               {
-                "label": "Объяснение принципа фильтрации",
+                "label": "Filtering Explained",
                 "id": "boolean.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Основные операторы",
+                "label": "Basic Operators",
                 "id": "basic-operators.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Сопоставление шаблонов",
+                "label": "Pattern Matching",
                 "id": "pattern-matching.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Фильтрация шаблонов",
+                "label": "Filtering Templating",
                 "id": "filtering-templating.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "Операторы JSON",
+                "label": "JSON Operators",
                 "id": "json-operators.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "Операторы над массивами",
+                "label": "Array Operators",
                 "id": "array-operators.md",
                 "order": 5,
                 "children": []
               },
               {
-                "label": "Операторы StructArray",
+                "label": "StructArray Operators",
                 "id": "struct-array-operators.md",
                 "order": 6,
                 "children": []
               },
               {
-                "label": "Случайная выборка",
+                "label": "Random Sampling",
                 "id": "random-sampling.md",
                 "order": 7,
                 "children": []
               },
               {
-                "label": "Операторы геометрии",
+                "label": "Geometry Operators",
                 "id": "geometry-operators.md",
                 "order": 8,
                 "children": []
@@ -1144,72 +1144,72 @@
             ]
           },
           {
-            "label": "Поиск по полному тексту",
+            "label": "Full Text Search",
             "id": "full-text-search.md",
             "order": 9,
             "children": []
           },
           {
-            "label": "Совпадение текста",
+            "label": "Text Match",
             "id": "keyword-match.md",
             "order": 10,
             "children": []
           },
           {
-            "label": "Выделение текста",
+            "label": "Text Highlighter",
             "id": "text-highlighter.md",
             "order": 11,
             "children": []
           },
           {
-            "label": "Совпадение фразы",
+            "label": "Phrase Match",
             "id": "phrase-match.md",
             "order": 12,
             "children": []
           },
           {
-            "label": "Поиск с помощью StructArray",
+            "label": "Search with StructArray",
             "id": "search-with-structarray",
             "order": 13,
             "children": [
               {
-                "label": "Базовый векторный поиск с использованием StructArray",
+                "label": "Basic Vector Search with StructArray",
                 "id": "basic-vector-search-with-structarray.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Фильтрованный поиск с использованием StructArray",
+                "label": "Filtered Search with StructArray",
                 "id": "filtered-search-with-structarray.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Поиск по диапазону с использованием StructArray",
+                "label": "Range Search with StructArray",
                 "id": "range-search-with-structarray.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Группировка результатов поиска с помощью StructArray",
+                "label": "Grouping Search with StructArray",
                 "id": "grouping-search-with-structarray.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "Гибридный поиск с использованием StructArray",
+                "label": "Hybrid Search with StructArray",
                 "id": "hybrid-search-with-structarray.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "Поиск с использованием списков вложений: ColBERT и ColPali",
+                "label": "Search with EmbeddingLists: ColBERT and ColPali",
                 "id": "search-with-embedding-lists.md",
                 "order": 5,
                 "children": []
               },
               {
-                "label": "Выберите стратегию поиска EmbeddingList",
+                "label": "Choose an EmbeddingList Search Strategy",
                 "id": "choose-an-embeddinglist-search-strategy.md",
                 "order": 6,
                 "children": []
@@ -1217,19 +1217,19 @@
             ]
           },
           {
-            "label": "Запросы Elasticsearch к Milvus",
+            "label": "Elasticsearch Queries to Milvus",
             "id": "elasticsearch-queries-to-milvus.md",
             "order": 14,
             "children": []
           },
           {
-            "label": "Итераторы поиска",
+            "label": "Search Iterators",
             "id": "with-iterators.md",
             "order": 15,
             "children": []
           },
           {
-            "label": "Использовать ключ раздела",
+            "label": "Use Partition Key",
             "id": "use-partition-key.md",
             "order": 16,
             "children": []
@@ -1237,25 +1237,25 @@
         ]
       },
       {
-        "label": "Вывод функций и моделей",
+        "label": "Function & Model Inference",
         "id": "embeddings-reranking",
         "order": 6,
         "isMenu": true,
         "children": [
           {
-            "label": "Функция BM25",
+            "label": "BM25 Function",
             "id": "bm25-function.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Функции вложения на основе моделей",
+            "label": "Model-based Embedding Functions",
             "id": "embedding-function",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "Обзор функции встраивания",
+                "label": "Embedding Function Overview",
                 "id": "embedding-function-overview.md",
                 "order": 0,
                 "children": []
@@ -1279,7 +1279,7 @@
                 "children": []
               },
               {
-                "label": "Коренные породы",
+                "label": "Bedrock",
                 "id": "bedrock.md",
                 "order": 4,
                 "children": []
@@ -1327,7 +1327,7 @@
                 "children": []
               },
               {
-                "label": "«Яндекс.Клауд»",
+                "label": "Yandex Cloud",
                 "id": "yandex-cloud.md",
                 "order": 12,
                 "children": []
@@ -1335,25 +1335,25 @@
             ]
           },
           {
-            "label": "Функция MinHash",
+            "label": "MinHash Function",
             "id": "minhash-function.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Функции переранжирования",
+            "label": "Rerank Functions",
             "id": "reranking",
             "order": 3,
             "isMenu": true,
             "children": [
               {
-                "label": "Рейтинговая система с взвешенными оценками",
+                "label": "Weighted Ranker",
                 "id": "weighted-ranker.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Рейтинг RRF",
+                "label": "RRF Ranker",
                 "id": "rrf-ranker.md",
                 "order": 1,
                 "children": []
@@ -1365,37 +1365,37 @@
                 "children": []
               },
               {
-                "label": "Рейтинг разложения",
+                "label": "Decay Ranker",
                 "id": "decay-ranker",
                 "isMenu": true,
                 "order": 3,
                 "children": [
                   {
-                    "label": "Обзор рейтинга Decay Ranker",
+                    "label": "Decay Ranker Overview",
                     "id": "decay-ranker-overview.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "Гауссово затухание",
+                    "label": "Gaussian Decay",
                     "id": "gaussian-decay.md",
                     "order": 1,
                     "children": []
                   },
                   {
-                    "label": "Экспоненциальный спад",
+                    "label": "Exponential Decay",
                     "id": "exponential-decay.md",
                     "order": 2,
                     "children": []
                   },
                   {
-                    "label": "Линейное затухание",
+                    "label": "Linear Decay",
                     "id": "linear-decay.md",
                     "order": 3,
                     "children": []
                   },
                   {
-                    "label": "Руководство: Реализация ранжирования по времени в Milvus",
+                    "label": "Tutorial: Implement Time-based Ranking in Milvus",
                     "id": "tutorial-implement-a-time-based-ranking-in-milvus.md",
                     "order": 4,
                     "children": []
@@ -1403,13 +1403,13 @@
                 ]
               },
               {
-                "label": "Рейтинг моделей",
+                "label": "Model Ranker",
                 "id": "model-ranker",
                 "order": 4,
                 "isMenu": true,
                 "children": [
                   {
-                    "label": "Обзор Model Ranker",
+                    "label": "Model Ranker Overview",
                     "id": "model-ranker-overview.md",
                     "order": 0,
                     "children": []
@@ -1433,7 +1433,7 @@
                     "children": []
                   },
                   {
-                    "label": "Рейтинг Voyage AI",
+                    "label": "Voyage AI Ranker",
                     "id": "voyage-ai-ranker.md",
                     "order": 4,
                     "children": []
@@ -1463,49 +1463,49 @@
         ]
       },
       {
-        "label": "Оптимизация хранения данных",
+        "label": "Storage Optimization",
         "id": "storage_optimization",
         "order": 10,
         "isMenu": true,
         "children": [
           {
-            "label": "Используйте mmap",
+            "label": "Use mmap",
             "id": "mmap.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Уплотнение кластеров",
+            "label": "Clustering Compaction",
             "id": "clustering-compaction.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Принудительная уплотнение при слиянии",
+            "label": "Force Merge Compaction",
             "id": "force-merge.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Многоуровневое хранение",
+            "label": "Tiered Storage",
             "id": "tiered_storage",
             "order": 3,
             "isMenu": true,
             "children": [
               {
-                "label": "Обзор многоуровневого хранения данных",
+                "label": "Tiered Storage Overview",
                 "id": "tiered-storage-overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Разминка",
+                "label": "Warm Up",
                 "id": "warm-up.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Выселение",
+                "label": "Eviction",
                 "id": "eviction.md",
                 "order": 2,
                 "children": []
@@ -1515,25 +1515,25 @@
         ]
       },
       {
-        "label": "Снимки",
+        "label": "Snapshots",
         "id": "snapshots",
         "order": 11,
         "isMenu": true,
         "children": [
           {
-            "label": "Обзор",
+            "label": "Overview",
             "id": "snapshots.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Управление моментальными снимками",
+            "label": "Manage Snapshots",
             "id": "manage-snapshots.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Варианты использования",
+            "label": "Use Cases",
             "id": "snapshot-use-cases.md",
             "order": 2,
             "children": []
@@ -1543,19 +1543,19 @@
     ]
   },
   {
-    "label": "Импорт данных",
+    "label": "Data Import",
     "id": "data_import",
     "order": 5,
     "isMenu": true,
     "children": [
       {
-        "label": "Подготовка исходных данных",
+        "label": "Prepare Source Data",
         "id": "prepare-source-data.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Импорт данных",
+        "label": "Import Data",
         "id": "import-data.md",
         "order": 1,
         "children": []
@@ -1563,55 +1563,55 @@
     ]
   },
   {
-    "label": "Инструменты искусственного интеллекта",
+    "label": "AI Tools",
     "id": "aiTools",
     "order": 4,
     "isMenu": true,
     "children": [
       {
-        "label": "Milvus для ИИ-агентов",
+        "label": "Milvus for AI Agents",
         "id": "milvus_for_agents.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Подсказки для ИИ",
+        "label": "AI Prompts",
         "id": "ai_prompts",
         "isMenu": true,
         "order": 1,
         "children": [
           {
-            "label": "AGENTS.md для Milvus",
+            "label": "AGENTS.md for Milvus",
             "id": "agents_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "SDK для Python",
+            "label": "Python SDK",
             "id": "python_sdk.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Проектирование схемы",
+            "label": "Schema Design",
             "id": "schema_design.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Шаблоны поиска",
+            "label": "Search Patterns",
             "id": "search_patterns.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Выбор индекса",
+            "label": "Index Selection",
             "id": "index_selection.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "Конвейер RAG",
+            "label": "RAG Pipeline",
             "id": "rag_pipeline.md",
             "order": 5,
             "children": []
@@ -1619,21 +1619,21 @@
         ]
       },
       {
-        "label": "Навык «Милвус»",
+        "label": "Milvus Skill",
         "id": "milvus_skill",
         "order": 2,
         "externalLink": "https://github.com/zilliztech/milvus-skill",
         "children": []
       },
       {
-        "label": "Сервер Milvus MCP",
+        "label": "Milvus MCP Server",
         "id": "mcp_server_milvus",
         "order": 3,
         "externalLink": "https://github.com/zilliztech/mcp-server-milvus",
         "children": []
       },
       {
-        "label": "Сервер MCP для кода Claude",
+        "label": "MCP Server for Claude Code",
         "id": "mcp_claude_context",
         "order": 4,
         "externalLink": "https://github.com/zilliztech/claude-context",
@@ -1642,43 +1642,43 @@
     ]
   },
   {
-    "label": "Руководство по администрированию",
+    "label": "Administration Guide",
     "id": "admin_guide",
     "isMenu": true,
     "order": 9,
     "children": [
       {
-        "label": "Развертывание",
+        "label": "Deployment",
         "id": "deployment",
         "order": 0,
         "isMenu": true,
         "children": [
           {
-            "label": "На месте",
+            "label": "On Premises",
             "id": "on_premises",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "С помощью Docker",
+                "label": "With Docker",
                 "id": "configure-docker.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "С помощью Helm",
+                "label": "With Helm",
                 "id": "configure-helm.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "С оператором Milvus",
+                "label": "With Milvus Operator",
                 "id": "configure_operator.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Распределить ресурсы",
+                "label": "Allocate Resources",
                 "id": "allocate.md",
                 "order": 3,
                 "children": []
@@ -1686,37 +1686,37 @@
             ]
           },
           {
-            "label": "«На облаках»",
+            "label": "On Clouds",
             "id": "on_cloud",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "Развертывание в AWS",
+                "label": "Deploy on AWS",
                 "id": "eks.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Развертывание на GCP",
+                "label": "Deploy on GCP",
                 "id": "gcp.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Развертывание в Azure",
+                "label": "Deploy on Azure",
                 "id": "azure.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "Развертывание на OpenShift",
+                "label": "Deploy on OpenShift",
                 "id": "openshift.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "Распределение нагрузки на уровне 7",
+                "label": "Layer-7 Load Balacing",
                 "id": "layer-7-lb",
                 "order": 5,
                 "isMenu": true,
@@ -1742,7 +1742,7 @@
                 ]
               },
               {
-                "label": "Облачное хранилище",
+                "label": "Cloud Storage",
                 "id": "cloud-storage",
                 "order": 6,
                 "isMenu": true,
@@ -1772,43 +1772,43 @@
         ]
       },
       {
-        "label": "Настройки",
+        "label": "Configuration",
         "id": "configuration",
         "order": 1,
         "isMenu": true,
         "children": [
           {
-            "label": "Конфигурации системы",
+            "label": "System Configurations",
             "id": "system_configuration.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "На ходу",
+            "label": "On the Fly",
             "id": "dynamic_config.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Ограничение количества сборов",
+            "label": "Limit Collection Counts",
             "id": "limit_collection_counts.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Настройка кэша блоков",
+            "label": "Configure Chunk Cache",
             "id": "chunk_cache.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Координатор HA",
+            "label": "Coordinator HA",
             "id": "coordinator_ha.md",
             "order": 4,
             "children": []
           },
           {
-            "label": "QueryNode с использованием локального диска",
+            "label": "QueryNode Using Local Disk",
             "id": "configure-querynode-localdisk.md",
             "order": 5,
             "children": []
@@ -1816,19 +1816,19 @@
         ]
       },
       {
-        "label": "Инфраструктура данных",
+        "label": "Data Infrastructure",
         "id": "data_infra_integration",
         "isMenu": true,
         "order": 2,
         "children": [
           {
-            "label": "Обзор",
+            "label": "Overview",
             "id": "data-infra-integration-overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Метаданные",
+            "label": "Metadata",
             "id": "metadata",
             "isMenu": true,
             "order": 1,
@@ -1842,42 +1842,42 @@
             ]
           },
           {
-            "label": "Объектное хранилище",
+            "label": "Object Storage",
             "id": "object-storage.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Очередь сообщений",
+            "label": "Message Queue",
             "id": "mqtype",
             "isMenu": true,
             "order": 3,
             "children": [
               {
-                "label": "Обзор",
+                "label": "Overview",
                 "id": "mqtype-overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Дятел",
+                "label": "Woodpecker",
                 "id": "woodpecker.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Пульсар",
+                "label": "Pulsar",
                 "id": "mq_pulsar.md",
                 "order": 2,
                 "children": [
                   {
-                    "label": "Обновление до Pulsar v3",
+                    "label": "Upgrade to Pulsar v3",
                     "id": "upgrade-pulsar-v3.md",
                     "order": 0,
                     "children": []
                   },
                   {
-                    "label": "Продолжить использование Pulsar v2",
+                    "label": "Continue Using Pulsar v2",
                     "id": "use-pulsar-v2.md",
                     "order": 1,
                     "children": []
@@ -1885,7 +1885,7 @@
                 ]
               },
               {
-                "label": "Кафка",
+                "label": "Kafka",
                 "id": "mq_kafka.md",
                 "order": 3,
                 "children": []
@@ -1897,12 +1897,12 @@
                 "children": []
               },
               {
-                "label": "Переключение очереди сообщений",
+                "label": "Switch Message Queue",
                 "id": "switch_milvus_mq_type",
                 "order": 5,
                 "children": [
                   {
-                    "label": "Обзор",
+                    "label": "Overview",
                     "id": "switch-mq-type.md",
                     "order": 0,
                     "children": []
@@ -1914,13 +1914,13 @@
                     "children": []
                   },
                   {
-                    "label": "Пульсар ↔ Дятел",
+                    "label": "Pulsar ↔ Woodpecker",
                     "id": "switch-pulsar-woodpecker.md",
                     "order": 2,
                     "children": []
                   },
                   {
-                    "label": "Кафка ↔ Дятел",
+                    "label": "Kafka ↔ Woodpecker",
                     "id": "switch-kafka-woodpecker.md",
                     "order": 3,
                     "children": []
@@ -1932,31 +1932,31 @@
         ]
       },
       {
-        "label": "Масштабирование",
+        "label": "Scaling",
         "id": "scaling",
         "order": 4,
         "isMenu": true,
         "children": [
           {
-            "label": "Кластер масштабирования",
+            "label": "Scale Cluster",
             "id": "scaleout.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Автономный масштаб",
+            "label": "Scale Standalone",
             "id": "scale-standalone.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Масштаб с HPA",
+            "label": "Scale with HPA",
             "id": "hpa.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Зависимости от масштаба",
+            "label": "Scale Dependencies",
             "id": "scale-dependencies.md",
             "order": 3,
             "children": []
@@ -1964,18 +1964,18 @@
         ]
       },
       {
-        "label": "Обновление",
+        "label": "Upgrade",
         "id": "upgrade_milvus",
         "order": 7,
         "children": [
           {
-            "label": "Обновление кластера Milvus",
+            "label": "Upgrade Milvus Cluster",
             "id": "upgrade_milvus_cluster-operator.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Обновление автономной версии Milvus",
+            "label": "Upgrade Milvus Standalone",
             "id": "upgrade_milvus_standalone-operator.md",
             "order": 1,
             "children": []
@@ -1983,37 +1983,37 @@
         ]
       },
       {
-        "label": "Мониторинг, оповещения и журналы",
+        "label": "Monitoring, Alerts & Logs",
         "id": "monitor_alert_log",
         "order": 8,
         "isMenu": true,
         "children": [
           {
-            "label": "Мониторинг",
+            "label": "Monitoring",
             "id": "monitoring",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "Архитектура",
+                "label": "Architecture",
                 "id": "monitor_overview.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Развертывание служб мониторинга",
+                "label": "Deploy Monitoring Services",
                 "id": "monitor.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Визуализация показателей",
+                "label": "Visualize Metrics",
                 "id": "visualize.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Панель мониторинга Milvus Metrics",
+                "label": "Milvus Metrics Dashboard",
                 "id": "metrics_dashboard.md",
                 "order": 3,
                 "children": []
@@ -2021,13 +2021,13 @@
             ]
           },
           {
-            "label": "Уведомления",
+            "label": "Alerts",
             "id": "alerts",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "Создать оповещение",
+                "label": "Create an Alert",
                 "id": "alert.md",
                 "order": 0,
                 "children": []
@@ -2035,19 +2035,19 @@
             ]
           },
           {
-            "label": "Журналы",
+            "label": "Logs",
             "id": "logs",
             "order": 2,
             "isMenu": true,
             "children": [
               {
-                "label": "Настройка Grafana Loki",
+                "label": "Configure Grafana Loki",
                 "id": "configure_grafana_loki.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Настройка журналов доступа",
+                "label": "Configure Access Logs",
                 "id": "configure_access_logs.md",
                 "order": 1,
                 "children": []
@@ -2055,7 +2055,7 @@
             ]
           },
           {
-            "label": "Трейс",
+            "label": "Trace",
             "id": "trace",
             "order": 3,
             "isMenu": true,
@@ -2071,12 +2071,12 @@
         ]
       },
       {
-        "label": "Группы ресурсов",
+        "label": "Resource Groups",
         "id": "resource_groups",
         "order": 9,
         "children": [
           {
-            "label": "Управление группами ресурсов",
+            "label": "Manage Resource Groups",
             "id": "resource_group.md",
             "order": 0,
             "children": []
@@ -2084,31 +2084,31 @@
         ]
       },
       {
-        "label": "Безопасность",
+        "label": "Security",
         "id": "security",
         "order": 11,
         "isMenu": true,
         "children": [
           {
-            "label": "Включить аутентификацию",
+            "label": "Enable Authentication",
             "id": "authenticate.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Включить RBAC",
+            "label": "Enable RBAC",
             "id": "rbac",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "Обзор модели RBAC",
+                "label": "RBAC Overview",
                 "id": "rbac.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Пользователи, права доступа и роли",
+                "label": "Users, Privileges, and Roles",
                 "id": "users_and_roles.md",
                 "order": 1,
                 "children": []
@@ -2120,19 +2120,19 @@
                 "children": []
               },
               {
-                "label": "Предоставить права",
+                "label": "Grant Privileges",
                 "id": "grant_privileges.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "Роли грантополучателей",
+                "label": "Grant Roles",
                 "id": "grant_roles.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "Удаление пользователей и ролей",
+                "label": "Drop Users & Roles",
                 "id": "drop_users_roles.md",
                 "order": 5,
                 "children": []
@@ -2140,13 +2140,13 @@
             ]
           },
           {
-            "label": "Шифрование при передаче данных",
+            "label": "Encryption in Transit",
             "id": "tls.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Подключение к Kafka с использованием SASL/SSL",
+            "label": "Connect to Kafka with SASL/SSL",
             "id": "connect_kafka_ssl.md",
             "order": 3,
             "children": []
@@ -2162,13 +2162,13 @@
     ]
   },
   {
-    "label": "Инструменты",
+    "label": "Tools",
     "id": "tools",
     "isMenu": true,
     "order": 6,
     "children": [
       {
-        "label": "Атту (графический интерфейс Milvus)",
+        "label": "Attu (Milvus GUI)",
         "id": "milvus_attu",
         "order": 0,
         "externalLink": "https://github.com/zilliztech/attu",
@@ -2180,13 +2180,13 @@
         "order": 1,
         "children": [
           {
-            "label": "Обзор",
+            "label": "Overview",
             "id": "milvus_backup_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Команды",
+            "label": "Commands",
             "id": "milvus_backup_cli.md",
             "order": 1,
             "children": []
@@ -2198,31 +2198,31 @@
             "children": []
           },
           {
-            "label": "Распространенные случаи",
+            "label": "Common Cases",
             "id": "common-cases",
             "order": 3,
             "isMenu": true,
             "children": [
               {
-                "label": "Резервное копирование и восстановление в одном экземпляре",
+                "label": "Backup and Restore in One Instance",
                 "id": "single-instance-backup-and-restore.md",
                 "order": 0,
                 "children": []
               },
               {
-                "label": "Перенос данных между экземплярами в одном бакете",
+                "label": "Migrate Between Instances in One Bucket",
                 "id": "shared-bucket-backup-and-restore.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Перенос данных между экземплярами в разных корзинах",
+                "label": "Migrate Between Instances Across Buckets",
                 "id": "cross-bucket-backup-and-restore.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Перенос между экземплярами в различных средах S3",
+                "label": "Migrate Between Instances Across S3 Environments",
                 "id": "multi-storage-backup-and-restore.md",
                 "order": 3,
                 "children": []
@@ -2232,24 +2232,24 @@
         ]
       },
       {
-        "label": "Любитель птиц",
+        "label": "Birdwatcher",
         "id": "birdwatcher",
         "order": 3,
         "children": [
           {
-            "label": "Обзор",
+            "label": "Overview",
             "id": "birdwatcher_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Руководства по установке",
+            "label": "Install Guides",
             "id": "birdwatcher_install_guides.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Руководства по использованию",
+            "label": "Usage Guides",
             "id": "birdwatcher_usage_guides.md",
             "order": 2,
             "children": []
@@ -2262,31 +2262,31 @@
         "order": 2,
         "children": [
           {
-            "label": "Обзор",
+            "label": "Overview",
             "id": "milvus_cdc_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Настройка репликации CDC",
+            "label": "Set Up CDC Replication",
             "id": "set_up_cdc_replication.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Переключение",
+            "label": "Switchover",
             "id": "cdc_switchover.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Переключение на резервный сервер",
+            "label": "Failover",
             "id": "cdc_failover.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Массовый импорт при репликации CDC",
+            "label": "Bulk Import in CDC Replication",
             "id": "bulk_import_in_cdc_replication.md",
             "order": 4,
             "children": []
@@ -2300,19 +2300,19 @@
         "isMenu": true,
         "children": [
           {
-            "label": "Обзор",
+            "label": "Overview",
             "id": "cli_overview.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Установка",
+            "label": "Installation",
             "id": "install_cli.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Команды",
+            "label": "Commands",
             "id": "cli_commands.md",
             "order": 2,
             "children": []
@@ -2320,13 +2320,13 @@
         ]
       },
       {
-        "label": "Разъёмы Milvus",
+        "label": "Milvus Connectors",
         "id": "milvus_connectors",
         "order": 5,
         "isMenu": true,
         "children": [
           {
-            "label": "Искра",
+            "label": "Spark",
             "id": "integrate_with_spark.md",
             "order": 0,
             "children": []
@@ -2341,14 +2341,14 @@
         "children": []
       },
       {
-        "label": "Инструмент для определения размера Milvus",
+        "label": "Milvus Sizing Tool",
         "id": "sizing",
         "order": 7,
         "externalLink": "https://milvus.io/tools/sizing/",
         "children": []
       },
       {
-        "label": "Клиент PowerShell Milvus",
+        "label": "Powershell Milvus Client",
         "id": "milvus_powershell",
         "order": 8,
         "externalLink": "https://github.com/rrg92/ps-milvus/blob/main/docs/integrate_powershell.md",
@@ -2362,19 +2362,19 @@
         "children": []
       },
       {
-        "label": "Модели",
+        "label": "Models",
         "id": "models",
         "isMenu": true,
         "order": 10,
         "children": [
           {
-            "label": "Вложения",
+            "label": "Embeddings",
             "id": "embeddings",
             "order": 0,
             "isMenu": true,
             "children": [
               {
-                "label": "Обзор",
+                "label": "Overview",
                 "id": "embeddings.md",
                 "order": 0,
                 "children": []
@@ -2386,7 +2386,7 @@
                 "children": []
               },
               {
-                "label": "Трансформаторы предложений",
+                "label": "Sentence Transformers",
                 "id": "embed-with-sentence-transform.md",
                 "order": 2,
                 "children": []
@@ -2404,7 +2404,7 @@
                 "children": []
               },
               {
-                "label": "Путешествие",
+                "label": "Voyage",
                 "id": "embed-with-voyage.md",
                 "order": 6,
                 "children": []
@@ -2422,7 +2422,7 @@
                 "children": []
               },
               {
-                "label": "Преподаватель",
+                "label": "Instructor",
                 "id": "embed-with-instructor.md",
                 "order": 9,
                 "children": []
@@ -2452,7 +2452,7 @@
                 "children": []
               },
               {
-                "label": "Близнецы",
+                "label": "Gemini",
                 "id": "embed-with-gemini.md",
                 "order": 14,
                 "children": []
@@ -2460,13 +2460,13 @@
             ]
           },
           {
-            "label": "Реранкеры",
+            "label": "Rerankers",
             "id": "rerankers",
             "order": 1,
             "isMenu": true,
             "children": [
               {
-                "label": "Обзор",
+                "label": "Overview",
                 "id": "rerankers-overview.md",
                 "order": 0,
                 "children": []
@@ -2484,13 +2484,13 @@
                 "children": []
               },
               {
-                "label": "Кросс-кодер",
+                "label": "Cross Encoder",
                 "id": "rerankers-cross-encoder.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "Путешествие",
+                "label": "Voyage",
                 "id": "rerankers-voyage.md",
                 "order": 4,
                 "children": []
@@ -2506,7 +2506,7 @@
         ]
       },
       {
-        "label": "Помощник по коду SDK (MCP)",
+        "label": "SDK Code Helper (MCP)",
         "id": "milvus-sdk-helper-mcp.md",
         "order": 11,
         "children": []
@@ -2514,19 +2514,19 @@
     ]
   },
   {
-    "label": "Интеграции",
+    "label": "Integrations",
     "id": "integrations",
     "isMenu": true,
     "order": 8,
     "children": [
       {
-        "label": "Обзор",
+        "label": "Overview",
         "id": "integrations_overview.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Оркестровка",
+        "label": "Orchestration",
         "id": "orchestrate-with-milvus",
         "order": 3,
         "children": [
@@ -2536,13 +2536,13 @@
             "order": 0,
             "children": [
               {
-                "label": "Основные принципы использования",
+                "label": "Basic Usage",
                 "id": "basic_usage_langchain.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Встраивание текста",
+                "label": "Text Embedding",
                 "id": "langchain_milvus_dido.md",
                 "order": 2,
                 "children": []
@@ -2554,25 +2554,25 @@
                 "children": []
               },
               {
-                "label": "Гибридный поиск",
+                "label": "Hybrid Search",
                 "id": "milvus_hybrid_search_retriever.md",
                 "order": 4,
                 "children": []
               },
               {
-                "label": "Полнотекстовый поиск",
+                "label": "Full-text Search",
                 "id": "full_text_search_with_langchain.md",
                 "order": 5,
                 "children": []
               },
               {
-                "label": "Асинхронный поиск",
+                "label": "Asynchronous Search",
                 "id": "langchain_milvus_async.md",
                 "order": 6,
                 "children": []
               },
               {
-                "label": "Агент RAG",
+                "label": "Agent RAG",
                 "id": "agentic_rag_with_milvus_and_langgraph.md",
                 "order": 7,
                 "children": []
@@ -2591,25 +2591,25 @@
                 "children": []
               },
               {
-                "label": "API Milvus Async",
+                "label": "Milvus Async API",
                 "id": "llamaindex_milvus_async.md",
                 "order": 1,
                 "children": []
               },
               {
-                "label": "Полнотекстовый поиск",
+                "label": "Full-text Search",
                 "id": "llamaindex_milvus_full_text_search.md",
                 "order": 2,
                 "children": []
               },
               {
-                "label": "Гибридный поиск",
+                "label": "Hybrid Search",
                 "id": "llamaindex_milvus_hybrid_search.md",
                 "order": 3,
                 "children": []
               },
               {
-                "label": "Фильтрация метаданных",
+                "label": "Metadata Filtering",
                 "id": "llamaindex_milvus_metadata_filter.md",
                 "order": 4,
                 "children": []
@@ -2640,7 +2640,7 @@
                 "children": []
               },
               {
-                "label": "Полнотекстовый поиск",
+                "label": "Full-text Search",
                 "id": "full_text_search_with_milvus_and_haystack.md",
                 "order": 1,
                 "children": []
@@ -2648,7 +2648,7 @@
             ]
           },
           {
-            "label": "Котаэмон",
+            "label": "Kotaemon",
             "id": "kotaemon_with_milvus.md",
             "order": 5,
             "children": []
@@ -2704,7 +2704,7 @@
         ]
       },
       {
-        "label": "Агенты",
+        "label": "Agents",
         "id": "integrate-agents",
         "order": 4,
         "children": [
@@ -2715,7 +2715,7 @@
             "children": []
           },
           {
-            "label": "Верблюд",
+            "label": "Camel",
             "id": "integrate_with_camel.md",
             "order": 1,
             "children": []
@@ -2727,7 +2727,7 @@
             "children": []
           },
           {
-            "label": "Агно",
+            "label": "Agno",
             "id": "integrate_with_agno.md",
             "order": 3,
             "children": []
@@ -2757,7 +2757,7 @@
             "children": []
           },
           {
-            "label": "Основная память",
+            "label": "Basic Memory",
             "id": "basic_memory_with_milvus.md",
             "order": 8,
             "children": []
@@ -2771,12 +2771,12 @@
         ]
       },
       {
-        "label": "Оценка и отслеживаемость",
+        "label": "Evaluation & Observability",
         "id": "evaluation-observability",
         "order": 6,
         "children": [
           {
-            "label": "Раги",
+            "label": "Ragas",
             "id": "integrate_with_ragas.md",
             "order": 0,
             "children": []
@@ -2788,13 +2788,13 @@
             "children": []
           },
           {
-            "label": "Пятьдесят один",
+            "label": "FiftyOne",
             "id": "integrate_with_voxel51.md",
             "order": 2,
             "children": []
           },
           {
-            "label": "Аризе Феникс",
+            "label": "Arize Pheonix",
             "id": "evaluation_with_phoenix.md",
             "order": 3,
             "children": []
@@ -2814,7 +2814,7 @@
         ]
       },
       {
-        "label": "Внедрение моделей",
+        "label": "Embedding Models",
         "id": "integrate-embeddings-models",
         "order": 1,
         "children": [
@@ -2881,7 +2881,7 @@
         ]
       },
       {
-        "label": "LLM",
+        "label": "LLMs",
         "id": "integrate-llms",
         "order": 2,
         "children": [
@@ -2898,7 +2898,7 @@
             "children": []
           },
           {
-            "label": "Фейерверки",
+            "label": "Fireworks",
             "id": "build_RAG_with_milvus_and_fireworks.md",
             "order": 2,
             "children": []
@@ -2916,13 +2916,13 @@
             "children": []
           },
           {
-            "label": "Близнецы",
+            "label": "Gemini",
             "id": "build_RAG_with_milvus_and_gemini.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "Оллама",
+            "label": "Ollama",
             "id": "build_RAG_with_milvus_and_ollama.md",
             "order": 7,
             "children": []
@@ -2936,24 +2936,24 @@
         ]
       },
       {
-        "label": "Инженерия знаний",
+        "label": "Knowledge Engineering",
         "id": "knowledge-engineering",
         "order": 5,
         "children": [
           {
-            "label": "Почему? Как?",
+            "label": "WhyHow",
             "id": "integrate_with_whyhow.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Ванна",
+            "label": "Vanna",
             "id": "integrate_with_vanna.md",
             "order": 1,
             "children": []
           },
           {
-            "label": "Таблица знаний",
+            "label": "Knowledge Table",
             "id": "knowledge_table_with_milvus.md",
             "order": 2,
             "children": []
@@ -2973,7 +2973,7 @@
         ]
       },
       {
-        "label": "Источники данных",
+        "label": "Data Sources",
         "id": "data-sources",
         "order": 7,
         "children": [
@@ -2984,7 +2984,7 @@
             "children": []
           },
           {
-            "label": "Кафка",
+            "label": "Kafka",
             "id": "kafka-connect-milvus.md",
             "order": 1,
             "children": []
@@ -2996,13 +2996,13 @@
             "children": []
           },
           {
-            "label": "Неструктурированные",
+            "label": "Unstructured",
             "id": "rag_with_milvus_and_unstructured.md",
             "order": 3,
             "children": []
           },
           {
-            "label": "Маска PII",
+            "label": "PII Masker",
             "id": "RAG_with_pii_and_milvus.md",
             "order": 4,
             "children": []
@@ -3032,7 +3032,7 @@
             "children": []
           },
           {
-            "label": "Праздник",
+            "label": "Feast",
             "id": "build_RAG_with_milvus_and_feast.md",
             "order": 9,
             "children": []
@@ -3070,18 +3070,18 @@
         ]
       },
       {
-        "label": "Прочее",
+        "label": "Others",
         "id": "other-integrations",
         "order": 8,
         "children": [
           {
-            "label": "Снежинка",
+            "label": "Snowflake",
             "id": "integrate_with_snowpark.md",
             "order": 0,
             "children": []
           },
           {
-            "label": "Рука",
+            "label": "Arm",
             "id": "build_rag_on_arm.md",
             "order": 1,
             "children": []
@@ -3091,163 +3091,163 @@
     ]
   },
   {
-    "label": "Учебные пособия",
+    "label": "Tutorials",
     "id": "tutorials",
     "isMenu": true,
     "order": 7,
     "children": [
       {
-        "label": "Обзор",
+        "label": "Overview",
         "id": "tutorials-overview.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Создание RAG с помощью Milvus",
+        "label": "Build RAG with Milvus",
         "id": "build-rag-with-milvus.md",
         "order": 1,
         "children": []
       },
       {
-        "label": "Расширенный RAG",
+        "label": "Advanced RAG",
         "id": "how_to_enhance_your_rag.md",
         "order": 2,
         "children": []
       },
       {
-        "label": "Полнотекстовый поиск с помощью Milvus",
+        "label": "Full-Text Search with Milvus",
         "id": "full_text_search_with_milvus.md",
         "order": 3,
         "children": []
       },
       {
-        "label": "Гибридный поиск с помощью Milvus",
+        "label": "Hybrid Search with Milvus",
         "id": "hybrid_search_with_milvus.md",
         "order": 4,
         "children": []
       },
       {
-        "label": "Поиск изображений с помощью Milvus",
+        "label": "Image Search with Milvus",
         "id": "image_similarity_search.md",
         "order": 5,
         "children": []
       },
       {
-        "label": "Мультимодальный RAG",
+        "label": "Multimodal RAG",
         "id": "multimodal_rag_with_milvus.md",
         "order": 6,
         "children": []
       },
       {
-        "label": "График RAG с использованием Milvus",
+        "label": "Graph RAG with Milvus",
         "id": "graph_rag_with_milvus.md",
         "order": 7,
         "children": []
       },
       {
-        "label": "Контекстуальный поиск",
+        "label": "Contextual Retrieval",
         "id": "contextual_retrieval_with_milvus.md",
         "order": 8,
         "children": []
       },
       {
-        "label": "Кластеризация HDBSCAN",
+        "label": "HDBSCAN Clustering",
         "id": "hdbscan_clustering_with_milvus.md",
         "order": 9,
         "children": []
       },
       {
-        "label": "Используйте ColBERT и ColPali с Milvus",
+        "label": "Use ColBERT and ColPali with Milvus",
         "id": "search-with-embedding-lists",
         "order": 10,
         "externalLink": "https://milvus.io/docs/search-with-embedding-lists.md",
         "children": []
       },
       {
-        "label": "Векторная визуализация",
+        "label": "Vector Visualization",
         "id": "vector_visualization.md",
         "order": 11,
         "children": []
       },
       {
-        "label": "Рекомендация фильма",
+        "label": "Movie Recommendation",
         "id": "movie_recommendation_with_milvus.md",
         "order": 12,
         "children": []
       },
       {
-        "label": "Поиск по воронке с использованием вложений «матрешки»",
+        "label": "Funnel Search with Matryoshka Embeddings",
         "id": "funnel_search_with_matryoshka.md",
         "order": 13,
         "children": []
       },
       {
-        "label": "Краткое руководство по работе с Attu",
+        "label": "Quickstart with Attu",
         "id": "quickstart_with_attu.md",
         "order": 14,
         "children": []
       },
       {
-        "label": "Использование AsyncMilvusClient с asyncio",
+        "label": "Use AsyncMilvusClient with asyncio",
         "id": "use-async-milvus-client-with-asyncio.md",
         "order": 15,
         "children": []
       },
       {
-        "label": "Поиск по тексту с помощью Milvus",
+        "label": "Text-to-Image Search with Milvus",
         "id": "text_image_search.md",
         "order": 16,
         "children": []
       },
       {
-        "label": "Генерация выражений фильтрации запросов Milvus с помощью крупных языковых моделей",
+        "label": "Generating Milvus Query Filter Expressions with Large Language Models",
         "id": "generating_milvus_query_filter_expressions.md",
         "order": 17,
         "children": []
       },
       {
-        "label": "Узнать больше",
+        "label": "Explore More",
         "id": "explore-more",
         "order": 99,
         "children": [
           {
-            "label": "Система ответов на вопросы",
+            "label": "Question Answering System",
             "id": "question_answering_system.md",
             "order": 5,
             "children": []
           },
           {
-            "label": "Система рекомендаций",
+            "label": "Recommender System",
             "id": "recommendation_system.md",
             "order": 6,
             "children": []
           },
           {
-            "label": "Поиск по сходству видео",
+            "label": "Video Similarity Search",
             "id": "video_similarity_search.md",
             "order": 7,
             "children": []
           },
           {
-            "label": "Поиск по сходству аудиофайлов",
+            "label": "Audio Similarity Search",
             "id": "audio_similarity_search.md",
             "order": 8,
             "children": []
           },
           {
-            "label": "Классификация последовательностей ДНК",
+            "label": "DNA Sequence Classification",
             "id": "dna_sequence_classification.md",
             "order": 9,
             "children": []
           },
           {
-            "label": "Поисковая система по тексту",
+            "label": "Text Search Engine",
             "id": "text_search_engine.md",
             "order": 10,
             "children": []
           },
           {
-            "label": "Система дедупликации изображений",
+            "label": "Image Deduplication System",
             "id": "image_deduplication_system.md",
             "order": 12,
             "children": []
@@ -3257,37 +3257,37 @@
     ]
   },
   {
-    "label": "Часто задаваемые вопросы",
+    "label": "FAQs",
     "id": "faq",
     "isMenu": true,
     "order": 11,
     "children": [
       {
-        "label": "Часто задаваемые вопросы о производительности",
+        "label": "Performance FAQs",
         "id": "performance_faq.md",
         "order": 0,
         "children": []
       },
       {
-        "label": "Часто задаваемые вопросы о продуктах",
+        "label": "Product FAQs",
         "id": "product_faq.md",
         "order": 1,
         "children": []
       },
       {
-        "label": "Часто задаваемые вопросы по эксплуатации",
+        "label": "Operational FAQs",
         "id": "operational_faq.md",
         "order": 2,
         "children": []
       },
       {
-        "label": "Ограничения Milvus",
+        "label": "Milvus Limits",
         "id": "limitations.md",
         "order": 3,
         "children": []
       },
       {
-        "label": "Устранение неисправностей",
+        "label": "Troubleshooting",
         "id": "troubleshooting.md",
         "order": 4,
         "children": []

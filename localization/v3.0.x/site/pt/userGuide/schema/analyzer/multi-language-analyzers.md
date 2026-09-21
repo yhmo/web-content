@@ -1,19 +1,18 @@
 ---
 id: multi-language-analyzers.md
-title: Analisadores multilinguesCompatible with Milvus 2.5.11+
+title: Multi-language AnalyzersCompatible with Milvus 2.5.11+
 summary: >-
-  Quando o Milvus realiza a análise de texto, aplica normalmente um único
-  analisador a todo o campo de texto de uma coleção. Se esse analisador estiver
-  otimizado para o inglês, terá dificuldades com as regras de tokenização e
-  stemming muito diferentes exigidas por outras línguas, como o chinês, o
-  espanhol ou o francês, o que resulta numa taxa de recall mais baixa. Por
-  exemplo, uma pesquisa pela palavra espanhola «teléfono» (que significa
-  «telefone») confundiria um analisador focado no inglês: este poderia ignorar o
-  acento e não aplicar a derivação específica do espanhol, fazendo com que
-  resultados relevantes fossem ignorados.
+  When Milvus performs text analysis, it typically applies a single analyzer
+  across an entire text field in a collection. If that analyzer is optimized for
+  English, it struggles with the very different tokenization and stemming rules
+  required by other languages, such as Chinese, Spanish, or French, resulting a
+  lower recall rate. For instance, a search for the Spanish word "teléfono"
+  (meaning "phone") would trip up an English‑focused analyzer: it may drop the
+  accent and apply no Spanish‑specific stemming, causing relevant results to be
+  overlooked.
 beta: Milvus 2.5.11+
 ---
-<h1 id="Multi-language-Analyzers" class="common-anchor-header">Analisadores multilingues<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Multi-language-Analyzers" class="anchor-icon" translate="no">
+<h1 id="Multi-language-Analyzers" class="common-anchor-header">Multi-language Analyzers<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Multi-language-Analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -28,9 +27,9 @@ beta: Milvus 2.5.11+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Quando o Milvus realiza a análise de texto, aplica normalmente um único analisador a todo o campo de texto de uma coleção. Se esse analisador estiver otimizado para o inglês, terá dificuldades com as regras de tokenização e stemming muito diferentes exigidas por outras línguas, como o chinês, o espanhol ou o francês, resultando numa taxa de recuperação mais baixa. Por exemplo, uma pesquisa pela palavra espanhola <em>«teléfono»</em> (que significa <em>«telefone»</em>) confundiria um analisador focado no inglês: este poderia ignorar o acento e não aplicar a derivação específica do espanhol, fazendo com que resultados relevantes fossem ignorados.</p>
-<p>Os analisadores multilingues resolvem este problema, permitindo-lhe configurar vários analisadores para um campo de texto numa única coleção. Desta forma, pode armazenar documentos multilingues num campo de texto, e o Milvus analisa o texto de acordo com as regras linguísticas adequadas para cada documento.</p>
-<h2 id="Limits" class="common-anchor-header">Limites<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>When Milvus performs text analysis, it typically applies a single analyzer across an entire text field in a collection. If that analyzer is optimized for English, it struggles with the very different tokenization and stemming rules required by other languages, such as Chinese, Spanish, or French, resulting a lower recall rate. For instance, a search for the Spanish word <em>“teléfono”</em> (meaning <em>“phone”</em>) would trip up an English‑focused analyzer: it may drop the accent and apply no Spanish‑specific stemming, causing relevant results to be overlooked.</p>
+<p>Multi‑language analyzers resolve this issue by allowing you to configure multiple analyzers for a text field in a single collection. This way, you can store multilingual documents in a text field, and Milvus analyzes text according to the appropriate language rules for each document.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -46,11 +45,11 @@ beta: Milvus 2.5.11+
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Esta funcionalidade funciona apenas com a recuperação de texto baseada em BM25 e vetores esparsos. Para mais informações, consulte <a href="/docs/pt/full-text-search.md">Pesquisa</a> de <a href="/docs/pt/full-text-search.md">Texto Completo</a>.</p></li>
-<li><p>Cada documento numa única coleção pode utilizar apenas um analisador, determinado pelo valor do seu campo identificador de idioma.</p></li>
-<li><p>O desempenho pode variar consoante a complexidade dos seus analisadores e a dimensão dos seus dados de texto.</p></li>
+<li><p>This feature works only with BM25-based text retrieval and sparse vectors. For more information, refer to <a href="/docs/pt/full-text-search.md">Full Text Search</a>.</p></li>
+<li><p>Each document in a single collection can use only one analyzer, determined by its language identifier field value.</p></li>
+<li><p>Performance may vary depending on the complexity of your analyzers and the size of your text data.</p></li>
 </ul>
-<h2 id="Overview" class="common-anchor-header">Visão geral<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -65,43 +64,43 @@ beta: Milvus 2.5.11+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>O diagrama seguinte mostra o fluxo de trabalho para configurar e utilizar analisadores multilingues no Milvus:</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/multi-language-analyzers-workflow.png" alt="Multi Language Analyzers Workflow" class="doc-image" id="multi-language-analyzers-workflow" /> 
-   <span>Fluxo de trabalho dos analisadores multilingues</span>
-  
- </span></p>
+    </button></h2><p>The following diagram shows the workflow of configuring and using multi-language analyzers in Milvus:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/multi-language-analyzers-workflow.png" alt="Multi Language Analyzers Workflow" class="doc-image" id="multi-language-analyzers-workflow" />
+    <span>Multi Language Analyzers Workflow</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>Configurar analisadores multilingues</strong>:</p>
+<li><p><strong>Configure Multi-language Analyzers</strong>:</p>
 <ul>
-<li><p>Configure vários analisadores específicos para cada idioma utilizando o formato: <code translate="no">&lt;analyzer_name&gt;: &lt;analyzer_config&gt;</code>, em que cada <code translate="no">analyzer_config</code> segue a configuração padrão <code translate="no">analyzer_params</code>, conforme descrito na <a href="/docs/pt/analyzer-overview.md#Analyzer-types">Visão geral do analisador</a>.</p></li>
-<li><p>Defina um campo identificador especial que determinará a seleção do analisador para cada documento.</p></li>
-<li><p>Configure um analisador <code translate="no">default</code> para lidar com idiomas desconhecidos.</p></li>
+<li><p>Set up multiple language-specific analyzers using the format: <code translate="no">&lt;analyzer_name&gt;: &lt;analyzer_config&gt;</code>, where each <code translate="no">analyzer_config</code> follows standard <code translate="no">analyzer_params</code> configuration as described in <a href="/docs/pt/analyzer-overview.md#Analyzer-types">Analyzer Overview</a>.</p></li>
+<li><p>Define a special identifier field that will determine analyzer selection for each document.</p></li>
+<li><p>Configure a <code translate="no">default</code> analyzer for handling unknown languages.</p></li>
 </ul></li>
-<li><p><strong>Criar coleção</strong>:</p>
+<li><p><strong>Create Collection</strong>:</p>
 <ul>
-<li><p>Defina o esquema com os campos essenciais:</p>
+<li><p>Define schema with essential fields:</p>
 <ul>
-<li><p><strong>primary_key</strong>: Identificador único do documento.</p></li>
-<li><p><strong>text_field</strong>: Armazena o conteúdo de texto original.</p></li>
-<li><p><strong>identifier_field</strong>: Indica qual o analisador a utilizar para cada documento.</p></li>
-<li><p><strong>vector_field</strong>: Armazena embeddings esparsas a serem geradas pela função BM25.</p></li>
+<li><p><strong>primary_key</strong>: Unique document identifier.</p></li>
+<li><p><strong>text_field</strong>: Stores original text content.</p></li>
+<li><p><strong>identifier_field</strong>: Indicates which analyzer to use for each document.</p></li>
+<li><p><strong>vector_field</strong>: Stores sparse embeddings to be generated by the BM25 function.</p></li>
 </ul></li>
-<li><p>Configure a função BM25 e os parâmetros de indexação.</p></li>
+<li><p>Configure BM25 function and indexing parameters.</p></li>
 </ul></li>
-<li><p><strong>Inserir dados com identificadores de idioma</strong>:</p>
+<li><p><strong>Insert Data with Language Identifiers</strong>:</p>
 <ul>
-<li><p>Adicione documentos que contenham texto em várias línguas, em que cada documento inclua um valor de identificador que especifique qual o analisador a utilizar.</p></li>
-<li><p>O Milvus seleciona o analisador adequado com base no campo identificador, e os documentos com identificadores desconhecidos utilizam o analisador « <code translate="no">default</code> ».</p></li>
+<li><p>Add documents containing text in various languages, where each document includes an identifier value specifying which analyzer to use.</p></li>
+<li><p>Milvus selects the appropriate analyzer based on the identifier field, and documents with unknown identifiers use the <code translate="no">default</code> analyzer.</p></li>
 </ul></li>
-<li><p><strong>Pesquisar com analisadores específicos para cada idioma</strong>:</p>
+<li><p><strong>Search with Language-Specific Analyzers</strong>:</p>
 <ul>
-<li><p>Forneça o texto da consulta com o nome de um analisador especificado e o Milvus processa a consulta utilizando o analisador especificado.</p></li>
-<li><p>A tokenização ocorre de acordo com regras específicas do idioma, e a pesquisa devolve resultados adequados ao idioma com base na semelhança.</p></li>
+<li><p>Provide query text with an analyzer name specified, and Milvus processes the query using the specified analyzer.</p></li>
+<li><p>Tokenization occurs according to language-specific rules, and search returns language-appropriate results based on similarity.</p></li>
 </ul></li>
 </ol>
-<h2 id="Step-1-Configure-multianalyzerparams" class="common-anchor-header">Passo 1: Configurar multi_analyzer_params<button data-href="#Step-1-Configure-multianalyzerparams" class="anchor-icon" translate="no">
+<h2 id="Step-1-Configure-multianalyzerparams" class="common-anchor-header">Step 1: Configure multi_analyzer_params<button data-href="#Step-1-Configure-multianalyzerparams" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -116,13 +115,13 @@ beta: Milvus 2.5.11+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>O <code translate="no">multi_analyzer_params</code> é um único objeto JSON que determina como o Milvus seleciona o analisador adequado para cada entidade:</p>
+    </button></h2><p>The <code translate="no">multi_analyzer_params</code> is a single JSON object that determines how Milvus selects the appropriate analyzer for each entity:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">multi_analyzer_params = {
   <span class="hljs-comment"># Define language-specific analyzers</span>
@@ -236,39 +235,39 @@ analyzerParams.put(<span class="hljs-string">&quot;alias&quot;</span>, <span cla
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Parâmetro</p></th>
-     <th><p>Obrigatório?</p></th>
-     <th><p>Descrição</p></th>
-     <th><p>Regras</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Rules</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">analyzers</code></p></td>
-     <td><p>Sim</p></td>
-     <td><p>Enumera todos os analisadores específicos de cada idioma que o Milvus pode utilizar para processar texto.
- Cada analisador em <code translate="no">analyzers</code> segue este formato: <code translate="no">&lt;analyzer_name&gt;: &lt;analyzer_params&gt;</code>.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Lists every language‑specific analyzer that Milvus can use to process text.
+ Each analyzer in <code translate="no">analyzers</code> follows this format: <code translate="no">&lt;analyzer_name&gt;: &lt;analyzer_params&gt;</code>.</p></td>
      <td><ul>
-<li>Defina cada analisador com a sintaxe padrão do <code translate="no">analyzer_params</code> (consulte <a href="/docs/pt/analyzer-overview.md#Analyzer-types">Visão geral do analisador</a>).</li>
-<li>Adicione uma entrada cuja chave seja « <code translate="no">default</code> »; o Milvus recorre a este analisador sempre que o valor armazenado em « <code translate="no">by_field</code> » não corresponder a nenhum outro nome de analisador.</li>
+<li>Define each analyzer with the standard <code translate="no">analyzer_params</code> syntax (see <a href="/docs/pt/analyzer-overview.md#Analyzer-types">Analyzer Overview</a>).</li>
+<li>Add an entry whose key is <code translate="no">default</code>; Milvus falls back to this analyzer whenever the value stored in <code translate="no">by_field</code> does not match any other analyzer name.</li>
 </ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">by_field</code></p></td>
-     <td><p>Sim</p></td>
-     <td><p>Nome do campo que armazena, para cada documento, o idioma (ou seja, o nome do analisador) que o Milvus deve aplicar.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Name of the field that stores, for every document, the language (that is, the analyzer name) Milvus should apply.</p></td>
      <td><ul>
-<li><p>Tem de ser um campo « <code translate="no">VARCHAR</code> » definido na coleção.</p></li>
-<li><p>O valor em cada linha deve corresponder exatamente a um dos nomes de analisador (ou aliases) listados em <code translate="no">analyzers</code>.</p></li>
-<li><p>Se o valor de uma linha estiver em falta ou não for encontrado, o Milvus aplica automaticamente o analisador « <code translate="no">default</code> ».</p></li>
+<li><p>Must be a <code translate="no">VARCHAR</code> field defined in the collection.</p></li>
+<li><p>The value in every row must exactly match one of the analyzer names (or aliases) listed in <code translate="no">analyzers</code>.</p></li>
+<li><p>If a row's value is missing or not found, Milvus automatically applies the <code translate="no">default</code> analyzer.</p></li>
 </ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">alias</code></p></td>
-     <td><p>Não</p></td>
-     <td><p>Cria atalhos ou nomes alternativos para os seus analisadores, facilitando a sua referência no seu código. Cada analisador pode ter um ou mais aliases.</p></td>
-     <td><p>Cada alias deve corresponder a uma chave de analisador existente.</p></td>
+     <td><p>No</p></td>
+     <td><p>Creates shortcuts or alternative names for your analyzers, making them easier to reference in your code. Each analyzer can have one or more aliases.</p></td>
+     <td><p>Each alias must map to an existing analyzer key.</p></td>
    </tr>
 </table>
-<h2 id="Step-2-Create-collection" class="common-anchor-header">Passo 2: Criar coleção<button data-href="#Step-2-Create-collection" class="anchor-icon" translate="no">
+<h2 id="Step-2-Create-collection" class="common-anchor-header">Step 2: Create collection<button data-href="#Step-2-Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -283,8 +282,8 @@ analyzerParams.put(<span class="hljs-string">&quot;alias&quot;</span>, <span cla
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>A criação de uma coleção com suporte multilingue requer a configuração de campos e índices específicos:</p>
-<h3 id="Add-fields" class="common-anchor-header">Adicionar campos<button data-href="#Add-fields" class="anchor-icon" translate="no">
+    </button></h2><p>Creating a collection with multi-language support requires configuring specific fields and indexes:</p>
+<h3 id="Add-fields" class="common-anchor-header">Add fields<button data-href="#Add-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -299,19 +298,19 @@ analyzerParams.put(<span class="hljs-string">&quot;alias&quot;</span>, <span cla
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Nesta etapa, defina o esquema da coleção com quatro campos essenciais:</p>
+    </button></h3><p>In this step, define the collection schema with four essential fields:</p>
 <ul>
-<li><p><strong>Campo de chave primária</strong> (<code translate="no">id</code>): Um identificador único para cada entidade na coleção. Definir « <code translate="no">auto_id=True</code> » permite que o Milvus gere automaticamente estes IDs.</p></li>
-<li><p><strong>Campo de indicador de idioma</strong> (<code translate="no">language</code>): Este campo VARCHAR corresponde ao <code translate="no">by_field</code> especificado no seu <code translate="no">multi_analyzer_params</code>. Armazena o identificador de idioma de cada entidade, que indica ao Milvus qual o analisador a utilizar.</p></li>
-<li><p><strong>Campo de Conteúdo de Texto</strong> (<code translate="no">text</code>): Este campo VARCHAR armazena os dados de texto propriamente ditos que pretende analisar e pesquisar. A definição de « <code translate="no">enable_analyzer=True</code> » é crucial, uma vez que ativa as capacidades de análise de texto para este campo. A configuração de « <code translate="no">multi_analyzer_params</code> » está diretamente associada a este campo, estabelecendo a ligação entre os seus dados de texto e os analisadores específicos de cada idioma.</p></li>
-<li><p><strong>Campo Vector</strong> (<code translate="no">sparse</code>): Este campo armazenará os vetores esparsos gerados pela função BM25. Estes vetores representam a forma analisável dos seus dados de texto e são o que o Milvus realmente pesquisa.</p></li>
+<li><p><strong>Primary Key Field</strong> (<code translate="no">id</code>): A unique identifier for each entity in the collection. Setting <code translate="no">auto_id=True</code> enables Milvus to automatically generate these IDs.</p></li>
+<li><p><strong>Language Indicator Field</strong> (<code translate="no">language</code>): This VARCHAR field corresponds to the <code translate="no">by_field</code> specified in your <code translate="no">multi_analyzer_params</code>. It stores the language identifier for each entity, which tells Milvus which analyzer to use.</p></li>
+<li><p><strong>Text Content Field</strong> (<code translate="no">text</code>): This VARCHAR field stores the actual text data you want to analyze and search. Setting <code translate="no">enable_analyzer=True</code> is crucial as it activates text analysis capabilities for this field. The <code translate="no">multi_analyzer_params</code> configuration is attached directly to this field, establishing the connection between your text data and language-specific analyzers.</p></li>
+<li><p><strong>Vector Field</strong> (<code translate="no">sparse</code>): This field will store the sparse vectors generated by the BM25 function. These vectors represent the analyzable form of your text data and are what Milvus actually searches.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Import required modules</span>
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
@@ -512,7 +511,7 @@ schema.WithField(entity.NewField().
   &quot;dataType&quot;: &quot;SparseFloatVector&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Define-BM25-function" class="common-anchor-header">Definir a função BM25<button data-href="#Define-BM25-function" class="anchor-icon" translate="no">
+<h3 id="Define-BM25-function" class="common-anchor-header">Define BM25 function<button data-href="#Define-BM25-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -527,13 +526,13 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Defina uma função BM25 para gerar representações de vetores esparsos a partir dos seus dados de texto brutos:</p>
+    </button></h3><p>Define a BM25 function to generate sparse vector representations from your raw text data:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Create the BM25 function</span>
 bm25_function = Function(
@@ -592,8 +591,8 @@ schema.WithFunction(function.WithName(<span class="hljs-string">&quot;text_to_ve
   ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Esta função aplica automaticamente o analisador adequado a cada entrada de texto com base no seu identificador de idioma. Para mais informações sobre a recuperação de texto baseada em BM25, consulte <a href="/docs/pt/full-text-search.md">Pesquisa de Texto Completo</a>.</p>
-<h3 id="Configure-index-params" class="common-anchor-header">Configurar parâmetros do índice<button data-href="#Configure-index-params" class="anchor-icon" translate="no">
+<p>This function automatically applies the appropriate analyzer to each text entry based on its language identifier. For more information on BM25-based text retrieval, refer to <a href="/docs/pt/full-text-search.md">Full Text Search</a>.</p>
+<h3 id="Configure-index-params" class="common-anchor-header">Configure index params<button data-href="#Configure-index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -608,13 +607,13 @@ schema.WithFunction(function.WithName(<span class="hljs-string">&quot;text_to_ve
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Para permitir uma pesquisa eficiente, crie um índice no campo de vetores esparsos:</p>
+    </button></h3><p>To allow efficient searching, create an index on the sparse vector field:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Configure index parameters</span>
 index_params = client.prepare_index_params()
@@ -652,8 +651,8 @@ indexOption := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot
   }
 ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>O índice melhora o desempenho da pesquisa ao organizar vetores esparsos para cálculos eficientes de similaridade BM25.</p>
-<h3 id="Create-the-collection" class="common-anchor-header">Criar a coleção<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
+<p>The index improves search performance by organizing sparse vectors for efficient BM25 similarity calculations.</p>
+<h3 id="Create-the-collection" class="common-anchor-header">Create the collection<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -668,18 +667,18 @@ indexOption := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Esta etapa final de criação reúne todas as suas configurações anteriores:</p>
+    </button></h3><p>This final creation step brings together all your previous configurations:</p>
 <ul>
-<li><p><code translate="no">collection_name=&quot;multilang_demo&quot;</code> dê um nome à sua coleção para referência futura.</p></li>
-<li><p><code translate="no">schema=schema</code> aplica a estrutura e a função do campo que definiu.</p></li>
-<li><p><code translate="no">index_params=index_params</code> implementa a estratégia de indexação para pesquisas eficientes.</p></li>
+<li><p><code translate="no">collection_name=&quot;multilang_demo&quot;</code> names your collection for future reference.</p></li>
+<li><p><code translate="no">schema=schema</code> applies the field structure and function you defined.</p></li>
+<li><p><code translate="no">index_params=index_params</code> implements the indexing strategy for efficient searches.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Create collection</span>
 COLLECTION_NAME = <span class="hljs-string">&quot;multilingual_documents&quot;</span>
@@ -739,8 +738,8 @@ curl --request POST \
 }&quot;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<p>Nesta fase, o Milvus cria uma coleção vazia com suporte a um analisador multilingue, pronta para receber dados.</p>
-<h2 id="Step-3-Insert-example-data" class="common-anchor-header">Passo 3: Inserir dados de exemplo<button data-href="#Step-3-Insert-example-data" class="anchor-icon" translate="no">
+<p>At this point, Milvus creates an empty collection with multi-language analyzer support, ready to receive data.</p>
+<h2 id="Step-3-Insert-example-data" class="common-anchor-header">Step 3: Insert example data<button data-href="#Step-3-Insert-example-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -755,13 +754,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ao adicionar documentos à sua coleção multilingue, cada um deve incluir tanto conteúdo de texto como um identificador de idioma:</p>
+    </button></h2><p>When adding documents to your multi-language collection, each must include both text content and a language identifier:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Prepare multilingual documents</span>
 documents = [
@@ -903,17 +902,17 @@ curl --request POST \
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Durante a inserção, o Milvus:</p>
+<p>During insertion, Milvus:</p>
 <ol>
-<li><p>Lê o campo « <code translate="no">language</code> » de cada documento</p></li>
-<li><p>Aplica o analisador correspondente ao campo « <code translate="no">text</code> »</p></li>
-<li><p>Gera uma representação de vetor esparso através da função BM25</p></li>
-<li><p>Armazena tanto o texto original como o vetor esparso gerado</p></li>
+<li><p>Reads each document’s <code translate="no">language</code> field</p></li>
+<li><p>Applies the corresponding analyzer to the <code translate="no">text</code> field</p></li>
+<li><p>Generates a sparse vector representation via the BM25 function</p></li>
+<li><p>Stores both the original text and the generated sparse vector</p></li>
 </ol>
 <div class="alert note">
-<p>Não é necessário fornecer o vetor esparso diretamente; a função BM25 gera-o automaticamente com base no seu texto e no analisador especificado.</p>
+<p>You don’t need to provide the sparse vector directly; the BM25 function generates it automatically based on your text and the specified analyzer.</p>
 </div>
-<h2 id="Step-4-Perform-search-operations" class="common-anchor-header">Passo 4: Realizar operações de pesquisa<button data-href="#Step-4-Perform-search-operations" class="anchor-icon" translate="no">
+<h2 id="Step-4-Perform-search-operations" class="common-anchor-header">Step 4: Perform search operations<button data-href="#Step-4-Perform-search-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -928,7 +927,7 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Use-English-analyzer" class="common-anchor-header">Utilize o analisador de inglês<button data-href="#Use-English-analyzer" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Use-English-analyzer" class="common-anchor-header">Use English analyzer<button data-href="#Use-English-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -943,18 +942,18 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ao efetuar pesquisas com analisadores multilingues, o ficheiro « <code translate="no">search_params</code> » contém uma configuração crucial:</p>
+    </button></h3><p>When searching with multi-language analyzers, <code translate="no">search_params</code> contains crucial configuration:</p>
 <ul>
-<li><p><code translate="no">metric_type=&quot;BM25&quot;</code> deve corresponder à configuração do seu índice.</p></li>
-<li><p><code translate="no">analyzer_name=&quot;english&quot;</code> especifica qual o analisador a aplicar ao texto da sua consulta. Isto é independente dos analisadores utilizados nos documentos armazenados.</p></li>
-<li><p><code translate="no">params={&quot;drop_ratio_search&quot;: &quot;0&quot;}</code> controla o comportamento específico do BM25; neste caso, mantém todos os termos na pesquisa. Para mais informações, consulte <a href="/docs/pt/sparse_vector.md">«Sparse Vector</a>».</p></li>
+<li><p><code translate="no">metric_type=&quot;BM25&quot;</code> must match your index configuration.</p></li>
+<li><p><code translate="no">analyzer_name=&quot;english&quot;</code> specifies which analyzer to apply to your query text. This is independent of the analyzers used on stored documents.</p></li>
+<li><p><code translate="no">params={&quot;drop_ratio_search&quot;: &quot;0&quot;}</code> controls BM25-specific behavior; here, it retains all terms in the search. For more information, refer to <a href="/docs/pt/sparse_vector.md">Sparse Vector</a>.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;metric_type&quot;</span>: <span class="hljs-string">&quot;BM25&quot;</span>,            <span class="hljs-comment"># Must match index configuration</span>
@@ -1074,7 +1073,7 @@ curl --request POST \
   &quot;consistencyLevel&quot;: &quot;Bounded&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Use-Chinese-analyzer" class="common-anchor-header">Utilizar o analisador de chinês<button data-href="#Use-Chinese-analyzer" class="anchor-icon" translate="no">
+<h3 id="Use-Chinese-analyzer" class="common-anchor-header">Use Chinese analyzer<button data-href="#Use-Chinese-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1089,13 +1088,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Este exemplo demonstra a mudança para o analisador de chinês (utilizando o seu alias <code translate="no">&quot;cn&quot;</code>) para um texto de consulta diferente. Todos os outros parâmetros permanecem os mesmos, mas agora o texto da consulta é processado utilizando regras de tokenização específicas do chinês.</p>
+    </button></h3><p>This example demonstrates switching to the Chinese analyzer (using its alias <code translate="no">&quot;cn&quot;</code>) for different query text. All other parameters remain the same, but now the query text is processed using Chinese-specific tokenization rules.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">search_params[<span class="hljs-string">&quot;analyzer_name&quot;</span>] = <span class="hljs-string">&quot;cn&quot;</span>
 

@@ -1,14 +1,14 @@
 ---
 id: text-highlighter.md
-title: Выделитель текстаCompatible with Milvus 2.6.8+
+title: Text HighlighterCompatible with Milvus 2.6.8+
 summary: >-
-  Выделитель в Milvus аннотирует совпадающие термины в текстовых полях,
-  оборачивая их настраиваемыми тегами. Выделение помогает объяснить, почему
-  документ соответствует, улучшает читаемость результатов и поддерживает богатую
-  визуализацию в приложениях поиска и RAG.
+  The Highlighter in Milvus annotates matched terms in text fields by wrapping
+  them with customizable tags. Highlighting helps explain why a document
+  matches, improves result readability, and supports rich rendering in search
+  and RAG applications.
 beta: Milvus 2.6.8+
 ---
-<h1 id="Text-Highlighter" class="common-anchor-header">Выделитель текста<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#Text-Highlighter" class="anchor-icon" translate="no">
+<h1 id="Text-Highlighter" class="common-anchor-header">Text Highlighter<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#Text-Highlighter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,19 +23,19 @@ beta: Milvus 2.6.8+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Выделитель в Milvus аннотирует совпадающие термины в текстовых полях, оборачивая их настраиваемыми тегами. Выделение помогает объяснить, почему документ соответствует, улучшает читаемость результатов и поддерживает богатый рендеринг в приложениях поиска и RAG.</p>
-<p>Выделение выполняется как этап постобработки конечного набора результатов поиска. Оно не влияет на поиск кандидатов, логику фильтрации, ранжирование или оценку.</p>
-<p>Выделитель обеспечивает три независимых измерения контроля:</p>
+    </button></h1><p>The Highlighter in Milvus annotates matched terms in text fields by wrapping them with customizable tags. Highlighting helps explain why a document matches, improves result readability, and supports rich rendering in search and RAG applications.</p>
+<p>Highlighting is executed as a post-processing step on the final search result set. It does not affect candidate retrieval, filtering logic, ranking, or scoring.</p>
+<p>The Highlighter provides three independent dimensions of control:</p>
 <ul>
-<li><p><strong>Какие термины выделяются</strong></p>
-<p>Вы можете выбрать, откуда берутся выделенные термины. Например, выделить поисковые термины, используемые в <strong>полнотекстовом поиске BM25</strong>, или термины запроса, указанные в <strong>выражениях фильтрации на основе текста</strong> (например, условия <code translate="no">TEXT_MATCH</code> ).</p></li>
-<li><p><strong>Как отображаются выделенные термины</strong></p>
-<p>Вы можете управлять тем, как совпавшие термины отображаются в результатах подсветки, настраивая метки, вставляемые до и после каждого совпадения. Например, используйте простые маркеры, такие как <code translate="no">{}</code>, или HTML-теги, такие как <code translate="no">&lt;em&gt;&lt;/em&gt;</code>, для богатой визуализации.</p></li>
-<li><p><strong>Как возвращается выделенный текст</strong></p>
-<p>Вы можете управлять тем, как выделенные результаты возвращаются в виде фрагментов, включая начало фрагментов, их длину и количество возвращаемых фрагментов.</p></li>
+<li><p><strong>Which terms are highlighted</strong></p>
+<p>You can choose where highlighted terms come from. For example, highlight search terms used in <strong>BM25 full text search</strong>, or query terms specified in <strong>text-based filtering expressions</strong> (such as <code translate="no">TEXT_MATCH</code> conditions).</p></li>
+<li><p><strong>How highlighted terms are rendered</strong></p>
+<p>You can control how matched terms appear in the highlighting output by configuring the tags inserted before and after each match. For example, use simple markers like <code translate="no">{}</code> or HTML tags such as <code translate="no">&lt;em&gt;&lt;/em&gt;</code> for rich rendering.</p></li>
+<li><p><strong>How highlighted text is returned</strong></p>
+<p>You can control how highlighted results are returned as fragments, including where fragments start, how long they are, and how many fragments are returned.</p></li>
 </ul>
-<p>В следующих разделах рассматриваются эти сценарии.</p>
-<h2 id="Search-term-highlighting-in-BM25-full-text-search" class="common-anchor-header">Выделение поисковых терминов в полнотекстовом поиске BM25<button data-href="#Search-term-highlighting-in-BM25-full-text-search" class="anchor-icon" translate="no">
+<p>The following sections walk through these scenarios.</p>
+<h2 id="Search-term-highlighting-in-BM25-full-text-search" class="common-anchor-header">Search term highlighting in BM25 full text search<button data-href="#Search-term-highlighting-in-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -50,13 +50,13 @@ beta: Milvus 2.6.8+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Когда вы выполняете полнотекстовый поиск в BM25, вы можете выделить <strong>поисковые термины</strong> в возвращаемых результатах, чтобы объяснить, почему документ соответствует запросу. Чтобы узнать больше о полнотекстовом поиске в BM25, обратитесь к разделу <a href="/docs/ru/full-text-search.md">Полнотекстовый поиск</a>.</p>
-<p>В этом сценарии выделенные термины напрямую связаны с поисковыми терминами, используемыми в полнотекстовом поиске BM25. Выделитель использует эти термины для аннотирования совпадающего текста в итоговом результате.</p>
-<p>Предположим, что в текстовом поле хранится следующее содержимое:</p>
+    </button></h2><p>When you perform a BM25 full text search, you can highlight the <strong>search terms</strong> in the returned result to help explain why a document matches the query. To learn more about BM25 full text search, refer to <a href="/docs/ru/full-text-search.md">Full Text Search</a>.</p>
+<p>In this scenario, highlighted terms come directly from the search terms used in BM25 full text search. The Highlighter uses these terms to annotate matched text in the final result.</p>
+<p>Assume the following content is stored in a text field:</p>
 <pre><code translate="no" class="language-plaintext">Milvus supports full text search. Use BM25 for keyword relevance. Filters can narrow results.
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Конфигурация выделителя</strong></p>
-<p>Чтобы выделить поисковые термины в полнотекстовом поиске BM25, создайте <code translate="no">LexicalHighlighter</code> и включите подсветку поисковых терминов для полнотекстового поиска BM25:</p>
+<p><strong>Highlighter configuration</strong></p>
+<p>To highlight search terms in BM25 full text search, create a <code translate="no">LexicalHighlighter</code> and enable search term highlighting for BM25 full text search:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> LexicalHighlighter
 
 highlighter = LexicalHighlighter(
@@ -65,21 +65,21 @@ highlighter = LexicalHighlighter(
     highlight_search_text=<span class="hljs-literal">True</span>   <span class="hljs-comment"># Enable search term highlighting for BM25 full text search</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>В этом примере:</p>
+<p>In this example:</p>
 <ul>
-<li><p><code translate="no">pre_tags</code> и <code translate="no">post_tags</code> управляют тем, как выделенный текст появляется в выдаче. В этом случае совпадающие термины обернуты <code translate="no">{}</code> (например, <code translate="no">{term}</code>). Можно также указать несколько тегов в виде списка (например, <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). При выделении нескольких терминов теги применяются по порядку и поворачиваются в соответствии с последовательностью совпадений.</p></li>
-<li><p><code translate="no">highlight_search_text=True</code> указывает Milvus на использование поисковых терминов в полнотекстовом поиске BM25 в качестве источника выделенных терминов.</p></li>
+<li><p><code translate="no">pre_tags</code> and <code translate="no">post_tags</code> control how highlighted text appears in the output. In this case, matched terms are wrapped by <code translate="no">{}</code> (for example, <code translate="no">{term}</code>). You can also provide multiple tags as a list (for example, <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). When multiple terms are highlighted, tags are applied in order and rotated by match sequence.</p></li>
+<li><p><code translate="no">highlight_search_text=True</code> tells Milvus to use the search terms in BM25 full text search as the source of highlighted terms.</p></li>
 </ul>
-<p>После создания объекта Highlighter примените его конфигурацию к запросу полнотекстового поиска BM25:</p>
+<p>Once the Highlighter object is created, apply its configuration to your BM25 full text search request:</p>
 <pre><code translate="no" class="language-python">results = client.search(
     ...,
     data=[<span class="hljs-string">&quot;BM25&quot;</span>],      <span class="hljs-comment"># Search term used in BM25 full text search</span>
 <span class="highlighted-wrapper-line">    highlighter=highlighter <span class="hljs-comment"># Pass highlighter config here</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Вывод выделения</strong></p>
-<p>Когда подсветка включена, Milvus возвращает выделенный текст в специальном поле <code translate="no">highlight</code>. По умолчанию выделенная выдача возвращается в виде фрагмента, начиная с первого найденного термина.</p>
-<p>В данном примере поисковым термином является <code translate="no">&quot;BM25&quot;</code>, поэтому он выделен в возвращаемом результате:</p>
+<p><strong>Highlighting output</strong></p>
+<p>When highlighting is enabled, Milvus returns highlighted text in a dedicated <code translate="no">highlight</code> field. By default, highlighted output is returned as a fragment starting from the first matched term.</p>
+<p>In this example, the search term is <code translate="no">&quot;BM25&quot;</code>, so it is highlighted in the returned result:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     ...<span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;highlight&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -89,8 +89,8 @@ highlighter = LexicalHighlighter(
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Чтобы управлять положением, длиной и количеством возвращаемых фрагментов, см. раздел <a href="/docs/ru/text-highlighter.md#Fragment-based-highlighting-output">Возвращать выделенный текст в виде фрагментов</a>.</p>
-<h2 id="Query-term-highlighting-in-filtering" class="common-anchor-header">Выделение поисковых терминов при фильтрации<button data-href="#Query-term-highlighting-in-filtering" class="anchor-icon" translate="no">
+<p>To control the position, length, and number of returned fragments, see <a href="/docs/ru/text-highlighter.md#Fragment-based-highlighting-output">Return highlighted text as fragments</a>.</p>
+<h2 id="Query-term-highlighting-in-filtering" class="common-anchor-header">Query term highlighting in filtering<button data-href="#Query-term-highlighting-in-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -105,16 +105,16 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Помимо выделения поисковых терминов, вы можете выделять термины, используемые в текстовых выражениях фильтрации.</p>
+    </button></h2><p>In addition to highlighting search terms, you can highlight terms used in text-based filtering expressions.</p>
 <div class="alert note">
-<p>В настоящее время для выделения терминов запроса поддерживается только условие фильтрации <code translate="no">TEXT_MATCH</code>. Чтобы узнать больше, обратитесь к разделу <a href="/docs/ru/keyword-match.md">"Текстовое соответствие"</a>.</p>
+<p>Currently, only the <code translate="no">TEXT_MATCH</code> filtering condition is supported for query term highlighting. To learn more, refer to <a href="/docs/ru/keyword-match.md">Text Match</a>.</p>
 </div>
-<p>В этом сценарии выделенные термины используются в выражениях фильтрации на основе текста. Фильтрация определяет, какие документы совпадают, а подсветка аннотирует совпавшие участки текста.</p>
-<p>Предположим, что следующее содержимое хранится в текстовом поле:</p>
+<p>In this scenario, highlighted terms come from text-based filtering expressions. Filtering determines which documents match, while the Highlighter annotates the matched text spans.</p>
+<p>Assume the following content is stored in a text field:</p>
 <pre><code translate="no" class="language-python">This document explains how text filtering works <span class="hljs-keyword">in</span> Milvus.
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Конфигурация выделителя</strong></p>
-<p>Чтобы выделить термины запроса, используемые при фильтрации, создайте <code translate="no">LexicalHighlighter</code> и определите <code translate="no">highlight_query</code>, соответствующий условию фильтрации:</p>
+<p><strong>Highlighter configuration</strong></p>
+<p>To highlight query terms used in filtering, create a <code translate="no">LexicalHighlighter</code> and define a <code translate="no">highlight_query</code> that corresponds to the filtering condition:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> LexicalHighlighter
 
 highlighter = LexicalHighlighter(
@@ -127,21 +127,21 @@ highlighter = LexicalHighlighter(
     }]
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>В этой конфигурации:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">pre_tags</code> <code translate="no">post_tags</code> и управляют тем, как выделенный текст появляется в выводе. В этом случае совпадающие термины оборачиваются тегами <code translate="no">{}</code> (например, <code translate="no">{term}</code>). Можно также указать несколько тегов в виде списка (например, <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). При выделении нескольких терминов теги применяются по порядку и поворачиваются в соответствии с последовательностью совпадений.</p></li>
-<li><p><code translate="no">highlight_query</code> определяет, какие термины фильтрации должны быть выделены.</p></li>
+<li><p><code translate="no">pre_tags</code> and <code translate="no">post_tags</code> control how highlighted text appears in the output. In this case, matched terms are wrapped by <code translate="no">{}</code> (for example, <code translate="no">{term}</code>). You can also provide multiple tags as a list (for example, <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). When multiple terms are highlighted, tags are applied in order and rotated by match sequence.</p></li>
+<li><p><code translate="no">highlight_query</code> defines which filtering terms should be highlighted.</p></li>
 </ul>
-<p>После создания объекта Highlighter примените то же выражение фильтрации и конфигурацию Highlighter к поисковому запросу:</p>
+<p>Once the Highlighter object is created, apply the same filtering expression and the highlighter configuration to your search request:</p>
 <pre><code translate="no" class="language-python">results = client.search(
     ...,
     <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;TEXT_MATCH(text, &quot;text filtering&quot;)&#x27;</span>,
 <span class="highlighted-wrapper-line">    highlighter=highlighter <span class="hljs-comment"># Pass highlighter config here</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Вывод с подсветкой</strong></p>
-<p>Когда для фильтрации включена подсветка терминов запроса, Milvus возвращает выделенный текст в специальном поле <code translate="no">highlight</code>. По умолчанию выделенная выдача возвращается в виде фрагмента, начиная с первого найденного термина.</p>
-<p>В этом примере первый найденный термин - <code translate="no">&quot;text&quot;</code>, поэтому возвращаемый выделенный текст начинается с этой позиции:</p>
+<p><strong>Highlighting output</strong></p>
+<p>When query term highlighting is enabled for filtering, Milvus returns highlighted text in a dedicated <code translate="no">highlight</code> field. By default, highlighted output is returned as a fragment starting from the first matched term.</p>
+<p>In this example, the first matched term is <code translate="no">&quot;text&quot;</code>, so the returned highlighted text starts from that position:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     ...<span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;highlight&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -151,8 +151,8 @@ highlighter = LexicalHighlighter(
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Чтобы управлять положением, длиной и количеством возвращаемых фрагментов, см. раздел <a href="/docs/ru/text-highlighter.md#Fragment-based-highlighting-output">Возвращать выделенный текст в виде фрагментов</a>.</p>
-<h2 id="Fragment-based-highlighting-output" class="common-anchor-header">Вывод выделенного текста на основе фрагментов<button data-href="#Fragment-based-highlighting-output" class="anchor-icon" translate="no">
+<p>To control the position, length, and number of returned fragments, see <a href="/docs/ru/text-highlighter.md#Fragment-based-highlighting-output">Return highlighted text as fragments</a>.</p>
+<h2 id="Fragment-based-highlighting-output" class="common-anchor-header">Fragment-based highlighting output<button data-href="#Fragment-based-highlighting-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -167,12 +167,12 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>По умолчанию Milvus возвращает выделенный текст в виде фрагментов, начиная с первого найденного термина. Настройки, связанные с фрагментами, позволяют дополнительно управлять тем, как возвращаются фрагменты, не меняя при этом, какие термины выделяются.</p>
-<p>Предположим, что следующее содержимое хранится в текстовом поле:</p>
+    </button></h2><p>By default, Milvus returns highlighted text as fragments starting from the first matched term. Fragment-related settings allow you to further control how fragments are returned, without changing which terms are highlighted.</p>
+<p>Assume the following content is stored in a text field:</p>
 <pre><code translate="no" class="language-plaintext">Milvus supports full text search. Use BM25 for keyword relevance. Filters can narrow results.
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Конфигурация выделителя</strong></p>
-<p>Чтобы управлять формой выделенных фрагментов, настройте параметры, связанные с фрагментами, на странице <code translate="no">LexicalHighlighter</code>:</p>
+<p><strong>Highlighter configuration</strong></p>
+<p>To control the shape of highlighted fragments, configure fragment-related options in the <code translate="no">LexicalHighlighter</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> LexicalHighlighter
 
 highlighter = LexicalHighlighter(
@@ -184,21 +184,21 @@ highlighter = LexicalHighlighter(
     num_of_fragments=<span class="hljs-number">1</span>     <span class="hljs-comment"># Max. number of fragments to return</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>В этой конфигурации:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">fragment_offset</code> резервирует ведущий контекст перед первым выделенным фрагментом.</p></li>
-<li><p><code translate="no">fragment_size</code> ограничивает объем текста, включаемого в каждый фрагмент.</p></li>
-<li><p><code translate="no">num_of_fragments</code> управляет количеством возвращаемых фрагментов.</p></li>
+<li><p><code translate="no">fragment_offset</code> reserves leading context before the first highlighted term.</p></li>
+<li><p><code translate="no">fragment_size</code> limits how much text is included in each fragment.</p></li>
+<li><p><code translate="no">num_of_fragments</code> controls how many fragments are returned.</p></li>
 </ul>
-<p>После создания объекта Highlighter примените конфигурацию Highlighter к поисковому запросу:</p>
+<p>Once the Highlighter object is created, apply the highlighter configuration to your search request:</p>
 <pre><code translate="no" class="language-python">results = client.search(
     ...,
     data=[<span class="hljs-string">&quot;BM25&quot;</span>],
 <span class="highlighted-wrapper-line">    highlighter=highlighter <span class="hljs-comment"># Pass highlighter config here</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Вывод с выделением</strong></p>
-<p>При включенном выделении на основе фрагментов Milvus возвращает выделенный текст в виде фрагментов в поле <code translate="no">highlight</code>:</p>
+<p><strong>Highlighting output</strong></p>
+<p>With fragment-based highlighting enabled, Milvus returns highlighted text as fragments in the <code translate="no">highlight</code> field:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     ...<span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;highlight&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -208,13 +208,13 @@ highlighter = LexicalHighlighter(
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>В этом выводе:</p>
+<p>In this output:</p>
 <ul>
-<li><p>Фрагмент не начинается точно с <code translate="no">{BM25}</code>, потому что установлено значение <code translate="no">fragment_offset</code>.</p></li>
-<li><p>Возвращается только один фрагмент, потому что <code translate="no">num_of_fragments</code> равен 1.</p></li>
-<li><p>Длина фрагмента ограничена значением <code translate="no">fragment_size</code>.</p></li>
+<li><p>The fragment does not start exactly at <code translate="no">{BM25}</code> because <code translate="no">fragment_offset</code> is set.</p></li>
+<li><p>Only one fragment is returned because <code translate="no">num_of_fragments</code> is 1.</p></li>
+<li><p>The length of the fragment is capped by <code translate="no">fragment_size</code>.</p></li>
 </ul>
-<h2 id="Examples" class="common-anchor-header">Примеры<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -229,7 +229,7 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Preparation" class="common-anchor-header">Подготовка<button data-href="#Preparation" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Preparation" class="common-anchor-header">Preparation<button data-href="#Preparation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -244,10 +244,10 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Перед использованием подсветки убедитесь, что ваша коллекция правильно настроена.</p>
-<p>В приведенном ниже примере создается коллекция, поддерживающая полнотекстовый поиск BM25 и запросы <code translate="no">TEXT_MATCH</code>, а затем в нее вставляются примеры документов.</p>
+    </button></h3><p>Before using the highlighter, ensure your collection is properly configured.</p>
+<p>The example below creates a collection that supports BM25 full text search and <code translate="no">TEXT_MATCH</code> queries, then inserts sample documents.</p>
 <p><details></p>
-<p><summary><strong>Подготовьте коллекцию</strong></summary></p>
+<p><summary><strong>Prepare your collection</strong></summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
     DataType,
@@ -312,7 +312,7 @@ SEARCH_PARAMS = {<span class="hljs-string">&quot;metric_type&quot;</span>: <span
 <span class="hljs-comment"># ✓ Collection created with 4 documents</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-1-Highlight-search-terms-in-BM25-full-text-search" class="common-anchor-header">Пример 1: Выделение поисковых терминов в полнотекстовом поиске BM25<button data-href="#Example-1-Highlight-search-terms-in-BM25-full-text-search" class="anchor-icon" translate="no">
+<h3 id="Example-1-Highlight-search-terms-in-BM25-full-text-search" class="common-anchor-header">Example 1: Highlight search terms in BM25 full text search<button data-href="#Example-1-Highlight-search-terms-in-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -327,10 +327,10 @@ SEARCH_PARAMS = {<span class="hljs-string">&quot;metric_type&quot;</span>: <span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>В этом примере показано, как выделить условия поиска в полнотекстовом поиске BM25.</p>
+    </button></h3><p>This example shows how to highlight search terms in BM25 full text search.</p>
 <ul>
-<li><p>В полнотекстовом поиске BM25 в качестве поискового термина используется <code translate="no">&quot;test&quot;</code>.</p></li>
-<li><p>Выделитель обводит все вхождения слова "test" тегами <code translate="no">{</code> и <code translate="no">}</code>.</p></li>
+<li><p>BM25 full text search uses <code translate="no">&quot;test&quot;</code> as the search term</p></li>
+<li><p>The highlighter wraps all occurrences of “test” with <code translate="no">{</code> and <code translate="no">}</code> tags</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -353,14 +353,14 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>Ожидаемый результат</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;{test} doc&#x27;]
 [&#x27;{test} doc&#x27;]
 [&#x27;{test} doc. Milvus is an open-source vector database built for GenAI applications.&#x27;]
 [&#x27;{test} doc. Milvus is an open-source vector database that suits AI applications of every size from run&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-2-Highlight-query-terms-in-filtering" class="common-anchor-header">Пример 2: Выделение терминов запроса при фильтрации<button data-href="#Example-2-Highlight-query-terms-in-filtering" class="anchor-icon" translate="no">
+<h3 id="Example-2-Highlight-query-terms-in-filtering" class="common-anchor-header">Example 2: Highlight query terms in filtering<button data-href="#Example-2-Highlight-query-terms-in-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -375,11 +375,11 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>В этом примере показано, как выделить термины, соответствующие фильтру <code translate="no">TEXT_MATCH</code>.</p>
+    </button></h3><p>This example shows how to highlight terms matched by a <code translate="no">TEXT_MATCH</code> filter.</p>
 <ul>
-<li><p>В полнотекстовом поиске BM25 в качестве термина запроса используется <code translate="no">&quot;test&quot;</code>.</p></li>
-<li><p>Параметр <code translate="no">queries</code> добавляет <code translate="no">&quot;my doc&quot;</code> в список выделения.</p></li>
-<li><p>Выделитель обводит все совпадающие термины (<code translate="no">&quot;my&quot;</code>, <code translate="no">&quot;test&quot;</code>, <code translate="no">&quot;doc&quot;</code>) с <code translate="no">{</code> и <code translate="no">}</code></p></li>
+<li><p>BM25 full text search uses <code translate="no">&quot;test&quot;</code> as the query term</p></li>
+<li><p>The <code translate="no">queries</code> parameter adds <code translate="no">&quot;my doc&quot;</code> to the highlight list</p></li>
+<li><p>The highlighter wraps all matched terms (<code translate="no">&quot;my&quot;</code>, <code translate="no">&quot;test&quot;</code>, <code translate="no">&quot;doc&quot;</code>) with <code translate="no">{</code> and <code translate="no">}</code></p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -405,14 +405,14 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>Ожидаемый результат</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;{my} first {test} {doc}&#x27;]
 [&#x27;{my} second {test} {doc}&#x27;]
 [&#x27;{my} first {test} {doc}. Milvus is an open-source vector database built for GenAI applications.&#x27;]
 [&#x27;{my} second {test} {doc}. Milvus is an open-source vector database that suits AI applications of every siz&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-3-Return-highlights-as-fragments" class="common-anchor-header">Пример 3: Возвращение фрагментов выделения<button data-href="#Example-3-Return-highlights-as-fragments" class="anchor-icon" translate="no">
+<h3 id="Example-3-Return-highlights-as-fragments" class="common-anchor-header">Example 3: Return highlights as fragments<button data-href="#Example-3-Return-highlights-as-fragments" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -427,11 +427,11 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>В этом примере запрос ищет <code translate="no">&quot;Milvus&quot;</code> и возвращает фрагменты выделения со следующими настройками:</p>
+    </button></h3><p>In this example, the query searches for <code translate="no">&quot;Milvus&quot;</code> and returns highlight fragments in the following settings:</p>
 <ul>
-<li><p><code translate="no">fragment_offset</code> сохраняет до 20 символов перед первым выделенным фрагментом в качестве ведущего контекста (по умолчанию 0).</p></li>
-<li><p><code translate="no">fragment_size</code> ограничивает каждый фрагмент примерно 60 символами (по умолчанию 100).</p></li>
-<li><p><code translate="no">num_of_fragments</code> ограничивает количество возвращаемых фрагментов на одно текстовое значение (по умолчанию 5).</p></li>
+<li><p><code translate="no">fragment_offset</code> keeps up to 20 characters before the first highlighted span as leading context (default is 0).</p></li>
+<li><p><code translate="no">fragment_size</code> limits each fragment to approximately 60 characters (default is 100).</p></li>
+<li><p><code translate="no">num_of_fragments</code> limits the number of returned fragments per text value (default is 5).</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -457,12 +457,12 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>Ожидаемый результат</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Doc 1: [&#x27;my first test doc. {Milvus} is an open-source vector database &#x27;]
 Doc 2: [&#x27;my second test doc. {Milvus} is an open-source vector database&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-4-Multi-query-highlighting" class="common-anchor-header">Пример 4: Выделение нескольких запросов<button data-href="#Example-4-Multi-query-highlighting" class="anchor-icon" translate="no">
+<h3 id="Example-4-Multi-query-highlighting" class="common-anchor-header">Example 4: Multi-query highlighting<button data-href="#Example-4-Multi-query-highlighting" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -477,11 +477,11 @@ Doc 2: [&#x27;my second test doc. {Milvus} is an open-source vector database&#x2
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>При поиске по нескольким запросам в полнотекстовом поиске BM25 результаты каждого запроса выделяются независимо. Результаты первого запроса содержат подсветку для его поискового запроса, результаты второго запроса содержат подсветку для его поискового запроса и так далее. Каждый запрос использует одну и ту же конфигурацию <code translate="no">highlighter</code>, но применяет ее независимо.</p>
-<p>В примере ниже:</p>
+    </button></h3><p>When searching with multiple queries in BM25 full text search, each query’s results are highlighted independently. The first query’s results contain highlights for its search term, and the second query’s results contain highlights for its search term, and so on. Each query uses the same <code translate="no">highlighter</code> configuration but applies it independently.</p>
+<p>In the example below:</p>
 <ul>
-<li><p>Первый запрос выделяет <code translate="no">&quot;test&quot;</code> в своем наборе результатов.</p></li>
-<li><p>Второй запрос выделяет <code translate="no">&quot;Milvus&quot;</code> в своем наборе результатов.</p></li>
+<li><p>First query highlights <code translate="no">&quot;test&quot;</code> in its result set</p></li>
+<li><p>Second query highlights <code translate="no">&quot;Milvus&quot;</code> in its result set</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -507,7 +507,7 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>Ожидаемый результат</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Query &#x27;test&#x27;:
   [&#x27;{test} doc&#x27;]
   [&#x27;{test} doc&#x27;]
@@ -516,7 +516,7 @@ Query &#x27;Milvus&#x27;:
   [&#x27;{Milvus} is an open-source vector database that suits AI applications of every size from running a dem&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-5-Custom-HTML-tags" class="common-anchor-header">Пример 5: Пользовательские HTML-теги<button data-href="#Example-5-Custom-HTML-tags" class="anchor-icon" translate="no">
+<h3 id="Example-5-Custom-HTML-tags" class="common-anchor-header">Example 5: Custom HTML tags<button data-href="#Example-5-Custom-HTML-tags" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -531,7 +531,7 @@ Query &#x27;Milvus&#x27;:
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Для подсветки можно использовать любые теги, например HTML-безопасные теги для веб-интерфейсов. Это удобно при отображении результатов поиска в браузере.</p>
+    </button></h3><p>You can use any tags for highlighting, such as HTML-safe tags for web UIs. This is useful when rendering search results in a browser.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;&lt;mark&gt;&quot;</span>],</span>
 <span class="highlighted-comment-line">    post_tags=[<span class="hljs-string">&quot;&lt;/mark&gt;&quot;</span>],</span>
@@ -553,7 +553,7 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>Ожидаемый результат</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;&lt;mark&gt;test&lt;/mark&gt; doc&#x27;]
 [&#x27;&lt;mark&gt;test&lt;/mark&gt; doc&#x27;]
 <button class="copy-code-btn"></button></code></pre>

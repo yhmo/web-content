@@ -1,14 +1,13 @@
 ---
 id: eviction.md
-title: EvicçãoCompatible with Milvus 2.6.4+
+title: EvictionCompatible with Milvus 2.6.4+
 summary: >-
-  O Eviction gerencia os recursos de cache de cada QueryNode no Milvus. Quando
-  ativado, remove automaticamente os dados em cache quando os limites de
-  recursos são atingidos, garantindo um desempenho estável e evitando o
-  esgotamento da memória ou do disco.
+  Eviction manages the cache resources of each QueryNode in Milvus. When
+  enabled, it automatically removes cached data once resource thresholds are
+  reached, ensuring stable performance and preventing memory or disk exhaustion.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Eviction" class="common-anchor-header">Evicção<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Eviction" class="anchor-icon" translate="no">
+<h1 id="Eviction" class="common-anchor-header">Eviction<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Eviction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,12 +22,12 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>O Eviction gerencia os recursos de cache de cada QueryNode no Milvus. Quando ativado, ele remove automaticamente os dados em cache quando os limites de recursos são atingidos, garantindo um desempenho estável e evitando o esgotamento da memória ou do disco.</p>
-<p>A evicção usa uma política <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies">LRU (Least Recently Used)</a> para recuperar espaço em cache. Os metadados são sempre colocados em cache e nunca são despejados, uma vez que são essenciais para o planeamento de consultas e, normalmente, são pequenos.</p>
+    </button></h1><p>Eviction manages the cache resources of each QueryNode in Milvus. When enabled, it automatically removes cached data once resource thresholds are reached, ensuring stable performance and preventing memory or disk exhaustion.</p>
+<p>Eviction uses a <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies">Least Recently Used (LRU)</a> policy to reclaim cache space. Metadata is always cached and never evicted, as it is essential for query planning and typically small.</p>
 <div class="alert note">
-<p>O despejo deve ser ativado explicitamente. Sem configuração, os dados em cache continuarão a acumular-se até que os recursos se esgotem.</p>
+<p>Eviction must be explicitly enabled. Without configuration, cached data will continue to accumulate until resources are depleted.</p>
 </div>
-<h2 id="Eviction-types" class="common-anchor-header">Tipos de despejo<button data-href="#Eviction-types" class="anchor-icon" translate="no">
+<h2 id="Eviction-types" class="common-anchor-header">Eviction types<button data-href="#Eviction-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,48 +42,48 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus suporta dois modos complementares de despejo<strong>(sync</strong> e <strong>async</strong>) que trabalham em conjunto para uma gestão óptima dos recursos:</p>
+    </button></h2><p>Milvus supports two complementary eviction modes (<strong>sync</strong> and <strong>async</strong>) that work together for optimal resource management:</p>
 <table>
    <tr>
-     <th><p>Aspeto</p></th>
-     <th><p>Evicção sincronizada</p></th>
-     <th><p>Evicção assíncrona</p></th>
+     <th><p>Aspect</p></th>
+     <th><p>Sync Eviction</p></th>
+     <th><p>Async Eviction</p></th>
    </tr>
    <tr>
-     <td><p>Acionador</p></td>
-     <td><p>Ocorre durante a consulta ou pesquisa quando a utilização da memória ou do disco excede os limites internos.</p></td>
-     <td><p>Acionado por um thread em segundo plano quando o uso excede a marca d'água alta ou quando os dados em cache atingem seu tempo de vida (TTL).</p></td>
+     <td><p>Trigger</p></td>
+     <td><p>Occurs during query or search when memory or disk usage exceeds internal limits.</p></td>
+     <td><p>Triggered by a background thread when usage exceeds the high watermark or when cached data reaches its time-to-live (TTL).</p></td>
    </tr>
    <tr>
-     <td><p>Comportamento</p></td>
-     <td><p>As operações de consulta ou pesquisa são temporariamente interrompidas enquanto o QueryNode recupera espaço em cache. O despejo continua até que a utilização desça abaixo da marca de água baixa ou ocorra um timeout. Se o tempo limite for atingido e não for possível recuperar dados suficientes, a consulta ou pesquisa pode falhar.</p></td>
-     <td><p>É executado periodicamente em segundo plano, despejando proactivamente os dados em cache quando a utilização excede a marca de água alta ou quando os dados expiram com base no TTL. O despejo continua até que o uso caia abaixo da marca d'água baixa. As consultas não são bloqueadas.</p></td>
+     <td><p>Behavior</p></td>
+     <td><p>Query or search operations pause temporarily while the QueryNode reclaims cache space. Eviction continues until usage drops below the low watermark or a timeout occurs. If timeout is reached and insufficient data can be reclaimed, the query or search may fail.</p></td>
+     <td><p>Runs periodically in the background, proactively evicting cached data when usage exceeds the high watermark or when data expires based on TTL. Eviction continues until usage drops below the low watermark. Queries are not blocked.</p></td>
    </tr>
    <tr>
-     <td><p>Ideal para</p></td>
-     <td><p>Cargas de trabalho que podem tolerar breves picos de latência ou pausas temporárias durante o pico de uso. Útil quando o despejo assíncrono não consegue recuperar espaço com rapidez suficiente.</p></td>
-     <td><p>Cargas de trabalho sensíveis à latência que exigem um desempenho de consulta suave e previsível. Ideal para gerenciamento proativo de recursos.</p></td>
+     <td><p>Best For</p></td>
+     <td><p>Workloads that can tolerate brief latency spikes or temporary pauses during peak usage. Useful when async eviction cannot reclaim space fast enough.</p></td>
+     <td><p>Latency-sensitive workloads that require smooth and predictable query performance. Ideal for proactive resource management.</p></td>
    </tr>
    <tr>
-     <td><p>Precauções</p></td>
-     <td><p>Pode causar pequenos atrasos ou tempos limite de consulta se não houver dados eviccionáveis suficientes disponíveis.</p></td>
-     <td><p>Requer marcas d'água altas/baixas e configurações TTL adequadamente ajustadas. Ligeira sobrecarga do thread em segundo plano.</p></td>
+     <td><p>Cautions</p></td>
+     <td><p>Can cause short query delays or timeouts if insufficient evictable data is available.</p></td>
+     <td><p>Requires properly tuned high/low watermarks and TTL settings. Slight overhead from the background thread.</p></td>
    </tr>
    <tr>
-     <td><p>Configuração</p></td>
-     <td><p>Ativado através de <code translate="no">evictionEnabled: true</code></p></td>
-     <td><p>Ativado através de <code translate="no">backgroundEvictionEnabled: true</code> (requer <code translate="no">evictionEnabled: true</code> ao mesmo tempo)</p></td>
+     <td><p>Configuration</p></td>
+     <td><p>Enabled via <code translate="no">evictionEnabled: true</code></p></td>
+     <td><p>Enabled via <code translate="no">backgroundEvictionEnabled: true</code> (requires <code translate="no">evictionEnabled: true</code> at the same time)</p></td>
    </tr>
 </table>
-<p><strong>Configuração recomendada</strong>:</p>
+<p><strong>Recommended setup</strong>:</p>
 <ul>
-<li><p>Ambos os modos de despejo podem ser habilitados juntos para um equilíbrio ideal, desde que a carga de trabalho se beneficie do Armazenamento em camadas e possa tolerar a latência de busca relacionada ao despejo.</p></li>
-<li><p>Para testes de desempenho ou cenários críticos de latência, considere desabilitar o despejo completamente para evitar a sobrecarga de busca de rede após o despejo.</p></li>
+<li><p>Both eviction modes can be enabled together for optimal balance, provided your workload benefits from Tiered Storage and can tolerate eviction-related fetch latency.</p></li>
+<li><p>For performance testing or latency-critical scenarios, consider disabling eviction entirely to avoid network fetch overhead after eviction.</p></li>
 </ul>
 <div class="alert note">
-<p>Para campos e índices eviccionáveis, a unidade de evicção corresponde à granularidade de carregamento - os campos escalares/vectoriais são evacuados por pedaço e os índices escalares/vectoriais são evacuados por segmento.</p>
+<p>For evictable fields and indexes, the eviction unit matches the loading granularity—scalar/vector fields are evicted by chunk, and scalar/vector indexes are evicted by segment.</p>
 </div>
-<h2 id="Enable-eviction" class="common-anchor-header">Ativar a evicção<button data-href="#Enable-eviction" class="anchor-icon" translate="no">
+<h2 id="Enable-eviction" class="common-anchor-header">Enable eviction<button data-href="#Enable-eviction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,7 +98,7 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Configure a expulsão em <code translate="no">queryNode.segcore.tieredStorage</code> em <code translate="no">milvus.yaml</code>:</p>
+    </button></h2><p>Configure eviction under <code translate="no">queryNode.segcore.tieredStorage</code> in <code translate="no">milvus.yaml</code>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
     <span class="hljs-attr">tieredStorage:</span>
@@ -108,28 +107,28 @@ beta: Milvus 2.6.4+
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Parâmetro</p></th>
-     <th><p>Tipo de parâmetro</p></th>
-     <th><p>Valores</p></th>
-     <th><p>Descrição</p></th>
-     <th><p>Caso de utilização recomendado</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Type</p></th>
+     <th><p>Values</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended use case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">evictionEnabled</code></p></td>
      <td><p>bool</p></td>
      <td><p><code translate="no">true</code>/<code translate="no">false</code></p></td>
-     <td><p>Interruptor principal para a estratégia de despejo. Predefinição para <code translate="no">false</code>. Ativa o modo de evicção de sincronização.</p></td>
-     <td><p>Sempre definido como <code translate="no">true</code> no armazenamento em camadas.</p></td>
+     <td><p>Master switch for eviction strategy. Defaults to <code translate="no">false</code>. Enables sync eviction mode.</p></td>
+     <td><p>Always set to <code translate="no">true</code> in Tiered Storage.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">backgroundEvictionEnabled</code></p></td>
      <td><p>bool</p></td>
      <td><p><code translate="no">true</code>/<code translate="no">false</code></p></td>
-     <td><p>Executa o despejo de forma assíncrona em segundo plano. Requer <code translate="no">evictionEnabled: true</code>. O padrão é <code translate="no">false</code>.</p></td>
-     <td><p>Use <code translate="no">true</code> para obter um desempenho de consulta mais suave; reduz a frequência de despejo de sincronização.</p></td>
+     <td><p>Run eviction asynchronously in the background. Requires <code translate="no">evictionEnabled: true</code>. Defaults to <code translate="no">false</code>.</p></td>
+     <td><p>Use <code translate="no">true</code> for smoother query performance; it reduces sync eviction frequency.</p></td>
    </tr>
 </table>
-<h2 id="Configure-watermarks" class="common-anchor-header">Configurar marcas d'água<button data-href="#Configure-watermarks" class="anchor-icon" translate="no">
+<h2 id="Configure-watermarks" class="common-anchor-header">Configure watermarks<button data-href="#Configure-watermarks" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,15 +143,15 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>As marcas d'água definem quando o despejo do cache começa e termina para a memória e o disco. Cada tipo de recurso tem dois limites:</p>
+    </button></h2><p>Watermarks define when cache eviction begins and ends for both memory and disk. Each resource type has two thresholds:</p>
 <ul>
-<li><p><strong>Marca d'água alta</strong>: O despejo começa quando o uso excede esse valor.</p></li>
-<li><p><strong>Marca de água baixa</strong>: O despejo continua até que o uso caia abaixo deste valor.</p></li>
+<li><p><strong>High watermark</strong>: Eviction starts when usage exceeds this value.</p></li>
+<li><p><strong>Low watermark</strong>: Eviction continues until usage falls below this value.</p></li>
 </ul>
 <div class="alert note">
-<p>Esta configuração só tem efeito quando <a href="/docs/pt/eviction.md#Enable-eviction">o despejo está ativado</a>.</p>
+<p>This configuration takes effect only when <a href="/docs/pt/eviction.md#Enable-eviction">eviction is enabled</a>.</p>
 </div>
-<p><strong>Exemplo de YAML</strong>:</p>
+<p><strong>Example YAML</strong>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
     <span class="hljs-attr">tieredStorage:</span>
@@ -166,47 +165,47 @@ beta: Milvus 2.6.4+
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Parâmetro</p></th>
-     <th><p>Tipo de parâmetro</p></th>
-     <th><p>Intervalo</p></th>
-     <th><p>Descrição</p></th>
-     <th><p>Caso de utilização recomendado</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Type</p></th>
+     <th><p>Range</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended use case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">memoryLowWatermarkRatio</code></p></td>
-     <td><p>flutuante</p></td>
+     <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>Nível de utilização de memória em que o despejo pára.</p></td>
-     <td><p>Começar em <code translate="no">0.75</code>. Reduzir ligeiramente se a memória do QueryNode for limitada.</p></td>
+     <td><p>Memory usage level where eviction stops.</p></td>
+     <td><p>Start at <code translate="no">0.75</code>. Lower slightly if QueryNode memory is limited.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">memoryHighWatermarkRatio</code></p></td>
-     <td><p>flutuante</p></td>
+     <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>Nível de utilização de memória em que o despejo assíncrono começa.</p></td>
-     <td><p>Comece em <code translate="no">0.8</code>. Mantenha um intervalo razoável da marca de água baixa (por exemplo, 0,05-0,10) para evitar accionamentos frequentes.</p></td>
+     <td><p>Memory usage level where async eviction starts.</p></td>
+     <td><p>Start at <code translate="no">0.8</code>. Keep a sensible gap from low watermark (e.g., 0.05–0.10) to prevent frequent triggers.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">diskLowWatermarkRatio</code></p></td>
-     <td><p>flutuante</p></td>
+     <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>Nível de utilização do disco em que o despejo pára.</p></td>
-     <td><p>Começa em <code translate="no">0.75</code>. Ajustar para baixo se a E/S do disco for limitada.</p></td>
+     <td><p>Disk usage level where eviction stops.</p></td>
+     <td><p>Start at <code translate="no">0.75</code>. Adjust lower if disk I/O is limited.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">diskHighWatermarkRatio</code></p></td>
-     <td><p>flutuante</p></td>
+     <td><p>float</p></td>
      <td><p>(0.0, 1.0]</p></td>
-     <td><p>Nível de utilização do disco em que o despejo assíncrono começa.</p></td>
-     <td><p>Começa em <code translate="no">0.8</code>. Mantenha um intervalo razoável da marca de água baixa (por exemplo, 0,05-0,10) para evitar accionamentos frequentes.</p></td>
+     <td><p>Disk usage level where async eviction starts.</p></td>
+     <td><p>Start at <code translate="no">0.8</code>. Keep a sensible gap from low watermark (e.g., 0.05–0.10) to prevent frequent triggers.</p></td>
    </tr>
 </table>
-<p><strong>Melhores práticas</strong>:</p>
+<p><strong>Best practices</strong>:</p>
 <ul>
-<li><p>Não defina marcas d'água altas ou baixas acima de ~0,80 para deixar espaço livre para o uso estático do QueryNode e explosões de tempo de consulta.</p></li>
-<li><p>Evite grandes intervalos entre as marcas d'água alta e baixa; grandes intervalos prolongam cada ciclo de despejo e podem adicionar latência.</p></li>
+<li><p>Do not set high or low watermarks above ~0.80 to leave headroom for QueryNode static usage and query-time bursts.</p></li>
+<li><p>Avoid large gaps between high and low watermarks; big gaps prolong each eviction cycle and can add latency.</p></li>
 </ul>
-<h2 id="Configure-cache-TTL" class="common-anchor-header">Configurar o TTL da cache<button data-href="#Configure-cache-TTL" class="anchor-icon" translate="no">
+<h2 id="Configure-cache-TTL" class="common-anchor-header">Configure cache TTL<button data-href="#Configure-cache-TTL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -221,11 +220,11 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>O TTL (Cache Time-to-Live)</strong> remove automaticamente os dados em cache após uma duração definida, mesmo que os limites de recursos não sejam atingidos. Ele funciona junto com o despejo LRU para evitar que dados obsoletos ocupem o cache indefinidamente.</p>
+    </button></h2><p><strong>Cache Time-to-Live (TTL)</strong> automatically removes cached data after a set duration, even if resource thresholds are not reached. It works alongside LRU eviction to prevent stale data from occupying cache indefinitely.</p>
 <div class="alert note">
-<p>O TTL do cache requer <code translate="no">backgroundEvictionEnabled: true</code>, pois é executado no mesmo thread em segundo plano.</p>
+<p>Cache TTL requires <code translate="no">backgroundEvictionEnabled: true</code>, as it runs on the same background thread.</p>
 </div>
-<p><strong>Exemplo de YAML</strong>:</p>
+<p><strong>Example YAML</strong>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">queryNode:</span>
   <span class="hljs-attr">segcore:</span>
     <span class="hljs-attr">tieredStorage:</span>
@@ -237,17 +236,17 @@ beta: Milvus 2.6.4+
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Parâmetro</p></th>
-     <th><p>Tipo de parâmetro</p></th>
-     <th><p>Unidade</p></th>
-     <th><p>Descrição</p></th>
-     <th><p>Caso de utilização recomendado</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Type</p></th>
+     <th><p>Unit</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended use case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">cacheTtl</code></p></td>
-     <td><p>inteiro</p></td>
-     <td><p>segundos</p></td>
-     <td><p>Duração antes de os dados em cache expirarem. Os itens expirados são removidos em segundo plano.</p></td>
-     <td><p>Utilize um TTL curto (horas) para dados altamente dinâmicos; utilize um TTL longo (dias) para conjuntos de dados estáveis. Defina 0 para desativar a expiração baseada no tempo.</p></td>
+     <td><p>integer</p></td>
+     <td><p>seconds</p></td>
+     <td><p>Duration before cached data expires. Expired items are removed in the background.</p></td>
+     <td><p>Use a short TTL (hours) for highly dynamic data; use a long TTL (days) for stable datasets. Set 0 to disable time-based expiration.</p></td>
    </tr>
 </table>

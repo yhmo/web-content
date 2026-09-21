@@ -1,14 +1,13 @@
 ---
 id: basic-vector-search-with-structarray.md
-title: Базовый векторный поиск с использованием StructArray
+title: Basic Vector Search with StructArray
 summary: >-
-  Используйте эту страницу для векторного поиска по векторным подполям внутри
-  поля StructArray. StructArray поддерживает два основных режима векторного
-  поиска: поиск по списку вложений (EmbeddingList), при котором оценивается
-  список вложений, хранящийся в каждом объекте, и поиск на уровне элементов, при
-  котором каждый элемент Struct просматривается независимо.
+  Use this page to run vector search on vector subfields inside a StructArray
+  field. StructArray supports two basic vector search modes: EmbeddingList
+  search, which scores an embedding list stored in each entity, and
+  element-level search, which searches each Struct element independently.
 ---
-<h1 id="Basic-Vector-Search-with-StructArray" class="common-anchor-header">Базовый векторный поиск с использованием StructArray<button data-href="#Basic-Vector-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Basic-Vector-Search-with-StructArray" class="common-anchor-header">Basic Vector Search with StructArray<button data-href="#Basic-Vector-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Используйте эту страницу для выполнения векторного поиска по подполям вектора внутри поля StructArray. StructArray поддерживает два основных режима векторного поиска: поиск по списку вложений (EmbeddingList), при котором оценивается список вложений, хранящийся в каждой сущности, и поиск на уровне элементов, при котором каждый элемент Struct просматривается независимо.</p>
-<p>На этой странице используется коллекция « <code translate="no">tech_articles</code> » из раздела <a href="/docs/ru/create-structarray-field.md">«Создание поля StructArray</a>». В коллекции имеется поле StructArray с именем « <code translate="no">chunks</code> ». Каждый фрагмент содержит текст, скалярные метаданные, векторное подполе с именем « <code translate="no">emb_list_vector</code> » с индексом для поиска по списку вложений, а также векторное подполе с именем « <code translate="no">emb</code> » с индексом для поиска на уровне элементов.</p>
-<h2 id="Before-you-begin" class="common-anchor-header">Перед началом работы<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to run vector search on vector subfields inside a StructArray field. StructArray supports two basic vector search modes: EmbeddingList search, which scores an embedding list stored in each entity, and element-level search, which searches each Struct element independently.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/ru/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>. Each chunk contains text, scalar metadata, a vector subfield named <code translate="no">emb_list_vector</code> with an index for EmbeddingList search, and a vector subfield named <code translate="no">emb</code> with an index for element-level search.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,23 +39,23 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Убедитесь, что схема коллекции, данные и индексы уже подготовлены.</p>
+    </button></h2><p>Make sure the collection schema, data, and indexes are already prepared.</p>
 <table>
 <thead>
-<tr><th>Требования</th><th>Где это подготовить</th></tr>
+<tr><th>Requirement</th><th>Where to prepare it</th></tr>
 </thead>
 <tbody>
-<tr><td>Создайте поле StructArray, например <code translate="no">chunks</code>.</td><td><a href="/docs/ru/create-structarray-field.md">Создание поля StructArray</a></td></tr>
-<tr><td>Вставьте сущности, поле « <code translate="no">chunks</code> » которых содержит объекты Struct.</td><td><a href="/docs/ru/insert-data-into-structarray-fields.md">Вставка данных в поля StructArray</a></td></tr>
-<tr><td>Создайте индекс <code translate="no">MAX_SIM*</code> на <code translate="no">chunks[emb_list_vector]</code> для поиска по EmbeddingList.</td><td><a href="/docs/ru/index-structarray-fields.md">Индексирование полей StructArray</a></td></tr>
-<tr><td>Создайте обычный векторно-метрический индекс на поле « <code translate="no">chunks[emb]</code> » для поиска на уровне элементов.</td><td><a href="/docs/ru/index-structarray-fields.md">Индексирование полей StructArray</a></td></tr>
+<tr><td>Create a StructArray field, such as <code translate="no">chunks</code>.</td><td><a href="/docs/ru/create-structarray-field.md">Create a StructArray Field</a></td></tr>
+<tr><td>Insert entities whose <code translate="no">chunks</code> field contains Struct objects.</td><td><a href="/docs/ru/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a></td></tr>
+<tr><td>Create a <code translate="no">MAX_SIM*</code> index on <code translate="no">chunks[emb_list_vector]</code> for EmbeddingList search.</td><td><a href="/docs/ru/index-structarray-fields.md">Index StructArray Fields</a></td></tr>
+<tr><td>Create a regular vector-metric index on <code translate="no">chunks[emb]</code> for element-level search.</td><td><a href="/docs/ru/index-structarray-fields.md">Index StructArray Fields</a></td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>Предупреждение</p>
-<p>Векторное поле или векторное подполе допускает только один индекс. Если вам нужен как поиск по EmbeddingList, так и поиск на уровне элементов, создайте два отдельных векторных подполя. На этой странице поле <code translate="no">chunks[emb_list_vector]</code> индексируется для поиска по EmbeddingList, а поле <code translate="no">chunks[emb]</code> — для поиска на уровне элементов.</p>
+<p>Warning</p>
+<p>A vector field or vector subfield accepts only one index. If you need both EmbeddingList search and element-level search, create two separate vector subfields. In this page, <code translate="no">chunks[emb_list_vector]</code> is indexed for EmbeddingList search, and <code translate="no">chunks[emb]</code> is indexed for element-level search.</p>
 </div>
-<h2 id="Choose-a-search-mode" class="common-anchor-header">Выберите режим поиска<button data-href="#Choose-a-search-mode" class="anchor-icon" translate="no">
+<h2 id="Choose-a-search-mode" class="common-anchor-header">Choose a search mode<button data-href="#Choose-a-search-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,19 +72,19 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Аспект</th><th>Поиск по EmbeddingList</th><th>Поиск на уровне элементов</th></tr>
+<tr><th>Aspect</th><th>EmbeddingList search</th><th>Element-level search</th></tr>
 </thead>
 <tbody>
-<tr><td>Целевое подполе</td><td><code translate="no">chunks[emb_list_vector]</code></td><td><code translate="no">chunks[emb]</code></td></tr>
-<tr><td>Данные запроса</td><td>Список вложений, содержащий один или несколько векторов.</td><td>Обычный вектор.</td></tr>
-<tr><td>Семейство метрик</td><td><code translate="no">MAX_SIM*</code>, например <code translate="no">MAX_SIM_COSINE</code>.</td><td>Обычные векторные метрики, такие как <code translate="no">COSINE</code>, <code translate="no">IP</code> или <code translate="no">L2</code>.</td></tr>
-<tr><td>Что представляет собой один результат</td><td>Соответствующий объект, подполе вектора StructArray которого схоже со списком вложений запроса.</td><td>Соответствующий элемент Struct внутри поля StructArray.</td></tr>
-<tr><td>Детализация результатов</td><td>Уровень сущности.</td><td>Уровень элемента Struct.</td></tr>
-<tr><td>Смещение</td><td>Не применимо.</td><td>Определяет позицию сопоставленного элемента структуры с нулевым индексом при возвращении.</td></tr>
-<tr><td>Типичное использование</td><td>ColBERT, ColPali и другие шаблоны поиска с поздним взаимодействием.</td><td>Поиск на уровне фрагментов, абзацев, клипов, патчей или фактов.</td></tr>
+<tr><td>Target subfield</td><td><code translate="no">chunks[emb_list_vector]</code></td><td><code translate="no">chunks[emb]</code></td></tr>
+<tr><td>Query data</td><td>An embedding list that contains one or more vectors.</td><td>A regular vector.</td></tr>
+<tr><td>Metric family</td><td><code translate="no">MAX_SIM*</code>, such as <code translate="no">MAX_SIM_COSINE</code>.</td><td>Regular vector metrics, such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</td></tr>
+<tr><td>What one hit represents</td><td>A matched entity whose StructArray vector subfield is similar to the query embedding list.</td><td>A matched Struct element inside the StructArray field.</td></tr>
+<tr><td>Result granularity</td><td>Entity level.</td><td>Struct element level.</td></tr>
+<tr><td>Offset</td><td>Not applicable.</td><td>Identifies the zero-based position of the matched Struct element when returned.</td></tr>
+<tr><td>Typical use</td><td>ColBERT, ColPali, and other late-interaction retrieval patterns.</td><td>Chunk-level, passage-level, clip-level, patch-level, or fact-level retrieval.</td></tr>
 </tbody>
 </table>
-<h2 id="Run-EmbeddingList-search" class="common-anchor-header">Запуск поиска EmbeddingList<button data-href="#Run-EmbeddingList-search" class="anchor-icon" translate="no">
+<h2 id="Run-EmbeddingList-search" class="common-anchor-header">Run EmbeddingList search<button data-href="#Run-EmbeddingList-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,7 +99,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Используйте поиск EmbeddingList, если сам запрос содержит несколько векторов, а целевое подполе вектора StructArray индексируется с помощью метрики « <code translate="no">MAX_SIM*</code> ». Результатом является совпадение на уровне сущностей.</p>
+    </button></h2><p>Use EmbeddingList search when the query itself contains multiple vectors and the target StructArray vector subfield is indexed with a <code translate="no">MAX_SIM*</code> metric. The result is an entity-level match.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">from</span> pymilvus.client.embedding_list <span class="hljs-keyword">import</span> EmbeddingList
 
@@ -131,11 +130,11 @@ results = client.search(
     <span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> hits:
         <span class="hljs-built_in">print</span>(hit[<span class="hljs-string">&quot;id&quot;</span>], hit[<span class="hljs-string">&quot;distance&quot;</span>], hit[<span class="hljs-string">&quot;entity&quot;</span>])
 <button class="copy-code-btn"></button></code></pre>
-<p>В этом режиме поиска параметр « <code translate="no">limit</code> » определяет, сколько сущностей будет возвращено по каждому запросу. Результат может включать подполя StructArray, однако само совпадение представляет собой найденную родительскую сущность, а не какой-то конкретный элемент Struct.</p>
+<p>In this search mode, <code translate="no">limit</code> controls how many entities are returned for each query. The output can include StructArray subfields, but the hit itself represents the matched parent entity rather than one specific Struct element.</p>
 <div class="alert note">
-<p>Полное руководство по работе с ColBERT или ColPali см. в разделе <a href="/docs/ru/search-with-embedding-lists.md">«Поиск с использованием списков вложений</a>». На этой странице рассматриваются только основные особенности поиска по StructArray.</p>
+<p>For a full ColBERT or ColPali-style walkthrough, see <a href="/docs/ru/search-with-embedding-lists.md">Search with Embedding Lists</a>. This page only covers the basic StructArray search behavior.</p>
 </div>
-<h2 id="Run-element-level-search" class="common-anchor-header">Запуск поиска на уровне элементов<button data-href="#Run-element-level-search" class="anchor-icon" translate="no">
+<h2 id="Run-element-level-search" class="common-anchor-header">Run element-level search<button data-href="#Run-element-level-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -150,7 +149,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Используйте поиск на уровне элементов, когда каждый элемент Struct должен участвовать в векторном поиске независимо. Запрос представляет собой обычный вектор, а целевое подполе вектора должно индексироваться с помощью обычной векторной метрики.</p>
+    </button></h2><p>Use element-level search when each Struct element should participate in vector search independently. The query is a regular vector, and the target vector subfield must be indexed with a regular vector metric.</p>
 <pre><code translate="no" class="language-python">query_vector = [<span class="hljs-number">0.19</span>, <span class="hljs-number">0.24</span>, <span class="hljs-number">0.30</span>, <span class="hljs-number">0.37</span>]
 
 results = client.search(
@@ -177,8 +176,8 @@ results = client.search(
             <span class="hljs-string">&quot;entity:&quot;</span>, hit[<span class="hljs-string">&quot;entity&quot;</span>],
         )
 <button class="copy-code-btn"></button></code></pre>
-<p>При поиске на уровне элементов каждый результат соответствует найденному элементу Struct. Значение « <code translate="no">offset</code> » представляет собой позицию этого элемента в поле StructArray, начиная с нуля. Один и тот же объект может появиться более одного раза, если запросу соответствует более одного элемента Struct. Значение « <code translate="no">limit</code> » применяется к найденным элементам, а не к уникальным родительским объектам.</p>
-<h2 id="Interpret-results" class="common-anchor-header">Интерпретация результатов<button data-href="#Interpret-results" class="anchor-icon" translate="no">
+<p>In element-level search, each hit represents a matched Struct element. The <code translate="no">offset</code> value is the zero-based position of that element in the StructArray field. The same entity can appear more than once if more than one Struct element matches the query. The <code translate="no">limit</code> value applies to element hits, not unique parent entities.</p>
+<h2 id="Interpret-results" class="common-anchor-header">Interpret results<button data-href="#Interpret-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -195,17 +194,17 @@ results = client.search(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Элемент результата</th><th>Поиск по списку вложений (EmbeddingList)</th><th>Поиск на уровне элементов</th></tr>
+<tr><th>Result item</th><th>EmbeddingList search</th><th>Element-level search</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">id</code></td><td>Первичный ключ найденного объекта.</td><td>Первичный ключ сущности, содержащей найденный элемент Struct.</td></tr>
-<tr><td><code translate="no">distance</code> или оценка</td><td>Оценка или расстояние между списком вложений запроса и сохраненным списком вложений.</td><td>Оценка или расстояние между вектором запроса и вектором найденного элемента Struct.</td></tr>
-<tr><td><code translate="no">offset</code></td><td>Не применимо.</td><td>Позиция соревнования элемента Struct с нулевым индексом при возвращении.</td></tr>
-<tr><td>Повторяющиеся первичные ключи</td><td>Не ожидается для отдельного запроса, поскольку результаты предоставляются на уровне сущности.</td><td>Возможно, поскольку могут совпадать несколько элементов Struct в одной сущности.</td></tr>
-<tr><td>Запрашиваемые поля вывода StructArray</td><td>Возвращаются из найденной сущности.</td><td>Возвращаются с формой совпадения на уровне элементов, поддерживаемой целевым API и SDK.</td></tr>
+<tr><td><code translate="no">id</code></td><td>Primary key of the matched entity.</td><td>Primary key of the entity that contains the matched Struct element.</td></tr>
+<tr><td><code translate="no">distance</code> or score</td><td>Score or distance between the query embedding list and the stored embedding list.</td><td>Score or distance between the query vector and the matched Struct element vector.</td></tr>
+<tr><td><code translate="no">offset</code></td><td>Not applicable.</td><td>Zero-based position of the matched Struct element when returned.</td></tr>
+<tr><td>Repeated primary keys</td><td>Not expected for a single query because results are entity-level.</td><td>Possible, because multiple Struct elements in the same entity can match.</td></tr>
+<tr><td>Requested StructArray output fields</td><td>Returned from the matched entity.</td><td>Returned with the element-level hit shape supported by the target API and SDK.</td></tr>
 </tbody>
 </table>
-<h2 id="Common-mistakes" class="common-anchor-header">Распространенные ошибки<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -221,14 +220,14 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Использование <code translate="no">chunks.emb</code> вместо требуемого синтаксиса пути к подполю <code translate="no">chunks[emb]</code>.</p></li>
-<li><p>Использование запроса EmbeddingList для векторного подполя, индексированного с помощью обычной векторной метрики.</p></li>
-<li><p>Использование обычного векторного запроса к векторному подполю, индексированному с помощью метрики <code translate="no">MAX_SIM*</code>.</p></li>
-<li><p>Ожидание того, что поиск на уровне элементов <code translate="no">limit</code> вернет столько же уникальных родительских сущностей. Он возвращает совпадения на уровне элементов.</p></li>
-<li><p>Ожидается, что поиск EmbeddingList вернет одно конкретное смещение элемента. Вместо этого возвращаются совпадения на уровне сущностей.</p></li>
-<li><p>Повторное использование одного векторного подполя для обоих режимов поиска. Используйте отдельные векторные подполя, поскольку каждое векторное подполе допускает только один индекс.</p></li>
+<li><p>Using <code translate="no">chunks.emb</code> instead of the required subfield path syntax <code translate="no">chunks[emb]</code>.</p></li>
+<li><p>Using an EmbeddingList query against a vector subfield indexed with a regular vector metric.</p></li>
+<li><p>Using a regular vector query against a vector subfield indexed with a <code translate="no">MAX_SIM*</code> metric.</p></li>
+<li><p>Expecting element-level search <code translate="no">limit</code> to return that many unique parent entities. It returns element hits.</p></li>
+<li><p>Expecting EmbeddingList search to return one specific element offset. It returns entity-level matches.</p></li>
+<li><p>Reusing one vector subfield for both search modes. Use separate vector subfields because each vector subfield accepts only one index.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">Следующие шаги<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -244,9 +243,9 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Чтобы ограничить поиск на уровне элементов с помощью скалярных условий, ознакомьтесь с разделом <a href="/docs/ru/filtered-search-with-structarray.md">«Фильтрованный поиск с использованием StructArray</a>».</p></li>
-<li><p>Чтобы выполнить поиск по границам оценки или расстояния, ознакомьтесь с разделом <a href="/docs/ru/range-search-with-structarray.md">«Поиск по диапазону с использованием StructArray</a>».</p></li>
-<li><p>Чтобы после поиска на уровне элементов возвращалось не более одного результата на родительский объект, ознакомьтесь с разделом <a href="/docs/ru/grouping-search-with-structarray.md">«Групповой поиск с использованием StructArray</a>».</p></li>
-<li><p>Чтобы объединить поиск с использованием StructArray с другими векторными поисками, ознакомьтесь с разделом <a href="/docs/ru/hybrid-search-with-structarray.md">«Гибридный поиск с использованием StructArray</a>».</p></li>
-<li><p>Чтобы ознакомиться с поддерживаемыми типами данных, метриками, фильтрами и ограничениями для конкретных версий, ознакомьтесь с разделом <a href="/docs/ru/structarray-limits.md">«Ограничения StructArray</a>».</p></li>
+<li><p>To restrict element-level search by scalar conditions, read <a href="/docs/ru/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
+<li><p>To search by score or distance boundaries, read <a href="/docs/ru/range-search-with-structarray.md">Range Search with StructArray</a>.</p></li>
+<li><p>To return at most one result per parent entity after element-level search, read <a href="/docs/ru/grouping-search-with-structarray.md">Grouping Search with StructArray</a>.</p></li>
+<li><p>To combine StructArray search with other vector searches, read <a href="/docs/ru/hybrid-search-with-structarray.md">Hybrid Search with StructArray</a>.</p></li>
+<li><p>To review supported data types, metrics, filters, and version-specific limits, read <a href="/docs/ru/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

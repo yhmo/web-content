@@ -1,11 +1,11 @@
 ---
 id: cdc_failover.md
 summary: >-
-  Découvrez comment effectuer un basculement lorsque le cluster Milvus primaire
-  devient indisponible.
-title: Basculement
+  Learn how to perform a failover when the primary Milvus cluster becomes
+  unavailable.
+title: Failover
 ---
-<h1 id="Failover" class="common-anchor-header">Basculement<button data-href="#Failover" class="anchor-icon" translate="no">
+<h1 id="Failover" class="common-anchor-header">Failover<button data-href="#Failover" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,14 +20,14 @@ title: Basculement
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Le basculement permet de promouvoir un cluster en attente vers un cluster primaire autonome lorsque le cluster primaire d'origine est totalement indisponible. Il s'agit d'une opération qui privilégie la disponibilité et qui peut entraîner la perte de données qui n'ont pas été répliquées avant la panne.</p>
-<p>Ce guide suppose que la topologie d'origine est :</p>
+    </button></h1><p>Failover promotes a standby cluster to a standalone primary when the original primary is completely unavailable. It is an availability-first operation and may lose data that was not replicated before the failure.</p>
+<p>This guide assumes the original topology is:</p>
 <pre><code translate="no" class="language-text">cluster-a (primary)  -&gt;  cluster-b (standby)
 <button class="copy-code-btn"></button></code></pre>
-<p>Après le basculement, <code translate="no">cluster-b</code> devient un serveur primaire autonome :</p>
+<p>After failover, <code translate="no">cluster-b</code> becomes a standalone primary:</p>
 <pre><code translate="no" class="language-text">cluster-b (primary)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="When-to-Use-Failover" class="common-anchor-header">Quand utiliser le basculement<button data-href="#When-to-Use-Failover" class="anchor-icon" translate="no">
+<h2 id="When-to-Use-Failover" class="common-anchor-header">When to Use Failover<button data-href="#When-to-Use-Failover" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,14 +42,14 @@ title: Basculement
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>N'utilisez le basculement que dans les cas suivants</p>
+    </button></h2><p>Use failover only when:</p>
 <ul>
-<li>Le serveur principal d'origine ne peut pas répondre aux demandes.</li>
-<li>Le serveur principal ne peut pas être rétabli dans un délai acceptable.</li>
-<li>Le rétablissement de la disponibilité en écriture est plus important que l'attente de l'ancien serveur principal.</li>
+<li>The original primary cannot respond to requests.</li>
+<li>The primary cannot be recovered within an acceptable time.</li>
+<li>Restoring write availability is more important than waiting for the old primary.</li>
 </ul>
-<p>Si le serveur principal est toujours joignable, utilisez plutôt le <a href="/docs/fr/cdc_switchover.md">basculement</a>. Le basculement permet d'éviter la perte de données.</p>
-<h2 id="Data-Loss-Risk" class="common-anchor-header">Risque de perte de données<button data-href="#Data-Loss-Risk" class="anchor-icon" translate="no">
+<p>If the primary is still reachable, use <a href="/docs/fr/cdc_switchover.md">Switchover</a> instead. Switchover avoids data loss.</p>
+<h2 id="Data-Loss-Risk" class="common-anchor-header">Data Loss Risk<button data-href="#Data-Loss-Risk" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -64,20 +64,20 @@ title: Basculement
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Le basculement n'attend pas l'ancien serveur primaire. Toutes les données écrites sur l'ancien serveur principal mais non encore répliquées sur le serveur de secours peuvent être perdues.</p>
-<p>La perte éventuelle de données est déterminée par le décalage du CDC au moment où le serveur principal est devenu indisponible.</p>
-<p>Avant d'exécuter le basculement, il faut comprendre le compromis :</p>
+    </button></h2><p>Failover does not wait for the original primary. Any data written to the old primary but not yet replicated to the standby may be lost.</p>
+<p>The possible data loss is determined by CDC lag at the time the primary became unavailable.</p>
+<p>Before running failover, understand the tradeoff:</p>
 <table>
 <thead>
-<tr><th>Objectif</th><th>Basculement</th><th>Basculement</th></tr>
+<tr><th>Goal</th><th>Switchover</th><th>Failover</th></tr>
 </thead>
 <tbody>
-<tr><td>Restaurer les écritures lorsque le serveur principal est inaccessible</td><td>Non</td><td>Oui</td></tr>
-<tr><td>Éviter la perte de données</td><td>Oui</td><td>Non garanti</td></tr>
-<tr><td>Nécessité d'une réponse de l'ancien système primaire</td><td>Oui</td><td>Non</td></tr>
+<tr><td>Restore writes while primary is unreachable</td><td>No</td><td>Yes</td></tr>
+<tr><td>Avoid data loss</td><td>Yes</td><td>Not guaranteed</td></tr>
+<tr><td>Requires old primary to respond</td><td>Yes</td><td>No</td></tr>
 </tbody>
 </table>
-<h2 id="Before-You-Begin" class="common-anchor-header">Avant de commencer<button data-href="#Before-You-Begin" class="anchor-icon" translate="no">
+<h2 id="Before-You-Begin" class="common-anchor-header">Before You Begin<button data-href="#Before-You-Begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -92,16 +92,16 @@ title: Basculement
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Confirmez ce qui suit :</p>
+    </button></h2><p>Confirm the following:</p>
 <ul>
-<li>Le serveur principal d'origine n'est pas disponible.</li>
-<li>Vous avez décidé de ne pas attendre le rétablissement du primaire.</li>
-<li>Le trafic applicatif peut être redirigé vers le serveur de secours.</li>
-<li>L'automatisation du trafic ne renverra pas d'écritures à l'ancien primaire s'il se rétablit.</li>
-<li>Vous disposez de l'ID, de l'adresse, du jeton et des canaux p du cluster de secours.</li>
+<li>The original primary is unavailable.</li>
+<li>You have decided not to wait for primary recovery.</li>
+<li>Application traffic can be redirected to the standby.</li>
+<li>Traffic automation will not send writes back to the old primary if it recovers.</li>
+<li>You have the standby cluster ID, address, token, and pchannels.</li>
 </ul>
-<p>L'exigence de sécurité la plus importante est d'éviter le "split brain". Après le basculement, seul le standby promu doit accepter les écritures d'application.</p>
-<h2 id="Build-the-Failover-Configuration" class="common-anchor-header">Construire la configuration de basculement<button data-href="#Build-the-Failover-Configuration" class="anchor-icon" translate="no">
+<p>The most important safety requirement is to prevent split brain. After failover, only the promoted standby should accept application writes.</p>
+<h2 id="Build-the-Failover-Configuration" class="common-anchor-header">Build the Failover Configuration<button data-href="#Build-the-Failover-Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -116,7 +116,7 @@ title: Basculement
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Construisez une configuration qui ne contient que le cluster de secours et aucune topologie de réplication. Définissez <code translate="no">force_promote=True</code>.</p>
+    </button></h2><p>Build a configuration that contains only the standby cluster and no replication topology. Set <code translate="no">force_promote=True</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># If you followed Set Up CDC Replication, cluster B is the original target cluster.</span>
 cluster_b_id = target_cluster_id
 cluster_b_addr = target_cluster_addr
@@ -139,7 +139,7 @@ failover_config = {
     <span class="hljs-string">&quot;force_promote&quot;</span>: <span class="hljs-literal">True</span>,
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Promote-the-Standby" class="common-anchor-header">Promouvoir le standby<button data-href="#Promote-the-Standby" class="anchor-icon" translate="no">
+<h2 id="Promote-the-Standby" class="common-anchor-header">Promote the Standby<button data-href="#Promote-the-Standby" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -154,7 +154,7 @@ failover_config = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Envoyez la demande au cluster en attente.</p>
+    </button></h2><p>Send the request to the standby cluster.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
@@ -164,8 +164,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
 <span class="hljs-keyword">finally</span>:
     client_b.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>Si la demande aboutit, <code translate="no">cluster-b</code> devient un primaire autonome et peut accepter des écritures.</p>
-<h2 id="Redirect-Application-Traffic" class="common-anchor-header">Redirection du trafic de l'application<button data-href="#Redirect-Application-Traffic" class="anchor-icon" translate="no">
+<p>If the request succeeds, <code translate="no">cluster-b</code> becomes a standalone primary and can accept writes.</p>
+<h2 id="Redirect-Application-Traffic" class="common-anchor-header">Redirect Application Traffic<button data-href="#Redirect-Application-Traffic" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -180,14 +180,14 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Après la promotion :</p>
+    </button></h2><p>After promotion:</p>
 <ol>
-<li>Redirigez le trafic d'écriture vers <code translate="no">cluster-b</code>.</li>
-<li>Supprimez <code translate="no">cluster-a</code> des points de terminaison d'écriture, des équilibreurs de charge, des enregistrements DNS et de l'automatisation.</li>
-<li>Vérifiez que <code translate="no">cluster-b</code> accepte les écritures.</li>
-<li>Maintenir <code translate="no">cluster-a</code> isolé jusqu'à ce qu'il soit mis hors service ou reconstruit explicitement.</li>
+<li>Redirect write traffic to <code translate="no">cluster-b</code>.</li>
+<li>Remove <code translate="no">cluster-a</code> from write endpoints, load balancers, DNS records, and automation.</li>
+<li>Verify that <code translate="no">cluster-b</code> accepts writes.</li>
+<li>Keep <code translate="no">cluster-a</code> isolated until it is decommissioned or explicitly rebuilt.</li>
 </ol>
-<p>Exemple de vérification de l'écriture :</p>
+<p>Example write verification:</p>
 <pre><code translate="no" class="language-python">client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
 
 <span class="hljs-keyword">try</span>:
@@ -198,8 +198,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
 <span class="hljs-keyword">finally</span>:
     client_b.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>Ajustez les champs de nom de collection et de schéma pour qu'ils correspondent à votre déploiement.</p>
-<h2 id="Verify-the-Result" class="common-anchor-header">Vérifier le résultat<button data-href="#Verify-the-Result" class="anchor-icon" translate="no">
+<p>Adjust the collection name and schema fields to match your deployment.</p>
+<h2 id="Verify-the-Result" class="common-anchor-header">Verify the Result<button data-href="#Verify-the-Result" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -214,13 +214,13 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Vérifiez directement le cluster promu :</p>
+    </button></h2><p>Verify the promoted cluster directly:</p>
 <ul>
-<li>Les écritures réussissent sur <code translate="no">cluster-b</code>.</li>
-<li>Les lectures renvoient les données attendues.</li>
-<li>Aucun composant d'application n'écrit sur <code translate="no">cluster-a</code>.</li>
+<li>Writes succeed on <code translate="no">cluster-b</code>.</li>
+<li>Reads return expected data.</li>
+<li>No application component writes to <code translate="no">cluster-a</code>.</li>
 </ul>
-<h2 id="Handling-the-Old-Primary" class="common-anchor-header">Gestion de l'ancien primaire<button data-href="#Handling-the-Old-Primary" class="anchor-icon" translate="no">
+<h2 id="Handling-the-Old-Primary" class="common-anchor-header">Handling the Old Primary<button data-href="#Handling-the-Old-Primary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,9 +235,9 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Après le basculement, traitez <code translate="no">cluster-a</code> comme stale. N'y envoyez pas d'écritures d'application s'il redevient accessible. Il peut contenir des données qui n'ont jamais été répliquées sur <code translate="no">cluster-b</code>, et <code translate="no">cluster-b</code> peut déjà contenir de nouvelles écritures après le basculement.</p>
-<p>Ne reconnectez pas automatiquement <code translate="no">cluster-a</code> à l'ancienne topologie. La réintroduction de l'ancien primaire est une tâche de récupération distincte qui doit être planifiée avec soin.</p>
-<h2 id="Minimizing-Data-Loss" class="common-anchor-header">Minimiser les pertes de données<button data-href="#Minimizing-Data-Loss" class="anchor-icon" translate="no">
+    </button></h2><p>After failover, treat <code translate="no">cluster-a</code> as stale. Do not send application writes to it if it becomes reachable again. It may contain data that was never replicated to <code translate="no">cluster-b</code>, and <code translate="no">cluster-b</code> may already contain new writes after failover.</p>
+<p>Do not reconnect <code translate="no">cluster-a</code> to the old topology automatically. Reintroducing the old primary is a separate recovery task that must be planned carefully.</p>
+<h2 id="Minimizing-Data-Loss" class="common-anchor-header">Minimizing Data Loss<button data-href="#Minimizing-Data-Loss" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -252,16 +252,16 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Vous ne pouvez pas éliminer tous les risques de perte de données liés au basculement, mais vous pouvez les réduire :</p>
+    </button></h2><p>You cannot remove all data-loss risk from failover, but you can reduce it:</p>
 <ul>
-<li>Surveillez en permanence le décalage du CDC.</li>
-<li>Gardez les clusters de secours provisionnés pour gérer le taux d'écriture du primaire.</li>
-<li>Veillez à ce que la latence du réseau inter-clusters et la perte de paquets soient faibles.</li>
-<li>Faites en sorte que les écritures des applications soient idempotentes.</li>
-<li>Réessayer les écritures dont le succès est incertain après le basculement.</li>
-<li>Préférer le basculement lorsque le serveur principal peut encore répondre.</li>
+<li>Monitor CDC lag continuously.</li>
+<li>Keep standby clusters provisioned to handle the primary write rate.</li>
+<li>Keep cross-cluster network latency and packet loss low.</li>
+<li>Make application writes idempotent.</li>
+<li>Retry writes whose success is uncertain after failover.</li>
+<li>Prefer switchover whenever the primary can still respond.</li>
 </ul>
-<h2 id="FAQ" class="common-anchor-header">QUESTIONS FRÉQUEMMENT POSÉES<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -276,7 +276,7 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Does-failover-always-lose-data" class="common-anchor-header">Le basculement entraîne-t-il toujours des pertes de données ?<button data-href="#Does-failover-always-lose-data" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Does-failover-always-lose-data" class="common-anchor-header">Does failover always lose data?<button data-href="#Does-failover-always-lose-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -291,8 +291,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Non, mais c'est possible. Si toutes les écritures ont déjà été répliquées avant la défaillance du serveur principal, aucune donnée n'est perdue. En cas de décalage du CDC, les données en retard peuvent être perdues.</p>
-<h3 id="How-long-does-failover-take" class="common-anchor-header">Combien de temps dure le basculement ?<button data-href="#How-long-does-failover-take" class="anchor-icon" translate="no">
+    </button></h3><p>No, but it can. If all writes were already replicated before the primary failed, no data is lost. If CDC lag existed, the lagging data may be lost.</p>
+<h3 id="How-long-does-failover-take" class="common-anchor-header">How long does failover take?<button data-href="#How-long-does-failover-take" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -307,8 +307,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Il s'effectue généralement en quelques secondes, en fonction de l'état du cluster et de la disponibilité du plan de contrôle sur le standby.</p>
-<h3 id="Can-I-run-failover-on-the-primary" class="common-anchor-header">Puis-je exécuter le basculement sur l'ordinateur principal ?<button data-href="#Can-I-run-failover-on-the-primary" class="anchor-icon" translate="no">
+    </button></h3><p>It typically completes within seconds, depending on cluster state and control-plane availability on the standby.</p>
+<h3 id="Can-I-run-failover-on-the-primary" class="common-anchor-header">Can I run failover on the primary?<button data-href="#Can-I-run-failover-on-the-primary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -323,8 +323,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Non. Le basculement est destiné à un cluster en attente. Si le système primaire actuel est disponible, utilisez le basculement.</p>
-<h3 id="Can-the-old-primary-rejoin-automatically" class="common-anchor-header">L'ancien serveur principal peut-il se reconnecter automatiquement ?<button data-href="#Can-the-old-primary-rejoin-automatically" class="anchor-icon" translate="no">
+    </button></h3><p>No. Failover is intended for a standby cluster. If the current primary is available, use switchover.</p>
+<h3 id="Can-the-old-primary-rejoin-automatically" class="common-anchor-header">Can the old primary rejoin automatically?<button data-href="#Can-the-old-primary-rejoin-automatically" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -339,8 +339,8 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Non. Après le basculement, l'ancien serveur primaire doit être considéré comme périmé et mis hors service ou reconstruit avant de pouvoir participer à nouveau à la réplication.</p>
-<h3 id="How-do-I-avoid-split-brain" class="common-anchor-header">Comment éviter le "split brain" ?<button data-href="#How-do-I-avoid-split-brain" class="anchor-icon" translate="no">
+    </button></h3><p>No. After failover, the old primary must be treated as stale and decommissioned or rebuilt before it can participate in replication again.</p>
+<h3 id="How-do-I-avoid-split-brain" class="common-anchor-header">How do I avoid split brain?<button data-href="#How-do-I-avoid-split-brain" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -355,4 +355,4 @@ client_b = MilvusClient(uri=cluster_b_client_addr, token=cluster_b_token)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Veillez à ce que seul le cluster promu reçoive des écritures. Retirez l'ancien cluster primaire de tous les chemins d'écriture avant qu'il ne puisse se rétablir et accepter du trafic.</p>
+    </button></h3><p>Ensure that only the promoted cluster receives writes. Remove the old primary from all write paths before it can recover and accept traffic.</p>

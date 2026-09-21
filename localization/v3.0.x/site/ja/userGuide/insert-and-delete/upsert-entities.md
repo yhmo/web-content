@@ -1,9 +1,11 @@
 ---
 id: upsert-entities.md
-title: エンティティのアップサート
-summary: upsert 操作は、コレクション内のエンティティを挿入または更新するための便利な方法を提供します。
+title: Upsert Entities
+summary: >-
+  The upsert operation provides a convenient way to insert or update entities in
+  a collection.
 ---
-<h1 id="Upsert-Entities" class="common-anchor-header">エンティティのアップサート<button data-href="#Upsert-Entities" class="anchor-icon" translate="no">
+<h1 id="Upsert-Entities" class="common-anchor-header">Upsert Entities<button data-href="#Upsert-Entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: upsert 操作は、コレクション内のエンティティを挿入�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">upsert</code> 操作は、コレクション内のエンティティを挿入または更新するための便利な方法を提供します。</p>
-<h2 id="Overview" class="common-anchor-header">概要<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">upsert</code> operation provides a convenient way to insert or update entities in a collection.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,9 +36,9 @@ summary: upsert 操作は、コレクション内のエンティティを挿入�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">upsert</code> を使用すると、upsert リクエストで指定された主キーがコレクション内に存在するかどうかによって、新しいエンティティを挿入するか、既存のエンティティを更新するかを選択できます。主キーが見つからない場合は、挿入操作が行われます。それ以外の場合は、更新操作が行われます。<code translate="no">autoID</code> コレクションに対する部分更新は例外であり、以下で説明するように、既存のエンティティのみが更新されます。</p>
-<p>Milvus におけるアップサートは、<strong>オーバーライドモード</strong>または<strong>マージ</strong>モードのいずれかで動作します。</p>
-<h3 id="Upsert-in-override-mode" class="common-anchor-header">オーバーライドモードでのアップサート<button data-href="#Upsert-in-override-mode" class="anchor-icon" translate="no">
+    </button></h2><p>You can use <code translate="no">upsert</code> to either insert a new entity or update an existing one, depending on whether the primary key provided in the upsert request exists in the collection. If the primary key is not found, an insert operation occurs. Otherwise, an update operation will be performed. Partial updates on <code translate="no">autoID</code> collections are an exception: they update existing entities only, as described below.</p>
+<p>An upsert in Milvus works in either <strong>override</strong> or <strong>merge</strong> mode.</p>
+<h3 id="Upsert-in-override-mode" class="common-anchor-header">Upsert in override mode<button data-href="#Upsert-in-override-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,16 +53,16 @@ summary: upsert 操作は、コレクション内のエンティティを挿入�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>オーバーライドモードで動作するアップサートリクエストは、INSERTとDELETEを組み合わせたものです。既存エンティティに対する<code translate="no">upsert</code> リクエストを受信すると、Milvusはリクエストペイロードに含まれるデータを挿入すると同時に、データ内で指定された元の主キーを持つ既存エンティティを削除します。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/upsert-in-override-mode.png" alt="Upsert In Override Mode" class="doc-image" id="upsert-in-override-mode" /> 
-   <span>オーバーライドモードでのアップサート</span>
-  
- </span></p>
-<p>ターゲットコレクションのプライマリフィールドで<code translate="no">autoID</code> が有効になっている場合でも、<code translate="no">upsert</code> リクエストにはターゲットエンティティのプライマリキーを含める必要があります。Milvusは、提供されたプライマリキーを使用して置換するエンティティを特定し、リクエストペイロードに含まれるデータに対して新しいプライマリキーを生成してから挿入を行います。</p>
-<p><code translate="no">nullable</code> が有効になっているフィールドについて、更新が必要ない場合は、<code translate="no">upsert</code> リクエストでそれらを省略できます。</p>
-<h3 id="Upsert-in-merge-mode" class="common-anchor-header">マージモードでのアップサート<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-in-merge-mode" class="anchor-icon" translate="no">
+    </button></h3><p>An upsert request that works in override mode combines an insert and a delete. When an <code translate="no">upsert</code> request for an existing entity is received, Milvus inserts the data carried in the request payload and deletes the existing entity with the original primary key specified in the data at the same time.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/upsert-in-override-mode.png" alt="Upsert In Override Mode" class="doc-image" id="upsert-in-override-mode" />
+    <span>Upsert In Override Mode</span>
+  </span>
+</p>
+<p>If the target collection has <code translate="no">autoID</code> enabled on its primary field, the <code translate="no">upsert</code> request must still include the primary key of the target entity. Milvus uses the provided primary key to locate the entity to replace, and generates a new primary key for the data carried in the request payload before inserting it.</p>
+<p>For fields with <code translate="no">nullable</code> enabled, you can omit them in the <code translate="no">upsert</code> request if they do not require any updates.</p>
+<h3 id="Upsert-in-merge-mode" class="common-anchor-header">Upsert in merge mode<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-in-merge-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,24 +77,24 @@ summary: upsert 操作は、コレクション内のエンティティを挿入�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>マージモードを使用すると、既存のエンティティの特定のフィールドを更新しつつ、他のフィールドは変更せずに保持できます。</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/upsert-in-merge-mode.png" alt="Upsert In Merge Mode" class="doc-image" id="upsert-in-merge-mode" /> 
-   <span>マージモードでのアップサート</span>
-  
- </span></p>
-<p><code translate="no">partial_update=True</code> を設定し、主キーと更新したいフィールドを指定します。</p>
-<p>Milvus は、強一貫性クエリを使用して既存エンティティを取得し、変更内容を保存されたデータとマージして、マージされたエンティティを挿入し、古いエンティティを削除します。</p>
-<p>プライマリキーが存在しない場合、結果は<code translate="no">autoID</code> が有効かどうかに依存します：</p>
+    </button></h3><p>Use merge mode to update specific fields of an existing entity while keeping the other fields unchanged.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/upsert-in-merge-mode.png" alt="Upsert In Merge Mode" class="doc-image" id="upsert-in-merge-mode" />
+    <span>Upsert In Merge Mode</span>
+  </span>
+</p>
+<p>Set <code translate="no">partial_update=True</code> and provide the primary key and the fields you want to update.</p>
+<p>Milvus retrieves the existing entity with a strong-consistency query, merges your changes with the stored data, inserts the merged entity, and deletes the old entity.</p>
+<p>If the primary key does not exist, the result depends on whether <code translate="no">autoID</code> is enabled:</p>
 <ul>
-<li><strong> <code translate="no">autoID</code> が無効な場合</strong>、Milvusは指定された主キーを持つ新しいエンティティを挿入しようとします。通常の挿入要件を満たしていれば、リクエストは成功します。必須フィールドが欠落している場合、リクエストはフィールド欠落エラーで失敗します。NULL許容フィールドやデフォルト値を持つフィールドは、通常の挿入と同様に省略可能です。</li>
-<li><strong> <code translate="no">autoID</code> が有効な場合</strong>、リクエスト内のすべての主キーはすでに存在している必要があります。挿入に必要なすべてのフィールドを指定していたとしても、主キーのいずれかが欠けていると、Milvusはリクエストを拒否します。既存のエンティティの場合、マージモードでは主キーは変更されません。</li>
+<li><strong>With <code translate="no">autoID</code> disabled</strong>, Milvus attempts to insert a new entity with the primary key you supplied. The request succeeds if it meets the normal insertion requirements. If a required field is missing, the request fails with a missing-field error. Nullable fields and fields with default values can be omitted, just as in a normal insert.</li>
+<li><strong>With <code translate="no">autoID</code> enabled</strong>, every primary key in the request must already exist. Milvus rejects the request if any primary key is missing, even if you provide all fields required for insertion. For existing entities, merge mode keeps the primary key unchanged.</li>
 </ul>
-<p>部分更新が「フィールド欠落」エラーで失敗した場合は、対象エンティティが存在するかどうかを確認してください。既存のエンティティがない場合、Milvusは省略したフィールドの値を取得できません。</p>
-<p>新規エンティティの場合は、<code translate="no">insert</code> を使用するか、オーバーライドモードでのupsertを使用してください。個々のフィールドに対するその後の更新には、マージモードを使用してください。</p>
-<p><code translate="no">ARRAY</code> フィールドの場合、Milvus v2.6.17以降では、マージモードで次の2つの演算子がサポートされています：<code translate="no">ARRAY_APPEND</code> および<code translate="no">ARRAY_REMOVE</code> 。これらの演算子を使用すると、エンティティをクエリして現在の値を取得することなく、既存の<code translate="no">ARRAY</code> フィールドに要素を追加したり、一致する要素を削除したりできます。詳細については、<a href="/docs/ja/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">「マージモードでのARRAYフィールドのアップサート」</a>を参照してください。</p>
-<h3 id="Upsert-behaviors-special-notes" class="common-anchor-header">Upsertの動作：特記事項<button data-href="#Upsert-behaviors-special-notes" class="anchor-icon" translate="no">
+<p>If a partial update fails with a missing-field error, check whether the target entity exists. Without an existing entity, Milvus cannot retrieve the values of fields you omitted.</p>
+<p>For new entities, use <code translate="no">insert</code> or an upsert in override mode. Use merge mode for subsequent updates to individual fields.</p>
+<p>For <code translate="no">ARRAY</code> fields, merge mode supports two operators in Milvus v2.6.17 and later: <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code>. These operators let you append elements to or remove matching elements from an existing <code translate="no">ARRAY</code> field, without first querying the entity to retrieve its current value. For details, see <a href="/docs/ja/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">Upsert ARRAY fields in merge mode</a>.</p>
+<h3 id="Upsert-behaviors-special-notes" class="common-anchor-header">Upsert behaviors: special notes<button data-href="#Upsert-behaviors-special-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,38 +109,38 @@ summary: upsert 操作は、コレクション内のエンティティを挿入�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>マージ機能を使用する前に、考慮すべきいくつかの特別な注意事項があります。以下のケースでは、<code translate="no">title</code> および<code translate="no">issue</code> という 2 つのスカラーフィールド、主キー<code translate="no">id</code> 、および<code translate="no">vector</code> というベクトルフィールドを持つコレクションが存在することを前提としています。</p>
+    </button></h3><p>There are several special notes you should consider before using the merge feature. The following cases assume that you have a collection with two scalar fields named <code translate="no">title</code> and <code translate="no">issue</code>, along with a primary key <code translate="no">id</code> and a vector field called <code translate="no">vector</code>.</p>
 <ul>
-<li><p><code translate="no">nullable</code> が<strong>有効になっている</strong><strong>フィールドのアップサート</strong> <strong>。</strong></p>
-<p><code translate="no">issue</code> フィールドがNULL可能であると仮定します。これらのフィールドをアップサートする際は、以下の点に注意してください：</p>
+<li><p><strong>Upsert fields with</strong> <code translate="no">nullable</code> <strong>enabled.</strong></p>
+<p>Suppose that the <code translate="no">issue</code> field can be null. When you upsert these fields, note that:</p>
 <ul>
-<li><p><code translate="no">upsert</code> リクエストで<code translate="no">issue</code> フィールドを省略し、<code translate="no">partial_update</code> を無効にした場合、<code translate="no">issue</code> フィールドは元の値を維持するのではなく、<code translate="no">null</code> に更新されます。</p></li>
-<li><p><code translate="no">issue</code> フィールドの元の値を保持するには、<code translate="no">partial_update</code> を有効にして<code translate="no">issue</code> フィールドを省略するか、<code translate="no">upsert</code> リクエストに元の値を持つ<code translate="no">issue</code> フィールドを含める必要があります。</p></li>
+<li><p>If you omit the <code translate="no">issue</code> field in the <code translate="no">upsert</code> request and disable <code translate="no">partial_update</code>, the <code translate="no">issue</code> field will be updated to <code translate="no">null</code> instead of retaining its original value.</p></li>
+<li><p>To preserve the original value of the <code translate="no">issue</code> field, you need either to enable <code translate="no">partial_update</code> and omit the <code translate="no">issue</code> field or include the <code translate="no">issue</code> field with its original value in the <code translate="no">upsert</code> request.</p></li>
 </ul></li>
-<li><p><strong>動的フィールドのキーをアップサートします</strong>。</p>
-<p>サンプルコレクションで動的キーを有効にしており、エンティティの動的フィールド内のキーと値のペアが<code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code> のようなものであると仮定します。</p>
-<p><code translate="no">author</code> 、<code translate="no">year</code> 、<code translate="no">tags</code> などのキーを使用してエンティティをアップサートする場合、または他のキーを追加する場合は、次の点に注意してください。</p>
+<li><p><strong>Upsert keys in the dynamic field</strong>.</p>
+<p>Suppose that you have enabled the dynamic key in the example collection, and the key-value pairs in the dynamic field of an entity are similar to <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>.</p>
+<p>When you upsert the entity with keys, such as <code translate="no">author</code>, <code translate="no">year</code>, or <code translate="no">tags</code>, or add other keys, note that:</p>
 <ul>
-<li><p><code translate="no">partial_update</code> が無効な状態でアップサートを行う場合、デフォルトの挙動は<strong>上書き</strong>となります。つまり、リクエストに含まれるスキーマで定義されていないすべてのフィールドとその値によって、動的フィールドの値が上書きされます。</p>
-<p>たとえば、リクエストに含まれるデータが `<code translate="no">{&quot;author&quot;: &quot;Jane&quot;, &quot;genre&quot;: &quot;fantasy&quot;}</code>` である場合、対象エンティティの動的フィールド内のキーと値のペアは、その値に更新されます。</p></li>
-<li><p><code translate="no">partial_update</code> を有効にして upsert を行う場合、デフォルトの動作は<strong>マージ</strong>です。つまり、動的フィールドの値は、リクエストに含まれるスキーマで定義されていないすべてのフィールドとその値とマージされます。</p>
-<p>たとえば、リクエストに含まれるデータが `<code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>` の場合、アップサート後にターゲットエンティティの動的フィールドのキーと値のペアは `<code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;], &quot;genre&quot;: &quot;fantasy&quot;}</code> ` になります。</p></li>
+<li><p>If you upsert with <code translate="no">partial_update</code> disabled, the default behavior is to <strong>override</strong>. It means that the value of the dynamic field will be overridden by all non-schema-defined fields included in the request and their values.</p>
+<p>For example, if the data included in the request is <code translate="no">{&quot;author&quot;: &quot;Jane&quot;, &quot;genre&quot;: &quot;fantasy&quot;}</code>, the key-value pairs in the dynamic field of the target entity will be updated to that.</p></li>
+<li><p>If you upsert with <code translate="no">partial_update</code> enabled, the default behavior is to <strong>merge</strong>. It means that the value of the dynamic field will merge with all non-schema-defined fields included in the request and their values.</p>
+<p>For example, if the data included in the request is <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>, the key-value pairs in the dynamic field of the target entity will become <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;], &quot;genre&quot;: &quot;fantasy&quot;}</code> after the upsert.</p></li>
 </ul></li>
-<li><p><strong>JSONフィールドのアップサート。</strong></p>
-<p>例として、コレクションに<code translate="no">extras</code> という名前のスキーマ定義済み JSON フィールドがあり、エンティティのこの JSON フィールド内のキーと値のペアが<code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code> のようなものであるとします。</p>
-<p>変更された JSON データを使用してエンティティの<code translate="no">extras</code> フィールドをアップサートする場合、JSON フィールドは全体として扱われるため、個々のキーを選択的に更新することはできない点に注意してください。つまり、JSON フィールドは<strong>マージモードでの</strong>アップサートを<strong>サポートしていません</strong>。</p></li>
-<li><p><code translate="no">ARRAY</code> <strong>フィールド</strong><strong>のアップサート</strong> <strong>。</strong></p>
-<p>デフォルトでは、マージモードの<code translate="no">ARRAY</code> フィールドは<strong>REPLACE</strong>セマンティクスに従います。つまり、リクエストに含まれる値が既存の配列を上書きします。よりきめ細かな更新を行うために、Milvus v2.6.17以降では以下の2つの演算子もサポートされています。</p>
+<li><p><strong>Upsert a JSON field.</strong></p>
+<p>Suppose that the example collection has a schema-defined JSON field named <code translate="no">extras</code>, and the key-value pairs in this JSON field of an entity are similar to <code translate="no">{&quot;author&quot;: &quot;John&quot;, &quot;year&quot;: 2020, &quot;tags&quot;: [&quot;fiction&quot;]}</code>.</p>
+<p>When you upsert the <code translate="no">extras</code> field of an entity with modified JSON data, note that the JSON field is treated as a whole, and you cannot update individual keys selectively. In other words, the JSON field <strong>DOES NOT</strong> support upsert in <strong>merge</strong> mode.</p></li>
+<li><p><strong>Upsert an</strong> <code translate="no">ARRAY</code> <strong>field.</strong></p>
+<p>By default, an <code translate="no">ARRAY</code> field in merge mode follows <strong>REPLACE</strong> semantics: the value carried in the request overwrites the existing array. For finer-grained updates, Milvus v2.6.17 and later also supports two operators:</p>
 <ul>
-<li><p><code translate="no">ARRAY_APPEND</code> リクエストペイロード内の要素を既存の配列の末尾に追加します。</p></li>
-<li><p><code translate="no">ARRAY_REMOVE</code> リクエストペイロード内の値と一致する要素を、既存の配列からすべて削除します。</p></li>
+<li><p><code translate="no">ARRAY_APPEND</code> appends the elements in the request payload to the existing array.</p></li>
+<li><p><code translate="no">ARRAY_REMOVE</code> removes every element from the existing array that matches a value in the request payload.</p></li>
 </ul>
-<p>演算子の構文、サポートされる要素型、およびその他の制約については、「<a href="/docs/ja/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">マージモードでの ARRAY フィールドのアップサート</a>」を参照してください。</p></li>
-<li><p><strong>StructArray フィールドのアップサート。</strong></p>
-<p>エンティティ内の StructArray フィールドに対してアップサートを行うと、フィールドの値が上書きされます。これを行うには、マージモードでアップサートを実行する場合であっても、構造体スキーマで定義されたすべてのサブフィールドを含む辞書のリストを指定する必要があります。</p>
-<p>詳細については、「<a href="/docs/ja/upsert-entities.md#Upsert-StructArray-field-in-merge-mode">マージモードでの StructArray フィールドのアップサート</a>」を参照してください。</p></li>
+<p>For operator syntax, supported element types, and other constraints, see <a href="/docs/ja/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">Upsert ARRAY fields in merge mode</a>.</p></li>
+<li><p><strong>Upsert a StructArray field.</strong></p>
+<p>Upserting a StructArray field in an entity overwrites the field value. To do so, you need to provide a list of dictionaries, each of which contains all subfields defined in the struct schema, even when you perform the upsert in merge mode.</p>
+<p>For details, refer to <a href="/docs/ja/upsert-entities.md#Upsert-StructArray-field-in-merge-mode">Upsert StructArray field in merge mode</a>.</p></li>
 </ul>
-<h3 id="Limits--Restrictions" class="common-anchor-header">制限事項<button data-href="#Limits--Restrictions" class="anchor-icon" translate="no">
+<h3 id="Limits--Restrictions" class="common-anchor-header">Limits & Restrictions<button data-href="#Limits--Restrictions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -153,19 +155,19 @@ summary: upsert 操作は、コレクション内のエンティティを挿入�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>上記の内容に基づき、以下の制限事項に従う必要があります。</p>
+    </button></h3><p>Based on the above content, there are several limits and restrictions to follow:</p>
 <ul>
-<li><p>「<code translate="no">autoID</code> 」が有効になっている場合でも、<code translate="no">upsert</code> リクエストには常にターゲットエンティティのプライマリキーを含める必要があります。<code translate="no">autoID</code> コレクションの場合、プライマリキーの処理はアップサートモードによって異なります：</p>
+<li><p>The <code translate="no">upsert</code> request must always include the primary keys of the target entities, even when <code translate="no">autoID</code> is enabled. For <code translate="no">autoID</code> collections, primary-key handling depends on the upsert mode:</p>
 <ul>
-<li><p>オーバーライドモードでは、主キーは置き換える既存エンティティを識別し、Milvus は置き換え対象のエンティティに対して新しい主キーを生成します。</p></li>
-<li><p>マージモードでは、主キーは更新対象の既存エンティティを識別し、変更されません。主キーが存在しない場合、新しいエンティティを挿入する代わりにリクエストは失敗します。</p></li>
+<li><p>In override mode, the primary key identifies the existing entity to replace, and Milvus generates a new primary key for the replacement entity.</p></li>
+<li><p>In merge mode, the primary key identifies the existing entity to update and remains unchanged. If the primary key does not exist, the request fails instead of inserting a new entity.</p></li>
 </ul></li>
-<li><p>ターゲットコレクションは読み込まれており、クエリに利用可能である必要があります。</p></li>
-<li><p>リクエストで指定されたすべてのフィールドは、ターゲットコレクションのスキーマに存在している必要があります。</p></li>
-<li><p>リクエストで指定されたすべてのフィールドの値は、スキーマで定義されたデータ型と一致している必要があります。</p></li>
-<li><p>関数を使用して別のフィールドから派生したフィールドについては、Milvus は再計算を可能にするため、アップサート中にその派生フィールドを削除します。</p></li>
+<li><p>The target collection must be loaded and available for queries.</p></li>
+<li><p>All fields specified in the request must exist in the schema of the target collection.</p></li>
+<li><p>The values of all fields specified in the request must match the data types defined in the schema.</p></li>
+<li><p>For any field derived from another using functions, Milvus will remove the derived field during the upsert to allow recalculation.</p></li>
 </ul>
-<h2 id="Upsert-entities-in-a-collection" class="common-anchor-header">コレクションへのエンティティのアップサート<button data-href="#Upsert-entities-in-a-collection" class="anchor-icon" translate="no">
+<h2 id="Upsert-entities-in-a-collection" class="common-anchor-header">Upsert entities in a collection<button data-href="#Upsert-entities-in-a-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -180,14 +182,14 @@ summary: upsert 操作は、コレクション内のエンティティを挿入�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>このセクションでは、<code translate="no">my_collection</code> という名前のコレクションにエンティティをアップサートします。このコレクションには、<code translate="no">id</code> 、<code translate="no">vector</code> 、<code translate="no">title</code> 、<code translate="no">issue</code> という 4 つのフィールドがあります。<code translate="no">id</code> フィールドはプライマリフィールドであり、<code translate="no">title</code> および<code translate="no">issue</code> フィールドはスカラーフィールドです。</p>
-<p>コレクション内にこれら3つのエンティティが存在する場合、upsertリクエストに含まれるものによって上書きされます。</p>
+    </button></h2><p>In this section, we will upsert entities into a collection named <code translate="no">my_collection</code>. This collection has only two fields, named <code translate="no">id</code>, <code translate="no">vector</code>, <code translate="no">title</code>, and <code translate="no">issue</code>. The <code translate="no">id</code> field is the primary field, while the <code translate="no">title</code> and <code translate="no">issue</code> fields are scalar fields.</p>
+<p>The three entities, if exists in the collection, will be overridden by those included the upsert request.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -354,7 +356,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-entities-in-a-partition" class="common-anchor-header">パーティションへのエンティティのアップサート<button data-href="#Upsert-entities-in-a-partition" class="anchor-icon" translate="no">
+<h2 id="Upsert-entities-in-a-partition" class="common-anchor-header">Upsert entities in a partition<button data-href="#Upsert-entities-in-a-partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -369,14 +371,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>指定したパーティションにエンティティをアップサートすることもできます。以下のコードスニペットは、コレクション内に「<strong>PartitionA</strong>」という名前のパーティションが存在することを前提としています。</p>
-<p>パーティション内にこれら3つのエンティティが存在する場合、リクエストに含まれるエンティティによって上書きされます。</p>
+    </button></h2><p>You can also upsert entities into a specified partition. The following code snippets assume that you have a partition named <strong>PartitionA</strong> in your collection.</p>
+<p>The three entities, if exists in the partition, will be overridden by those included in the request.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">data=[
     {
@@ -507,7 +509,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-entities-in-merge-mode" class="common-anchor-header">マージモードでのエンティティのアップサート<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-entities-in-merge-mode" class="anchor-icon" translate="no">
+<h2 id="Upsert-entities-in-merge-mode" class="common-anchor-header">Upsert entities in merge mode<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.2+</span><button data-href="#Upsert-entities-in-merge-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -522,16 +524,16 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>次の例では、<code translate="no">my_collection</code> 内のプライマリキーが<code translate="no">1</code> および<code translate="no">2</code> であるエンティティについて、<code translate="no">issue</code> フィールドのみを更新します。実行する前に、両方のエンティティがすでに存在していることを確認してください。その他のフィールドは現在の値のまま保持されます。</p>
+    </button></h2><p>The following example updates only the <code translate="no">issue</code> field of the entities with primary keys <code translate="no">1</code> and <code translate="no">2</code> in <code translate="no">my_collection</code>. Before running it, ensure that both entities already exist. Their other fields retain their current values.</p>
 <div class="alert note">
-<p>マージモードでアップサートを実行する際は、リクエストの対象となるエンティティが同一のフィールドセットを持っていることを確認してください。以下のコードスニペットに示すように、アップサート対象となるエンティティが2つ以上ある場合、エラーを防止し、データの整合性を維持するために、それらに同一のフィールドが含まれていることが重要です。</p>
+<p>When performing an upsert in merge mode, ensure that the entities involved in the request have the same set of fields. Suppose there are two or more entities to be upserted, as shown in the following code snippet, it is important that they include identical fields to prevent errors and maintain data integrity.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">data=[
     {
@@ -650,7 +652,7 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-ARRAY-fields-in-merge-mode" class="common-anchor-header">マージモードでの ARRAY フィールドのアップサート<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.17+</span><button data-href="#Upsert-ARRAY-fields-in-merge-mode" class="anchor-icon" translate="no">
+<h2 id="Upsert-ARRAY-fields-in-merge-mode" class="common-anchor-header">Upsert ARRAY fields in merge mode<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.17+</span><button data-href="#Upsert-ARRAY-fields-in-merge-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -665,14 +667,14 @@ curl -X POST <span class="hljs-string">&quot;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus v2.6.17 以前では、<code translate="no">ARRAY</code> フィールドの一部を更新するには、クライアント側での「読み取り→変更→書き込み」というフローが必要でした。つまり、既存の配列をクエリで取得し、アプリケーションコード内で変更を加え、置き換え用の完全な値をアップサートする必要がありました。 部分更新演算子（<code translate="no">ARRAY_APPEND</code> および<code translate="no">ARRAY_REMOVE</code> ）を使用すると、追加または削除する要素のみを送信できるため、クライアント側のロジックを削減し、Upsert前の余分な読み取りを回避できます。</p>
-<p>主キーが `<code translate="no">1</code> ` のエンティティに、すでに `<code translate="no">tags = [&quot;new&quot;, &quot;trial&quot;]</code>` が設定されていると仮定します。部分更新演算子が導入される前は、配列に要素 `<code translate="no">&quot;premium&quot;</code> ` を追加するには、置き換え用の配列全体をアップサートする必要がありました：</p>
+    </button></h2><p>Before Milvus v2.6.17, updating part of an <code translate="no">ARRAY</code> field required a client-side read-modify-write flow: query the existing array, change it in application code, and upsert the full replacement value. Partial-update operators (<code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code>) let you send only the elements to append or remove, which reduces client-side logic and avoids the extra read before the upsert.</p>
+<p>Suppose the entity with primary key <code translate="no">1</code> already has <code translate="no">tags = [&quot;new&quot;, &quot;trial&quot;]</code>. Before partial-update operators, adding element <code translate="no">&quot;premium&quot;</code> to an array required upserting the full replacement array:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.upsert(
     collection_name=<span class="hljs-string">&quot;users&quot;</span>,
@@ -696,13 +698,13 @@ client.upsert(UpsertReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">ARRAY_APPEND</code> を使用すれば、追加する要素のみを送信すれば済みます:</p>
+<p>With <code translate="no">ARRAY_APPEND</code>, send only the element to add:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.upsert(
     collection_name=<span class="hljs-string">&quot;users&quot;</span>,
@@ -731,13 +733,13 @@ client.upsert(UpsertReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">ARRAY_REMOVE</code> を使用すると、削除対象の要素のみを送信します:</p>
+<p>With <code translate="no">ARRAY_REMOVE</code>, send only the matching element to remove:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.upsert(
     collection_name=<span class="hljs-string">&quot;users&quot;</span>,
@@ -767,9 +769,9 @@ client.upsert(UpsertReq.builder()
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><code translate="no">field_ops</code> を使用していずれかの演算子をフィールドに適用すると、部分更新のセマンティクスが暗黙的に有効になります。したがって、<code translate="no">field_ops</code> と一緒に<code translate="no">partial_update=True</code> を渡す必要<strong>はありません</strong>。</p>
+<p>Attaching either operator to a field via <code translate="no">field_ops</code> implicitly enables partial-update semantics. Therefore, you do <strong>not</strong> need to pass <code translate="no">partial_update=True</code> alongside <code translate="no">field_ops</code>.</p>
 </div>
-<h3 id="Limits" class="common-anchor-header">制限事項<button data-href="#Limits" class="anchor-icon" translate="no">
+<h3 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -785,12 +787,12 @@ client.upsert(UpsertReq.builder()
         ></path>
       </svg>
     </button></h3><ul>
-<li><p>ペイロードの値は、対象の<code translate="no">ARRAY</code> フィールドの<code translate="no">element_type</code> と一致する必要があります。たとえば、対象フィールドが<code translate="no">ARRAY&lt;VARCHAR&gt;</code> の場合、ペイロードには文字列値が含まれている必要があります。</p></li>
-<li><p>Milvus v2.6.17 以降では、<code translate="no">ARRAY_APPEND</code> および<code translate="no">ARRAY_REMOVE</code> は、<code translate="no">element_type</code> が<code translate="no">BOOL</code> 、<code translate="no">INT8</code> 、<code translate="no">INT16</code> 、<code translate="no">INT32</code> 、<code translate="no">INT64</code> 、<code translate="no">FLOAT</code> 、<code translate="no">DOUBLE</code> 、または<code translate="no">VARCHAR</code> のいずれかである<code translate="no">ARRAY</code> フィールドをサポートしています。</p></li>
-<li><p><code translate="no">ARRAY_APPEND</code> 操作の後、結果の配列の長さは、そのフィールドの<code translate="no">max_capacity</code> を超えてはなりません。</p></li>
-<li><p>同一エンティティに対する並行したアップサートは、リクエスト間でアトミックではありません。2つのリクエストが同時に同じ<code translate="no">ARRAY</code> フィールドを更新した場合、後に行われた書き込みが先行する書き込みを上書きする可能性があります。すべての並行変更を保持する必要がある場合は、アプリケーションレベルでの調整を行ってください。</p></li>
+<li><p>The payload values must match the <code translate="no">element_type</code> of the target <code translate="no">ARRAY</code> field. For example, if the target field is <code translate="no">ARRAY&lt;VARCHAR&gt;</code>, the payload must contain string values.</p></li>
+<li><p>In Milvus v2.6.17 and later, <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> support <code translate="no">ARRAY</code> fields whose <code translate="no">element_type</code> is <code translate="no">BOOL</code>, <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>, or <code translate="no">VARCHAR</code>.</p></li>
+<li><p>After an <code translate="no">ARRAY_APPEND</code> operation, the resulting array length must not exceed the field’s <code translate="no">max_capacity</code>.</p></li>
+<li><p>Concurrent upserts to the same entity are not atomic across requests. If two requests update the same <code translate="no">ARRAY</code> field at the same time, the later write can overwrite the earlier one. Use application-level coordination if you need to preserve all concurrent changes.</p></li>
 </ul>
-<h3 id="Example" class="common-anchor-header">例<button data-href="#Example" class="anchor-icon" translate="no">
+<h3 id="Example" class="common-anchor-header">Example<button data-href="#Example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -805,13 +807,13 @@ client.upsert(UpsertReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>次の例では、主キー<code translate="no">pk</code> 、型が<code translate="no">ARRAY&lt;VARCHAR&gt;</code> の<code translate="no">tags</code> フィールド、および<code translate="no">embedding</code> ベクトルフィールドを持つ小さな<code translate="no">users</code> コレクションを使用しています。まず、初期値<code translate="no">tags</code> を持つ2つのエンティティを挿入し、次に<code translate="no">ARRAY_APPEND</code> および<code translate="no">ARRAY_REMOVE</code> を使用して、各演算子が格納された配列をどのように変更するかを示します。</p>
+    </button></h3><p>The following example uses a small <code translate="no">users</code> collection with a primary key <code translate="no">pk</code>, a <code translate="no">tags</code> field of type <code translate="no">ARRAY&lt;VARCHAR&gt;</code>, and an <code translate="no">embedding</code> vector field. It first inserts two entities with initial <code translate="no">tags</code> values, then uses <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> to show how each operator changes the stored array.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, FieldOp, MilvusClient
 
@@ -908,7 +910,7 @@ res = client.query(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Upsert-StructArray-field-in-merge-mode" class="common-anchor-header">マージモードでの StructArray フィールドのアップサート<button data-href="#Upsert-StructArray-field-in-merge-mode" class="anchor-icon" translate="no">
+<h2 id="Upsert-StructArray-field-in-merge-mode" class="common-anchor-header">Upsert StructArray field in merge mode<button data-href="#Upsert-StructArray-field-in-merge-mode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -923,14 +925,14 @@ res = client.query(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>エンティティ内の StructArray フィールドをアップサートすると、そのフィールドの値は上書きされます。つまり、StructArray フィールドをアップサートする際には、構造体スキーマで定義されているすべてのサブフィールドを含める必要があります。</p>
-<p>以下の例は、6つのサブフィールドを持つStructArrayフィールド「<code translate="no">chunks</code> 」をマージモードでアップサートする方法を示しています。操作が完了すると、IDが1のエンティティの<code translate="no">chunks</code> フィールドは、リクエストで指定された2つの要素を持つ構造体を含む配列に設定されます。</p>
+    </button></h2><p>Upserting a StructArray field in an entity overwrites the field value. That means you need to include all subfields defined in the struct schema when you upsert a StructArray field.</p>
+<p>The following example demonstrates how to upsert the <code translate="no">chunks</code> field in merge mode, a StructArray field with 6 subfields. When the operation completes, the <code translate="no">chunks</code> field of the entity with id 1 is set to the array with the two-element structs provided in the request.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.upsert(
     collection_name=<span class="hljs-string">&quot;books&quot;</span>,

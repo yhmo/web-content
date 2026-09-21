@@ -1,11 +1,13 @@
 ---
 id: build_RAG_with_milvus_and_crawl4ai.md
 summary: >-
-  在本教程中，我們將告訴您如何使用 Milvus 和 Crawl4AI 建立一個 Retrieval-Augmented Generation (RAG)
-  管道。此管道整合了 Crawl4AI (用於網路資料爬取)、Milvus (用於向量儲存)，以及 OpenAI (用於產生有洞察力的情境感知回應)。
-title: 使用 Milvus 和 Crawl4AI 建立 RAG
+  In this tutorial, we’ll show you how to build a Retrieval-Augmented Generation
+  (RAG) pipeline using Milvus and Crawl4AI. The pipeline integrates Crawl4AI for
+  web data crawling, Milvus for vector storage, and OpenAI for generating
+  insightful, context-aware responses.
+title: Building RAG with Milvus and Crawl4AI
 ---
-<h1 id="Building-RAG-with-Milvus-and-Crawl4AI" class="common-anchor-header">使用 Milvus 和 Crawl4AI 建立 RAG<button data-href="#Building-RAG-with-Milvus-and-Crawl4AI" class="anchor-icon" translate="no">
+<h1 id="Building-RAG-with-Milvus-and-Crawl4AI" class="common-anchor-header">Building RAG with Milvus and Crawl4AI<button data-href="#Building-RAG-with-Milvus-and-Crawl4AI" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,9 +28,9 @@ title: 使用 Milvus 和 Crawl4AI 建立 RAG
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/build_RAG_with_milvus_and_crawl4ai.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<p><a href="https://crawl4ai.com/mkdocs/">Crawl4AI</a>為 LLM 提供極速、AI 就緒的網路爬取功能。它是開放源碼，並針對 RAG 進行了最佳化，可利用先進的萃取功能和即時效能簡化搜刮工作。</p>
-<p>在本教程中，我們將告訴您如何使用 Milvus 和 Crawl4AI 建立一個 Retrieval-Augmented Generation (RAG) 管道。此管道整合了 Crawl4AI (用於網路資料爬取)、Milvus (用於向量儲存)，以及 OpenAI (用於產生有洞察力的情境感知回應)。</p>
-<h2 id="Preparation" class="common-anchor-header">準備工作<button data-href="#Preparation" class="anchor-icon" translate="no">
+<p><a href="https://crawl4ai.com/mkdocs/">Crawl4AI</a> delivers blazing-fast, AI-ready web crawling for LLMs. Open-source and optimized for RAG, it simplifies scraping with advanced extraction and real-time performance.</p>
+<p>In this tutorial, we’ll show you how to build a Retrieval-Augmented Generation (RAG) pipeline using Milvus and Crawl4AI. The pipeline integrates Crawl4AI for web data crawling, Milvus for vector storage, and OpenAI for generating insightful, context-aware responses.</p>
+<h2 id="Preparation" class="common-anchor-header">Preparation<button data-href="#Preparation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,7 +45,7 @@ title: 使用 Milvus 和 Crawl4AI 建立 RAG
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Dependencies-and-Environment" class="common-anchor-header">相依性與環境<button data-href="#Dependencies-and-Environment" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Dependencies-and-Environment" class="common-anchor-header">Dependencies and Environment<button data-href="#Dependencies-and-Environment" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -58,13 +60,13 @@ title: 使用 Milvus 和 Crawl4AI 建立 RAG
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要開始使用，請執行下列指令安裝所需的相依性：</p>
+    </button></h3><p>To start, install the required dependencies by running the following command:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip install -U crawl4ai pymilvus milvus-lite openai requests tqdm</span>
 <button class="copy-code-btn"></button></code></pre>
 <blockquote>
-<p>如果您使用的是 Google Colab，為了啟用剛安裝的相依性，您可能需要<strong>重新啟動執行時</strong>（點選畫面上方的「Runtime」功能表，並從下拉式功能表中選擇「Restart session」）。</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </blockquote>
-<p>要完全設定好 crawl4ai，請執行下列指令：</p>
+<p>To fully set up crawl4ai, run the following commands:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Run post-installation setup</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">crawl4ai-setup</span>
 <span class="hljs-meta prompt_">
@@ -87,7 +89,7 @@ title: 使用 Milvus 和 Crawl4AI 建立 RAG
 [32m[COMPLETE] ● ✅ Crawling test passed![0m
 [0m
 </code></pre>
-<h3 id="Setting-Up-OpenAI-API-Key" class="common-anchor-header">設定 OpenAI API Key<button data-href="#Setting-Up-OpenAI-API-Key" class="anchor-icon" translate="no">
+<h3 id="Setting-Up-OpenAI-API-Key" class="common-anchor-header">Setting Up OpenAI API Key<button data-href="#Setting-Up-OpenAI-API-Key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,12 +104,12 @@ title: 使用 Milvus 和 Crawl4AI 建立 RAG
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在本範例中，我們將使用 OpenAI 作為 LLM。你應該準備<a href="https://platform.openai.com/docs/quickstart">OPENAI_API_KEY</a>作為環境變數。</p>
+    </button></h3><p>We will use OpenAI as the LLM in this example. You should prepare the <a href="https://platform.openai.com/docs/quickstart">OPENAI_API_KEY</a> as an environment variable.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 os.environ[<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>] = <span class="hljs-string">&quot;sk-***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Prepare-the-LLM-and-Embedding-Model" class="common-anchor-header">準備 LLM 和嵌入模型<button data-href="#Prepare-the-LLM-and-Embedding-Model" class="anchor-icon" translate="no">
+<h3 id="Prepare-the-LLM-and-Embedding-Model" class="common-anchor-header">Prepare the LLM and Embedding Model<button data-href="#Prepare-the-LLM-and-Embedding-Model" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,12 +124,12 @@ os.environ[<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>] = <span 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>我們初始化 OpenAI 用戶端以準備嵌入模型。</p>
+    </button></h3><p>We initialize the OpenAI client to prepare the embedding model.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
 
 openai_client = OpenAI()
 <button class="copy-code-btn"></button></code></pre>
-<p>定義一個函式來使用 OpenAI client 產生文字嵌入。我們使用<a href="https://platform.openai.com/docs/guides/embeddings">text-embedding-3-small</a>模型作為範例。</p>
+<p>Define a function to generate text embeddings using OpenAI client. We use the <a href="https://platform.openai.com/docs/guides/embeddings">text-embedding-3-small</a> model as an example.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">emb_text</span>(<span class="hljs-params">text</span>):
     <span class="hljs-keyword">return</span> (
         openai_client.embeddings.create(<span class="hljs-built_in">input</span>=text, model=<span class="hljs-string">&quot;text-embedding-3-small&quot;</span>)
@@ -135,7 +137,7 @@ openai_client = OpenAI()
         .embedding
     )
 <button class="copy-code-btn"></button></code></pre>
-<p>產生測試嵌入，並列印其尺寸和前幾個元素。</p>
+<p>Generate a test embedding and print its dimension and first few elements.</p>
 <pre><code translate="no" class="language-python">test_embedding = emb_text(<span class="hljs-string">&quot;This is a test&quot;</span>)
 embedding_dim = <span class="hljs-built_in">len</span>(test_embedding)
 <span class="hljs-built_in">print</span>(embedding_dim)
@@ -144,7 +146,7 @@ embedding_dim = <span class="hljs-built_in">len</span>(test_embedding)
 <pre><code translate="no">1536
 [0.009889289736747742, -0.005578675772994757, 0.00683477520942688, -0.03805781528353691, -0.01824733428657055, -0.04121600463986397, -0.007636285852640867, 0.03225184231996536, 0.018949154764413834, 9.352207416668534e-05]
 </code></pre>
-<h2 id="Crawl-Data-Using-Crawl4AI" class="common-anchor-header">使用 Crawl4AI 抓取資料<button data-href="#Crawl-Data-Using-Crawl4AI" class="anchor-icon" translate="no">
+<h2 id="Crawl-Data-Using-Crawl4AI" class="common-anchor-header">Crawl Data Using Crawl4AI<button data-href="#Crawl-Data-Using-Crawl4AI" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -176,7 +178,7 @@ markdown_content = <span class="hljs-keyword">await</span> crawl()
 [FETCH]... ↓ https://lilianweng.github.io/posts/2023-06-23-agen... | Status: True | Time: 0.07s
 [COMPLETE] ● https://lilianweng.github.io/posts/2023-06-23-agen... | Status: True | Total: 0.08s
 </code></pre>
-<h3 id="Process-the-Crawled-Content" class="common-anchor-header">處理抓取的內容<button data-href="#Process-the-Crawled-Content" class="anchor-icon" translate="no">
+<h3 id="Process-the-Crawled-Content" class="common-anchor-header">Process the Crawled Content<button data-href="#Process-the-Crawled-Content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -191,7 +193,7 @@ markdown_content = <span class="hljs-keyword">await</span> crawl()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>為了使抓取到的內容可以管理，以便插入到 Milvus 中，我們只需使用「#」來分隔內容，這樣就可以大致分隔抓取到的 markdown 檔案中每個主要部分的內容。</p>
+    </button></h3><p>To make the crawled content manageable for insertion into Milvus, we simply use "# " to separate the content, which can roughly separate the content of each main part of the crawled markdown file.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">split_markdown_content</span>(<span class="hljs-params">content</span>):
     <span class="hljs-keyword">return</span> [section.strip() <span class="hljs-keyword">for</span> section <span class="hljs-keyword">in</span> content.split(<span class="hljs-string">&quot;# &quot;</span>) <span class="hljs-keyword">if</span> section.strip()]
 
@@ -227,7 +229,7 @@ In a LLM-powered autonomous agent system, LLM functions as the agent’s brain, 
     * Subgoal and decomposition: The agent breaks down large t...
 --------------------------------------------------
 </code></pre>
-<h2 id="Load-Data-into-Milvus" class="common-anchor-header">將資料載入 Milvus<button data-href="#Load-Data-into-Milvus" class="anchor-icon" translate="no">
+<h2 id="Load-Data-into-Milvus" class="common-anchor-header">Load Data into Milvus<button data-href="#Load-Data-into-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -242,7 +244,7 @@ In a LLM-powered autonomous agent system, LLM functions as the agent’s brain, 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Create-the-collection" class="common-anchor-header">建立集合<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Create-the-collection" class="common-anchor-header">Create the collection<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -266,19 +268,19 @@ collection_name = <span class="hljs-string">&quot;my_rag_collection&quot;</span>
 INFO:numexpr.utils:NumExpr defaulting to 8 threads.
 </code></pre>
 <div class="alert note">
-<p>至於<code translate="no">MilvusClient</code> 的參數 ：</p>
+<p>As for the argument of <code translate="no">MilvusClient</code>:</p>
 <ul>
-<li><p>將<code translate="no">uri</code> 設定為本機檔案，例如：<code translate="no">./milvus.db</code> ，是最方便的方法，因為它會自動利用<a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a>將所有資料儲存在這個檔案中。</p></li>
-<li><p>如果您有大規模的資料，您可以在<a href="https://milvus.io/docs/quickstart.md">docker 或 kubernetes</a> 上架設效能更高的 Milvus 伺服器。在此設定中，請使用伺服器的 uri，例如<code translate="no">http://localhost:19530</code> ，作為您的<code translate="no">uri</code> 。</p></li>
-<li><p>如果您想使用<a href="https://zilliz.com/cloud">Zilliz Cloud</a>（Milvus 的完全管理<a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">雲端</a>服務），請調整<code translate="no">uri</code> 和<code translate="no">token</code> ，與 Zilliz Cloud 中的<a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint 和 Api key</a>對應。</p></li>
+<li><p>Setting the <code translate="no">uri</code> as a local file, e.g.<code translate="no">./milvus.db</code>, is the most convenient method, as it automatically utilizes <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> to store all data in this file.</p></li>
+<li><p>If you have large scale of data, you can set up a more performant Milvus server on <a href="https://milvus.io/docs/quickstart.md">docker or kubernetes</a>. In this setup, please use the server uri, e.g.<code translate="no">http://localhost:19530</code>, as your <code translate="no">uri</code>.</p></li>
+<li><p>If you want to use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, the fully managed cloud service for Milvus, adjust the <code translate="no">uri</code> and <code translate="no">token</code>, which correspond to the <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and Api key</a> in Zilliz Cloud.</p></li>
 </ul>
 </div>
-<p>檢查集合是否已經存在，如果已經存在，請將其刪除。</p>
+<p>Check if the collection already exists and drop it if it does.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">if</span> milvus_client.has_collection(collection_name):
     milvus_client.drop_collection(collection_name)
 <button class="copy-code-btn"></button></code></pre>
-<p>使用指定的參數建立新的集合。</p>
-<p>如果我們沒有指定任何欄位資訊，Milvus 會自動建立一個預設的<code translate="no">id</code> 欄位做為主索引鍵，以及一個<code translate="no">vector</code> 欄位來儲存向量資料。保留的 JSON 欄位用來儲存非結構描述定義的欄位及其值。</p>
+<p>Create a new collection with specified parameters.</p>
+<p>If we don’t specify any field information, Milvus will automatically create a default <code translate="no">id</code> field for primary key, and a <code translate="no">vector</code> field to store the vector data. A reserved JSON field is used to store non-schema-defined fields and their values.</p>
 <pre><code translate="no" class="language-python">milvus_client.create_collection(
     collection_name=collection_name,
     dimension=embedding_dim,
@@ -286,7 +288,7 @@ INFO:numexpr.utils:NumExpr defaulting to 8 threads.
     consistency_level=<span class="hljs-string">&quot;Bounded&quot;</span>,  <span class="hljs-comment"># Supported values are (`&quot;Strong&quot;`, `&quot;Session&quot;`, `&quot;Bounded&quot;`, `&quot;Eventually&quot;`). See https://milvus.io/docs/tune_consistency.md#Consistency-Level for more details.</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Insert-data" class="common-anchor-header">插入資料<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h3 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -337,7 +339,7 @@ Processing sections: 100%|██████████| 18/18 [00:09&lt;00:00,
 
 {'insert_count': 18, 'ids': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], 'cost': 0}
 </code></pre>
-<h2 id="Build-RAG" class="common-anchor-header">建立 RAG<button data-href="#Build-RAG" class="anchor-icon" translate="no">
+<h2 id="Build-RAG" class="common-anchor-header">Build RAG<button data-href="#Build-RAG" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -352,7 +354,7 @@ Processing sections: 100%|██████████| 18/18 [00:09&lt;00:00,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Retrieve-data-for-a-query" class="common-anchor-header">為查詢擷取資料<button data-href="#Retrieve-data-for-a-query" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Retrieve-data-for-a-query" class="common-anchor-header">Retrieve data for a query<button data-href="#Retrieve-data-for-a-query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -367,10 +369,10 @@ Processing sections: 100%|██████████| 18/18 [00:09&lt;00:00,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>讓我們指定一個關於剛剛抓取的網站的查詢問題。</p>
+    </button></h3><p>Let’s specify a query question about the website we just crawled.</p>
 <pre><code translate="no" class="language-python">question = <span class="hljs-string">&quot;What are the main components of autonomous agents?&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在集合中搜尋該問題，並擷取符合語意的前三名。</p>
+<p>Search for the question in the collection and retrieve the semantic top-3 matches.</p>
 <pre><code translate="no" class="language-python">search_res = milvus_client.search(
     collection_name=collection_name,
     data=[emb_text(question)],
@@ -381,7 +383,7 @@ Processing sections: 100%|██████████| 18/18 [00:09&lt;00:00,
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">INFO:httpx:HTTP Request: POST https://api.openai.com/v1/embeddings &quot;HTTP/1.1 200 OK&quot;
 </code></pre>
-<p>讓我們來看看查詢的搜尋結果</p>
+<p>Let’s take a look at the search results of the query</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 
 retrieved_lines_with_distances = [
@@ -404,7 +406,7 @@ retrieved_lines_with_distances = [
     ]
 ]
 </code></pre>
-<h3 id="Use-LLM-to-get-a-RAG-response" class="common-anchor-header">使用 LLM 取得 RAG 回應<button data-href="#Use-LLM-to-get-a-RAG-response" class="anchor-icon" translate="no">
+<h3 id="Use-LLM-to-get-a-RAG-response" class="common-anchor-header">Use LLM to get a RAG response<button data-href="#Use-LLM-to-get-a-RAG-response" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -419,12 +421,12 @@ retrieved_lines_with_distances = [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>將擷取的文件轉換成字串格式。</p>
+    </button></h3><p>Convert the retrieved documents into a string format.</p>
 <pre><code translate="no" class="language-python">context = <span class="hljs-string">&quot;\n&quot;</span>.join(
     [line_with_distance[<span class="hljs-number">0</span>] <span class="hljs-keyword">for</span> line_with_distance <span class="hljs-keyword">in</span> retrieved_lines_with_distances]
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>定義 Lanage Model 的系統和使用者提示。此提示與從 Milvus 擷取的文件組合。</p>
+<p>Define system and user prompts for the Lanage Model. This prompt is assembled with the retrieved documents from Milvus.</p>
 <pre><code translate="no" class="language-python">SYSTEM_PROMPT = <span class="hljs-string">&quot;&quot;&quot;
 Human: You are an AI assistant. You are able to find answers to the questions from the contextual passage snippets provided.
 &quot;&quot;&quot;</span>
@@ -438,7 +440,7 @@ Use the following pieces of information enclosed in &lt;context&gt; tags to prov
 &lt;/question&gt;
 &quot;&quot;&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>使用 OpenAI ChatGPT 根據提示產生回應。</p>
+<p>Use OpenAI ChatGPT to generate a response based on the prompts.</p>
 <pre><code translate="no" class="language-python">response = openai_client.chat.completions.create(
     model=<span class="hljs-string">&quot;gpt-4o&quot;</span>,
     messages=[

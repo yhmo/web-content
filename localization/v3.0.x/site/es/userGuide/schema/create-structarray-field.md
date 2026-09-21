@@ -1,13 +1,13 @@
 ---
 id: create-structarray-field.md
-title: Crear un campo StructArray
+title: Create a StructArray Field
 summary: >-
-  Crea un campo StructArray cuando una entidad deba contener una lista ordenada
-  de elementos estructurados. Un campo StructArray es un campo Array cuyo tipo
-  de elemento es Struct. Cada elemento Struct sigue el mismo esquema y puede
-  contener subcampos escalares, subcampos vectoriales o ambos.
+  Create a StructArray field when one entity needs to contain an ordered list of
+  structured elements. A StructArray field is an Array field whose element type
+  is Struct. Each Struct element follows the same schema and can contain scalar
+  subfields, vector subfields, or both.
 ---
-<h1 id="Create-a-StructArray-Field" class="common-anchor-header">Crear un campo StructArray<button data-href="#Create-a-StructArray-Field" class="anchor-icon" translate="no">
+<h1 id="Create-a-StructArray-Field" class="common-anchor-header">Create a StructArray Field<button data-href="#Create-a-StructArray-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Crea un campo StructArray cuando una entidad deba contener una lista ordenada de elementos estructurados. Un campo StructArray es un campo Array cuyo tipo de elemento es Struct. Cada elemento Struct sigue el mismo esquema y puede contener subcampos escalares, subcampos vectoriales o ambos.</p>
-<p>En esta página se explica cómo definir un esquema Struct, añadirlo como campo StructArray, seleccionar subcampos para su posterior búsqueda y filtrado, y comprender las reglas del esquema que se aplican antes de insertar o indexar datos.</p>
-<h2 id="Before-you-begin" class="common-anchor-header">Antes de empezar<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+    </button></h1><p>Create a StructArray field when one entity needs to contain an ordered list of structured elements. A StructArray field is an Array field whose element type is Struct. Each Struct element follows the same schema and can contain scalar subfields, vector subfields, or both.</p>
+<p>This page shows how to define a Struct schema, add it as a StructArray field, choose subfields for later search and filtering, and understand the schema rules that apply before you insert or index data.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,38 +39,38 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Esta página utiliza una colección denominada « <code translate="no">tech_articles</code> ». Cada entidad representa un artículo técnico, y el campo « <code translate="no">chunks</code> » almacena datos a nivel de fragmento como elementos Struct.</p>
+    </button></h2><p>This page uses a collection named <code translate="no">tech_articles</code>. Each entity represents one technical article, and the <code translate="no">chunks</code> field stores chunk-level data as Struct elements.</p>
 <table>
 <thead>
-<tr><th>Campo</th><th>Tipo</th><th>Finalidad</th></tr>
+<tr><th>Field</th><th>Type</th><th>Purpose</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">doc_id</code></td><td><code translate="no">INT64</code></td><td>Clave primaria del artículo.</td></tr>
-<tr><td><code translate="no">title</code></td><td><code translate="no">VARCHAR</code></td><td>Título del artículo.</td></tr>
-<tr><td><code translate="no">category</code></td><td><code translate="no">VARCHAR</code></td><td>Categoría a nivel de artículo.</td></tr>
-<tr><td><code translate="no">title_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Campo vectorial a nivel de artículo, que se utilizará más adelante en los ejemplos de búsqueda híbrida.</td></tr>
-<tr><td><code translate="no">chunks</code></td><td><code translate="no">ARRAY</code></td><td>Campo StructArray que almacena texto a nivel de fragmento, metadatos e incrustaciones.</td></tr>
+<tr><td><code translate="no">doc_id</code></td><td><code translate="no">INT64</code></td><td>Primary key for the article.</td></tr>
+<tr><td><code translate="no">title</code></td><td><code translate="no">VARCHAR</code></td><td>Article title.</td></tr>
+<tr><td><code translate="no">category</code></td><td><code translate="no">VARCHAR</code></td><td>Article-level category.</td></tr>
+<tr><td><code translate="no">title_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Article-level vector field, used later in hybrid search examples.</td></tr>
+<tr><td><code translate="no">chunks</code></td><td><code translate="no">ARRAY</code></td><td>StructArray field that stores chunk-level text, metadata, and embeddings.</td></tr>
 </tbody>
 </table>
-<p>El campo StructArray « <code translate="no">chunks</code> » contiene los siguientes subcampos.</p>
+<p>The <code translate="no">chunks</code> StructArray field contains the following subfields.</p>
 <table>
 <thead>
-<tr><th>Subcampo</th><th>Tipo</th><th>Finalidad</th></tr>
+<tr><th>Subfield</th><th>Type</th><th>Purpose</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">text</code></td><td><code translate="no">VARCHAR</code></td><td>Texto del fragmento.</td></tr>
-<tr><td><code translate="no">section</code></td><td><code translate="no">VARCHAR</code></td><td>Nombre de la sección, como « <code translate="no">index</code> », « <code translate="no">search</code> » o « <code translate="no">filter</code> ».</td></tr>
-<tr><td><code translate="no">page</code></td><td><code translate="no">INT64</code></td><td>Número de página o posición lógica del fragmento.</td></tr>
-<tr><td><code translate="no">quality_score</code></td><td><code translate="no">FLOAT</code></td><td>Puntuación a nivel de fragmento utilizada en el filtrado escalar y en los ejemplos de rango.</td></tr>
-<tr><td><code translate="no">has_code</code></td><td><code translate="no">BOOL</code></td><td>Si el fragmento contiene código.</td></tr>
-<tr><td><code translate="no">emb_list_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Subcampo vectorial para la búsqueda en EmbeddingList con métricas de « <code translate="no">MAX_SIM*</code> ».</td></tr>
-<tr><td><code translate="no">emb</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Subcampo vectorial para la búsqueda a nivel de elemento con métricas vectoriales habituales.</td></tr>
+<tr><td><code translate="no">text</code></td><td><code translate="no">VARCHAR</code></td><td>Chunk text.</td></tr>
+<tr><td><code translate="no">section</code></td><td><code translate="no">VARCHAR</code></td><td>Section name, such as <code translate="no">index</code>, <code translate="no">search</code>, or <code translate="no">filter</code>.</td></tr>
+<tr><td><code translate="no">page</code></td><td><code translate="no">INT64</code></td><td>Page number or logical position of the chunk.</td></tr>
+<tr><td><code translate="no">quality_score</code></td><td><code translate="no">FLOAT</code></td><td>Chunk-level score used in scalar filtering and range examples.</td></tr>
+<tr><td><code translate="no">has_code</code></td><td><code translate="no">BOOL</code></td><td>Whether the chunk contains code.</td></tr>
+<tr><td><code translate="no">emb_list_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vector subfield for EmbeddingList search with <code translate="no">MAX_SIM*</code> metrics.</td></tr>
+<tr><td><code translate="no">emb</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vector subfield for element-level search with regular vector metrics.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>Un campo vectorial o un subcampo vectorial solo admite un índice. Si necesitas tanto la búsqueda en EmbeddingList como la búsqueda a nivel de elemento, define dos subcampos vectoriales independientes. En este ejemplo, « <code translate="no">chunks[emb_list_vector]</code> » se utiliza para la búsqueda en EmbeddingList, y « <code translate="no">chunks[emb]</code> » para la búsqueda a nivel de elemento.</p>
+<p>A vector field or vector subfield accepts only one index. If you need both EmbeddingList search and element-level search, define two separate vector subfields. In this example, <code translate="no">chunks[emb_list_vector]</code> is for EmbeddingList search, and <code translate="no">chunks[emb]</code> is for element-level search.</p>
 </div>
-<h2 id="Supported-subfield-data-types" class="common-anchor-header">Tipos de datos admitidos para los subcampos<button data-href="#Supported-subfield-data-types" class="anchor-icon" translate="no">
+<h2 id="Supported-subfield-data-types" class="common-anchor-header">Supported subfield data types<button data-href="#Supported-subfield-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -85,32 +85,32 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Un campo StructArray almacena un valor de matriz para cada subcampo Struct. Al definir un esquema Struct, elija los tipos de subcampo de entre las familias escalares y vectoriales compatibles.</p>
+    </button></h2><p>A StructArray field stores one array value for each Struct subfield. When you define a Struct schema, choose subfield types from the supported scalar and vector families.</p>
 <table>
 <thead>
-<tr><th>Tipo físico de subcampo Struct</th><th>Compatibilidad</th><th>Notas</th></tr>
+<tr><th>Struct subfield physical type</th><th>Support</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Array</code></td><td>Compatible</td><td>Defina el subcampo como « <code translate="no">DataType.BOOL</code> ».</td></tr>
-<tr><td><code translate="no">Array</code></td><td>Compatible</td><td>Defina el subcampo como « <code translate="no">DataType.INT8</code> », « <code translate="no">DataType.INT16</code> », « <code translate="no">DataType.INT32</code> » o « <code translate="no">DataType.INT64</code> ».</td></tr>
-<tr><td><code translate="no">Array</code></td><td>Compatible</td><td>Defina el subcampo como <code translate="no">DataType.FLOAT</code> o <code translate="no">DataType.DOUBLE</code>.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>Compatible</td><td>Defina el subcampo como « <code translate="no">DataType.VARCHAR</code> » y establezca « <code translate="no">max_length</code> ».</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>Compatible</td><td>Defina el subcampo como « <code translate="no">DataType.FLOAT_VECTOR</code> » y establezca « <code translate="no">dim</code> ».</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>Compatible</td><td>Defina el subcampo como « <code translate="no">DataType.FLOAT16_VECTOR</code> » y establezca « <code translate="no">dim</code> ».</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>Compatible</td><td>Defina el subcampo como « <code translate="no">DataType.BFLOAT16_VECTOR</code> » y establezca « <code translate="no">dim</code> ».</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>Compatible</td><td>Defina el subcampo como « <code translate="no">DataType.INT8_VECTOR</code> » y establezca « <code translate="no">dim</code> ».</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>Compatible</td><td>Defina el subcampo como « <code translate="no">DataType.BINARY_VECTOR</code> » y establezca « <code translate="no">dim</code> ».</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>No compatible</td><td>Los subcampos de vectores dispersos no son compatibles con los campos StructArray.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>No compatible</td><td>Utilice « <code translate="no">VARCHAR</code> », no « <code translate="no">String</code> ».</td></tr>
-<tr><td><code translate="no">Array</code></td><td>No compatible</td><td>Los subcampos JSON no son compatibles con los campos StructArray.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>No compatible</td><td>Los subcampos de geometría y las funciones SIG no son compatibles con los campos StructArray.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>No compatible</td><td>Los subcampos de texto no son compatibles con los campos StructArray.</td></tr>
-<tr><td><code translate="no">Array</code></td><td>No compatible</td><td>Los subcampos «timestamptz» y las expresiones específicas de tiempo no son compatibles con los campos StructArray.</td></tr>
-<tr><td><code translate="no">Array</code>, <code translate="no">ArrayOfVector</code>, <code translate="no">Struct</code> o <code translate="no">ArrayOfStruct</code></td><td>No compatible</td><td>Un campo StructArray no puede contener matrices anidadas, matrices vectoriales anidadas, campos Struct anidados ni campos Array-of-Struct anidados.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BOOL</code>.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.INT8</code>, <code translate="no">DataType.INT16</code>, <code translate="no">DataType.INT32</code>, or <code translate="no">DataType.INT64</code>.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT</code> or <code translate="no">DataType.DOUBLE</code>.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.VARCHAR</code> and set <code translate="no">max_length</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT16_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BFLOAT16_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.INT8_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BINARY_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Not supported</td><td>Sparse vector subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>Use <code translate="no">VARCHAR</code>, not <code translate="no">String</code>.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>JSON subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>Geometry subfields and GIS functions are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>Text subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>Timestamptz subfields and time-specific expressions are not supported in StructArray fields.</td></tr>
+<tr><td>Nested <code translate="no">Array</code>, <code translate="no">ArrayOfVector</code>, <code translate="no">Struct</code>, or <code translate="no">ArrayOfStruct</code></td><td>Not supported</td><td>A StructArray field cannot contain nested arrays, nested vector arrays, nested Struct fields, or nested Array-of-Struct fields.</td></tr>
 </tbody>
 </table>
-<p>Para obtener información sobre la compatibilidad específica de cada versión, el comportamiento de los valores nulos y otras restricciones, consulta <a href="/docs/es/structarray-limits.md">Restricciones de StructArray</a>.</p>
-<h2 id="Create-a-collection-with-a-StructArray-field" class="common-anchor-header">Crear una colección con un campo StructArray<button data-href="#Create-a-collection-with-a-StructArray-field" class="anchor-icon" translate="no">
+<p>For version-specific support, nullable behavior, and other limits, see <a href="/docs/es/structarray-limits.md">StructArray Limits</a>.</p>
+<h2 id="Create-a-collection-with-a-StructArray-field" class="common-anchor-header">Create a collection with a StructArray field<button data-href="#Create-a-collection-with-a-StructArray-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -125,15 +125,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para crear un campo StructArray, defina primero el esquema Struct utilizado por cada elemento. A continuación, añada un campo Array y establezca su tipo de elemento en Struct.</p>
+    </button></h2><p>To create a StructArray field, first define the Struct schema used by each element. Then add an Array field and set its element type to Struct.</p>
 <ol>
-<li><p>Crea el esquema de la colección.</p></li>
-<li><p>Añade campos a nivel de colección, como la clave principal y los campos a nivel de artículo.</p></li>
-<li><p>Crea un esquema Struct para los elementos almacenados dentro del campo StructArray.</p></li>
-<li><p>Añade subcampos escalares y vectoriales al esquema Struct.</p></li>
-<li><p>Añade un campo «Array» con « <code translate="no">element_type=DataType.STRUCT</code> ».</p></li>
-<li><p>Establece ` <code translate="no">struct_schema</code> ` en el esquema `Struct`.</p></li>
-<li><p>Establece « <code translate="no">max_capacity</code> » para limitar el número de elementos «Struct» que cada entidad puede almacenar en el campo.</p></li>
+<li><p>Create the collection schema.</p></li>
+<li><p>Add collection-level fields, such as the primary key and article-level fields.</p></li>
+<li><p>Create a Struct schema for elements stored inside the StructArray field.</p></li>
+<li><p>Add scalar and vector subfields to the Struct schema.</p></li>
+<li><p>Add an Array field with <code translate="no">element_type=DataType.STRUCT</code>.</p></li>
+<li><p>Set <code translate="no">struct_schema</code> to the Struct schema.</p></li>
+<li><p>Set <code translate="no">max_capacity</code> to limit how many Struct elements each entity can store in the field.</p></li>
 </ol>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -222,7 +222,7 @@ client.create_collection(
     schema=schema,
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Understand-StructArray-field-paths" class="common-anchor-header">Comprender las rutas de los campos StructArray<button data-href="#Understand-StructArray-field-paths" class="anchor-icon" translate="no">
+<h2 id="Understand-StructArray-field-paths" class="common-anchor-header">Understand StructArray field paths<button data-href="#Understand-StructArray-field-paths" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -237,20 +237,20 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Una vez creado un campo StructArray, haz referencia a sus subcampos utilizando la sintaxis de ruta « <code translate="no">structArray[subfield]</code> ». Utiliza esta sintaxis al crear índices, buscar en subcampos vectoriales, generar subcampos de salida o crear filtros escalares.</p>
+    </button></h2><p>After you create a StructArray field, refer to its subfields with the <code translate="no">structArray[subfield]</code> path syntax. Use this syntax when you create indexes, search vector subfields, output subfields, or build scalar filters.</p>
 <table>
 <thead>
-<tr><th>Ruta</th><th>Significado</th><th>Uso habitual</th></tr>
+<tr><th>Path</th><th>Meaning</th><th>Common usage</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">chunks[text]</code></td><td>El subcampo « <code translate="no">text</code> » dentro de cada elemento Struct.</td><td>Campo de salida o filtrado escalar.</td></tr>
-<tr><td><code translate="no">chunks[section]</code></td><td>La etiqueta de sección de cada fragmento.</td><td>Filtrado escalar.</td></tr>
-<tr><td><code translate="no">chunks[quality_score]</code></td><td>La puntuación de calidad a nivel de fragmento.</td><td>Filtrado escalar o índice escalar.</td></tr>
-<tr><td><code translate="no">chunks[emb_list_vector]</code></td><td>El subcampo vectorial utilizado como lista de incrustaciones.</td><td>Búsqueda en EmbeddingList con « <code translate="no">MAX_SIM*</code> ».</td></tr>
-<tr><td><code translate="no">chunks[emb]</code></td><td>El subcampo vectorial utilizado por cada elemento de Struct de forma independiente.</td><td>Búsqueda vectorial a nivel de elemento.</td></tr>
+<tr><td><code translate="no">chunks[text]</code></td><td>The <code translate="no">text</code> subfield inside each Struct element.</td><td>Output field or scalar filtering.</td></tr>
+<tr><td><code translate="no">chunks[section]</code></td><td>The section label for each chunk.</td><td>Scalar filtering.</td></tr>
+<tr><td><code translate="no">chunks[quality_score]</code></td><td>The chunk-level quality score.</td><td>Scalar filtering or scalar index.</td></tr>
+<tr><td><code translate="no">chunks[emb_list_vector]</code></td><td>The vector subfield used as an embedding list.</td><td>EmbeddingList search with <code translate="no">MAX_SIM*</code>.</td></tr>
+<tr><td><code translate="no">chunks[emb]</code></td><td>The vector subfield used by each Struct element independently.</td><td>Element-level vector search.</td></tr>
 </tbody>
 </table>
-<h2 id="Make-a-StructArray-field-nullable" class="common-anchor-header">Hacer que un campo StructArray sea nulo<button data-href="#Make-a-StructArray-field-nullable" class="anchor-icon" translate="no">
+<h2 id="Make-a-StructArray-field-nullable" class="common-anchor-header">Make a StructArray field nullable<button data-href="#Make-a-StructArray-field-nullable" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -265,7 +265,7 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus v3.0.x admite campos StructArray nulos. Un campo StructArray nulo permite que una entidad almacene valores de tipo « <code translate="no">null</code> » para todo el campo StructArray.</p>
+    </button></h2><p>Milvus v3.0.x supports nullable StructArray fields. A nullable StructArray field allows an entity to store <code translate="no">null</code> for the entire StructArray field.</p>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;chunks&quot;</span>,
     datatype=DataType.ARRAY,
@@ -276,10 +276,10 @@ client.create_collection(
 )
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Advertencia
-Los campos StructArray nulos solo están disponibles en Milvus v3.0.x. En el caso de un campo StructArray nulo, una entidad puede proporcionar un valor StructArray válido o establecer todo el campo como ` <code translate="no">null</code>`. Al insertar un valor StructArray válido, todos los subcampos deben ser nulos o tener valores válidos. La inserción de una entidad con algunos subcampos establecidos en nulo y otros en valores válidos da lugar a un error. Para más detalles, consulta <a href="/docs/es/structarray-limits.md">«Límites de StructArray</a>».</p>
+<p>Warning
+Nullable StructArray fields are available only in Milvus v3.0.x. For a nullable StructArray field, an entity can provide a valid StructArray value or set the whole field to <code translate="no">null</code>. When inserting a valid StructArray value, all subfields should either be null or have valid values. Inserting an entity with some subfields set to null and others set to valid values results in an error. For details, see <a href="/docs/es/structarray-limits.md">StructArray Limits</a>.</p>
 </div>
-<h2 id="Add-a-StructArray-field-to-an-existing-collection" class="common-anchor-header">Añadir un campo StructArray a una colección existente<button data-href="#Add-a-StructArray-field-to-an-existing-collection" class="anchor-icon" translate="no">
+<h2 id="Add-a-StructArray-field-to-an-existing-collection" class="common-anchor-header">Add a StructArray field to an existing collection<button data-href="#Add-a-StructArray-field-to-an-existing-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -294,8 +294,8 @@ Los campos StructArray nulos solo están disponibles en Milvus v3.0.x. En el cas
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus v3.0.x permite añadir un campo StructArray a una colección existente. El campo StructArray añadido debe ser nulo, ya que las entidades que ya existen en la colección no tienen valores para el nuevo campo.</p>
-<p>Para añadir un campo StructArray a una colección existente, defina primero el esquema Struct. A continuación, llame a ` <code translate="no">add_collection_struct_field()</code> ` y establezca ` <code translate="no">nullable=True</code>`.</p>
+    </button></h2><p>Milvus v3.0.x supports adding a StructArray field to an existing collection. The added StructArray field must be nullable, because entities that already exist in the collection do not have values for the new field.</p>
+<p>To add a StructArray field to an existing collection, define the Struct schema first. Then call <code translate="no">add_collection_struct_field()</code> and set <code translate="no">nullable=True</code>.</p>
 <pre><code translate="no" class="language-python">chunk_schema = client.create_struct_field_schema()
 chunk_schema.add_field(
     field_name=<span class="hljs-string">&quot;text&quot;</span>,
@@ -338,8 +338,8 @@ client.add_collection_struct_field(
     nullable=<span class="hljs-literal">True</span>,
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Una vez añadido el campo StructArray, las entidades existentes devuelven ` <code translate="no">null</code> ` para el nuevo campo en todos sus subcampos.</p>
-<p>Una vez creado un campo StructArray, no se pueden añadir nuevos subcampos a ese campo StructArray ya existente. Si más adelante necesitas atributos de elemento adicionales, llama a ` <code translate="no">drop_collection_field()</code> ` para eliminar el campo StructArray y, a continuación, añade un nuevo campo StructArray con el esquema Struct actualizado.</p>
+<p>After the StructArray field is added, existing entities return <code translate="no">null</code> for the new field across all its subfields.</p>
+<p>After a StructArray field is created, you cannot add new subfields to that existing StructArray field. If you need additional element attributes later, call <code translate="no">drop_collection_field()</code> to drop the StructArray field, and then add a new StructArray field with the updated Struct schema.</p>
 <pre><code translate="no" class="language-python">client.drop_collection_field(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
     field_name=<span class="hljs-string">&quot;chunks&quot;</span>,
@@ -353,7 +353,7 @@ client.add_collection_struct_field(
     nullable=<span class="hljs-literal">True</span>,
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Schema-rules" class="common-anchor-header">Reglas del esquema<button data-href="#Schema-rules" class="anchor-icon" translate="no">
+<h2 id="Schema-rules" class="common-anchor-header">Schema rules<button data-href="#Schema-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -370,21 +370,21 @@ client.add_collection_struct_field(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Regla</th><th>Explicación</th></tr>
+<tr><th>Rule</th><th>Explanation</th></tr>
 </thead>
 <tbody>
-<tr><td>Struct se utiliza como tipo de elemento Array.</td><td>Crea un campo StructArray como un campo Array con ` <code translate="no">element_type=STRUCT</code>`. No crees Struct como un campo de colección de nivel superior.</td></tr>
-<tr><td>Todos los elementos comparten un mismo esquema.</td><td>Cada elemento «Struct» del mismo campo «StructArray» sigue el esquema «Struct» definido para ese campo.</td></tr>
-<tr><td><code translate="no">max_capacity</code> es obligatorio.</td><td>Limita el número de elementos Struct que cada entidad puede almacenar en el campo StructArray.</td></tr>
-<tr><td>Solo se permiten los tipos de subcampos compatibles.</td><td>Utilice los tipos de subcampos escalares y vectoriales compatibles con StructArray. No defina subcampos JSON, Geometry, Text, Timestamptz, SparseFloatVector ni subcampos Struct / Array anidados.</td></tr>
-<tr><td>Los subcampos vectoriales necesitan índices antes de la búsqueda.</td><td>Crea índices en rutas como <code translate="no">chunks[emb_list_vector]</code> o <code translate="no">chunks[emb]</code> antes de ejecutar una búsqueda vectorial.</td></tr>
-<tr><td>Cada subcampo vectorial tiene un índice.</td><td>Si necesitas tanto la búsqueda en EmbeddingList como la búsqueda a nivel de elemento, crea dos subcampos vectoriales independientes.</td></tr>
-<tr><td>Los subcampos StructArray existentes son fijos.</td><td>Una vez creado un campo StructArray, no se pueden añadir más subcampos a ese mismo campo StructArray.</td></tr>
-<tr><td>No se admiten funciones dentro de Struct.</td><td>No definas funciones para campos o subcampos dentro de un campo StructArray.</td></tr>
-<tr><td>Los subcampos escalares deben ajustarse a las necesidades de filtrado.</td><td>Añade campos como « <code translate="no">section</code> », « <code translate="no">quality_score</code> » o « <code translate="no">has_code</code> » solo cuando necesites filtrarlos, agruparlos o mostrarlos posteriormente.</td></tr>
+<tr><td>Struct is used as an Array element type.</td><td>Create a StructArray field as an Array field with <code translate="no">element_type=STRUCT</code>. Do not create Struct as a top-level collection field.</td></tr>
+<tr><td>All elements share one schema.</td><td>Every Struct element in the same StructArray field follows the Struct schema defined for that field.</td></tr>
+<tr><td><code translate="no">max_capacity</code> is required.</td><td>It limits how many Struct elements each entity can store in the StructArray field.</td></tr>
+<tr><td>Only supported subfield types are allowed.</td><td>Use scalar and vector subfield types supported by StructArray. Do not define JSON, Geometry, Text, Timestamptz, SparseFloatVector, or nested Struct / Array subfields.</td></tr>
+<tr><td>Vector subfields need indexes before search.</td><td>Create indexes on paths such as <code translate="no">chunks[emb_list_vector]</code> or <code translate="no">chunks[emb]</code> before running vector search.</td></tr>
+<tr><td>One vector subfield has one index.</td><td>If you need both EmbeddingList search and element-level search, create two separate vector subfields.</td></tr>
+<tr><td>Existing StructArray subfields are fixed.</td><td>After creating a StructArray field, do not expect to add more subfields to that same StructArray field.</td></tr>
+<tr><td>Functions are not supported inside Struct.</td><td>Do not define functions for fields or subfields inside a StructArray field.</td></tr>
+<tr><td>Scalar subfields should match filter needs.</td><td>Add fields such as <code translate="no">section</code>, <code translate="no">quality_score</code>, or <code translate="no">has_code</code> only when you need to filter, group, or output them later.</td></tr>
 </tbody>
 </table>
-<h2 id="Common-mistakes" class="common-anchor-header">Errores comunes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -400,18 +400,18 @@ client.add_collection_struct_field(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Crear « <code translate="no">DataType.STRUCT</code> » como un campo de colección de nivel superior en lugar de utilizarlo como tipo de elemento de un campo «Array».</p></li>
-<li><p>Olvidarse de establecer « <code translate="no">max_capacity</code> » en el campo «StructArray».</p></li>
-<li><p>Definir tipos de subcampos no admitidos, como JSON, Geometry, Text, Timestamptz, SparseFloatVector, Array anidado, Struct anidado o Array-of-Struct.</p></li>
-<li><p>Utilizar « <code translate="no">String</code> » como tipo de subcampo. Utiliza « <code translate="no">VARCHAR</code> » y establece « <code translate="no">max_length</code> ».</p></li>
-<li><p>Utilizar un único subcampo vectorial tanto para la búsqueda en EmbeddingList como para la búsqueda a nivel de elemento.</p></li>
-<li><p>Añadir únicamente subcampos vectoriales y omitir los subcampos escalares necesarios para el filtrado, como <code translate="no">section</code>, <code translate="no">quality_score</code> o <code translate="no">has_code</code>.</p></li>
-<li><p>Tratar los subcampos vectoriales como entradas de predicados escalares de tipo <code translate="no">$[...]</code>. Utilizar los subcampos vectoriales para la búsqueda vectorial y los subcampos escalares para los predicados escalares.</p></li>
-<li><p>Suponer que se pueden añadir nuevos subcampos a un campo StructArray existente una vez creado dicho campo.</p></li>
-<li><p>Utilizar <code translate="no">chunks.emb</code> o <code translate="no">chunks.emb_list_vector</code> en lugar de la sintaxis de ruta requerida <code translate="no">chunks[emb]</code> o <code translate="no">chunks[emb_list_vector]</code>.</p></li>
-<li><p>Tratar el comportamiento de los StructArray nulos como si estuviera disponible en todas las versiones de destino.</p></li>
+<li><p>Creating <code translate="no">DataType.STRUCT</code> as a top-level collection field instead of using it as the element type of an Array field.</p></li>
+<li><p>Forgetting to set <code translate="no">max_capacity</code> on the StructArray field.</p></li>
+<li><p>Defining unsupported subfield types, such as JSON, Geometry, Text, Timestamptz, SparseFloatVector, nested Array, nested Struct, or Array-of-Struct.</p></li>
+<li><p>Using <code translate="no">String</code> as a subfield type. Use <code translate="no">VARCHAR</code> and set <code translate="no">max_length</code>.</p></li>
+<li><p>Using one vector subfield for both EmbeddingList search and element-level search.</p></li>
+<li><p>Adding only vector subfields and forgetting scalar subfields needed for filtering, such as <code translate="no">section</code>, <code translate="no">quality_score</code>, or <code translate="no">has_code</code>.</p></li>
+<li><p>Treating vector subfields as <code translate="no">$[...]</code> scalar predicate inputs. Use vector subfields for vector search, and scalar subfields for scalar predicates.</p></li>
+<li><p>Assuming new subfields can be added to an existing StructArray field after the field is created.</p></li>
+<li><p>Using <code translate="no">chunks.emb</code> or <code translate="no">chunks.emb_list_vector</code> instead of the required path syntax <code translate="no">chunks[emb]</code> or <code translate="no">chunks[emb_list_vector]</code>.</p></li>
+<li><p>Treating nullable StructArray behavior as available in every target version.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">Próximos pasos<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -427,8 +427,8 @@ client.add_collection_struct_field(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Para insertar datos anidados en el campo StructArray, consulta <a href="/docs/es/insert-data-into-structarray-fields.md">Insertar datos en campos StructArray</a>.</p></li>
-<li><p>Para crear índices vectoriales y escalares, consulta <a href="/docs/es/index-structarray-fields.md">«Indexar campos StructArray</a>».</p></li>
-<li><p>Para buscar en los subcampos vectoriales de StructArray, consulta <a href="/docs/es/basic-vector-search-with-structarray.md">«Búsqueda vectorial básica con StructArray</a>».</p></li>
-<li><p>Para consultar los tipos de datos admitidos, el comportamiento de los valores nulos y las limitaciones específicas de cada versión, consulta <a href="/docs/es/structarray-limits.md">«Límites de StructArray</a>».</p></li>
+<li><p>To insert nested data into the StructArray field, read <a href="/docs/es/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p></li>
+<li><p>To create vector and scalar indexes, read <a href="/docs/es/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To search StructArray vector subfields, read <a href="/docs/es/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To review supported data types, nullable behavior, and version-specific limitations, read <a href="/docs/es/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

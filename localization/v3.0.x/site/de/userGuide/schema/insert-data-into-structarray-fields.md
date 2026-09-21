@@ -1,14 +1,13 @@
 ---
 id: insert-data-into-structarray-fields.md
-title: Daten in StructArray-Felder einfügen
+title: Insert Data into StructArray Fields
 summary: >-
-  Fügen Sie Daten in ein StructArray-Feld ein, wenn jede Entität eine geordnete
-  Liste strukturierter Elemente enthält. In der Einfüge-Nutzlast wird ein
-  StructArray-Feld als Array von Objekten dargestellt. Jedes Objekt
-  repräsentiert ein Struct-Element und verwendet die im Sammlungsschema
-  definierten Namen der Struct-Unterfelder.
+  Insert data into a StructArray field when each entity contains an ordered list
+  of structured elements. In the insert payload, a StructArray field is
+  represented as an array of objects. Each object represents one Struct element
+  and uses the Struct subfield names defined in the collection schema.
 ---
-<h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">Daten in StructArray-Felder einfügen<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
+<h1 id="Insert-Data-into-StructArray-Fields" class="common-anchor-header">Insert Data into StructArray Fields<button data-href="#Insert-Data-into-StructArray-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Fügen Sie Daten in ein StructArray-Feld ein, wenn jede Entität eine geordnete Liste strukturierter Elemente enthält. In der Einfüge-Nutzlast wird ein StructArray-Feld als Array von Objekten dargestellt. Jedes Objekt repräsentiert ein Struct-Element und verwendet die im Sammlungsschema definierten Namen der Struct-Unterfelder.</p>
-<p>Auf dieser Seite wird die Sammlung „ <code translate="no">tech_articles</code> “ aus dem Abschnitt <a href="/docs/de/create-structarray-field.md">„Erstellen eines StructArray-Feldes“</a> verwendet. Jede Entität ist ein technischer Artikel, und das Feld „ <code translate="no">chunks</code> “ speichert Artikelabschnitte als Struct-Elemente.</p>
-<h2 id="Before-you-begin" class="common-anchor-header">Bevor Sie beginnen<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+    </button></h1><p>Insert data into a StructArray field when each entity contains an ordered list of structured elements. In the insert payload, a StructArray field is represented as an array of objects. Each object represents one Struct element and uses the Struct subfield names defined in the collection schema.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/de/create-structarray-field.md">Create a StructArray Field</a>. Each entity is a technical article, and the <code translate="no">chunks</code> field stores article chunks as Struct elements.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,38 +39,38 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Stellen Sie sicher, dass das Sammlungsschema bereits das StructArray-Feld „ <code translate="no">chunks</code> “ enthält.</p>
+    </button></h2><p>Make sure the collection schema already contains the <code translate="no">chunks</code> StructArray field.</p>
 <table>
 <thead>
-<tr><th>Feld</th><th>Typ</th><th>Wert einfügen</th></tr>
+<tr><th>Field</th><th>Type</th><th>Insert value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">doc_id</code></td><td><code translate="no">INT64</code></td><td>Artikel-ID.</td></tr>
-<tr><td><code translate="no">title</code></td><td><code translate="no">VARCHAR</code></td><td>Artikeltitel.</td></tr>
-<tr><td><code translate="no">category</code></td><td><code translate="no">VARCHAR</code></td><td>Artikelkategorie.</td></tr>
-<tr><td><code translate="no">title_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Einbettung auf Artikelebene.</td></tr>
-<tr><td><code translate="no">chunks</code></td><td><code translate="no">ARRAY</code></td><td>Eine Liste von Chunk-Objekten.</td></tr>
+<tr><td><code translate="no">doc_id</code></td><td><code translate="no">INT64</code></td><td>Article ID.</td></tr>
+<tr><td><code translate="no">title</code></td><td><code translate="no">VARCHAR</code></td><td>Article title.</td></tr>
+<tr><td><code translate="no">category</code></td><td><code translate="no">VARCHAR</code></td><td>Article category.</td></tr>
+<tr><td><code translate="no">title_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Article-level embedding.</td></tr>
+<tr><td><code translate="no">chunks</code></td><td><code translate="no">ARRAY</code></td><td>A list of chunk objects.</td></tr>
 </tbody>
 </table>
-<p>Jedes Objekt in „ <code translate="no">chunks</code> “ muss dem Struct-Schema entsprechen.</p>
+<p>Each object in <code translate="no">chunks</code> must follow the Struct schema.</p>
 <table>
 <thead>
-<tr><th>Unterfeld</th><th>Typ</th><th>Wert einfügen</th></tr>
+<tr><th>Subfield</th><th>Type</th><th>Insert value</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">text</code></td><td><code translate="no">VARCHAR</code></td><td>Chunk-Text.</td></tr>
-<tr><td><code translate="no">section</code></td><td><code translate="no">VARCHAR</code></td><td>Abschnittsname, z. B. „ <code translate="no">index</code> “, „ <code translate="no">search</code> “ oder „ <code translate="no">filter</code> “.</td></tr>
-<tr><td><code translate="no">page</code></td><td><code translate="no">INT64</code></td><td>Seitennummer oder logische Position.</td></tr>
-<tr><td><code translate="no">quality_score</code></td><td><code translate="no">FLOAT</code></td><td>Bewertung auf Chunk-Ebene.</td></tr>
-<tr><td><code translate="no">has_code</code></td><td><code translate="no">BOOL</code></td><td>Angabe, ob der Textblock Code enthält.</td></tr>
-<tr><td><code translate="no">emb_list_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Für die EmbeddingList-Suche erstellter Vektor.</td></tr>
-<tr><td><code translate="no">emb</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vektor, der für die Suche auf Elementebene erstellt wurde.</td></tr>
+<tr><td><code translate="no">text</code></td><td><code translate="no">VARCHAR</code></td><td>Chunk text.</td></tr>
+<tr><td><code translate="no">section</code></td><td><code translate="no">VARCHAR</code></td><td>Section name, such as <code translate="no">index</code>, <code translate="no">search</code>, or <code translate="no">filter</code>.</td></tr>
+<tr><td><code translate="no">page</code></td><td><code translate="no">INT64</code></td><td>Page number or logical position.</td></tr>
+<tr><td><code translate="no">quality_score</code></td><td><code translate="no">FLOAT</code></td><td>Chunk-level score.</td></tr>
+<tr><td><code translate="no">has_code</code></td><td><code translate="no">BOOL</code></td><td>Whether the chunk contains code.</td></tr>
+<tr><td><code translate="no">emb_list_vector</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vector written for EmbeddingList search.</td></tr>
+<tr><td><code translate="no">emb</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Vector written for element-level search.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>In einer Einfüge-Nutzlast ist „ <code translate="no">chunks</code> “ ein reguläres Feld, dessen Wert ein Array von Struct-Objekten ist. Verwenden Sie innerhalb jedes Objekts Unterfeldnamen wie „ <code translate="no">text</code> “ und „ <code translate="no">emb</code> “. Verwenden Sie die Pfadsyntax, z. B. „ <code translate="no">chunks[text]</code> “ oder „ <code translate="no">chunks[emb]</code> “, erst nach dem Einfügen, wenn Sie Indizes erstellen, Suchvorgänge ausführen, Filter erstellen oder Ausgabefelder angeben.</p>
+<p>In an insert payload, <code translate="no">chunks</code> is a regular field whose value is an array of Struct objects. Inside each object, use subfield names such as <code translate="no">text</code> and <code translate="no">emb</code>. Use path syntax, such as <code translate="no">chunks[text]</code> or <code translate="no">chunks[emb]</code>, only after insertion when you create indexes, run searches, build filters, or specify output fields.</p>
 </div>
-<h2 id="Understand-the-insert-payload-shape" class="common-anchor-header">Die Struktur der Einfüge-Nutzdaten verstehen<button data-href="#Understand-the-insert-payload-shape" class="anchor-icon" translate="no">
+<h2 id="Understand-the-insert-payload-shape" class="common-anchor-header">Understand the insert payload shape<button data-href="#Understand-the-insert-payload-shape" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -86,7 +85,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Der Wert „ <code translate="no">chunks</code> “ ist ein Array aus Struct-Elementen. Jedes Element ist ein Objekt, dessen Schlüssel die Namen von Unterfeldern sind.</p>
+    </button></h2><p>The <code translate="no">chunks</code> value is an array of Struct elements. Each element is an object whose keys are subfield names.</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;doc_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;StructArray indexing patterns&quot;</span><span class="hljs-punctuation">,</span>
@@ -114,8 +113,8 @@ summary: >-
   <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">emb_list_vector</code> und „ <code translate="no">emb</code> “ sind separate Vektor-Unterfelder, da sie unterschiedliche Suchmodi unterstützen. Die „EmbeddingList“-Suche behandelt alle Vektoren in einem „StructArray“-Feld als eine einzige Einbettungsliste und gibt Ergebnisse auf Entitätsebene mit „ <code translate="no">MAX_SIM*</code> “-Metriken zurück. Die Suche auf Elementebene durchsucht jedes „Struct“-Element unabhängig und kann den Offset des übereinstimmenden Elements zurückgeben. In diesem Beispiel werden der Einfachheit halber in beiden Feldern dieselben Vektorwerte gespeichert. In einer Produktionsanwendung können Sie in beiden Unterfeldern dieselben Einbettungen speichern, wenn beide Suchmodi dieselbe Chunk-Einbettung verwenden, oder unterschiedliche Einbettungen speichern, wenn die beiden Suchmodi unterschiedliche Darstellungen nutzen.</p>
-<h2 id="Insert-rows" class="common-anchor-header">Zeilen einfügen<button data-href="#Insert-rows" class="anchor-icon" translate="no">
+<p><code translate="no">emb_list_vector</code> and <code translate="no">emb</code> are separate vector subfields because they support different search modes. EmbeddingList search treats all vectors in a StructArray field as one embedding list and returns entity-level results with <code translate="no">MAX_SIM*</code> metrics. Element-level search searches each Struct element independently and can return the matched element offset. This example stores the same vector values in both fields for simplicity. In a production application, you can store the same embeddings in both subfields when both search modes use the same chunk embedding, or store different embeddings when the two search modes use different representations.</p>
+<h2 id="Insert-rows" class="common-anchor-header">Insert rows<button data-href="#Insert-rows" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -130,7 +129,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Verwenden Sie „ <code translate="no">client.insert()</code> “, um Zeilen einzufügen, die StructArray-Werte enthalten.</p>
+    </button></h2><p>Use <code translate="no">client.insert()</code> to insert rows that contain StructArray values.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -217,7 +216,7 @@ result = client.insert(
 
 <span class="hljs-built_in">print</span>(result)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-into-nullable-StructArray-fields" class="common-anchor-header">Einfügen in nullfähige „StructArray“-Felder<button data-href="#Insert-into-nullable-StructArray-fields" class="anchor-icon" translate="no">
+<h2 id="Insert-into-nullable-StructArray-fields" class="common-anchor-header">Insert into nullable StructArray fields<button data-href="#Insert-into-nullable-StructArray-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -232,7 +231,7 @@ result = client.insert(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Wenn das „ <code translate="no">chunks</code> “-Feld nullfähig ist, kann eine Entität das gesamte „ <code translate="no">chunks</code> “-Feld auf null setzen. Verwenden Sie in Python „ <code translate="no">None</code> “, um einen Nullwert darzustellen.</p>
+    </button></h2><p>If the <code translate="no">chunks</code> field is nullable, an entity can set the entire <code translate="no">chunks</code> field to null. In Python, use <code translate="no">None</code> to represent a null value.</p>
 <pre><code translate="no" class="language-python">client.insert(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
     data=[
@@ -246,12 +245,12 @@ result = client.insert(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Wenn ein nullfähiges „StructArray“-Feld einen gültigen „StructArray“-Wert enthält, sollten alle Unterfelder in diesem Wert entweder null sein oder gültige Werte aufweisen. Das Einfügen einer Entität, bei der einige Unterfelder auf null und andere auf gültige Werte gesetzt sind, führt zu einem Fehler.</p>
+<p>When a nullable StructArray field contains a valid StructArray value, all subfields in that value should either be null or have valid values. Inserting an entity with some subfields set to null and others set to valid values results in an error.</p>
 <div class="alert note">
-<p>Warnung
-Nullfähige „StructArray“-Felder sind nur in Milvus v3.0.x verfügbar. Wenn Sie einem bestehenden Datensatz dynamisch ein „StructArray“-Feld hinzufügen, muss das hinzugefügte Feld nullfähig sein, und bestehende Entitäten geben für das neue Feld in allen seinen Unterfeldern den Wert „ <code translate="no">null</code> “ zurück.</p>
+<p>Warning
+Nullable StructArray fields are available only in Milvus v3.0.x. If you dynamically add a StructArray field to an existing collection, the added field must be nullable, and existing entities return <code translate="no">null</code> for the new field across all its subfields.</p>
 </div>
-<h2 id="Validate-inserted-data" class="common-anchor-header">Eingefügte Daten validieren<button data-href="#Validate-inserted-data" class="anchor-icon" translate="no">
+<h2 id="Validate-inserted-data" class="common-anchor-header">Validate inserted data<button data-href="#Validate-inserted-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -266,7 +265,7 @@ Nullfähige „StructArray“-Felder sind nur in Milvus v3.0.x verfügbar. Wenn 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sie können die Sammlung abfragen und das StructArray-Feld oder ausgewählte Unterfelder zurückgeben.</p>
+    </button></h2><p>You can query the collection and return the StructArray field or selected subfields.</p>
 <pre><code translate="no" class="language-python">rows = client.query(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
     <span class="hljs-built_in">filter</span>=<span class="hljs-string">&quot;doc_id in [1, 2, 3]&quot;</span>,
@@ -282,8 +281,8 @@ Nullfähige „StructArray“-Felder sind nur in Milvus v3.0.x verfügbar. Wenn 
 <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> rows:
     <span class="hljs-built_in">print</span>(row)
 <button class="copy-code-btn"></button></code></pre>
-<p>Verwenden Sie StructArray-Feldpfade wie „ <code translate="no">chunks[text]</code> “ nur bei Abfragen, Suchvorgängen, Filterungen oder beim Erstellen von Indizes. Bei Einfügungen sollten weiterhin verschachtelte Objekte unter „ <code translate="no">chunks</code> “ verwendet werden.</p>
-<h2 id="Insert-rules" class="common-anchor-header">Einfüge-Regeln<button data-href="#Insert-rules" class="anchor-icon" translate="no">
+<p>Use StructArray field paths, such as <code translate="no">chunks[text]</code>, only when you query, search, filter, or create indexes. Insert payloads should still use nested objects under <code translate="no">chunks</code>.</p>
+<h2 id="Insert-rules" class="common-anchor-header">Insert rules<button data-href="#Insert-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -300,19 +299,19 @@ Nullfähige „StructArray“-Felder sind nur in Milvus v3.0.x verfügbar. Wenn 
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Regel</th><th>Erläuterung</th></tr>
+<tr><th>Rule</th><th>Explanation</th></tr>
 </thead>
 <tbody>
-<tr><td>Verwenden Sie für ein StructArray-Feld ein Array von Objekten.</td><td>Der Wert von „ <code translate="no">chunks</code> “ ist eine Liste, und jedes Element in der Liste ist ein Struct-Element.</td></tr>
-<tr><td>Verwenden Sie Unterfeldnamen innerhalb jedes Struct-Elements.</td><td>Fügen Sie „ <code translate="no">{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}</code> “ innerhalb von „ <code translate="no">chunks</code> “ ein, nicht innerhalb von „ <code translate="no">{&quot;chunks[text]&quot;: &quot;...&quot;}</code> “.</td></tr>
-<tr><td>Halten Sie sich an das Struct-Schema.</td><td>Jedes Struct-Element muss die im Struct-Schema definierten Unterfelder verwenden.</td></tr>
-<tr><td>Die Vektordimensionen müssen übereinstimmen.</td><td>Die Vektorwerte müssen mit den für ihre Vektor-Unterfelder konfigurierten „ <code translate="no">dim</code> “ übereinstimmen.</td></tr>
-<tr><td>Beachten Sie die „ <code translate="no">max_capacity</code> “.</td><td>Die Anzahl der Struct-Elemente in einer Entität darf die im StructArray-Feld konfigurierte „ <code translate="no">max_capacity</code> “ nicht überschreiten.</td></tr>
-<tr><td>Verwenden Sie separate Vektor-Unterfelder für separate Suchmodi.</td><td>Wenn sowohl die EmbeddingList-Suche als auch die Suche auf Elementebene erforderlich sind, schreiben Sie Vektorwerte in beide Vektor-Unterfelder.</td></tr>
-<tr><td>Verwenden Sie „ <code translate="no">null</code> “ nur, wenn das Feld nullfähig ist.</td><td>Nicht-nullfähige StructArray-Felder erfordern gültige StructArray-Werte.</td></tr>
+<tr><td>Use an array of objects for a StructArray field.</td><td>The value of <code translate="no">chunks</code> is a list, and each item in the list is a Struct element.</td></tr>
+<tr><td>Use subfield names inside each Struct element.</td><td>Insert <code translate="no">{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}</code> inside <code translate="no">chunks</code>, not <code translate="no">{&quot;chunks[text]&quot;: &quot;...&quot;}</code>.</td></tr>
+<tr><td>Match the Struct schema.</td><td>Each Struct element must use the subfields defined in the Struct schema.</td></tr>
+<tr><td>Match vector dimensions.</td><td>Vector values must match the <code translate="no">dim</code> configured for their vector subfields.</td></tr>
+<tr><td>Respect <code translate="no">max_capacity</code>.</td><td>The number of Struct elements in one entity must not exceed the <code translate="no">max_capacity</code> of the StructArray field.</td></tr>
+<tr><td>Use separate vector subfields for separate search modes.</td><td>If both EmbeddingList search and element-level search are required, write vector values to both vector subfields.</td></tr>
+<tr><td>Use <code translate="no">null</code> only when the field is nullable.</td><td>Non-nullable StructArray fields require valid StructArray values.</td></tr>
 </tbody>
 </table>
-<h2 id="Common-mistakes" class="common-anchor-header">Häufige Fehler<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -328,15 +327,15 @@ Nullfähige „StructArray“-Felder sind nur in Milvus v3.0.x verfügbar. Wenn 
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Verwendung von Feldpfaden wie „ <code translate="no">chunks[text]</code> “ in Einfüge-Payloads.</p></li>
-<li><p>Das Weglassen erforderlicher Unterfelder aus einem Struct-Element.</p></li>
-<li><p>Einfügen von Vektoren mit falscher Dimension.</p></li>
-<li><p>Einfügen von mehr Struct-Elementen, als „ <code translate="no">max_capacity</code> “ zulässt.</p></li>
-<li><p>Nur ein Unterfeld auf „ <code translate="no">null</code> “ setzen, während andere Unterfelder im selben „StructArray“-Wert gültig sind.</p></li>
-<li><p>Das Schreiben von Vektoren ausschließlich in „ <code translate="no">emb_list_vector</code> “ und der anschließende Versuch, eine Suche auf Elementebene in „ <code translate="no">chunks[emb]</code> “ durchzuführen.</p></li>
-<li><p>Das Schreiben von Vektoren ausschließlich in „ <code translate="no">emb</code> “, gefolgt vom Versuch, eine „EmbeddingList“-Suche auf „ <code translate="no">chunks[emb_list_vector]</code> “ durchzuführen.</p></li>
+<li><p>Using field paths such as <code translate="no">chunks[text]</code> in insert payloads.</p></li>
+<li><p>Omitting required subfields from a Struct element.</p></li>
+<li><p>Inserting vectors with the wrong dimension.</p></li>
+<li><p>Inserting more Struct elements than <code translate="no">max_capacity</code> allows.</p></li>
+<li><p>Setting only one subfield to <code translate="no">null</code> while other subfields in the same StructArray value are valid.</p></li>
+<li><p>Writing vectors only to <code translate="no">emb_list_vector</code> and then trying to run element-level search on <code translate="no">chunks[emb]</code>.</p></li>
+<li><p>Writing vectors only to <code translate="no">emb</code> and then trying to run EmbeddingList search on <code translate="no">chunks[emb_list_vector]</code>.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">Nächste Schritte<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -352,7 +351,7 @@ Nullfähige „StructArray“-Felder sind nur in Milvus v3.0.x verfügbar. Wenn 
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Informationen zum Erstellen von Indizes für „ <code translate="no">chunks[emb_list_vector]</code> “, „ <code translate="no">chunks[emb]</code> “ und skalare Unterfelder finden Sie unter <a href="/docs/de/index-structarray-fields.md">„Index StructArray Fields</a>“.</p></li>
-<li><p>Informationen zur Suche in StructArray-Vektor-Unterfeldern finden Sie unter <a href="/docs/de/basic-vector-search-with-structarray.md">„Grundlegende Vektorsuche mit StructArray</a>“.</p></li>
-<li><p>Informationen zum Verhalten bei nullfähigen Werten und zu versionsspezifischen Einschränkungen finden Sie unter <a href="/docs/de/structarray-limits.md">„StructArray-Einschränkungen</a>“.</p></li>
+<li><p>To create indexes for <code translate="no">chunks[emb_list_vector]</code>, <code translate="no">chunks[emb]</code>, and scalar subfields, read <a href="/docs/de/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To search StructArray vector subfields, read <a href="/docs/de/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To review nullable behavior and version-specific limitations, read <a href="/docs/de/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

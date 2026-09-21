@@ -1,13 +1,13 @@
 ---
 id: filtered-search-with-structarray.md
-title: البحث المُصفى باستخدام StructArray
+title: Filtered Search with StructArray
 summary: >-
-  استخدم هذه الصفحة لإضافة تصفية قيمية إلى البحث المتجهي في حقول StructArray.
-  تتكون تصفية StructArray من مستويين: تعمل المرشحات على مستوى الصفوف على تحديد
-  الكيانات الأصلية، بينما تحدد المرشحات على مستوى العناصر عناصر Struct التي
-  تشارك في البحث المتجهي على مستوى العناصر.
+  Use this page to add scalar filtering to vector search on StructArray fields.
+  StructArray filtering has two levels: row-level filters select parent
+  entities, while element-level filters constrain which Struct elements
+  participate in element-level vector search.
 ---
-<h1 id="Filtered-Search-with-StructArray" class="common-anchor-header">البحث المُصفى باستخدام StructArray<button data-href="#Filtered-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Filtered-Search-with-StructArray" class="common-anchor-header">Filtered Search with StructArray<button data-href="#Filtered-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>استخدم هذه الصفحة لإضافة تصفية قيمية إلى البحث المتجهي في حقول StructArray. تتكون تصفية StructArray من مستويين: تعمل المرشحات على مستوى الصف على تحديد الكيانات الأصلية، بينما تحدد المرشحات على مستوى العنصر عناصر Struct التي تشارك في البحث المتجهي على مستوى العنصر.</p>
-<p>تستخدم هذه الصفحة مجموعة « <code translate="no">tech_articles</code> » من <a href="/docs/ar/create-structarray-field.md">«إنشاء حقل StructArray</a>». تحتوي المجموعة على حقل StructArray باسم « <code translate="no">chunks</code> »، مع حقول فرعية قياسية مثل « <code translate="no">section</code> » و« <code translate="no">page</code> » و« <code translate="no">quality_score</code> » و« <code translate="no">has_code</code> »، بالإضافة إلى حقول فرعية متجهة للبحث.</p>
-<h2 id="Choose-a-filter-type" class="common-anchor-header">اختر نوع المرشح<button data-href="#Choose-a-filter-type" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to add scalar filtering to vector search on StructArray fields. StructArray filtering has two levels: row-level filters select parent entities, while element-level filters constrain which Struct elements participate in element-level vector search.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/ar/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>, with scalar subfields such as <code translate="no">section</code>, <code translate="no">page</code>, <code translate="no">quality_score</code>, and <code translate="no">has_code</code>, plus vector subfields for search.</p>
+<h2 id="Choose-a-filter-type" class="common-anchor-header">Choose a filter type<button data-href="#Choose-a-filter-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,18 +41,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>الهدف</th><th>الاستخدام</th><th>سلوك النتيجة</th></tr>
+<tr><th>Goal</th><th>Use</th><th>Result behavior</th></tr>
 </thead>
 <tbody>
-<tr><td>التصفية حسب حقل قياسي من المستوى الأعلى، مثل <code translate="no">category</code>.</td><td>تعبير تصفية عادي.</td><td>يختار الكيانات الأصلية قبل البحث أو أثناءه.</td></tr>
-<tr><td>تقييد البحث المتجهي على مستوى العناصر ليقتصر على عناصر Struct التي تتطابق مع الشروط القياسية.</td><td><code translate="no">element_filter</code>.</td><td>يبحث فقط في عناصر Struct المطابقة ويمكنه إرجاع إزاحات العناصر المطابقة.</td></tr>
-<tr><td>تحديد الكيانات بناءً على ما إذا كانت أي عناصر من Struct أو جميعها أو عدد محدد منها تتطابق مع المسند.</td><td><code translate="no">MATCH_ANY</code>، <code translate="no">MATCH_ALL</code> ، <code translate="no">MATCH_LEAST</code> ، <code translate="no">MATCH_MOST</code> ، أو <code translate="no">MATCH_EXACT</code>.</td><td>التصفية على مستوى الصف. لا تُرجع هذه العوامل إزاحات بحد ذاتها.</td></tr>
+<tr><td>Filter by a top-level scalar field, such as <code translate="no">category</code>.</td><td>Regular filter expression.</td><td>Selects parent entities before or during search.</td></tr>
+<tr><td>Constrain element-level vector search to Struct elements that match scalar conditions.</td><td><code translate="no">element_filter</code>.</td><td>Searches only matching Struct elements and can return matched element offsets.</td></tr>
+<tr><td>Select entities by whether any, all, or a specific number of Struct elements match a predicate.</td><td><code translate="no">MATCH_ANY</code>, <code translate="no">MATCH_ALL</code>, <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, or <code translate="no">MATCH_EXACT</code>.</td><td>Row-level filtering. These operators do not return offsets by themselves.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>تشرح هذه الصفحة كيفية استخدام عوامل تصفية StructArray في سير عمل البحث. للاطلاع على قواعد الصياغة الكاملة وأنواع المسندات المدعومة ومصفوفة المسندات غير المدعومة، راجع <a href="/docs/ar/struct-array-operators.md">عوامل StructArray</a>.</p>
+<p>This page explains how to use StructArray filters in search workflows. For the full syntax rules, supported predicate types, and unsupported predicate matrix, see <a href="/docs/ar/struct-array-operators.md">StructArray Operators</a>.</p>
 </div>
-<h2 id="Filter-by-top-level-fields" class="common-anchor-header">التصفية حسب الحقول ذات المستوى الأعلى<button data-href="#Filter-by-top-level-fields" class="anchor-icon" translate="no">
+<h2 id="Filter-by-top-level-fields" class="common-anchor-header">Filter by top-level fields<button data-href="#Filter-by-top-level-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,7 +67,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم تعبيرات التصفية العادية عندما تنتمي الشرط إلى الكيان الأصلي، وليس إلى عنصر Struct فردي. يعمل هذا مع كل من البحث EmbeddingList والبحث على مستوى العناصر.</p>
+    </button></h2><p>Use regular filter expressions when the condition belongs to the parent entity, not to an individual Struct element. This works with both EmbeddingList search and element-level search.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">from</span> pymilvus.client.embedding_list <span class="hljs-keyword">import</span> EmbeddingList
 
@@ -95,8 +95,8 @@ results = client.search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>يختار التصفية أعلاه فقط الكيانات التي يكون حقل المستوى الأعلى الخاص بـ « <code translate="no">category</code> » فيها هو « <code translate="no">&quot;search&quot;</code> ». ولا يحدد عنصر Struct واحدًا مطابقًا.</p>
-<h2 id="Filter-element-level-vector-search" class="common-anchor-header">تصفية البحث المتجهي على مستوى العناصر<button data-href="#Filter-element-level-vector-search" class="anchor-icon" translate="no">
+<p>The filter above selects only entities whose top-level <code translate="no">category</code> field is <code translate="no">&quot;search&quot;</code>. It does not identify one matched Struct element.</p>
+<h2 id="Filter-element-level-vector-search" class="common-anchor-header">Filter element-level vector search<button data-href="#Filter-element-level-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -111,7 +111,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم <code translate="no">element_filter(structArrayField, predicate)</code> عندما يجب أن تنطبق الشروط القياسية على نفس عنصر Struct الذي يشارك في البحث المتجهي على مستوى العنصر. داخل المسند، استخدم <code translate="no">$[subfield]</code> للإشارة إلى الحقول الفرعية القياسية لعنصر Struct الحالي.</p>
+    </button></h2><p>Use <code translate="no">element_filter(structArrayField, predicate)</code> when the scalar conditions must apply to the same Struct element that participates in element-level vector search. Inside the predicate, use <code translate="no">$[subfield]</code> to refer to scalar subfields of the current Struct element.</p>
 <pre><code translate="no" class="language-python">query_vector = [<span class="hljs-number">0.19</span>, <span class="hljs-number">0.24</span>, <span class="hljs-number">0.30</span>, <span class="hljs-number">0.37</span>]
 
 filter_expr = (
@@ -148,12 +148,12 @@ results = client.search(
             <span class="hljs-string">&quot;entity:&quot;</span>, hit[<span class="hljs-string">&quot;entity&quot;</span>],
         )
 <button class="copy-code-btn"></button></code></pre>
-<p>في هذا المثال، يختار المسند ذو المستوى الأعلى <code translate="no">category == &quot;search&quot;</code> الكيانات المرشحة، ويقصر <code translate="no">element_filter</code> البحث المتجهي على مستوى العنصر على المجموعات التي تتطابق فيها <code translate="no">section</code> و <code translate="no">quality_score</code> و <code translate="no">has_code</code> جميعها في نفس عنصر Struct.</p>
+<p>In this example, the top-level predicate <code translate="no">category == &quot;search&quot;</code> selects candidate entities, and <code translate="no">element_filter</code> restricts element-level vector search to chunks where <code translate="no">section</code>, <code translate="no">quality_score</code>, and <code translate="no">has_code</code> all match in the same Struct element.</p>
 <div class="alert note">
-<p>تحذير</p>
-<p>عند دمج مسند من المستوى الأعلى مع <code translate="no">element_filter</code> ، ضع <code translate="no">element_filter</code> في نهاية التعبير. لا يمكن أن يحتوي تعبير التصفية إلا على <code translate="no">element_filter</code> واحد فقط، ولا يمكنك تضمين <code translate="no">element_filter</code> أو <code translate="no">MATCH_*</code> داخل عامل StructArray آخر.</p>
+<p>Warning</p>
+<p>When you combine a top-level predicate with <code translate="no">element_filter</code>, place <code translate="no">element_filter</code> at the end of the expression. A filter expression can contain only one <code translate="no">element_filter</code>, and you cannot nest <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code> inside another StructArray operator.</p>
 </div>
-<h2 id="Filter-entities-with-MATCH-operators" class="common-anchor-header">تصفية الكيانات باستخدام عوامل MATCH<button data-href="#Filter-entities-with-MATCH-operators" class="anchor-icon" translate="no">
+<h2 id="Filter-entities-with-MATCH-operators" class="common-anchor-header">Filter entities with MATCH operators<button data-href="#Filter-entities-with-MATCH-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -168,17 +168,17 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم مشغلات <code translate="no">MATCH_*</code> عندما يتعين على التصفية تحديد ما إذا كانت الكيانات الأصلية مؤهلة بناءً على عناصر Struct الخاصة بها. هذه المشغلات هي عوامل تصفية على مستوى الصف: فهي تحدد الكيانات، ولكنها لا تُرجع إزاحات العناصر من تلقاء نفسها.</p>
+    </button></h2><p>Use <code translate="no">MATCH_*</code> operators when the filter should decide whether a parent entity qualifies based on its Struct elements. These operators are row-level filters: they select entities, but do not return element offsets by themselves.</p>
 <table>
 <thead>
-<tr><th>المشغل</th><th>استخدمه عندما</th><th>مثال</th></tr>
+<tr><th>Operator</th><th>Use it when</th><th>Example</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">MATCH_ANY</code></td><td>يجب أن يستوفي عنصر Struct واحد على الأقل الشرط.</td><td><code translate="no">MATCH_ANY(chunks, $[section] == &quot;index&quot;)</code></td></tr>
-<tr><td><code translate="no">MATCH_ALL</code></td><td>يجب أن تستوفي جميع عناصر Struct الشرط.</td><td><code translate="no">MATCH_ALL(chunks, $[quality_score] &gt; 0.5)</code></td></tr>
-<tr><td><code translate="no">MATCH_LEAST</code></td><td>يجب أن تستوفي عناصر Struct التي لا يقل عددها عن <code translate="no">N</code> الشرط.</td><td><code translate="no">MATCH_LEAST(chunks, $[has_code] == true, threshold=2)</code></td></tr>
-<tr><td><code translate="no">MATCH_MOST</code></td><td>يجب أن تستوفي عناصر Struct التي لا يتجاوز عددها <code translate="no">N</code> الشرط.</td><td><code translate="no">MATCH_MOST(chunks, $[section] == &quot;appendix&quot;, threshold=1)</code></td></tr>
-<tr><td><code translate="no">MATCH_EXACT</code></td><td>يجب أن تستوفي عناصر Struct التي يبلغ عددها بالضبط <code translate="no">N</code> الشرط.</td><td><code translate="no">MATCH_EXACT(chunks, $[section] == &quot;summary&quot;, threshold=1)</code></td></tr>
+<tr><td><code translate="no">MATCH_ANY</code></td><td>At least one Struct element must satisfy the predicate.</td><td><code translate="no">MATCH_ANY(chunks, $[section] == &quot;index&quot;)</code></td></tr>
+<tr><td><code translate="no">MATCH_ALL</code></td><td>All Struct elements must satisfy the predicate.</td><td><code translate="no">MATCH_ALL(chunks, $[quality_score] &gt; 0.5)</code></td></tr>
+<tr><td><code translate="no">MATCH_LEAST</code></td><td>At least <code translate="no">N</code> Struct elements must satisfy the predicate.</td><td><code translate="no">MATCH_LEAST(chunks, $[has_code] == true, threshold=2)</code></td></tr>
+<tr><td><code translate="no">MATCH_MOST</code></td><td>At most <code translate="no">N</code> Struct elements must satisfy the predicate.</td><td><code translate="no">MATCH_MOST(chunks, $[section] == &quot;appendix&quot;, threshold=1)</code></td></tr>
+<tr><td><code translate="no">MATCH_EXACT</code></td><td>Exactly <code translate="no">N</code> Struct elements must satisfy the predicate.</td><td><code translate="no">MATCH_EXACT(chunks, $[section] == &quot;summary&quot;, threshold=1)</code></td></tr>
 </tbody>
 </table>
 <pre><code translate="no" class="language-python">filter_expr = (
@@ -202,8 +202,8 @@ results = client.search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>استخدم " <code translate="no">MATCH_ANY</code> " هنا لأن نتيجة البحث في EmbeddingList تكون على مستوى الكيان. يتطلب المرشح أن تكون هناك قطعة واحدة على الأقل في الكيان من نوع " <code translate="no">&quot;index&quot;</code> " ذات جودة عالية، لكن نتيجة البحث نفسها لا تزال تمثل الكيان الأصلي.</p>
-<h2 id="Use-filters-in-hybrid-search" class="common-anchor-header">استخدم المرشحات في البحث الهجين<button data-href="#Use-filters-in-hybrid-search" class="anchor-icon" translate="no">
+<p>Use <code translate="no">MATCH_ANY</code> here because the EmbeddingList search result is entity-level. The filter requires at least one chunk in the entity to be an <code translate="no">&quot;index&quot;</code> chunk with high quality, but the search result itself still represents the parent entity.</p>
+<h2 id="Use-filters-in-hybrid-search" class="common-anchor-header">Use filters in hybrid search<button data-href="#Use-filters-in-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -218,7 +218,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في البحث المختلط، قم بتطبيق مرشحات StructArray حيث يجب أن يسري الشرط. يمكن مشاركة مرشح المستوى الأعلى مع البحث المختلط بأكمله. يجب إرفاق <code translate="no">element_filter</code> بطلب مستوى العنصر StructArray الذي يحتاج إلى قيود على مستوى العنصر.</p>
+    </button></h2><p>In hybrid search, apply StructArray filters where the condition should take effect. A top-level filter can be shared by the whole hybrid search. An <code translate="no">element_filter</code> should be attached to the StructArray element-level request that needs element-level constraints.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> AnnSearchRequest, RRFRanker
 
 query_vector = [<span class="hljs-number">0.19</span>, <span class="hljs-number">0.24</span>, <span class="hljs-number">0.30</span>, <span class="hljs-number">0.37</span>]
@@ -252,8 +252,8 @@ results = client.hybrid_search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>تطبق وسيطة <code translate="no">filter</code> شرط الكيان من المستوى الأعلى، بينما يقيد <code translate="no">expr</code> في <code translate="no">chunk_req</code> طلب المتجه على مستوى عنصر StructArray فقط. للاطلاع على تركيبات البحث الهجين المدعومة والقيود الخاصة بالإصدار، راجع <a href="/docs/ar/hybrid-search-with-structarray.md">البحث الهجين باستخدام StructArray</a> <a href="/docs/ar/structarray-limits.md">وقيود StructArray</a>.</p>
-<h2 id="Predicate-support-summary" class="common-anchor-header">ملخص دعم المسندات<button data-href="#Predicate-support-summary" class="anchor-icon" translate="no">
+<p>The <code translate="no">filter</code> argument applies the top-level entity condition, while the <code translate="no">expr</code> on <code translate="no">chunk_req</code> constrains only the StructArray element-level vector request. For supported hybrid search combinations and version-specific limits, see <a href="/docs/ar/hybrid-search-with-structarray.md">Hybrid Search with StructArray</a> and <a href="/docs/ar/structarray-limits.md">StructArray Limits</a>.</p>
+<h2 id="Predicate-support-summary" class="common-anchor-header">Predicate support summary<button data-href="#Predicate-support-summary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -268,21 +268,21 @@ results = client.hybrid_search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم الحقول الفرعية القياسية في مسندات StructArray. لا تُعتبر الحقول الفرعية المتجهة مدخلات قياسية للمسندات.</p>
+    </button></h2><p>Use scalar subfields in StructArray predicates. Vector subfields are not scalar predicate inputs.</p>
 <table>
 <thead>
-<tr><th>نوع الحقل الفرعي</th><th>أمثلة نموذجية على المسندات</th></tr>
+<tr><th>Subfield type</th><th>Typical predicate examples</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code></td><td><code translate="no">$[has_code] == true</code>، <code translate="no">!($[has_code] == true)</code></td></tr>
-<tr><td>أنواع الأعداد الصحيحة</td><td><code translate="no">$[page] &gt;= 2</code>, <code translate="no">$[page] in [1, 2, 3]</code></td></tr>
-<tr><td><code translate="no">FLOAT</code>، <code translate="no">DOUBLE</code></td><td><code translate="no">$[quality_score] &gt; 0.9</code>، <code translate="no">0.7 &lt; $[quality_score] &lt; 0.95</code></td></tr>
-<tr><td><code translate="no">VARCHAR</code></td><td><code translate="no">$[section] == &quot;index&quot;</code>، <code translate="no">$[text] like &quot;range%&quot;</code></td></tr>
-<tr><td>الحقول الفرعية للمتجهات</td><td>غير مدعومة كمدخلات للمسندات القياسية في <code translate="no">$[...]</code>. استخدم الحقول الفرعية للمتجهات من خلال البحث المتجهي بدلاً من ذلك.</td></tr>
+<tr><td><code translate="no">BOOL</code></td><td><code translate="no">$[has_code] == true</code>, <code translate="no">!($[has_code] == true)</code></td></tr>
+<tr><td>Integer types</td><td><code translate="no">$[page] &gt;= 2</code>, <code translate="no">$[page] in [1, 2, 3]</code></td></tr>
+<tr><td><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code></td><td><code translate="no">$[quality_score] &gt; 0.9</code>, <code translate="no">0.7 &lt; $[quality_score] &lt; 0.95</code></td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td><code translate="no">$[section] == &quot;index&quot;</code>, <code translate="no">$[text] like &quot;range%&quot;</code></td></tr>
+<tr><td>Vector subfields</td><td>Not supported as <code translate="no">$[...]</code> scalar predicate inputs. Use vector subfields through vector search instead.</td></tr>
 </tbody>
 </table>
-<p>بالنسبة للحالات غير المدعومة مثل مسارات JSON، ووظائف حاويات المصفوفات، ووظائف مطابقة النص، والمسندات ذات القيمة null في <code translate="no">$[...]</code> ، ووظائف Geometry، وتعبيرات Timestamptz، واستدعاءات الوظائف العامة، راجع <a href="/docs/ar/struct-array-operators.md">StructArray Operators</a>.</p>
-<h2 id="Common-mistakes" class="common-anchor-header">الأخطاء الشائعة<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<p>For unsupported cases such as JSON paths, array container functions, text match functions, null predicates on <code translate="no">$[...]</code>, Geometry functions, Timestamptz expressions, and generic function calls, see <a href="/docs/ar/struct-array-operators.md">StructArray Operators</a>.</p>
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -298,14 +298,14 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>استخدام <code translate="no">$[subfield]</code> خارج <code translate="no">element_filter</code> أو <code translate="no">MATCH_*</code>.</p></li>
-<li><p>استخدام <code translate="no">chunks.section</code> بدلاً من صيغة مشغل StructArray مثل <code translate="no">element_filter(chunks, $[section] == &quot;index&quot;)</code>.</p></li>
-<li><p>استخدام <code translate="no">element_filter</code> عندما تحتاج فقط إلى التصفية على مستوى الصفوف. استخدم <code translate="no">MATCH_ANY</code> بدلاً من ذلك إذا كنت تحتاج فقط إلى تحديد الكيانات.</p></li>
-<li><p>توقع أن تُرجع <code translate="no">MATCH_*</code> إزاحات العناصر. تختار هذه العوامل الكيانات ولا تحدد عنصرًا مطابقًا واحدًا بمفردها.</p></li>
-<li><p>كتابة المسندات المنطقية المجردة مثل <code translate="no">$[has_code]</code>. استخدم مقارنات صريحة مثل <code translate="no">$[has_code] == true</code>.</p></li>
-<li><p>وضع <code translate="no">element_filter</code> قبل مسند من المستوى الأعلى في نفس تعبير التصفية.</p></li>
+<li><p>Using <code translate="no">$[subfield]</code> outside <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code>.</p></li>
+<li><p>Using <code translate="no">chunks.section</code> instead of StructArray operator syntax such as <code translate="no">element_filter(chunks, $[section] == &quot;index&quot;)</code>.</p></li>
+<li><p>Using <code translate="no">element_filter</code> when you only need row-level filtering. Use <code translate="no">MATCH_ANY</code> instead if you only need to select entities.</p></li>
+<li><p>Expecting <code translate="no">MATCH_*</code> to return element offsets. These operators select entities and do not identify one matched element by themselves.</p></li>
+<li><p>Writing bare boolean predicates such as <code translate="no">$[has_code]</code>. Use explicit comparisons such as <code translate="no">$[has_code] == true</code>.</p></li>
+<li><p>Putting <code translate="no">element_filter</code> before a top-level predicate in the same filter expression.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">الخطوات التالية<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -321,8 +321,8 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>لمراجعة صيغة تصفية StructArray الكاملة، اقرأ <a href="/docs/ar/struct-array-operators.md">«عوامل StructArray</a>».</p></li>
-<li><p>لتشغيل عمليات البحث المتجهية غير المفلترة أولاً، اقرأ <a href="/docs/ar/basic-vector-search-with-structarray.md">«البحث المتجهي الأساسي باستخدام StructArray</a>».</p></li>
-<li><p>لإنشاء فهارس قياسية لفلاتر StructArray المستخدمة بشكل متكرر، اقرأ " <a href="/docs/ar/index-structarray-fields.md">فهرسة حقول StructArray</a>".</p></li>
-<li><p>للتحقق من حدود التصفية والبحث الخاصة بكل إصدار، اقرأ " <a href="/docs/ar/structarray-limits.md">حدود StructArray</a>".</p></li>
+<li><p>To review full StructArray filter syntax, read <a href="/docs/ar/struct-array-operators.md">StructArray Operators</a>.</p></li>
+<li><p>To run unfiltered vector searches first, read <a href="/docs/ar/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To create scalar indexes for frequently used StructArray filters, read <a href="/docs/ar/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To check version-specific filter and search limits, read <a href="/docs/ar/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

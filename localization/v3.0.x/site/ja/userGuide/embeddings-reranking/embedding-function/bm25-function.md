@@ -1,10 +1,13 @@
 ---
 id: bm25-function.md
-title: BM25関数
+title: BM25 Function
 summary: >-
-  BM25関数は、生のテキストを疎なベクトルに変換し、語彙の関連性に基づいて文書をスコアリングすることで、全文検索を可能にする。用語ベースのマッチングと頻度を考慮した重み付けを適用し、クエリ用語と密接に一致するテキスト文書の効率的な検索をサポートする。
+  The BM25 function enables full text search by transforming raw text into
+  sparse vectors and scoring documents based on lexical relevance. It applies
+  term-based matching and frequency-aware weighting to support efficient
+  retrieval of text documents that closely match query terms.
 ---
-<h1 id="BM25-Function" class="common-anchor-header">BM25関数<button data-href="#BM25-Function" class="anchor-icon" translate="no">
+<h1 id="BM25-Function" class="common-anchor-header">BM25 Function<button data-href="#BM25-Function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><strong>BM25関数は</strong>、生のテキストを<strong>疎なベクトルに</strong>変換し、語彙的関連性に基づいて文書をスコアリングすることにより、<a href="/docs/ja/full-text-search.md">全文検索を</a>可能にする。用語ベースのマッチングと頻度を考慮した重み付けを適用し、クエリ用語と密接に一致するテキスト文書の効率的な検索をサポートする。</p>
-<p>ローカルテキスト関数であるBM25関数はMilvus内で実行され、モデル推論や外部統合を必要としない。テキストベースの検索シナリオにおいて、決定論的で透過的な検索メカニズムを提供します。</p>
-<h2 id="How-BM25-works" class="common-anchor-header">BM25の仕組み<button data-href="#How-BM25-works" class="anchor-icon" translate="no">
+    </button></h1><p>The <strong>BM25 function</strong> enables <a href="/docs/ja/full-text-search.md">full text search</a> by transforming raw text into <strong>sparse vectors</strong> and scoring documents based on lexical relevance. It applies term-based matching and frequency-aware weighting to support efficient retrieval of text documents that closely match query terms.</p>
+<p>As a local text function, the BM25 function runs within Milvus and does not require model inference or external integrations. It provides a deterministic and transparent retrieval mechanism for text-based search scenarios.</p>
+<h2 id="How-BM25-works" class="common-anchor-header">How BM25 works<button data-href="#How-BM25-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,9 +39,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://en.wikipedia.org/wiki/Okapi_BM25">BM25</a>アルゴリズムは全文検索で広く使用されている用語ベースの関連性スコアリングアルゴリズムです。Milvusでは、BM25をスパース検索パイプラインとして実装し、テキストをタームウェイト表現に変換し、分散スパースインデックスを使用してトップ<em>K</em>文書を検索する。</p>
-<p>全体的なワークフローは、同じテキスト解析ロジックを共有する<strong>文書取り込みと</strong> <strong>クエリテキスト処理の</strong>2つの対称パスから構成される。</p>
-<h3 id="Document-ingestion-From-text-to-sparse-representation" class="common-anchor-header">文書の取り込みテキストからスパース表現へ<button data-href="#Document-ingestion-From-text-to-sparse-representation" class="anchor-icon" translate="no">
+    </button></h2><p>The <a href="https://en.wikipedia.org/wiki/Okapi_BM25">BM25</a> algorithm is a term-based relevance scoring algorithm widely used in full text retrieval. In Milvus, BM25 is implemented as a sparse retrieval pipeline that converts text into term-weight representations and retrieves top <em>K</em> documents using distributed sparse indexes.</p>
+<p>The overall workflow consists of two symmetric paths: <strong>document ingestion</strong> and <strong>query text processing</strong>, which share the same text analysis logic.</p>
+<h3 id="Document-ingestion-From-text-to-sparse-representation" class="common-anchor-header">Document ingestion: From text to sparse representation<button data-href="#Document-ingestion-From-text-to-sparse-representation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,28 +56,28 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>文書が挿入されると、その生テキストはまず<strong><a href="/docs/ja/analyzer-overview.md">アナライザで</a></strong>処理され、アナライザはテキストを個々の用語にトークン化する。</p>
-<p>例えば、ドキュメント</p>
+    </button></h3><p>When a document is inserted, its raw text is first processed by an <strong><a href="/docs/ja/analyzer-overview.md">analyzer</a></strong>, which tokenizes the text into individual terms.</p>
+<p>For example, the document:</p>
 <pre><code translate="no" class="language-plaintext">&quot;We are loving Milvus!&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>という文書は、次のような用語に分析される：</p>
+<p>can be analyzed into the following terms:</p>
 <pre><code translate="no" class="language-plaintext">[&quot;we&quot;, &quot;love&quot;, &quot;milvus&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p>次に、各文書は用語頻度（TF）表現として表現され、各用語が文書に何回現れるかを記録する。例えば</p>
+<p>Each document is then represented as a term frequency (TF) representation, which records how many times each term appears in the document. For example:</p>
 <pre><code translate="no" class="language-plaintext">{
   &quot;we&quot;: 1,
   &quot;love&quot;: 1,
   &quot;milvus&quot;: 1
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>同時に、Milvusは以下のようなコーパスレベルの統計情報を更新する：</p>
+<p>At the same time, Milvus updates corpus-level statistics, including:</p>
 <ul>
-<li><p>各用語の文書出現頻度 (DF)</p></li>
-<li><p>平均文書長</p></li>
-<li><p>各用語とそれを含む文書を対応付ける投稿リスト</p></li>
+<li><p>the document frequency (DF) of each term</p></li>
+<li><p>the average document length</p></li>
+<li><p>posting lists that map each term to the documents containing it</p></li>
 </ul>
-<p>文書のTF表現は<strong>スパース埋め込みに</strong>挿入され、そこに投稿された用語はスケーラブルな検索のためにノード間で分割される。</p>
-<h3 id="Query-text-process-Apply-IDF-weighting" class="common-anchor-header">クエリテキスト処理：IDF重み付けの適用<button data-href="#Query-text-process-Apply-IDF-weighting" class="anchor-icon" translate="no">
+<p>The document’s TF representation is inserted into <strong>sparse embeddings</strong>, where term postings are partitioned across nodes for scalable retrieval.</p>
+<h3 id="Query-text-process-Apply-IDF-weighting" class="common-anchor-header">Query text process: Apply IDF weighting<button data-href="#Query-text-process-Apply-IDF-weighting" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -89,22 +92,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>テキストベースのクエリが発行されると、<a href="/docs/ja/bm25-function.md#Document-ingestion-From-text-to-sparse-representation">文書取り込みの</a>際に使用された<strong>のと同じアナライザによって</strong>処理され、一貫した用語のセグメンテーションが保証される。</p>
-<p>例えば</p>
+    </button></h3><p>When a text-based query is issued, it is processed by the <strong>same analyzer</strong> used during <a href="/docs/ja/bm25-function.md#Document-ingestion-From-text-to-sparse-representation">document ingestion</a>, ensuring consistent term segmentation.</p>
+<p>For example, the query:</p>
 <pre><code translate="no" class="language-plaintext">&quot;who loves Milvus?&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>は次のように分析される：</p>
+<p>can be analyzed into:</p>
 <pre><code translate="no" class="language-plaintext">[&quot;who&quot;, &quot;love&quot;, &quot;milvus&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvusは各クエリ用語について、コーパス統計からその<a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">逆文書頻度</a>（IDF）を調べる。IDFはデータセット全体における用語の情報量を反映し、稀な用語は高い重み付けを受け、一般的な用語は低い重み付けを受ける。</p>
-<p>概念的には、これはIDFで重み付けされたクエリー用語のセットを生成する：</p>
+<p>For each query term, Milvus looks up its <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">inverse document frequency</a> (IDF) from corpus statistics. IDF reflects how informative a term is across the entire dataset: rarer terms receive higher weights, while common terms receive lower weights.</p>
+<p>Conceptually, this produces a set of IDF-weighted query terms, such as:</p>
 <pre><code translate="no" class="language-plaintext">{
   &quot;who&quot;: 0.1,
   &quot;love&quot;: 0.5,
   &quot;milvus&quot;: 1.2
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="BM25-scoring-and-top-K-retrieval" class="common-anchor-header">BM25スコアリングとトップK検索<button data-href="#BM25-scoring-and-top-K-retrieval" class="anchor-icon" translate="no">
+<h3 id="BM25-scoring-and-top-K-retrieval" class="common-anchor-header">BM25 scoring and top K retrieval<button data-href="#BM25-scoring-and-top-K-retrieval" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -119,27 +122,27 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>BM25は、マッチしたクエリ用語に基づいて関連性スコアを計算し、文書をランク付けする。スコアリングは<strong>用語レベルで</strong>行われ、<strong>文書</strong>レベルで集計される。</p>
-<p><strong>用語レベルでのスコアリング</strong></p>
-<p>文書に出現する各クエリ用語について、BM25は用語レベルのスコアを計算する：</p>
+    </button></h3><p>BM25 ranks documents by computing a relevance score based on matched query terms. Scoring is performed at the <strong>term level</strong> and aggregated at the <strong>document level</strong>.</p>
+<p><strong>Term-level scoring</strong></p>
+<p>For each query term that appears in a document, BM25 computes a term-level score:</p>
 <pre><code translate="no" class="language-plaintext">term_score =
   IDF(term) ×
   TF_boost(term, document, k1) ×
   length_normalization(document, b)
 <button class="copy-code-btn"></button></code></pre>
-<p>ここで</p>
+<p>Where:</p>
 <ul>
-<li><p><strong>IDF(term)</strong>は、その用語がコレクション内でどれだけレアであるかを反映する。</p></li>
-<li><p><strong>TF_boost(...,k1)は</strong>用語の頻度とともに増加するが、頻度が高くなるにつれて飽和する。</p></li>
-<li><p><strong>length_normalization(..., b)</strong>は文書の長さに基づいてスコアを調整する。</p></li>
+<li><p><strong>IDF(term)</strong> reflects how rare the term is in the collection</p></li>
+<li><p><strong>TF_boost(…, k1)</strong> increases with term frequency but saturates as frequency grows</p></li>
+<li><p><strong>length_normalization(…, b)</strong> adjusts the score based on document length</p></li>
 </ul>
-<p><strong>文書レベルのスコアリングとTop-K検索</strong></p>
-<p>最終的な文書スコアは、マッチした全てのクエリー用語の用語レベルスコアの合計である：</p>
+<p><strong>Document-level scoring and Top-K retrieval</strong></p>
+<p>The final document score is the sum of term-level scores for all matched query terms:</p>
 <pre><code translate="no" class="language-plaintext">document_score =
   sum of term_score over all matched query terms
 <button class="copy-code-btn"></button></code></pre>
-<p>ドキュメントは最終スコアでランク付けされ、上位K個の高得点ドキュメントが返されます。</p>
-<h2 id="Before-you-start" class="common-anchor-header">始める前に<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+<p>Documents are ranked by their final scores, and the top-K highest-scoring documents are returned.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -154,18 +157,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>BM25機能を使用する前に、コレクションスキーマを計画し、それが字句解析的なフルテキスト検索をサポートしていることを確認してください：</p>
+    </button></h2><p>Before using the BM25 function, plan your collection schema to ensure it supports lexical full text search:</p>
 <ul>
-<li><p><strong>生コンテンツのテキストフィールド</strong></p>
-<p>コレクションには、生のテキストを格納する<code translate="no">VARCHAR</code> フィールドが必要です。このフィールドは、全文検索のために処理されるテキストのソースです。</p></li>
-<li><p><strong>テキストフィールドのアナライザ</strong></p>
-<p>テキストフィールドはアナライザを有効にする必要があります。アナライザは、BM25関数によって語彙関連性が計算される前に、テキストがどのようにトークン化され、正規化されるかを定義します。</p>
-<p>デフォルトでは、Milvusは空白と句読点に基づいてテキストをトークン化するアナライザを内蔵しています。カスタム トークン化または正規化の動作が必要な場合は、カスタム アナライザを定義することができます。詳細については、「<a href="/docs/ja/choose-the-right-analyzer-for-your-use-case.md">ユースケースに適したアナライザを選択する</a>」を参照してください。</p></li>
-<li><p><strong>BM25出力用の疎ベクトル</strong></p>
-<p>コレクションには、BM25関数によって生成されたスパース表現を格納する<code translate="no">SPARSE_FLOAT_VECTOR</code> フィールドを含める必要があります。このフィールドは、全文検索時のインデックス作成と検索に使用されます。</p></li>
+<li><p><strong>A text field for raw content</strong></p>
+<p>Your collection must include a <code translate="no">VARCHAR</code> field to store raw text. This field is the source of text that will be processed for full text search.</p></li>
+<li><p><strong>An analyzer for the text field</strong></p>
+<p>The text field must have an analyzer enabled. The analyzer defines how text is tokenized and normalized before lexical relevance is computed by the BM25 function.</p>
+<p>By default, Milvus provides a built-in analyzer that tokenizes text based on whitespace and punctuation. If your application requires custom tokenization or normalization behavior, you can define a custom analyzer. See <a href="/docs/ja/choose-the-right-analyzer-for-your-use-case.md">Choose the Right Analyzer for Your Use Case</a> for details.</p></li>
+<li><p><strong>A sparse vector for BM25 output</strong></p>
+<p>Your collection must include a <code translate="no">SPARSE_FLOAT_VECTOR</code> field to store the sparse representations generated by the BM25 function. This field is used for indexing and retrieval during full text search.</p></li>
 </ul>
-<p>これらのスキーマレベルの考慮事項を把握した後、コレクションの作成と BM25 関数の使用に進みます。</p>
-<h2 id="Step-1-Create-a-collection-with-a-BM25-function" class="common-anchor-header">ステップ 1: BM25 関数でコレクションを作成する<button data-href="#Step-1-Create-a-collection-with-a-BM25-function" class="anchor-icon" translate="no">
+<p>After these schema-level considerations are figured out, proceed to create the collection and use the BM25 function.</p>
+<h2 id="Step-1-Create-a-collection-with-a-BM25-function" class="common-anchor-header">Step 1: Create a collection with a BM25 function<button data-href="#Step-1-Create-a-collection-with-a-BM25-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -180,15 +183,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>BM25関数を使用するには、コレクションを作成するときに関数を定義する必要があります。関数はコレクション・スキーマの一部となり、データ挿入と検索時に自動的に適用されます。</p>
-<h4 id="Define-schema-fields" class="common-anchor-header">スキーマフィールドの定義</h4><p>コレクションスキーマには、少なくとも3つの必須フィールドを含める必要があります：</p>
+    </button></h2><p>To use the BM25 function, you must define it when creating the collection. The function becomes part of the collection schema and is applied automatically during data insertion and search.</p>
+<h4 id="Define-schema-fields" class="common-anchor-header">Define schema fields</h4><p>Your collection schema must include at least three required fields:</p>
 <ul>
-<li><p><strong>プライマリフィールド</strong>：コレクション内の各エンティティを一意に識別する。</p></li>
-<li><p><strong>テキストフィールド</strong>(<code translate="no">VARCHAR</code>)：生のテキスト文書を格納する。Milvus が BM25 関連性ランキングのためにテキストを処理できるように、<code translate="no">enable_analyzer=True</code> を設定する必要があります。デフォルトでは、Milvusはテキスト分析にアナライザを使用します。 <a href="/docs/ja/standard-analyzer.md"><code translate="no">standard</code></a><a href="/docs/ja/standard-analyzer.md"> アナライザを</a>使用します。別のアナライザを設定するには、<a href="/docs/ja/analyzer-overview.md">アナライザの概要を</a>参照してください。</p></li>
-<li><p><strong>スパースベクトルフィールド</strong>(<code translate="no">SPARSE_FLOAT_VECTOR</code>)：BM25関数によって自動的に生成されたスパース埋め込みを格納する。</p></li>
+<li><p><strong>Primary field</strong>: Uniquely identifies each entity in the collection.</p></li>
+<li><p><strong>Text field</strong> (<code translate="no">VARCHAR</code>): Stores raw text documents. Must set <code translate="no">enable_analyzer=True</code> so Milvus can process the text for BM25 relevance ranking. By default, Milvus uses the <a href="/docs/ja/standard-analyzer.md"><code translate="no">standard</code></a><a href="/docs/ja/standard-analyzer.md"> analyzer</a> for text analysis. To configure a different analyzer, refer to <a href="/docs/ja/analyzer-overview.md">Analyzer Overview</a>.</p></li>
+<li><p><strong>Sparse vector field</strong> (<code translate="no">SPARSE_FLOAT_VECTOR</code>): Stores sparse embeddings automatically generated by the BM25 function.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
 client = MilvusClient(
@@ -317,8 +325,8 @@ schema.WithField(entity.NewField().
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Define-the-BM25-function" class="common-anchor-header">BM25 関数の定義</h4><p>BM25関数はトークン化されたテキストをBM25スコアリングをサポートするスパースベクトルに変換します。</p>
-<p>関数を定義し、スキーマに追加します：</p>
+<h4 id="Define-the-BM25-function" class="common-anchor-header">Define the BM25 function</h4><p>The BM25 function converts tokenized text into sparse vectors that support BM25 scoring.</p>
+<p>Define the function and add it to your schema:</p>
 <pre><code translate="no" class="language-python">bm25_function = Function(
     name=<span class="hljs-string">&quot;text_bm25_emb&quot;</span>, <span class="hljs-comment"># Function name</span>
     input_field_names=[<span class="hljs-string">&quot;text&quot;</span>], <span class="hljs-comment"># Name of the VARCHAR field containing raw text data</span>
@@ -391,7 +399,7 @@ schema.WithFunction(function)
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Configure-the-index" class="common-anchor-header">インデックスの設定</h4><p>必要なフィールドと組み込み関数でスキーマを定義した後、コレクションのインデックスを設定します。</p>
+<h4 id="Configure-the-index" class="common-anchor-header">Configure the index</h4><p>After defining the schema with necessary fields and the built-in function, set up the index for your collection.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
 index_params.add_index(
@@ -454,7 +462,7 @@ indexes.add(IndexParam.builder()
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Create-the-collection" class="common-anchor-header">コレクションの作成</h4><p>定義したスキーマとインデックスのパラメータを使用して、コレクションを作成します：</p>
+<h4 id="Create-the-collection" class="common-anchor-header">Create the collection</h4><p>Now create the collection using the schema and index parameters defined:</p>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>,
     schema=schema,
@@ -499,8 +507,8 @@ curl --request POST \
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>BM25 関数を持つコレクションが作成されると、テキストを挿入し、テキストクエリに基づいて字句検索を実行できます。</p>
-<h2 id="Step-2-Insert-text-data-into-the-collection" class="common-anchor-header">ステップ 2: テキストデータをコレクションに挿入する<button data-href="#Step-2-Insert-text-data-into-the-collection" class="anchor-icon" translate="no">
+<p>Once the collection with a BM25 function is created, you can insert text and perform lexical searches based on text query.</p>
+<h2 id="Step-2-Insert-text-data-into-the-collection" class="common-anchor-header">Step 2: Insert text data into the collection<button data-href="#Step-2-Insert-text-data-into-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -515,7 +523,7 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>コレクションとインデックスを設定すると、テキストデータを挿入する準備ができます。このプロセスでは、生のテキストを提供するだけです。先ほど定義したBM25関数は、各テキストエントリのスパースベクトルを自動的に生成します。</p>
+    </button></h2><p>After setting up your collection and index, you’re ready to insert text data. In this process, you need only to provide the raw text. The BM25 function we defined earlier automatically generates the sparse vector for each text entry.</p>
 <pre><code translate="no" class="language-python">client.insert(<span class="hljs-string">&#x27;my_collection&#x27;</span>, [
     {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval is a field of study.&#x27;</span>},
     {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval focuses on finding relevant information in large datasets.&#x27;</span>},
@@ -564,7 +572,7 @@ client.insert(InsertReq.builder()
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-3-Search-with-text-query" class="common-anchor-header">ステップ3：テキストクエリーによる検索<button data-href="#Step-3-Search-with-text-query" class="anchor-icon" translate="no">
+<h2 id="Step-3-Search-with-text-query" class="common-anchor-header">Step 3: Search with text query<button data-href="#Step-3-Search-with-text-query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -579,7 +587,7 @@ client.insert(InsertReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>データをコレクションに挿入したら、生のテキストクエリを使用して全文検索を実行できます。Milvusは自動的にクエリをスパースベクトルに変換し、BM25アルゴリズムを使ってマッチした検索結果をランク付けし、トップK(<code translate="no">limit</code>)の結果を返します。</p>
+    </button></h2><p>Once you’ve inserted data into your collection, you can perform full text searches using raw text queries. Milvus automatically converts your query into a sparse vector and ranks the matched search results using the BM25 algorithm, and then returns the topK (<code translate="no">limit</code>) results.</p>
 <pre><code translate="no" class="language-python">search_params = {
 
 }

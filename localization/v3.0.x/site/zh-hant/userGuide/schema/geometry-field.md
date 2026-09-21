@@ -1,12 +1,14 @@
 ---
 id: geometry-field.md
-title: 幾何領域Compatible with Milvus 2.6.4+
+title: Geometry FieldCompatible with Milvus 2.6.4+
 summary: >-
-  在建立地理資訊系統 (GIS)、繪圖工具或定位服務等應用程式時，您經常需要儲存和查詢幾何資料。Milvus 中的 GEOMETRY
-  資料類型透過提供儲存和查詢彈性幾何資料的原生方式，解決了這個難題。
+  When building applications like Geographic Information Systems (GIS), mapping
+  tools, or location-based services, you often need to store and query geometric
+  data. The GEOMETRY data type in Milvus solves this challenge by providing a
+  native way to store and query flexible geometric data.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Geometry-Field" class="common-anchor-header">幾何領域<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Geometry-Field" class="anchor-icon" translate="no">
+<h1 id="Geometry-Field" class="common-anchor-header">Geometry Field<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Geometry-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,17 +23,17 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在建立地理資訊系統 (GIS)、繪圖工具或定位服務等應用程式時，您經常需要儲存和查詢幾何資料。Milvus 中的<code translate="no">GEOMETRY</code> 資料類型提供了儲存和查詢彈性幾何資料的原生方式，解決了這個難題。</p>
-<p>例如，當您需要結合向量相似性與空間限制時，請使用 GEOMETRY 欄位：</p>
+    </button></h1><p>When building applications like Geographic Information Systems (GIS), mapping tools, or location-based services, you often need to store and query geometric data. The <code translate="no">GEOMETRY</code> data type in Milvus solves this challenge by providing a native way to store and query flexible geometric data.</p>
+<p>Use a GEOMETRY field when you need to combine vector similarity with spatial constraints, for example:</p>
 <ul>
-<li><p>位置基礎服務 (LBS)：「尋找此城市區塊<strong>內</strong>相似的 POI」。</p></li>
-<li><p>多模式搜尋："檢索此點<strong>1 公里範圍內的</strong>相似照片</p></li>
-<li><p>地圖與物流：「區域<strong>內的</strong>資產 」或<strong>「與</strong>路徑<strong>相交的</strong>路線」</p></li>
+<li><p>Location-Base Service (LBS): “find similar POIs <strong>within</strong> this city block”</p></li>
+<li><p>Multi‑modal search: “retrieve similar photos <strong>within 1km</strong> of this point”</p></li>
+<li><p>Maps & logistics: “assets <strong>inside</strong> a region” or “routes <strong>intersecting</strong> a path”</p></li>
 </ul>
 <div class="alert note">
-<p>若要使用 GEOMETRY 欄位，請將您的 SDK 升級至最新版本。</p>
+<p>To use the GEOMETRY field, upgrade your SDK to the latest version.</p>
 </div>
-<h2 id="What-is-a-GEOMETRY-field" class="common-anchor-header">什麼是 GEOMETRY 欄位？<button data-href="#What-is-a-GEOMETRY-field" class="anchor-icon" translate="no">
+<h2 id="What-is-a-GEOMETRY-field" class="common-anchor-header">What is a GEOMETRY field?<button data-href="#What-is-a-GEOMETRY-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -46,18 +48,18 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在 Milvus 中，GEOMETRY 欄位是一種模式定義的資料類型 (<code translate="no">DataType.GEOMETRY</code>) ，用來儲存幾何資料。當處理幾何欄位時，您使用<a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-Known Text (WKT)</a>格式與資料互動，這是一種人類可讀的表示法，用於插入資料和查詢。在內部，Milvus 會將 WKT 轉換為<a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary">Well-Known Binary (WKB)</a>，以提高儲存和處理效率，但您不需要直接處理 WKB。</p>
-<p><code translate="no">GEOMETRY</code> 資料類型支援下列幾何物件：</p>
+    </button></h2><p>A GEOMETRY field is a schema-defined data type (<code translate="no">DataType.GEOMETRY</code>) in Milvus that stores geometric data. When working with geometry fields, you interact with the data using the <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-Known Text (WKT)</a> format, a human-readable representation used for both inserting data and querying. Internally, Milvus converts WKT to <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary">Well-Known Binary (WKB)</a> for efficient storage and processing, but you do not need to handle WKB directly.</p>
+<p>The <code translate="no">GEOMETRY</code> data type supports the following geometric objects:</p>
 <ul>
-<li><p><strong>POINT</strong>:<code translate="no">POINT (x y)</code>; 例如，<code translate="no">POINT (13.403683 52.520711)</code> ，其中<code translate="no">x</code> = 經度，<code translate="no">y</code> = 緯度</p></li>
-<li><p><strong>LINESTRING</strong>:<code translate="no">LINESTRING (x1 y1, x2 y2, …)</code>; 舉例來說、<code translate="no">LINESTRING (13.40 52.52, 13.41 52.51)</code></p></li>
-<li><p><strong>POLYGON</strong>:<code translate="no">POLYGON ((x1 y1, x2 y2, x3 y3, x1 y1))</code>; 例如、<code translate="no">POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))</code></p></li>
-<li><p><strong>MULTIPOINT</strong>:<code translate="no">MULTIPOINT ((x1 y1), (x2 y2), …)</code>, 例如、<code translate="no">MULTIPOINT ((10 40), (40 30), (20 20), (30 10))</code></p></li>
-<li><p><strong>multilinestring</strong>：<code translate="no">MULTILINESTRING ((x1 y1, …), (xk yk, …))</code>, 例如<code translate="no">MULTILINESTRING ((10 10, 20 20, 10 40), (40 40, 30 30, 40 20, 30 10))</code></p></li>
-<li><p><strong>MULTIPOLYGON</strong>:<code translate="no">MULTIPOLYGON (((outer ring ...)), ((outer ring ...)))</code>, 例如、<code translate="no">MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), ((15 5, 40 10, 10 20, 5 10, 15 5)))</code></p></li>
-<li><p><strong>GEOMETRYCOLLECTION</strong>:<code translate="no">GEOMETRYCOLLECTION(POINT(x y), LINESTRING(x1 y1, x2 y2), ...)</code>, 例如、<code translate="no">GEOMETRYCOLLECTION (POINT (40 10), LINESTRING (10 10, 20 20, 10 40), POLYGON ((40 40, 20 45, 45 30, 40 40)))</code></p></li>
+<li><p><strong>POINT</strong>: <code translate="no">POINT (x y)</code>; for example, <code translate="no">POINT (13.403683 52.520711)</code> where <code translate="no">x</code> = longitude and <code translate="no">y</code> = latitude</p></li>
+<li><p><strong>LINESTRING</strong>: <code translate="no">LINESTRING (x1 y1, x2 y2, …)</code>; for example, <code translate="no">LINESTRING (13.40 52.52, 13.41 52.51)</code></p></li>
+<li><p><strong>POLYGON</strong>: <code translate="no">POLYGON ((x1 y1, x2 y2, x3 y3, x1 y1))</code>; for example, <code translate="no">POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))</code></p></li>
+<li><p><strong>MULTIPOINT</strong>: <code translate="no">MULTIPOINT ((x1 y1), (x2 y2), …)</code>, for example, <code translate="no">MULTIPOINT ((10 40), (40 30), (20 20), (30 10))</code></p></li>
+<li><p><strong>MULTILINESTRING</strong>: <code translate="no">MULTILINESTRING ((x1 y1, …), (xk yk, …))</code>, for example, <code translate="no">MULTILINESTRING ((10 10, 20 20, 10 40), (40 40, 30 30, 40 20, 30 10))</code></p></li>
+<li><p><strong>MULTIPOLYGON</strong>: <code translate="no">MULTIPOLYGON (((outer ring ...)), ((outer ring ...)))</code>, for example, <code translate="no">MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)), ((15 5, 40 10, 10 20, 5 10, 15 5)))</code></p></li>
+<li><p><strong>GEOMETRYCOLLECTION</strong>: <code translate="no">GEOMETRYCOLLECTION(POINT(x y), LINESTRING(x1 y1, x2 y2), ...)</code>, for example, <code translate="no">GEOMETRYCOLLECTION (POINT (40 10), LINESTRING (10 10, 20 20, 10 40), POLYGON ((40 40, 20 45, 45 30, 40 40)))</code></p></li>
 </ul>
-<h2 id="Basic-operations" class="common-anchor-header">基本操作<button data-href="#Basic-operations" class="anchor-icon" translate="no">
+<h2 id="Basic-operations" class="common-anchor-header">Basic operations<button data-href="#Basic-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -72,8 +74,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用<code translate="no">GEOMETRY</code> 欄位的工作流程包括在集合模式中定義、插入幾何資料，然後再使用特定的篩選表達式查詢資料。</p>
-<h3 id="Step-1-Define-a-GEOMETRY-field" class="common-anchor-header">步驟 1：定義 GEOMETRY 欄位<button data-href="#Step-1-Define-a-GEOMETRY-field" class="anchor-icon" translate="no">
+    </button></h2><p>The workflow for using a <code translate="no">GEOMETRY</code> field involves defining it in your collection schema, inserting geometric data, and then querying the data using specific filter expressions.</p>
+<h3 id="Step-1-Define-a-GEOMETRY-field" class="common-anchor-header">Step 1: Define a GEOMETRY field<button data-href="#Step-1-Define-a-GEOMETRY-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -88,9 +90,14 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要使用<code translate="no">GEOMETRY</code> 欄位，請在建立集合時，在集合模式中明確定義。以下範例示範如何建立具有<code translate="no">geo</code> 欄位類型<code translate="no">DataType.GEOMETRY</code> 的集合。</p>
+    </button></h3><p>To use a <code translate="no">GEOMETRY</code> field, explicitly define it in your collection schema when creating the collection. The following example demonstrates how to create a collection with a <code translate="no">geo</code> field of type <code translate="no">DataType.GEOMETRY</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 <span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 
@@ -172,9 +179,9 @@ client.createCollection(requestCreate);
 
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>在這個範例中，在集合模式中定義的<code translate="no">GEOMETRY</code> 欄位允許使用<code translate="no">nullable=True</code> 的 null 值。詳情請參閱<a href="/docs/zh-hant/nullable-and-default.md">Nullable &amp; Default</a>。</p>
+<p>In this example, the <code translate="no">GEOMETRY</code> field defined in the collection schema allows null values with <code translate="no">nullable=True</code>. For details, refer to <a href="/docs/zh-hant/nullable-and-default.md">Nullable & Default</a>.</p>
 </div>
-<h3 id="Step-2-Insert-data" class="common-anchor-header">步驟 2：插入資料<button data-href="#Step-2-Insert-data" class="anchor-icon" translate="no">
+<h3 id="Step-2-Insert-data" class="common-anchor-header">Step 2: Insert data<button data-href="#Step-2-Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -189,9 +196,14 @@ client.createCollection(requestCreate);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以<a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">WKT</a>格式插入具有幾何資料的實體。以下是一個有幾個地理點的範例：</p>
+    </button></h3><p>Insert entities with geometry data in <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">WKT</a> format. Here’s an example with several geo points:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">rng = np.random.default_rng(seed=<span class="hljs-number">19530</span>)
 geo_points = [
     <span class="hljs-string">&#x27;POINT(13.399710 52.518010)&#x27;</span>,
@@ -279,7 +291,7 @@ client.insert(InsertReq.builder()
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Filtering-operations" class="common-anchor-header">步驟 3：篩選作業<button data-href="#Step-3-Filtering-operations" class="anchor-icon" translate="no">
+<h3 id="Step-3-Filtering-operations" class="common-anchor-header">Step 3: Filtering operations<button data-href="#Step-3-Filtering-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -294,15 +306,20 @@ client.insert(InsertReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在您可以對<code translate="no">GEOMETRY</code> 欄位執行篩選操作之前，請確定：</p>
+    </button></h3><p>Before you can perform filtering operations on <code translate="no">GEOMETRY</code> fields, make sure:</p>
 <ul>
-<li><p>您已為每個向量欄位建立索引。</p></li>
-<li><p>集合已載入記憶體。</p></li>
+<li><p>You have created an index on each vector field.</p></li>
+<li><p>The collection is loaded into memory.</p></li>
 </ul>
 <p><details></p>
-<p><summary>顯示程式碼</summary></p>
+<p><summary>Show code</summary></p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">index_params = milvus_client.prepare_index_params()
 index_params.add_index(field_name=<span class="hljs-string">&quot;embeddings&quot;</span>, metric_type=<span class="hljs-string">&quot;L2&quot;</span>)
 
@@ -346,22 +363,27 @@ client.createIndex(CreateIndexReq.builder()
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>一旦滿足這些要求，您就可以使用具有專用幾何運算符號的表達式，根據幾何值篩選集合。</p>
-<h4 id="Define-filter-expressions" class="common-anchor-header">定義篩選表達式</h4><p>若要對<code translate="no">GEOMETRY</code> 欄位進行篩選，請在表達式中使用幾何運算符：</p>
+<p>Once these requirements are met, you can use expressions with dedicated geometry operators to filter your collection based on the geometric values.</p>
+<h4 id="Define-filter-expressions" class="common-anchor-header">Define filter expressions</h4><p>To filter on a <code translate="no">GEOMETRY</code> field, use a geometry operator in an expression:</p>
 <ul>
-<li><p>一般：<code translate="no">{operator}(geo_field, '{wkt}')</code></p></li>
-<li><p>基於距離：<code translate="no">ST_DWITHIN(geo_field, '{wkt}', distance)</code></p></li>
+<li><p>General: <code translate="no">{operator}(geo_field, '{wkt}')</code></p></li>
+<li><p>Distance-based: <code translate="no">ST_DWITHIN(geo_field, '{wkt}', distance)</code></p></li>
 </ul>
-<p>其中：</p>
+<p>Where:</p>
 <ul>
-<li><p><code translate="no">operator</code> 是支援的幾何運算符號之一 (例如<code translate="no">ST_CONTAINS</code>,<code translate="no">ST_INTERSECTS</code>)。運算符號名稱必須全大楷或全小楷。如需支援的運算符號清單，請參閱<a href="/docs/zh-hant/geometry-operators.md#Supported-geometry-operators">支援的幾何運算符號</a>。</p></li>
-<li><p><code translate="no">geo_field</code> 是<code translate="no">GEOMETRY</code> 欄位的名稱。</p></li>
-<li><p><code translate="no">'{wkt}'</code> 是要查詢的幾何的 WKT 表示。</p></li>
-<li><p><code translate="no">distance</code> 是專為<code translate="no">ST_DWITHIN</code> 設定的臨界值。</p></li>
+<li><p><code translate="no">operator</code> is one of the supported geometry operators (e.g., <code translate="no">ST_CONTAINS</code>, <code translate="no">ST_INTERSECTS</code>). Operator names must be all uppercase or all lowercase. For a list of supported operators, refer to <a href="/docs/zh-hant/geometry-operators.md#Supported-geometry-operators">Supported geometry operators</a>.</p></li>
+<li><p><code translate="no">geo_field</code> is the name of your <code translate="no">GEOMETRY</code> field.</p></li>
+<li><p><code translate="no">'{wkt}'</code> is the WKT representation of the geometry to query.</p></li>
+<li><p><code translate="no">distance</code> is the threshold specifically for <code translate="no">ST_DWITHIN</code>.</p></li>
 </ul>
-<p>以下範例示範如何在篩選表達式中使用不同的特定幾何運算符號：</p>
-<h4 id="Example-1-Find-entities-within-a-rectangular-area" class="common-anchor-header">範例 1：尋找矩形區域內的實體</h4><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<p>The following examples demonstrate how to use different geometry-specific operators in a filter expression:</p>
+<h4 id="Example-1-Find-entities-within-a-rectangular-area" class="common-anchor-header">Example 1: Find entities within a rectangular area</h4><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">top_left_lon, top_left_lat = <span class="hljs-number">13.403683</span>, <span class="hljs-number">52.520711</span>
 bottom_right_lon, bottom_right_lat = <span class="hljs-number">13.455868</span>, <span class="hljs-number">52.495862</span>
 bounding_box_wkt = <span class="hljs-string">f&quot;POLYGON((<span class="hljs-subst">{top_left_lon}</span> <span class="hljs-subst">{top_left_lat}</span>, <span class="hljs-subst">{bottom_right_lon}</span> <span class="hljs-subst">{top_left_lat}</span>, <span class="hljs-subst">{bottom_right_lon}</span> <span class="hljs-subst">{bottom_right_lat}</span>, <span class="hljs-subst">{top_left_lon}</span> <span class="hljs-subst">{bottom_right_lat}</span>, <span class="hljs-subst">{top_left_lon}</span> <span class="hljs-subst">{top_left_lat}</span>))&quot;</span>
@@ -426,8 +448,13 @@ System.out.println(<span class="hljs-string">&quot;Query results:&quot;</span>);
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Example-2-Find-entities-within-1km-of-a-central-point" class="common-anchor-header">範例 2：尋找距離中心點 1 公里範圍內的實體</h4><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<h4 id="Example-2-Find-entities-within-1km-of-a-central-point" class="common-anchor-header">Example 2: Find entities within 1km of a central point</h4><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">center_point_lon, center_point_lat = <span class="hljs-number">13.403683</span>, <span class="hljs-number">52.520711</span>
 radius_meters = <span class="hljs-number">1000.0</span>
 central_point_wkt = <span class="hljs-string">f&quot;POINT(<span class="hljs-subst">{center_point_lon}</span> <span class="hljs-subst">{center_point_lat}</span>)&quot;</span>
@@ -480,8 +507,13 @@ System.out.println(<span class="hljs-string">&quot;Query results:&quot;</span>);
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Example-3-Combine-vector-similarity-with-a-spatial-filter" class="common-anchor-header">範例 3：結合向量相似性與空間篩選器</h4><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<h4 id="Example-3-Combine-vector-similarity-with-a-spatial-filter" class="common-anchor-header">Example 3: Combine vector similarity with a spatial filter</h4><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">vectors_to_search = rng.random((<span class="hljs-number">1</span>, dim))
 result = milvus_client.search(
     collection_name,
@@ -540,7 +572,7 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Next-Accelerate-queries" class="common-anchor-header">下一個：加速查詢<button data-href="#Next-Accelerate-queries" class="anchor-icon" translate="no">
+<h2 id="Next-Accelerate-queries" class="common-anchor-header">Next: Accelerate queries<button data-href="#Next-Accelerate-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -555,9 +587,9 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>預設情況下，在沒有索引的情況下，對<code translate="no">GEOMETRY</code> 欄位進行查詢時，會對所有行執行完整掃描，這在大型資料集上可能會很慢。若要加速幾何查詢，請在 GEOMETRY 欄位上建立<code translate="no">RTREE</code> 索引。</p>
-<p>如需詳細資訊，請參閱<a href="/docs/zh-hant/rtree.md">RTREE</a>。</p>
-<h2 id="FAQ" class="common-anchor-header">常見問題<button data-href="#FAQ" class="anchor-icon" translate="no">
+    </button></h2><p>By default, queries on <code translate="no">GEOMETRY</code> fields without an index will perform a full scan of all rows, which can be slow on large datasets. To accelerate geometric queries, create an <code translate="no">RTREE</code> index on your GEOMETRY field.</p>
+<p>For details, refer to <a href="/docs/zh-hant/rtree.md">RTREE</a>.</p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -572,7 +604,7 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="If-Ive-enabled-the-dynamic-field-feature-for-my-collection-can-I-insert-geometric-data-into-a-dynamic-field-key" class="common-anchor-header">如果我啟用了資料集的動態欄位功能，我可以將幾何資料插入動態欄位鍵嗎？<button data-href="#If-Ive-enabled-the-dynamic-field-feature-for-my-collection-can-I-insert-geometric-data-into-a-dynamic-field-key" class="anchor-icon" translate="no">
+    </button></h2><h3 id="If-Ive-enabled-the-dynamic-field-feature-for-my-collection-can-I-insert-geometric-data-into-a-dynamic-field-key" class="common-anchor-header">If I’ve enabled the dynamic field feature for my collection, can I insert geometric data into a dynamic field key?<button data-href="#If-Ive-enabled-the-dynamic-field-feature-for-my-collection-can-I-insert-geometric-data-into-a-dynamic-field-key" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -587,8 +619,8 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>不可以，幾何資料不能插入動態欄位。在插入幾何資料之前，請確定<code translate="no">GEOMETRY</code> 欄位已在您的資料庫模式中明確定義。</p>
-<h3 id="Does-the-GEOMETRY-field-support-the-mmap-feature" class="common-anchor-header">GEOMETRY 欄位是否支援 mmap 功能？<button data-href="#Does-the-GEOMETRY-field-support-the-mmap-feature" class="anchor-icon" translate="no">
+    </button></h3><p>No, geometry data cannot be inserted into a dynamic field. Before inserting geometric data, make sure the <code translate="no">GEOMETRY</code> field has been explicitly defined in your collection schema.</p>
+<h3 id="Does-the-GEOMETRY-field-support-the-mmap-feature" class="common-anchor-header">Does the GEOMETRY field support the mmap feature?<button data-href="#Does-the-GEOMETRY-field-support-the-mmap-feature" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -603,8 +635,8 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>是的，<code translate="no">GEOMETRY</code> 欄位支援 mmap。如需詳細資訊，請參閱<a href="https://zilliverse.feishu.cn/wiki/P3wrwSMNNihy8Vkf9p6cTsWYnTb">使用 mmap</a>。</p>
-<h3 id="Can-I-define-the-GEOMETRY-field-as-nullable-or-set-a-default-value" class="common-anchor-header">我是否可以將 GEOMETRY 欄位定義為可空值或設定預設值？<button data-href="#Can-I-define-the-GEOMETRY-field-as-nullable-or-set-a-default-value" class="anchor-icon" translate="no">
+    </button></h3><p>Yes, the <code translate="no">GEOMETRY</code> field supports mmap. For more information, refer to <a href="https://zilliverse.feishu.cn/wiki/P3wrwSMNNihy8Vkf9p6cTsWYnTb">Use mmap</a>.</p>
+<h3 id="Can-I-define-the-GEOMETRY-field-as-nullable-or-set-a-default-value" class="common-anchor-header">Can I define the GEOMETRY field as nullable or set a default value?<button data-href="#Can-I-define-the-GEOMETRY-field-as-nullable-or-set-a-default-value" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -619,4 +651,4 @@ List&lt;List&lt;SearchResp.SearchResult&gt;&gt; searchResults = statusR.getSearc
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>可以，GEOMETRY 欄位支援<code translate="no">nullable</code> 屬性和 WKT 格式的預設值。如需詳細資訊，請參閱<a href="/docs/zh-hant/nullable-and-default.md">Nullable &amp; Default</a>。</p>
+    </button></h3><p>Yes, the GEOMETRY field supports the <code translate="no">nullable</code> attribute and a default value in WKT format. For more information, refer to <a href="/docs/zh-hant/nullable-and-default.md">Nullable & Default</a>.</p>

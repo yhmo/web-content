@@ -1,14 +1,13 @@
 ---
 id: langchain_milvus_dido.md
 summary: >-
-  Esta guía demuestra cómo utilizar la función de incrustación de texto de
-  Milvus 2.6 (también conocida como Data In Data Out) con LangChain. Esta
-  función permite que el servidor Milvus convierta automáticamente texto sin
-  formato en incrustaciones vectoriales, simplificando el código del lado del
-  cliente y centralizando la gestión de claves API.
-title: Integración de la función de incrustación de texto de Milvus con LangChain
+  This guide demonstrates how to use Milvus 2.6's Text Embedding Function (also
+  known as Data In Data Out) with LangChain. This feature allows the Milvus
+  server to automatically convert raw text into vector embeddings, simplifying
+  client-side code and centralizing API key management.
+title: Integrating Milvus Text Embedding Function with LangChain
 ---
-<h1 id="Integrating-Milvus-Text-Embedding-Function-with-LangChain" class="common-anchor-header">Integración de la función de incrustación de texto de Milvus con LangChain<button data-href="#Integrating-Milvus-Text-Embedding-Function-with-LangChain" class="anchor-icon" translate="no">
+<h1 id="Integrating-Milvus-Text-Embedding-Function-with-LangChain" class="common-anchor-header">Integrating Milvus Text Embedding Function with LangChain<button data-href="#Integrating-Milvus-Text-Embedding-Function-with-LangChain" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -29,9 +28,9 @@ title: Integración de la función de incrustación de texto de Milvus con LangC
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/langchain/langchain_milvus_dido.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<p>Esta guía muestra cómo utilizar la función de incrustación <strong>de texto</strong> de Milvus 2.6 (también conocida como Data In Data Out) con LangChain. Esta función permite al servidor Milvus convertir automáticamente texto sin formato en incrustaciones vectoriales, simplificando el código del lado del cliente y centralizando la gestión de claves API.</p>
-<p><a href="https://milvus.io/">Milvus</a> es la base de datos vectorial de código abierto más avanzada del mundo, construida específicamente para soportar aplicaciones de búsqueda de similitud de incrustación y de IA. <a href="https://www.langchain.com/">LangChain</a> es un marco para el desarrollo de aplicaciones basadas en grandes modelos lingüísticos (LLM). Al integrar la función de incrustación de texto de Milvus, puede conseguir una solución de búsqueda vectorial más sencilla y eficaz en sus aplicaciones LangChain.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Requisitos previos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>This guide demonstrates how to use Milvus 2.6’s <strong>Text Embedding Function</strong> (also known as Data In Data Out) with LangChain. This feature allows the Milvus server to automatically convert raw text into vector embeddings, simplifying client-side code and centralizing API key management.</p>
+<p><a href="https://milvus.io/">Milvus</a> is the world’s most advanced open-source vector database, built specifically to support embedding similarity search and AI applications. <a href="https://www.langchain.com/">LangChain</a> is a framework for developing applications powered by large language models (LLMs). By integrating Milvus’s Text Embedding Function, you can achieve a simpler and more efficient vector search solution in your LangChain applications.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -46,13 +45,13 @@ title: Integración de la función de incrustación de texto de Milvus con LangC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Antes de ejecutar este tutorial, asegúrese de haber instalado las siguientes dependencias:</p>
+    </button></h2><p>Before running this tutorial, ensure you have installed the following dependencies:</p>
 <pre><code translate="no" class="language-shell">! pip install --upgrade langchain-milvus langchain-core langchain-openai
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Si está utilizando Google Colab, para habilitar las dependencias recién instaladas, es posible que tenga que <strong>reiniciar el tiempo de ejecución</strong> (haga clic en el menú "Tiempo de ejecución" en la parte superior de la pantalla, y seleccione "Reiniciar sesión" en el menú desplegable).</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </div>
-<h3 id="Configuring-the-Milvus-Server" class="common-anchor-header">Configuración del servidor Milvus<button data-href="#Configuring-the-Milvus-Server" class="anchor-icon" translate="no">
+<h3 id="Configuring-the-Milvus-Server" class="common-anchor-header">Configuring the Milvus Server<button data-href="#Configuring-the-Milvus-Server" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,18 +66,18 @@ title: Integración de la función de incrustación de texto de Milvus con LangC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>Importante</strong>: La función de incrustación de texto (entrada y salida de datos) sólo está disponible en <strong>Milvus Server</strong>. <strong>Milvus Lite no admite esta función</strong>. Necesita utilizar un servidor Milvus desplegado con Docker/Kubernetes.</p>
-<p>Antes de utilizar la función de incrustación de texto, debe configurar las credenciales para los proveedores de servicios de incrustación en el servidor Milvus.</p>
-<p><strong>Declare sus claves en credenciales:</strong></p>
-<p>Usted puede listar una o muchas claves API - déle a cada una una etiqueta que usted invente y a la que hará referencia más tarde.</p>
+    </button></h3><p><strong>Important</strong>: The Text Embedding Function (Data In Data Out) feature is only available in <strong>Milvus Server</strong>. <strong>Milvus Lite does not support this feature</strong>. You need to use a Milvus server deployed with Docker/Kubernetes.</p>
+<p>Before using the Text Embedding Function, you need to configure credentials for embedding service providers on the Milvus server.</p>
+<p><strong>Declare your keys under credential:</strong></p>
+<p>You may list one or many API keys—give each a label you invent and will reference later.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 
 <span class="hljs-attr">credential:</span>
   <span class="hljs-attr">apikey_dev:</span>
     <span class="hljs-attr">apikey:</span> <span class="hljs-string">&lt;YOUR_OPENAI_API_KEY&gt;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Dígale a Milvus qué clave utilizar para las llamadas OpenAI</strong></p>
-<p>En el mismo archivo, indique al proveedor de OpenAI la etiqueta que desea que utilice.</p>
+<p><strong>Tell Milvus which key to use for OpenAI calls</strong></p>
+<p>In the same file, point the OpenAI provider at the label you want it to use.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">function:</span>
   <span class="hljs-attr">textEmbedding:</span>
     <span class="hljs-attr">providers:</span>
@@ -86,8 +85,8 @@ title: Integración de la función de incrustación de texto de Milvus con LangC
         <span class="hljs-attr">credential:</span> <span class="hljs-string">apikey_dev</span>
         <span class="hljs-comment"># url: https://api.openai.com/v1/embeddings   # (optional) custom url</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Para más métodos de configuración, consulte la <a href="https://milvus.io/docs/embedding-function-overview.md">documentación de Milvus Embedding Function</a>.</p>
-<h3 id="Starting-the-Milvus-Service" class="common-anchor-header">Iniciando el Servicio Milvus<button data-href="#Starting-the-Milvus-Service" class="anchor-icon" translate="no">
+<p>For more configuration methods, please refer to the <a href="https://milvus.io/docs/embedding-function-overview.md">Milvus Embedding Function documentation</a>.</p>
+<h3 id="Starting-the-Milvus-Service" class="common-anchor-header">Starting the Milvus Service<button data-href="#Starting-the-Milvus-Service" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,8 +101,8 @@ title: Integración de la función de incrustación de texto de Milvus con LangC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Asegúrese de que Milvus Server se está ejecutando y que la función de incrustación está activada. Puede desplegar el servidor Milvus utilizando <a href="https://milvus.io/docs/install_standalone-docker.md">Docker</a> o <a href="https://milvus.io/docs/install_cluster-helm.md">Kubernetes</a>. Nota: <strong>Milvus Lite no es compatible con la función de incrustación de texto</strong>.</p>
-<h2 id="Understanding-Embedding-Client-side-vs-Server-side" class="common-anchor-header">Entendiendo la incrustación: Del lado del cliente vs del lado del servidor<button data-href="#Understanding-Embedding-Client-side-vs-Server-side" class="anchor-icon" translate="no">
+    </button></h3><p>Ensure that Milvus Server is running and the embedding feature is enabled. You can deploy Milvus server using <a href="https://milvus.io/docs/install_standalone-docker.md">Docker</a> or <a href="https://milvus.io/docs/install_cluster-helm.md">Kubernetes</a>. Note: <strong>Milvus Lite does not support Text Embedding Function</strong>.</p>
+<h2 id="Understanding-Embedding-Client-side-vs-Server-side" class="common-anchor-header">Understanding Embedding: Client-side vs Server-side<button data-href="#Understanding-Embedding-Client-side-vs-Server-side" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -118,8 +117,8 @@ title: Integración de la función de incrustación de texto de Milvus con LangC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Antes de sumergirnos en el uso, entendamos primero las diferencias entre los dos enfoques de incrustación.</p>
-<h3 id="Embedding-using-LangChains-Embeddings-class-Client-side" class="common-anchor-header">Incrustación utilizando la clase <code translate="no">Embeddings</code> de LangChain (del lado del cliente)<button data-href="#Embedding-using-LangChains-Embeddings-class-Client-side" class="anchor-icon" translate="no">
+    </button></h2><p>Before diving into usage, let’s first understand the differences between the two embedding approaches.</p>
+<h3 id="Embedding-using-LangChains-Embeddings-class-Client-side" class="common-anchor-header">Embedding using LangChain’s <code translate="no">Embeddings</code> class (Client-side)<button data-href="#Embedding-using-LangChains-Embeddings-class-Client-side" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,7 +133,7 @@ title: Integración de la función de incrustación de texto de Milvus con LangC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>En el enfoque tradicional de LangChain, la generación de la incrustación se realiza en el lado del cliente utilizando la <a href="https://python.langchain.com/docs/api_reference/embeddings/langchain_core.embeddings.Embeddings">clase<code translate="no">Embeddings</code> </a>. Su aplicación necesita utilizar el método <code translate="no">embed_query</code> de la clase para llamar a la API de incrustación, luego almacenar los vectores generados en Milvus.</p>
+    </button></h3><p>In the traditional LangChain approach, embedding generation happens on the client side by using the <a href="https://python.langchain.com/docs/api_reference/embeddings/langchain_core.embeddings.Embeddings"><code translate="no">Embeddings</code> class</a>. Your application needs to use the <code translate="no">embed_query</code> method of the class to call the embedding API, then store the generated vectors in Milvus.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> OpenAIEmbeddings
 <span class="hljs-keyword">from</span> langchain_milvus <span class="hljs-keyword">import</span> Milvus
 
@@ -149,20 +148,20 @@ vector_store = Milvus(
     collection_name=<span class="hljs-string">&quot;traditional_approach_collection&quot;</span>,
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Diagrama de secuencia:</strong></p>
+<p><strong>Sequence Diagram:</strong></p>
 <p>
   <span class="img-wrapper">
     <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/langchain_milvus_dito_langchain_embedding.png" alt="" class="doc-image" id="" />
     <span></span>
   </span>
 </p>
-<p><strong>Características:</strong></p>
+<p><strong>Characteristics:</strong></p>
 <ul>
-<li>El cliente llama directamente a la API de incrustación</li>
-<li>Necesidad de gestionar las claves API en el lado del cliente</li>
-<li>Flujo de datos: Texto → Cliente → API de incrustación → Vector → Milvus</li>
+<li>Client directly calls embedding API</li>
+<li>Need to manage API keys on the client side</li>
+<li>Data flow: Text → Client → Embedding API → Vector → Milvus</li>
 </ul>
-<h3 id="Milvus-Text-Embedding-Function-Server-side-Data-In-Data-Out" class="common-anchor-header">Función de incrustación de texto de Milvus (datos de entrada datos de salida del lado del servidor)<button data-href="#Milvus-Text-Embedding-Function-Server-side-Data-In-Data-Out" class="anchor-icon" translate="no">
+<h3 id="Milvus-Text-Embedding-Function-Server-side-Data-In-Data-Out" class="common-anchor-header">Milvus Text Embedding Function (Server-side Data In Data Out)<button data-href="#Milvus-Text-Embedding-Function-Server-side-Data-In-Data-Out" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -177,21 +176,21 @@ vector_store = Milvus(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La función de incrustación de texto (entrada y salida de datos) de Milvus 2.6 permite al servidor de Milvus convertir automáticamente texto en bruto en incrustaciones vectoriales. El cliente sólo tiene que proporcionar el texto, y Milvus se encargará automáticamente de la generación de la incrustación.</p>
-<p><strong>Diagrama de secuencia:</strong></p>
+    </button></h3><p>Milvus 2.6’s Text Embedding Function (Data In Data Out) allows the Milvus server to automatically convert raw text into vector embeddings. The client only needs to provide text, and Milvus will automatically handle embedding generation.</p>
+<p><strong>Sequence Diagram:</strong></p>
 <p>
   <span class="img-wrapper">
     <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/langchain_milvus_dito_milvus_embedding.png" alt="" class="doc-image" id="" />
     <span></span>
   </span>
 </p>
-<p><strong>Características:</strong></p>
+<p><strong>Characteristics:</strong></p>
 <ul>
-<li>El servidor Milvus llama a la API de incrustación</li>
-<li>Las claves de la API se gestionan de forma centralizada en el servidor.</li>
-<li>Flujo de datos: Texto → Milvus → API de incrustación → Vector (almacenado en Milvus)</li>
+<li>Milvus server calls embedding API</li>
+<li>API keys are centrally managed on the server side</li>
+<li>Data flow: Text → Milvus → Embedding API → Vector (stored in Milvus)</li>
 </ul>
-<h3 id="Comparison-of-the-Two-Methods" class="common-anchor-header">Comparación de los dos métodos<button data-href="#Comparison-of-the-Two-Methods" class="anchor-icon" translate="no">
+<h3 id="Comparison-of-the-Two-Methods" class="common-anchor-header">Comparison of the Two Methods<button data-href="#Comparison-of-the-Two-Methods" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -208,19 +207,19 @@ vector_store = Milvus(
       </svg>
     </button></h3><table>
 <thead>
-<tr><th>Característica</th><th>Incrustación LangChain (del lado del cliente)</th><th>Función de incrustación de texto de Milvus (del lado del servidor)</th></tr>
+<tr><th>Feature</th><th>LangChain Embedding (Client-side)</th><th>Milvus Text Embedding Function (Server-side)</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>Lugar de procesamiento</strong></td><td>Aplicación cliente</td><td>Servidor Milvus</td></tr>
-<tr><td><strong>Llamadas a la API</strong></td><td>El cliente llama directamente a la API de incrustación</td><td>El servidor Milvus llama a la API de incrustación</td></tr>
-<tr><td><strong>Gestión de claves API</strong></td><td>Necesidad de gestión en el lado del cliente</td><td>Gestión centralizada en el servidor, más segura</td></tr>
-<tr><td><strong>Complejidad del código</strong></td><td>Necesidad de gestionar claves y llamadas API en el lado del cliente</td><td>Sólo es necesario configurarlo una vez en la configuración de Milvus</td></tr>
-<tr><td><strong>Casos de uso</strong></td><td>- Necesidad de control del cliente sobre el proceso de incrustación<br>- Necesidad de almacenar en caché los resultados de la incrustación en el lado del cliente<br>- Necesidad de soportar múltiples cambios de modelo de incrustación</td><td>- Simplificar el código del lado del cliente<br>- Gestión centralizada de las claves API en el servidor<br>- Necesidad de procesar por lotes grandes volúmenes de documentos<br>- Necesidad de reducir las interacciones del cliente con API externas<br>- Necesidad de combinar con las funciones integradas de Milvus como BM25</td></tr>
-<tr><td><strong>Requisitos de la versión de Milvus</strong></td><td>Todas las versiones (incluida Milvus Lite)</td><td>Milvus Lite no es compatible</td></tr>
+<tr><td><strong>Processing Location</strong></td><td>Client application</td><td>Milvus server</td></tr>
+<tr><td><strong>API Calls</strong></td><td>Client directly calls embedding API</td><td>Milvus server calls embedding API</td></tr>
+<tr><td><strong>API Key Management</strong></td><td>Need to manage on client side</td><td>Centrally managed on server side, more secure</td></tr>
+<tr><td><strong>Code Complexity</strong></td><td>Need to manage API keys and calls on client side</td><td>Only need to configure once in Milvus configuration</td></tr>
+<tr><td><strong>Use Cases</strong></td><td>• Need client-side control over embedding process<br>• Need to cache embedding results on client side<br>• Need to support multiple embedding model switching</td><td>• Simplify client-side code<br>• Centrally manage API keys on server side<br>• Need to batch process large volumes of documents<br>• Want to reduce client-side interactions with external APIs<br>• Need to combine with Milvus built-in features like BM25</td></tr>
+<tr><td><strong>Milvus Version Requirements</strong></td><td>All versions (including Milvus Lite)</td><td>Milvus Lite not supported</td></tr>
 </tbody>
 </table>
-<p><strong>Este tutorial presenta principalmente el método Milvus Text Embedding Function (Data In Data Out) del lado del servidor</strong>, que es una nueva característica introducida en Milvus 2.6 que puede simplificar significativamente el código del lado del cliente y mejorar la seguridad.</p>
-<h2 id="Using-Text-Embedding-Function" class="common-anchor-header">Uso de la función de incrustación de texto<button data-href="#Using-Text-Embedding-Function" class="anchor-icon" translate="no">
+<p><strong>This tutorial primarily introduces the Milvus server-side Text Embedding Function (Data In Data Out) method</strong>, which is a new feature introduced in Milvus 2.6 that can significantly simplify client-side code and improve security.</p>
+<h2 id="Using-Text-Embedding-Function" class="common-anchor-header">Using Text Embedding Function<button data-href="#Using-Text-Embedding-Function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,7 +234,7 @@ vector_store = Milvus(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Example-1-Server-side-Embedding-Only" class="common-anchor-header">Ejemplo 1: Sólo incrustación en el servidor<button data-href="#Example-1-Server-side-Embedding-Only" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Example-1-Server-side-Embedding-Only" class="common-anchor-header">Example 1: Server-side Embedding Only<button data-href="#Example-1-Server-side-Embedding-Only" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -250,7 +249,7 @@ vector_store = Milvus(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Este es el caso de uso más simple, dependiendo completamente del servidor Milvus para generar incrustaciones. El cliente no necesita ninguna función de incrustación.</p>
+    </button></h3><p>This is the simplest use case, completely relying on the Milvus server to generate embeddings. The client does not need any embedding function.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> langchain_milvus <span class="hljs-keyword">import</span> Milvus
 <span class="hljs-keyword">from</span> langchain_milvus.function <span class="hljs-keyword">import</span> TextEmbeddingBuiltInFunction
 <span class="hljs-keyword">from</span> langchain_core.documents <span class="hljs-keyword">import</span> Document
@@ -280,13 +279,13 @@ vector_store = Milvus(
 )
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Para <code translate="no">connection_args</code>:</p>
+<p>For <code translate="no">connection_args</code>:</p>
 <ul>
-<li><strong>Debe utilizar Milvus Server</strong>: La función de incrustación de texto sólo está disponible en Milvus Server, Milvus Lite no es compatible.</li>
-<li>Utilice la uri del servidor, como <code translate="no">http://localhost:19530</code> (despliegue Docker local) o <code translate="no">http://your-server:19530</code> (servidor remoto).</li>
-<li>Si utiliza <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, utilice el Public Endpoint como <code translate="no">uri</code> y establezca el parámetro <code translate="no">token</code>.</li>
+<li><strong>Must use Milvus Server</strong>: The Text Embedding Function feature is only available in Milvus Server, Milvus Lite is not supported.</li>
+<li>Use server uri, such as <code translate="no">http://localhost:19530</code> (local Docker deployment) or <code translate="no">http://your-server:19530</code> (remote server).</li>
+<li>If using <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, use the Public Endpoint as <code translate="no">uri</code> and set the <code translate="no">token</code> parameter.</li>
 </ul>
-<p>Al añadir documentos, sólo necesita proporcionar texto, no es necesario precalcular vectores. Milvus llamará automáticamente a la API de OpenAI para generar incrustaciones.</p>
+<p>When adding documents, you only need to provide text, no need to pre-compute vectors. Milvus will automatically call the OpenAI API to generate embeddings.</p>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Add documents (only need to provide text, no need to pre-compute vectors)</span>
 documents = [
@@ -303,7 +302,7 @@ vector_store.add_documents(documents)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">[462726375729313252, 462726375729313253, 462726375729313254]
 </code></pre>
-<p>Durante la búsqueda, utilice directamente consultas de texto, y Milvus convertirá automáticamente el texto de la consulta en vectores para la búsqueda.</p>
+<p>During search, directly use text queries, and Milvus will automatically convert the query text to vectors for search.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Search (directly use text query)</span>
 results = vector_store.similarity_search(
     query=<span class="hljs-string">&quot;How does Milvus handle semantic search?&quot;</span>, k=<span class="hljs-number">2</span>
@@ -323,7 +322,7 @@ Metadata: {'pk': 462726375729313252}
 Content: Semantic search helps users find relevant information quickly.
 Metadata: {'pk': 462726375729313254}
 </code></pre>
-<h3 id="Example-2-Combining-Text-Embedding-and-BM25-Hybrid-Search" class="common-anchor-header">Ejemplo 2: Combinación de incrustación de texto y BM25 (búsqueda híbrida)<button data-href="#Example-2-Combining-Text-Embedding-and-BM25-Hybrid-Search" class="anchor-icon" translate="no">
+<h3 id="Example-2-Combining-Text-Embedding-and-BM25-Hybrid-Search" class="common-anchor-header">Example 2: Combining Text Embedding and BM25 (Hybrid Search)<button data-href="#Example-2-Combining-Text-Embedding-and-BM25-Hybrid-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -338,7 +337,7 @@ Metadata: {'pk': 462726375729313254}
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La combinación de la búsqueda semántica (Text Embedding) y la búsqueda por palabras clave (BM25) permite realizar búsquedas híbridas más potentes. La búsqueda semántica permite comprender mejor la intención de la consulta, mientras que la búsqueda por palabras clave permite obtener una correspondencia exacta.</p>
+    </button></h3><p>Combining semantic search (Text Embedding) and keyword search (BM25) enables more powerful hybrid search capabilities. Semantic search excels at understanding query intent, while keyword search excels at exact matching.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> langchain_milvus <span class="hljs-keyword">import</span> Milvus
 <span class="hljs-keyword">from</span> langchain_milvus.function <span class="hljs-keyword">import</span> TextEmbeddingBuiltInFunction, BM25BuiltInFunction
 
@@ -381,7 +380,7 @@ vector_store.add_documents(documents)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">[462726375729313255, 462726375729313256]
 </code></pre>
-<p>Utilice <code translate="no">WeightedRanker</code> para controlar el peso de la búsqueda semántica y de la búsqueda por palabras clave. Cuando la ponderación densa es mayor, los resultados están más sesgados hacia la similitud semántica; cuando la ponderación dispersa es mayor, los resultados están más sesgados hacia la coincidencia de palabras clave.</p>
+<p>Use <code translate="no">WeightedRanker</code> to control the weights of semantic search and keyword search. When dense weight is higher, results are more biased towards semantic similarity; when sparse weight is higher, results are more biased towards keyword matching.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Hybrid search, use WeightedRanker to control weights</span>
 <span class="hljs-comment"># 70% semantic search, 30% keyword search</span>
 results = vector_store.similarity_search(
@@ -410,7 +409,7 @@ results_keyword_focused = vector_store.similarity_search(
 <pre><code translate="no">[Document(metadata={'pk': 462726375729313256}, page_content='The cat sat on the mat'),
  Document(metadata={'pk': 462726375729313255}, page_content='Machine learning and artificial intelligence')]
 </code></pre>
-<h2 id="Summary" class="common-anchor-header">Resumen<button data-href="#Summary" class="anchor-icon" translate="no">
+<h2 id="Summary" class="common-anchor-header">Summary<button data-href="#Summary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -425,4 +424,4 @@ results_keyword_focused = vector_store.similarity_search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Enhorabuena. Ha aprendido a utilizar la función de incrustación de texto (Data In Data Out) de Milvus con LangChain. Al mover la generación de incrustaciones al lado del servidor, puede simplificar el código del lado del cliente, gestionar de forma centralizada las claves API e implementar fácilmente la búsqueda híbrida. Combinado con Text Embedding Function y BM25, Milvus le proporciona potentes capacidades de búsqueda vectorial.</p>
+    </button></h2><p>Congratulations! You have learned how to use Milvus’s Text Embedding Function (Data In Data Out) feature with LangChain. By moving embedding generation to the server side, you can simplify client-side code, centrally manage API keys, and easily implement hybrid search. Combined with Text Embedding Function and BM25, Milvus provides you with powerful vector search capabilities.</p>

@@ -2,9 +2,9 @@
 id: stl-sort.md
 title: STL_SORT
 summary: >-
-  فهرس STL_SORT هو نوع فهرس مصمم خصيصًا لتحسين أداء الاستعلام على الحقول الرقمية
-  (INT8، INT16، إلخ) أو حقول VARCHAR أو حقول TIMESTAMPTZ داخل Milvus من خلال
-  تنظيم البيانات بترتيب مرتب.
+  The STL_SORT index is an index type specifically designed to enhance query
+  performance on numeric fields (INT8, INT16, etc.), VARCHAR fields, or
+  TIMESTAMPTZ fields within Milvus by organizing the data in a sorted order.
 ---
 <h1 id="STLSORT" class="common-anchor-header">STL_SORT<button data-href="#STLSORT" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -21,13 +21,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>فهرس <code translate="no">STL_SORT</code> هو نوع فهرس مصمم خصيصًا لتحسين أداء الاستعلام على الحقول الرقمية (INT8، INT16، إلخ) أو حقول <code translate="no">VARCHAR</code> أو حقول <code translate="no">TIMESTAMPTZ</code> داخل Milvus من خلال تنظيم البيانات بترتيب مرتب.</p>
-<p>استخدم الفهرس <code translate="no">STL_SORT</code> إذا كنت تقوم بتشغيل الاستعلامات بشكل متكرر مع:</p>
+    </button></h1><p>The <code translate="no">STL_SORT</code> index is an index type specifically designed to enhance query performance on numeric fields (INT8, INT16, etc.), <code translate="no">VARCHAR</code> fields, or <code translate="no">TIMESTAMPTZ</code> fields within Milvus by organizing the data in a sorted order.</p>
+<p>Use the <code translate="no">STL_SORT</code> index if you frequently run queries with:</p>
 <ul>
-<li><p>تصفية المقارنة باستخدام <code translate="no">==</code> و <code translate="no">!=</code> و و <code translate="no">&gt;</code> و <code translate="no">&lt;</code> و <code translate="no">&gt;=</code> و <code translate="no">&lt;=</code> </p></li>
-<li><p>تصفية النطاق باستخدام المشغلين <code translate="no">IN</code> و <code translate="no">LIKE</code> </p></li>
+<li><p>Comparison filtering with <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, and <code translate="no">&lt;=</code> operators</p></li>
+<li><p>Range filtering with <code translate="no">IN</code> and <code translate="no">LIKE</code> operators</p></li>
 </ul>
-<h2 id="Supported-data-types" class="common-anchor-header">أنواع البيانات المدعومة<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
+<h2 id="Supported-data-types" class="common-anchor-header">Supported data types<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,11 +43,11 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>حقول رقمية (على سبيل المثال، <code translate="no">INT8</code> ، <code translate="no">INT16</code> ، ، <code translate="no">INT32</code> ، <code translate="no">INT64</code> ، <code translate="no">FLOAT</code> ، <code translate="no">DOUBLE</code>). لمزيد من التفاصيل، راجع الحقول <a href="/docs/ar/number.md">المنطقية والعددية</a>.</p></li>
-<li><p><code translate="no">VARCHAR</code> الحقول. لمزيد من التفاصيل، راجع حقول <a href="/docs/ar/string.md">السلسلة</a>.</p></li>
-<li><p><code translate="no">TIMESTAMPTZ</code> الحقول. لمزيد من التفاصيل، راجع <a href="/docs/ar/timestamptz-field.md">حقل TIMESTAMPTZ</a>.</p></li>
+<li><p>Numeric fields (e.g., <code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code>, <code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code>). For details, refer to <a href="/docs/ar/v2.6.x/number.md">Boolean & Number</a>.</p></li>
+<li><p><code translate="no">VARCHAR</code> fields. For details, refer to <a href="/docs/ar/v2.6.x/string.md">String Field</a>.</p></li>
+<li><p><code translate="no">TIMESTAMPTZ</code> fields. For details, refer to <a href="/docs/ar/v2.6.x/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">كيف يعمل<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,24 +62,24 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ينفذ ميلفوس <code translate="no">STL_SORT</code> على مرحلتين:</p>
+    </button></h2><p>Milvus implements <code translate="no">STL_SORT</code> in two phases:</p>
 <ol>
-<li><p><strong>بناء الفهرس</strong></p>
+<li><p><strong>Build index</strong></p>
 <ul>
-<li><p>أثناء الاستيعاب، يجمع Milvus جميع القيم للحقل المفهرس.</p></li>
-<li><p>يتم فرز القيم بترتيب تصاعدي باستخدام <a href="https://en.cppreference.com/w/cpp/algorithm/sort.html">std:::sort</a> الخاص بـ C++ STL.</p></li>
-<li><p>يتم إقران كل قيمة بمعرف الكيان الخاص بها، ويتم استمرار المصفوفة المصنفة كفهرس.</p></li>
+<li><p>During ingestion, Milvus collects all values for the indexed field.</p></li>
+<li><p>The values are sorted in ascending order using C++ STL’s <a href="https://en.cppreference.com/w/cpp/algorithm/sort.html">std::sort</a>.</p></li>
+<li><p>Each value is paired with its entity ID, and the sorted array is persisted as the index.</p></li>
 </ul></li>
-<li><p><strong>تسريع الاستعلامات</strong></p>
+<li><p><strong>Accelerate queries</strong></p>
 <ul>
-<li><p>في وقت الاستعلام، يستخدم Milvus <strong>بحثًا ثنائيًا</strong><a href="https://en.cppreference.com/w/cpp/algorithm/lower_bound.html">(std::Lower_bound</a> و <a href="https://en.cppreference.com/w/cpp/algorithm/upper_bound.html">std::upper_bound</a>) على المصفوفة المصنفة.</p></li>
-<li><p>بالنسبة للتساوي، يعثر ميلفوس بسرعة على جميع القيم المطابقة.</p></li>
-<li><p>بالنسبة للنطاقات، يحدد Milvus موقعي البداية والنهاية ويعيد جميع القيم بينهما.</p></li>
-<li><p>يتم تمرير معرفات الكيانات المطابقة إلى منفذ الاستعلام لتجميع النتائج النهائية.</p></li>
+<li><p>At query time, Milvus uses <strong>binary search</strong> (<a href="https://en.cppreference.com/w/cpp/algorithm/lower_bound.html">std::lower_bound</a> and <a href="https://en.cppreference.com/w/cpp/algorithm/upper_bound.html">std::upper_bound</a>) on the sorted array.</p></li>
+<li><p>For equality, Milvus quickly finds all matching values.</p></li>
+<li><p>For ranges, Milvus locates the start and end positions and returns all values in between.</p></li>
+<li><p>Matching entity IDs are passed to the query executor for final result assembly.</p></li>
 </ul></li>
 </ol>
-<p>يقلل ذلك من تعقيد الاستعلام من <strong>O(n)</strong> (مسح كامل) إلى <strong>O(log n + m)</strong>، حيث <em>m</em> هو عدد مرات التطابق.</p>
-<h2 id="Create-an-STLSORT-index" class="common-anchor-header">إنشاء فهرس STL_SORT<button data-href="#Create-an-STLSORT-index" class="anchor-icon" translate="no">
+<p>This reduces query complexity from <strong>O(n)</strong> (full scan) to <strong>O(log n + m)</strong>, where <em>m</em> is the number of matches.</p>
+<h2 id="Create-an-STLSORT-index" class="common-anchor-header">Create an STL_SORT index<button data-href="#Create-an-STLSORT-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -94,8 +94,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يمكنك إنشاء فهرس <code translate="no">STL_SORT</code> على حقل رقمي أو <code translate="no">TIMESTAMPTZ</code>. لا توجد معلمات إضافية مطلوبة.</p>
-<p>يوضح المثال أدناه كيفية إنشاء فهرس <code translate="no">STL_SORT</code> على حقل <code translate="no">TIMESTAMPTZ</code>:</p>
+    </button></h2><p>You can create an <code translate="no">STL_SORT</code> index on a numeric or <code translate="no">TIMESTAMPTZ</code> field. No extra parameters are required.</p>
+<p>The example below shows how to create an <code translate="no">STL_SORT</code> index on a <code translate="no">TIMESTAMPTZ</code> field:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your server address</span>
@@ -119,7 +119,7 @@ client.create_index(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Drop-an-index" class="common-anchor-header">إسقاط فهرس<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
+<h2 id="Drop-an-index" class="common-anchor-header">Drop an index<button data-href="#Drop-an-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,7 +134,7 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>استخدم الأسلوب <code translate="no">drop_index()</code> لإزالة فهرس موجود من مجموعة.</p>
+    </button></h2><p>Use the <code translate="no">drop_index()</code> method to remove an existing index from a collection.</p>
 <div class="alert note">
 </div>
 <pre><code translate="no" class="language-python">client.drop_index(
@@ -142,7 +142,7 @@ client.create_index(
     index_name=<span class="hljs-string">&quot;tsz_index&quot;</span> <span class="hljs-comment"># Name of the index to drop</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Usage-notes" class="common-anchor-header">ملاحظات الاستخدام<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<h2 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -158,7 +158,7 @@ client.create_index(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>أنواع الحقول:</strong> يعمل مع الحقول الرقمية و <code translate="no">TIMESTAMPTZ</code>. للمزيد من المعلومات حول أنواع البيانات، راجع <a href="/docs/ar/timestamptz-field.md">الحقل</a> <a href="/docs/ar/number.md">المنطقي والرقمي</a> <a href="/docs/ar/timestamptz-field.md">وحقل TIMESTAMPTZ</a>.</p></li>
-<li><p><strong>المعلمات:</strong> لا حاجة إلى معلمات فهرس.</p></li>
-<li><p><strong>Mmap غير مدعوم:</strong> وضع تعيين الذاكرة غير متاح لـ <code translate="no">STL_SORT</code>.</p></li>
+<li><p><strong>Field types:</strong> Works with numeric and <code translate="no">TIMESTAMPTZ</code> fields. For more information on data types, refer to <a href="/docs/ar/v2.6.x/number.md">Boolean & Number</a> and <a href="/docs/ar/v2.6.x/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p></li>
+<li><p><strong>Parameters:</strong> No index parameters are needed.</p></li>
+<li><p><strong>Mmap not supported:</strong> Memory-mapped mode is not available for <code translate="no">STL_SORT</code>.</p></li>
 </ul>

@@ -1,14 +1,13 @@
 ---
 id: grouping-search-with-structarray.md
-title: Agrupación de resultados de búsqueda con StructArray
+title: Grouping Search with StructArray
 summary: >-
-  Utiliza esta página para agrupar los resultados de la búsqueda a nivel de
-  elemento de StructArray por entidad principal. La búsqueda a nivel de elemento
-  puede devolver varios resultados de la misma entidad cuando varios elementos
-  de Struct coinciden con la consulta. La agrupación agrupa esos resultados de
-  elementos de modo que cada entidad principal aparezca como máximo una vez.
+  Use this page to group StructArray element-level search results by the parent
+  entity. Element-level search can return multiple hits from the same entity
+  when several Struct elements match the query. Grouping collapses those element
+  hits so each parent entity appears at most once.
 ---
-<h1 id="Grouping-Search-with-StructArray" class="common-anchor-header">Agrupación de resultados de búsqueda con StructArray<button data-href="#Grouping-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Grouping-Search-with-StructArray" class="common-anchor-header">Grouping Search with StructArray<button data-href="#Grouping-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Utiliza esta página para agrupar los resultados de búsqueda a nivel de elemento de StructArray por entidad principal. La búsqueda a nivel de elemento puede devolver varios resultados de la misma entidad cuando varios elementos de Struct coinciden con la consulta. La agrupación agrupa esos resultados de elementos de modo que cada entidad principal aparezca como máximo una vez.</p>
-<p>Esta página utiliza la colección « <code translate="no">tech_articles</code> » de <a href="/docs/es/create-structarray-field.md">«Crear un campo StructArray</a>». La colección tiene un campo StructArray denominado « <code translate="no">chunks</code> ». El subcampo vectorial « <code translate="no">chunks[emb]</code> » está indexado para la búsqueda a nivel de elemento con una métrica vectorial regular.</p>
-<h2 id="How-grouping-applies-to-StructArray" class="common-anchor-header">Cómo se aplica la agrupación a StructArray<button data-href="#How-grouping-applies-to-StructArray" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to group StructArray element-level search results by the parent entity. Element-level search can return multiple hits from the same entity when several Struct elements match the query. Grouping collapses those element hits so each parent entity appears at most once.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/es/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>. The <code translate="no">chunks[emb]</code> vector subfield is indexed for element-level search with a regular vector metric.</p>
+<h2 id="How-grouping-applies-to-StructArray" class="common-anchor-header">How grouping applies to StructArray<button data-href="#How-grouping-applies-to-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,18 +41,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Modo de búsqueda</th><th>Comportamiento de la agrupación</th><th>Comportamiento de los resultados</th></tr>
+<tr><th>Search mode</th><th>Grouping behavior</th><th>Result behavior</th></tr>
 </thead>
 <tbody>
-<tr><td>Búsqueda en EmbeddingList</td><td>No es compatible.</td><td>No aplicable.</td></tr>
-<tr><td>Búsqueda a nivel de elemento</td><td>Compatible mediante agrupación por clave primaria.</td><td>Devuelve como máximo un resultado por entidad principal. Se conservan los metadatos a nivel de elemento, por lo que se puede devolver el índice o el desplazamiento del elemento seleccionado cuando lo exponga la API o el SDK.</td></tr>
-<tr><td>Búsqueda híbrida</td><td>Solo es compatible cuando todas las subbúsquedas se dirigen a campos vectoriales a nivel de elemento dentro del mismo campo StructArray.</td><td>Las subbúsquedas a nivel de elemento se agrupan por clave primaria antes del procesamiento final de los resultados.</td></tr>
+<tr><td>EmbeddingList search</td><td>Not supported.</td><td>Not applicable.</td></tr>
+<tr><td>Element-level search</td><td>Supported by grouping on the primary key.</td><td>Returns at most one result per parent entity. Element-level metadata is preserved, so the selected element index or offset can be returned when exposed by the API or SDK.</td></tr>
+<tr><td>Hybrid search</td><td>Supported only when all sub-searches target element-level vector fields under the same StructArray field.</td><td>Element-level sub-searches are grouped by primary key before final result handling.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>Utiliza la agrupación cuando la búsqueda a nivel de elemento sin agrupar devuelva demasiadas entidades principales duplicadas. Si deseas que cada elemento Struct coincidente aparezca como un resultado individual, utiliza <a href="/docs/es/basic-vector-search-with-structarray.md">la búsqueda vectorial básica con StructArray</a> sin la opción « <code translate="no">group_by_field</code> ».</p>
+<p>Use grouping when ungrouped element-level search returns too many duplicate parent entities. If you want every matching Struct element as an individual hit, use <a href="/docs/es/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a> without <code translate="no">group_by_field</code>.</p>
 </div>
-<h2 id="Before-you-begin" class="common-anchor-header">Antes de empezar<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,20 +67,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Prepara la colección, los datos y los índices antes de ejecutar la búsqueda agrupada.</p>
+    </button></h2><p>Prepare the collection, data, and indexes before running grouping search.</p>
 <table>
 <thead>
-<tr><th>Requisitos</th><th>Detalles</th></tr>
+<tr><th>Requirement</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>Subcampo vectorial a nivel de elemento</td><td>Utilice un subcampo vectorial StructArray, como <code translate="no">chunks[emb]</code>, indexado con una métrica vectorial regular.</td></tr>
-<tr><td>Consulta vectorial normal</td><td>Utilice un vector de consulta regular, no un ` <code translate="no">EmbeddingList</code>`.</td></tr>
-<tr><td>Agrupación por clave primaria</td><td>Utilice la clave primaria de la colección como ` <code translate="no">group_by_field</code>`, por ejemplo, ` <code translate="no">doc_id</code>`.</td></tr>
-<tr><td>Sin parámetros de rango</td><td>No combine la búsqueda por agrupación con parámetros de búsqueda por rango, como <code translate="no">radius</code> o <code translate="no">range_filter</code>.</td></tr>
+<tr><td>Element-level vector subfield</td><td>Use a StructArray vector subfield such as <code translate="no">chunks[emb]</code>, indexed with a regular vector metric.</td></tr>
+<tr><td>Regular vector query</td><td>Use a regular query vector, not an <code translate="no">EmbeddingList</code>.</td></tr>
+<tr><td>Primary key grouping</td><td>Use the collection primary key as <code translate="no">group_by_field</code>, such as <code translate="no">doc_id</code>.</td></tr>
+<tr><td>No range parameters</td><td>Do not combine grouping search with range-search parameters such as <code translate="no">radius</code> or <code translate="no">range_filter</code>.</td></tr>
 </tbody>
 </table>
-<p>Para la configuración del índice, consulta <a href="/docs/es/index-structarray-fields.md">«Campos StructArray del índice</a>».</p>
-<h2 id="Run-grouped-element-level-search" class="common-anchor-header">Ejecutar una búsqueda agrupada a nivel de elemento<button data-href="#Run-grouped-element-level-search" class="anchor-icon" translate="no">
+<p>For index setup, see <a href="/docs/es/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Run-grouped-element-level-search" class="common-anchor-header">Run grouped element-level search<button data-href="#Run-grouped-element-level-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,7 +95,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>El siguiente ejemplo busca primero en fragmentos individuales y, a continuación, agrupa los resultados de los elementos según la clave primaria de la entidad principal.</p>
+    </button></h2><p>The following example searches individual chunks first, then groups the element hits by the parent entity’s primary key.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -131,8 +130,8 @@ results = client.search(
             <span class="hljs-string">&quot;entity:&quot;</span>, hit[<span class="hljs-string">&quot;entity&quot;</span>],
         )
 <button class="copy-code-btn"></button></code></pre>
-<p>Sin agrupación, el mismo <code translate="no">doc_id</code> puede aparecer varias veces si varios fragmentos coinciden con la consulta. Con <code translate="no">group_by_field=&quot;doc_id&quot;</code>, cada entidad principal aparece como máximo una vez. La agrupación conserva los metadatos a nivel de elemento, por lo que el resultado agrupado puede seguir incluyendo el índice o el desplazamiento del elemento Struct seleccionado cuando la API o el SDK lo expongan.</p>
-<h2 id="Add-scalar-filters" class="common-anchor-header">Añadir filtros escalares<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
+<p>Without grouping, the same <code translate="no">doc_id</code> can appear multiple times if several chunks match the query. With <code translate="no">group_by_field=&quot;doc_id&quot;</code>, each parent entity appears at most once. Grouping preserves element-level metadata, so the grouped result can still include the selected Struct element index or offset when the API or SDK exposes it.</p>
+<h2 id="Add-scalar-filters" class="common-anchor-header">Add scalar filters<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -147,7 +146,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Puedes combinar la búsqueda agrupada con el filtrado escalar de StructArray. Utiliza « <code translate="no">element_filter</code> » cuando la condición escalar deba restringir qué elementos Struct participan en la búsqueda vectorial a nivel de elemento.</p>
+    </button></h2><p>You can combine grouping search with StructArray scalar filtering. Use <code translate="no">element_filter</code> when the scalar condition should constrain which Struct elements participate in element-level vector search.</p>
 <pre><code translate="no" class="language-python">filter_expr = (
     <span class="hljs-string">&#x27;category == &quot;search&quot; &amp;&amp; &#x27;</span>
     <span class="hljs-string">&#x27;element_filter(chunks, &#x27;</span>
@@ -172,8 +171,8 @@ results = client.search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>El predicado de nivel superior selecciona las entidades candidatas. El predicado « <code translate="no">element_filter</code> » restringe la búsqueda vectorial a nivel de elemento a los elementos de Struct que coincidan. A continuación, la agrupación agrupa los resultados de elementos coincidentes por la clave principal.</p>
-<h2 id="Use-grouping-in-hybrid-search" class="common-anchor-header">Utilice la agrupación en la búsqueda híbrida<button data-href="#Use-grouping-in-hybrid-search" class="anchor-icon" translate="no">
+<p>The top-level predicate selects candidate entities. The <code translate="no">element_filter</code> predicate restricts element-level vector search to matching Struct elements. Grouping then collapses matching element hits by the primary key.</p>
+<h2 id="Use-grouping-in-hybrid-search" class="common-anchor-header">Use grouping in hybrid search<button data-href="#Use-grouping-in-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -188,8 +187,8 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>La agrupación híbrida con StructArray es una característica a nivel de elemento. Solo es compatible cuando todas las subbúsquedas se dirigen a campos vectoriales a nivel de elemento dentro del mismo campo StructArray. No utilices solicitudes a nivel de EmbeddingList en una búsqueda híbrida agrupada de StructArray.</p>
-<p>El siguiente ejemplo parte de la base de que el campo StructArray « <code translate="no">chunks</code> » tiene dos subcampos vectoriales a nivel de elemento, « <code translate="no">chunks[emb]</code> » y « <code translate="no">chunks[code_emb]</code> », y que ambos están indexados con métricas vectoriales normales.</p>
+    </button></h2><p>Hybrid grouping with StructArray is an element-level feature. It is supported only when all sub-searches target element-level vector fields under the same StructArray field. Do not use EmbeddingList-level requests in a grouped StructArray hybrid search.</p>
+<p>The following example assumes the <code translate="no">chunks</code> StructArray field has two element-level vector subfields, <code translate="no">chunks[emb]</code> and <code translate="no">chunks[code_emb]</code>, and both are indexed with regular vector metrics.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> AnnSearchRequest, RRFRanker
 
 index_chunk_req = AnnSearchRequest(
@@ -220,8 +219,8 @@ results = client.hybrid_search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>En este ejemplo, ambas subconsultas se dirigen a campos vectoriales a nivel de elemento dentro del mismo campo StructArray, <code translate="no">chunks</code>. Una búsqueda híbrida no admite la agrupación a nivel de elemento si mezcla campos vectoriales normales, diferentes campos StructArray o consultas a nivel de EmbeddingList.</p>
-<h2 id="Interpret-grouped-results" class="common-anchor-header">Interpretar los resultados agrupados<button data-href="#Interpret-grouped-results" class="anchor-icon" translate="no">
+<p>In this example, both sub-requests target element-level vector fields under the same StructArray field, <code translate="no">chunks</code>. A hybrid search does not support element-level group-by if it mixes normal vector fields, different StructArray fields, or EmbeddingList-level requests.</p>
+<h2 id="Interpret-grouped-results" class="common-anchor-header">Interpret grouped results<button data-href="#Interpret-grouped-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -238,17 +237,17 @@ results = client.hybrid_search(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Elemento del resultado</th><th>Significado</th></tr>
+<tr><th>Result item</th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">id</code></td><td>Clave primaria de la entidad principal agrupada.</td></tr>
-<tr><td><code translate="no">distance</code> o puntuación</td><td>Puntuación o distancia del elemento Struct seleccionado para esa entidad principal.</td></tr>
-<tr><td><code translate="no">offset</code></td><td>Posición, contada a partir de cero, del elemento Struct seleccionado al devolverse.</td></tr>
-<tr><td>Claves primarias repetidas</td><td>No se esperan al agrupar por la clave primaria.</td></tr>
-<tr><td><code translate="no">limit</code></td><td>Se aplica a los resultados agrupados de la entidad principal.</td></tr>
+<tr><td><code translate="no">id</code></td><td>Primary key of the grouped parent entity.</td></tr>
+<tr><td><code translate="no">distance</code> or score</td><td>Score or distance of the selected Struct element for that parent entity.</td></tr>
+<tr><td><code translate="no">offset</code></td><td>Zero-based position of the selected Struct element when returned.</td></tr>
+<tr><td>Repeated primary keys</td><td>Not expected when grouping by the primary key.</td></tr>
+<tr><td><code translate="no">limit</code></td><td>Applies to grouped parent-entity results.</td></tr>
 </tbody>
 </table>
-<h2 id="Limitations" class="common-anchor-header">Limitaciones<button data-href="#Limitations" class="anchor-icon" translate="no">
+<h2 id="Limitations" class="common-anchor-header">Limitations<button data-href="#Limitations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -264,14 +263,14 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>La búsqueda por agrupación solo se aplica a la búsqueda vectorial de StructArray a nivel de elemento. La búsqueda de EmbeddingList y la búsqueda híbrida a nivel de EmbeddingList no admiten la agrupación.</p></li>
-<li><p>Utiliza la clave primaria como « <code translate="no">group_by_field</code> ». La agrupación a nivel de elemento de StructArray no es una agrupación de uso general sobre campos escalares arbitrarios.</p></li>
-<li><p>No combine la búsqueda por agrupación con la búsqueda por rango.</p></li>
-<li><p>No utilices una consulta « <code translate="no">EmbeddingList</code> » ni una métrica « <code translate="no">MAX_SIM*</code> » para la búsqueda agrupada.</p></li>
-<li><p>La agrupación híbrida solo es compatible cuando todas las subbúsquedas se dirigen a campos vectoriales a nivel de elemento dentro del mismo campo StructArray.</p></li>
-<li><p>La agrupación híbrida no es compatible cuando la búsqueda híbrida combina un campo vectorial normal, un campo StructArray diferente o una solicitud a nivel de EmbeddingList.</p></li>
+<li><p>Grouping search applies only to element-level StructArray vector search. EmbeddingList search and EmbeddingList-level hybrid search do not support group-by.</p></li>
+<li><p>Use the primary key as <code translate="no">group_by_field</code>. StructArray element-level grouping is not a general-purpose group-by over arbitrary scalar fields.</p></li>
+<li><p>Do not combine grouping search with range search.</p></li>
+<li><p>Do not use an <code translate="no">EmbeddingList</code> query or a <code translate="no">MAX_SIM*</code> metric for grouping search.</p></li>
+<li><p>Hybrid grouping is supported only when all sub-searches target element-level vector fields under the same StructArray field.</p></li>
+<li><p>Hybrid grouping is not supported when the hybrid search mixes a normal vector field, a different StructArray field, or an EmbeddingList-level request.</p></li>
 </ul>
-<h2 id="Common-mistakes" class="common-anchor-header">Errores comunes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -287,14 +286,14 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Utilizar la agrupación con ` <code translate="no">chunks[emb_list_vector]</code>`, que está pensada para la búsqueda en `EmbeddingList`.</p></li>
-<li><p>Agrupación por un campo escalar que no sea la clave principal.</p></li>
-<li><p>Agrupación por varios campos. La agrupación de StructArray a nivel de elemento solo admite la agrupación por clave primaria.</p></li>
-<li><p>Esperar que los resultados agrupados representen todos los elementos Struct coincidentes. La agrupación devuelve como máximo un resultado por entidad principal.</p></li>
-<li><p>Suponer que la búsqueda agrupada a nivel de elemento vuelve a calcular una puntuación de tipo « <code translate="no">MAX_SIM*</code> » al estilo de EmbeddingList. La agrupación agrupa los resultados a nivel de elemento; no cambia el modelo de puntuación.</p></li>
-<li><p>Combinación de « <code translate="no">group_by_field</code> » con « <code translate="no">radius</code> » o « <code translate="no">range_filter</code> ».</p></li>
+<li><p>Using grouping with <code translate="no">chunks[emb_list_vector]</code>, which is intended for EmbeddingList search.</p></li>
+<li><p>Grouping by a non-primary-key scalar field.</p></li>
+<li><p>Grouping by multiple fields. Element-level StructArray grouping supports only primary-key grouping.</p></li>
+<li><p>Expecting grouped results to represent every matched Struct element. Grouping returns at most one result per parent entity.</p></li>
+<li><p>Assuming grouped element-level search recomputes an EmbeddingList-style <code translate="no">MAX_SIM*</code> score. Grouping collapses element-level hits; it does not change the scoring model.</p></li>
+<li><p>Combining <code translate="no">group_by_field</code> with <code translate="no">radius</code> or <code translate="no">range_filter</code>.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">Próximos pasos<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -310,8 +309,8 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Para aprender primero la búsqueda a nivel de elemento sin agrupar, lee <a href="/docs/es/basic-vector-search-with-structarray.md">«Búsqueda vectorial básica con StructArray</a>».</p></li>
-<li><p>Para añadir filtros escalares a la búsqueda agrupada, lee <a href="/docs/es/filtered-search-with-structarray.md">«Búsqueda filtrada con StructArray</a>».</p></li>
-<li><p>Para utilizar límites de puntuación o distancia en lugar de agrupaciones, consulta <a href="/docs/es/range-search-with-structarray.md">«Búsqueda por rango con StructArray</a>».</p></li>
-<li><p>Para consultar los límites de búsqueda de StructArray, lee <a href="/docs/es/structarray-limits.md">«Límites de StructArray</a>».</p></li>
+<li><p>To learn ungrouped element-level search first, read <a href="/docs/es/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To add scalar filters to grouped search, read <a href="/docs/es/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
+<li><p>To use score or distance boundaries instead of grouping, read <a href="/docs/es/range-search-with-structarray.md">Range Search with StructArray</a>.</p></li>
+<li><p>To check StructArray search limits, read <a href="/docs/es/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

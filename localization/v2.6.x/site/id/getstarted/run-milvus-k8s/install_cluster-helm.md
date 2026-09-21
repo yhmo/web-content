@@ -2,10 +2,10 @@
 id: install_cluster-helm.md
 label: Helm
 related_key: Kubernetes
-summary: Pelajari cara menginstal klaster Milvus di Kubernetes.
-title: Menginstal Milvus Cluster dengan Helm
+summary: Learn how to install Milvus cluster on Kubernetes.
+title: Install Milvus Cluster with Helm
 ---
-<h1 id="Run-Milvus-in-Kubernetes-with-Helm" class="common-anchor-header">Menjalankan Milvus di Kubernetes dengan Helm<button data-href="#Run-Milvus-in-Kubernetes-with-Helm" class="anchor-icon" translate="no">
+<h1 id="Run-Milvus-in-Kubernetes-with-Helm" class="common-anchor-header">Run Milvus in Kubernetes with Helm<button data-href="#Run-Milvus-in-Kubernetes-with-Helm" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: Menginstal Milvus Cluster dengan Helm
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Halaman ini menjelaskan cara menjalankan instance Milvus di Kubernetes menggunakan <a href="https://github.com/zilliztech/milvus-helm">chart Helm Milvus</a>.</p>
-<h2 id="Overview" class="common-anchor-header">Gambaran Umum<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>This page illustrates how to start a Milvus instance in Kubernetes using <a href="https://github.com/zilliztech/milvus-helm">Milvus Helm charts</a>.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,8 +36,8 @@ title: Menginstal Milvus Cluster dengan Helm
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Helm menggunakan format pengemasan yang disebut chart. Chart adalah kumpulan berkas yang mendeskripsikan sekumpulan sumber daya Kubernetes yang saling terkait. Milvus menyediakan serangkaian chart untuk membantu Anda menerapkan dependensi dan komponen Milvus.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Persyaratan<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h2><p>Helm uses a packaging format called charts. A chart is a collection of files that describe a related set of Kubernetes resources. Milvus provides a set of charts to help you deploy Milvus dependencies and components.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,21 +53,21 @@ title: Menginstal Milvus Cluster dengan Helm
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><a href="https://helm.sh/docs/intro/install/">Instal Helm CLI</a>.</p></li>
-<li><p><a href="/docs/id/v2.6.x/prerequisite-helm.md#How-can-I-start-a-K8s-cluster-locally-for-test-purposes">Buat kluster K8s</a>.</p></li>
-<li><p>Instal <a href="https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/">StorageClass</a>. Anda dapat memeriksa StorageClass yang telah diinstal sebagai berikut.</p>
+<li><p><a href="https://helm.sh/docs/intro/install/">Install Helm CLI</a>.</p></li>
+<li><p><a href="/docs/id/v2.6.x/prerequisite-helm.md#How-can-I-start-a-K8s-cluster-locally-for-test-purposes">Create a K8s cluster</a>.</p></li>
+<li><p>Install a <a href="https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/">StorageClass</a>. You can check the installed StorageClass as follows.</p>
 <pre><code translate="no" class="language-bash">$ kubectl get sc
 
 NAME                  PROVISIONER                  RECLAIMPOLICY    VOLUMEBIINDINGMODE    ALLOWVOLUMEEXPANSION     AGE
 standard (default)    k8s.io/minikube-hostpath     Delete           Immediate             <span class="hljs-literal">false</span> 
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Periksa <a href="/docs/id/v2.6.x/prerequisite-helm.md">persyaratan perangkat keras dan perangkat lunak</a> sebelum instalasi.</p></li>
-<li><p>Sebelum menginstal Milvus, disarankan untuk menggunakan <a href="https://milvus.io/tools/sizing">Milvus Sizing Tool</a> guna memperkirakan persyaratan perangkat keras berdasarkan ukuran data Anda. Hal ini membantu memastikan kinerja optimal dan alokasi sumber daya yang tepat untuk instalasi Milvus Anda.</p></li>
+<li><p>Check <a href="/docs/id/v2.6.x/prerequisite-helm.md">the hardware and software requirements</a> before installation.</p></li>
+<li><p>Before installing Milvus, it is recommended to use the <a href="https://milvus.io/tools/sizing">Milvus Sizing Tool</a> to estimate the hardware requirements based on your data size. This helps ensure optimal performance and resource allocation for your Milvus installation.</p></li>
 </ul>
 <div class="alert note">
-<p>Jika Anda mengalami masalah saat menarik gambar, hubungi kami di <a href="mailto:community@zilliz.com">community@zilliz.com</a> dengan detail mengenai masalah tersebut, dan kami akan memberikan dukungan yang diperlukan.</p>
+<p>If you encounter any issues pulling the image, contact us at <a href="mailto:community@zilliz.com">community@zilliz.com</a> with details about the problem, and we’ll provide you with the necessary support.</p>
 </div>
-<h2 id="Install-Milvus-Helm-Chart" class="common-anchor-header">Instal Milvus Helm Chart<button data-href="#Install-Milvus-Helm-Chart" class="anchor-icon" translate="no">
+<h2 id="Install-Milvus-Helm-Chart" class="common-anchor-header">Install Milvus Helm Chart<button data-href="#Install-Milvus-Helm-Chart" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -82,17 +82,17 @@ standard (default)    k8s.io/minikube-hostpath     Delete           Immediate   
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sebelum menginstal Milvus Helm Charts, Anda perlu menambahkan repositori Milvus Helm.</p>
+    </button></h2><p>Before installing Milvus Helm Charts, you need to add Milvus Helm repository.</p>
 <pre><code translate="no" class="language-bash">helm repo add zilliztech https://zilliztech.github.io/milvus-helm/
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Repositori Milvus Helm Charts di <code translate="no">https://github.com/milvus-io/milvus-helm</code> telah diarsipkan. Kami sekarang menggunakan repositori baru di <code translate="no">https://github.com/zilliztech/milvus-helm</code>. Repositori yang diarsipkan masih tersedia untuk chart hingga versi 4.0.31, tetapi gunakan repositori baru untuk rilis yang lebih baru.</p>
+<p>The Milvus Helm Charts repo at <code translate="no">https://github.com/milvus-io/milvus-helm</code> has been archived. We now use the new repository at <code translate="no">https://github.com/zilliztech/milvus-helm</code>. The archived repo is still available for charts up to 4.0.31, but use the new repo for later releases.</p>
 </div>
-<p>Kemudian, unduh Milvus Helm Charts dari repositori tersebut sebagai berikut:</p>
+<p>Then fetch Milvus charts from the repository as follows:</p>
 <pre><code translate="no"><span class="hljs-variable">$ </span>helm repo update
 <button class="copy-code-btn"></button></code></pre>
-<p>Anda selalu dapat menjalankan perintah ini untuk mengambil Milvus Helm charts terbaru.</p>
-<h2 id="Online-install" class="common-anchor-header">Instalasi daring<button data-href="#Online-install" class="anchor-icon" translate="no">
+<p>You can always run this command to fetch the latest Milvus Helm charts.</p>
+<h2 id="Online-install" class="common-anchor-header">Online install<button data-href="#Online-install" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,7 +107,7 @@ standard (default)    k8s.io/minikube-hostpath     Delete           Immediate   
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="1-Deploy-a-Milvus-cluster" class="common-anchor-header">1. Deploy kluster Milvus<button data-href="#1-Deploy-a-Milvus-cluster" class="anchor-icon" translate="no">
+    </button></h2><h3 id="1-Deploy-a-Milvus-cluster" class="common-anchor-header">1. Deploy a Milvus cluster<button data-href="#1-Deploy-a-Milvus-cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,63 +122,63 @@ standard (default)    k8s.io/minikube-hostpath     Delete           Immediate   
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Setelah Anda menginstal chart Helm, Anda dapat menjalankan Milvus di Kubernetes. Bagian ini memandu Anda dalam menyebarkan kluster Milvus.</p>
+    </button></h3><p>Once you have installed the Helm chart, you can start Milvus on Kubernetes. This section guides you through deploying a Milvus cluster.</p>
 <div class="alert note" id="standalone-deployment-note">
-<p><strong>Butuh penyebaran standalone?</strong></p>
-<p>Jika Anda lebih memilih untuk menyebarkan Milvus dalam mode mandiri (satu node) untuk pengembangan atau pengujian, gunakan perintah ini:</p>
+<p><strong>Need standalone deployment instead?</strong></p>
+<p>If you prefer to deploy Milvus in standalone mode (single node) for development or testing, use this command:</p>
 <pre><code translate="no" class="language-bash">helm install my-release zilliztech/milvus \
-  --<span class="hljs-built_in">set</span> image.all.tag=v2.6.23 \
+  --<span class="hljs-built_in">set</span> image.all.tag=v2.6.24 \
   --<span class="hljs-built_in">set</span> cluster.enabled=<span class="hljs-literal">false</span> \
   --<span class="hljs-built_in">set</span> pulsarv3.enabled=<span class="hljs-literal">false</span> \
   --<span class="hljs-built_in">set</span> standalone.messageQueue=woodpecker \
   --<span class="hljs-built_in">set</span> woodpecker.enabled=<span class="hljs-literal">true</span> \
   --<span class="hljs-built_in">set</span> streaming.enabled=<span class="hljs-literal">true</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Catatan</strong>: Mode mandiri menggunakan Woodpecker sebagai antrian pesan default dan mengaktifkan komponen Streaming Node. Untuk detailnya, lihat <a href="/docs/id/v2.6.x/architecture_overview.md">Ikhtisar Arsitektur</a> dan <a href="/docs/id/v2.6.x/use-woodpecker.md">Menggunakan Woodpecker</a>.</p>
+<p><strong>Note</strong>: Standalone mode uses Woodpecker as the default message queue and enables the Streaming Node component. For details, refer to the <a href="/docs/id/v2.6.x/architecture_overview.md">Architecture Overview</a> and <a href="/docs/id/v2.6.x/use-woodpecker.md">Use Woodpecker</a>.</p>
 </div>
-<p><strong>Menerapkan kluster Milvus:</strong></p>
-<p>Perintah berikut menyebarkan kluster Milvus dengan pengaturan yang dioptimalkan untuk v2.6.23, menggunakan Woodpecker sebagai antrian pesan yang direkomendasikan:</p>
+<p><strong>Deploy Milvus cluster:</strong></p>
+<p>The following command deploys a Milvus cluster with optimized settings for v2.6.24, using Woodpecker as the recommended message queue:</p>
 <pre><code translate="no" class="language-bash">helm install my-release zilliztech/milvus \
-  --<span class="hljs-built_in">set</span> image.all.tag=v2.6.23 \
+  --<span class="hljs-built_in">set</span> image.all.tag=v2.6.24 \
   --<span class="hljs-built_in">set</span> pulsarv3.enabled=<span class="hljs-literal">false</span> \
   --<span class="hljs-built_in">set</span> woodpecker.enabled=<span class="hljs-literal">true</span> \
   --<span class="hljs-built_in">set</span> streaming.enabled=<span class="hljs-literal">true</span> \
   --<span class="hljs-built_in">set</span> indexNode.enabled=<span class="hljs-literal">false</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Fungsi perintah ini:</strong></p>
+<p><strong>What this command does:</strong></p>
 <ul>
-<li>Menggunakan <strong>Woodpecker</strong> sebagai antrian pesan (direkomendasikan untuk mengurangi beban pemeliharaan)</li>
-<li>Mengaktifkan komponen <strong>Streaming Node</strong> yang baru untuk meningkatkan kinerja</li>
-<li>Menonaktifkan <strong>Index Node</strong> versi lama (fungsinya kini ditangani oleh Data Node)</li>
-<li>Menonaktifkan Pulsar dan menggunakan Woodpecker sebagai gantinya</li>
+<li>Uses <strong>Woodpecker</strong> as the message queue (recommended for reduced maintenance)</li>
+<li>Enables the new <strong>Streaming Node</strong> component for improved performance</li>
+<li>Disables the legacy <strong>Index Node</strong> (functionality is now handled by Data Node)</li>
+<li>Disables Pulsar to use Woodpecker instead</li>
 </ul>
 <div class="alert note">
-<p><strong>Perubahan Arsitektur di Milvus 2.6.x:</strong></p>
+<p><strong>Architecture Changes in Milvus 2.6.x:</strong></p>
 <ul>
-<li><strong>Antrian Pesan</strong>: <strong>Woodpecker</strong> kini direkomendasikan (mengurangi pemeliharaan infrastruktur dibandingkan dengan Pulsar)</li>
-<li><strong>Komponen Baru</strong>: <strong>Streaming Node</strong> diperkenalkan dan diaktifkan secara default</li>
-<li><strong>Komponen yang Digabungkan</strong>: <strong>Node Indeks</strong> dan <strong>Node Data</strong> digabungkan menjadi satu <strong>Node Data</strong></li>
+<li><strong>Message Queue</strong>: <strong>Woodpecker</strong> is now recommended (reduces infrastructure maintenance compared to Pulsar)</li>
+<li><strong>New Component</strong>: <strong>Streaming Node</strong> is introduced and enabled by default</li>
+<li><strong>Merged Components</strong>: <strong>Index Node</strong> and <strong>Data Node</strong> are combined into a single <strong>Data Node</strong></li>
 </ul>
-<p>Untuk detail arsitektur lengkap, lihat <a href="/docs/id/v2.6.x/architecture_overview.md">Ikhtisar Arsitektur</a>.</p>
+<p>For complete architecture details, refer to the <a href="/docs/id/v2.6.x/architecture_overview.md">Architecture Overview</a>.</p>
 </div>
-<p><strong>Opsi Antrian Pesan Alternatif:</strong></p>
-<p>Jika Anda lebih memilih menggunakan <strong>Pulsar</strong> (pilihan tradisional) daripada Woodpecker:</p>
+<p><strong>Alternative Message Queue Options:</strong></p>
+<p>If you prefer to use <strong>Pulsar</strong> (traditional choice) instead of Woodpecker:</p>
 <pre><code translate="no" class="language-bash">helm install my-release zilliztech/milvus \
-  --<span class="hljs-built_in">set</span> image.all.tag=v2.6.23 \
+  --<span class="hljs-built_in">set</span> image.all.tag=v2.6.24 \
   --<span class="hljs-built_in">set</span> streaming.enabled=<span class="hljs-literal">true</span> \
   --<span class="hljs-built_in">set</span> indexNode.enabled=<span class="hljs-literal">false</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Langkah selanjutnya:</strong>
-Perintah di atas akan menerapkan Milvus dengan konfigurasi yang direkomendasikan. Untuk penggunaan produksi:</p>
+<p><strong>Next steps:</strong>
+The command above deploys Milvus with recommended configurations. For production use:</p>
 <ul>
-<li>Gunakan <a href="https://milvus.io/tools/sizing">Alat Penentuan Ukuran Milvus</a> untuk mengoptimalkan pengaturan berdasarkan ukuran data Anda</li>
-<li>Tinjau <a href="https://milvus.io/docs/system_configuration.md">Daftar Periksa Konfigurasi Sistem Milvus</a> untuk opsi konfigurasi lanjutan</li>
+<li>Use the <a href="https://milvus.io/tools/sizing">Milvus Sizing Tool</a> to optimize settings based on your data size</li>
+<li>Review <a href="https://milvus.io/docs/system_configuration.md">Milvus System Configurations Checklist</a> for advanced configuration options</li>
 </ul>
 <div class="alert note">
-<p><strong>Catatan penting:</strong></p>
+<p><strong>Important notes:</strong></p>
 <ul>
-<li><strong>Penamaan rilis</strong>: Gunakan hanya huruf, angka, dan tanda hubung (titik tidak diperbolehkan)</li>
-<li><strong>Kubernetes v1.25+</strong>: Jika Anda mengalami masalah PodDisruptionBudget, gunakan solusi sementara ini:
+<li><strong>Release naming</strong>: Use only letters, numbers, and dashes (no dots allowed)</li>
+<li><strong>Kubernetes v1.25+</strong>: If you encounter PodDisruptionBudget issues, use this workaround:
 <pre><code translate="no" class="language-bash">helm install my-release zilliztech/milvus \
   --<span class="hljs-built_in">set</span> pulsar.bookkeeper.pdb.usePolicy=<span class="hljs-literal">false</span> \
   --<span class="hljs-built_in">set</span> pulsar.broker.pdb.usePolicy=<span class="hljs-literal">false</span> \
@@ -186,9 +186,9 @@ Perintah di atas akan menerapkan Milvus dengan konfigurasi yang direkomendasikan
   --<span class="hljs-built_in">set</span> pulsar.zookeeper.pdb.usePolicy=<span class="hljs-literal">false</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<p>Untuk informasi lebih lanjut, lihat <a href="https://artifacthub.io/packages/helm/milvus/milvus">Milvus Helm Chart</a> dan <a href="https://helm.sh/docs/">dokumentasi Helm</a>.</p>
+<p>For more information, see <a href="https://artifacthub.io/packages/helm/milvus/milvus">Milvus Helm Chart</a> and <a href="https://helm.sh/docs/">Helm documentation</a>.</p>
 </div>
-<h3 id="2-Check-Milvus-cluster-status" class="common-anchor-header">2. Periksa status kluster Milvus<button data-href="#2-Check-Milvus-cluster-status" class="anchor-icon" translate="no">
+<h3 id="2-Check-Milvus-cluster-status" class="common-anchor-header">2. Check Milvus cluster status<button data-href="#2-Check-Milvus-cluster-status" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -203,10 +203,10 @@ Perintah di atas akan menerapkan Milvus dengan konfigurasi yang direkomendasikan
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Pastikan deployment Anda berhasil dengan memeriksa status pod:</p>
+    </button></h3><p>Verify that your deployment is successful by checking the pod status:</p>
 <pre><code translate="no" class="language-bash">kubectl get pods
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Tunggu hingga semua pod menunjukkan status “Running”.</strong> Dengan konfigurasi v2.6.23, Anda seharusnya melihat pod yang mirip dengan:</p>
+<p><strong>Wait for all pods to show “Running” status.</strong> With the v2.6.24 configuration, you should see pods similar to:</p>
 <pre><code translate="no">NAME                                             READY  STATUS   RESTARTS  AGE
 my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><span class="hljs-operator">-</span>etcd<span class="hljs-number">-0</span>                                <span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">1</span>    <span class="hljs-keyword">Running</span>   <span class="hljs-number">0</span>        <span class="hljs-number">3</span>m23s
 my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><span class="hljs-operator">-</span>etcd<span class="hljs-number">-1</span>                                <span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">1</span>    <span class="hljs-keyword">Running</span>   <span class="hljs-number">0</span>        <span class="hljs-number">3</span>m23s
@@ -228,13 +228,13 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
 my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><span class="hljs-operator">-</span>pulsar<span class="hljs-operator">-</span>zookeeper<span class="hljs-number">-0</span>                    <span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">1</span>    <span class="hljs-keyword">Running</span>   <span class="hljs-number">0</span>        <span class="hljs-number">3</span>m23s
 my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><span class="hljs-operator">-</span>pulsar<span class="hljs-operator">-</span>zookeeper<span class="hljs-operator">-</span>metadata<span class="hljs-number">-98</span>zbr       <span class="hljs-number">0</span><span class="hljs-operator">/</span><span class="hljs-number">1</span>   Completed  <span class="hljs-number">0</span>        <span class="hljs-number">3</span>m24s
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Komponen utama yang perlu diverifikasi:</strong></p>
+<p><strong>Key components to verify:</strong></p>
 <ul>
-<li><strong>Komponen Milvus</strong>: <code translate="no">mixcoord</code>, <code translate="no">datanode</code>, <code translate="no">querynode</code>, <code translate="no">proxy</code>, <code translate="no">streaming-node</code></li>
-<li><strong>Ketergantungan</strong>: <code translate="no">etcd</code> (metadata), <code translate="no">minio</code> (penyimpanan objek), <code translate="no">pulsar</code> (antrian pesan)</li>
+<li><strong>Milvus components</strong>: <code translate="no">mixcoord</code>, <code translate="no">datanode</code>, <code translate="no">querynode</code>, <code translate="no">proxy</code>, <code translate="no">streaming-node</code></li>
+<li><strong>Dependencies</strong>: <code translate="no">etcd</code> (metadata), <code translate="no">minio</code> (object storage), <code translate="no">pulsar</code> (message queue)</li>
 </ul>
-<p>Anda juga dapat mengakses <strong>Milvus WebUI</strong> di <code translate="no">http://127.0.0.1:9091/webui/</code> setelah pengalihan port disiapkan (lihat langkah berikutnya). Untuk detailnya, lihat <a href="/docs/id/v2.6.x/milvus-webui.md">Milvus WebUI</a>.</p>
-<h3 id="3-Connect-to-Milvus" class="common-anchor-header">3. Menghubungkan ke Milvus<button data-href="#3-Connect-to-Milvus" class="anchor-icon" translate="no">
+<p>You can also access the <strong>Milvus WebUI</strong> at <code translate="no">http://127.0.0.1:9091/webui/</code> once port forwarding is set up (see next step). For details, refer to <a href="/docs/id/v2.6.x/milvus-webui.md">Milvus WebUI</a>.</p>
+<h3 id="3-Connect-to-Milvus" class="common-anchor-header">3. Connect to Milvus<button data-href="#3-Connect-to-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -249,30 +249,30 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk terhubung ke kluster Milvus Anda dari luar Kubernetes, Anda perlu mengatur pengalihan port.</p>
-<p><strong>Konfigurasikan port forwarding:</strong></p>
+    </button></h3><p>To connect to your Milvus cluster from outside Kubernetes, you need to set up port forwarding.</p>
+<p><strong>Set up port forwarding:</strong></p>
 <pre><code translate="no" class="language-bash">kubectl port-forward service/my-release-milvus 27017:19530
 <button class="copy-code-btn"></button></code></pre>
-<p>Perintah ini meneruskan port lokal Anda <code translate="no">27017</code> ke port Milvus <code translate="no">19530</code>. Anda akan melihat:</p>
+<p>This command forwards your local port <code translate="no">27017</code> to Milvus port <code translate="no">19530</code>. You should see:</p>
 <pre><code translate="no"><span class="hljs-attribute">Forwarding</span> from <span class="hljs-number">127.0.0.1:27017</span> -&gt; <span class="hljs-number">19530</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Rincian koneksi:</strong></p>
+<p><strong>Connection details:</strong></p>
 <ul>
-<li><strong>Koneksi lokal</strong>: <code translate="no">localhost:27017</code></li>
-<li><strong>Port default Milvus</strong>: <code translate="no">19530</code></li>
+<li><strong>Local connection</strong>: <code translate="no">localhost:27017</code></li>
+<li><strong>Milvus default port</strong>: <code translate="no">19530</code></li>
 </ul>
 <div class="alert note">
-<p><strong>Opsi untuk penerusan port:</strong></p>
+<p><strong>Options for port forwarding:</strong></p>
 <ul>
-<li><strong>Penetapan port lokal otomatis</strong>: Gunakan <code translate="no">:19530</code> alih-alih <code translate="no">27017:19530</code> agar kubectl memilih port yang tersedia</li>
-<li><strong>Mendengarkan di semua antarmuka</strong>: Tambahkan <code translate="no">--address 0.0.0.0</code> untuk mengizinkan koneksi dari mesin lain:
+<li><strong>Auto-assign local port</strong>: Use <code translate="no">:19530</code> instead of <code translate="no">27017:19530</code> to let kubectl choose an available port</li>
+<li><strong>Listen on all interfaces</strong>: Add <code translate="no">--address 0.0.0.0</code> to allow connections from other machines:
 <pre><code translate="no" class="language-bash">kubectl port-forward --address 0.0.0.0 service/my-release-milvus 27017:19530
 <button class="copy-code-btn"></button></code></pre></li>
-<li><strong>Penerapan mandiri</strong>: Jika menggunakan mode mandiri, nama layanan tetap sama</li>
+<li><strong>Standalone deployment</strong>: If using standalone mode, the service name remains the same</li>
 </ul>
 </div>
-<p><strong>Biarkan terminal ini tetap terbuka</strong> saat menggunakan Milvus. Sekarang Anda dapat terhubung ke Milvus menggunakan SDK Milvus mana pun di <code translate="no">localhost:27017</code>.</p>
-<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Opsional) Perbarui konfigurasi Milvus<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
+<p><strong>Keep this terminal open</strong> while using Milvus. You can now connect to Milvus using any Milvus SDK at <code translate="no">localhost:27017</code>.</p>
+<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Optional) Update Milvus configurations<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -287,28 +287,28 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Anda dapat memperbarui konfigurasi kluster Milvus Anda dengan mengedit berkas <code translate="no">values.yaml</code> dan menerapkannya kembali.</p>
+    </button></h2><p>You can update the configurations of your Milvus cluster by editing the <code translate="no">values.yaml</code> file and applying it again.</p>
 <ol>
-<li><p>Buat berkas <code translate="no">values.yaml</code> dengan konfigurasi yang diinginkan.</p>
-<p>Berikut ini mengasumsikan bahwa Anda ingin mengaktifkan <code translate="no">proxy.http</code>.</p>
+<li><p>Create a <code translate="no">values.yaml</code> file with the desired configurations.</p>
+<p>The following assumes that you want to enable <code translate="no">proxy.http</code>.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">extraConfigFiles:</span>
   <span class="hljs-attr">user.yaml:</span> <span class="hljs-string">|+
     proxy:
       http:
         enabled: true
 </span><button class="copy-code-btn"></button></code></pre>
-<p>Untuk item konfigurasi yang berlaku, lihat <a href="/docs/id/v2.6.x/system_configuration.md">Konfigurasi Sistem</a>.</p></li>
-<li><p>Terapkan berkas ` <code translate="no">values.yaml</code> `.</p></li>
+<p>For applicable configuration items, refer to <a href="/docs/id/v2.6.x/system_configuration.md">System Configuration</a>.</p></li>
+<li><p>Apply the <code translate="no">values.yaml</code> file.</p></li>
 </ol>
 <pre><code translate="no" class="language-shell">helm upgrade my-release zilliztech/milvus --namespace my-namespace -f values.yaml
 <button class="copy-code-btn"></button></code></pre>
 <ol>
-<li><p>Periksa konfigurasi yang telah diperbarui.</p>
+<li><p>Check the updated configurations.</p>
 <pre><code translate="no" class="language-shell">helm get values my-release
 <button class="copy-code-btn"></button></code></pre>
-<p>Hasilnya seharusnya menampilkan konfigurasi yang telah diperbarui.</p></li>
+<p>The output should show the updated configurations.</p></li>
 </ol>
-<h2 id="Access-Milvus-WebUI" class="common-anchor-header">Akses Milvus WebUI<button data-href="#Access-Milvus-WebUI" class="anchor-icon" translate="no">
+<h2 id="Access-Milvus-WebUI" class="common-anchor-header">Access Milvus WebUI<button data-href="#Access-Milvus-WebUI" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -323,13 +323,13 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus dilengkapi dengan alat GUI bawaan bernama Milvus WebUI yang dapat Anda akses melalui browser Anda. Milvus WebUI meningkatkan kemampuan pemantauan sistem dengan antarmuka yang sederhana dan intuitif. Anda dapat menggunakan Milvus WebUI untuk memantau statistik dan metrik komponen serta dependensi Milvus, memeriksa detail database dan koleksi, serta menampilkan daftar konfigurasi Milvus secara terperinci. Untuk detail tentang Milvus WebUI, lihat <a href="/docs/id/v2.6.x/milvus-webui.md">Milvus WebUI</a></p>
-<p>Untuk mengaktifkan akses ke Milvus WebUI, Anda perlu melakukan port-forwarding pada pod proxy ke port lokal.</p>
+    </button></h2><p>Milvus ships with a built-in GUI tool called Milvus WebUI that you can access through your browser. Milvus Web UI enhances system observability with a simple and intuitive interface. You can use Milvus Web UI to observe the statistics and metrics of the components and dependencies of Milvus, check database and collection details, and list detailed Milvus configurations. For details about Milvus Web UI, see <a href="/docs/id/v2.6.x/milvus-webui.md">Milvus WebUI</a></p>
+<p>To enable the access to the Milvus Web UI, you need to port-forward the proxy pod to a local port.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl port-forward --address 0.0.0.0 service/my-release-milvus 27018:9091</span>
 Forwarding from 0.0.0.0:27018 -&gt; 9091
 <button class="copy-code-btn"></button></code></pre>
-<p>Sekarang, Anda dapat mengakses Milvus WebUI di <code translate="no">http://localhost:27018</code>.</p>
-<h2 id="Offline-install" class="common-anchor-header">Instalasi offline<button data-href="#Offline-install" class="anchor-icon" translate="no">
+<p>Now, you can access Milvus Web UI at <code translate="no">http://localhost:27018</code>.</p>
+<h2 id="Offline-install" class="common-anchor-header">Offline install<button data-href="#Offline-install" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -344,8 +344,8 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Jika Anda berada di lingkungan dengan pembatasan jaringan, ikuti prosedur di bagian ini untuk memulai kluster Milvus.</p>
-<h3 id="1-Get-Milvus-manifest" class="common-anchor-header">1. Dapatkan manifes Milvus<button data-href="#1-Get-Milvus-manifest" class="anchor-icon" translate="no">
+    </button></h2><p>If you are in a network-restricted environment, follow the procedure in this section to start a Milvus cluster.</p>
+<h3 id="1-Get-Milvus-manifest" class="common-anchor-header">1. Get Milvus manifest<button data-href="#1-Get-Milvus-manifest" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -360,17 +360,17 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Jalankan perintah berikut untuk mendapatkan manifest Milvus.</p>
+    </button></h3><p>Run the following command to get the Milvus manifest.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">helm template my-release zilliztech/milvus &gt; milvus_manifest.yaml</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Perintah di atas menghasilkan templat chart untuk klaster Milvus dan menyimpan hasilnya ke berkas manifest bernama <code translate="no">milvus_manifest.yaml</code>. Dengan menggunakan manifest ini, Anda dapat menginstal klaster Milvus beserta komponen dan ketergantungannya di pod terpisah.</p>
+<p>The above command renders chart templates for a Milvus cluster and saves the output to a manifest file named <code translate="no">milvus_manifest.yaml</code>. Using this manifest, you can install a Milvus cluster with its components and dependencies in separate pods.</p>
 <div class="alert note">
 <ul>
-<li>Untuk menginstal instance Milvus dalam mode mandiri di mana semua komponen Milvus terdapat dalam satu pod, Anda harus menjalankan ` <code translate="no">helm template my-release --set cluster.enabled=false --set etcd.replicaCount=1 --set minio.mode=standalone --set pulsarv3.enabled=false zilliztech/milvus &gt; milvus_manifest.yaml</code> ` sebagai gantinya untuk menampilkan templat chart untuk instance Milvus dalam mode mandiri.</li>
-<li>Untuk mengubah konfigurasi Milvus, unduh <a href="https://raw.githubusercontent.com/milvus-io/milvus-helm/master/charts/milvus/values.yaml"><code translate="no">value.yaml</code></a> templat, masukkan pengaturan yang Anda inginkan ke dalamnya, lalu gunakan <code translate="no">helm template -f values.yaml my-release zilliztech/milvus &gt; milvus_manifest.yaml</code> untuk merender manifest sesuai dengan pengaturan tersebut.</li>
+<li>To install a Milvus instance in the standalone mode where all Milvus components are contained within a single pod, you should run <code translate="no">helm template my-release --set cluster.enabled=false --set etcd.replicaCount=1 --set minio.mode=standalone --set pulsarv3.enabled=false zilliztech/milvus &gt; milvus_manifest.yaml</code> instead to render chart templates for a Milvus instance in a standalone mode.</li>
+<li>To change Milvus configurations, download the <a href="https://raw.githubusercontent.com/milvus-io/milvus-helm/master/charts/milvus/values.yaml"><code translate="no">value.yaml</code></a> template, place your desired settings in it, and use <code translate="no">helm template -f values.yaml my-release zilliztech/milvus &gt; milvus_manifest.yaml</code> to render the manifest accordingly.</li>
 </ul>
 </div>
-<h3 id="2-Download-image-pulling-script" class="common-anchor-header">2. Unduh skrip pengunduhan gambar<button data-href="#2-Download-image-pulling-script" class="anchor-icon" translate="no">
+<h3 id="2-Download-image-pulling-script" class="common-anchor-header">2. Download image-pulling script<button data-href="#2-Download-image-pulling-script" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -385,11 +385,11 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Skrip pengunduhan gambar dikembangkan dalam Python. Anda harus mengunduh skrip tersebut beserta dependensinya dalam berkas <code translate="no">requirement.txt</code>.</p>
+    </button></h3><p>The image-pulling script is developed in Python. You should download the script along with its dependencies in the <code translate="no">requirement.txt</code> file.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://raw.githubusercontent.com/milvus-io/milvus/master/deployments/offline/requirements.txt</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://raw.githubusercontent.com/milvus-io/milvus/master/deployments/offline/save_image.py</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="3-Pull-and-save-images" class="common-anchor-header">3. Mengunduh dan menyimpan gambar<button data-href="#3-Pull-and-save-images" class="anchor-icon" translate="no">
+<h3 id="3-Pull-and-save-images" class="common-anchor-header">3. Pull and save images<button data-href="#3-Pull-and-save-images" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -404,12 +404,12 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Jalankan perintah berikut untuk mengunduh dan menyimpan gambar yang diperlukan.</p>
+    </button></h3><p>Run the following command to pull and save the required images.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip3 install -r requirements.txt</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">python3 save_image.py --manifest milvus_manifest.yaml</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Gambar-gambar tersebut akan diunduh ke dalam subfolder bernama <code translate="no">images</code> di direktori saat ini.</p>
-<h3 id="4-Load-images" class="common-anchor-header">4. Memuat gambar<button data-href="#4-Load-images" class="anchor-icon" translate="no">
+<p>The images are pulled into a sub-folder named <code translate="no">images</code> in the current directory.</p>
+<h3 id="4-Load-images" class="common-anchor-header">4. Load images<button data-href="#4-Load-images" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -424,7 +424,7 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Anda sekarang dapat memuat gambar ke host di lingkungan yang dibatasi jaringan sebagai berikut:</p>
+    </button></h3><p>You can now load the images to the hosts in the network-restricted environment as follows:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-keyword">for</span> image <span class="hljs-keyword">in</span> $(find . -<span class="hljs-built_in">type</span> f -name <span class="hljs-string">&quot;*.tar.gz&quot;</span>) ; <span class="hljs-keyword">do</span> gunzip -c <span class="hljs-variable">$image</span> | docker load; <span class="hljs-keyword">done</span></span>
 <button class="copy-code-btn"></button></code></pre>
 <h3 id="5-Deploy-Milvus" class="common-anchor-header">5. Deploy Milvus<button data-href="#5-Deploy-Milvus" class="anchor-icon" translate="no">
@@ -444,8 +444,8 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
       </svg>
     </button></h3><pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl apply -f milvus_manifest.yaml</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Sampai saat ini, Anda dapat mengikuti langkah <a href="#2-Check-Milvus-cluster-status">2</a> dan <a href="#3-Forward-a-local-port-to-Milvus">3</a> dari panduan instalasi online untuk memeriksa status kluster dan meneruskan port lokal ke Milvus.</p>
-<h2 id="Upgrade-running-Milvus-cluster" class="common-anchor-header">Memperbarui kluster Milvus yang sedang berjalan<button data-href="#Upgrade-running-Milvus-cluster" class="anchor-icon" translate="no">
+<p>Till now, you can follow steps <a href="#2-Check-Milvus-cluster-status">2</a> and <a href="#3-Forward-a-local-port-to-Milvus">3</a> of the online install to check the cluster status and forward a local port to Milvus.</p>
+<h2 id="Upgrade-running-Milvus-cluster" class="common-anchor-header">Upgrade running Milvus cluster<button data-href="#Upgrade-running-Milvus-cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -460,11 +460,11 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Jalankan perintah berikut untuk memperbarui kluster Milvus yang sedang berjalan ke versi terbaru:</p>
+    </button></h2><p>Run the following command to upgrade your running Milvus cluster to the latest version:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">helm repo update</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">helm upgrade my-release zilliztech/milvus --reset-then-reuse-values</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Uninstall-Milvus" class="common-anchor-header">Hapus instalasi Milvus<button data-href="#Uninstall-Milvus" class="anchor-icon" translate="no">
+<h2 id="Uninstall-Milvus" class="common-anchor-header">Uninstall Milvus<button data-href="#Uninstall-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -479,10 +479,10 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Jalankan perintah berikut untuk menghapus instalasi Milvus.</p>
+    </button></h2><p>Run the following command to uninstall Milvus.</p>
 <pre><code translate="no" class="language-bash">$ helm uninstall my-release
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Whats-next" class="common-anchor-header">Langkah selanjutnya<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -497,29 +497,29 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Setelah menginstal Milvus di Docker, Anda dapat:</p>
+    </button></h2><p>Having installed Milvus in Docker, you can:</p>
 <ul>
-<li><p>Kunjungi <a href="/docs/id/v2.6.x/quickstart.md">Hello Milvus</a> untuk melihat apa saja yang dapat dilakukan oleh Milvus.</p></li>
-<li><p>Pelajari operasi dasar Milvus:</p>
+<li><p>Check <a href="/docs/id/v2.6.x/quickstart.md">Hello Milvus</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/id/v2.6.x/manage_databases.md">Mengelola basis data</a></li>
-<li><a href="/docs/id/v2.6.x/manage-collections.md">Mengelola Koleksi</a></li>
-<li><a href="/docs/id/v2.6.x/manage-partitions.md">Mengelola partisi</a></li>
-<li><a href="/docs/id/v2.6.x/insert-update-delete.md">Sisipkan, Upsert &amp; Hapus</a></li>
-<li><a href="/docs/id/v2.6.x/single-vector-search.md">Pencarian Vektor Tunggal</a></li>
-<li><a href="/docs/id/v2.6.x/multi-vector-search.md">Pencarian Hibrida</a></li>
+<li><a href="/docs/id/v2.6.x/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/id/v2.6.x/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/id/v2.6.x/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/id/v2.6.x/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/id/v2.6.x/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/id/v2.6.x/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p><a href="/docs/id/v2.6.x/upgrade_milvus_cluster-helm.md">Tingkatkan Milvus Menggunakan Helm Chart</a>.</p></li>
-<li><p><a href="/docs/id/v2.6.x/scaleout.md">Skalakan kluster Milvus Anda</a>.</p></li>
-<li><p>Terapkan kluster Milvus Anda di cloud:</p>
+<li><p><a href="/docs/id/v2.6.x/upgrade_milvus_cluster-helm.md">Upgrade Milvus Using Helm Chart</a>.</p></li>
+<li><p><a href="/docs/id/v2.6.x/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvus cluster on clouds:</p>
 <ul>
 <li><a href="/docs/id/v2.6.x/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/id/v2.6.x/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/id/v2.6.x/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>Jelajahi <a href="/docs/id/v2.6.x/milvus-webui.md">Milvus WebUI</a>, antarmuka web yang intuitif untuk pemantauan dan pengelolaan Milvus.</p></li>
-<li><p>Jelajahi <a href="/docs/id/v2.6.x/milvus_backup_overview.md">Milvus Backup</a>, alat sumber terbuka untuk pencadangan data Milvus.</p></li>
-<li><p>Jelajahi <a href="/docs/id/v2.6.x/birdwatcher_overview.md">Birdwatcher</a>, alat sumber terbuka untuk mendebug Milvus dan pembaruan konfigurasi dinamis.</p></li>
-<li><p>Jelajahi <a href="https://github.com/zilliztech/attu">Attu</a>, alat GUI sumber terbuka untuk pengelolaan Milvus yang intuitif.</p></li>
-<li><p><a href="/docs/id/v2.6.x/monitor.md">Pantau Milvus dengan Prometheus</a>.</p></li>
+<li><p>Explore <a href="/docs/id/v2.6.x/milvus-webui.md">Milvus WebUI</a>, an intuitive web interface for Milvus observability and management.</p></li>
+<li><p>Explore <a href="/docs/id/v2.6.x/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/id/v2.6.x/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/id/v2.6.x/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

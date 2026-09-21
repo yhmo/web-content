@@ -1,9 +1,11 @@
 ---
 id: connect-to-milvus-server.md
-title: 连接 Milvus 服务器
-summary: 本主题介绍如何建立客户端与 Milvus 服务器的连接，并配置常用的连接选项。
+title: Connect to Milvus Server
+summary: >-
+  This topic describes how to establish a client connection to a Milvus server
+  and configure common connection options.
 ---
-<h1 id="Connect-to-Milvus-Server" class="common-anchor-header">连接 Milvus 服务器<button data-href="#Connect-to-Milvus-Server" class="anchor-icon" translate="no">
+<h1 id="Connect-to-Milvus-Server" class="common-anchor-header">Connect to Milvus Server<button data-href="#Connect-to-Milvus-Server" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: 本主题介绍如何建立客户端与 Milvus 服务器的连接，并
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>本主题介绍如何建立与 Milvus 服务器的客户端连接并配置常用连接选项。</p>
-<h2 id="Prerequisites" class="common-anchor-header">前提条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This topic describes how to establish a client connection to a Milvus server and configure common connection options.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,11 +37,11 @@ summary: 本主题介绍如何建立客户端与 Milvus 服务器的连接，并
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>已安装所使用语言的 SDK。有关详情，请参阅<a href="/docs/zh/install-pymilvus.md">Python SDK</a>、<a href="/docs/zh/install-java.md">Java SDK</a>、<a href="/docs/zh/install-go.md">Go SDK</a> 或<a href="/docs/zh/install-node.md">Nodejs SDK</a>。</p></li>
-<li><p>Milvus 服务器地址（本地默认地址：<code translate="no">http://localhost:19530</code> ，代理端口<strong>19530</strong>）。</p></li>
-<li><p>如果<a href="/docs/zh/authenticate.md">启用了身份验证</a>，请提供<strong>令牌</strong>或<strong>用户名 + 密码</strong>。令牌可以是<code translate="no">username:password</code> （如<code translate="no">root:Milvus</code> ）。有关详情，请参阅 "<a href="/docs/zh/authenticate.md">验证用户访问</a>"和 "<a href="/docs/zh/users_and_roles.md">创建用户和角色</a>"。</p></li>
+<li><p>The SDK of your language installed. For details, refer to <a href="/docs/zh/install-pymilvus.md">Python SDK</a>, <a href="/docs/zh/install-java.md">Java SDK</a>, <a href="/docs/zh/install-go.md">Go SDK</a>, or <a href="/docs/zh/install-node.md">Nodejs SDK</a>.</p></li>
+<li><p>A Milvus server address (for local default: <code translate="no">http://localhost:19530</code>, proxy port <strong>19530</strong>).</p></li>
+<li><p>If <a href="/docs/zh/authenticate.md">authentication is enabled</a>, provide either a <strong>token</strong> or a <strong>username + password</strong>. A token can be <code translate="no">username:password</code> (e.g., <code translate="no">root:Milvus</code>). See <a href="/docs/zh/authenticate.md">Authenticate User Access</a> and <a href="/docs/zh/users_and_roles.md">Create Users & Roles</a> for details.</p></li>
 </ul>
-<h2 id="Connect-by-URI-authentication-disabled" class="common-anchor-header">通过 URI 连接（禁用身份验证）<button data-href="#Connect-by-URI-authentication-disabled" class="anchor-icon" translate="no">
+<h2 id="Connect-by-URI-authentication-disabled" class="common-anchor-header">Connect by URI (authentication disabled)<button data-href="#Connect-by-URI-authentication-disabled" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -54,9 +56,14 @@ summary: 本主题介绍如何建立客户端与 Milvus 服务器的连接，并
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>使用 Milvus 服务器地址（如<code translate="no">http://localhost:19530</code> ）建立连接。</p>
+    </button></h2><p>Use the Milvus server address (e.g. <code translate="no">http://localhost:19530</code>) to establish a connection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -91,7 +98,7 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     -H <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
     -d <span class="hljs-string">&#x27;{}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Connect-with-credentials-authentication-enabled" class="common-anchor-header">使用凭证连接（启用身份验证）<button data-href="#Connect-with-credentials-authentication-enabled" class="anchor-icon" translate="no">
+<h2 id="Connect-with-credentials-authentication-enabled" class="common-anchor-header">Connect with credentials (authentication enabled)<button data-href="#Connect-with-credentials-authentication-enabled" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -106,9 +113,14 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>提供<code translate="no">&quot;username:password&quot;</code> 或<code translate="no">user</code> 和<code translate="no">password</code> 形式的<strong>令牌</strong>。默认内置管理员为<code translate="no">root:Milvus</code> （生产时可更改）。</p>
+    </button></h2><p>Provide either a <strong>token</strong> in the form <code translate="no">&quot;username:password&quot;</code> or separate <code translate="no">user</code> and <code translate="no">password</code>. The default built-in admin is <code translate="no">root:Milvus</code> (change this for production).</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Token form</span>
@@ -160,9 +172,9 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     -d <span class="hljs-string">&#x27;{}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>令牌格式为<code translate="no">&quot;&lt;username&gt;:&lt;password&gt;&quot;</code> 。文档明确指出<code translate="no">root:Milvus</code> 为默认凭据，而《<a href="/docs/zh/users_and_roles.md">创建用户和角色</a>》指南则涉及用户管理。</p>
+<p>Token format is <code translate="no">&quot;&lt;username&gt;:&lt;password&gt;&quot;</code>. The docs explicitly note <code translate="no">root:Milvus</code> as the default credential, and the <a href="/docs/zh/users_and_roles.md">Create Users & Roles</a> guide covers managing users.</p>
 </div>
-<h2 id="Configure-a-timeout" class="common-anchor-header">配置超时<button data-href="#Configure-a-timeout" class="anchor-icon" translate="no">
+<h2 id="Configure-a-timeout" class="common-anchor-header">Configure a timeout<button data-href="#Configure-a-timeout" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -177,9 +189,14 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>设置客户端连接的默认超时时间：</p>
+    </button></h2><p>Set a default timeout on the client connection:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>, timeout=<span class="hljs-number">1000</span>) <span class="hljs-comment"># If not set, the timeout defaults to 10s</span>
@@ -227,11 +244,11 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
 <ul>
-<li><p>对于上面列出的 SDK，该超时仅在建立连接时使用，并不作为其他 API 操作符的默认超时。</p></li>
-<li><p>对于 RESTful API，<code translate="no">Request-Timeout</code> 是以秒为单位的每个请求的截止时间（与 Java 的<code translate="no">rpcDeadlineMs</code> 和 Node.js<code translate="no">timeout</code> 不同，后者以毫秒为单位），因此请在每个需要截止时间的调用中包含它。</p></li>
+<li><p>For the SDKs listed above, this timeout is used only when establishing connections and does not serve as a default timeout for other API operations.</p></li>
+<li><p>For the RESTful API, <code translate="no">Request-Timeout</code> is a per-request deadline in seconds (unlike Java’s <code translate="no">rpcDeadlineMs</code> and the Node.js <code translate="no">timeout</code>, which are in milliseconds), so include it on every call that needs a deadline.</p></li>
 </ul>
 </div>
-<h2 id="Connect-to-a-specific-database" class="common-anchor-header">连接到特定数据库<button data-href="#Connect-to-a-specific-database" class="anchor-icon" translate="no">
+<h2 id="Connect-to-a-specific-database" class="common-anchor-header">Connect to a specific database<button data-href="#Connect-to-a-specific-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -246,9 +263,14 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在构建过程中，使用<code translate="no">db_name</code> 选择目标数据库。也可以稍后使用<code translate="no">using_database()</code> 进行切换。</p>
+    </button></h2><p>Choose the target database during construction with <code translate="no">db_name</code>. You can also switch later using <code translate="no">using_database()</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Set the database when creating the client</span>
@@ -310,9 +332,9 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>有关创建、列出和描述数据库以及更广泛的数据库管理任务，请参阅<a href="/docs/zh/manage_databases.md">数据库</a>指南。</p>
+<p>See the <a href="/docs/zh/manage_databases.md">Database</a> guide for creating, listing, and describing databases, and for broader database management tasks.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">下一步<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -328,7 +350,7 @@ curl -X POST <span class="hljs-string">&quot;http://<span class="hljs-variable">
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><a href="/docs/zh/create-collection.md">创建 Collections</a></p></li>
-<li><p><a href="/docs/zh/insert-update-delete.md">插入实体</a></p></li>
-<li><p><a href="/docs/zh/single-vector-search.md">基本向量搜索</a></p></li>
+<li><p><a href="/docs/zh/create-collection.md">Create Collection</a></p></li>
+<li><p><a href="/docs/zh/insert-update-delete.md">Insert Entities</a></p></li>
+<li><p><a href="/docs/zh/single-vector-search.md">Basic Vector Search</a></p></li>
 </ul>

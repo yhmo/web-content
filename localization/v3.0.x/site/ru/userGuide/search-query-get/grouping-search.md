@@ -1,11 +1,11 @@
 ---
 id: grouping-search.md
-title: Групповой поиск
+title: Grouping Search
 summary: >-
-  Используйте групповой поиск, чтобы сгруппировать результаты поиска ANN по
-  значению поля и сократить количество дубликатов сущностей.
+  Use grouping search to aggregate ANN search results by a field value and
+  reduce duplicate entities.
 ---
-<h1 id="Grouping-Search" class="common-anchor-header">Групповой поиск<button data-href="#Grouping-Search" class="anchor-icon" translate="no">
+<h1 id="Grouping-Search" class="common-anchor-header">Grouping Search<button data-href="#Grouping-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Групповой поиск позволяет Milvus группировать результаты поиска по значениям в указанном поле для агрегирования данных на более высоком уровне. Например, с помощью базового поиска ANN можно найти книги, похожие на рассматриваемую, а с помощью группированного поиска — найти категории книг, которые могут затрагивать темы, обсуждаемые в этой книге. В данном разделе описывается, как использовать группированный поиск, а также приводятся основные моменты, которые следует учитывать.</p>
-<h2 id="Overview" class="common-anchor-header">Обзор<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>A grouping search allows Milvus to group the search results by the values in a specified field to aggregate data at a higher level. For example, you can use a basic ANN search to find books similar to the one at hand, but you can use a grouping search to find the book categories that may involve the topics discussed in that book. This topic describes how to use Grouping Search along with key considerations.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,31 +36,31 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Когда объекты в результатах поиска имеют одинаковое значение в скалярном поле, это указывает на их сходство по определенному атрибуту, что может негативно повлиять на результаты поиска.</p>
-<p>Предположим, что в коллекции хранится несколько документов (обозначенных <strong>docId</strong>). Чтобы сохранить как можно больше семантической информации при преобразовании документов в векторы, каждый документ разбивается на более мелкие, удобные для работы абзацы (или <strong>фрагменты</strong>) и хранится в виде отдельных объектов. Несмотря на то что документ разбит на более мелкие части, пользователи часто по-прежнему заинтересованы в том, чтобы определить, какие документы наиболее соответствуют их потребностям.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/ann-search.png" alt="Ann Search" class="doc-image" id="ann-search" /> 
-   <span>Поиск Ann</span>
-  
- </span></p>
-<p>При выполнении поиска по методу приближенного ближайшего соседа (ANN) в такой коллекции результаты поиска могут включать несколько абзацев из одного и того же документа, что может привести к игнорированию других документов, что, возможно, не соответствует предполагаемому сценарию использования.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/grouping-search.png" alt="Grouping Search" class="doc-image" id="grouping-search" /> 
-   <span>Групповой поиск</span>
-  
- </span></p>
-<p>Чтобы повысить разнообразие результатов поиска, вы можете добавить в запрос на поиск параметр ` <code translate="no">group_by_field</code> `, чтобы включить групповой поиск. Как показано на схеме, вы можете установить значение параметра ` <code translate="no">group_by_field</code> ` равным ` <code translate="no">docId</code>`. Получив такой запрос, Milvus:</p>
+    </button></h2><p>When entities in the search results share the same value in a scalar field, this indicates that they are similar in a particular attribute, which may negatively impact the search results.</p>
+<p>Assume a collection stores multiple documents (denoted by <strong>docId</strong>). To retain as much semantic information as possible when converting documents into vectors, each document is split into smaller, manageable paragraphs (or <strong>chunks</strong>) and stored as separate entities. Even though the document is divided into smaller sections, users are often still interested in identifying which documents are most relevant to their needs.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/ann-search.png" alt="Ann Search" class="doc-image" id="ann-search" />
+    <span>Ann Search</span>
+  </span>
+</p>
+<p>When performing an Approximate Nearest Neighbor (ANN) search on such a collection, the search results may include several paragraphs from the same document, potentially causing other documents to be overlooked, which may not align with the intended use case.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/grouping-search.png" alt="Grouping Search" class="doc-image" id="grouping-search" />
+    <span>Grouping Search</span>
+  </span>
+</p>
+<p>To improve the diversity of search results, you can add the <code translate="no">group_by_field</code> parameter in the search request to enable Grouping Search. As shown in the diagram, you can set <code translate="no">group_by_field</code> to <code translate="no">docId</code>. Upon receiving this request, Milvus will:</p>
 <ul>
-<li><p>Выполнит поиск с использованием нейронной сети (ANN) на основе предоставленного вектора запроса, чтобы найти все объекты, наиболее похожие на запрос.</p></li>
-<li><p>Сгруппирует результаты поиска по указанному параметру « <code translate="no">group_by_field</code> », например <code translate="no">docId</code>.</p></li>
-<li><p>Вернет лучшие результаты для каждой группы, как определено параметром <code translate="no">limit</code>, с наиболее похожим объектом из каждой группы.</p></li>
+<li><p>Perform an ANN search based on the provided query vector to find all entities most similar to the query.</p></li>
+<li><p>Group the search results by the specified <code translate="no">group_by_field</code>, such as <code translate="no">docId</code>.</p></li>
+<li><p>Return the top results for each group, as defined by the <code translate="no">limit</code> parameter, with the most similar entity from each group.</p></li>
 </ul>
 <div class="alert note">
-<p>По умолчанию групповой поиск возвращает только одну сущность на группу. Если вы хотите увеличить количество результатов, возвращаемых для каждой группы, вы можете настроить это с помощью параметров <code translate="no">group_size</code> и <code translate="no">strict_group_size</code>.</p>
+<p>By default, Grouping Search returns only one entity per group. If you want to increase the number of results to return per group, you can control this with the <code translate="no">group_size</code> and <code translate="no">strict_group_size</code> parameters.</p>
 </div>
-<h2 id="Perform-Grouping-Search" class="common-anchor-header">Выполнение группового поиска<button data-href="#Perform-Grouping-Search" class="anchor-icon" translate="no">
+<h2 id="Perform-Grouping-Search" class="common-anchor-header">Perform Grouping Search<button data-href="#Perform-Grouping-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,7 +75,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В этом разделе приведены примеры кода, демонстрирующие использование группового поиска. В следующем примере предполагается, что коллекция содержит поля <code translate="no">id</code>, <code translate="no">vector</code>, <code translate="no">chunk</code> и <code translate="no">docId</code>.</p>
+    </button></h2><p>This section provides example code to demonstrate the use of Grouping Search. The following example assumes the collection includes fields for <code translate="no">id</code>, <code translate="no">vector</code>, <code translate="no">chunk</code>, and <code translate="no">docId</code>.</p>
 <pre><code translate="no" class="language-python">[
         {<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;vector&quot;</span>: [<span class="hljs-number">0.3580376395471989</span>, -<span class="hljs-number">0.6023495712049978</span>, <span class="hljs-number">0.18414012509913835</span>, -<span class="hljs-number">0.26286205330961354</span>, <span class="hljs-number">0.9029438446296592</span>], <span class="hljs-string">&quot;chunk&quot;</span>: <span class="hljs-string">&quot;pink_8682&quot;</span>, <span class="hljs-string">&quot;docId&quot;</span>: <span class="hljs-number">1</span>},
         {<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&quot;vector&quot;</span>: [<span class="hljs-number">0.19886812562848388</span>, <span class="hljs-number">0.06023560599112088</span>, <span class="hljs-number">0.6976963061752597</span>, <span class="hljs-number">0.2614474506242501</span>, <span class="hljs-number">0.838729485096104</span>], <span class="hljs-string">&quot;chunk&quot;</span>: <span class="hljs-string">&quot;red_7025&quot;</span>, <span class="hljs-string">&quot;docId&quot;</span>: <span class="hljs-number">5</span>},
@@ -90,14 +90,14 @@ summary: >-
 ]
 
 <button class="copy-code-btn"></button></code></pre>
-<p>В запросе на поиск установите для полей <code translate="no">group_by_field</code> и <code translate="no">output_fields</code> значение <code translate="no">docId</code>. Milvus сгруппирует результаты по указанному полю и вернёт наиболее похожую сущность из каждой группы, включая значение <code translate="no">docId</code> для каждой возвращаемой сущности.</p>
+<p>In the search request, set both <code translate="no">group_by_field</code> and <code translate="no">output_fields</code> to <code translate="no">docId</code>. Milvus will group the results by the specified field and return the most similar entity from each group, including the value of <code translate="no">docId</code> for each returned entity.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -275,8 +275,8 @@ status = client-&gt;<span class="hljs-built_in">Search</span>(request, response)
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>В приведённом выше запросе параметр <code translate="no">limit=3</code> указывает, что система вернёт результаты поиска из трёх групп, причём каждая группа будет содержать единственный объект, наиболее схожий с вектором запроса.</p>
-<h2 id="Configure-group-size" class="common-anchor-header">Настройка размера группы<button data-href="#Configure-group-size" class="anchor-icon" translate="no">
+<p>In the request above, <code translate="no">limit=3</code> indicates that the system will return search results from three groups, with each group containing the single most similar entity to the query vector.</p>
+<h2 id="Configure-group-size" class="common-anchor-header">Configure group size<button data-href="#Configure-group-size" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -291,14 +291,14 @@ status = client-&gt;<span class="hljs-built_in">Search</span>(request, response)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>По умолчанию функция группового поиска возвращает только один объект в каждой группе. Если вам требуется несколько результатов в каждой группе, измените параметры <code translate="no">group_size</code> и <code translate="no">strict_group_size</code>.</p>
+    </button></h2><p>By default, Grouping Search returns only one entity per group. If you want multiple results per group, adjust the <code translate="no">group_size</code> and <code translate="no">strict_group_size</code> parameters.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Group search results</span>
 
@@ -465,13 +465,13 @@ status = client-&gt;<span class="hljs-built_in">Search</span>(request, response)
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>В приведенном выше примере:</p>
+<p>In the example above:</p>
 <ul>
-<li><p><code translate="no">group_size</code>: Указывает желаемое количество объектов, которые должны возвращаться в каждой группе. Например, установка значения <code translate="no">group_size=2</code> означает, что каждая группа (или каждый <code translate="no">docId</code>) в идеале должна возвращать два наиболее похожих абзаца (или <strong>фрагмента</strong>). Если параметр <code translate="no">group_size</code> не задан, система по умолчанию возвращает один результат в каждой группе.</p></li>
-<li><p><code translate="no">strict_group_size</code>: Этот булевый параметр определяет, должна ли система строго соблюдать количество, заданное параметром ` <code translate="no">group_size</code>`. При значении ` <code translate="no">strict_group_size=True</code>` система будет пытаться включить в каждую группу точное количество элементов, указанное в ` <code translate="no">group_size</code> ` (например, два абзаца), за исключением случаев, когда в данной группе недостаточно данных. По умолчанию (<code translate="no">strict_group_size=False</code>) система уделяет приоритетное внимание соблюдению количества групп, заданного параметром <code translate="no">limit</code>, а не обеспечению того, чтобы каждая группа содержала <code translate="no">group_size</code> элементов. Такой подход, как правило, более эффективен в случаях, когда распределение данных неравномерно.</p></li>
+<li><p><code translate="no">group_size</code>: Specifies the desired number of entities to return per group. For instance, setting <code translate="no">group_size=2</code> means each group (or each <code translate="no">docId</code>) should ideally return two of the most similar paragraphs (or <strong>chunks</strong>). If <code translate="no">group_size</code> is not set, the system defaults to returning one result per group.</p></li>
+<li><p><code translate="no">strict_group_size</code>: This boolean parameter controls whether the system should strictly enforce the count set by <code translate="no">group_size</code>. When <code translate="no">strict_group_size=True</code>, the system will attempt to include the exact number of entities specified by <code translate="no">group_size</code> in each group (e.g., two paragraphs), unless there isn’t enough data in that group. By default (<code translate="no">strict_group_size=False</code>), the system prioritizes meeting the number of groups specified by the <code translate="no">limit</code> parameter, rather than ensuring each group contains <code translate="no">group_size</code> entities. This approach is generally more efficient in cases where data distribution is uneven.</p></li>
 </ul>
-<p>Дополнительные сведения о параметрах см. в разделе <a href="https://docs.zilliz.com/reference/python/python/Vector-search">search</a>.</p>
-<h2 id="Order-groups-by-a-scalar-field" class="common-anchor-header">Сортировка групп по скалярному полю<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Order-groups-by-a-scalar-field" class="anchor-icon" translate="no">
+<p>For additional parameter details, refer to <a href="https://docs.zilliz.com/reference/python/python/Vector-search">search</a>.</p>
+<h2 id="Order-groups-by-a-scalar-field" class="common-anchor-header">Order groups by a scalar field<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Order-groups-by-a-scalar-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -486,15 +486,15 @@ status = client-&gt;<span class="hljs-built_in">Search</span>(request, response)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Вы можете совместить поиск с группировкой (Grouping Search) с функцией сортировки по скалярному полю ( <code translate="no">order_by_fields</code> ), чтобы упорядочить группы по скалярному полю. Это полезно, когда вам нужны разнообразные результаты в разных группах, но при этом вы хотите, чтобы группы следовали порядку, значимому для бизнеса, например, по цене или рейтингу.</p>
-<p>В следующем примере результаты поиска сгруппированы по параметру « <code translate="no">category</code> », в каждую группу входит не более трёх объектов, а возвращённые группы отсортированы по значению параметра « <code translate="no">price</code> » от наименьшего к наибольшему.</p>
+    </button></h2><p>You can combine Grouping Search with <code translate="no">order_by_fields</code> to order groups by a scalar field. This is useful when you want diverse results across groups, but still want the groups to follow a business-relevant order such as price or rating.</p>
+<p>The following example groups search results by <code translate="no">category</code>, returns up to three entities per group, and orders the returned groups by <code translate="no">price</code> from low to high.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>,
@@ -619,9 +619,9 @@ milvus::SearchResponse response;
     std::cout &lt;&lt; rows &lt;&lt; std::endl;
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>В приведённом выше запросе параметр ` <code translate="no">limit=20</code> ` означает, что Milvus выбирает до 20 групп, а не 20 объектов. Поскольку ` <code translate="no">group_size=3</code>`, плоский список результатов может содержать в общей сложности до 60 объектов.</p>
-<p>При использовании <code translate="no">order_by_fields</code> с <code translate="no">group_by_field</code> Milvus сортирует группы по указанному значению скалярного поля ведущего объекта каждой группы. Внутри каждой группы объекты остаются отсортированными по степени сходства с вектором запроса.</p>
-<h2 id="Considerations" class="common-anchor-header">Рекомендации<button data-href="#Considerations" class="anchor-icon" translate="no">
+<p>In the request above, <code translate="no">limit=20</code> means Milvus selects up to 20 groups, not 20 entities. Because <code translate="no">group_size=3</code>, the flat result list can contain up to 60 entities in total.</p>
+<p>When you use <code translate="no">order_by_fields</code> with <code translate="no">group_by_field</code>, Milvus orders groups by the specified scalar field value of each group’s top entity. Within each group, entities remain ordered by their similarity score to the query vector.</p>
+<h2 id="Considerations" class="common-anchor-header">Considerations<button data-href="#Considerations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -637,9 +637,9 @@ milvus::SearchResponse response;
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Индексирование</strong>: Эта функция группировки работает только для коллекций, проиндексированных с использованием следующих типов индексов: <strong>FLAT</strong>, <strong>IVF_FLAT</strong>, <strong>IVF_SQ8</strong>, <strong>HNSW</strong>, <strong>HNSW_PQ</strong>, <strong>HNSW_PRQ</strong>, <strong>HNSW_SQ</strong>, <strong>DISKANN</strong>, <strong>SPARSE_INVERTED_INDEX</strong>.</p></li>
-<li><p><strong>Количество групп</strong>: Параметр ` <code translate="no">limit</code> ` определяет количество групп, из которых возвращаются результаты поиска, а не конкретное количество объектов в каждой группе. Установка подходящего значения ` <code translate="no">limit</code> ` помогает контролировать разнообразие результатов поиска и производительность запроса. Уменьшение значения ` <code translate="no">limit</code> ` может снизить вычислительные затраты, если данные распределены плотно или существует проблема с производительностью.</p></li>
-<li><p><strong>Количество объектов в группе</strong>: Параметр <code translate="no">group_size</code> управляет количеством объектов, возвращаемых в каждой группе. Регулировка значения <code translate="no">group_size</code> в соответствии с вашим сценарием использования может повысить насыщенность результатов поиска. Однако при неравномерном распределении данных некоторые группы могут возвращать меньшее количество объектов, чем указано в параметре <code translate="no">group_size</code>, особенно в условиях ограниченного объема данных.</p></li>
-<li><p><strong>Строгий размер группы</strong>: при значении <code translate="no">strict_group_size=True</code> система будет пытаться возвращать указанное количество сущностей (<code translate="no">group_size</code>) для каждой группы, за исключением случаев, когда в данной группе недостаточно данных. Этот параметр обеспечивает постоянное количество сущностей в каждой группе, но может привести к снижению производительности при неравномерном распределении данных или ограниченных ресурсах. Если строгое количество сущностей не требуется, установка значения <code translate="no">strict_group_size=False</code> может повысить скорость выполнения запросов.</p></li>
-<li><p>Если векторы запроса уже существуют в целевой коллекции, рассмотрите возможность использования параметра ` <code translate="no">ids</code> ` вместо их извлечения перед выполнением поиска. Подробности см. в разделе <a href="/docs/ru/primary-key-search.md">«Поиск по первичному ключу</a>».</p></li>
+<li><p><strong>Indexing</strong>: This grouping feature works only for collections that are indexed with these index types: <strong>FLAT</strong>, <strong>IVF_FLAT</strong>, <strong>IVF_SQ8</strong>, <strong>HNSW</strong>, <strong>HNSW_PQ</strong>, <strong>HNSW_PRQ</strong>, <strong>HNSW_SQ</strong>, <strong>DISKANN</strong>, <strong>SPARSE_INVERTED_INDEX</strong>.</p></li>
+<li><p><strong>Number of groups</strong>: The <code translate="no">limit</code> parameter controls the number of groups from which search results are returned, rather than the specific number of entities within each group. Setting an appropriate <code translate="no">limit</code> helps control search diversity and query performance. Reducing <code translate="no">limit</code> can reduce computation costs if data is densely distributed or performance is a concern.</p></li>
+<li><p><strong>Entities per group</strong>: The <code translate="no">group_size</code> parameter controls the number of entities returned per group. Adjusting <code translate="no">group_size</code> based on your use case can increase the richness of search results. However, if data is unevenly distributed, some groups may return fewer entities than specified by <code translate="no">group_size</code>, particularly in limited data scenarios.</p></li>
+<li><p><strong>Strict group size</strong>: When <code translate="no">strict_group_size=True</code>, the system will attempt to return the specified number of entities (<code translate="no">group_size</code>) for each group, unless there isn’t enough data in that group. This setting ensures consistent entity counts per group but may lead to performance degradation with uneven data distribution or limited resources. If strict entity counts aren’t required, setting <code translate="no">strict_group_size=False</code> can improve query speed.</p></li>
+<li><p>If the query vectors already exist in the target collection, consider using <code translate="no">ids</code> instead of retrieving them before searches. For details, refer to <a href="/docs/ru/primary-key-search.md">Primary-Key Search</a>.</p></li>
 </ul>

@@ -1,9 +1,11 @@
 ---
 id: nullable-and-default.md
-title: 可为空字段
-summary: 配置可为空字段和默认值，包括Schema、插入、索引、搜索和过滤行为。
+title: Nullable Fields
+summary: >-
+  Configure nullable fields and default values, including schema, insert, index,
+  search, and filter behavior.
 ---
-<h1 id="Nullable-Fields" class="common-anchor-header">可为空字段<button data-href="#Nullable-Fields" class="anchor-icon" translate="no">
+<h1 id="Nullable-Fields" class="common-anchor-header">Nullable Fields<button data-href="#Nullable-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,14 +20,14 @@ summary: 配置可为空字段和默认值，包括Schema、插入、索引、�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 支持可为空字段，允许字段值为空或显式设置为 NULL。可为空性在 Schema 级别定义，并在数据摄入、索引、搜索和查询操作中始终如一地应用。</p>
-<p>在以下情况下使用可空字段：</p>
+    </button></h1><p>Milvus supports nullable fields, which allow a field value to be missing or explicitly set to NULL. Nullability is defined at the schema level and applies consistently across data ingestion, indexing, search, and query operations.</p>
+<p>Use nullable fields when:</p>
 <ul>
-<li>从允许缺失值的外部系统摄取数据时。</li>
-<li>部分元数据为可选，或仅在数据集的部分数据中可用。</li>
-<li>向量Embeddings是异步生成的，并在稍后插入。</li>
+<li>Data is ingested from external systems that allow missing values.</li>
+<li>Some metadata is optional or only available for part of the dataset.</li>
+<li>Vector embeddings are generated asynchronously and inserted later.</li>
 </ul>
-<h2 id="Limits" class="common-anchor-header">限制<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,12 +43,12 @@ summary: 配置可为空字段和默认值，包括Schema、插入、索引、�
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>允许 NULL 值的向量字段不支持 `<code translate="no">IS NULL</code> ` 或 `<code translate="no">IS NOT NULL</code> ` 过滤表达式。您无法根据向量字段值是否为 NULL 来显式过滤实体。</p></li>
-<li><p>从 Milvus 3.0.0 开始，父级<a href="/docs/zh/array-of-structs.md">StructArray</a>字段可以是可为空的。请在父级 StructArray 字段上设置 `<code translate="no">nullable=True</code> `，而非在单个子字段上设置。NULL 适用于整个 StructArray 字段，而非单个 Struct 元素，且 Milvus 会在内部将父级字段的可为空性传播至其子字段。 添加到现有 Collection 中的 StructArray 字段必须为可空，以便现有实体能够为该新字段返回 NULL。详情请参阅《<a href="/docs/zh/structarray-limits.md#Nullable-and-dynamic-schema-limits">StructArray 限制</a>》。</p></li>
-<li><p>可空属性在字段创建时定义，此后无法修改。您无法对现有字段启用或禁用可空性。</p></li>
-<li><p>标记为可空的字段不能用作Partition Key。Partition Key字段必须始终包含有效的、非空的值。有关更多信息，请参阅《<a href="/docs/zh/use-partition-key.md">使用Partition Key</a>》。</p></li>
+<li><p>Vector fields that allow NULL values do not support <code translate="no">IS NULL</code> or <code translate="no">IS NOT NULL</code> filter expressions. You cannot explicitly filter entities based on whether a vector field value is NULL.</p></li>
+<li><p>Starting in Milvus 3.0.0, the parent <a href="/docs/zh/array-of-structs.md">StructArray</a> field can be nullable. Set <code translate="no">nullable=True</code> on the parent StructArray field, not on individual subfields. NULL applies to the whole StructArray field, not to an individual Struct element, and Milvus propagates the parent’s nullability to its subfields internally. A StructArray field added to an existing collection must be nullable so existing entities can return NULL for the new field. For details, refer to <a href="/docs/zh/structarray-limits.md#Nullable-and-dynamic-schema-limits">StructArray Limits</a>.</p></li>
+<li><p>The nullable attribute is defined when a field is created and cannot be modified afterward. You cannot enable or disable nullability for an existing field.</p></li>
+<li><p>Fields marked as nullable cannot be used as partition keys. Partition key fields must always contain valid, non-null values. For more information, refer to <a href="/docs/zh/use-partition-key.md">Use Partition Key</a>.</p></li>
 </ul>
-<h2 id="What-is-a-nullable-field" class="common-anchor-header">什么是可空字段？<button data-href="#What-is-a-nullable-field" class="anchor-icon" translate="no">
+<h2 id="What-is-a-nullable-field" class="common-anchor-header">What is a nullable field?<button data-href="#What-is-a-nullable-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -61,22 +63,22 @@ summary: 配置可为空字段和默认值，包括Schema、插入、索引、�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在 Milvus 中，字段是否允许存储 NULL 值由一个名为 `<code translate="no">nullable</code>` 的 Schema 级字段属性控制。</p>
-<p>当字段被定义为<code translate="no">nullable=True</code> 时，Milvus 允许在数据摄入过程中该字段值缺失。实际上，Milvus 将以下两种输入视为等效，并将字段值存储为 NULL：</p>
+    </button></h2><p>In Milvus, whether a field is allowed to store a NULL value is controlled by a schema-level field attribute named <code translate="no">nullable</code>.</p>
+<p>When a field is defined with <code translate="no">nullable=True</code>, Milvus allows the field value to be missing during data ingestion. In practice, Milvus treats the following two inputs as equivalent and stores the field value as NULL:</p>
 <ul>
-<li>输入实体中省略了该字段。</li>
-<li>该字段被显式设置为 NULL（例如，在 Python 中使用 `<code translate="no">None</code> `）。</li>
+<li>The field is omitted from the input entity.</li>
+<li>The field is explicitly set to NULL (for example, <code translate="no">None</code> in Python).</li>
 </ul>
-<p>如果字段未定义为可为空（默认行为），则每个实体都必须为该字段提供有效值。省略该字段或显式赋值为 NULL 都会导致插入或导入操作失败。</p>
-<p>Schema 模式中的<strong>标量字段和向量字段均</strong>支持 nullable 属性。从 Milvus 3.0.0 开始，父级 StructArray 字段也支持该属性。请勿单独将 Struct 子字段配置为可为空；应在 StructArray 父级上定义可为空性，Milvus 会内部将该设置传播到其子字段。</p>
+<p>If a field is not defined as nullable (the default behavior), every entity must provide a valid value for that field. Omitting the field or explicitly assigning a NULL value will cause the insert or import operation to fail.</p>
+<p>The nullable attribute is supported for both <strong>scalar and vector fields</strong> in a collection schema. Starting in Milvus 3.0.0, it is also supported on the parent StructArray field. Do not configure Struct subfields as nullable independently; define nullability on the StructArray parent and Milvus propagates that setting to its subfields internally.</p>
 <div class="alert note">
-<p>可空性决定字段值是否可以为空；它并不定义字段为空时使用的具体值。</p>
+<p>Nullability determines whether a field value may be missing; it does not define what value is used when a field is missing.</p>
 <ul>
-<li>如果配置了可空字段但未指定默认值，则省略该字段时，系统将存储 NULL 值。</li>
-<li>如果配置了默认值，Milvus 可能会存储该默认值。有关详细信息，请参阅<a href="/docs/zh/default-values.md">“默认值”</a>。</li>
+<li>If a nullable field is configured without a default value, omitting the field results in a stored NULL value.</li>
+<li>If a default value is configured, Milvus may store the default value instead. For details, see <a href="/docs/zh/default-values.md">Default Values</a>.</li>
 </ul>
 </div>
-<h2 id="Define-a-nullable-field-in-the-collection-schema" class="common-anchor-header">在Collection Schema中定义可空字段<button data-href="#Define-a-nullable-field-in-the-collection-schema" class="anchor-icon" translate="no">
+<h2 id="Define-a-nullable-field-in-the-collection-schema" class="common-anchor-header">Define a nullable field in the collection schema<button data-href="#Define-a-nullable-field-in-the-collection-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -91,14 +93,14 @@ summary: 配置可为空字段和默认值，包括Schema、插入、索引、�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要使用可空字段，您必须在定义 Collection Schema 时启用 nullable 属性。</p>
-<p>在此示例中，Collection Schema定义了一个名为<code translate="no">embedding</code> 的向量字段，其<code translate="no">nullable=True</code> 。这允许Collection中的实体在数据摄入过程中省略向量值，或将其显式设置为NULL。</p>
+    </button></h2><p>To use nullable fields, you must enable the nullable attribute when defining the collection schema.</p>
+<p>In this example, the collection schema defines a vector field named <code translate="no">embedding</code> with <code translate="no">nullable=True</code>. This allows entities in the collection to omit the vector value or explicitly set it to NULL during data ingestion.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
@@ -248,22 +250,22 @@ curl --request POST \
     }
   }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此Schema中：</p>
+<p>In this schema:</p>
 <ul>
-<li><code translate="no">embedding</code> 字段被显式标记为可为空。</li>
-<li>实体在插入时可以省略<code translate="no">embedding</code> 字段，或将其赋值为 NULL。</li>
-<li>是否允许 NULL 值的决定在 Collection 创建时即已确定。</li>
+<li>The <code translate="no">embedding</code> field is explicitly marked as nullable.</li>
+<li>Entities may omit the <code translate="no">embedding</code> field or assign it a NULL value during insertion.</li>
+<li>The decision to allow NULL values is fixed at collection creation time.</li>
 </ul>
-<p>为清晰起见，以下示例将重点放在可为空的向量字段（<code translate="no">embedding</code> ）上。定义可为空的标量字段是可选的，且无需遵循本指南的其余内容。</p>
+<p>For clarity, the following examples focus on a nullable vector field (<code translate="no">embedding</code>). Defining nullable scalar fields is optional and not required to follow the rest of this guide.</p>
 <p><details>
-<summary>可选：定义可空标量字段</summary></p>
-<p>标量字段也可以使用相同的 `<code translate="no">nullable</code> ` 属性定义为可为空，并在数据摄入过程中遵循相同的规则。例如：</p>
+<summary>Optional: Define a nullable scalar field</summary></p>
+<p>Scalar fields can also be defined as nullable using the same <code translate="no">nullable</code> attribute and follow the same rules during ingestion. For example:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;age&quot;</span>,
@@ -290,7 +292,7 @@ curl --request POST \
 <span class="hljs-comment"># { &quot;fieldName&quot;: &quot;age&quot;, &quot;dataType&quot;: &quot;Int64&quot;, &quot;nullable&quot;: true }</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h2 id="Insert-behavior-with-missing-or-NULL-values" class="common-anchor-header">存在缺失值或 NULL 值时的插入行为<button data-href="#Insert-behavior-with-missing-or-NULL-values" class="anchor-icon" translate="no">
+<h2 id="Insert-behavior-with-missing-or-NULL-values" class="common-anchor-header">Insert behavior with missing or NULL values<button data-href="#Insert-behavior-with-missing-or-NULL-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -305,14 +307,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>一旦在 Schema 中将字段定义为可空，Milvus 便允许在数据摄入过程中该字段值为缺失或显式设置为 NULL。</p>
-<p>下面的示例将三个实体插入到<a href="#define-a-nullable-field-in-the-collection-schema">“在Schema中定义可为空字段”中</a>创建的Collection中，演示了这些不同情况。</p>
+    </button></h2><p>Once a field is defined as nullable in the collection schema, Milvus allows the field value to be missing or explicitly set to NULL during data ingestion.</p>
+<p>The example below inserts three entities into the collection created in <a href="#define-a-nullable-field-in-the-collection-schema">Define a nullable field in the collection schema</a>, demonstrating these different cases.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">data = [
     {
@@ -407,13 +409,13 @@ _, err := client.Insert(ctx, milvusclient.NewRowBasedInsertOption(<span class="h
     ]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此示例中：</p>
+<p>In this example:</p>
 <ul>
-<li>实体<strong>id = 1</strong>提供了有效的向量值。</li>
-<li>实体<strong>id = 2</strong>将 NULL 值显式赋值给 `<code translate="no">embedding</code> ` 字段。</li>
-<li>实体<strong>id = 3</strong>完全省略了 `<code translate="no">embedding</code> ` 字段；Milvus 将其存储为 NULL。</li>
+<li>Entity <strong>id = 1</strong> provides a valid vector value.</li>
+<li>Entity <strong>id = 2</strong> explicitly assigns a NULL value to the <code translate="no">embedding</code> field.</li>
+<li>Entity <strong>id = 3</strong> omits the <code translate="no">embedding</code> field entirely; Milvus stores it as NULL.</li>
 </ul>
-<h2 id="Index-behavior-on-nullable-fields" class="common-anchor-header">可为空字段的索引行为<button data-href="#Index-behavior-on-nullable-fields" class="anchor-icon" translate="no">
+<h2 id="Index-behavior-on-nullable-fields" class="common-anchor-header">Index behavior on nullable fields<button data-href="#Index-behavior-on-nullable-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -428,18 +430,18 @@ _, err := client.Insert(ctx, milvusclient.NewRowBasedInsertOption(<span class="h
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>插入数据后，您可以照常在可为空字段上构建索引。主要区别在于 Milvus 在构建索引时如何处理 NULL 值：</p>
+    </button></h2><p>After inserting data, you can build an index on a nullable field as usual. The key difference is how Milvus handles NULL values during index construction:</p>
 <ul>
-<li>只有具有非空值的实体才会被添加到索引中。</li>
-<li>具有 NULL 值的实体将被跳过，不参与索引构建。</li>
+<li>Only entities with non-null values are added to the index.</li>
+<li>Entities with NULL values are skipped and do not participate in index building.</li>
 </ul>
-<p>对于可为空的向量字段，这意味着只有具有有效向量的实体才能通过向量相似度进行搜索。</p>
+<p>For a nullable vector field, this means only entities with valid vectors become searchable by vector similarity.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Set index parameters</span>
 index_params = client.prepare_index_params()
@@ -540,12 +542,12 @@ curl --request POST \
   --header <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
   -d <span class="hljs-string">&#x27;{&quot;collectionName&quot;: &quot;my_collection&quot;}&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>此时：</p>
+<p>At this point:</p>
 <ul>
-<li>具有有效Embeddings值的实体已被索引，并可供搜索。</li>
-<li>嵌入值为NULL的实体仍保留在Collection中，但不会被纳入向量索引。</li>
+<li>Entities with valid embedding values are indexed and ready for search.</li>
+<li>Entities whose embedding is NULL remain in the collection, but they are not included in the vector index.</li>
 </ul>
-<h2 id="Search-behavior-with-nullable-fields" class="common-anchor-header">可为空字段的搜索行为<button data-href="#Search-behavior-with-nullable-fields" class="anchor-icon" translate="no">
+<h2 id="Search-behavior-with-nullable-fields" class="common-anchor-header">Search behavior with nullable fields<button data-href="#Search-behavior-with-nullable-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -560,20 +562,20 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>当您对可为空字段执行搜索操作时，Milvus 仅评估该字段值不为空的实体。向量字段为 NULL 的实体将被自动跳过。</p>
-<p>以本例中的<code translate="no">embedding</code> 等可为空的向量字段为例：</p>
+    </button></h2><p>When you perform search operations on a nullable field, Milvus evaluates only entities with non-null values for the field used in the search. Entities whose vector field is NULL are skipped automatically.</p>
+<p>For a nullable vector field such as <code translate="no">embedding</code> in this example:</p>
 <ul>
-<li>只有具有有效向量值的实体才会被评估和排序。</li>
-<li>向量值为NULL的实体不会引发错误。</li>
-<li>如果有效向量的数量少于请求的<code translate="no">topK</code> （<code translate="no">limit</code> ），Milvus返回的结果可能少于<code translate="no">limit</code> 。</li>
+<li>Only entities with valid vector values are evaluated and ranked.</li>
+<li>Entities with NULL vectors do not cause errors.</li>
+<li>If the number of valid vectors is smaller than the requested <code translate="no">topK</code> (<code translate="no">limit</code>), Milvus may return fewer results than <code translate="no">limit</code>.</li>
 </ul>
-<p>以下示例对可为空的向量字段<code translate="no">embedding</code> 执行向量搜索：</p>
+<p>The following example performs a vector search on the nullable vector field <code translate="no">embedding</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -651,13 +653,13 @@ fmt.Println(resultSets)
     &quot;outputFields&quot;: [&quot;embedding&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此搜索中：</p>
+<p>In this search:</p>
 <ul>
-<li>仅将<code translate="no">embedding</code> 值不为空的实体视为候选对象。</li>
-<li><code translate="no">embedding</code> 值为 NULL 的实体将被排除在评估之外。</li>
-<li>返回的结果数量取决于Collection中存在多少个有效的向量。</li>
+<li>Only entities with non-null <code translate="no">embedding</code> values are considered candidates.</li>
+<li>Entities with NULL values for <code translate="no">embedding</code> are excluded from evaluation.</li>
+<li>The number of returned results depends on how many valid vectors exist in the collection.</li>
 </ul>
-<h2 id="Query-and-filtering-implications" class="common-anchor-header">查询与过滤的注意事项<button data-href="#Query-and-filtering-implications" class="anchor-icon" translate="no">
+<h2 id="Query-and-filtering-implications" class="common-anchor-header">Query and filtering implications<button data-href="#Query-and-filtering-implications" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -672,15 +674,15 @@ fmt.Println(resultSets)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>前面的示例侧重于向量字段。本节将说明 NULL 值在<strong>标量过滤表达式中的</strong>行为。</p>
-<p>标量字段可以使用<code translate="no">nullable=True</code> 进行定义，并遵循与向量字段相同的摄入规则。但是，<strong>在过滤表达式中</strong>，<strong>NULL 标量值始终被评估为 false</strong>。</p>
-<p>例如，假设有一个可为空的标量字段<code translate="no">age</code> ，以下过滤器将筛选出年龄大于 18 岁的实体：</p>
+    </button></h2><p>The previous examples focus on vector fields. This section describes how NULL values behave in <strong>scalar filter expressions</strong>.</p>
+<p>Scalar fields can be defined with <code translate="no">nullable=True</code> and follow the same ingestion rules as vector fields. However, <strong>NULL scalar values always evaluate to false in filter expressions</strong>.</p>
+<p>For example, given a nullable scalar field <code translate="no">age</code>, the following filter selects entities whose age is greater than 18:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&quot;age &gt; 18&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -693,14 +695,14 @@ fmt.Println(resultSets)
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># Use in query/search filter parameter, for example:</span>
 <span class="hljs-comment"># &quot;filter&quot;: &quot;age &gt; 18&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">age</code> 为 NULL 的实体将被排除在结果之外，因为 NULL 值不符合过滤条件。</p>
-<p>同样地，等值检查也不会匹配 NULL 值。例如：</p>
+<p>Entities where <code translate="no">age</code> is NULL are excluded from the results because a NULL value does not satisfy the filter condition.</p>
+<p>Similarly, equality checks do not match NULL values. For example:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">expr = <span class="hljs-string">&#x27;status == &quot;active&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -712,8 +714,8 @@ fmt.Println(resultSets)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># &quot;filter&quot;: &quot;status == \&quot;active\&quot;&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">status</code> 为 NULL 的实体将被排除在结果之外。</p>
-<h2 id="Nullable-fields-and-default-values" class="common-anchor-header">可为空字段与默认值<button data-href="#Nullable-fields-and-default-values" class="anchor-icon" translate="no">
+<p>Entities where <code translate="no">status</code> is NULL are excluded from the results.</p>
+<h2 id="Nullable-fields-and-default-values" class="common-anchor-header">Nullable fields and default values<button data-href="#Nullable-fields-and-default-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -728,24 +730,24 @@ fmt.Println(resultSets)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>当某个字段同时配置了<code translate="no">nullable</code> 和<code translate="no">default_value</code> 时，以下规则将决定Milvus在插入过程中如何处理NULL输入或缺失的字段值。</p>
+    </button></h2><p>When both <code translate="no">nullable</code> and <code translate="no">default_value</code> are configured for a field, the following rules determine how Milvus handles NULL input or missing field values during insertion.</p>
 <table>
 <thead>
-<tr><th>启用可为空</th><th>默认值</th><th>用户输入（NULL 或省略）</th><th>结果</th></tr>
+<tr><th>Nullable enabled</th><th>Default value</th><th>User input (NULL or omitted)</th><th>Result</th></tr>
 </thead>
 <tbody>
-<tr><td>是</td><td>是（非NULL）</td><td>NULL 或省略</td><td>使用默认值</td></tr>
-<tr><td>是</td><td>否</td><td>NULL 或省略</td><td>存储为 NULL</td></tr>
-<tr><td>否</td><td>是（非NULL）</td><td>NULL 或省略</td><td>使用默认值</td></tr>
-<tr><td>否</td><td>否</td><td>NULL 或省略</td><td>抛出错误</td></tr>
-<tr><td>否</td><td>是（默认值为NULL）</td><td>NULL 或省略</td><td>会引发错误</td></tr>
+<tr><td>Yes</td><td>Yes (non-NULL)</td><td>NULL or omitted</td><td>Uses the default value</td></tr>
+<tr><td>Yes</td><td>No</td><td>NULL or omitted</td><td>Stored as NULL</td></tr>
+<tr><td>No</td><td>Yes (non-NULL)</td><td>NULL or omitted</td><td>Uses the default value</td></tr>
+<tr><td>No</td><td>No</td><td>NULL or omitted</td><td>Throws an error</td></tr>
+<tr><td>No</td><td>Yes (NULL default)</td><td>NULL or omitted</td><td>Throws an error</td></tr>
 </tbody>
 </table>
-<p><strong>要点：</strong></p>
+<p><strong>Key takeaways:</strong></p>
 <ul>
-<li>当字段具有非NULL默认值时，无论是否启用了<code translate="no">nullable</code> ，系统都会使用该默认值。</li>
-<li>当启用<code translate="no">nullable=True</code> 但未设置默认值时，该字段将存储NULL。</li>
-<li>当启用<code translate="no">nullable=False</code> 但未设置默认值时，插入操作将失败并抛出错误。</li>
-<li>在不可为空字段上设置 NULL 默认值是无效的，并将引发错误。</li>
+<li>When a field has a non-NULL default value, that value is used regardless of whether <code translate="no">nullable</code> is enabled.</li>
+<li>When <code translate="no">nullable=True</code> but no default value is set, the field stores NULL.</li>
+<li>When <code translate="no">nullable=False</code> and no default value is set, insertion fails with an error.</li>
+<li>Setting a NULL default value on a non-nullable field is invalid and causes an error.</li>
 </ul>
-<p>有关默认值的完整示例和 API 使用方法，请参阅<a href="/docs/zh/default-values.md">“默认值”</a>。</p>
+<p>For full examples and API usage for defaults, see <a href="/docs/zh/default-values.md">Default Values</a>.</p>

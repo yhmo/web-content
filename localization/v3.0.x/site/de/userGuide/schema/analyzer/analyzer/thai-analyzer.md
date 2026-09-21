@@ -2,8 +2,8 @@
 id: thai-analyzer.md
 title: ThaiCompatible with Milvus 3.0.0+
 summary: >-
-  Der integrierte Thai-Analysator unterteilt thailändischen Text in Wörter,
-  normalisiert Unicode-Dezimalziffern und entfernt thailändische Stoppwörter.
+  The built-in Thai analyzer segments Thai text into words, normalizes Unicode
+  decimal digits, and removes Thai stop words.
 beta: Milvus 3.0.0+
 ---
 <h1 id="Thai" class="common-anchor-header">Thai<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#Thai" class="anchor-icon" translate="no">
@@ -21,8 +21,8 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Der Analysator „ <code translate="no">thai</code> “ ist ein integrierter Analysator für thailändischen Text. Verwenden Sie diesen Analysator, wenn Milvus thailändischen Text in Wörter segmentieren, thailändische Ziffern normalisieren, gemischten lateinischen Text in Kleinbuchstaben umwandeln und thailändische Stoppwörter entfernen soll.</p>
-<h2 id="Configuration" class="common-anchor-header">Konfiguration<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">thai</code> analyzer is a built-in analyzer for Thai text. Use this analyzer when you need Milvus to segment Thai text into words, normalize Thai digits, lowercase mixed Latin text, and remove Thai stop words.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,35 +37,35 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Integrierte Analysatoren sind von Milvus bereitgestellte Analysatorvorlagen. Um einen integrierten Analysator zu verwenden, setzen Sie „ <code translate="no">type</code> “ auf einen vordefinierten Analysatornamen unter „ <code translate="no">analyzer_params</code> “.</p>
-<p>Um den integrierten thailändischen Analysator zu verwenden, setzen Sie „ <code translate="no">type</code> “ auf „ <code translate="no">thai</code> “:</p>
+    </button></h2><p>Built-in analyzers are Milvus-provided analyzer templates. To use a built-in analyzer, set <code translate="no">type</code> to a predefined analyzer name in <code translate="no">analyzer_params</code>.</p>
+<p>To use the built-in Thai analyzer, set <code translate="no">type</code> to <code translate="no">thai</code>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;thai&quot;</span>,
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Der Analysator „ <code translate="no">thai</code> “ akzeptiert den folgenden optionalen Parameter:</p>
+<p>The <code translate="no">thai</code> analyzer accepts the following optional parameter:</p>
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Typ</p></th>
-     <th><p>Standard</p></th>
-     <th><p>Beschreibung</p></th>
+     <th><p>Type</p></th>
+     <th><p>Default</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">stop_words</code></p></td>
      <td><p><code translate="no">list[str]</code></p></td>
      <td><p><code translate="no">_thai_</code></p></td>
-     <td><p>Eine Liste zusätzlicher Stoppwörter, die bei der Tokenisierung entfernt werden sollen. Standardmäßig verwendet der „ <code translate="no">thai</code> “-Analysator das integrierte Wörterbuch „ <code translate="no">_thai_</code> “. Informationen zum Standardwörterbuch finden Sie in der Milvus <a href="https://github.com/milvus-io/milvus/blob/1945ba399b4552fd0fd0b131f7c735ddde21e71c/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words/thai.txt">-Liste der thailändischen Stoppwörter</a>. Die Liste stammt aus der Apache Lucene <a href="https://github.com/apache/lucene/blob/main/lucene/analysis/common/src/resources/org/apache/lucene/analysis/th/stopwords.txt">-Datei mit thailändischen Stoppwörtern</a>.</p></td>
+     <td><p>A list of additional stop words to remove from tokenization. By default, the <code translate="no">thai</code> analyzer uses the built-in <code translate="no">_thai_</code> dictionary. To inspect the default dictionary, refer to the Milvus <a href="https://github.com/milvus-io/milvus/blob/1945ba399b4552fd0fd0b131f7c735ddde21e71c/internal/core/thirdparty/tantivy/tantivy-binding/src/analyzer/filter/stop_words/thai.txt">Thai stop-word list</a>. The list is sourced from the Apache Lucene <a href="https://github.com/apache/lucene/blob/main/lucene/analysis/common/src/resources/org/apache/lucene/analysis/th/stopwords.txt">Thai stopwords file</a>.</p></td>
    </tr>
 </table>
-<p>Um benutzerdefinierte Stoppwörter hinzuzufügen, fügen Sie „ <code translate="no">stop_words</code> “ ein:</p>
+<p>To add custom stop words, include <code translate="no">stop_words</code>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;thai&quot;</span>,
     <span class="hljs-string">&quot;stop_words&quot;</span>: [<span class="hljs-string">&quot;มิลวัส&quot;</span>],
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus wendet zusätzlich zum integrierten „ <code translate="no">_thai_</code> “-Wörterbuch benutzerdefinierte Stoppwörter an.</p>
-<p>Der integrierte „ <code translate="no">thai</code> “-Analysator entspricht der folgenden Konfiguration für einen benutzerdefinierten Analysator:</p>
+<p>Milvus applies custom stop words in addition to the built-in <code translate="no">_thai_</code> dictionary.</p>
+<p>The built-in <code translate="no">thai</code> analyzer is equivalent to the following custom analyzer configuration:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;thai&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [
@@ -78,16 +78,16 @@ beta: Milvus 3.0.0+
     ],
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Dieser Analysator wendet die folgenden Verarbeitungsschritte an:</p>
+<p>This analyzer applies the following processing steps:</p>
 <ul>
-<li><strong>Tokenisierung</strong>: Verwendet den <a href="/docs/de/thai-tokenizer.md"><code translate="no">thai</code></a> Tokenizer, um thailändischen Text in Wort-Token zu segmentieren, ohne sich auf Leerzeichen zu stützen. Der Tokenizer filtert Segmente heraus, die ausschließlich aus Leerzeichen und Satzzeichen bestehen.</li>
-<li><strong>Groß-/Kleinschreibungsnormalisierung</strong>: Verwendet den Filter „ <code translate="no">lowercase</code> “, der lateinische Buchstaben in gemischtem thailändisch-englischem Text beeinflusst.</li>
-<li><strong>Ziffernnormalisierung</strong>: Verwendet den Filter „ <code translate="no">decimaldigit</code> “, um thailändische Ziffern und andere Unicode-Dezimalziffern in ASCII-Ziffern umzuwandeln.</li>
-<li><strong>Entfernung von Stoppwörtern</strong>: Verwendet den Filter „ <code translate="no">stop</code> “ mit dem integrierten Wörterbuch „ <code translate="no">_thai_</code> “.</li>
-<li><strong>Kein Stemming</strong>: Der integrierte „ <code translate="no">thai</code> “-Analysator wendet keinen „ <code translate="no">stemmer</code> “-Filter an.</li>
+<li><strong>Tokenization</strong>: Uses the <a href="/docs/de/thai-tokenizer.md"><code translate="no">thai</code></a> tokenizer to segment Thai text into word tokens without relying on whitespace. The tokenizer filters out whitespace and punctuation-only segments.</li>
+<li><strong>Case normalization</strong>: Uses the <code translate="no">lowercase</code> filter, which affects Latin letters in mixed Thai/English text.</li>
+<li><strong>Digit normalization</strong>: Uses the <code translate="no">decimaldigit</code> filter to convert Thai digits and other Unicode decimal digits to ASCII digits.</li>
+<li><strong>Stop-word removal</strong>: Uses the <code translate="no">stop</code> filter with the built-in <code translate="no">_thai_</code> dictionary.</li>
+<li><strong>No stemming</strong>: The built-in <code translate="no">thai</code> analyzer does not apply a <code translate="no">stemmer</code> filter.</li>
 </ul>
-<p>Nachdem Sie „ <code translate="no">analyzer_params</code> “ definiert haben, können Sie den Analysator bei der Definition eines Sammlungsschemas auf ein „ <code translate="no">VARCHAR</code> “-Feld anwenden. Weitere Informationen finden Sie unter <a href="/docs/de/analyzer-overview.md#Example-use">„Anwendungsbeispiel</a>“.</p>
-<h2 id="Examples" class="common-anchor-header">Beispiele<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply the analyzer to a <code translate="no">VARCHAR</code> field when defining a collection schema. For details, refer to <a href="/docs/de/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,8 +102,8 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Bevor Sie die Analysator-Konfiguration auf Ihr Sammlungsschema anwenden, überprüfen Sie deren Verhalten mithilfe der Methode „ <code translate="no">run_analyzer</code> “.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">Analysator-Konfiguration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,7 +122,7 @@ beta: Milvus 3.0.0+
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;thai&quot;</span>,
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Überprüfung mit <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -146,7 +146,7 @@ sample_text = <span class="hljs-string">&quot;ฉันรักการค้�
 result = client.run_analyzer(sample_text, analyzer_params)
 <span class="hljs-built_in">print</span>(result)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">Erwartete Ausgabe<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

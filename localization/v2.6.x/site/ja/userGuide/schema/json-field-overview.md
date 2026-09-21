@@ -1,10 +1,15 @@
 ---
 id: json-field-overview.md
-title: JSONフィールドの概要
+title: JSON Field Overview
 summary: >-
-  商品カタログ、コンテンツ管理システム、ユーザー嗜好エンジンのようなアプリケーションを構築する場合、多くの場合、ベクトル埋め込みと一緒に柔軟なメタデータを保存する必要があります。商品の属性はカテゴリーによって異なり、ユーザーの嗜好は時間とともに変化し、ドキュメントのプロパティは複雑な入れ子構造を持っています。MilvusのJSONフィールドは、パフォーマンスを犠牲にすることなく、柔軟な構造化データの保存とクエリを可能にすることで、この課題を解決します。
+  When building applications like product catalogs, content management systems,
+  or user preference engines, you often need to store flexible metadata
+  alongside your vector embeddings. Product attributes vary by category, user
+  preferences evolve over time, and document properties have complex nested
+  structures. JSON fields in Milvus solve this challenge by allowing you to
+  store and query flexible structured data without sacrificing performance.
 ---
-<h1 id="JSON-Field-Overview" class="common-anchor-header">JSONフィールドの概要<button data-href="#JSON-Field-Overview" class="anchor-icon" translate="no">
+<h1 id="JSON-Field-Overview" class="common-anchor-header">JSON Field Overview<button data-href="#JSON-Field-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +24,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>商品カタログ、コンテンツ管理システム、ユーザー嗜好エンジンのようなアプリケーションを構築する場合、多くの場合、ベクトル埋め込みと一緒に柔軟なメタデータを保存する必要があります。商品の属性はカテゴリによって異なり、ユーザの嗜好は時間とともに変化し、ドキュメントのプロパティは複雑な入れ子構造を持っています。MilvusのJSONフィールドは、パフォーマンスを犠牲にすることなく、柔軟な構造化データの保存とクエリを可能にすることで、この課題を解決します。</p>
-<h2 id="What-is-a-JSON-field" class="common-anchor-header">JSONフィールドとは？<button data-href="#What-is-a-JSON-field" class="anchor-icon" translate="no">
+    </button></h1><p>When building applications like product catalogs, content management systems, or user preference engines, you often need to store flexible metadata alongside your vector embeddings. Product attributes vary by category, user preferences evolve over time, and document properties have complex nested structures. JSON fields in Milvus solve this challenge by allowing you to store and query flexible structured data without sacrificing performance.</p>
+<h2 id="What-is-a-JSON-field" class="common-anchor-header">What is a JSON field?<button data-href="#What-is-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,8 +40,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>JSONフィールドとは、Milvusのスキーマ定義データ型(<code translate="no">DataType.JSON</code>)の一つで、構造化されたキー・バリューデータを格納するものです。従来の硬直したデータベースカラムとは異なり、JSONフィールドはネストされたオブジェクト、配列、および混合データ型に対応し、高速クエリのための複数のインデックスオプションを提供します。</p>
-<p>JSONフィールド構造の例：</p>
+    </button></h2><p>A JSON field is a schema-defined data type (<code translate="no">DataType.JSON</code>) in Milvus that stores structured key-value data. Unlike traditional rigid database columns, JSON fields accommodate nested objects, arrays, and mixed data types while providing multiple indexing options for fast queries.</p>
+<p>Example JSON field structure:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> 
     <span class="hljs-attr">&quot;category&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;electronics&quot;</span><span class="hljs-punctuation">,</span>
@@ -56,11 +61,11 @@ summary: >-
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>この例では、<code translate="no">metadata</code> は1つのJSONフィールドで、フラット値（例：<code translate="no">category</code> 、<code translate="no">in_stock</code> ）、配列（<code translate="no">tags</code> ）、入れ子オブジェクト（<code translate="no">supplier</code> ）が混在している。</p>
+<p>In this example, <code translate="no">metadata</code> is a single JSON field that contains a mix of flat values (e.g. <code translate="no">category</code>, <code translate="no">in_stock</code>), arrays (<code translate="no">tags</code>), and nested objects (<code translate="no">supplier</code>).</p>
 <div class="alert note">
-<p><strong>命名規則：</strong>JSONキーには、文字、数字、アンダースコアのみを使用する。特殊文字、スペース、ドットは、クエリで解析の問題を引き起こす可能性があるため、避けてください。</p>
+<p><strong>Naming convention:</strong> Use only letters, numbers, and underscores in JSON keys. Avoid special characters, spaces, or dots as they may cause parsing issues in queries.</p>
 </div>
-<h2 id="JSON-field-vs-dynamic-field" class="common-anchor-header">JSONフィールドとダイナミック・フィールドの違い<button data-href="#JSON-field-vs-dynamic-field" class="anchor-icon" translate="no">
+<h2 id="JSON-field-vs-dynamic-field" class="common-anchor-header">JSON field vs. dynamic field<button data-href="#JSON-field-vs-dynamic-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,36 +80,36 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>よくある混乱は、JSONフィールドと<a href="/docs/ja/enable-dynamic-field.md">ダイナミックフィールドの</a>違いです。どちらもJSONに関連していますが、その目的は異なります。</p>
-<p>以下の表は、JSONフィールドとダイナミック・フィールドの主な違いをまとめたものです：</p>
+    </button></h2><p>A common point of confusion is the difference between a JSON field and the <a href="/docs/ja/v2.6.x/enable-dynamic-field.md">dynamic field</a>. While both are related to JSON, they serve different purposes.</p>
+<p>The table below summarizes the key differences between a JSON field and the dynamic field:</p>
 <table>
    <tr>
-     <th><p>機能</p></th>
-     <th><p>JSONフィールド</p></th>
-     <th><p>ダイナミック・フィールド</p></th>
+     <th><p>Feature</p></th>
+     <th><p>JSON Field</p></th>
+     <th><p>Dynamic Field</p></th>
    </tr>
    <tr>
-     <td><p>スキーマ定義</p></td>
-     <td><p>コレクション・スキーマで、<code translate="no">DataType.JSON</code> 型で明示的に宣言する必要があるスカラー・フィールド。</p></td>
-     <td><p>宣言されていないフィールドを自動的に格納する非表示の JSON フィールド（<code translate="no">$meta</code> ）。</p></td>
+     <td><p>Schema definition</p></td>
+     <td><p>A scalar field that must be explicitly declared in the collection schema with the <code translate="no">DataType.JSON</code> type.</p></td>
+     <td><p>A hidden JSON field (named <code translate="no">$meta</code>) that automatically stores undeclared fields.</p></td>
    </tr>
    <tr>
-     <td><p>使用例</p></td>
-     <td><p>スキーマが既知で一貫性のある構造化データを格納する。</p></td>
-     <td><p>固定スキーマに適合しない、柔軟な、進化する、または半構造化データを格納する。</p></td>
+     <td><p>Use case</p></td>
+     <td><p>Stores structured data where the schema is known and consistent.</p></td>
+     <td><p>Stores flexible, evolving, or semi-structured data that doesn't fit a fixed schema.</p></td>
    </tr>
    <tr>
-     <td><p>制御</p></td>
-     <td><p>フィールド名と構造を制御します。</p></td>
-     <td><p>未定義のフィールドはシステム管理。</p></td>
+     <td><p>Control</p></td>
+     <td><p>You control the field name and structure.</p></td>
+     <td><p>System-managed for undefined fields.</p></td>
    </tr>
    <tr>
-     <td><p>クエリ</p></td>
-     <td><p>JSONフィールド内のフィールド名またはターゲット・キーを使用してクエリ：<code translate="no">metadata["key"]</code> 。</p></td>
-     <td><p>ダイナミック・フィールドのキーを使って直接クエリーする：<code translate="no">"dynamic_key"</code> または<code translate="no">$meta</code> を経由して：<code translate="no">$meta["dynamic_key"]</code></p></td>
+     <td><p>Querying</p></td>
+     <td><p>Query using your field name or target key inside the JSON field: <code translate="no">metadata["key"]</code>.</p></td>
+     <td><p>Query directly using the dynamic field key: <code translate="no">"dynamic_key"</code> or via <code translate="no">$meta</code>: <code translate="no">$meta["dynamic_key"]</code></p></td>
    </tr>
 </table>
-<h2 id="Basic-operations" class="common-anchor-header">基本的な操作<button data-href="#Basic-operations" class="anchor-icon" translate="no">
+<h2 id="Basic-operations" class="common-anchor-header">Basic operations<button data-href="#Basic-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -119,8 +124,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>JSONフィールドを使用する基本的なワークフローは、スキーマでフィールドを定義し、データを挿入し、特定のフィルター式を使用してデータをクエリすることです。</p>
-<h3 id="Define-a-JSON-field" class="common-anchor-header">JSONフィールドの定義<button data-href="#Define-a-JSON-field" class="anchor-icon" translate="no">
+    </button></h2><p>The fundamental workflow for using a JSON field involves defining it in your schema, inserting data, and then querying the data using specific filter expressions.</p>
+<h3 id="Define-a-JSON-field" class="common-anchor-header">Define a JSON field<button data-href="#Define-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -135,7 +140,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>JSON フィールドを使用するには、コレクションの作成時にコレクションスキーマで明示的に定義します。次の例は、<code translate="no">DataType.JSON</code> タイプの<code translate="no">metadata</code> フィールドを持つコレクションを作成する方法を示します：</p>
+    </button></h3><p>To use a JSON field, explicitly define it in your collection schema when creating the collection. The following example demonstrates how to create a collection with a <code translate="no">metadata</code> field of type <code translate="no">DataType.JSON</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>) <span class="hljs-comment"># Replace with your server address </span>
@@ -154,9 +159,9 @@ client.create_collection(
 )
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>この例では、コレクションスキーマで定義された JSON フィールドは、<code translate="no">nullable=True</code> で NULL 値を許可します。詳細は、<a href="/docs/ja/nullable-and-default.md">Nullable &amp; Defaultを</a>参照してください。</p>
+<p>In this example, the JSON field defined in the collection schema allows null values with <code translate="no">nullable=True</code>. For details, refer to <a href="/docs/ja/v2.6.x/nullable-and-default.md">Nullable & Default</a>.</p>
 </div>
-<h3 id="Insert-data" class="common-anchor-header">データの挿入<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h3 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -171,7 +176,7 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>コレクションが作成されたら、構造化 JSON オブジェクトを含むエンティティを指定の JSON フィールドに挿入します。データは、辞書のリストとしてフォーマットする必要があります。</p>
+    </button></h3><p>Once the collection is created, insert entities that contain structured JSON objects in your designated JSON field. Your data should be formatted as a list of dictionaries.</p>
 <pre><code translate="no" class="language-python">entities = [
     {
         <span class="hljs-string">&quot;product_id&quot;</span>: <span class="hljs-number">1</span>,
@@ -197,7 +202,7 @@ client.create_collection(
 
 client.insert(collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>, data=entities)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Filtering-operations" class="common-anchor-header">フィルタリング操作<button data-href="#Filtering-operations" class="anchor-icon" translate="no">
+<h3 id="Filtering-operations" class="common-anchor-header">Filtering operations<button data-href="#Filtering-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -212,13 +217,13 @@ client.insert(collection_name=<span class="hljs-string">&quot;product_catalog&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>JSON フィールドでフィルタリング操作を実行する前に、以下を確認してください：</p>
+    </button></h3><p>Before you can perform filtering operations on JSON fields, make sure:</p>
 <ul>
-<li><p>各ベクトル・フィールドにインデックスが作成されている。</p></li>
-<li><p>コレクションがメモリにロードされている。</p></li>
+<li><p>You have created an index on each vector field.</p></li>
+<li><p>The collection is loaded into memory.</p></li>
 </ul>
 <p><details></p>
-<p><summary>コードを表示する</summary></p>
+<p><summary>Show code</summary></p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;vector&quot;</span>,
@@ -232,9 +237,9 @@ client.create_index(collection_name=<span class="hljs-string">&quot;product_cata
 client.load_collection(collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<p>これらの要件が満たされると、以下の式を使用して、JSON フィールド内の値に基づいてコレクションをフィルタリングできます。これらのフィルター式は、特定の JSON パス構文と専用の演算子を活用しています。</p>
-<h4 id="Filtering-with-JSON-path-syntax" class="common-anchor-header">JSON パス構文を使用したフィルタリング</h4><p>特定のキーにクエリーするには、JSON キーにアクセスするためにブラケット記法を使用します:<code translate="no">json_field_name[&quot;key&quot;]</code>.入れ子になったキーの場合は、それらを連結してください：<code translate="no">json_field_name[&quot;key1&quot;][&quot;key2&quot;]</code> 。</p>
-<p><code translate="no">category</code> が<code translate="no">&quot;electronics&quot;</code> であるエンティティをフィルタリングする：</p>
+<p>Once these requirements are met, you can use the expressions below to filter on your collection based on the values within the JSON field. These filter expressions leverage specific JSON path syntax and dedicated operators.</p>
+<h4 id="Filtering-with-JSON-path-syntax" class="common-anchor-header">Filtering with JSON path syntax</h4><p>To query a specific key, use bracket notation to access JSON keys: <code translate="no">json_field_name[&quot;key&quot;]</code>. For nested keys, chain them together: <code translate="no">json_field_name[&quot;key1&quot;][&quot;key2&quot;]</code>.</p>
+<p>To filter for entities where the <code translate="no">category</code> is <code translate="no">&quot;electronics&quot;</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata[&quot;category&quot;] == &quot;electronics&quot;&#x27;</span>
 
@@ -246,7 +251,7 @@ client.search(
     output_fields=[<span class="hljs-string">&quot;product_id&quot;</span>, <span class="hljs-string">&quot;metadata&quot;</span>]   <span class="hljs-comment"># Fields to include in the search results</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>入れ子になったキー<code translate="no">supplier[&quot;country&quot;]</code> が<code translate="no">&quot;USA&quot;</code> であるエンティティをフィルタリングするには：</p>
+<p>To filter for entities where the nested key <code translate="no">supplier[&quot;country&quot;]</code> is <code translate="no">&quot;USA&quot;</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata[&quot;supplier&quot;][&quot;country&quot;] == &quot;USA&quot;&#x27;</span>
 
@@ -260,13 +265,13 @@ res = client.search(
 
 <span class="hljs-built_in">print</span>(res)
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Filtering-with-JSON-specific-operators" class="common-anchor-header">JSON固有の演算子によるフィルタリング</h4><p>Milvusは、特定のJSONフィールドキーに対して配列値を問い合わせるための特別な演算子も提供しています。例えば</p>
+<h4 id="Filtering-with-JSON-specific-operators" class="common-anchor-header">Filtering with JSON-specific operators</h4><p>Milvus also provides special operators for querying array values on specific JSON field keys. For example:</p>
 <ul>
-<li><p><code translate="no">json_contains(identifier, expr)</code>:JSON配列内に特定の要素またはサブ配列が存在するかどうかをチェックします。</p></li>
-<li><p><code translate="no">json_contains_all(identifier, expr)</code>:指定されたJSON式のすべての要素がフィールドに存在するかどうかを確認します。</p></li>
-<li><p><code translate="no">json_contains_any(identifier, expr)</code>:JSON式の少なくとも1つのメンバがフィールド内に存在するエンティティをフィルタリングする。</p></li>
+<li><p><code translate="no">json_contains(identifier, expr)</code>: Checks if a specific element or sub-array exists within a JSON array</p></li>
+<li><p><code translate="no">json_contains_all(identifier, expr)</code>: Ensures that all elements of the specified JSON expression are present in the field</p></li>
+<li><p><code translate="no">json_contains_any(identifier, expr)</code>: Filters entities where at least one member of the JSON expression exists within the field</p></li>
 </ul>
-<p><code translate="no">tags</code> キーの下に<code translate="no">&quot;summer_sale&quot;</code> の値を持つ製品を検索します：</p>
+<p>To find a product that has the <code translate="no">&quot;summer_sale&quot;</code> value under the <code translate="no">tags</code> key:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot;], &quot;summer_sale&quot;)&#x27;</span>
 
@@ -280,7 +285,7 @@ res = client.search(
 
 <span class="hljs-built_in">print</span>(res)
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">tags</code> キーの下に、<code translate="no">&quot;electronics&quot;</code> 、<code translate="no">&quot;new&quot;</code> 、<code translate="no">&quot;clearance&quot;</code> の値の少なくとも 1 つを持つ製品を検索します：</p>
+<p>To find a product that has at least one of the <code translate="no">&quot;electronics&quot;</code>, <code translate="no">&quot;new&quot;</code>, or <code translate="no">&quot;clearance&quot;</code> values under the <code translate="no">tags</code> key:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;json_contains_any(metadata[&quot;tags&quot;], [&quot;electronics&quot;, &quot;new&quot;, &quot;clearance&quot;])&#x27;</span>
 
@@ -294,8 +299,8 @@ res = client.search(
 
 <span class="hljs-built_in">print</span>(res)
 <button class="copy-code-btn"></button></code></pre>
-<p>JSON固有の演算子の詳細については、「<a href="/docs/ja/json-operators.md">JSON演算子</a>」を参照してください。</p>
-<h2 id="Next-Accelerate-JSON-queries" class="common-anchor-header">次へJSONクエリーの高速化<button data-href="#Next-Accelerate-JSON-queries" class="anchor-icon" translate="no">
+<p>For more information about JSON-specific operators, refer to <a href="/docs/ja/v2.6.x/json-operators.md">JSON Operators</a>.</p>
+<h2 id="Next-Accelerate-JSON-queries" class="common-anchor-header">Next: Accelerate JSON queries<button data-href="#Next-Accelerate-JSON-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -310,42 +315,42 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>デフォルトでは、高速化されていないJSONフィールドに対するクエリは、すべての行のフルスキャンを実行します。JSONクエリを高速化するために、Milvusは高度なインデックス機能とストレージ最適化機能を提供しています。</p>
-<p>以下の表は、それらの違いと最適な使用シナリオをまとめたものです：</p>
+    </button></h2><p>By default, queries on JSON fields without acceleration will perform a full scan of all rows, which can be slow on large datasets. To speed up JSON queries, Milvus provides advanced indexing and storage optimization features.</p>
+<p>The table below summarizes their differences and best-use scenarios:</p>
 <table>
    <tr>
-     <th><p>手法</p></th>
-     <th><p>最適</p></th>
-     <th><p>アレイ アクセラレーション</p></th>
-     <th><p>備考</p></th>
+     <th><p>Technique</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Arrays Acceleration</p></th>
+     <th><p>Notes</p></th>
    </tr>
    <tr>
-     <td><p>JSONインデックス</p></td>
-     <td><p>頻繁にアクセスされるキーの小さなセット、特定の配列キー上の配列</p></td>
-     <td><p>あり（インデックス付き配列キー）</p></td>
-     <td><p>事前にキーを選択する必要があり、スキーマが進化した場合はメンテナンスが必要</p></td>
+     <td><p>JSON Indexing</p></td>
+     <td><p>Small set of frequently accessed keys, arrays on a specific array key</p></td>
+     <td><p>Yes (on indexed array key)</p></td>
+     <td><p>Must preselect keys, maintenance needed if schema evolves</p></td>
    </tr>
    <tr>
-     <td><p>JSONシュレッダー</p></td>
-     <td><p>多様なクエリに柔軟に対応できる。</p></td>
-     <td><p>なし（配列内の値を高速化しない）</p></td>
-     <td><p>余分なストレージ構成、配列にはキーごとのインデックスが必要</p></td>
+     <td><p>JSON Shredding</p></td>
+     <td><p>General speed-up across many keys, flexible for varied queries</p></td>
+     <td><p>No (does not accelerate values inside arrays)</p></td>
+     <td><p>Extra storage config, arrays still need per-key index</p></td>
    </tr>
    <tr>
-     <td><p>NGRAMインデックス</p></td>
-     <td><p>ワイルドカード検索、テキストフィールドの部分文字列マッチング</p></td>
-     <td><p>該当なし</p></td>
-     <td><p>数値/範囲フィルタには使えない</p></td>
+     <td><p>NGRAM Index</p></td>
+     <td><p>Wildcard searches, substring matching in text fields</p></td>
+     <td><p>N/A</p></td>
+     <td><p>Not for numeric/range filters</p></td>
    </tr>
 </table>
-<p><strong>ヒント：</strong>これらのアプローチを組み合わせることができます。例えば、JSONシュレッダーを使用して広範なクエリを高速化し、JSONインデックスを高頻度の配列キーに使用し、NGRAMインデックスを使用して柔軟なテキスト検索を行うことができます。</p>
-<p>実装の詳細については、以下を参照してください：</p>
+<p><strong>Tip:</strong> You can combine these approaches—for example, use JSON shredding for broad query acceleration, JSON indexing for high-frequency array keys, and NGRAM indexing for flexible text search.</p>
+<p>For implementation details, refer to:</p>
 <ul>
-<li><p><a href="/docs/ja/json-indexing.md">JSON インデキシング</a></p></li>
-<li><p><a href="/docs/ja/json-shredding.md">JSONシュレッディング</a></p></li>
-<li><p><a href="/docs/ja/ngram.md">NGRAM</a></p></li>
+<li><p><a href="/docs/ja/v2.6.x/json-indexing.md">JSON Indexing</a></p></li>
+<li><p><a href="/docs/ja/v2.6.x/json-shredding.md">JSON Shredding</a></p></li>
+<li><p><a href="/docs/ja/v2.6.x/ngram.md">NGRAM</a></p></li>
 </ul>
-<h2 id="FAQ" class="common-anchor-header">よくある質問<button data-href="#FAQ" class="anchor-icon" translate="no">
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -360,7 +365,7 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Are-there-any-limitations-on-the-size-of-a-JSON-field" class="common-anchor-header">JSONフィールドのサイズに制限はありますか?<button data-href="#Are-there-any-limitations-on-the-size-of-a-JSON-field" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Are-there-any-limitations-on-the-size-of-a-JSON-field" class="common-anchor-header">Are there any limitations on the size of a JSON field?<button data-href="#Are-there-any-limitations-on-the-size-of-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -375,8 +380,8 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>はい。各JSONフィールドは65,536バイトに制限されています。</p>
-<h3 id="Does-a-JSON-field-support-setting-a-default-value" class="common-anchor-header">JSONフィールドは、デフォルト値の設定をサポートしていますか？<button data-href="#Does-a-JSON-field-support-setting-a-default-value" class="anchor-icon" translate="no">
+    </button></h3><p>Yes. Each JSON field is limited to 65,536 bytes.</p>
+<h3 id="Does-a-JSON-field-support-setting-a-default-value" class="common-anchor-header">Does a JSON field support setting a default value?<button data-href="#Does-a-JSON-field-support-setting-a-default-value" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -391,9 +396,9 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>JSONフィールドはデフォルト値をサポートしていません。ただし、フィールドの定義時に<code translate="no">nullable=True</code> を設定して、空の入力を許可することはできます。</p>
-<p>詳細については、「<a href="/docs/ja/nullable-and-default.md">Nullable &amp; Default</a>」を参照してください。</p>
-<h3 id="Are-there-any-naming-conventions-for-JSON-field-keys" class="common-anchor-header">JSONフィールド・キーの命名規則はありますか？<button data-href="#Are-there-any-naming-conventions-for-JSON-field-keys" class="anchor-icon" translate="no">
+    </button></h3><p>No, JSON fields do not support default values. However, you can set <code translate="no">nullable=True</code> when defining the field to allow empty entries.</p>
+<p>Refer to <a href="/docs/ja/v2.6.x/nullable-and-default.md">Nullable & Default</a> for details.</p>
+<h3 id="Are-there-any-naming-conventions-for-JSON-field-keys" class="common-anchor-header">Are there any naming conventions for JSON field keys?<button data-href="#Are-there-any-naming-conventions-for-JSON-field-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -408,13 +413,13 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>はい、クエリとインデックス作成の互換性を確保するためです：</p>
+    </button></h3><p>Yes, to ensure compatibility with queries and indexing:</p>
 <ul>
-<li><p>JSONキーには、文字、数字、アンダースコアのみを使用してください。</p></li>
-<li><p>JSONキーには、文字、数字、アンダースコアのみを使用してください。特殊文字、スペース、ドット（<code translate="no">.</code> 、<code translate="no">/</code> など）の使用は避けてください。</p></li>
-<li><p>互換性のないキーは、フィルタ式において解析上の問題を引き起こす可能性があります。</p></li>
+<li><p>Use only letters, numbers, and underscores in JSON keys.</p></li>
+<li><p>Avoid using special characters, spaces, or dots (<code translate="no">.</code>, <code translate="no">/</code>, etc.).</p></li>
+<li><p>Incompatible keys may cause parsing issues in filter expressions.</p></li>
 </ul>
-<h3 id="How-does-Milvus-handle-string-values-in-JSON-fields" class="common-anchor-header">MilvusはJSONフィールド内の文字列値をどのように扱いますか?<button data-href="#How-does-Milvus-handle-string-values-in-JSON-fields" class="anchor-icon" translate="no">
+<h3 id="How-does-Milvus-handle-string-values-in-JSON-fields" class="common-anchor-header">How does Milvus handle string values in JSON fields?<button data-href="#How-does-Milvus-handle-string-values-in-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -429,10 +434,10 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvusは、JSON入力に表示されたとおりに、セマンティック変換なしで文字列値を保存します。文字列が不適切に引用符で囲まれていると、パース時にエラーが発生する可能性があります。</p>
-<p><strong>有効な文字列の例</strong></p>
+    </button></h3><p>Milvus stores string values exactly as they appear in the JSON input—without semantic transformation. Improperly quoted strings may result in errors during parsing.</p>
+<p><strong>Examples of valid strings</strong>:</p>
 <pre><code translate="no" class="language-plaintext">&quot;a\&quot;b&quot;, &quot;a&#x27;b&quot;, &quot;a\\b&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>無効な文字列の例</strong></p>
+<p><strong>Examples of invalid strings</strong>:</p>
 <pre><code translate="no" class="language-plaintext">&#x27;a&quot;b&#x27;, &#x27;a\&#x27;b&#x27;
 <button class="copy-code-btn"></button></code></pre>

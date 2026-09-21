@@ -1,11 +1,14 @@
 ---
 id: timestamptz-field.md
-title: TIMESTAMPTZフィールドCompatible with Milvus 2.6.6+
+title: TIMESTAMPTZ FieldCompatible with Milvus 2.6.6+
 summary: >-
-  電子商取引システム、コラボレーションツール、分散ロギングなど、地域を越えて時間を追跡するアプリケーションでは、タイムゾーンを伴うタイムスタンプの正確な取り扱いが必要です。MilvusのTIMESTAMPTZデータ型はタイムスタンプとタイムゾーンを関連付けて保存することにより、この機能を提供します。
+  Applications that track time across regions, such as e-commerce systems,
+  collaboration tools, or distributed logging, need precise handling of
+  timestamps with time zones. The TIMESTAMPTZ data type in Milvus provides this
+  capability by storing timestamps with their associated time zone.
 beta: Milvus 2.6.6+
 ---
-<h1 id="TIMESTAMPTZ-Field" class="common-anchor-header">TIMESTAMPTZフィールド<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.6+</span><button data-href="#TIMESTAMPTZ-Field" class="anchor-icon" translate="no">
+<h1 id="TIMESTAMPTZ-Field" class="common-anchor-header">TIMESTAMPTZ Field<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.6+</span><button data-href="#TIMESTAMPTZ-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +23,8 @@ beta: Milvus 2.6.6+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>電子商取引システム、コラボレーションツール、分散ロギングなど、地域をまたいで時間を追跡するアプリケーションでは、タイムゾーンを持つタイムスタンプを正確に扱う必要があります。Milvusの<code translate="no">TIMESTAMPTZ</code> データ型は、タイムスタンプを関連するタイムゾーンと共に保存することにより、この機能を提供します。</p>
-<h2 id="What-is-a-TIMESTAMPTZ-field" class="common-anchor-header">TIMESTAMPTZフィールドとは何ですか？<button data-href="#What-is-a-TIMESTAMPTZ-field" class="anchor-icon" translate="no">
+    </button></h1><p>Applications that track time across regions, such as e-commerce systems, collaboration tools, or distributed logging, need precise handling of timestamps with time zones. The <code translate="no">TIMESTAMPTZ</code> data type in Milvus provides this capability by storing timestamps with their associated time zone.</p>
+<h2 id="What-is-a-TIMESTAMPTZ-field" class="common-anchor-header">What is a TIMESTAMPTZ field?<button data-href="#What-is-a-TIMESTAMPTZ-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,20 +39,20 @@ beta: Milvus 2.6.6+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">TIMESTAMPTZ</code> フィールドはMilvusのスキーマ定義データ型(<code translate="no">DataType.TIMESTAMPTZ</code>)であり、タイムゾーンを考慮した入力を処理し、内部的に全てのタイムポイントをUTC絶対時間として格納します：</p>
+    </button></h2><p>A <code translate="no">TIMESTAMPTZ</code> field is a schema-defined data type (<code translate="no">DataType.TIMESTAMPTZ</code>) in Milvus that processes time zone-aware input and stores all time points internally as UTC absolute time:</p>
 <ul>
-<li><p><strong>入力フォーマット</strong>：入力フォーマット:<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>文字列にタイムゾーンのオフセット (例えば、<code translate="no">&quot;2025-05-01T23:59:59+08:00&quot;</code> は 2025 年 5 月 1 日 (UTC+08:00) の午後 11 時 59 分 59 秒を表します)。</p></li>
-<li><p><strong>内部ストレージ</strong>：<code translate="no">TIMESTAMPTZ</code> の値はすべて正規化され、<a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">協定世界時</a>（UTC）に保存されます。</p></li>
-<li><p><strong>比較とフィルタリング</strong>：すべてのフィルタリングと順序付け操作はUTCで実行され、異なるタイムゾーン間で一貫性のある予測可能な結果を保証します。</p></li>
+<li><p><strong>Accepted input format</strong>: <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> strings with a time-zone offset (for example, <code translate="no">&quot;2025-05-01T23:59:59+08:00&quot;</code> denotes 11:59:59 PM on May 1, 2025 (UTC+08:00)).</p></li>
+<li><p><strong>Internal storage</strong>: All <code translate="no">TIMESTAMPTZ</code> values are normalized and stored in <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">Coordinated Universal Time</a> (UTC).</p></li>
+<li><p><strong>Comparison and filtering</strong>: All filtering and ordering operations are performed in UTC, ensuring consistent and predictable results across different time zones.</p></li>
 </ul>
 <div class="alert note">
 <ul>
-<li><p><code translate="no">TIMESTAMPTZ</code> フィールドに<code translate="no">nullable=True</code> を設定し、欠損値を許容することができます。</p></li>
-<li><p><a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>形式の<code translate="no">default_value</code> 属性を用いて、デフォルトのタイムスタンプ値を指定することができます。</p></li>
+<li><p>You can set <code translate="no">nullable=True</code> for <code translate="no">TIMESTAMPTZ</code> fields to allow missing values.</p></li>
+<li><p>You can specify a default timestamp value using the <code translate="no">default_value</code> attribute in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format.</p></li>
 </ul>
-<p>詳しくは<a href="/docs/ja/nullable-and-default.md">Nullable &amp; Defaultを</a>参照してください。</p>
+<p>See <a href="/docs/ja/v2.6.x/nullable-and-default.md">Nullable & Default</a> for details.</p>
 </div>
-<h2 id="Basic-operations" class="common-anchor-header">基本操作<button data-href="#Basic-operations" class="anchor-icon" translate="no">
+<h2 id="Basic-operations" class="common-anchor-header">Basic operations<button data-href="#Basic-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -64,8 +67,8 @@ beta: Milvus 2.6.6+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">TIMESTAMPTZ</code> フィールドを使用する際の基本的なワークフローは、milvusの他のスカラーフィールドと同様です： フィールドの定義 → データの挿入 → クエリ/フィルタ.</p>
-<h3 id="Step-1-Define-a-TIMESTAMPTZ-field" class="common-anchor-header">ステップ1: TIMESTAMPTZフィールドの定義<button data-href="#Step-1-Define-a-TIMESTAMPTZ-field" class="anchor-icon" translate="no">
+    </button></h2><p>The basic workflow of using a <code translate="no">TIMESTAMPTZ</code> field mirrors other scalar fields in Milvus: define the field → insert data → query/filter.</p>
+<h3 id="Step-1-Define-a-TIMESTAMPTZ-field" class="common-anchor-header">Step 1: Define a TIMESTAMPTZ field<button data-href="#Step-1-Define-a-TIMESTAMPTZ-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -80,9 +83,14 @@ beta: Milvus 2.6.6+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">TIMESTAMPTZ</code> フィールドを使用するには、コレクション作成時にコレクションスキーマで明示的に定義します。以下の例では、<code translate="no">DataType.TIMESTAMPTZ</code> 型の<code translate="no">tsz</code> フィールドを持つコレクションを作成する方法を示します。</p>
+    </button></h3><p>To use a <code translate="no">TIMESTAMPTZ</code> field, explicitly define it in your collection schema when creating the collection. The following example demonstrates how to create a collection with a <code translate="no">tsz</code> field of type <code translate="no">DataType.TIMESTAMPTZ</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 <span class="hljs-keyword">import</span> datetime
@@ -115,7 +123,7 @@ client.create_collection(collection_name, schema=schema, consistency_level=<span
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Insert-data" class="common-anchor-header">ステップ 2: データの挿入<button data-href="#Step-2-Insert-data" class="anchor-icon" translate="no">
+<h3 id="Step-2-Insert-data" class="common-anchor-header">Step 2: Insert data<button data-href="#Step-2-Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -130,15 +138,20 @@ client.create_collection(collection_name, schema=schema, consistency_level=<span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>タイムゾーンオフセットを持つISO 8601文字列を含むエンティティを挿入する。</p>
-<p>以下の例では、8,193行のサンプルデータをコレクションに挿入している。各行には以下が含まれます：</p>
+    </button></h3><p>Insert entities containing ISO 8601 strings with time zone offsets.</p>
+<p>The example below inserts 8,193 rows of sample data into the collection. Each row includes:</p>
 <ul>
-<li><p>一意のID</p></li>
-<li><p>タイムゾーン対応タイムスタンプ（上海時間）</p></li>
-<li><p>単純な4次元ベクトル</p></li>
+<li><p>a unique ID</p></li>
+<li><p>a timezone-aware timestamp (Shanghai time)</p></li>
+<li><p>a simple 4-dimensional vector</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">data_size = <span class="hljs-number">8193</span>
 
 <span class="hljs-comment"># Get the Asia/Shanghai time zone using the pytz library</span>
@@ -173,7 +186,7 @@ client.insert(collection_name, data)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Filtering-operations" class="common-anchor-header">ステップ3：フィルタリング操作<button data-href="#Step-3-Filtering-operations" class="anchor-icon" translate="no">
+<h3 id="Step-3-Filtering-operations" class="common-anchor-header">Step 3: Filtering operations<button data-href="#Step-3-Filtering-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -188,16 +201,21 @@ client.insert(collection_name, data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">TIMESTAMPTZ</code> はスカラー比較、区間演算、時間成分の抽出をサポートしている。</p>
-<p><code translate="no">TIMESTAMPTZ</code> フィールドに対してフィルタリング操作を行う前に、以下を確認してください：</p>
+    </button></h3><p><code translate="no">TIMESTAMPTZ</code> supports scalar comparisons, interval arithmetic, and extraction of time components.</p>
+<p>Before you can perform filtering operations on <code translate="no">TIMESTAMPTZ</code> fields, make sure:</p>
 <ul>
-<li><p>各ベクトル・フィールドにインデックスが作成されている。</p></li>
-<li><p>コレクションがメモリにロードされている。</p></li>
+<li><p>You have created an index on each vector field.</p></li>
+<li><p>The collection is loaded into memory.</p></li>
 </ul>
 <p><details></p>
-<p><summary>コード例を示す。</summary></p>
+<p><summary>Show example code</summary></p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Create index on vector field</span>
 index_params = client.prepare_index_params()
 index_params.add_index(
@@ -222,10 +240,15 @@ client.load_collection(collection_name)
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h4 id="Query-with-timestamp-filtering" class="common-anchor-header">タイムスタンプ・フィルタリングによるクエリー</h4><p><code translate="no">==</code>,<code translate="no">!=</code>,<code translate="no">&lt;</code>,<code translate="no">&gt;</code>,<code translate="no">&lt;=</code>,<code translate="no">&gt;=</code> のような算術演算子を使用する。Milvusで使用できる算術演算子の一覧は<a href="/docs/ja/basic-operators.md#Arithmetic-Operators">算術演算子を</a>参照してください。</p>
-<p>以下の例では、タイムスタンプ(<code translate="no">tsz</code>)が<strong>2025-01-03T00:00:00+08:00と</strong>等しくないエンティティをフィルタリングしています：</p>
+<h4 id="Query-with-timestamp-filtering" class="common-anchor-header">Query with timestamp filtering</h4><p>Use arithmetic operators like <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;=</code>, <code translate="no">&gt;=</code>. For a full list of arithmetic operators available in Milvus, refer to <a href="/docs/ja/v2.6.x/basic-operators.md#Arithmetic-Operators">Arithmetic Operators</a>.</p>
+<p>The example below filters entities with timestamps (<code translate="no">tsz</code>) that are not equal to <strong>2025-01-03T00:00:00+08:00</strong>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Query for entities where tsz is not equal to &#x27;2025-01-03T00:00:00+08:00&#x27;</span>
 <span class="highlighted-wrapper-line">expr = <span class="hljs-string">&quot;tsz != ISO &#x27;2025-01-03T00:00:00+08:00&#x27;&quot;</span></span>
 
@@ -249,16 +272,21 @@ results = client.query(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>上記の例では</p>
+<p>In the example above,</p>
 <ul>
-<li><p><code translate="no">tsz</code> はスキーマで定義された<code translate="no">TIMESTAMPTZ</code> フィールド名です。</p></li>
-<li><p><code translate="no">ISO '2025-01-03T00:00:00+08:00'</code> は<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>形式のタイムスタンプリテラルで、タイムゾーンオフセットを含みます。</p></li>
-<li><p><code translate="no">!=</code> は、フィールドの値をそのリテラルと比較します。その他のサポートされる演算子には、<code translate="no">==</code> 、<code translate="no">&lt;</code> 、<code translate="no">&lt;=</code> 、<code translate="no">&gt;</code> 、<code translate="no">&gt;=</code> がある。</p></li>
+<li><p><code translate="no">tsz</code> is the <code translate="no">TIMESTAMPTZ</code> field name defined in the schema.</p></li>
+<li><p><code translate="no">ISO '2025-01-03T00:00:00+08:00'</code> is a timestamp literal in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format, including its time-zone offset.</p></li>
+<li><p><code translate="no">!=</code> compares the field value against that literal. Other supported operators include <code translate="no">==</code>, <code translate="no">&lt;</code>, <code translate="no">&lt;=</code>, <code translate="no">&gt;</code>, and <code translate="no">&gt;=</code>.</p></li>
 </ul>
-<h4 id="Interval-operations" class="common-anchor-header">区間演算</h4><p><a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601の継続時間形式の</a> <strong>INTERVAL</strong>値を使用して、<code translate="no">TIMESTAMPTZ</code> フィールドの演算を実行することができます。これにより、データをフィルタリングする際に、タイムスタンプから日、時、分などの期間を加算または減算することができます。</p>
-<p>たとえば、次のクエリは、タイムスタンプ (<code translate="no">tsz</code>) に 0 日を足した値が<strong>2025-01-03T00:00:00+08:00</strong> と<strong>等しくない</strong>エンティティをフィルタリングします：</p>
+<h4 id="Interval-operations" class="common-anchor-header">Interval operations</h4><p>You can perform arithmetic on <code translate="no">TIMESTAMPTZ</code> fields using <strong>INTERVAL</strong> values in the <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 duration format</a>. This allows you to add or subtract durations, such as days, hours, or minutes, from a timestamp when filtering data.</p>
+<p>For example, the following query filters entities where the timestamp (<code translate="no">tsz</code>) plus zero days is <strong>not equal</strong> to <strong>2025-01-03T00:00:00+08:00</strong>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="highlighted-wrapper-line">expr = <span class="hljs-string">&quot;tsz + INTERVAL &#x27;P0D&#x27; != ISO &#x27;2025-01-03T00:00:00+08:00&#x27;&quot;</span></span>
 
 results = client.query(
@@ -282,21 +310,26 @@ results = client.query(
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><code translate="no">INTERVAL</code> の値は<a href="https://www.w3.org/TR/xmlschema-2/#duration">ISO 8601 の期間構文に</a>従います。例えば</p>
+<p><code translate="no">INTERVAL</code> values follow the <a href="https://www.w3.org/TR/xmlschema-2/#duration">ISO 8601 duration syntax</a>. For example:</p>
 <ul>
-<li><p><code translate="no">P1D</code> → 1 日</p></li>
-<li><p><code translate="no">PT3H</code> → 3 時間</p></li>
-<li><p><code translate="no">P2DT6H</code> → 2日と6時間</p></li>
+<li><p><code translate="no">P1D</code> → 1 day</p></li>
+<li><p><code translate="no">PT3H</code> → 3 hours</p></li>
+<li><p><code translate="no">P2DT6H</code> → 2 days and 6 hours</p></li>
 </ul>
-<p>フィルター式では、<code translate="no">INTERVAL</code> の演算を直接使用できます：</p>
+<p>You can use <code translate="no">INTERVAL</code> arithmetic directly in filter expressions, such as:</p>
 <ul>
-<li><p><code translate="no">tsz + INTERVAL 'P3D'</code> → 3日を足す</p></li>
-<li><p><code translate="no">tsz - INTERVAL 'PT2H'</code> → 2時間を引く</p></li>
+<li><p><code translate="no">tsz + INTERVAL 'P3D'</code> → Adds 3 days</p></li>
+<li><p><code translate="no">tsz - INTERVAL 'PT2H'</code> → Subtracts 2 hours</p></li>
 </ul>
 </div>
-<h4 id="Search-with-timestamp-filtering" class="common-anchor-header">タイムスタンプ・フィルタリングによる検索</h4><p><code translate="no">TIMESTAMPTZ</code> フィルタリングとベクトル類似度検索を組み合わせて、時間と類似度の両方で結果を絞り込むことができます。</p>
+<h4 id="Search-with-timestamp-filtering" class="common-anchor-header">Search with timestamp filtering</h4><p>You can combine <code translate="no">TIMESTAMPTZ</code> filtering with vector similarity search to narrow results by both time and similarity.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define a time-based filter expression</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;tsz &gt; ISO &#x27;2025-01-05T00:00:00+08:00&#x27;&quot;</span>
 
@@ -322,9 +355,9 @@ res = client.search(
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>コレクションに2つ以上のベクトル・フィールドがある場合、タイムスタンプ・フィルタリングとのハイブリッド検索操作を実行できる。詳細については、<a href="/docs/ja/multi-vector-search.md">Multi-Vector Hybrid Searchを</a>参照してください。</p>
+<p>If your collection has two or more vector fields, you can perform hybrid search operations with timestamp filtering. For details, refer to <a href="/docs/ja/v2.6.x/multi-vector-search.md">Multi-Vector Hybrid Search</a>.</p>
 </div>
-<h2 id="Advanced-usage" class="common-anchor-header">高度な使用法<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
+<h2 id="Advanced-usage" class="common-anchor-header">Advanced usage<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -339,8 +372,8 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>高度な使用法として、異なるレベル（データベース、コレクション、クエリなど）でタイムゾーンを管理したり、インデックスを使用して<code translate="no">TIMESTAMPTZ</code> フィールドのクエリを高速化することができます。</p>
-<h3 id="Manage-time-zones-at-different-levels" class="common-anchor-header">異なるレベルでのタイムゾーンの管理<button data-href="#Manage-time-zones-at-different-levels" class="anchor-icon" translate="no">
+    </button></h2><p>For advanced usage, you can manage time zones at different levels (e.g. database, collection, or query) or accelerate queries on <code translate="no">TIMESTAMPTZ</code> fields using indexes.</p>
+<h3 id="Manage-time-zones-at-different-levels" class="common-anchor-header">Manage time zones at different levels<button data-href="#Manage-time-zones-at-different-levels" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -355,42 +388,42 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">TIMESTAMPTZ</code> フィールドのタイムゾーンは、<strong>データベース</strong>、<strong>コレクション</strong>、<strong>クエリ/検索</strong>レベルで管理できます。</p>
+    </button></h3><p>You can control the time zone for <code translate="no">TIMESTAMPTZ</code> fields at the <strong>database</strong>, <strong>collection</strong>, or <strong>query/search</strong> level.</p>
 <table>
    <tr>
-     <th><p>レベル</p></th>
-     <th><p>パラメータ</p></th>
-     <th><p>範囲</p></th>
-     <th><p>優先度</p></th>
+     <th><p>Level</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Scope</p></th>
+     <th><p>Priority</p></th>
    </tr>
    <tr>
-     <td><p>データベース</p></td>
+     <td><p>Database</p></td>
      <td><p><code translate="no">timezone</code></p></td>
-     <td><p>データベース内のすべてのコレクションのデフォルト</p></td>
-     <td><p>最も低い</p></td>
+     <td><p>Default for all collections in the database</p></td>
+     <td><p>Lowest</p></td>
    </tr>
    <tr>
-     <td><p>コレクション</p></td>
+     <td><p>Collection</p></td>
      <td><p><code translate="no">timezone</code></p></td>
-     <td><p>そのコレクションのデータベースのデフォルトのタイムゾーン設定を上書きします。</p></td>
-     <td><p>ミディアム</p></td>
+     <td><p>Overrides the database default time zone setting for that collection</p></td>
+     <td><p>Medium</p></td>
    </tr>
    <tr>
-     <td><p>クエリ/検索/ハイブリッド検索</p></td>
+     <td><p>Query/search/hybrid search</p></td>
      <td><p><code translate="no">timezone</code></p></td>
-     <td><p>特定の操作に対する一時的なオーバーライド</p></td>
-     <td><p>最高</p></td>
+     <td><p>Temporary overrides for one specific operation</p></td>
+     <td><p>Highest</p></td>
    </tr>
 </table>
-<p>ステップバイステップの説明とコードサンプルについては、専用ページを参照してください：</p>
+<p>For step-by-step instructions and code samples, refer to the dedicated pages:</p>
 <ul>
-<li><p><a href="/docs/ja/modify-collection.md#Example-6-Set-collection-time-zone">コレクションの変更</a></p></li>
-<li><p><a href="/docs/ja/manage_databases.md#Manage-database-properties">データベース</a></p></li>
-<li><p><a href="/docs/ja/get-and-scalar-query.md#Temporarily-set-a-timezone-for-a-query">クエリ</a></p></li>
-<li><p><a href="/docs/ja/single-vector-search.md#Temporarily-set-a-timezone-for-a-search">基本ベクトル検索</a></p></li>
-<li><p><a href="/docs/ja/multi-vector-search.md">マルチベクター・ハイブリッド検索</a></p></li>
+<li><p><a href="/docs/ja/v2.6.x/modify-collection.md#Example-6-Set-collection-time-zone">Modify Collection</a></p></li>
+<li><p><a href="/docs/ja/v2.6.x/manage_databases.md#Manage-database-properties">Database</a></p></li>
+<li><p><a href="/docs/ja/v2.6.x/get-and-scalar-query.md#Temporarily-set-a-timezone-for-a-query">Query</a></p></li>
+<li><p><a href="/docs/ja/v2.6.x/single-vector-search.md#Temporarily-set-a-timezone-for-a-search">Basic Vector Search</a></p></li>
+<li><p><a href="/docs/ja/v2.6.x/multi-vector-search.md">Multi-Vector Hybrid Search</a></p></li>
 </ul>
-<h3 id="Accelerate-queries" class="common-anchor-header">クエリの高速化<button data-href="#Accelerate-queries" class="anchor-icon" translate="no">
+<h3 id="Accelerate-queries" class="common-anchor-header">Accelerate queries<button data-href="#Accelerate-queries" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -405,5 +438,5 @@ res = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>デフォルトでは、インデックスのない<code translate="no">TIMESTAMPTZ</code> フィールドに対するクエリは、すべての行のフルスキャンを実行します。タイムスタンプ・クエリを高速化するには、<code translate="no">TIMESTAMPTZ</code> フィールドに<code translate="no">STL_SORT</code> インデックスを作成します。</p>
-<p>詳細は<a href="/docs/ja/stl-sort.md">STL_SORTを</a>参照。</p>
+    </button></h3><p>By default, queries on <code translate="no">TIMESTAMPTZ</code> fields without an index will perform a full scan of all rows, which can be slow on large datasets. To accelerate timestamp queries, create an <code translate="no">STL_SORT</code> index on your <code translate="no">TIMESTAMPTZ</code> field.</p>
+<p>For details, refer to <a href="/docs/ja/v2.6.x/stl-sort.md">STL_SORT</a>.</p>

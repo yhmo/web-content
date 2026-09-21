@@ -1,9 +1,11 @@
 ---
 id: string.md
-title: VarChar 字段
-summary: VARCHAR 是 Milvus 中用于存储短的、有长度的字符串元数据的标量字段类型。
+title: VarChar Field
+summary: >-
+  VARCHAR is a scalar field type for storing short, bounded string metadata in
+  Milvus.
 ---
-<h1 id="VarChar-Field" class="common-anchor-header">VarChar 字段<button data-href="#VarChar-Field" class="anchor-icon" translate="no">
+<h1 id="VarChar-Field" class="common-anchor-header">VarChar Field<button data-href="#VarChar-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,17 +20,17 @@ summary: VARCHAR 是 Milvus 中用于存储短的、有长度的字符串元数�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 通过 `<code translate="no">VARCHAR</code> ` 和 `<code translate="no">TEXT</code> ` 字段支持文本型标量数据。本页介绍 `<code translate="no">VARCHAR</code>`，该字段专为名称、标签、类别和外部 ID 等短且长度受限的字符串元数据而设计。</p>
-<p>对于需要与实体一起存储和返回的较长源文本、文档片段、文章正文、工单或日志，请改用<code translate="no">TEXT</code> 字段。当值可能超过<code translate="no">65,535</code> 字节，或者您不想在 Schema 中设置固定的<code translate="no">max_length</code> 时，请使用<code translate="no">TEXT</code> 。有关详细信息，请参阅<a href="/docs/zh/text.md">“文本字段”</a>。</p>
-<p>定义<code translate="no">VARCHAR</code> 字段时，有两个必填参数：</p>
+    </button></h1><p>Milvus supports textual scalar data with <code translate="no">VARCHAR</code> and <code translate="no">TEXT</code> fields. This page describes <code translate="no">VARCHAR</code>, which is designed for short, bounded string metadata such as names, tags, categories, and external IDs.</p>
+<p>For longer source text, document passages, article bodies, tickets, or logs that should be stored and returned with entities, use a <code translate="no">TEXT</code> field instead. Use <code translate="no">TEXT</code> when a value may exceed <code translate="no">65,535</code> bytes or when you do not want to set a fixed <code translate="no">max_length</code> in the collection schema. For details, refer to <a href="/docs/zh/text.md">Text Field</a>.</p>
+<p>When you define a <code translate="no">VARCHAR</code> field, two parameters are mandatory:</p>
 <ul>
-<li><p>将<code translate="no">datatype</code> 设置为<code translate="no">DataType.VARCHAR</code> 。</p></li>
-<li><p>指定<code translate="no">max_length</code> ，该参数定义<code translate="no">VARCHAR</code> 字段可存储的最大字节数。<code translate="no">max_length</code> 的有效范围为1至65,535。</p></li>
+<li><p>Set the <code translate="no">datatype</code> to <code translate="no">DataType.VARCHAR</code>.</p></li>
+<li><p>Specify the <code translate="no">max_length</code>, which defines the maximum number of bytes the <code translate="no">VARCHAR</code> field can store. The valid range for <code translate="no">max_length</code> is from 1 to 65,535.</p></li>
 </ul>
 <div class="alert note">
-<p>Milvus 支持<code translate="no">VARCHAR</code> 字段的空值和默认值。要启用这些功能，请将<code translate="no">nullable</code> 设置为<code translate="no">True</code> ，并将<code translate="no">default_value</code> 设置为字符串值。有关详细信息，请参阅《<a href="/docs/zh/nullable-and-default.md">可为空与默认值</a>》。</p>
+<p>Milvus supports null values and default values for <code translate="no">VARCHAR</code> fields. To enable these features, set <code translate="no">nullable</code> to <code translate="no">True</code> and <code translate="no">default_value</code> to a string value. For details, refer to <a href="/docs/zh/nullable-and-default.md">Nullable & Default</a>.</p>
 </div>
-<h2 id="Add-VARCHAR-field" class="common-anchor-header">添加 VARCHAR 字段<button data-href="#Add-VARCHAR-field" class="anchor-icon" translate="no">
+<h2 id="Add-VARCHAR-field" class="common-anchor-header">Add VARCHAR field<button data-href="#Add-VARCHAR-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,20 +45,20 @@ summary: VARCHAR 是 Milvus 中用于存储短的、有长度的字符串元数�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若要在 Milvus 中存储短且有长度的字符串元数据，请在 Collection Schema 中定义一个 `<code translate="no">VARCHAR</code> ` 字段。以下是一个包含两个 `<code translate="no">VARCHAR</code> ` 字段的 Collection Schema 定义示例：</p>
+    </button></h2><p>To store short, bounded string metadata in Milvus, define a <code translate="no">VARCHAR</code> field in your collection schema. Below is an example of defining a collection schema with two <code translate="no">VARCHAR</code> fields:</p>
 <ul>
-<li><p><code translate="no">varchar_field1</code>：最多可存储 100 字节，允许空值，默认值为<code translate="no">&quot;Unknown&quot;</code> 。</p></li>
-<li><p><code translate="no">varchar_field2</code>: 最多存储 200 字节，允许空值，但没有默认值。</p></li>
+<li><p><code translate="no">varchar_field1</code>: stores up to 100 bytes, allows null values, and has a default value of <code translate="no">&quot;Unknown&quot;</code>.</p></li>
+<li><p><code translate="no">varchar_field2</code>: stores up to 200 bytes, allows null values, but does not have a default value.</p></li>
 </ul>
 <div class="alert note">
-<p>如果您在定义 Schema 时设置了 `<code translate="no">enable_dynamic_fields=True</code> `，Milvus 允许您插入未预先定义的标量字段。但这可能会增加查询和管理的复杂性，并可能影响性能。有关更多信息，请参阅<a href="/docs/zh/enable-dynamic-field.md">“Dynamic Field”</a>。</p>
+<p>If you set <code translate="no">enable_dynamic_fields=True</code> when defining the schema, Milvus allows you to insert scalar fields that were not defined in advance. However, this may increase the complexity of queries and management, potentially impacting performance. For more information, refer to <a href="/docs/zh/enable-dynamic-field.md">Dynamic Field</a>.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Import necessary libraries</span>
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
@@ -237,7 +239,7 @@ schema.WithField(entity.NewField().
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-index-params" class="common-anchor-header">设置索引参数<button data-href="#Set-index-params" class="anchor-icon" translate="no">
+<h2 id="Set-index-params" class="common-anchor-header">Set index params<button data-href="#Set-index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -252,17 +254,17 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>建立索引有助于提升搜索和查询性能。在 Milvus 中，向量字段必须建立索引，而标量字段则可选。</p>
-<p>以下示例在向量字段<code translate="no">embedding</code> 和标量字段<code translate="no">varchar_field1</code> 上创建索引，两者均使用<code translate="no">AUTOINDEX</code> 索引类型。使用此类型时，Milvus 会根据数据类型自动选择最合适的索引。您也可以为每个字段自定义索引类型和参数。有关详细信息，请参阅《<a href="/docs/zh/index-explained.md">索引详解》</a>。</p>
+    </button></h2><p>Indexing helps improve search and query performance. In Milvus, indexing is mandatory for vector fields but optional for scalar fields.</p>
+<p>The following example creates indexes on the vector field <code translate="no">embedding</code> and the scalar field <code translate="no">varchar_field1</code>, both using the <code translate="no">AUTOINDEX</code> index type. With this type, Milvus automatically selects the most suitable index based on the data type. You can also customize the index type and params for each field. For details, refer to <a href="/docs/zh/index-explained.md">Index Explained</a>.</p>
 <div class="alert note">
-<p>您还可以构建一个<code translate="no">NGRAM</code> 索引，以加速对<code translate="no">VARCHAR</code> 字段中<code translate="no">LIKE</code> 的过滤。详情请参阅《<a href="/docs/zh/ngram.md">NGRAM</a>》。</p>
+<p>You can also builds an <code translate="no">NGRAM</code> index to accelerate <code translate="no">LIKE</code> filtering on <code translate="no">VARCHAR</code> fields. For details, refer to <a href="/docs/zh/ngram.md">NGRAM</a>.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Set index params</span>
 
@@ -337,7 +339,7 @@ indexParams.<span class="hljs-title function_">push</span>({
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-collection" class="common-anchor-header">创建Collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
+<h2 id="Create-collection" class="common-anchor-header">Create collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -352,13 +354,13 @@ indexParams.<span class="hljs-title function_">push</span>({
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>定义好Schema和索引后，创建一个包含字符串字段的Collection。</p>
+    </button></h2><p>Once the schema and index are defined, create a collection that includes string fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Create Collection</span>
 client.create_collection(
@@ -400,7 +402,7 @@ client.createCollection(requestCreate);
 }&quot;</span>
 <span class="hljs-comment">## {&quot;code&quot;:0,&quot;data&quot;:{}}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-data" class="common-anchor-header">插入数据<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h2 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -415,13 +417,13 @@ client.createCollection(requestCreate);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>创建Collection后，插入符合Schema的实体。</p>
+    </button></h2><p>After creating the collection, insert entities that match the schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample data</span>
 data = [
@@ -532,7 +534,7 @@ _, err = client.Insert(ctx, milvusclient.NewColumnBasedInsertOption(<span class=
 
 <span class="hljs-comment">## {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:{&quot;insertCount&quot;:3,&quot;insertIds&quot;:[1,2,3]}}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Query-with-filter-expressions" class="common-anchor-header">使用过滤表达式进行查询<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Query-with-filter-expressions" class="common-anchor-header">Query with filter expressions<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -547,14 +549,14 @@ _, err = client.Insert(ctx, milvusclient.NewColumnBasedInsertOption(<span class=
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>插入实体后，使用<code translate="no">query</code> 方法检索符合指定过滤表达式的实体。</p>
-<p>若要检索<code translate="no">varchar_field1</code> 字段与字符串<code translate="no">&quot;Product A&quot;</code> 匹配的实体：</p>
+    </button></h2><p>After inserting entities, use the <code translate="no">query</code> method to retrieve entities that match the specified filter expressions.</p>
+<p>To retrieve entities where the <code translate="no">varchar_field1</code> matches the string <code translate="no">&quot;Product A&quot;</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Filter `varchar_field1` with value &quot;Product A&quot;</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;varchar_field1 == &quot;Product A&quot;&#x27;</span>
@@ -622,13 +624,13 @@ fmt.Println(<span class="hljs-string">&quot;varchar_field2&quot;</span>, queryRe
 }&#x27;</span>
 <span class="hljs-comment">## {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[{&quot;pk&quot;:1,&quot;varchar_field1&quot;:&quot;Product A&quot;,&quot;varchar_field2&quot;:&quot;High quality product&quot;}]}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>要检索<code translate="no">varchar_field2</code> 为null的实体：</p>
+<p>To retrieve entities where the <code translate="no">varchar_field2</code> is null:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Filter entities where `varchar_field2` is null</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;varchar_field2 is null&#x27;</span>
@@ -696,13 +698,13 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;varchar_field1&quot;, &quot;varchar_field2&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>若要检索<code translate="no">varchar_field1</code> 值为<code translate="no">&quot;Unknown&quot;</code> 的实体，请使用以下表达式。由于<code translate="no">varchar_field1</code> 的默认值为<code translate="no">&quot;Unknown&quot;</code> ，预期结果应包含<code translate="no">varchar_field1</code> 显式设置为<code translate="no">&quot;Unknown&quot;</code> 的实体，或<code translate="no">varchar_field1</code> 设置为null的实体。</p>
+<p>To retrieve entities where <code translate="no">varchar_field1</code> has the value <code translate="no">&quot;Unknown&quot;</code>, use the following expression below. As the default value of <code translate="no">varchar_field1</code> is <code translate="no">&quot;Unknown&quot;</code>, the expected result should include entities with <code translate="no">varchar_field1</code> explicitly set to <code translate="no">&quot;Unknown&quot;</code> or with <code translate="no">varchar_field1</code> set to null.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Filter entities with `varchar_field1` with value `Unknown`</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;varchar_field1 == &quot;Unknown&quot;&#x27;</span>
@@ -769,7 +771,7 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;varchar_field1&quot;, &quot;varchar_field2&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">带过滤表达式的向量搜索<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">Vector search with filter expressions<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -784,13 +786,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>除了基本的标量字段过滤外，您还可以将向量相似度搜索与标量字段过滤器结合使用。例如，以下代码演示了如何在向量搜索中添加标量字段过滤器：</p>
+    </button></h2><p>In addition to basic scalar field filtering, you can combine vector similarity searches with scalar field filters. For example, the following code shows how to add a scalar field filter to a vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Search with string filtering</span>
 

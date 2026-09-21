@@ -2,11 +2,10 @@
 id: scann.md
 title: SCANN
 summary: >-
-  Didukung oleh pustaka ScaNN dari Google, indeks SCANN di Milvus dirancang
-  untuk mengatasi tantangan penskalaan pencarian kemiripan vektor, dengan
-  menyeimbangkan antara kecepatan dan akurasi, bahkan pada kumpulan data besar
-  yang secara tradisional akan menjadi tantangan bagi sebagian besar algoritme
-  pencarian.
+  Powered by the ScaNN library from Google, the SCANN index in Milvus is
+  designed to address scaling vector similarity search challenges, striking a
+  balance between speed and accuracy, even on large datasets that would
+  traditionally pose challenges for most search algorithms.
 ---
 <h1 id="SCANN" class="common-anchor-header">SCANN<button data-href="#SCANN" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -23,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Didukung oleh pustaka <a href="https://github.com/google-research/google-research/blob/master/scann%2FREADME.md">ScaNN</a> dari Google, indeks <code translate="no">SCANN</code> di Milvus dirancang untuk mengatasi tantangan penskalaan pencarian kemiripan vektor, dengan menyeimbangkan antara kecepatan dan akurasi, bahkan pada dataset besar yang secara tradisional akan menjadi tantangan bagi sebagian besar algoritme pencarian.</p>
-<h2 id="Overview" class="common-anchor-header">Gambaran Umum<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>Powered by the <a href="https://github.com/google-research/google-research/blob/master/scann%2FREADME.md">ScaNN</a> library from Google, the <code translate="no">SCANN</code> index in Milvus is designed to address scaling vector similarity search challenges, striking a balance between speed and accuracy, even on large datasets that would traditionally pose challenges for most search algorithms.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,23 +38,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ScaNN dibangun untuk memecahkan salah satu tantangan terbesar dalam pencarian vektor: secara efisien menemukan vektor yang paling relevan dalam ruang dimensi tinggi, bahkan ketika set data tumbuh lebih besar dan lebih kompleks. Arsitekturnya memecah proses pencarian vektor menjadi beberapa tahap yang berbeda:</p>
+    </button></h2><p>ScaNN is built to solve one of the biggest challenges in vector search: efficiently finding the most relevant vectors in high-dimensional spaces, even as datasets grow larger and more complex. Its architecture breaks down the vector search process into distinct stages:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/scann.png" alt="Scann" class="doc-image" id="scann" />
-   </span> <span class="img-wrapper"> <span>Memindai</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/scann.png" alt="Scann" class="doc-image" id="scann" />
+    <span>Scann</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>Pemilahan</strong>: Membagi set data menjadi beberapa kelompok. Metode ini mempersempit ruang pencarian dengan hanya berfokus pada subset data yang relevan daripada memindai seluruh dataset, sehingga menghemat waktu dan sumber daya pemrosesan. ScaNN sering menggunakan algoritme pengelompokan, seperti <a href="https://zilliz.com/blog/k-means-clustering">k-means</a>, untuk mengidentifikasi klaster, yang memungkinkannya melakukan pencarian kemiripan dengan lebih efisien.</p></li>
-<li><p><strong>Kuantisasi</strong>: ScaNN menerapkan proses kuantisasi yang dikenal sebagai <a href="https://arxiv.org/abs/1908.10396">kuantisasi vektor anisotropik</a> setelah melakukan partisi. Kuantisasi tradisional berfokus pada meminimalkan jarak keseluruhan antara vektor asli dan vektor yang dikompresi, yang tidak ideal untuk tugas-tugas seperti <a href="https://papers.nips.cc/paper/5329-asymmetric-lsh-alsh-for-sublinear-time-maximum-inner-product-search-mips.pdf">Maximum Inner Product Search (MIPS</a>), di mana kemiripan ditentukan oleh hasil kali dalam vektor, bukan jarak langsung. Sebaliknya, kuantisasi anisotropik memprioritaskan pemeliharaan komponen paralel di antara vektor, atau bagian yang paling penting untuk menghitung inner product yang akurat. Pendekatan ini memungkinkan ScaNN untuk mempertahankan akurasi MIPS yang tinggi dengan menyelaraskan vektor yang dikompresi dengan kueri secara hati-hati, sehingga memungkinkan pencarian kemiripan yang lebih cepat dan lebih tepat.</p></li>
-<li><p><strong>Pemeringkatan ulang</strong>: Fase pemeringkatan ulang adalah langkah terakhir, di mana ScaNN menyempurnakan hasil pencarian dari tahap partisi dan kuantisasi. Pemeringkatan ulang ini menerapkan perhitungan inner product yang tepat pada vektor kandidat teratas, untuk memastikan hasil akhir yang sangat akurat. Pemeringkatan ulang sangat penting dalam mesin rekomendasi berkecepatan tinggi atau aplikasi pencarian gambar di mana pemfilteran dan pengelompokan awal berfungsi sebagai lapisan kasar, dan tahap akhir memastikan bahwa hanya hasil yang paling relevan yang dikembalikan kepada pengguna.</p></li>
+<li><p><strong>Partitioning</strong>: Divides the dataset into clusters. This method narrows the search space by focusing only on relevant data subsets instead of scanning the entire dataset, saving time and processing resources. ScaNN often uses clustering algorithms, such as <a href="https://zilliz.com/blog/k-means-clustering">k-means</a>, to identify clusters, which allows it to perform similarity searches more efficiently.</p></li>
+<li><p><strong>Quantization</strong>: ScaNN applies a quantization process known as <a href="https://arxiv.org/abs/1908.10396">anisotropic vector quantization</a> after partitioning. Traditional quantization focuses on minimizing the overall distance between original and compressed vectors, which isn’t ideal for tasks like <a href="https://papers.nips.cc/paper/5329-asymmetric-lsh-alsh-for-sublinear-time-maximum-inner-product-search-mips.pdf">Maximum Inner Product Search (MIPS)</a>, where similarity is determined by the inner product of vectors rather than direct distance. Anisotropic quantization instead prioritizes preserving parallel components between vectors, or the parts most important for calculating accurate inner products. This approach allows ScaNN to maintain high MIPS accuracy by carefully aligning compressed vectors with the query, enabling faster, more precise similarity searches.</p></li>
+<li><p><strong>Re-ranking</strong>: The re-ranking phase is the final step, where ScaNN fine-tunes the search results from the partitioning and quantization stages. This re-ranking applies precise inner product calculations to the top candidate vectors, ensuring the final results are highly accurate. Re-ranking is crucial in high-speed recommendation engines or image search applications where the initial filtering and clustering serve as a coarse layer, and the final stage ensures that only the most relevant results are returned to the user.</p></li>
 </ol>
-<p>Kinerja <code translate="no">SCANN</code> dikendalikan oleh dua parameter utama yang memungkinkan Anda menyempurnakan keseimbangan antara kecepatan dan akurasi:</p>
+<p>The performance of <code translate="no">SCANN</code> is controlled by two key parameters that let you fine-tune the balance between speed and accuracy:</p>
 <ul>
-<li><p><code translate="no">with_raw_data</code>: Mengontrol apakah data vektor asli disimpan bersama dengan representasi yang dikuantisasi. Mengaktifkan parameter ini akan meningkatkan akurasi selama pemeringkatan ulang, tetapi meningkatkan kebutuhan penyimpanan.</p></li>
-<li><p><code translate="no">reorder_k</code>: Menentukan berapa banyak kandidat yang disempurnakan selama fase pemeringkatan ulang akhir. Nilai yang lebih tinggi meningkatkan akurasi tetapi meningkatkan latensi pencarian.</p></li>
+<li><p><code translate="no">with_raw_data</code>: Controls whether original vector data is stored alongside quantized representations. Enabling this parameter improves accuracy during re-ranking but increases storage requirements.</p></li>
+<li><p><code translate="no">reorder_k</code>: Determines how many candidates are refined during the final re-ranking phase. Higher values improve accuracy but increase search latency.</p></li>
 </ul>
-<p>Untuk panduan terperinci tentang cara mengoptimalkan parameter ini untuk kasus penggunaan spesifik Anda, lihat Parameter <a href="/docs/id/scann.md#Index-params">indeks</a>.</p>
-<h2 id="Build-index" class="common-anchor-header">Membangun indeks<button data-href="#Build-index" class="anchor-icon" translate="no">
+<p>For detailed guidance on optimizing these parameters for your specific use case, refer to <a href="/docs/id/scann.md#Index-params">Index params</a>.</p>
+<h2 id="Build-index" class="common-anchor-header">Build index<button data-href="#Build-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,7 +71,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Untuk membangun indeks <code translate="no">SCANN</code> pada bidang vektor di Milvus, gunakan metode <code translate="no">add_index()</code>, tentukan <code translate="no">index_type</code>, <code translate="no">metric_type</code>, dan parameter tambahan untuk indeks.</p>
+    </button></h2><p>To build a <code translate="no">SCANN</code> index on a vector field in Milvus, use the <code translate="no">add_index()</code> method, specifying the <code translate="no">index_type</code>, <code translate="no">metric_type</code>, and additional parameters for the index.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 <span class="hljs-comment"># Prepare index building params</span>
@@ -86,18 +87,18 @@ index_params.add_index(
     } <span class="hljs-comment"># Index building params</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam konfigurasi ini:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">index_type</code>: Jenis indeks yang akan dibangun. Dalam contoh ini, tetapkan nilainya ke <code translate="no">SCANN</code>.</p></li>
-<li><p><code translate="no">metric_type</code>: Metode yang digunakan untuk menghitung jarak antara vektor. Nilai yang didukung termasuk <code translate="no">COSINE</code>, <code translate="no">L2</code>, dan <code translate="no">IP</code>. Untuk detailnya, lihat <a href="/docs/id/metric.md">Jenis Metrik</a>.</p></li>
-<li><p><code translate="no">params</code>: Opsi konfigurasi tambahan untuk membangun indeks.</p>
+<li><p><code translate="no">index_type</code>: The type of index to be built. In this example, set the value to <code translate="no">SCANN</code>.</p></li>
+<li><p><code translate="no">metric_type</code>: The method used to calculate the distance between vectors. Supported values include <code translate="no">COSINE</code>, <code translate="no">L2</code>, and <code translate="no">IP</code>. For details, refer to <a href="/docs/id/metric.md">Metric Types</a>.</p></li>
+<li><p><code translate="no">params</code>: Additional configuration options for building the index.</p>
 <ul>
-<li><code translate="no">with_raw_data</code>: Apakah akan menyimpan data vektor asli di samping representasi yang dikuantisasi.</li>
+<li><code translate="no">with_raw_data</code>: Whether to store the original vector data alongside the quantized representation.</li>
 </ul>
-<p>Untuk mempelajari lebih lanjut parameter pembuatan yang tersedia untuk indeks <code translate="no">SCANN</code>, lihat Parameter <a href="/docs/id/scann.md#Index-building-params">pembuatan indeks</a>.</p></li>
+<p>To learn more building parameters available for the <code translate="no">SCANN</code> index, refer to <a href="/docs/id/scann.md#Index-building-params">Index building params</a>.</p></li>
 </ul>
-<p>Setelah parameter indeks dikonfigurasi, Anda dapat membuat indeks dengan menggunakan metode <code translate="no">create_index()</code> secara langsung atau mengoper parameter indeks dalam metode <code translate="no">create_collection</code>. Untuk detailnya, lihat <a href="/docs/id/create-collection.md">Membuat Koleksi</a>.</p>
-<h2 id="Search-on-index" class="common-anchor-header">Mencari di indeks<button data-href="#Search-on-index" class="anchor-icon" translate="no">
+<p>Once the index parameters are configured, you can create the index by using the <code translate="no">create_index()</code> method directly or passing the index params in the <code translate="no">create_collection</code> method. For details, refer to <a href="/docs/id/create-collection.md">Create Collection</a>.</p>
+<h2 id="Search-on-index" class="common-anchor-header">Search on index<button data-href="#Search-on-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -112,7 +113,7 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Setelah indeks dibuat dan entitas dimasukkan, Anda dapat melakukan pencarian kemiripan pada indeks.</p>
+    </button></h2><p>Once the index is built and entities are inserted, you can perform similarity searches on the index.</p>
 <pre><code translate="no" class="language-python">search_params = {
     <span class="hljs-string">&quot;params&quot;</span>: {
         <span class="hljs-string">&quot;reorder_k&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-comment"># Number of candidates to refine</span>
@@ -128,16 +129,16 @@ res = MilvusClient.search(
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Dalam konfigurasi ini:</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">params</code>: Opsi konfigurasi tambahan untuk pencarian pada indeks.</p>
+<li><p><code translate="no">params</code>: Additional configuration options for searching on the index.</p>
 <ul>
-<li><code translate="no">reorder_k</code>: Jumlah kandidat yang akan disaring selama fase pemeringkatan ulang.</li>
-<li><code translate="no">nprobe</code>: Jumlah kluster yang akan dicari.</li>
+<li><code translate="no">reorder_k</code>: Number of candidates to refine during the re-ranking phase.</li>
+<li><code translate="no">nprobe</code>: Number of clusters to search for.</li>
 </ul>
-<p>Untuk mempelajari lebih lanjut parameter pencarian yang tersedia untuk indeks <code translate="no">SCANN</code>, lihat Parameter <a href="/docs/id/scann.md#Index-specific-search-params">pencarian khusus indeks</a>.</p></li>
+<p>To learn more search parameters available for the <code translate="no">SCANN</code> index, refer to <a href="/docs/id/scann.md#Index-specific-search-params">Index-specific search params</a>.</p></li>
 </ul>
-<h2 id="Index-params" class="common-anchor-header">Parameter indeks<button data-href="#Index-params" class="anchor-icon" translate="no">
+<h2 id="Index-params" class="common-anchor-header">Index params<button data-href="#Index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -152,8 +153,8 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Bagian ini memberikan gambaran umum tentang parameter yang digunakan untuk membangun indeks dan melakukan pencarian pada indeks.</p>
-<h3 id="Index-building-params" class="common-anchor-header">Parameter pembangunan indeks<button data-href="#Index-building-params" class="anchor-icon" translate="no">
+    </button></h2><p>This section provides an overview of the parameters used for building an index and performing searches on the index.</p>
+<h3 id="Index-building-params" class="common-anchor-header">Index building params<button data-href="#Index-building-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -168,28 +169,28 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Tabel berikut mencantumkan parameter yang dapat dikonfigurasi di <code translate="no">params</code> saat <a href="/docs/id/scann.md#Build-index">membangun indeks.</a></p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">params</code> when <a href="/docs/id/scann.md#Build-index">building an index</a>.</p>
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Deskripsi</p></th>
-     <th><p>Rentang Nilai</p></th>
-     <th><p>Saran Penyetelan</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">nlist</code></p></td>
-     <td><p>Jumlah unit cluster</p></td>
+     <td><p>Number of cluster units</p></td>
      <td><p>[1, 65536]</p></td>
-     <td><p><em>Nlist</em> yang lebih tinggi meningkatkan efisiensi pemangkasan dan biasanya mempercepat pencarian kasar, tetapi partisi dapat menjadi terlalu kecil, yang dapat mengurangi penarikan; <em>nlist</em> yang lebih rendah memindai cluster yang lebih besar, meningkatkan penarikan tetapi memperlambat pencarian.</p></td>
+     <td><p>A higher <em>nlist</em> increases pruning efficiency and typically speeds up coarse search, but partitions can get too small, which may reduce recall; a lower <em>nlist</em> scans larger clusters, improving recall but slowing search.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">with_raw_data</code></p></td>
-     <td><p>Apakah akan menyimpan data vektor asli bersama dengan representasi terkuantisasi. Jika diaktifkan, ini memungkinkan penghitungan kemiripan yang lebih akurat selama fase pemeringkatan ulang dengan menggunakan vektor asli, bukan perkiraan terkuantisasi.</p></td>
-     <td><p><strong>Jenis</strong>: Boolean</p><p><strong>Rentang</strong> <code translate="no">true</code>, <code translate="no">false</code></p><p><strong>Nilai default</strong>: <code translate="no">true</code></p></td>
-     <td><p>Setel ke <code translate="no">true</code> untuk <strong>akurasi pencarian yang lebih tinggi</strong> dan ketika ruang penyimpanan tidak menjadi perhatian utama. Data vektor asli memungkinkan penghitungan kemiripan yang lebih tepat selama pemeringkatan ulang.</p><p>Atur ke <code translate="no">false</code> untuk <strong>mengurangi biaya penyimpanan</strong> dan penggunaan memori, terutama untuk set data yang besar. Namun, hal ini dapat menghasilkan akurasi pencarian yang sedikit lebih rendah karena fase pemeringkatan ulang akan menggunakan vektor yang dikuantisasi.</p><p><strong>Direkomendasikan</strong>: Gunakan <code translate="no">true</code> untuk aplikasi produksi yang memerlukan akurasi tinggi.</p></td>
+     <td><p>Whether to store the original vector data alongside the quantized representation. When enabled, this allows for more accurate similarity calculations during the re-ranking phase by using the original vectors instead of quantized approximations.</p></td>
+     <td><p><strong>Type</strong>: Boolean</p><p><strong>Range</strong>: <code translate="no">true</code>, <code translate="no">false</code></p><p><strong>Default value</strong>: <code translate="no">true</code></p></td>
+     <td><p>Set to <code translate="no">true</code> for <strong>higher search accuracy</strong> and when storage space is not a primary concern. The original vector data enables more precise similarity calculations during re-ranking.</p><p>Set to <code translate="no">false</code> to <strong>reduce storage overhead</strong> and memory usage, especially for large datasets. However, this may result in slightly lower search accuracy as the re-ranking phase will use quantized vectors.</p><p><strong>Recommended</strong>: Use <code translate="no">true</code> for production applications where accuracy is critical.</p></td>
    </tr>
 </table>
-<h3 id="Index-specific-search-params" class="common-anchor-header">Parameter pencarian khusus indeks<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
+<h3 id="Index-specific-search-params" class="common-anchor-header">Index-specific search params<button data-href="#Index-specific-search-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -204,24 +205,24 @@ res = MilvusClient.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Tabel berikut mencantumkan parameter yang dapat dikonfigurasi di <code translate="no">search_params.params</code> saat melakukan <a href="/docs/id/scann.md#Search-on-index">pencarian pada indeks</a>.</p>
+    </button></h3><p>The following table lists the parameters that can be configured in <code translate="no">search_params.params</code> when <a href="/docs/id/scann.md#Search-on-index">searching on the index</a>.</p>
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Deskripsi</p></th>
-     <th><p>Rentang Nilai</p></th>
-     <th><p>Saran Penyetelan</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value Range</p></th>
+     <th><p>Tuning Suggestion</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reorder_k</code></p></td>
-     <td><p>Mengontrol jumlah vektor kandidat yang disempurnakan selama tahap pemeringkatan ulang. Parameter ini menentukan berapa banyak kandidat teratas dari tahap pemartisian dan kuantisasi awal yang dievaluasi ulang menggunakan perhitungan kemiripan yang lebih tepat.</p></td>
-     <td><p><strong>Tipe</strong> Bilangan bulat</p><p><strong>Rentang</strong>: [1, <em>int_max</em>]</p><p><strong>Nilai default</strong>: Tidak ada</p></td>
-     <td><p><code translate="no">reorder_k</code> yang lebih besar umumnya menghasilkan <strong>akurasi pencarian yang lebih tinggi</strong> karena lebih banyak kandidat yang dipertimbangkan selama fase penyempurnaan akhir. Namun, hal ini juga <strong>meningkatkan waktu pencarian</strong> karena adanya komputasi tambahan.</p><p>Pertimbangkan untuk meningkatkan <code translate="no">reorder_k</code> ketika mencapai recall yang tinggi sangat penting dan kecepatan pencarian tidak terlalu menjadi perhatian. Titik awal yang baik adalah 2-5x dari <code translate="no">limit</code> yang Anda inginkan (hasil TopK yang akan dikembalikan).</p><p>Pertimbangkan untuk mengurangi <code translate="no">reorder_k</code> untuk memprioritaskan pencarian yang lebih cepat, terutama dalam skenario di mana sedikit penurunan akurasi dapat diterima.</p><p>Dalam kebanyakan kasus, kami sarankan Anda menetapkan nilai dalam kisaran ini:<em>[batas</em>, <em>batas</em> * 5].</p></td>
+     <td><p>Controls the number of candidate vectors that are refined during the re-ranking phase. This parameter determines how many top candidates from the initial partitioning and quantization stages are re-evaluated using more precise similarity calculations.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, <em>int_max</em>]</p><p><strong>Default value</strong>: None</p></td>
+     <td><p>A larger <code translate="no">reorder_k</code> generally leads to <strong>higher search accuracy</strong> as more candidates are considered during the final refinement phase. However, this also <strong>increases search time</strong> due to additional computation.</p><p>Consider increasing <code translate="no">reorder_k</code> when achieving high recall is critical and search speed is less of a concern. A good starting point is 2-5x your desired <code translate="no">limit</code> (TopK results to return).</p><p>Consider decreasing <code translate="no">reorder_k</code> to prioritize faster searches, especially in scenarios where a slight reduction in accuracy is acceptable.</p><p>In most cases, we recommend you set a value within this range: [<em>limit</em>, <em>limit</em> * 5].</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">nprobe</code></p></td>
-     <td><p>Jumlah cluster untuk mencari kandidat.</p></td>
-     <td><p><strong>Jenis</strong> Bilangan bulat</p><p><strong>Rentang</strong>: [1, <em>nlist</em>]</p><p><strong>Nilai default</strong>: <code translate="no">8</code></p></td>
-     <td><p>Nilai yang lebih tinggi memungkinkan lebih banyak klaster untuk dicari, meningkatkan daya ingat dengan memperluas cakupan pencarian, tetapi dengan biaya peningkatan latensi kueri.</p><p>Tetapkan <code translate="no">nprobe</code> secara proporsional dengan <code translate="no">nlist</code> untuk menyeimbangkan kecepatan dan akurasi.</p><p>Pada kebanyakan kasus, kami menyarankan Anda menetapkan nilai dalam kisaran ini: [1, nlist].</p></td>
+     <td><p>The number of clusters to search for candidates.</p></td>
+     <td><p><strong>Type</strong>: Integer</p><p><strong>Range</strong>: [1, <em>nlist</em>]</p><p><strong>Default value</strong>: <code translate="no">8</code></p></td>
+     <td><p>Higher values allow more clusters to be searched, improving recall by expanding the search scope but at the cost of increased query latency.</p><p>Set <code translate="no">nprobe</code> proportionally to <code translate="no">nlist</code> to balance speed and accuracy.</p><p>In most cases, we recommend you set a value within this range: [1, nlist].</p></td>
    </tr>
 </table>

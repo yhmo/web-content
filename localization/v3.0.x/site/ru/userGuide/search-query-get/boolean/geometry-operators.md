@@ -1,14 +1,14 @@
 ---
 id: geometry-operators.md
-title: Операторы геометрииCompatible with Milvus 2.6.4+
+title: Geometry OperatorsCompatible with Milvus 2.6.4+
 summary: >-
-  Milvus поддерживает набор операторов для пространственной фильтрации по полям
-  GEOMETRY, которые необходимы для управления и анализа геометрических данных.
-  Эти операторы позволяют извлекать сущности на основе геометрических связей
-  между объектами.
+  Milvus supports a set of operators for spatial filtering on GEOMETRY fields,
+  which are essential for managing and analyzing geometric data. These operators
+  allow you to retrieve entities based on the geometric relationships between
+  objects.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Geometry-Operators" class="common-anchor-header">Операторы геометрии<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Geometry-Operators" class="anchor-icon" translate="no">
+<h1 id="Geometry-Operators" class="common-anchor-header">Geometry Operators<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Geometry-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,9 +23,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus поддерживает набор операторов для пространственной фильтрации по полям <code translate="no">GEOMETRY</code>, которые необходимы для управления и анализа геометрических данных. Эти операторы позволяют извлекать сущности на основе геометрических отношений между объектами.</p>
-<p>Все операторы геометрии принимают два геометрических аргумента: имя поля <code translate="no">GEOMETRY</code>, определенного в схеме вашей коллекции, и целевой геометрический объект, представленный в формате <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-Known Text</a> (WKT).</p>
-<h2 id="Use-syntax" class="common-anchor-header">Синтаксис использования<button data-href="#Use-syntax" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus supports a set of operators for spatial filtering on <code translate="no">GEOMETRY</code> fields, which are essential for managing and analyzing geometric data. These operators allow you to retrieve entities based on the geometric relationships between objects.</p>
+<p>All geometry operators function by taking two geometric arguments: the name of the <code translate="no">GEOMETRY</code> field defined in your collection schema and a target geometry object represented in <a href="https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry">Well-Known Text</a> (WKT) format.</p>
+<h2 id="Use-syntax" class="common-anchor-header">Use syntax<button data-href="#Use-syntax" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,20 +40,20 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Для фильтрации по полю <code translate="no">GEOMETRY</code> используйте геометрический оператор в выражении:</p>
+    </button></h2><p>To filter on a <code translate="no">GEOMETRY</code> field, use a geometry operator in an expression:</p>
 <ul>
-<li><p>Общие: <code translate="no">{operator}(geo_field, '{wkt}')</code></p></li>
-<li><p>На основе расстояния: <code translate="no">ST_DWITHIN(geo_field, '{wkt}', distance)</code></p></li>
+<li><p>General: <code translate="no">{operator}(geo_field, '{wkt}')</code></p></li>
+<li><p>Distance-based: <code translate="no">ST_DWITHIN(geo_field, '{wkt}', distance)</code></p></li>
 </ul>
-<p>Где:</p>
+<p>Where:</p>
 <ul>
-<li><p><code translate="no">operator</code> один из поддерживаемых геометрических операторов (например, <code translate="no">ST_CONTAINS</code>, <code translate="no">ST_INTERSECTS</code>). Имена операторов должны быть полностью прописными или полностью строчными. Список поддерживаемых операторов см. в разделе <a href="/docs/ru/geometry-operators.md#Supported-geometry-operators">Поддерживаемые операторы геометрии</a>.</p></li>
-<li><p><code translate="no">geo_field</code> это имя вашего поля <code translate="no">GEOMETRY</code>.</p></li>
-<li><p><code translate="no">'{wkt}'</code> WKT-представление геометрии для запроса.</p></li>
-<li><p><code translate="no">distance</code> порог специально для <code translate="no">ST_DWITHIN</code>.</p></li>
+<li><p><code translate="no">operator</code> is one of the supported geometry operators (e.g., <code translate="no">ST_CONTAINS</code>, <code translate="no">ST_INTERSECTS</code>). Operator names must be all uppercase or all lowercase. For a list of supported operators, refer to <a href="/docs/ru/geometry-operators.md#Supported-geometry-operators">Supported geometry operators</a>.</p></li>
+<li><p><code translate="no">geo_field</code> is the name of your <code translate="no">GEOMETRY</code> field.</p></li>
+<li><p><code translate="no">'{wkt}'</code> is the WKT representation of the geometry to query.</p></li>
+<li><p><code translate="no">distance</code> is the threshold specifically for <code translate="no">ST_DWITHIN</code>.</p></li>
 </ul>
-<p>Чтобы узнать больше о полях <code translate="no">GEOMETRY</code> в Milvus, обратитесь к разделу <a href="/docs/ru/geometry-field.md">Поле геометрии</a>.</p>
-<h2 id="Supported-geometry-operators" class="common-anchor-header">Поддерживаемые операторы геометрии<button data-href="#Supported-geometry-operators" class="anchor-icon" translate="no">
+<p>To learn more about <code translate="no">GEOMETRY</code> fields in Milvus, refer to <a href="/docs/ru/geometry-field.md">Geometry Field</a>.</p>
+<h2 id="Supported-geometry-operators" class="common-anchor-header">Supported geometry operators<button data-href="#Supported-geometry-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,55 +68,55 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В следующей таблице перечислены операторы геометрии, доступные в Milvus.</p>
+    </button></h2><p>The following table lists the geometry operators available in Milvus.</p>
 <div class="alert note">
-<p>Имена операторов должны быть <strong>полностью прописными</strong> или <strong>полностью строчными</strong>. Не смешивайте регистры в имени одного оператора.</p>
+<p>Operator names must be <strong>all uppercase</strong> or <strong>all lowercase</strong>. Do not mix cases within the same operator name.</p>
 </div>
 <table>
    <tr>
-     <th><p>Оператор</p></th>
-     <th><p>Описание</p></th>
-     <th><p>Пример</p></th>
+     <th><p>Operator</p></th>
+     <th><p>Description</p></th>
+     <th><p>Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">ST_EQUALS(A, B)</code> / <code translate="no">st_equals(A, B)</code></p></td>
-     <td><p>Возвращает TRUE, если две геометрии пространственно идентичны, то есть имеют одинаковый набор точек и размерность.</p></td>
-     <td><p>Являются ли две геометрии (A и B) абсолютно одинаковыми в пространстве?</p></td>
+     <td><p>Returns TRUE if two geometries are spatially identical, meaning they have the same set of points and dimension.</p></td>
+     <td><p>Are two geometries (A and B) exactly the same in space?</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">ST_CONTAINS(A, B)</code> / <code translate="no">st_contains(A, B)</code></p></td>
-     <td><p>Возвращает TRUE, если геометрия A полностью содержит геометрию B, а их внутренности имеют хотя бы одну общую точку.</p></td>
-     <td><p>Содержит ли городская черта (A) определенный парк (B)?</p></td>
+     <td><p>Returns TRUE if geometry A completely contains geometry B, with their interiors having at least one point in common.</p></td>
+     <td><p>Is a city boundary (A) containing a specific park (B)?</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">ST_CROSSES(A, B)</code> / <code translate="no">st_crosses(A, B)</code></p></td>
-     <td><p>Возвращает TRUE, если геометрии A и B частично пересекаются, но не полностью содержат друг друга.</p></td>
-     <td><p>Пересекаются ли две дороги (A и B) на перекрестке?</p></td>
+     <td><p>Returns TRUE if geometries A and B partially intersect but do not fully contain each other.</p></td>
+     <td><p>Do two roads (A and B) cross at an intersection?</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">ST_INTERSECTS(A, B)</code> / <code translate="no">st_intersects(A, B)</code></p></td>
-     <td><p>Возвращает TRUE, если геометрии A и B имеют хотя бы одну общую точку. Это наиболее общий и широко используемый пространственный запрос.</p></td>
-     <td><p>Пересекается ли область поиска (A) с любым из мест расположения магазинов (B)?</p></td>
+     <td><p>Returns TRUE if geometries A and B have at least one common point. This is the most general and widely used spatial query.</p></td>
+     <td><p>Does a search area (A) intersect with any of the store locations (B)?</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">ST_OVERLAPS(A, B)</code> / <code translate="no">st_overlaps(A, B)</code></p></td>
-     <td><p>Возвращает TRUE, если геометрии A и B имеют одинаковое измерение, частично пересекаются и ни одна из них полностью не содержит другую.</p></td>
-     <td><p>Пересекаются ли два земельных участка (A и B)?</p></td>
+     <td><p>Returns TRUE if geometries A and B are of the same dimension, partially overlap, and neither fully contains the other.</p></td>
+     <td><p>Do two land plots (A and B) overlap?</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">ST_TOUCHES(A, B)</code> / <code translate="no">st_touches(A, B)</code></p></td>
-     <td><p>Возвращает TRUE, если геометрии A и B имеют общую границу, но их внутренности не пересекаются.</p></td>
-     <td><p>Имеют ли две соседние недвижимости (A и B) общую границу?</p></td>
+     <td><p>Returns TRUE if geometries A and B share a common boundary but their interiors do not intersect.</p></td>
+     <td><p>Do two neighboring properties (A and B) share a border?</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">ST_WITHIN(A, B)</code> / <code translate="no">st_within(A, B)</code></p></td>
-     <td><p>Возвращает TRUE, если геометрия A полностью содержится в геометрии B, а их интерьеры имеют хотя бы одну общую точку. Это обратная функция <code translate="no">ST_Contains(B, A)</code>.</p></td>
-     <td><p>Находится ли определенная точка интереса (A) в пределах заданного радиуса поиска (B)?</p></td>
+     <td><p>Returns TRUE if geometry A is completely contained within geometry B, with their interiors having at least one point in common. It's the inverse of <code translate="no">ST_Contains(B, A)</code>.</p></td>
+     <td><p>Is a specific point of interest (A) within a defined search radius (B)?</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">ST_DWITHIN(A, B, distance)</code> / <code translate="no">st_dwithin(A, B, distance)</code></p></td>
-     <td><p>Возвращает TRUE, если расстояние между геометрией A и геометрией B меньше или равно указанному расстоянию.</p><p><strong>Примечание</strong>: Геометрия B в настоящее время поддерживает только точки. Единицей измерения расстояния являются метры.</p></td>
-     <td><p>Найти все точки в пределах 5000 метров от определенной точки (B).</p></td>
+     <td><p>Returns TRUE if the distance between geometry A and geometry B is less than or equal to the specified distance.</p><p><strong>Note</strong>: Geometry B currently only supports points. The distance unit is meters.</p></td>
+     <td><p>Find all points within 5000 meters of a specific point (B).</p></td>
    </tr>
 </table>
 <h2 id="STEQUALS--stequals" class="common-anchor-header">ST_EQUALS / st_equals<button data-href="#STEQUALS--stequals" class="anchor-icon" translate="no">
@@ -134,9 +134,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Оператор <code translate="no">ST_EQUALS</code> возвращает значение TRUE, если две геометрии пространственно идентичны, то есть имеют одинаковый набор точек и размерность. Это полезно для проверки, представляют ли два сохраненных геометрических объекта одно и то же местоположение и форму.</p>
-<p><strong>Пример</strong></p>
-<p>Предположим, вам нужно проверить, является ли сохраненная геометрия (например, точка или многоугольник) точно такой же, как целевая геометрия. Например, можно сравнить сохраненную точку с конкретной точкой интереса.</p>
+    </button></h2><p>The <code translate="no">ST_EQUALS</code> operator returns TRUE if two geometries are spatially identical, meaning they have the same set of points and dimension. This is useful for verifying if two stored geometry objects represent exactly the same location and shape.</p>
+<p><strong>Example</strong></p>
+<p>Suppose you want to check whether a stored geometry (such as a point or polygon) is exactly the same as a target geometry. For instance, you can compare a stored point to a specific point of interest.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to check if a geometry matches a specific point</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_EQUALS(geo_field, &#x27;POINT(10 20)&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -155,9 +155,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Оператор <code translate="no">ST_CONTAINS</code> возвращает TRUE, если первая геометрия полностью содержит вторую геометрию. Это полезно для поиска точек внутри многоугольника или меньших многоугольников внутри большего.</p>
-<p><strong>Пример</strong></p>
-<p>Представьте, что у вас есть набор районов города и вы хотите найти определенную точку, например ресторан, которая находится в границах данного района.</p>
+    </button></h2><p>The <code translate="no">ST_CONTAINS</code> operator returns TRUE if the first geometry completely contains the second geometry. This is useful for finding points within a polygon, or smaller polygons within a larger one.</p>
+<p><strong>Example</strong></p>
+<p>Imagine you have a collection of city districts and want to find a specific point of interest, such as a restaurant, that falls within the boundaries of a given district.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to find geometries completely within a specific polygon.</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_CONTAINS(geo_field, &#x27;POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -176,9 +176,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Оператор <code translate="no">ST_CROSSES</code> возвращает <code translate="no">TRUE</code>, если пересечение двух геометрий образует геометрию с меньшей размерностью, чем исходные геометрии. Обычно это относится к линии, пересекающей многоугольник или другую линию.</p>
-<p><strong>Пример</strong></p>
-<p>Вы хотите найти все туристические тропы (строки), которые пересекают определенную границу (другую строку) или входят в охраняемую зону (многоугольник).</p>
+    </button></h2><p>The <code translate="no">ST_CROSSES</code> operator returns <code translate="no">TRUE</code> if the intersection of two geometries forms a geometry with a lower dimension than the original geometries. This typically applies to a line crossing a polygon or another line.</p>
+<p><strong>Example</strong></p>
+<p>You want to find all hiking trails (line strings) that cross a specific boundary line (another line string) or enter a protected area (polygon).</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to find geometries that cross a line string.</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_CROSSES(geo_field, &#x27;LINESTRING(5 0, 5 10)&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -197,9 +197,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Оператор <code translate="no">ST_INTERSECTS</code> возвращает значение <code translate="no">TRUE</code>, если две геометрии имеют общую точку на границах или внутренностях. Это оператор общего назначения для обнаружения любой формы пространственного перекрытия.</p>
-<p><strong>Пример</strong></p>
-<p>Если у вас есть коллекция дорог, и вы хотите найти все дороги, которые пересекают или касаются определенной строки, представляющей предлагаемую новую дорогу, вы можете использовать <code translate="no">ST_INTERSECTS</code>.</p>
+    </button></h2><p>The <code translate="no">ST_INTERSECTS</code> operator returns <code translate="no">TRUE</code> if two geometries have any point of their boundaries or interiors in common. This is a general-purpose operator for detecting any form of spatial overlap.</p>
+<p><strong>Example</strong></p>
+<p>If you have a collection of roads and want to find all roads that cross or touch a specific line string representing a proposed new road, you can use <code translate="no">ST_INTERSECTS</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to find geometries that intersect with a specific line string.</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_INTERSECTS(geo_field, &#x27;LINESTRING (1 1, 2 2)&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -218,9 +218,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Оператор <code translate="no">ST_OVERLAPS</code> возвращает <code translate="no">TRUE</code>, если две геометрии одной размерности имеют частичное пересечение, где само пересечение имеет ту же размерность, что и исходные геометрии, но не равно ни одной из них.</p>
-<p><strong>Пример</strong></p>
-<p>У вас есть набор пересекающихся регионов продаж, и вы хотите найти все регионы, которые частично пересекаются с новой предлагаемой зоной продаж.</p>
+    </button></h2><p>The <code translate="no">ST_OVERLAPS</code> operator returns <code translate="no">TRUE</code> if two geometries of the same dimension have a partial intersection, where the intersection itself has the same dimension as the original geometries, but is not equal to either of them.</p>
+<p><strong>Example</strong></p>
+<p>You have a set of overlapping sales regions and want to find all regions that partially overlap with a new proposed sales zone.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to find geometries that partially overlap with a polygon.</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_OVERLAPS(geo_field, &#x27;POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -239,9 +239,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Оператор <code translate="no">ST_TOUCHES</code> возвращает <code translate="no">TRUE</code>, если границы двух геометрий соприкасаются, но их внутренности не пересекаются. Это полезно для определения смежности.</p>
-<p><strong>Пример</strong></p>
-<p>Если у вас есть карта участков недвижимости и вы хотите найти все участки, которые непосредственно примыкают к общественному парку без каких-либо пересечений.</p>
+    </button></h2><p>The <code translate="no">ST_TOUCHES</code> operator returns <code translate="no">TRUE</code> if two geometries’ boundaries touch, but their interiors do not intersect. This is useful for detecting adjacencies.</p>
+<p><strong>Example</strong></p>
+<p>If you have a map of property parcels and want to find all parcels that are directly adjacent to a public park without any overlap.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to find geometries that only touch a line string at their boundaries.</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_TOUCHES(geo_field, &#x27;LINESTRING(0 0, 1 1)&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -260,13 +260,13 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Оператор <code translate="no">ST_WITHIN</code> возвращает <code translate="no">TRUE</code>, если первая геометрия полностью находится внутри или на границе второй геометрии. Он является обратным оператору <code translate="no">ST_CONTAINS</code>.</p>
-<p><strong>Пример</strong></p>
-<p>Вам нужно найти все небольшие жилые районы, которые полностью расположены в пределах более крупной парковой зоны.</p>
+    </button></h2><p>The <code translate="no">ST_WITHIN</code> operator returns <code translate="no">TRUE</code> if the first geometry is completely within the interior or on the boundary of the second geometry. It is the inverse of <code translate="no">ST_CONTAINS</code>.</p>
+<p><strong>Example</strong></p>
+<p>You want to find all small residential areas that are located entirely within a larger designated park area.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># The filter expression to find geometries that are completely within a larger polygon.</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_WITHIN(geo_field, &#x27;POLYGON((110 38, 115 38, 115 42, 110 42, 110 38))&#x27;)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Дополнительные сведения о том, как использовать поле <code translate="no">GEOMETRY</code>, см. в разделе <a href="/docs/ru/geometry-field.md">Поле геометрии</a>.</p>
+<p>For more information on how to use a <code translate="no">GEOMETRY</code> field, refer to <a href="/docs/ru/geometry-field.md">Geometry Field</a>.</p>
 <h2 id="STDWITHIN--stdwithin" class="common-anchor-header">ST_DWITHIN / st_dwithin<button data-href="#STDWITHIN--stdwithin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -282,9 +282,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Оператор <code translate="no">ST_DWITHIN</code> возвращает <code translate="no">TRUE</code>, если расстояние между геометрией A и геометрией B меньше или равно заданному значению (в метрах). В настоящее время геометрия B должна быть точкой.</p>
-<p><strong>Пример</strong></p>
-<p>Предположим, у вас есть коллекция местоположений магазинов, и вы хотите найти все магазины в пределах 5 000 метров от местоположения определенного клиента.</p>
+    </button></h2><p>The <code translate="no">ST_DWITHIN</code> operator returns <code translate="no">TRUE</code> if the distance between geometry A and geometry B is less than or equal to a specified value (in meters). Currently, geometry B must be a point.</p>
+<p><strong>Example</strong></p>
+<p>Suppose you have a collection of store locations and want to find all stores within 5,000 meters of a specific customer’s location.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Find all stores within 5000 meters of the point (120 30)</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;ST_DWITHIN(geo_field, &#x27;POINT(120 30)&#x27;, 5000)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>

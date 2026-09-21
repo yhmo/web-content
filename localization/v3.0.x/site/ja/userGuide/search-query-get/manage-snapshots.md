@@ -1,10 +1,12 @@
 ---
 id: manage-snapshots.md
-title: スナップショットの管理Compatible with Milvus 3.0.x
-summary: スナップショットの作成、一覧表示、説明の追加、ピン留め、復元、削除の方法、および復元ジョブの監視方法について学びます。
+title: Manage SnapshotsCompatible with Milvus 3.0.x
+summary: >-
+  Learn how to create, list, describe, pin, restore, and drop snapshots and
+  monitor restoration jobs.
 beta: Milvus 3.0.x
 ---
-<h1 id="Manage-Snapshots" class="common-anchor-header">スナップショットの管理<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Manage-Snapshots" class="anchor-icon" translate="no">
+<h1 id="Manage-Snapshots" class="common-anchor-header">Manage Snapshots<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Manage-Snapshots" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,18 +21,18 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>このガイドでは、スナップショットの作成および管理方法について解説します。具体的には、</p>
+    </button></h1><p>In this guide, you will learn how to create and manage snapshots, including</p>
 <ul>
-<li><a href="#Create-snapshot">スナップショットの作成</a>、</li>
-<li><a href="#List-snapshots">スナップショットの一覧表示</a>、</li>
-<li><a href="#Describe-snapshot">スナップショットの説明</a>、</li>
-<li><a href="#Pinunpin-snapshot-data">スナップショットデータの固定／固定解除</a>、</li>
-<li><a href="#Restore-snapshot">スナップショットの復元</a>、</li>
-<li><a href="#Drop-snapshot">スナップショットを削除する</a>、</li>
-<li><a href="#List-restoration-jobs">復元ジョブの一覧表示</a>、および</li>
-<li><a href="#Get-restoration-state">復元状態の取得</a>。</li>
+<li><a href="#Create-snapshot">Create a snapshot</a>,</li>
+<li><a href="#List-snapshots">List snapshots</a>,</li>
+<li><a href="#Describe-snapshot">Describe a snapshot</a>,</li>
+<li><a href="#Pinunpin-snapshot-data">Pin/unpin snapshot data</a>,</li>
+<li><a href="#Restore-snapshot">Restore a snapshot</a>,</li>
+<li><a href="#Drop-snapshot">Drop a snapshot</a>,</li>
+<li><a href="#List-restoration-jobs">List restoration jobs</a>, and</li>
+<li><a href="#Get-restoration-state">Get restoration state</a>.</li>
 </ul>
-<h2 id="Create-snapshot" class="common-anchor-header">スナップショットの作成<button data-href="#Create-snapshot" class="anchor-icon" translate="no">
+<h2 id="Create-snapshot" class="common-anchor-header">Create snapshot<button data-href="#Create-snapshot" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -45,18 +47,18 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>スナップショットを作成する前に、データ損失を防ぐため、対象コレクションへの書き込みを停止し、<code translate="no">flush()</code> を呼び出すことを推奨します。</p>
+    </button></h2><p>Before creating a snapshot, you are advised to stop writing data to the target collection and call <code translate="no">flush()</code> to avoid possible data loss.</p>
 <div class="alert note">
-<p><code translate="no">flush()</code> の呼び出しは必須ではありませんが、データ損失を防ぐために強く推奨されます。これを省略した場合、スナップショットにはすでにフラッシュ済みのデータのみが含まれます。</p>
+<p>Calling <code translate="no">flush()</code> is not mandatory but highly recommended to avoid data loss. If you skip this, the snapshot contains only the data that has already been flushed.</p>
 </div>
-<p>スナップショットに名前を付ける際は、「<code translate="no">&quot;daily_backup_20240101&quot;</code> 」や「<code translate="no">&quot;v2.1_production_release&quot;</code> 」など、明確で説明的な名前を使用し、「<code translate="no">&quot;backup1&quot;</code> 」や「<code translate="no">&quot;test&quot;</code> 」などの一般的な用語は避けてください。バージョン、環境、ステージごとにスナップショットを区別できるよう、スナップショット名は慎重に決定してください。</p>
-<p>以下のコード例では、<code translate="no">my_collection</code> という名前のコレクションがすでに存在していることを前提としています。</p>
+<p>When naming a snapshot, use clear, descriptive names, such as <code translate="no">&quot;daily_backup_20240101&quot;</code> or <code translate="no">&quot;v2.1_production_release&quot;</code> and avoid generic terms, such as <code translate="no">&quot;backup1&quot;</code> and <code translate="no">&quot;test&quot;</code>. Use snapshot names wisely to distinguish snapshots across versions, environments, and stages.</p>
+<p>The code examples below assume that you already have a collection named <code translate="no">my_collection</code>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -103,7 +105,7 @@ err = client.CreateSnapshot(context.Background(), createOpt)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="List-snapshots" class="common-anchor-header">スナップショットのリスト表示<button data-href="#List-snapshots" class="anchor-icon" translate="no">
+<h2 id="List-snapshots" class="common-anchor-header">List snapshots<button data-href="#List-snapshots" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -118,13 +120,13 @@ err = client.CreateSnapshot(context.Background(), createOpt)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>既存のスナップショットの名前を一覧表示できます。</p>
+    </button></h2><p>You can list the names of existing snapshots.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># List all snapshots for a collection</span>
 snapshots = client.list_snapshots(
@@ -143,7 +145,7 @@ snapshots, err := client.ListSnapshots(context.Background(), listOpt)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># bash</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Describe-snapshot" class="common-anchor-header">スナップショットの詳細取得<button data-href="#Describe-snapshot" class="anchor-icon" translate="no">
+<h2 id="Describe-snapshot" class="common-anchor-header">Describe snapshot<button data-href="#Describe-snapshot" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -158,13 +160,13 @@ snapshots, err := client.ListSnapshots(context.Background(), listOpt)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>特定のスナップショットの詳細情報を取得できます。</p>
+    </button></h2><p>You can get the detailed information about a specific snapshot.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">snapshot_info = client.describe_snapshot(
     snapshot_name=<span class="hljs-string">&quot;backup_20240101&quot;</span>,
@@ -188,7 +190,7 @@ fmt.Printf(<span class="hljs-string">&quot;Collection: %s\n&quot;</span>, resp.G
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Pinunpin-snapshot-data" class="common-anchor-header">スナップショットデータの固定/固定解除<button data-href="#Pinunpin-snapshot-data" class="anchor-icon" translate="no">
+<h2 id="Pinunpin-snapshot-data" class="common-anchor-header">Pin/unpin snapshot data<button data-href="#Pinunpin-snapshot-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -203,14 +205,14 @@ fmt.Printf(<span class="hljs-string">&quot;Collection: %s\n&quot;</span>, resp.G
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>復元中に、スナップショットをピン留めして、その基となるデータがガベージコレクションの対象となるのを一時的に防ぐことができます。また、ピン留めを解除してデータを解放することもできます。</p>
-<p>また、ピン留め操作に有効期限（TTL）を設定することで、期限が切れた時点でピン留めされたデータを解放するようにすることもできます。</p>
+    </button></h2><p>During restoration, you can pin a snapshot to temporarily protect its underlying data from garbage collection, and unpin it to release the data.</p>
+<p>You can also set a time-to-live (TTL) duration for the pin operation so that the pinned data will be released when the duration expires.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">pin_id = client.pin_snapshot_data(
     snapshot_name=<span class="hljs-string">&quot;backup_20240101&quot;</span>,
@@ -245,7 +247,7 @@ client.unpin_snapshot_data(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Restore-snapshot" class="common-anchor-header">スナップショットの復元<button data-href="#Restore-snapshot" class="anchor-icon" translate="no">
+<h2 id="Restore-snapshot" class="common-anchor-header">Restore snapshot<button data-href="#Restore-snapshot" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -260,21 +262,21 @@ client.unpin_snapshot_data(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>スナップショットを新しいコレクションに復元できます。この操作は非同期で行われ、復元の進行状況を追跡するためのジョブ ID が返されます。</p>
-<p>復元には、データのインポートではなく<strong>セグメントコピー</strong>方式が使用されます。これは、</p>
+    </button></h2><p>You can restore a snapshot to a new collection. This operation is asynchronous and returns a job ID for tracking the restoration progress.</p>
+<p>The restoration uses a <strong>copy-segment</strong> mechanism instead of data import, which is more efficient because it</p>
 <ul>
-<li>スナップショットストレージからセグメントファイル（binlog、deltalog、インデックスファイル）を直接コピーする</li>
-<li>フィールドIDおよびインデックスIDを保持し、既存のデータファイルとの互換性を確保する</li>
-<li>データの書き換えやインデックスの再構築を回避できるため、復元時間が大幅に短縮され、</li>
-<li>従来のバックアップおよび復元方法と比較して、10～100倍のパフォーマンス向上を実現します</li>
+<li>directly copies segment files (binlogs, deltalogs, index files) from snapshot storage</li>
+<li>preserves field IDs and index IDs to ensure compatibility with existing data files</li>
+<li>avoids data rewriting and index rebuilding, resulting in significantly faster restore times, and</li>
+<li>ensures a 10- to 100-fold performance increase compared with traditional backup and restore methods</li>
 </ul>
-<p>スナップショットを復元するには、次のように操作します。</p>
+<p>To restore a snapshot, do as follows:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Restore snapshot to new collection</span>
 job_id = client.restore_snapshot(
@@ -298,8 +300,8 @@ jobID, err := client.RestoreSnapshot(context.Background(), restoreOpt)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>復元ジョブの進行状況の監視の詳細については、「<a href="#Get-restoration-state">復元状態の取得</a>」を参照してください。</p>
-<h2 id="Drop-snapshot" class="common-anchor-header">スナップショットの削除<button data-href="#Drop-snapshot" class="anchor-icon" translate="no">
+<p>For details on monitoring the progress of a restoration job, refer to <a href="#Get-restoration-state">Get restoration state</a>.</p>
+<h2 id="Drop-snapshot" class="common-anchor-header">Drop snapshot<button data-href="#Drop-snapshot" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -314,13 +316,13 @@ jobID, err := client.RestoreSnapshot(context.Background(), restoreOpt)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>スナップショットが不要になった場合は、削除することができます。ストレージ容量を節約するため、古いスナップショットは定期的に削除することをお勧めします。</p>
+    </button></h2><p>You can drop a snapshot if it is no longer needed. You are advised to remove old snapshots regularly to save storage.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.drop_snapshot(
     snapshot_name=<span class="hljs-string">&quot;backup_20240101&quot;</span>
@@ -335,7 +337,7 @@ err := client.DropSnapshot(context.Background(), dropOpt)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="List-restoration-jobs" class="common-anchor-header">復元ジョブのリスト取得<button data-href="#List-restoration-jobs" class="anchor-icon" translate="no">
+<h2 id="List-restoration-jobs" class="common-anchor-header">List restoration jobs<button data-href="#List-restoration-jobs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -350,13 +352,13 @@ err := client.DropSnapshot(context.Background(), dropOpt)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>このAPIを使用すると、対象のコレクションに対してすでに作成されているスナップショットのリストを取得できます。</p>
+    </button></h2><p>You can use this API to get a list of snapshots already created for the target collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># List all restore jobs</span>
 jobs = client.list_restore_snapshot_jobs()
@@ -393,7 +395,7 @@ jobs, err = client.ListRestoreSnapshotJobs(context.Background(), listOpt)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Get-restoration-state" class="common-anchor-header">復元状態の取得<button data-href="#Get-restoration-state" class="anchor-icon" translate="no">
+<h2 id="Get-restoration-state" class="common-anchor-header">Get restoration state<button data-href="#Get-restoration-state" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -408,13 +410,13 @@ jobs, err = client.ListRestoreSnapshotJobs(context.Background(), listOpt)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>復元ジョブ ID を取得したら、それを使用して復元の進捗状況を取得できます。</p>
+    </button></h2><p>Once you have a restoration job ID, you can use it to retrieve restoration progress.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">state = client.get_restore_snapshot_state(job_id=<span class="hljs-number">12345</span>)
 

@@ -1,11 +1,11 @@
 ---
 id: array_data_type.md
-title: Campo array
+title: Array Field
 summary: >-
-  Un campo ARRAY memorizza un insieme ordinato di elementi dello stesso tipo di
-  dati. Ecco un esempio di come i campi ARRAY memorizzano i dati:
+  An ARRAY field stores an ordered set of elements of the same data type. Here's
+  an example of how ARRAY fields store data:
 ---
-<h1 id="Array-Field" class="common-anchor-header">Campo array<button data-href="#Array-Field" class="anchor-icon" translate="no">
+<h1 id="Array-Field" class="common-anchor-header">Array Field<button data-href="#Array-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,13 +20,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Un campo ARRAY memorizza un insieme ordinato di elementi dello stesso tipo di dati. Ecco un esempio di come i campi ARRAY memorizzano i dati:</p>
+    </button></h1><p>An ARRAY field stores an ordered set of elements of the same data type. Here’s an example of how ARRAY fields store data:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;pop&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;rock&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;classic&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;ratings&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">5</span><span class="hljs-punctuation">,</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span> <span class="hljs-number">3</span><span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Limits" class="common-anchor-header">Limiti<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,12 +42,12 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Valori predefiniti</strong>: i campi ARRAY non supportano i valori predefiniti. Tuttavia, è possibile impostare l'attributo <code translate="no">nullable</code> su <code translate="no">True</code> per consentire valori nulli. Per ulteriori dettagli, consultare la sezione " <a href="/docs/it/nullable-and-default.md">Nullable &amp; Default"</a>.</p></li>
-<li><p><strong>Tipo di dati:</strong> tutti gli elementi di un campo ARRAY devono condividere lo stesso tipo di dati, definito dal parametro <code translate="no">element_type</code>. Quando <code translate="no">element_type</code> è impostato su <code translate="no">VARCHAR</code>, è necessario specificare anche l’ <code translate="no">max_length</code> e per gli elementi dell’array. L’ <code translate="no">element_type</code> accetta qualsiasi tipo di dati scalare supportato da Milvus, ad eccezione di <code translate="no">JSON</code>.</p></li>
-<li><p><strong>Capacità dell’array</strong>: il numero di elementi in un campo ARRAY deve essere inferiore o uguale alla capacità massima definita al momento della creazione dell’array, come specificato da <code translate="no">max_capacity</code>. Il valore deve essere un numero intero compreso tra <strong>1</strong> e <strong>4096</strong>.</p></li>
-<li><p><strong>Gestione delle stringhe</strong>: i valori delle stringhe nei campi ARRAY vengono memorizzati così come sono, senza escape semantico né conversioni. Ad esempio, <code translate="no">'a&quot;b'</code>, <code translate="no">&quot;a'b&quot;</code>, <code translate="no">'a\'b'</code> e <code translate="no">&quot;a\&quot;b&quot;</code> vengono memorizzati così come inseriti, mentre <code translate="no">'a'b'</code> e <code translate="no">&quot;a&quot;b&quot;</code> sono considerati valori non validi.</p></li>
+<li><p><strong>Default Values</strong>: ARRAY fields do not support default values. However, you can set the <code translate="no">nullable</code> attribute to <code translate="no">True</code> to allow null values. For details, refer to <a href="/docs/it/nullable-and-default.md">Nullable & Default</a>.</p></li>
+<li><p><strong>Data Type:</strong> All elements in an ARRAY field must share the same data type, which is defined by the <code translate="no">element_type</code> parameter. When <code translate="no">element_type</code> is set to <code translate="no">VARCHAR</code>, you must also specify the <code translate="no">max_length</code> for array elements. The <code translate="no">element_type</code> accepts any scalar data type supported by Milvus, with the exception of <code translate="no">JSON</code>.</p></li>
+<li><p><strong>Array Capacity</strong>: The number of elements in an ARRAY field must be less than or equal to the maximum capacity defined when the Array was created, as specified by <code translate="no">max_capacity</code>. The value should be an integer within the range from <strong>1</strong> to <strong>4096</strong>.</p></li>
+<li><p><strong>String Handling</strong>: String values in Array fields are stored as-is, without semantic escaping or conversion. For example, <code translate="no">'a&quot;b'</code>, <code translate="no">&quot;a'b&quot;</code>, <code translate="no">'a\'b'</code>, and <code translate="no">&quot;a\&quot;b&quot;</code> are stored as entered, while <code translate="no">'a'b'</code> and <code translate="no">&quot;a&quot;b&quot;</code> are considered invalid values.</p></li>
 </ul>
-<h2 id="Add-ARRAY-field" class="common-anchor-header">Aggiungere un campo ARRAY<button data-href="#Add-ARRAY-field" class="anchor-icon" translate="no">
+<h2 id="Add-ARRAY-field" class="common-anchor-header">Add ARRAY field<button data-href="#Add-ARRAY-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,22 +62,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Per utilizzare i campi ARRAY in Milvus, definire il tipo di campo pertinente durante la creazione dello schema della raccolta. Questa procedura prevede:</p>
+    </button></h2><p>To use ARRAY fields Milvus, define the relevant field type when creating the collection schema. This process includes:</p>
 <ol>
-<li><p>Impostare ` <code translate="no">datatype</code> ` sul tipo di dati Array supportato, <code translate="no">ARRAY</code>.</p></li>
-<li><p>Utilizzare il parametro <code translate="no">element_type</code> per specificare il tipo di dati degli elementi nell'array. Tutti gli elementi dello stesso array devono essere dello stesso tipo di dati.</p></li>
-<li><p>Utilizzo del parametro ` <code translate="no">max_capacity</code> ` per definire la capacità massima dell’array, ovvero il numero massimo di elementi che può contenere.</p></li>
+<li><p>Setting <code translate="no">datatype</code> to the supported Array data type, <code translate="no">ARRAY</code>.</p></li>
+<li><p>Using the <code translate="no">element_type</code> parameter to specify the data type of elements in the array. All elements in the same array must be of the same data type.</p></li>
+<li><p>Using the <code translate="no">max_capacity</code> parameter to define the maximum capacity of the array, i.e., the maximum number of elements it can contain.</p></li>
 </ol>
-<p>Ecco come definire uno schema di raccolta che includa campi ARRAY:</p>
+<p>Here’s how to define a collection schema that includes ARRAY fields:</p>
 <div class="alert note">
-<p>Se si imposta ` <code translate="no">enable_dynamic_fields=True</code> ` durante la definizione dello schema, Milvus consente di inserire campi scalari non definiti in precedenza. Tuttavia, ciò potrebbe aumentare la complessità delle query e della gestione, con potenziali ripercussioni sulle prestazioni. Per ulteriori informazioni, consultare la sezione <a href="/docs/it/enable-dynamic-field.md">Campo dinamico</a>.</p>
+<p>If you set <code translate="no">enable_dynamic_fields=True</code> when defining the schema, Milvus allows you to insert scalar fields that were not defined in advance. However, this may increase the complexity of queries and management, potentially impacting performance. For more information, refer to <a href="/docs/it/enable-dynamic-field.md">Dynamic Field</a>.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Import necessary libraries</span>
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
@@ -260,7 +260,7 @@ schema.WithField(entity.NewField().
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-index-params" class="common-anchor-header">Impostare i parametri di indicizzazione<button data-href="#Set-index-params" class="anchor-icon" translate="no">
+<h2 id="Set-index-params" class="common-anchor-header">Set index params<button data-href="#Set-index-params" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -275,14 +275,14 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>L’indicizzazione contribuisce a migliorare le prestazioni di ricerca e delle query. In Milvus, l’indicizzazione è obbligatoria per i campi vettoriali ma facoltativa per i campi scalari.</p>
-<p>L'esempio seguente crea indici sul campo vettoriale <code translate="no">embedding</code> e sul campo ARRAY <code translate="no">tags</code>, entrambi utilizzando il tipo di indice <code translate="no">AUTOINDEX</code>. Con questo tipo, Milvus seleziona automaticamente l'indice più adatto in base al tipo di dati. È inoltre possibile personalizzare il tipo di indice e i parametri per ciascun campo. Per i dettagli, consultare la sezione <a href="/docs/it/index-explained.md">"Spiegazione dell'indice"</a>.</p>
+    </button></h2><p>Indexing helps improve search and query performance. In Milvus, indexing is mandatory for vector fields but optional for scalar fields.</p>
+<p>The following example creates indexes on the vector field <code translate="no">embedding</code> and the ARRAY field <code translate="no">tags</code>, both using the <code translate="no">AUTOINDEX</code> index type. With this type, Milvus automatically selects the most suitable index based on the data type. You can also customize the index type and params for each field. For details, refer to <a href="/docs/it/index-explained.md">Index Explained</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Set index params</span>
 
@@ -346,7 +346,7 @@ indexParams.<span class="hljs-title function_">push</span>({
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-collection" class="common-anchor-header">Creazione di una collezione<button data-href="#Create-collection" class="anchor-icon" translate="no">
+<h2 id="Create-collection" class="common-anchor-header">Create collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -361,13 +361,13 @@ indexParams.<span class="hljs-title function_">push</span>({
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Una volta definiti lo schema e l’indice, creare una collezione che includa campi ARRAY.</p>
+    </button></h2><p>Once the schema and index are defined, create a collection that includes ARRAY fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -406,7 +406,7 @@ client.createCollection(requestCreate);
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-data" class="common-anchor-header">Inserire dati<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h2 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -421,13 +421,13 @@ client.createCollection(requestCreate);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dopo aver creato la collezione, è possibile inserire dati che includono campi ARRAY.</p>
+    </button></h2><p>After creating the collection, you can insert data that includes ARRAY fields.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample data</span>
 data = [
@@ -547,9 +547,9 @@ client.<span class="hljs-title function_">insert</span>({
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Oltre all'inserimento di array completi, i campi di tip <code translate="no">ARRAY</code> e supportano anche gli operatori di aggiornamento parziale <code translate="no">ARRAY_APPEND</code> e <code translate="no">ARRAY_REMOVE</code> nell'API <code translate="no">upsert</code> in Milvus v2.6.17 e versioni successive. Questi consentono di aggiungere elementi o rimuovere elementi corrispondenti da un array esistente senza dover prima recuperarne il valore corrente, evitando così il modello di lettura-modifica-scrittura lato client. Per ulteriori dettagli, consultare la sezione " <a href="/docs/it/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">Upsert dei campi ARRAY in modalità merge</a>".</p>
+<p>Beyond inserting full arrays, <code translate="no">ARRAY</code> fields also support the <code translate="no">ARRAY_APPEND</code> and <code translate="no">ARRAY_REMOVE</code> partial-update operators on the <code translate="no">upsert</code> API in Milvus v2.6.17 and later. These let you append elements to or remove matching elements from an existing array without first retrieving its current value, which avoids the client-side read-modify-write pattern. For details, see <a href="/docs/it/upsert-entities.md#Upsert-ARRAY-fields-in-merge-mode">Upsert ARRAY fields in merge mode</a>.</p>
 </div>
-<h2 id="Query-with-filter-expressions" class="common-anchor-header">Query con espressioni di filtro<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Query-with-filter-expressions" class="common-anchor-header">Query with filter expressions<button data-href="#Query-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -564,14 +564,14 @@ client.<span class="hljs-title function_">insert</span>({
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dopo aver inserito le entità, utilizzare il metodo <code translate="no">query</code> per recuperare le entità che corrispondono alle espressioni di filtro specificate.</p>
-<p>Per recuperare le entità in cui il campo ` <code translate="no">tags</code> ` non è nullo:</p>
+    </button></h2><p>After inserting entities, use the <code translate="no">query</code> method to retrieve entities that match the specified filter expressions.</p>
+<p>To retrieve entities where the <code translate="no">tags</code> is not null:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Query to exclude entities where `tags` is not null</span>
 
@@ -637,13 +637,13 @@ fmt.Println(<span class="hljs-string">&quot;ratings&quot;</span>, rs.GetColumn(<
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<p>Per recuperare le entità in cui il valore del primo elemento di ` <code translate="no">ratings</code> ` è maggiore di 4:</p>
+<p>To retrieve entities where the value of the first element of <code translate="no">ratings</code> is greater than 4:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;ratings[0] &gt; 4&#x27;</span>
 
@@ -719,7 +719,7 @@ curl --request POST \
   &quot;outputFields&quot;: [&quot;tags&quot;, &quot;ratings&quot;, &quot;embedding&quot;]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">Ricerca vettoriale con espressioni di filtro<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
+<h2 id="Vector-search-with-filter-expressions" class="common-anchor-header">Vector search with filter expressions<button data-href="#Vector-search-with-filter-expressions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -734,13 +734,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Oltre al filtraggio di base dei campi scalari, è possibile combinare le ricerche di similarità vettoriale con i filtri dei campi scalari. Ad esempio, il codice seguente mostra come aggiungere un filtro di campo scalare a una ricerca vettoriale:</p>
+    </button></h2><p>In addition to basic scalar field filtering, you can combine vector similarity searches with scalar field filters. For example, the following code shows how to add a scalar field filter to a vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;tags[0] == &quot;pop&quot;&#x27;</span>
 
@@ -831,4 +831,4 @@ resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
 
 <span class="hljs-comment"># {&quot;code&quot;:0,&quot;cost&quot;:0,&quot;data&quot;:[{&quot;distance&quot;:-0.24793813,&quot;embedding&quot;:[0.12,0.34,0.56],&quot;id&quot;:1,&quot;ratings&quot;:{&quot;Data&quot;:{&quot;LongData&quot;:{&quot;data&quot;:[5,4,3]}}},&quot;tags&quot;:{&quot;Data&quot;:{&quot;StringData&quot;:{&quot;data&quot;:[&quot;pop&quot;,&quot;rock&quot;,&quot;classic&quot;]}}}}]}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Inoltre, Milvus supporta operatori avanzati di filtraggio su array come <code translate="no">ARRAY_CONTAINS</code>, <code translate="no">ARRAY_CONTAINS_ALL</code>, <code translate="no">ARRAY_CONTAINS_ANY</code> e <code translate="no">ARRAY_LENGTH</code> per potenziare ulteriormente le capacità di query. Per ulteriori dettagli, consultare <a href="/docs/it/array-operators.md">Operatori ARRAY</a>.</p>
+<p>Additionally, Milvus supports advanced Array filtering operators like <code translate="no">ARRAY_CONTAINS</code>, <code translate="no">ARRAY_CONTAINS_ALL</code>, <code translate="no">ARRAY_CONTAINS_ANY</code>, and <code translate="no">ARRAY_LENGTH</code> to further enhance query capabilities. For more details, refer to <a href="/docs/it/array-operators.md">ARRAY Operators</a>.</p>

@@ -1,10 +1,12 @@
 ---
 id: regex-filter.md
-title: 正则表达式分析器过滤器Compatible with Milvus 2.5.11+
-summary: 正则表达式分析器过滤器会保留匹配正则表达式的标记，并丢弃其余部分。
+title: Regex Analyzer FilterCompatible with Milvus 2.5.11+
+summary: >-
+  The regex analyzer filter keeps tokens that match a regular expression and
+  discards the rest.
 beta: Milvus 2.5.11+
 ---
-<h1 id="Regex-Analyzer-Filter" class="common-anchor-header">正则表达式分析器过滤器<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Regex-Analyzer-Filter" class="anchor-icon" translate="no">
+<h1 id="Regex-Analyzer-Filter" class="common-anchor-header">Regex Analyzer Filter<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Regex-Analyzer-Filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,11 +21,11 @@ beta: Milvus 2.5.11+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">regex</code> 过滤器是一个正则表达式过滤器：只有当分词器生成的任何令牌与您提供的表达式匹配时，该令牌才会被保留；其余内容均会被丢弃。</p>
+    </button></h1><p>The <code translate="no">regex</code> filter is a regular expression filter: any token produced by the tokenizer is kept only if it matches the expression you provide; everything else is discarded.</p>
 <div class="alert note">
-<p>本页介绍分析器管道中的<code translate="no">regex</code> 过滤器。它会对分词器生成的词元进行过滤，并影响文本分析过程中生成的术语。若要在<code translate="no">query</code> 、<code translate="no">search</code> 或混合搜索中使用<code translate="no">field =~ &quot;pattern&quot;</code> 或<code translate="no">field !~ &quot;pattern&quot;</code> 等标量表达式过滤实体，请参阅<a href="/docs/zh/pattern-matching.md">“模式匹配”</a>。</p>
+<p>This page describes the <code translate="no">regex</code> filter in the analyzer pipeline. It filters tokens produced by a tokenizer and affects the terms generated during text analysis. To filter entities with scalar expressions such as <code translate="no">field =~ &quot;pattern&quot;</code> or <code translate="no">field !~ &quot;pattern&quot;</code> in <code translate="no">query</code>, <code translate="no">search</code>, or hybrid search, refer to <a href="/docs/zh/pattern-matching.md">Pattern Matching</a>.</p>
 </div>
-<h2 id="Configuration" class="common-anchor-header">配置<button data-href="#Configuration" class="anchor-icon" translate="no">
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,13 +40,13 @@ beta: Milvus 2.5.11+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">regex</code> 过滤器是Milvus中的自定义过滤器。要使用它，请在过滤器配置中指定<code translate="no">&quot;type&quot;: &quot;regex&quot;</code> ，并配合<code translate="no">expr</code> 参数来指定所需的正则表达式。</p>
+    </button></h2><p>The <code translate="no">regex</code> filter is a custom filter in Milvus. To use it, specify <code translate="no">&quot;type&quot;: &quot;regex&quot;</code> in the filter configuration, along with an <code translate="no">expr</code> parameter to specify the desired regular expressions.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -73,21 +75,21 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># curl</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">regex</code> 过滤器支持以下可配置参数。</p>
+<p>The <code translate="no">regex</code> filter accepts the following configurable parameters.</p>
 <table>
    <tr>
-     <th><p>参数</p></th>
-     <th><p>描述</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">expr</code></p></td>
-     <td><p>应用于每个令牌的正则表达式模式。匹配的令牌将被保留；不匹配的令牌将被丢弃。
-有关正则表达式语法的详细信息，请参阅<a href="https://docs.rs/regex/latest/regex/#syntax">“语法”</a>。</p></td>
+     <td><p>A regular‑expression pattern applied to each token. Tokens that match are retained; non‑matches are dropped.
+ For details on regex syntax, refer to <a href="https://docs.rs/regex/latest/regex/#syntax">Syntax</a>.</p></td>
    </tr>
 </table>
-<p><code translate="no">regex</code> 过滤器对分词器生成的术语进行处理，因此必须与分词器配合使用。</p>
-<p>定义<code translate="no">analyzer_params</code> 后，您可以在定义Collection Schema时将其应用于<code translate="no">VARCHAR</code> 字段。这使Milvus能够使用指定的分析器处理该字段中的文本，从而实现高效的分词和过滤。有关详细信息，请参阅<a href="/docs/zh/analyzer-overview.md#Example-use">“使用示例”</a>。</p>
-<h2 id="Examples" class="common-anchor-header">示例<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>The <code translate="no">regex</code> filter operates on the terms generated by the tokenizer, so it must be used in combination with a tokenizer.</p>
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/zh/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,8 +104,8 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在将分析器配置应用到Collection Schema之前，请使用<code translate="no">run_analyzer</code> 方法验证其行为。</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">分析器配置<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -119,11 +121,11 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#plaintext">纯文本</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#plaintext">plaintext</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-plaintext">analyzer_params = {
     &quot;tokenizer&quot;: &quot;standard&quot;,
@@ -151,7 +153,7 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># curl</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">使用以下方式进行验证<code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -167,11 +169,11 @@ analyzerParams.put(<span class="hljs-string">&quot;filter&quot;</span>,
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -237,7 +239,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># curl</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">预期输出<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

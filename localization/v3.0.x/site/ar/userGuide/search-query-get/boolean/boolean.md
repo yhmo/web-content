@@ -1,13 +1,14 @@
 ---
 id: boolean.md
-title: شرح التصفية
+title: Filtering Explained
 summary: >-
-  يوفر Milvus إمكانات تصفية قوية تتيح إجراء استعلامات دقيقة عن بياناتك. تتيح لك
-  تعبيرات التصفية استهداف حقول قياسية محددة وتحسين نتائج البحث باستخدام شروط
-  مختلفة. يشرح هذا الدليل كيفية استخدام تعبيرات التصفية في Milvus، مع أمثلة تركز
-  على عمليات الاستعلام. يمكنك أيضًا تطبيق هذه المرشحات في طلبات البحث والحذف.
+  Milvus provides powerful filtering capabilities that enable precise querying
+  of your data. Filter expressions allow you to target specific scalar fields
+  and refine search results with different conditions. This guide explains how
+  to use filter expressions in Milvus, with examples focused on query
+  operations. You can also apply these filters in search and delete requests.
 ---
-<h1 id="Filtering-Explained" class="common-anchor-header">شرح التصفية<button data-href="#Filtering-Explained" class="anchor-icon" translate="no">
+<h1 id="Filtering-Explained" class="common-anchor-header">Filtering Explained<button data-href="#Filtering-Explained" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,8 +23,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يوفر Milvus إمكانيات تصفية قوية تتيح إجراء استعلامات دقيقة عن بياناتك. تتيح لك تعبيرات التصفية استهداف حقول قياسية محددة وتحسين نتائج البحث باستخدام شروط مختلفة. يشرح هذا الدليل كيفية استخدام تعبيرات التصفية في Milvus، مع أمثلة تركز على عمليات الاستعلام. يمكنك أيضًا تطبيق هذه المرشحات في طلبات البحث والحذف.</p>
-<h2 id="Basic-operators" class="common-anchor-header">المشغلات الأساسية<button data-href="#Basic-operators" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus provides powerful filtering capabilities that enable precise querying of your data. Filter expressions allow you to target specific scalar fields and refine search results with different conditions. This guide explains how to use filter expressions in Milvus, with examples focused on query operations. You can also apply these filters in search and delete requests.</p>
+<h2 id="Basic-operators" class="common-anchor-header">Basic operators<button data-href="#Basic-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,16 +39,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يدعم Milvus عدة عوامل أساسية لتصفية البيانات:</p>
+    </button></h2><p>Milvus supports several basic operators for filtering data:</p>
 <ul>
-<li><p><strong>عوامل المقارنة</strong>: <code translate="no">==</code> ، <code translate="no">!=</code> ، <code translate="no">&gt;</code> ، <code translate="no">&lt;</code> ، <code translate="no">&gt;=</code> ، و <code translate="no">&lt;=</code> تتيح التصفية بناءً على الحقول الرقمية أو النصية.</p></li>
-<li><p><strong>مرشحات النطاق والأنماط</strong>: <code translate="no">IN</code> و <code translate="no">LIKE</code> و <code translate="no">=~</code> و <code translate="no">!~</code> تُطابق القيم أو أنماط أحرف البدل أو أنماط التعبيرات العادية. للحصول على تفاصيل حول أنماط السلاسل، راجع <a href="/docs/ar/pattern-matching.md">«مطابقة الأنماط</a>».</p></li>
-<li><p><strong>المشغلات الحسابية</strong>: تُستخدم <code translate="no">+</code> و <code translate="no">-</code> و <code translate="no">*</code> و <code translate="no">/</code> و <code translate="no">%</code> و <code translate="no">**</code> في الحسابات التي تتضمن حقولًا رقمية.</p></li>
-<li><p><strong>المُشغِّلات البتية</strong>: في Milvus 3.0.0 والإصدارات الأحدث، تُستخدم <code translate="no">&amp;</code> و <code translate="no">|</code> و <code translate="no">^</code> لتصفية الحقول الصحيحة التي تشفر علامات متعددة، مثل أذونات الوصول أو بتات الحالة. لمزيد من التفاصيل، راجع <a href="/docs/ar/basic-operators.md#Bitwise-operators">«المُشغِّلات الأساسية</a>».</p></li>
-<li><p><strong>المشغلات المنطقية</strong>: تجمع<strong>المشغلات</strong> <code translate="no">AND</code> و <code translate="no">OR</code> و <code translate="no">NOT</code> بين شروط متعددة لتكوين تعبيرات معقدة.</p></li>
-<li><p><strong>المشغلات IS NULL و IS NOT NULL</strong>: تُستخدم المشغلات <code translate="no">IS NULL</code> و <code translate="no">IS NOT NULL</code> لتصفية الحقول بناءً على ما إذا كانت تحتوي على قيمة فارغة (عدم وجود بيانات) أم لا. لمزيد من التفاصيل، راجع " <a href="/docs/ar/basic-operators.md#IS-NULL-and-IS-NOT-NULL-operators">المشغلات الأساسية</a>".</p></li>
+<li><p><strong>Comparison Operators</strong>: <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, and <code translate="no">&lt;=</code> allow filtering based on numeric or text fields.</p></li>
+<li><p><strong>Range and pattern filters</strong>: <code translate="no">IN</code>, <code translate="no">LIKE</code>, <code translate="no">=~</code>, and <code translate="no">!~</code> match values, wildcard patterns, or regex patterns. For details about string patterns, refer to <a href="/docs/ar/pattern-matching.md">Pattern Matching</a>.</p></li>
+<li><p><strong>Arithmetic Operators</strong>: <code translate="no">+</code>, <code translate="no">-</code>, <code translate="no">*</code>, <code translate="no">/</code>, <code translate="no">%</code>, and <code translate="no">**</code> are used for calculations involving numeric fields.</p></li>
+<li><p><strong>Bitwise Operators</strong>: In Milvus 3.0.0 and later, <code translate="no">&amp;</code>, <code translate="no">|</code>, and <code translate="no">^</code> filter integer fields that encode multiple flags, such as permissions or status bits. For details, refer to <a href="/docs/ar/basic-operators.md#Bitwise-operators">Basic Operators</a>.</p></li>
+<li><p><strong>Logical Operators</strong>: <code translate="no">AND</code>, <code translate="no">OR</code>, and <code translate="no">NOT</code> combine multiple conditions into complex expressions.</p></li>
+<li><p><strong>IS NULL and IS NOT NULL Operators</strong>: The <code translate="no">IS NULL</code> and <code translate="no">IS NOT NULL</code> operators are used to filter fields based on whether they contain a null value (absence of data). For details, refer to <a href="/docs/ar/basic-operators.md#IS-NULL-and-IS-NOT-NULL-operators">Basic Operators</a>.</p></li>
 </ul>
-<h3 id="Example-Filtering-by-Color" class="common-anchor-header">مثال: التصفية حسب اللون<button data-href="#Example-Filtering-by-Color" class="anchor-icon" translate="no">
+<h3 id="Example-Filtering-by-Color" class="common-anchor-header">Example: Filtering by Color<button data-href="#Example-Filtering-by-Color" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,10 +63,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>للعثور على الكيانات ذات الألوان الأساسية (الأحمر أو الأخضر أو الأزرق) في حقل قياسي <code translate="no">color</code> ، استخدم تعبير التصفية التالي:</p>
+    </button></h3><p>To find entities with primary colors (red, green, or blue) in a scalar field <code translate="no">color</code>, use the following filter expression:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;color in [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-Filtering-by-Permission-Bits" class="common-anchor-header">مثال: التصفية حسب بتات الأذونات<button data-href="#Example-Filtering-by-Permission-Bits" class="anchor-icon" translate="no">
+<h3 id="Example-Filtering-by-Permission-Bits" class="common-anchor-header">Example: Filtering by Permission Bits<button data-href="#Example-Filtering-by-Permission-Bits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -80,10 +81,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>للعثور على الكيانات التي يحتوي حقلها الصحيح <code translate="no">permissions</code> على بت <code translate="no">SHARE</code> ، استخدم عامل AND البتوي (<code translate="no">&amp;</code>):</p>
+    </button></h3><p>To find entities whose integer <code translate="no">permissions</code> field has the <code translate="no">SHARE</code> bit set, use the bitwise AND operator (<code translate="no">&amp;</code>):</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;(permissions &amp; 4) == 4&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-Filtering-by-Regex-Pattern" class="common-anchor-header">مثال: التصفية حسب نمط Regex<button data-href="#Example-Filtering-by-Regex-Pattern" class="anchor-icon" translate="no">
+<h3 id="Example-Filtering-by-Regex-Pattern" class="common-anchor-header">Example: Filtering by Regex Pattern<button data-href="#Example-Filtering-by-Regex-Pattern" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,11 +99,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>للعثور على الكيانات التي يحتوي حقل <code translate="no">message</code> الخاص بها على رمز خطأ مثل <code translate="no">E1001</code> ، استخدم عامل مطابقة regex <code translate="no">=~</code>:</p>
+    </button></h3><p>To find entities whose <code translate="no">message</code> field contains an error code such as <code translate="no">E1001</code>, use the regex match operator <code translate="no">=~</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;message =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>تستخدم عوامل تصفية Regex مطابقة السلسلة الفرعية. لفرض مطابقة قيمة الحقل بالكامل مع النمط، أضف المراسي <code translate="no">^</code> و <code translate="no">$</code>. لمزيد من التفاصيل، راجع <a href="/docs/ar/pattern-matching.md">مطابقة الأنماط</a>.</p>
-<h3 id="Example-Filtering-JSON-Fields" class="common-anchor-header">مثال: تصفية حقول JSON<button data-href="#Example-Filtering-JSON-Fields" class="anchor-icon" translate="no">
+<p>Regex filters use substring matching. To require the entire field value to match the pattern, add <code translate="no">^</code> and <code translate="no">$</code> anchors. For details, refer to <a href="/docs/ar/pattern-matching.md">Pattern Matching</a>.</p>
+<h3 id="Example-Filtering-JSON-Fields" class="common-anchor-header">Example: Filtering JSON Fields<button data-href="#Example-Filtering-JSON-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -117,10 +118,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يسمح Milvus بالإشارة إلى المفاتيح في حقول JSON. على سبيل المثال، إذا كان لديك حقل JSON <code translate="no">product</code> يحتوي على المفاتيح <code translate="no">price</code> و <code translate="no">model</code> ، وتريد العثور على منتجات ذات طراز معين وسعر أقل من 1,850، فاستخدم تعبير التصفية التالي:</p>
+    </button></h3><p>Milvus allows referencing keys in JSON fields. For instance, if you have a JSON field <code translate="no">product</code> with keys <code translate="no">price</code> and <code translate="no">model</code>, and want to find products with a specific model and price lower than 1,850, use this filter expression:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;product[&quot;model&quot;] == &quot;JSN-087&quot; AND product[&quot;price&quot;] &lt; 1850&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-Filtering-Array-Fields" class="common-anchor-header">مثال: تصفية حقول المصفوفات<button data-href="#Example-Filtering-Array-Fields" class="anchor-icon" translate="no">
+<h3 id="Example-Filtering-Array-Fields" class="common-anchor-header">Example: Filtering Array Fields<button data-href="#Example-Filtering-Array-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -135,11 +136,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>إذا كان لديك حقل صفيف <code translate="no">history_temperatures</code> يحتوي على سجلات متوسط درجات الحرارة التي أبلغت عنها محطات الرصد منذ عام 2000، وتريد العثور على محطات الرصد التي تجاوزت فيها درجة الحرارة في عام 2009 (العام العاشر المسجل) 23 درجة مئوية، فاستخدم هذا التعبير:</p>
+    </button></h3><p>If you have an array field <code translate="no">history_temperatures</code> containing the records of average temperatures reported by observatories since the year 2000, and want to find observatories where the temperature in 2009 (the 10th recorded ) exceeds 23°C, use this expression:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;history_temperatures[10] &gt; 23&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لمزيد من المعلومات حول هذه العوامل الأساسية، راجع <a href="/docs/ar/basic-operators.md">«العوامل الأساسية</a>».</p>
-<h2 id="Filter-expression-templates" class="common-anchor-header">قوالب تعبيرات التصفية<button data-href="#Filter-expression-templates" class="anchor-icon" translate="no">
+<p>For more information on these basic operators, refer to <a href="/docs/ar/basic-operators.md">Basic Operators</a>.</p>
+<h2 id="Filter-expression-templates" class="common-anchor-header">Filter expression templates<button data-href="#Filter-expression-templates" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -154,9 +155,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>عند التصفية باستخدام أحرف CJK، قد تكون المعالجة أكثر تعقيدًا نظرًا لمجموعات الأحرف الأكبر حجمًا والاختلافات في الترميز. وقد يؤدي ذلك إلى انخفاض الأداء، خاصةً مع عامل <code translate="no">IN</code>.</p>
-<p>يقدم Milvus قوالب تعبيرات التصفية لتحسين الأداء عند العمل مع أحرف CJK. من خلال فصل القيم الديناميكية عن تعبير التصفية، يتعامل محرك الاستعلام مع إدراج المعلمات بكفاءة أكبر.</p>
-<h3 id="Example" class="common-anchor-header">مثال<button data-href="#Example" class="anchor-icon" translate="no">
+    </button></h2><p>When filtering using CJK characters, processing can be more complex due to their larger character sets and encoding differences. This can result in slower performance, especially with the <code translate="no">IN</code> operator.</p>
+<p>Milvus introduces filter expression templating to optimize performance when working with CJK characters. By separating dynamic values from the filter expression, the query engine handles parameter insertion more efficiently.</p>
+<h3 id="Example" class="common-anchor-header">Example<button data-href="#Example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -171,15 +172,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>للعثور على الأفراد الذين تزيد أعمارهم عن 25 عامًا والذين يعيشون إما في «北京» (بكين) أو «上海» (شنغهاي)، استخدم قالب التعبير التالي:</p>
+    </button></h3><p>To find individuals over the age of 25 living in either “北京” (Beijing) or “上海” (Shanghai), use the following template expression:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;age &gt; 25 AND city IN [&#x27;北京&#x27;, &#x27;上海&#x27;]&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لتحسين الأداء، استخدم هذا الشكل المعدل باستخدام المعلمات:</p>
+<p>To improve performance, use this variation with parameters:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&quot;age &gt; {age} AND city in {city}&quot;</span>,
 filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="hljs-number">25</span>, <span class="hljs-string">&quot;city&quot;</span>: [<span class="hljs-string">&quot;北京&quot;</span>, <span class="hljs-string">&quot;上海&quot;</span>]}
 <button class="copy-code-btn"></button></code></pre>
-<p>يقلل هذا النهج من عبء التحليل ويحسن سرعة الاستعلام. لمزيد من المعلومات، راجع <a href="/docs/ar/filtering-templating.md">قوالب التصفية</a>.</p>
-<h2 id="Data-type-specific-operators" class="common-anchor-header">المشغلات الخاصة بأنواع البيانات<button data-href="#Data-type-specific-operators" class="anchor-icon" translate="no">
+<p>This approach reduces parsing overhead and improves query speed. For more information, see <a href="/docs/ar/filtering-templating.md">Filter Templating</a>.</p>
+<h2 id="Data-type-specific-operators" class="common-anchor-header">Data type-specific operators<button data-href="#Data-type-specific-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -194,8 +195,8 @@ filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>يوفر Milvus عوامل تصفية متقدمة لأنواع بيانات محددة، مثل حقول JSON وARRAY وVARCHAR.</p>
-<h3 id="JSON-field-specific-operators" class="common-anchor-header">المشغلات الخاصة بحقول JSON<button data-href="#JSON-field-specific-operators" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus provides advanced filtering operators for specific data types, such as JSON, ARRAY, and VARCHAR fields.</p>
+<h3 id="JSON-field-specific-operators" class="common-anchor-header">JSON field-specific operators<button data-href="#JSON-field-specific-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -210,21 +211,21 @@ filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يوفر Milvus عوامل تشغيل متقدمة للاستعلام عن حقول JSON، مما يتيح التصفية الدقيقة داخل هياكل JSON المعقدة:</p>
-<p><code translate="no">JSON_CONTAINS(identifier, jsonExpr)</code>: يتحقق من وجود تعبير JSON في الحقل.</p>
+    </button></h3><p>Milvus offers advanced operators for querying JSON fields, enabling precise filtering within complex JSON structures:</p>
+<p><code translate="no">JSON_CONTAINS(identifier, jsonExpr)</code>: Checks if a JSON expression exists in the field.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># JSON data: {&quot;tags&quot;: [&quot;electronics&quot;, &quot;sale&quot;, &quot;new&quot;]}</span>
 <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;json_contains(tags, &quot;sale&quot;)&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">JSON_CONTAINS_ALL(identifier, jsonExpr)</code>: يضمن وجود جميع عناصر تعبير JSON.</p>
+<p><code translate="no">JSON_CONTAINS_ALL(identifier, jsonExpr)</code>: Ensures all elements of the JSON expression are present.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># JSON data: {&quot;tags&quot;: [&quot;electronics&quot;, &quot;sale&quot;, &quot;new&quot;, &quot;discount&quot;]}</span>
 <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;json_contains_all(tags, [&quot;electronics&quot;, &quot;sale&quot;, &quot;new&quot;])&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">JSON_CONTAINS_ANY(identifier, jsonExpr)</code>: يقوم بالتصفية بحثًا عن الكيانات التي يوجد فيها عنصر واحد على الأقل في تعبير JSON.</p>
+<p><code translate="no">JSON_CONTAINS_ANY(identifier, jsonExpr)</code>: Filters for entities where at least one element exists in the JSON expression.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># JSON data: {&quot;tags&quot;: [&quot;electronics&quot;, &quot;sale&quot;, &quot;new&quot;]}</span>
 <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;json_contains_any(tags, [&quot;electronics&quot;, &quot;new&quot;, &quot;clearance&quot;])&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لمزيد من التفاصيل حول عوامل JSON، راجع <a href="/docs/ar/json-operators.md">عوامل JSON</a>.</p>
-<h3 id="ARRAY-field-specific-operators" class="common-anchor-header">عوامل خاصة بحقول ARRAY<button data-href="#ARRAY-field-specific-operators" class="anchor-icon" translate="no">
+<p>For more details on JSON operators, refer to <a href="/docs/ar/json-operators.md">JSON Operators</a>.</p>
+<h3 id="ARRAY-field-specific-operators" class="common-anchor-header">ARRAY field-specific operators<button data-href="#ARRAY-field-specific-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -239,21 +240,21 @@ filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يوفر Milvus عوامل تصفية متقدمة لحقول المصفوفات، مثل <code translate="no">ARRAY_CONTAINS</code> و <code translate="no">ARRAY_CONTAINS_ALL</code> و <code translate="no">ARRAY_CONTAINS_ANY</code> و <code translate="no">ARRAY_LENGTH</code> ، والتي تتيح تحكمًا دقيقًا في بيانات المصفوفات:</p>
-<p><code translate="no">ARRAY_CONTAINS</code>: يقوم بتصفية الكيانات التي تحتوي على عنصر معين.</p>
+    </button></h3><p>Milvus provides advanced filtering operators for array fields, such as <code translate="no">ARRAY_CONTAINS</code>, <code translate="no">ARRAY_CONTAINS_ALL</code>, <code translate="no">ARRAY_CONTAINS_ANY</code>, and <code translate="no">ARRAY_LENGTH</code>, which allow fine-grained control over array data:</p>
+<p><code translate="no">ARRAY_CONTAINS</code>: Filters entities containing a specific element.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span>=<span class="hljs-string">&quot;ARRAY_CONTAINS(history_temperatures, 23)&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">ARRAY_CONTAINS_ALL</code>: يقوم بتصفية الكيانات التي تحتوي على جميع العناصر الموجودة في القائمة.</p>
+<p><code translate="no">ARRAY_CONTAINS_ALL</code>: Filters entities where all elements in a list are present.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span>=<span class="hljs-string">&quot;ARRAY_CONTAINS_ALL(history_temperatures, [23, 24])&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">ARRAY_CONTAINS_ANY</code>: تصفية الكيانات التي تحتوي على أي عنصر من القائمة.</p>
+<p><code translate="no">ARRAY_CONTAINS_ANY</code>: Filters entities containing any element from the list.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span>=<span class="hljs-string">&quot;ARRAY_CONTAINS_ANY(history_temperatures, [23, 24])&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">ARRAY_LENGTH</code>: تصفية بناءً على طول المصفوفة.</p>
+<p><code translate="no">ARRAY_LENGTH</code>: Filters based on the length of the array.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span>=<span class="hljs-string">&quot;ARRAY_LENGTH(history_temperatures) &lt; 10&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لمزيد من التفاصيل حول عوامل الصفيف، راجع <a href="/docs/ar/array-operators.md">عوامل الصفيف (ARRAY Operators</a>).</p>
-<h3 id="VARCHAR-field-specific-operators" class="common-anchor-header">مشغلات خاصة بحقول VARCHAR<button data-href="#VARCHAR-field-specific-operators" class="anchor-icon" translate="no">
+<p>For more details on array operators, see <a href="/docs/ar/array-operators.md">ARRAY Operators</a>.</p>
+<h3 id="VARCHAR-field-specific-operators" class="common-anchor-header">VARCHAR field-specific operators<button data-href="#VARCHAR-field-specific-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -268,15 +269,15 @@ filter_params = {<span class="hljs-string">&quot;age&quot;</span>: <span class="
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يوفر Milvus عوامل تشغيل متخصصة لإجراء عمليات بحث نصية دقيقة في حقول VARCHAR:</p>
-<h4 id="Pattern-matching-operators" class="common-anchor-header">مشغلات مطابقة الأنماط</h4><p>تعمل عوامل التشغيل <code translate="no">LIKE</code> و <code translate="no">=~</code> و <code translate="no">!~</code> على مطابقة أنماط السلاسل في حقول <code translate="no">VARCHAR</code> ومسارات سلاسل JSON وعناصر <code translate="no">ARRAY&lt;VARCHAR&gt;</code> محددة. استخدم <code translate="no">LIKE</code> لأنماط أحرف البدل البسيطة. استخدم <code translate="no">=~</code> و <code translate="no">!~</code> للتعبيرات العادية RE2.</p>
-<p>للحصول على التفاصيل، راجع <a href="/docs/ar/pattern-matching.md">«مطابقة الأنماط</a>».</p>
-<h4 id="TEXTMATCH-operator" class="common-anchor-header"><code translate="no">TEXT_MATCH</code> المُشغِّل</h4><p>يتيح عامل التشغيل « <code translate="no">TEXT_MATCH</code> » استرجاع المستندات بدقة بناءً على مصطلحات استعلام محددة. وهو مفيد بشكل خاص لعمليات البحث المُصفاة التي تجمع بين عوامل التصفية القياسية وعمليات البحث عن التشابه المتجهي. وعلى عكس عمليات البحث الدلالي، يركز «Text Match» على التكرارات الدقيقة للمصطلحات.</p>
-<p>يستخدم Milvus Tantivy لدعم الفهرسة المعكوسة والبحث النصي القائم على المصطلحات. تتضمن العملية ما يلي:</p>
+    </button></h3><p>Milvus provides specialized operators for precise text-based searches on VARCHAR fields:</p>
+<h4 id="Pattern-matching-operators" class="common-anchor-header">Pattern matching operators</h4><p>The <code translate="no">LIKE</code>, <code translate="no">=~</code>, and <code translate="no">!~</code> operators match string patterns on <code translate="no">VARCHAR</code> fields, JSON string paths, and specific <code translate="no">ARRAY&lt;VARCHAR&gt;</code> elements. Use <code translate="no">LIKE</code> for simple wildcard patterns. Use <code translate="no">=~</code> and <code translate="no">!~</code> for RE2 regular expressions.</p>
+<p>For details, refer to <a href="/docs/ar/pattern-matching.md">Pattern Matching</a>.</p>
+<h4 id="TEXTMATCH-operator" class="common-anchor-header"><code translate="no">TEXT_MATCH</code> operator</h4><p>The <code translate="no">TEXT_MATCH</code> operator allows precise document retrieval based on specific query terms. It is particularly useful for filtered searches that combine scalar filters with vector similarity searches. Unlike semantic searches, Text Match focuses on exact term occurrences.</p>
+<p>Milvus uses Tantivy to support inverted indexing and term-based text search. The process involves:</p>
 <ol>
-<li><p><strong>المحلل</strong>: يقوم بتجزئة النص المدخل إلى رموز ومعالجته.</p></li>
-<li><p><strong>الفهرسة</strong>: إنشاء فهرس معكوس يربط الرموز الفريدة بالوثائق.</p></li>
+<li><p><strong>Analyzer</strong>: Tokenizes and processes input text.</p></li>
+<li><p><strong>Indexing</strong>: Creates an inverted index mapping unique tokens to documents.</p></li>
 </ol>
-<p>لمزيد من التفاصيل، راجع <a href="/docs/ar/keyword-match.md">«مطابقة النص</a>».</p>
-<h4 id="PHRASEMATCH-operator--Milvus-26x" class="common-anchor-header"><code translate="no">PHRASE_MATCH</code> المشغل<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span></h4><p>يتيح عامل التشغيل <strong>PHRASE_MATCH</strong> استرجاع المستندات بدقة استنادًا إلى التطابقات الدقيقة للعبارات، مع مراعاة كل من ترتيب مصطلحات الاستعلام وتجاورها.</p>
-<p>لمزيد من التفاصيل، راجع " <a href="/docs/ar/phrase-match.md">مطابقة العبارات</a>".</p>
+<p>For more details, refer to <a href="/docs/ar/keyword-match.md">Text Match</a>.</p>
+<h4 id="PHRASEMATCH-operator" class="common-anchor-header"><code translate="no">PHRASE_MATCH</code> operator<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span></h4><p>The <strong>PHRASE_MATCH</strong> operator enables precise retrieval of documents based on exact phrase matches, considering both the order and adjacency of query terms.</p>
+<p>For more details, refer to <a href="/docs/ar/phrase-match.md">Phrase Match</a>.</p>

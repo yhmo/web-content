@@ -1,13 +1,12 @@
 ---
 id: struct-array-operators.md
-title: Operatori StructArray
+title: StructArray Operators
 summary: >-
-  Gli operatori StructArray filtrano le entità valutando i predicati sui
-  sottocampi scalari all'interno di un campo StructArray. Utilizza questa pagina
-  come riferimento sintattico per l'operatore `element_filter` e la famiglia di
-  operatori `MATCH_*`.
+  StructArray operators filter entities by evaluating predicates on scalar
+  subfields inside a StructArray field. Use this page as a syntax reference for
+  element_filter and the MATCH_* operator family.
 ---
-<h1 id="StructArray-Operators" class="common-anchor-header">Operatori StructArray<button data-href="#StructArray-Operators" class="anchor-icon" translate="no">
+<h1 id="StructArray-Operators" class="common-anchor-header">StructArray Operators<button data-href="#StructArray-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,19 +21,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Gli operatori StructArray filtrano le entità valutando i predicati sui sottocampi scalari all'interno di un campo StructArray. Utilizzare questa pagina come riferimento sintattico per l'operatore " <code translate="no">element_filter</code> " e la famiglia di operatori " <code translate="no">MATCH_*</code> ".</p>
-<p>Il filtraggio StructArray prevede due famiglie di operatori:</p>
+    </button></h1><p>StructArray operators filter entities by evaluating predicates on scalar subfields inside a StructArray field. Use this page as a syntax reference for <code translate="no">element_filter</code> and the <code translate="no">MATCH_*</code> operator family.</p>
+<p>StructArray filtering has two operator families:</p>
 <table>
 <thead>
-<tr><th>Famiglia di operatori</th><th>Scopo principale</th><th>Comportamento del risultato</th></tr>
+<tr><th>Operator family</th><th>Main purpose</th><th>Result behavior</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">element_filter</code></td><td>Corrispondenza Elementi Struct che soddisfano un predicato scalare.</td><td>Nella ricerca a livello di elemento, i risultati corrispondenti possono includere gli offset degli elementi. Nelle query a livello di riga o nella ricerca filtrata, la struttura dei risultati dipende dall’API e dai campi di output.</td></tr>
-<tr><td><code translate="no">MATCH_*</code></td><td>Seleziona le entità in base al numero di elementi Struct che soddisfano un predicato scalare.</td><td>Filtraggio a livello di riga. Questi operatori non restituiscono di per sé gli offset degli elementi.</td></tr>
+<tr><td><code translate="no">element_filter</code></td><td>Match Struct elements that satisfy a scalar predicate.</td><td>In element-level search, matched hits can include element offsets. In row-level query or filtered search, result shape depends on the API and output fields.</td></tr>
+<tr><td><code translate="no">MATCH_*</code></td><td>Select entities by how many Struct elements satisfy a scalar predicate.</td><td>Row-level filtering. These operators do not return element offsets by themselves.</td></tr>
 </tbody>
 </table>
-<p>Utilizzare i sottocampi scalari negli operatori StructArray. I sottocampi vettoriali sono utilizzati dai percorsi di ricerca vettoriali e non costituiscono input per i predicati scalari.</p>
-<h2 id="When-to-use-which-operator" class="common-anchor-header">Quando utilizzare quale operatore<button data-href="#When-to-use-which-operator" class="anchor-icon" translate="no">
+<p>Use scalar subfields in StructArray operators. Vector subfields are used by vector search paths and are not scalar predicate inputs.</p>
+<h2 id="When-to-use-which-operator" class="common-anchor-header">When to use which operator<button data-href="#When-to-use-which-operator" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,17 +50,17 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Obiettivo</th><th>Uso</th></tr>
+<tr><th>Goal</th><th>Use</th></tr>
 </thead>
 <tbody>
-<tr><td>Limitare la ricerca vettoriale a livello di elemento agli elementi che soddisfano condizioni scalari.</td><td><code translate="no">element_filter</code></td></tr>
-<tr><td>Soddisfare più condizioni scalari all'interno dello stesso elemento Struct.</td><td><code translate="no">element_filter</code></td></tr>
-<tr><td>Restituire solo le entità in cui almeno un elemento Struct soddisfa un predicato.</td><td><code translate="no">MATCH_ANY</code></td></tr>
-<tr><td>Restituire solo le entità in cui tutti gli elementi Struct soddisfano un predicato.</td><td><code translate="no">MATCH_ALL</code></td></tr>
-<tr><td>Restituisce solo le entità in cui almeno, al massimo o esattamente <code translate="no">N</code> elementi Struct soddisfano un predicato.</td><td><code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code> o <code translate="no">MATCH_EXACT</code></td></tr>
+<tr><td>Constrain element-level vector search to elements that match scalar conditions.</td><td><code translate="no">element_filter</code></td></tr>
+<tr><td>Match multiple scalar conditions within the same Struct element.</td><td><code translate="no">element_filter</code></td></tr>
+<tr><td>Return only entities where at least one Struct element satisfies a predicate.</td><td><code translate="no">MATCH_ANY</code></td></tr>
+<tr><td>Return only entities where all Struct elements satisfy a predicate.</td><td><code translate="no">MATCH_ALL</code></td></tr>
+<tr><td>Return only entities where at least, at most, or exactly <code translate="no">N</code> Struct elements satisfy a predicate.</td><td><code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, or <code translate="no">MATCH_EXACT</code></td></tr>
 </tbody>
 </table>
-<h2 id="Element-Filter" class="common-anchor-header">Filtro per elemento<button data-href="#Element-Filter" class="anchor-icon" translate="no">
+<h2 id="Element-Filter" class="common-anchor-header">Element Filter<button data-href="#Element-Filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,22 +75,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilizzare ` <code translate="no">element_filter(structArrayField, predicate)</code> ` per trovare corrispondenze con gli elementi Struct in un campo StructArray.</p>
-<p>All’interno del predicato, utilizzare <code translate="no">$[subfield]</code> per fare riferimento a un sottocampo scalare dell’elemento Struct corrente.</p>
+    </button></h2><p>Use <code translate="no">element_filter(structArrayField, predicate)</code> to match Struct elements in a StructArray field.</p>
+<p>Inside the predicate, use <code translate="no">$[subfield]</code> to refer to a scalar subfield of the current Struct element.</p>
 <pre><code translate="no" class="language-python">element_filter(chunks, $[section] == <span class="hljs-string">&quot;index&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Quando all’interno del predicato vengono utilizzate più condizioni, tutti i riferimenti a ` <code translate="no">$[subfield]</code> ` si applicano allo stesso elemento Struct:</p>
+<p>When multiple conditions are used inside the predicate, all <code translate="no">$[subfield]</code> references apply to the same Struct element:</p>
 <pre><code translate="no" class="language-python">element_filter(chunks, $[section] == <span class="hljs-string">&quot;index&quot;</span> &amp;&amp; $[quality_score] &gt; <span class="hljs-number">0.9</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Quando si combina un predicato a livello di entità con ` <code translate="no">element_filter</code>`, posizionare ` <code translate="no">element_filter</code> ` alla fine dell'espressione:</p>
+<p>When you combine an entity-level predicate with <code translate="no">element_filter</code>, place <code translate="no">element_filter</code> at the end of the expression:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Correct</span>
 category == <span class="hljs-string">&quot;index&quot;</span> &amp;&amp; element_filter(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span>)
 
 <span class="hljs-comment"># Incorrect</span>
 element_filter(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span>) &amp;&amp; category == <span class="hljs-string">&quot;index&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">element_filter</code> può comparire una sola volta in un’espressione di filtro. Non annidare ` <code translate="no">element_filter</code> ` o ` <code translate="no">MATCH_*</code> ` all’interno di un altro ` <code translate="no">element_filter</code>`.</p>
-<h2 id="Match-Family-Operators" class="common-anchor-header">Operatori di corrispondenza per famiglie<button data-href="#Match-Family-Operators" class="anchor-icon" translate="no">
+<p><code translate="no">element_filter</code> can appear only once in a filter expression. Do not nest <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code> inside another <code translate="no">element_filter</code>.</p>
+<h2 id="Match-Family-Operators" class="common-anchor-header">Match Family Operators<button data-href="#Match-Family-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -106,20 +105,20 @@ element_filter(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilizzare gli operatori <code translate="no">MATCH_*</code> quando un'entità deve essere selezionata in base al numero di elementi Struct che soddisfano un predicato.</p>
+    </button></h2><p>Use <code translate="no">MATCH_*</code> operators when an entity should be selected based on how many Struct elements satisfy a predicate.</p>
 <table>
 <thead>
-<tr><th>Operatore</th><th>Significato</th></tr>
+<tr><th>Operator</th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">MATCH_ANY(field, predicate)</code></td><td>Almeno un elemento Struct soddisfa il predicato.</td></tr>
-<tr><td><code translate="no">MATCH_ALL(field, predicate)</code></td><td>Tutti gli elementi Struct soddisfano il predicato.</td></tr>
-<tr><td><code translate="no">MATCH_LEAST(field, predicate, threshold=N)</code></td><td>Almeno <code translate="no">N</code> elementi Struct soddisfano il predicato.</td></tr>
-<tr><td><code translate="no">MATCH_MOST(field, predicate, threshold=N)</code></td><td>Al massimo <code translate="no">N</code> elementi della struttura soddisfano il predicato.</td></tr>
-<tr><td><code translate="no">MATCH_EXACT(field, predicate, threshold=N)</code></td><td>Esattament <code translate="no">N</code> i elementi Struct soddisfano il predicato.</td></tr>
+<tr><td><code translate="no">MATCH_ANY(field, predicate)</code></td><td>At least one Struct element satisfies the predicate.</td></tr>
+<tr><td><code translate="no">MATCH_ALL(field, predicate)</code></td><td>All Struct elements satisfy the predicate.</td></tr>
+<tr><td><code translate="no">MATCH_LEAST(field, predicate, threshold=N)</code></td><td>At least <code translate="no">N</code> Struct elements satisfy the predicate.</td></tr>
+<tr><td><code translate="no">MATCH_MOST(field, predicate, threshold=N)</code></td><td>At most <code translate="no">N</code> Struct elements satisfy the predicate.</td></tr>
+<tr><td><code translate="no">MATCH_EXACT(field, predicate, threshold=N)</code></td><td>Exactly <code translate="no">N</code> Struct elements satisfy the predicate.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">MATCH_ANY</code> sia " <code translate="no">element_filter</code> " che " " possono entrambi indicare che almeno un elemento Struct soddisfa un predicato. Utilizza " <code translate="no">MATCH_ANY</code> " quando è necessario solo un filtro a livello di riga. Utilizza " <code translate="no">element_filter</code> " quando sono necessari vincoli a livello di elemento, come il filtraggio degli elementi Struct che partecipano alla ricerca vettoriale a livello di elemento.</p>
+<p><code translate="no">MATCH_ANY</code> and <code translate="no">element_filter</code> can both express that at least one Struct element satisfies a predicate. Use <code translate="no">MATCH_ANY</code> when you only need row-level filtering. Use <code translate="no">element_filter</code> when you need element-level constraints, such as filtering which Struct elements participate in element-level vector search.</p>
 <h3 id="MATCHANY" class="common-anchor-header">MATCH_ANY<button data-href="#MATCHANY" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -135,10 +134,10 @@ element_filter(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_ANY</code> restituisce " <code translate="no">true</code> " se almeno un elemento dello StructArray soddisfa il predicato.</p>
+    </button></h3><p><code translate="no">MATCH_ANY</code> evaluates to <code translate="no">true</code> if at least one element in the StructArray satisfies the predicate.</p>
 <pre><code translate="no" class="language-python">MATCH_ANY(chunks, $[section] == <span class="hljs-string">&quot;index&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Per uno StructArray vuoto, <code translate="no">MATCH_ANY</code> restituisce <code translate="no">false</code>.</p>
+<p>For an empty StructArray, <code translate="no">MATCH_ANY</code> returns <code translate="no">false</code>.</p>
 <h3 id="MATCHALL" class="common-anchor-header">MATCH_ALL<button data-href="#MATCHALL" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -154,10 +153,10 @@ element_filter(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_ALL</code> restituisce <code translate="no">true</code> se ogni elemento di StructArray soddisfa il predicato.</p>
+    </button></h3><p><code translate="no">MATCH_ALL</code> evaluates to <code translate="no">true</code> if every element in the StructArray satisfies the predicate.</p>
 <pre><code translate="no" class="language-python">MATCH_ALL(chunks, $[has_code] == true)
 <button class="copy-code-btn"></button></code></pre>
-<p>Per uno StructArray vuoto, <code translate="no">MATCH_ALL</code> restituisce <code translate="no">true</code>.</p>
+<p>For an empty StructArray, <code translate="no">MATCH_ALL</code> returns <code translate="no">true</code>.</p>
 <h3 id="MATCHLEAST" class="common-anchor-header">MATCH_LEAST<button data-href="#MATCHLEAST" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -173,10 +172,10 @@ element_filter(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_LEAST</code> restituisce <code translate="no">true</code> se il numero di elementi che soddisfano il predicato è maggiore o uguale a <code translate="no">threshold</code>.</p>
+    </button></h3><p><code translate="no">MATCH_LEAST</code> evaluates to <code translate="no">true</code> if the number of elements satisfying the predicate is greater than or equal to <code translate="no">threshold</code>.</p>
 <pre><code translate="no" class="language-python">MATCH_LEAST(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span>, threshold=<span class="hljs-number">2</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Per <code translate="no">MATCH_LEAST</code>, <code translate="no">threshold</code> deve essere un numero intero positivo.</p>
+<p>For <code translate="no">MATCH_LEAST</code>, <code translate="no">threshold</code> must be a positive integer.</p>
 <h3 id="MATCHMOST" class="common-anchor-header">MATCH_MOST<button data-href="#MATCHMOST" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -192,10 +191,10 @@ element_filter(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_MOST</code> restituisce il valore <code translate="no">true</code> se il numero di elementi che soddisfano il predicato è minore o uguale a <code translate="no">threshold</code>.</p>
+    </button></h3><p><code translate="no">MATCH_MOST</code> evaluates to <code translate="no">true</code> if the number of elements satisfying the predicate is less than or equal to <code translate="no">threshold</code>.</p>
 <pre><code translate="no" class="language-python">MATCH_MOST(chunks, $[has_code] == true, threshold=<span class="hljs-number">1</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Per <code translate="no">MATCH_MOST</code>, <code translate="no">threshold</code> può essere zero o un numero intero positivo.</p>
+<p>For <code translate="no">MATCH_MOST</code>, <code translate="no">threshold</code> can be zero or a positive integer.</p>
 <h3 id="MATCHEXACT" class="common-anchor-header">MATCH_EXACT<button data-href="#MATCHEXACT" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -211,11 +210,11 @@ element_filter(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">MATCH_EXACT</code> restituisce il valore <code translate="no">true</code> se il numero di elementi che soddisfano il predicato è esattamente uguale a <code translate="no">threshold</code>.</p>
+    </button></h3><p><code translate="no">MATCH_EXACT</code> evaluates to <code translate="no">true</code> if the number of elements satisfying the predicate is exactly equal to <code translate="no">threshold</code>.</p>
 <pre><code translate="no" class="language-python">MATCH_EXACT(chunks, $[section] == <span class="hljs-string">&quot;filter&quot;</span>, threshold=<span class="hljs-number">1</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Per <code translate="no">MATCH_EXACT</code>, <code translate="no">threshold</code> può essere zero o un numero intero positivo.</p>
-<h2 id="Supported-predicates" class="common-anchor-header">Predicati supportati<button data-href="#Supported-predicates" class="anchor-icon" translate="no">
+<p>For <code translate="no">MATCH_EXACT</code>, <code translate="no">threshold</code> can be zero or a positive integer.</p>
+<h2 id="Supported-predicates" class="common-anchor-header">Supported predicates<button data-href="#Supported-predicates" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -230,21 +229,21 @@ element_filter(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>La sintassi <code translate="no">$[...]</code> rappresenta il valore scalare dell’elemento Struct corrente. Il supporto dei predicati dipende dal tipo di sottocampo scalare.</p>
+    </button></h2><p>The <code translate="no">$[...]</code> syntax represents the scalar value of the current Struct element. Predicate support depends on the scalar subfield type.</p>
 <table>
 <thead>
-<tr><th>Tipo di sottocampo</th><th>Supporto dei predicati a livello di elemento</th></tr>
+<tr><th>Subfield type</th><th>Element-level predicate support</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">BOOL</code></td><td>Predicati scalari quali <code translate="no">$[has_code] == true</code> o <code translate="no">!($[has_code] == true)</code>. Evitare espressioni booleane nude quali <code translate="no">$[has_code]</code>.</td></tr>
-<tr><td><code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code></td><td>confronto, intervallo concatenato, <code translate="no">in</code>, <code translate="no">not in</code>, espressioni aritmetiche con <code translate="no">+</code>, <code translate="no">-</code>, <code translate="no">*</code>, <code translate="no">/</code> o <code translate="no">%</code> seguite da un confronto, e combinazioni logiche.</td></tr>
-<tr><td><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code></td><td>Confronto, intervallo concatenato, <code translate="no">in</code>, <code translate="no">not in</code>, espressioni aritmetiche con <code translate="no">+</code>, <code translate="no">-</code>, <code translate="no">*</code> o <code translate="no">/</code> seguite da un confronto e combinazioni logiche. L’operatore <code translate="no">%</code> non è supportato per i sottocampi in virgola mobile.</td></tr>
-<tr><td><code translate="no">VARCHAR</code></td><td>Confronto di stringhe, intervallo concatenato, <code translate="no">in</code>, <code translate="no">not in</code>, <code translate="no">like</code>, <code translate="no">=~</code>, <code translate="no">!~</code> e combinazioni logiche.</td></tr>
-<tr><td>Sottocampi vettoriali</td><td>Non supportati come input per i predicati scalari di tipo <code translate="no">$[...]</code>. Utilizzare invece i sottocampi vettoriali tramite la ricerca EmbeddingList o la ricerca vettoriale a livello di elemento.</td></tr>
+<tr><td><code translate="no">BOOL</code></td><td>Scalar predicates such as <code translate="no">$[has_code] == true</code> or <code translate="no">!($[has_code] == true)</code>. Avoid bare boolean expressions such as <code translate="no">$[has_code]</code>.</td></tr>
+<tr><td><code translate="no">INT8</code>, <code translate="no">INT16</code>, <code translate="no">INT32</code>, <code translate="no">INT64</code></td><td>Comparison, chained range, <code translate="no">in</code>, <code translate="no">not in</code>, arithmetic expressions with <code translate="no">+</code>, <code translate="no">-</code>, <code translate="no">*</code>, <code translate="no">/</code>, or <code translate="no">%</code> followed by comparison, and logical combinations.</td></tr>
+<tr><td><code translate="no">FLOAT</code>, <code translate="no">DOUBLE</code></td><td>Comparison, chained range, <code translate="no">in</code>, <code translate="no">not in</code>, arithmetic expressions with <code translate="no">+</code>, <code translate="no">-</code>, <code translate="no">*</code>, or <code translate="no">/</code> followed by comparison, and logical combinations. The <code translate="no">%</code> operator is not supported for floating-point subfields.</td></tr>
+<tr><td><code translate="no">VARCHAR</code></td><td>String comparison, chained range, <code translate="no">in</code>, <code translate="no">not in</code>, <code translate="no">like</code>, <code translate="no">=~</code>, <code translate="no">!~</code>, and logical combinations.</td></tr>
+<tr><td>Vector subfields</td><td>Not supported as <code translate="no">$[...]</code> scalar predicate inputs. Use vector subfields through EmbeddingList search or element-level vector search instead.</td></tr>
 </tbody>
 </table>
-<p>Gli operatori logici quali <code translate="no">&amp;&amp;</code>, <code translate="no">\|\|</code> e <code translate="no">!</code> si applicano alle espressioni dei predicati. Ad esempio, scrivere <code translate="no">!($[has_code] == true)</code> anziché <code translate="no">!$[has_code]</code>.</p>
-<h2 id="Unsupported-predicates" class="common-anchor-header">Predicati non supportati<button data-href="#Unsupported-predicates" class="anchor-icon" translate="no">
+<p>Logical operators such as <code translate="no">&amp;&amp;</code>, <code translate="no">\|\|</code>, and <code translate="no">!</code> apply to predicate expressions. For example, write <code translate="no">!($[has_code] == true)</code> instead of <code translate="no">!$[has_code]</code>.</p>
+<h2 id="Unsupported-predicates" class="common-anchor-header">Unsupported predicates<button data-href="#Unsupported-predicates" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -259,19 +258,19 @@ element_filter(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>I predicati a livello di elemento <code translate="no">$[...]</code> non supportano:</p>
+    </button></h2><p>Element-level <code translate="no">$[...]</code> predicates do not support:</p>
 <ul>
-<li><p>Funzioni di corrispondenza testuale, come <code translate="no">text_match(field, &quot;...&quot;)</code> o <code translate="no">phrase_match(field, &quot;...&quot;)</code>.</p></li>
-<li><p>La sintassi dei percorsi JSON, <code translate="no">exists</code> sui percorsi JSON o funzioni JSON quali <code translate="no">json_contains</code>, <code translate="no">json_contains_all</code> o <code translate="no">json_contains_any</code>.</p></li>
-<li><p>Funzioni relative ai contenitori array come <code translate="no">array_contains</code>, <code translate="no">array_contains_all</code>, <code translate="no">array_contains_any</code> o <code translate="no">array_length</code>.</p></li>
-<li><p><code translate="no">$[subfield] is null</code> oppure <code translate="no">$[subfield] is not null</code>.</p></li>
-<li><p>Funzioni di geometria / GIS.</p></li>
-<li><p>Espressioni timestamptz.</p></li>
+<li><p>Text match functions, such as <code translate="no">text_match(field, &quot;...&quot;)</code> or <code translate="no">phrase_match(field, &quot;...&quot;)</code>.</p></li>
+<li><p>JSON path syntax, <code translate="no">exists</code> on JSON paths, or JSON functions such as <code translate="no">json_contains</code>, <code translate="no">json_contains_all</code>, or <code translate="no">json_contains_any</code>.</p></li>
+<li><p>Array container functions such as <code translate="no">array_contains</code>, <code translate="no">array_contains_all</code>, <code translate="no">array_contains_any</code>, or <code translate="no">array_length</code>.</p></li>
+<li><p><code translate="no">$[subfield] is null</code> or <code translate="no">$[subfield] is not null</code>.</p></li>
+<li><p>Geometry / GIS functions.</p></li>
+<li><p>Timestamptz expressions.</p></li>
 <li><p><code translate="no">random_sample(...)</code>.</p></li>
-<li><p>Predicati vettoriali a livello di campo.</p></li>
-<li><p>Chiamate a funzioni di filtro generiche, a meno che la firma specifica della funzione e il percorso di esecuzione non supportino esplicitamente i predicati a livello di elemento StructArray.</p></li>
+<li><p>Field-level vector predicates.</p></li>
+<li><p>Generic filter function calls unless the specific function signature and execution path explicitly support StructArray element-level predicates.</p></li>
 </ul>
-<h2 id="Syntax-rules" class="common-anchor-header">Regole sintattiche<button data-href="#Syntax-rules" class="anchor-icon" translate="no">
+<h2 id="Syntax-rules" class="common-anchor-header">Syntax rules<button data-href="#Syntax-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -287,15 +286,15 @@ element_filter(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><code translate="no">MATCH_*</code> I nomi degli operatori non distinguono tra maiuscole e minuscole.</p></li>
-<li><p>Utilizzare <code translate="no">$[subfield]</code> solo all’interno di predicati <code translate="no">element_filter</code> o <code translate="no">MATCH_*</code>.</p></li>
-<li><p>Non utilizzare <code translate="no">$[subfield]</code> come percorso JSON, contenitore di array o riferimento a un campo vettoriale.</p></li>
-<li><p>Non annidare <code translate="no">element_filter</code> o <code translate="no">MATCH_*</code> all’interno di un altro operatore StructArray.</p></li>
-<li><p>Utilizzare <code translate="no">threshold=N</code> con nome per <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code> e <code translate="no">MATCH_EXACT</code>.</p></li>
-<li><p><code translate="no">MATCH_ANY</code> su uno StructArray vuoto restituisce <code translate="no">false</code>.</p></li>
-<li><p><code translate="no">MATCH_ALL</code> su uno StructArray vuoto restituisce <code translate="no">true</code>.</p></li>
+<li><p><code translate="no">MATCH_*</code> operator names are case-insensitive.</p></li>
+<li><p>Use <code translate="no">$[subfield]</code> only inside <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code> predicates.</p></li>
+<li><p>Do not use <code translate="no">$[subfield]</code> as a JSON path, array container, or vector field reference.</p></li>
+<li><p>Do not nest <code translate="no">element_filter</code> or <code translate="no">MATCH_*</code> inside another StructArray operator.</p></li>
+<li><p>Use named <code translate="no">threshold=N</code> for <code translate="no">MATCH_LEAST</code>, <code translate="no">MATCH_MOST</code>, and <code translate="no">MATCH_EXACT</code>.</p></li>
+<li><p><code translate="no">MATCH_ANY</code> on an empty StructArray returns <code translate="no">false</code>.</p></li>
+<li><p><code translate="no">MATCH_ALL</code> on an empty StructArray returns <code translate="no">true</code>.</p></li>
 </ul>
-<h2 id="See-also" class="common-anchor-header">Vedi anche<button data-href="#See-also" class="anchor-icon" translate="no">
+<h2 id="See-also" class="common-anchor-header">See also<button data-href="#See-also" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -311,8 +310,8 @@ element_filter(chunks, $[quality_score] &gt; <span class="hljs-number">0.9</span
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><a href="/docs/it/filtered-search-with-structarray.md">Ricerca filtrata con StructArray</a></p></li>
-<li><p><a href="/docs/it/basic-vector-search-with-structarray.md">Ricerca vettoriale di base con StructArray</a></p></li>
-<li><p><a href="/docs/it/index-structarray-fields.md">Indice dei campi di StructArray</a></p></li>
-<li><p><a href="/docs/it/structarray-limits.md">Limiti di StructArray</a></p></li>
+<li><p><a href="/docs/it/filtered-search-with-structarray.md">Filtered Search with StructArray</a></p></li>
+<li><p><a href="/docs/it/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a></p></li>
+<li><p><a href="/docs/it/index-structarray-fields.md">Index StructArray Fields</a></p></li>
+<li><p><a href="/docs/it/structarray-limits.md">StructArray Limits</a></p></li>
 </ul>

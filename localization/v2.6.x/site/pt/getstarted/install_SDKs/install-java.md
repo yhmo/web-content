@@ -2,10 +2,10 @@
 id: install-java.md
 label: Install Java SDK
 related_key: SDK
-summary: Saiba como instalar o SDK Java do Milvus.
-title: Instalar o SDK Java do Milvus
+summary: Learn how to install the Java SDK of Milvus.
+title: Install Milvus Java SDK
 ---
-<h1 id="Install-Milvus-Java-SDK" class="common-anchor-header">Instalar o SDK Java do Milvus<button data-href="#Install-Milvus-Java-SDK" class="anchor-icon" translate="no">
+<h1 id="Install-Milvus-Java-SDK" class="common-anchor-header">Install Milvus Java SDK<button data-href="#Install-Milvus-Java-SDK" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +20,9 @@ title: Instalar o SDK Java do Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Este tópico descreve como instalar o SDK Java do Milvus para o Milvus.</p>
-<p>A versão atual do Milvus suporta SDKs em Python, Node.js, GO e Java.</p>
-<h2 id="Requirement" class="common-anchor-header">Requisitos<button data-href="#Requirement" class="anchor-icon" translate="no">
+    </button></h1><p>This topic describes how to install Milvus Java SDK for Milvus.</p>
+<p>Current version of Milvus supports SDKs in Python, Node.js, GO, and Java.</p>
+<h2 id="Requirement" class="common-anchor-header">Requirement<button data-href="#Requirement" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,10 +38,10 @@ title: Instalar o SDK Java do Milvus
         ></path>
       </svg>
     </button></h2><ul>
-<li>Java (8 ou posterior)</li>
-<li>Apache Maven ou Gradle/Grails</li>
+<li>Java (8 or later)</li>
+<li>Apache Maven or Gradle/Grails</li>
 </ul>
-<h2 id="Install-Milvus-Java-SDK" class="common-anchor-header">Instalar o SDK Java do Milvus<button data-href="#Install-Milvus-Java-SDK" class="anchor-icon" translate="no">
+<h2 id="Install-Milvus-Java-SDK" class="common-anchor-header">Install Milvus Java SDK<button data-href="#Install-Milvus-Java-SDK" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,7 +56,7 @@ title: Instalar o SDK Java do Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Execute o comando seguinte para instalar o SDK Java do Milvus.</p>
+    </button></h2><p>Run the following command to install Milvus Java SDK.</p>
 <ul>
 <li>Apache Maven</li>
 </ul>
@@ -71,7 +71,7 @@ title: Instalar o SDK Java do Milvus
 </ul>
 <pre><code translate="no"><span class="hljs-attribute">implementation</span> <span class="hljs-string">&#x27;io.milvus:milvus-sdk-java:2.6.25&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Whats-next" class="common-anchor-header">Próximos passos<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -86,15 +86,15 @@ title: Instalar o SDK Java do Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Depois de instalar o Milvus Java SDK, pode:</p>
+    </button></h2><p>Having installed Milvus Java SDK, you can:</p>
 <ul>
-<li><p>Aprender as operações básicas do Milvus:</p>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/pt/v2.6.x/manage-collections.md">Gerir coleções</a></li>
-<li><a href="/docs/pt/v2.6.x/manage-partitions.md">Gerir partições</a></li>
-<li><a href="/docs/pt/v2.6.x/insert-update-delete.md">Inserir, atualizar e eliminar</a></li>
-<li><a href="/docs/pt/v2.6.x/single-vector-search.md">Pesquisa de vetor único</a></li>
-<li><a href="/docs/pt/v2.6.x/multi-vector-search.md">Pesquisa híbrida</a></li>
+<li><a href="/docs/pt/v2.6.x/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/pt/v2.6.x/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/pt/v2.6.x/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/pt/v2.6.x/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/pt/v2.6.x/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p>Explorar <a href="/api-reference/java/v2.6.x/About.md">a referência da API Java do Milvus</a></p></li>
+<li><p>Explore <a href="/api-reference/java/v2.6.x/About.md">Milvus Java API reference</a></p></li>
 </ul>

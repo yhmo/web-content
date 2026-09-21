@@ -2,8 +2,8 @@
 id: google-gemini.md
 title: Google Gemini
 summary: >-
-  Utilizzate un modello di incorporazione di Google Gemini con Milvus scegliendo
-  un modello e configurando Milvus con la vostra chiave API Gemini.
+  Use a Google Gemini embedding model with Milvus by choosing a model and
+  configuring Milvus with your Gemini API key.
 ---
 <h1 id="Google-Gemini" class="common-anchor-header">Google Gemini<button data-href="#Google-Gemini" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -20,8 +20,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Utilizzate un modello di incorporamento di Google Gemini con Milvus scegliendo un modello e configurando Milvus con la vostra chiave API Gemini.</p>
-<h2 id="Choose-an-embedding-model" class="common-anchor-header">Scegliere un modello di incorporamento<button data-href="#Choose-an-embedding-model" class="anchor-icon" translate="no">
+    </button></h1><p>Use a Google Gemini embedding model with Milvus by choosing a model and configuring Milvus with your Gemini API key.</p>
+<h2 id="Choose-an-embedding-model" class="common-anchor-header">Choose an embedding model<button data-href="#Choose-an-embedding-model" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,35 +36,35 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus supporta i modelli di incorporamento forniti da Google Gemini. Di seguito sono riportati i modelli di incorporamento Gemini attualmente disponibili per un rapido riferimento:</p>
+    </button></h2><p>Milvus supports embedding models provided by Google Gemini. Below are the currently available Gemini embedding models for quick reference:</p>
 <table>
    <tr>
-     <th><p><strong>Nome del modello</strong></p></th>
-     <th><p><strong>Dimensioni</strong></p></th>
-     <th><p><strong>Gettoni massimi</strong></p></th>
-     <th><p><strong>Descrizione</strong></p></th>
+     <th><p><strong>Model Name</strong></p></th>
+     <th><p><strong>Dimensions</strong></p></th>
+     <th><p><strong>Max Tokens</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
    </tr>
    <tr>
      <td><p>gemini-embedding-001</p></td>
-     <td><p>Predefinito: 3.072 (consigliato: 768, 1.536 o 3.072)</p></td>
+     <td><p>Default: 3,072 (recommended: 768, 1,536, or 3,072)</p></td>
      <td><p>8,192</p></td>
-     <td><p>Modello di incorporamento del testo con dimensioni flessibili, addestrato con Matryoshka Representation Learning (MRL).</p></td>
+     <td><p>Text embedding model with flexible dimensions, trained using Matryoshka Representation Learning (MRL).</p></td>
    </tr>
    <tr>
      <td><p>gemini-embedding-2</p></td>
-     <td><p>Predefinito: 3.072 (consigliato: 768, 1.536 o 3.072)</p></td>
+     <td><p>Default: 3,072 (recommended: 768, 1,536, or 3,072)</p></td>
      <td><p>8,192</p></td>
-     <td><p>Il primo modello di incorporamento multimodale di Google, che supporta testo, immagini, video, audio e documenti in uno spazio di incorporamento unificato.</p></td>
+     <td><p>Google's first natively multimodal embedding model, supporting text, images, video, audio, and documents in a unified embedding space.</p></td>
    </tr>
 </table>
-<p>Entrambi i modelli sono addestrati con la tecnica Matryoshka Representation Learning (MRL), che consente dimensioni di output flessibili tramite il parametro <code translate="no">dim</code>. Si consiglia di iniziare con 768 dimensioni e di scalare fino a 1.536 o 3.072 se necessario. Per maggiori dettagli, consultare i <a href="https://ai.google.dev/gemini-api/docs/embeddings">modelli di incorporazione Gemini</a>.</p>
-<p>I modelli di incorporazione Gemini supportano anche un parametro di <strong>tipo di compito</strong> che ottimizza le incorporazioni per casi d'uso specifici. Milvus imposta automaticamente il tipo di attività in base all'operazione:</p>
+<p>Both models are trained using the Matryoshka Representation Learning (MRL) technique, which allows for flexible output dimensions via the <code translate="no">dim</code> parameter. It is recommended to start with 768 dimensions and scale up to 1,536 or 3,072 if needed. For more details, refer to <a href="https://ai.google.dev/gemini-api/docs/embeddings">Gemini Embedding models</a>.</p>
+<p>Gemini embedding models also support a <strong>task type</strong> parameter that optimizes embeddings for specific use cases. Milvus automatically sets the task type based on the operation:</p>
 <ul>
-<li><p><strong>Insert / Upsert</strong>: <code translate="no">RETRIEVAL_DOCUMENT</code></p></li>
-<li><p><strong>Ricerca</strong>: <code translate="no">RETRIEVAL_QUERY</code></p></li>
+<li><p><strong>Insert / Upsert:</strong> <code translate="no">RETRIEVAL_DOCUMENT</code></p></li>
+<li><p><strong>Search:</strong> <code translate="no">RETRIEVAL_QUERY</code></p></li>
 </ul>
-<p>È possibile sovrascrivere questa impostazione specificando esplicitamente un parametro <code translate="no">task</code> (ad esempio, <code translate="no">SEMANTIC_SIMILARITY</code>, <code translate="no">CLASSIFICATION</code>, <code translate="no">CLUSTERING</code>).</p>
-<h2 id="Configure-credentials" class="common-anchor-header">Configurare le credenziali<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
+<p>You can override this by explicitly specifying a <code translate="no">task</code> parameter (e.g., <code translate="no">SEMANTIC_SIMILARITY</code>, <code translate="no">CLASSIFICATION</code>, <code translate="no">CLUSTERING</code>).</p>
+<h2 id="Configure-credentials" class="common-anchor-header">Configure credentials<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -79,14 +79,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus deve conoscere la chiave API Gemini prima di poter richiedere le incorporazioni. Milvus fornisce due metodi per configurare le credenziali:</p>
+    </button></h2><p>Milvus must know your Gemini API key before it can request embeddings. Milvus provides two methods to configure credentials:</p>
 <ul>
-<li><p><strong>File di configurazione (consigliato):</strong> Memorizzare la chiave API in <code translate="no">milvus.yaml</code> in modo che ogni riavvio e nodo la rilevi automaticamente.</p></li>
-<li><p><strong>Variabili d'ambiente:</strong> Iniettare la chiave al momento della distribuzione, ideale per Docker Compose.</p></li>
+<li><p><strong>Configuration file (recommended):</strong> Store the API key in <code translate="no">milvus.yaml</code> so every restart and node picks it up automatically.</p></li>
+<li><p><strong>Environment variables:</strong> Inject the key at deploy time—ideal for Docker Compose.</p></li>
 </ul>
-<p>Scegliete uno dei due metodi seguenti: il file di configurazione è più facile da mantenere su macchine virtuali e bare-metal, mentre la via delle variabili d'ambiente si adatta ai flussi di lavoro dei container.</p>
-<p>Se una chiave API per lo stesso provider è presente sia nel file di configurazione che in una variabile d'ambiente, Milvus utilizza sempre il valore in <code translate="no">milvus.yaml</code> e ignora la variabile d'ambiente.</p>
-<h3 id="Option-1-Configuration-file-recommended--higher-priority" class="common-anchor-header">Opzione 1: File di configurazione (consigliata e con priorità più alta)<button data-href="#Option-1-Configuration-file-recommended--higher-priority" class="anchor-icon" translate="no">
+<p>Choose one of the two methods below—the configuration file is easier to maintain on bare-metal and VMs, while the env-var route fits container workflows.</p>
+<p>If an API key for the same provider is present in both the configuration file and an environment variable, Milvus always uses the value in <code translate="no">milvus.yaml</code> and ignores the environment variable.</p>
+<h3 id="Option-1-Configuration-file-recommended--higher-priority" class="common-anchor-header">Option 1: Configuration file (recommended & higher priority)<button data-href="#Option-1-Configuration-file-recommended--higher-priority" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -101,10 +101,10 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Mantenere le chiavi API in <code translate="no">milvus.yaml</code>; Milvus le legge all'avvio e sovrascrive qualsiasi variabile d'ambiente per lo stesso provider.</p>
+    </button></h3><p>Keep your API keys in <code translate="no">milvus.yaml</code>; Milvus reads them at startup and overrides any environment variable for the same provider.</p>
 <ol>
-<li><p><strong>Dichiarare le chiavi sotto credenziali:</strong></p>
-<p>Si possono elencare una o più chiavi API, dando a ciascuna un'etichetta inventata e a cui si farà riferimento in seguito.</p>
+<li><p><strong>Declare your keys under credential:</strong></p>
+<p>You may list one or many API keys—give each a label you invent and will reference later.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">credential:</span>
   <span class="hljs-attr">apikey_dev:</span>            <span class="hljs-comment"># dev environment</span>
@@ -112,18 +112,18 @@ summary: >-
   <span class="hljs-attr">apikey_prod:</span>           <span class="hljs-comment"># production environment</span>
     <span class="hljs-attr">apikey:</span> <span class="hljs-string">&lt;YOUR_PROD_KEY&gt;</span>    
 <button class="copy-code-btn"></button></code></pre>
-<p>Mettere le chiavi API qui le rende persistenti tra i vari riavvii e consente di cambiare le chiavi semplicemente cambiando l'etichetta.</p></li>
-<li><p><strong>Indicare a Milvus quale chiave usare per le chiamate a Gemini</strong></p>
-<p>Nello stesso file, si indica al provider Gemini l'etichetta che si desidera utilizzare.</p>
+<p>Putting the API keys here makes them persistent across restarts and lets you switch keys just by changing a label.</p></li>
+<li><p><strong>Tell Milvus which key to use for Gemini calls</strong></p>
+<p>In the same file, point the Gemini provider at the label you want it to use.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">function:</span>
   <span class="hljs-attr">textEmbedding:</span>
     <span class="hljs-attr">providers:</span>
       <span class="hljs-attr">gemini:</span>
         <span class="hljs-attr">credential:</span> <span class="hljs-string">apikey_dev</span>      <span class="hljs-comment"># ← choose any label you defined above</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Questo vincola una chiave specifica a ogni richiesta che Milvus invia all'endpoint Gemini embeddings.</p></li>
+<p>This binds a specific key to every request Milvus sends to the Gemini embeddings endpoint.</p></li>
 </ol>
-<h3 id="Option-2-Environment-variable" class="common-anchor-header">Opzione 2: variabile d'ambiente<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
+<h3 id="Option-2-Environment-variable" class="common-anchor-header">Option 2: Environment variable<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -138,21 +138,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Utilizzate questo metodo quando eseguite Milvus con Docker Compose e preferite tenere i segreti fuori dai file e dalle immagini.</p>
-<p>Milvus ricorre alla variabile d'ambiente solo se non viene trovata alcuna chiave per il provider in <code translate="no">milvus.yaml</code>.</p>
+    </button></h3><p>Use this method when you run Milvus with Docker Compose and prefer to keep secrets out of files and images.</p>
+<p>Milvus falls back to the environment variable only if no key for the provider is found in <code translate="no">milvus.yaml</code>.</p>
 <table>
    <tr>
-     <th><p><strong>Variabile</strong></p></th>
-     <th><p><strong>Richiesto</strong></p></th>
-     <th><p><strong>Descrizione</strong></p></th>
+     <th><p><strong>Variable</strong></p></th>
+     <th><p><strong>Required</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
    </tr>
    <tr>
      <td><p>MILVUS_GEMINI_API_KEY</p></td>
-     <td><p>Sì</p></td>
-     <td><p>Rende disponibile la chiave Gemini all'interno di ogni contenitore Milvus (ignorata se esiste una chiave per Gemini in milvus.yaml).</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Makes the Gemini key available inside each Milvus container (ignored when a key for Gemini exists in milvus.yaml)</p></td>
    </tr>
 </table>
-<p>Nel file <strong>docker-compose.yaml</strong>, impostare la variabile di ambiente <code translate="no">MILVUS_GEMINI_API_KEY</code>.</p>
+<p>In your <strong>docker-compose.yaml</strong> file, set the <code translate="no">MILVUS_GEMINI_API_KEY</code> environment variable.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># docker-compose.yaml (standalone service section)</span>
 <span class="hljs-attr">standalone:</span>
   <span class="hljs-comment"># ... other configurations ...</span>
@@ -161,8 +161,8 @@ summary: >-
     <span class="hljs-comment"># Set the environment variable pointing to the Gemini API key inside the container</span>
     <span class="hljs-attr">MILVUS_GEMINI_API_KEY:</span> <span class="hljs-string">&lt;YOUR_GEMINI_API_KEY&gt;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Il blocco <code translate="no">environment:</code> inietta la chiave solo nel contenitore Milvus, lasciando inalterato il sistema operativo host. Per maggiori dettagli, consultare <a href="http://configure-docker.md#Configure-Milvus-with-Docker-Compose">Configurazione di Milvus con Docker Compose</a>.</p>
-<h2 id="Step-1-Create-a-collection-with-a-text-embedding-function" class="common-anchor-header">Passo 1: Creare una collezione con una funzione di incorporamento del testo<button data-href="#Step-1-Create-a-collection-with-a-text-embedding-function" class="anchor-icon" translate="no">
+<p>The <code translate="no">environment:</code> block injects the key only into the Milvus container, leaving your host OS untouched. For details, refer to <a href="http://configure-docker.md#Configure-Milvus-with-Docker-Compose">Configure Milvus with Docker Compose</a>.</p>
+<h2 id="Step-1-Create-a-collection-with-a-text-embedding-function" class="common-anchor-header">Step 1: Create a collection with a text embedding function<button data-href="#Step-1-Create-a-collection-with-a-text-embedding-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -177,7 +177,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Define-schema-fields" class="common-anchor-header">Definire i campi dello schema<button data-href="#Define-schema-fields" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Define-schema-fields" class="common-anchor-header">Define schema fields<button data-href="#Define-schema-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -192,13 +192,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Per utilizzare una funzione di incorporamento, creare una raccolta con uno schema specifico. Questo schema deve includere almeno tre campi necessari:</p>
+    </button></h3><p>To use an embedding function, create a collection with a specific schema. This schema must include at least three necessary fields:</p>
 <ul>
-<li><p>Il campo primario che identifica in modo univoco ogni entità della raccolta.</p></li>
-<li><p>Un campo <code translate="no">VARCHAR</code> che memorizza i dati grezzi da incorporare.</p></li>
-<li><p>Un campo vettoriale riservato per memorizzare le incorporazioni vettoriali dense che la funzione di incorporazione del testo genererà per il campo <code translate="no">VARCHAR</code>.</p></li>
+<li><p>The primary field that uniquely identifies each entity in a collection.</p></li>
+<li><p>A <code translate="no">VARCHAR</code> field that stores raw data to be embedded.</p></li>
+<li><p>A vector field reserved to store dense vector embeddings that the text embedding function will generate for the <code translate="no">VARCHAR</code> field.</p></li>
 </ul>
-<p>L'esempio seguente definisce uno schema con un campo scalare <code translate="no">&quot;document&quot;</code> per memorizzare i dati testuali e un campo vettoriale <code translate="no">&quot;dense&quot;</code> per memorizzare le incorporazioni che saranno generate dal modulo Function. Ricordarsi di impostare la dimensione del vettore (<code translate="no">dim</code>) in modo che corrisponda all'output del modello di embedding scelto.</p>
+<p>The following example defines a schema with one scalar field <code translate="no">&quot;document&quot;</code> for storing textual data and one vector field <code translate="no">&quot;dense&quot;</code> for storing embeddings to be generated by the Function module. Remember to set the vector dimension (<code translate="no">dim</code>) to match the output of your chosen embedding model.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
 <span class="hljs-comment"># Initialize Milvus client</span>
@@ -221,7 +221,7 @@ schema.add_field(<span class="hljs-string">&quot;document&quot;</span>, DataType
 <span class="hljs-comment"># but can be shortened to 768 or 1536 dimensions.</span>
 schema.add_field(<span class="hljs-string">&quot;dense&quot;</span>, DataType.FLOAT_VECTOR, dim=<span class="hljs-number">768</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Define-the-text-embedding-function" class="common-anchor-header">Definire la funzione di incorporazione del testo<button data-href="#Define-the-text-embedding-function" class="anchor-icon" translate="no">
+<h3 id="Define-the-text-embedding-function" class="common-anchor-header">Define the text embedding function<button data-href="#Define-the-text-embedding-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -236,8 +236,8 @@ schema.add_field(<span class="hljs-string">&quot;dense&quot;</span>, DataType.FL
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La funzione di incorporazione del testo converte automaticamente i dati grezzi memorizzati in un campo <code translate="no">VARCHAR</code> in embeddings e li memorizza nel campo vettoriale esplicitamente definito.</p>
-<p>L'esempio seguente aggiunge un modulo Function (<code translate="no">gemini_embedding</code>) che converte il campo scalare <code translate="no">&quot;document&quot;</code> in embeddings, memorizzando i vettori risultanti nel campo vettoriale <code translate="no">&quot;dense&quot;</code> definito in precedenza.</p>
+    </button></h3><p>The text embedding function automatically converts raw data stored in a <code translate="no">VARCHAR</code> field into embeddings and stores them into the explicitly defined vector field.</p>
+<p>The example below adds a Function module (<code translate="no">gemini_embedding</code>) that converts the scalar field <code translate="no">&quot;document&quot;</code> into embeddings, storing the resulting vectors in the <code translate="no">&quot;dense&quot;</code> vector field defined earlier.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Define embedding function (example: Gemini provider)</span>
 text_embedding_function = Function(
     name=<span class="hljs-string">&quot;gemini_embedding&quot;</span>,                        <span class="hljs-comment"># Unique identifier for this embedding function</span>
@@ -257,16 +257,16 @@ text_embedding_function = Function(
 <span class="hljs-comment"># Add the embedding function to your schema</span>
 schema.add_function(text_embedding_function)
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Tipi di task supportati per il parametro task:</strong></p>
+<p><strong>Supported task types for the task parameter:</strong></p>
 <ul>
-<li><p><code translate="no">RETRIEVAL_DOCUMENT</code> - Ottimizza gli embeddings per l'indicizzazione dei documenti (predefinito per insert/upsert).</p></li>
-<li><p><code translate="no">RETRIEVAL_QUERY</code> - Ottimizza gli embeddings per il recupero delle query (default per la ricerca).</p></li>
-<li><p><code translate="no">SEMANTIC_SIMILARITY</code> - Ottimizza gli embeddings per la misurazione della similarità del testo.</p></li>
-<li><p><code translate="no">CLASSIFICATION</code> - Ottimizza le incorporazioni per la classificazione del testo.</p></li>
-<li><p><code translate="no">CLUSTERING</code> - Ottimizza le incorporazioni per il clustering.</p></li>
+<li><p><code translate="no">RETRIEVAL_DOCUMENT</code> — Optimizes embeddings for document indexing (default for insert/upsert).</p></li>
+<li><p><code translate="no">RETRIEVAL_QUERY</code> — Optimizes embeddings for query retrieval (default for search).</p></li>
+<li><p><code translate="no">SEMANTIC_SIMILARITY</code> — Optimizes embeddings for measuring text similarity.</p></li>
+<li><p><code translate="no">CLASSIFICATION</code> — Optimizes embeddings for text classification.</p></li>
+<li><p><code translate="no">CLUSTERING</code> — Optimizes embeddings for clustering.</p></li>
 </ul>
-<p>Quando non è impostato esplicitamente, Milvus utilizza automaticamente <code translate="no">RETRIEVAL_DOCUMENT</code> durante l'inserimento/aggiornamento e <code translate="no">RETRIEVAL_QUERY</code> durante la ricerca.</p>
-<h3 id="Configure-the-index" class="common-anchor-header">Configurare l'indice<button data-href="#Configure-the-index" class="anchor-icon" translate="no">
+<p>When not explicitly set, Milvus automatically uses <code translate="no">RETRIEVAL_DOCUMENT</code> during insert/upsert and <code translate="no">RETRIEVAL_QUERY</code> during search.</p>
+<h3 id="Configure-the-index" class="common-anchor-header">Configure the index<button data-href="#Configure-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -281,7 +281,7 @@ schema.add_function(text_embedding_function)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dopo aver definito lo schema con i campi necessari e la funzione incorporata, configurare l'indice per la collezione. Per semplificare questo processo, utilizzare <code translate="no">AUTOINDEX</code> come <code translate="no">index_type</code>, un'opzione che consente a Milvus di scegliere e configurare il tipo di indice più adatto in base alla struttura dei dati.</p>
+    </button></h3><p>After defining the schema with necessary fields and the built-in function, set up the index for your collection. To simplify this process, use <code translate="no">AUTOINDEX</code> as the <code translate="no">index_type</code>, an option that allows Milvus to choose and configure the most suitable index type based on the structure of your data.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Prepare index parameters</span>
 index_params = client.prepare_index_params()
 
@@ -292,7 +292,7 @@ index_params.add_index(
     metric_type=<span class="hljs-string">&quot;COSINE&quot;</span> 
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Create-the-collection" class="common-anchor-header">Creare la collezione<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
+<h3 id="Create-the-collection" class="common-anchor-header">Create the collection<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -307,7 +307,7 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Creare ora la collezione utilizzando lo schema e i parametri dell'indice definiti.</p>
+    </button></h3><p>Now create the collection using the schema and index parameters defined.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Create collection named &quot;demo&quot;</span>
 client.create_collection(
     collection_name=<span class="hljs-string">&#x27;demo&#x27;</span>, 
@@ -315,7 +315,7 @@ client.create_collection(
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-2-Insert-data" class="common-anchor-header">Fase 2: inserimento dei dati<button data-href="#Step-2-Insert-data" class="anchor-icon" translate="no">
+<h2 id="Step-2-Insert-data" class="common-anchor-header">Step 2: Insert data<button data-href="#Step-2-Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -330,7 +330,7 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dopo aver configurato la collezione e l'indice, si è pronti a inserire i dati grezzi. In questo processo, è sufficiente fornire il testo grezzo. Il modulo Function, definito in precedenza, genera automaticamente il vettore sparse corrispondente per ogni voce di testo.</p>
+    </button></h2><p>After setting up your collection and index, you’re ready to insert your raw data. In this process, you need only to provide the raw text. The Function module we defined earlier automatically generates the corresponding sparse vector for each text entry.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Insert sample documents</span>
 client.insert(<span class="hljs-string">&#x27;demo&#x27;</span>, [
     {<span class="hljs-string">&#x27;id&#x27;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;document&#x27;</span>: <span class="hljs-string">&#x27;Milvus simplifies semantic search through embeddings.&#x27;</span>},
@@ -338,7 +338,7 @@ client.insert(<span class="hljs-string">&#x27;demo&#x27;</span>, [
     {<span class="hljs-string">&#x27;id&#x27;</span>: <span class="hljs-number">3</span>, <span class="hljs-string">&#x27;document&#x27;</span>: <span class="hljs-string">&#x27;Semantic search helps users find relevant information quickly.&#x27;</span>},
 ])
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-3-Search-with-text" class="common-anchor-header">Fase 3: Ricerca con il testo<button data-href="#Step-3-Search-with-text" class="anchor-icon" translate="no">
+<h2 id="Step-3-Search-with-text" class="common-anchor-header">Step 3: Search with text<button data-href="#Step-3-Search-with-text" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -353,7 +353,7 @@ client.insert(<span class="hljs-string">&#x27;demo&#x27;</span>, [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dopo l'inserimento dei dati, è possibile eseguire una ricerca semantica utilizzando il testo grezzo della query. Milvus converte automaticamente la query in un vettore di incorporamento, recupera i documenti pertinenti in base alla somiglianza e restituisce i risultati più corrispondenti.</p>
+    </button></h2><p>After data insertion, perform a semantic search using raw query text. Milvus automatically converts your query into an embedding vector, retrieves relevant documents based on similarity, and returns the top-matching results.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Perform semantic search</span>
 results = client.search(
     collection_name=<span class="hljs-string">&#x27;demo&#x27;</span>, 
@@ -365,4 +365,4 @@ results = client.search(
 
 <span class="hljs-built_in">print</span>(results)
 <button class="copy-code-btn"></button></code></pre>
-<p>Per ulteriori informazioni sulle operazioni di ricerca e interrogazione, consultare <a href="/docs/it/single-vector-search.md">Ricerca vettoriale</a> e <a href="/docs/it/get-and-scalar-query.md">interrogazione</a> <a href="/docs/it/single-vector-search.md">di base</a>.</p>
+<p>For more information about search and query operations, refer to <a href="/docs/it/single-vector-search.md">Basic Vector Search</a> and <a href="/docs/it/get-and-scalar-query.md">Query</a>.</p>

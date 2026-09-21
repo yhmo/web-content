@@ -2,9 +2,9 @@
 id: system_configuration.md
 related_key: configure
 group: system_configuration.md
-summary: Pelajari tentang konfigurasi sistem Milvus.
+summary: Learn about the system configuration of Milvus.
 ---
-<h1 id="Milvus-System-Configurations-Checklist" class="common-anchor-header">Daftar Periksa Konfigurasi Sistem Milvus<button data-href="#Milvus-System-Configurations-Checklist" class="anchor-icon" translate="no">
+<h1 id="Milvus-System-Configurations-Checklist" class="common-anchor-header">Milvus System Configurations Checklist<button data-href="#Milvus-System-Configurations-Checklist" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,12 +19,12 @@ summary: Pelajari tentang konfigurasi sistem Milvus.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Topik ini memperkenalkan bagian-bagian umum dari konfigurasi sistem di Milvus.</p>
-<p>Milvus memiliki sejumlah besar parameter yang mengatur konfigurasi sistem. Setiap konfigurasi memiliki nilai default yang dapat digunakan secara langsung. Anda dapat memodifikasi parameter-parameter ini secara fleksibel agar Milvus dapat lebih baik mendukung aplikasi Anda. Lihat <a href="/docs/id/configure-docker.md">Konfigurasi Milvus</a> untuk informasi lebih lanjut.</p>
+    </button></h1><p>This topic introduces the general sections of the system configurations in Milvus.</p>
+<p>Milvus maintains a considerable number of parameters that configure the system. Each configuration has a default value, which can be used directly. You can modify these parameters flexibly so that Milvus can better serve your application. See <a href="/docs/id/configure-docker.md">Configure Milvus</a> for more information.</p>
 <div class="alert note">
-Pada rilis saat ini, semua parameter hanya berlaku setelah dikonfigurasi saat Milvus dimulai.
+In current release, all parameters take effect only after being configured at the startup of Milvus.
 </div>
-<h2 id="Sections" class="common-anchor-header">Bagian<button data-href="#Sections" class="anchor-icon" translate="no">
+<h2 id="Sections" class="common-anchor-header">Sections<button data-href="#Sections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,7 +39,7 @@ Pada rilis saat ini, semua parameter hanya berlaku setelah dikonfigurasi saat Mi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Untuk memudahkan pemeliharaan, Milvus mengklasifikasikan konfigurasinya ke dalam bagian-bagian berdasarkan komponen, ketergantungan, dan penggunaan umumnya.</p>
+    </button></h2><p>For the convenience of maintenance, Milvus classifies its configurations into sections based on its components, dependencies, and general usage.</p>
 <h3 id="etcd" class="common-anchor-header"><code translate="no">etcd</code><button data-href="#etcd" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -55,8 +55,8 @@ Pada rilis saat ini, semua parameter hanya berlaku setelah dikonfigurasi saat Mi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Konfigurasi terkait etcd, yang digunakan untuk menyimpan metadata Milvus dan penemuan layanan.</p>
-<p>Lihat <a href="/docs/id/configure_etcd.md">Konfigurasi Terkait etcd</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Related configuration of etcd, used to store Milvus metadata & service discovery.</p>
+<p>See <a href="/docs/id/configure_etcd.md">etcd-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="metastore" class="common-anchor-header"><code translate="no">metastore</code><button data-href="#metastore" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -72,7 +72,7 @@ Pada rilis saat ini, semua parameter hanya berlaku setelah dikonfigurasi saat Mi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lihat <a href="/docs/id/configure_metastore.md">Konfigurasi terkait metastore</a> untuk deskripsi terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>See <a href="/docs/id/configure_metastore.md">metastore-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="tikv" class="common-anchor-header"><code translate="no">tikv</code><button data-href="#tikv" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -88,10 +88,10 @@ Pada rilis saat ini, semua parameter hanya berlaku setelah dikonfigurasi saat Mi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Konfigurasi terkait tikv, yang digunakan untuk menyimpan metadata Milvus.</p>
-<p>Perhatikan bahwa ketika TiKV diaktifkan untuk metastore, Anda tetap memerlukan etcd untuk penemuan layanan.</p>
-<p>TiKV merupakan pilihan yang baik jika ukuran metadata memerlukan skalabilitas horizontal yang lebih baik.</p>
-<p>Lihat <a href="/docs/id/configure_tikv.md">Konfigurasi terkait tikv</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Related configuration of tikv, used to store Milvus metadata.</p>
+<p>Notice that when TiKV is enabled for metastore, you still need to have etcd for service discovery.</p>
+<p>TiKV is a good option when the metadata size requires better horizontal scalability.</p>
+<p>See <a href="/docs/id/configure_tikv.md">tikv-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="localStorage" class="common-anchor-header"><code translate="no">localStorage</code><button data-href="#localStorage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -107,7 +107,7 @@ Pada rilis saat ini, semua parameter hanya berlaku setelah dikonfigurasi saat Mi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lihat <a href="/docs/id/configure_localstorage.md">Konfigurasi terkait localStorage</a> untuk deskripsi terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>See <a href="/docs/id/configure_localstorage.md">localStorage-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="minio" class="common-anchor-header"><code translate="no">minio</code><button data-href="#minio" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -123,9 +123,9 @@ Pada rilis saat ini, semua parameter hanya berlaku setelah dikonfigurasi saat Mi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Konfigurasi terkait MinIO/S3/GCS atau layanan lain yang mendukung API S3, yang bertanggung jawab atas persistensi data untuk Milvus.</p>
-<p>Untuk kemudahan, kami menyebut layanan penyimpanan tersebut sebagai MinIO/S3 dalam uraian berikut.</p>
-<p>Lihat <a href="/docs/id/configure_minio.md">Konfigurasi terkait minio</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Related configuration of MinIO/S3/GCS or any other service supports S3 API, which is responsible for data persistence for Milvus.</p>
+<p>We refer to the storage service as MinIO/S3 in the following description for simplicity.</p>
+<p>See <a href="/docs/id/configure_minio.md">minio-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="mq" class="common-anchor-header"><code translate="no">mq</code><button data-href="#mq" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -141,15 +141,15 @@ Pada rilis saat ini, semua parameter hanya berlaku setelah dikonfigurasi saat Mi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus mendukung empat MQ: rocksmq (berbasis RockDB), Pulsar, Kafka, dan Woodpecker.</p>
-<p>Anda dapat mengubah MQ dengan mengatur bidang mq.type.</p>
-<p>Jika Anda tidak mengatur bidang `mq.type` sesuai default, ada catatan mengenai pengaktifan prioritas jika kita mengonfigurasi beberapa MQ dalam berkas ini.</p>
+    </button></h3><p>Milvus supports four MQ: rocksmq(based on RockDB), Pulsar, Kafka and Woodpecker.</p>
+<p>You can change your mq by setting mq.type field.</p>
+<p>If you don’t set mq.type field as default, there is a note about enabling priority if we config multiple mq in this file.</p>
 <ol>
-<li><p>mode standalone (lokal): rocksmq (default) &gt; Pulsar &gt; Kafka</p></li>
-<li><p>mode cluster:  Pulsar (default) &gt; Kafka (rocksmq tidak didukung dalam mode cluster)</p></li>
-<li><p>Woodpecker dapat digunakan baik dalam mode standalone maupun cluster dengan mengatur mq.type menjadi woodpecker.</p></li>
+<li><p>standalone(local) mode: rocksmq(default) > Pulsar > Kafka</p></li>
+<li><p>cluster mode:  Pulsar(default) > Kafka (rocksmq is unsupported in cluster mode)</p></li>
+<li><p>Woodpecker can be used in both standalone and cluster mode by setting mq.type to woodpecker.</p></li>
 </ol>
-<p>Lihat <a href="/docs/id/configure_mq.md">Konfigurasi Terkait MQ</a> untuk deskripsi terperinci mengenai setiap parameter di bagian ini.</p>
+<p>See <a href="/docs/id/configure_mq.md">mq-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="pulsar" class="common-anchor-header"><code translate="no">pulsar</code><button data-href="#pulsar" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -165,8 +165,8 @@ Pada rilis saat ini, semua parameter hanya berlaku setelah dikonfigurasi saat Mi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Konfigurasi terkait Pulsar, yang digunakan untuk mengelola log Milvus dari operasi mutasi terbaru, log streaming keluaran, dan menyediakan layanan publikasi-langganan log.</p>
-<p>Lihat <a href="/docs/id/configure_pulsar.md">Konfigurasi terkait Pulsar</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Related configuration of pulsar, used to manage Milvus logs of recent mutation operations, output streaming log, and provide log publish-subscribe services.</p>
+<p>See <a href="/docs/id/configure_pulsar.md">pulsar-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="rocksmq" class="common-anchor-header"><code translate="no">rocksmq</code><button data-href="#rocksmq" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -182,13 +182,13 @@ Pada rilis saat ini, semua parameter hanya berlaku setelah dikonfigurasi saat Mi
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Jika Anda ingin mengaktifkan Kafka, konfigurasi Pulsar perlu dikomentari</p>
+    </button></h3><p>If you want to enable kafka, needs to comment the pulsar configs</p>
 <p>kafka:</p>
-<p>daftarBroker: localhost:9092</p>
+<p>brokerList: localhost:9092</p>
 <p>saslUsername:</p>
 <p>saslPassword:</p>
 <p>saslMechanisms:</p>
-<p>protokol keamanan:</p>
+<p>securityProtocol:</p>
 <p>ssl:</p>
 <pre><code translate="no">enabled: false # whether to enable ssl mode
 
@@ -200,8 +200,8 @@ tlsCaCert:  # file or directory path to CA certificate(s) for verifying the brok
 
 tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_ssl_cert(), if any
 </code></pre>
-<p>batas waktu baca: 10</p>
-<p>Lihat <a href="/docs/id/configure_rocksmq.md">Konfigurasi terkait rocksmq</a> untuk deskripsi terperinci mengenai setiap parameter di bagian ini.</p>
+<p>readTimeout: 10</p>
+<p>See <a href="/docs/id/configure_rocksmq.md">rocksmq-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="rootCoord" class="common-anchor-header"><code translate="no">rootCoord</code><button data-href="#rootCoord" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -217,8 +217,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Konfigurasi terkait rootCoord, yang digunakan untuk menangani permintaan bahasa definisi data (DDL) dan bahasa kontrol data (DCL)</p>
-<p>Lihat <a href="/docs/id/configure_rootcoord.md">Konfigurasi terkait rootCoord</a> untuk penjelasan terperinci mengenai setiap parameter di bawah bagian ini.</p>
+    </button></h3><p>Related configuration of rootCoord, used to handle data definition language (DDL) and data control language (DCL) requests</p>
+<p>See <a href="/docs/id/configure_rootcoord.md">rootCoord-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="proxy" class="common-anchor-header"><code translate="no">proxy</code><button data-href="#proxy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -234,8 +234,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Konfigurasi terkait proxy, yang digunakan untuk memvalidasi permintaan klien dan menyaring hasil yang dikembalikan.</p>
-<p>Lihat <a href="/docs/id/configure_proxy.md">Konfigurasi terkait proxy</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Related configuration of proxy, used to validate client requests and reduce the returned results.</p>
+<p>See <a href="/docs/id/configure_proxy.md">proxy-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="queryCoord" class="common-anchor-header"><code translate="no">queryCoord</code><button data-href="#queryCoord" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -251,8 +251,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Konfigurasi terkait queryCoord, digunakan untuk mengelola topologi dan penyeimbangan beban untuk node kueri, serta serah terima dari segmen yang berkembang ke segmen yang disegel.</p>
-<p>Lihat <a href="/docs/id/configure_querycoord.md">Konfigurasi terkait queryCoord</a> untuk deskripsi terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Related configuration of queryCoord, used to manage topology and load balancing for the query nodes, and handoff from growing segments to sealed segments.</p>
+<p>See <a href="/docs/id/configure_querycoord.md">queryCoord-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="queryNode" class="common-anchor-header"><code translate="no">queryNode</code><button data-href="#queryNode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -268,8 +268,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Konfigurasi terkait queryNode, yang digunakan untuk menjalankan pencarian hibrida antara data vektor dan skalar.</p>
-<p>Lihat <a href="/docs/id/configure_querynode.md">Konfigurasi terkait queryNode</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Related configuration of queryNode, used to run hybrid search between vector and scalar data.</p>
+<p>See <a href="/docs/id/configure_querynode.md">queryNode-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="indexCoord" class="common-anchor-header"><code translate="no">indexCoord</code><button data-href="#indexCoord" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -285,7 +285,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lihat <a href="/docs/id/configure_indexcoord.md">Konfigurasi terkait indexCoord</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>See <a href="/docs/id/configure_indexcoord.md">indexCoord-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="indexNode" class="common-anchor-header"><code translate="no">indexNode</code><button data-href="#indexNode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -301,7 +301,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lihat <a href="/docs/id/configure_indexnode.md">Konfigurasi terkait indexNode</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>See <a href="/docs/id/configure_indexnode.md">indexNode-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="dataCoord" class="common-anchor-header"><code translate="no">dataCoord</code><button data-href="#dataCoord" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -317,7 +317,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lihat <a href="/docs/id/configure_datacoord.md">Konfigurasi terkait dataCoord</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>See <a href="/docs/id/configure_datacoord.md">dataCoord-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="dataNode" class="common-anchor-header"><code translate="no">dataNode</code><button data-href="#dataNode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -333,7 +333,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lihat <a href="/docs/id/configure_datanode.md">Konfigurasi terkait dataNode</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>See <a href="/docs/id/configure_datanode.md">dataNode-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="msgChannel" class="common-anchor-header"><code translate="no">msgChannel</code><button data-href="#msgChannel" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -349,8 +349,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Topik ini memperkenalkan konfigurasi Milvus yang terkait dengan saluran pesan.</p>
-<p>Lihat <a href="/docs/id/configure_msgchannel.md">Konfigurasi terkait msgChannel</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>This topic introduces the message channel-related configurations of Milvus.</p>
+<p>See <a href="/docs/id/configure_msgchannel.md">msgChannel-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="log" class="common-anchor-header"><code translate="no">log</code><button data-href="#log" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -366,8 +366,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Mengonfigurasi keluaran log sistem.</p>
-<p>Lihat <a href="/docs/id/configure_log.md">Konfigurasi terkait log</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Configures the system log output.</p>
+<p>See <a href="/docs/id/configure_log.md">log-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="grpc" class="common-anchor-header"><code translate="no">grpc</code><button data-href="#grpc" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -383,7 +383,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lihat <a href="/docs/id/configure_grpc.md">Konfigurasi terkait grpc</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>See <a href="/docs/id/configure_grpc.md">grpc-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="tls" class="common-anchor-header"><code translate="no">tls</code><button data-href="#tls" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -399,8 +399,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Konfigurasikan TLS eksternal.</p>
-<p>Lihat <a href="/docs/id/configure_tls.md">Konfigurasi terkait tls</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Configure external tls.</p>
+<p>See <a href="/docs/id/configure_tls.md">tls-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="internaltls" class="common-anchor-header"><code translate="no">internaltls</code><button data-href="#internaltls" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -416,8 +416,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Mengonfigurasi TLS internal.</p>
-<p>Lihat <a href="/docs/id/configure_internaltls.md">Konfigurasi terkait internaltls</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Configure internal tls.</p>
+<p>See <a href="/docs/id/configure_internaltls.md">internaltls-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="common" class="common-anchor-header"><code translate="no">common</code><button data-href="#common" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -433,7 +433,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lihat <a href="/docs/id/configure_common.md">Konfigurasi terkait common</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>See <a href="/docs/id/configure_common.md">common-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="quotaAndLimits" class="common-anchor-header"><code translate="no">quotaAndLimits</code><button data-href="#quotaAndLimits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -449,22 +449,22 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>QuotaConfig, konfigurasi kuota dan batasan Milvus.</p>
-<p>Secara default, kami mengaktifkan:</p>
+    </button></h3><p>QuotaConfig, configurations of Milvus quota and limits.</p>
+<p>By default, we enable:</p>
 <ol>
-<li><p>Perlindungan TT;</p></li>
-<li><p>Perlindungan memori.</p></li>
-<li><p>Perlindungan kuota disk.</p></li>
+<li><p>TT protection;</p></li>
+<li><p>Memory protection.</p></li>
+<li><p>Disk quota protection.</p></li>
 </ol>
-<p>Anda dapat mengaktifkan:</p>
+<p>You can enable:</p>
 <ol>
-<li><p>Pembatasan throughput DML;</p></li>
-<li><p>Pembatasan qps/rps DDL dan DQL;</p></li>
-<li><p>Perlindungan panjang antrian/latensi DQL;</p></li>
-<li><p>Perlindungan laju hasil DQL;</p></li>
+<li><p>DML throughput limitation;</p></li>
+<li><p>DDL, DQL qps/rps limitation;</p></li>
+<li><p>DQL Queue length/latency protection;</p></li>
+<li><p>DQL result rate protection;</p></li>
 </ol>
-<p>Jika diperlukan, Anda juga dapat secara manual memaksa penolakan permintaan baca/tulis (RW).</p>
-<p>Lihat <a href="/docs/id/configure_quotaandlimits.md">Konfigurasi terkait quotaAndLimits</a> untuk deskripsi terperinci mengenai setiap parameter di bagian ini.</p>
+<p>If necessary, you can also manually force to deny RW requests.</p>
+<p>See <a href="/docs/id/configure_quotaandlimits.md">quotaAndLimits-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="trace" class="common-anchor-header"><code translate="no">trace</code><button data-href="#trace" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -480,7 +480,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Lihat <a href="/docs/id/configure_trace.md">konfigurasi terkait trace</a> untuk deskripsi terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>See <a href="/docs/id/configure_trace.md">trace-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="gpu" class="common-anchor-header"><code translate="no">gpu</code><button data-href="#gpu" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -496,13 +496,13 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>#Saat menggunakan pengindeksan GPU, Milvus akan memanfaatkan kumpulan memori (memory pool) untuk menghindari alokasi dan pelepasan memori yang sering terjadi.</p>
-<p>#di sini, Anda dapat mengatur ukuran memori yang ditempati oleh kumpulan memori, dengan satuan MB.</p>
-<p>#perhatikan bahwa ada kemungkinan Milvus mengalami crash jika kebutuhan memori aktual melebihi nilai yang ditetapkan oleh maxMemSize.</p>
-<p>#jika initMemSize dan MaxMemSize keduanya diatur ke nol,</p>
-<p>#Milvus akan secara otomatis menginisialisasi setengah dari memori GPU yang tersedia,</p>
-<p>#maxMemSize akan menggunakan seluruh memori GPU yang tersedia.</p>
-<p>Lihat <a href="/docs/id/configure_gpu.md">Konfigurasi terkait GPU</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>#when using GPU indexing, Milvus will utilize a memory pool to avoid frequent memory allocation and deallocation.</p>
+<p>#here, you can set the size of the memory occupied by the memory pool, with the unit being MB.</p>
+<p>#note that there is a possibility of Milvus crashing when the actual memory demand exceeds the value set by maxMemSize.</p>
+<p>#if initMemSize and MaxMemSize both set zero,</p>
+<p>#milvus will automatically initialize half of the available GPU memory,</p>
+<p>#maxMemSize will the whole available GPU memory.</p>
+<p>See <a href="/docs/id/configure_gpu.md">gpu-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="streamingNode" class="common-anchor-header"><code translate="no">streamingNode</code><button data-href="#streamingNode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -518,8 +518,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Konfigurasi apa pun yang terkait dengan server node streaming.</p>
-<p>Lihat <a href="/docs/id/configure_streamingnode.md">Konfigurasi terkait streamingNode</a> untuk deskripsi terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Any configuration related to the streaming node server.</p>
+<p>See <a href="/docs/id/configure_streamingnode.md">streamingNode-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="streaming" class="common-anchor-header"><code translate="no">streaming</code><button data-href="#streaming" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -535,8 +535,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Konfigurasi apa pun yang terkait dengan layanan streaming.</p>
-<p>Lihat <a href="/docs/id/configure_streaming.md">Konfigurasi terkait streaming</a> untuk deskripsi terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Any configuration related to the streaming service.</p>
+<p>See <a href="/docs/id/configure_streaming.md">streaming-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="knowhere" class="common-anchor-header"><code translate="no">knowhere</code><button data-href="#knowhere" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -552,5 +552,5 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Konfigurasi apa pun yang terkait dengan mesin pencari vektor knowhere</p>
-<p>Lihat <a href="/docs/id/configure_knowhere.md">Konfigurasi terkait knowhere</a> untuk penjelasan terperinci mengenai setiap parameter di bagian ini.</p>
+    </button></h3><p>Any configuration related to the knowhere vector search engine</p>
+<p>See <a href="/docs/id/configure_knowhere.md">knowhere-related Configurations</a> for detailed description for each parameter under this section.</p>

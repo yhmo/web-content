@@ -1,13 +1,12 @@
 ---
 id: standard-analyzer.md
-title: Penganalisis Standar
+title: Standard Analyzer
 summary: >-
-  Penganalisis standar adalah penganalisis bawaan di Milvus, yang secara
-  otomatis diterapkan pada bidang teks jika tidak ada penganalisis yang
-  ditentukan. Penganalisis ini menggunakan tokenisasi berbasis tata bahasa,
-  sehingga efektif untuk sebagian besar bahasa.
+  The standard analyzer is the default analyzer in Milvus, which is
+  automatically applied to text fields if no analyzer is specified. It uses
+  grammar-based tokenization, making it effective for most languages.
 ---
-<h1 id="Standard-Analyzer" class="common-anchor-header">Penganalisis Standar<button data-href="#Standard-Analyzer" class="anchor-icon" translate="no">
+<h1 id="Standard-Analyzer" class="common-anchor-header">Standard Analyzer<button data-href="#Standard-Analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,11 +21,11 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Penganalisis " <code translate="no">standard</code> " adalah penganalisis default di Milvus, yang secara otomatis diterapkan pada bidang teks jika tidak ada penganalisis yang ditentukan. Penganalisis ini menggunakan tokenisasi berbasis tata bahasa, sehingga efektif untuk sebagian besar bahasa.</p>
+    </button></h1><p>The <code translate="no">standard</code> analyzer is the default analyzer in Milvus, which is automatically applied to text fields if no analyzer is specified. It uses grammar-based tokenization, making it effective for most languages.</p>
 <div class="alert note">
-<p>Penganalisis " <code translate="no">standard</code> " cocok untuk bahasa yang mengandalkan pemisah (seperti spasi, tanda baca) sebagai batas kata. Namun, bahasa seperti Mandarin, Arab, Thailand, Jepang, dan Korea memerlukan tokenisasi atau normalisasi khusus bahasa. Dalam kasus seperti itu, gunakan penganalisis khusus bahasa seperti <a href="/docs/id/chinese-analyzer.md"><code translate="no">chinese</code></a>, <a href="/docs/id/arabic-analyzer.md"><code translate="no">arabic</code></a>, atau <a href="/docs/id/thai-analyzer.md"><code translate="no">thai</code></a>, atau penganalisis khusus dengan tokenizer khusus seperti <a href="/docs/id/lindera-tokenizer.md"><code translate="no">lindera</code></a> dan <a href="/docs/id/icu-tokenizer.md"><code translate="no">icu</code></a>.</p>
+<p>The <code translate="no">standard</code> analyzer is suitable for languages that rely on separators (such as spaces, punctuation) for word boundaries. However, languages like Chinese, Arabic, Thai, Japanese, and Korean need language-specific tokenization or normalization. In such cases, use a language-specific analyzer such as <a href="/docs/id/chinese-analyzer.md"><code translate="no">chinese</code></a>, <a href="/docs/id/arabic-analyzer.md"><code translate="no">arabic</code></a>, or <a href="/docs/id/thai-analyzer.md"><code translate="no">thai</code></a>, or custom analyzers with specialized tokenizers such as <a href="/docs/id/lindera-tokenizer.md"><code translate="no">lindera</code></a> and <a href="/docs/id/icu-tokenizer.md"><code translate="no">icu</code></a>.</p>
 </div>
-<h2 id="Definition" class="common-anchor-header">Definisi<button data-href="#Definition" class="anchor-icon" translate="no">
+<h2 id="Definition" class="common-anchor-header">Definition<button data-href="#Definition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,18 +40,18 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Penganalisis " <code translate="no">standard</code> " terdiri dari:</p>
+    </button></h2><p>The <code translate="no">standard</code> analyzer consists of:</p>
 <ul>
-<li><p><strong>Tokenizer</strong>: Menggunakan tokenizer " <code translate="no">standard</code> " untuk memecah teks menjadi unit kata terpisah berdasarkan aturan tata bahasa. Untuk informasi lebih lanjut, lihat <a href="/docs/id/standard-tokenizer.md">Tokenizer Standar</a>.</p></li>
-<li><p><strong>Filter</strong>: Menggunakan filter <code translate="no">lowercase</code> untuk mengubah semua token menjadi huruf kecil, sehingga memungkinkan pencarian yang tidak peka huruf besar-kecil. Untuk informasi lebih lanjut, lihat <a href="/docs/id/lowercase-filter.md">Lowercase</a>.</p></li>
+<li><p><strong>Tokenizer</strong>: Uses the <code translate="no">standard</code> tokenizer to split text into discrete word units based on grammar rules. For more information, refer to <a href="/docs/id/standard-tokenizer.md">Standard Tokenizer</a>.</p></li>
+<li><p><strong>Filter</strong>: Uses the <code translate="no">lowercase</code> filter to convert all tokens to lowercase, enabling case-insensitive searches. For more information, refer to <a href="/docs/id/lowercase-filter.md">Lowercase</a>.</p></li>
 </ul>
-<p>Fungsionalitas penganalisis <code translate="no">standard</code> setara dengan konfigurasi penganalisis khusus berikut:</p>
+<p>The functionality of the <code translate="no">standard</code> analyzer is equivalent to the following custom analyzer configuration:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -78,7 +77,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Configuration" class="common-anchor-header">Konfigurasi<button data-href="#Configuration" class="anchor-icon" translate="no">
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,13 +92,13 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Untuk menerapkan penganalisis ` <code translate="no">standard</code> ` ke suatu bidang, cukup atur ` <code translate="no">type</code> ` menjadi ` <code translate="no">standard</code> ` di ` <code translate="no">analyzer_params</code>`, dan sertakan parameter opsional sesuai kebutuhan.</p>
+    </button></h2><p>To apply the <code translate="no">standard</code> analyzer to a field, simply set <code translate="no">type</code> to <code translate="no">standard</code> in <code translate="no">analyzer_params</code>, and include optional parameters as needed.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>, <span class="hljs-comment"># Specifies the standard analyzer type</span>
@@ -119,24 +118,24 @@ analyzerParams=<span class="hljs-string">&#x27;{
   &quot;type&quot;: &quot;standard&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Alat analisis <code translate="no">standard</code> menerima parameter opsional berikut:</p>
+<p>The <code translate="no">standard</code> analyzer accepts the following optional parameters:</p>
 <table>
    <tr>
      <th><p>Parameter</p></th>
-     <th><p>Deskripsi</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">stop_words</code></p></td>
-     <td><p>Sebuah array yang berisi daftar kata-kata stop, yang akan dihapus dari proses tokenisasi. Nilai defaultnya adalah <code translate="no">_english_</code>, yaitu kumpulan kata-kata stop bahasa Inggris umum yang sudah terintegrasi.</p></td>
+     <td><p>An array containing a list of stop words, which will be removed from tokenization. Defaults to <code translate="no">_english_</code>, a built-in set of common English stop words.</p></td>
    </tr>
 </table>
-<p>Contoh konfigurasi kata-kata yang diabaikan kustom:</p>
+<p>Example configuration of custom stop words:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>, <span class="hljs-comment"># Specifies the standard analyzer type</span>
@@ -156,8 +155,8 @@ analyzerParams.put(<span class="hljs-string">&quot;stop_words&quot;</span>, Coll
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Setelah mendefinisikan <code translate="no">analyzer_params</code>, Anda dapat menerapkannya ke bidang <code translate="no">VARCHAR</code> saat mendefinisikan skema koleksi. Hal ini memungkinkan Milvus memproses teks di bidang tersebut menggunakan penganalisis yang ditentukan untuk tokenisasi dan penyaringan yang efisien. Untuk informasi lebih lanjut, lihat <a href="/docs/id/analyzer-overview.md#Example-use">Contoh penggunaan</a>.</p>
-<h2 id="Examples" class="common-anchor-header">Contoh<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For more information, refer to <a href="/docs/id/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -172,8 +171,8 @@ analyzerParams.put(<span class="hljs-string">&quot;stop_words&quot;</span>, Coll
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sebelum menerapkan konfigurasi penganalisis ke skema koleksi Anda, verifikasi perilakunya menggunakan metode ` <code translate="no">run_analyzer</code> `.</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">Konfigurasi penganalisis<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -189,11 +188,11 @@ analyzerParams.put(<span class="hljs-string">&quot;stop_words&quot;</span>, Coll
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,  <span class="hljs-comment"># Standard analyzer configuration</span>
@@ -216,7 +215,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verifikasi menggunakan <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -232,11 +231,11 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -306,7 +305,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">Hasil yang diharapkan<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

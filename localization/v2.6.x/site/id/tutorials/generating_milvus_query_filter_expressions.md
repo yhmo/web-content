@@ -1,15 +1,14 @@
 ---
 id: generating_milvus_query_filter_expressions.md
 summary: >-
-  Dalam tutorial ini, kami akan mendemonstrasikan cara menggunakan Large
-  Language Models (LLM) untuk secara otomatis menghasilkan ekspresi penyaringan
-  Milvus dari kueri bahasa alami. Pendekatan ini membuat kueri basis data vektor
-  lebih mudah diakses dengan memungkinkan pengguna mengekspresikan kondisi
-  pemfilteran yang rumit dalam bahasa Inggris, yang kemudian dikonversi ke
-  sintaks Milvus yang tepat.
-title: Menghasilkan Ekspresi Filter Kueri Milvus dengan Model Bahasa Besar
+  In this tutorial, we will demonstrate how to use Large Language Models (LLMs)
+  to automatically generate Milvus filter expressions from natural language
+  queries. This approach makes vector database querying more accessible by
+  allowing users to express complex filtering conditions in plain English, which
+  are then converted to proper Milvus syntax.
+title: Generating Milvus Query Filter Expressions with Large Language Models
 ---
-<h1 id="Generating-Milvus-Query-Filter-Expressions-with-Large-Language-Models" class="common-anchor-header">Menghasilkan Ekspresi Filter Kueri Milvus dengan Model Bahasa Besar<button data-href="#Generating-Milvus-Query-Filter-Expressions-with-Large-Language-Models" class="anchor-icon" translate="no">
+<h1 id="Generating-Milvus-Query-Filter-Expressions-with-Large-Language-Models" class="common-anchor-header">Generating Milvus Query Filter Expressions with Large Language Models<button data-href="#Generating-Milvus-Query-Filter-Expressions-with-Large-Language-Models" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,17 +23,17 @@ title: Menghasilkan Ekspresi Filter Kueri Milvus dengan Model Bahasa Besar
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Dalam tutorial ini, kami akan mendemonstrasikan cara menggunakan Model Bahasa Besar (LLM) untuk secara otomatis menghasilkan ekspresi filter Milvus dari kueri bahasa alami. Pendekatan ini membuat kueri basis data vektor menjadi lebih mudah diakses dengan mengizinkan pengguna untuk mengekspresikan kondisi penyaringan yang kompleks dalam bahasa Inggris sederhana, yang kemudian dikonversi ke sintaks Milvus yang tepat.</p>
-<p>Milvus mendukung kemampuan pemfilteran yang canggih termasuk:</p>
+    </button></h1><p>In this tutorial, we will demonstrate how to use Large Language Models (LLMs) to automatically generate Milvus filter expressions from natural language queries. This approach makes vector database querying more accessible by allowing users to express complex filtering conditions in plain English, which are then converted to proper Milvus syntax.</p>
+<p>Milvus supports sophisticated filtering capabilities including:</p>
 <ul>
-<li><strong>Operator Dasar</strong>: Operator perbandingan seperti <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code></li>
-<li><strong>Operator Boolean</strong>: Operator logika seperti <code translate="no">and</code>, <code translate="no">or</code>, <code translate="no">not</code> untuk kondisi yang kompleks</li>
-<li><strong>Operasi String</strong>: Pencocokan pola dengan <code translate="no">like</code> dan fungsi string lainnya</li>
-<li><strong>Operasi Larik</strong>: Bekerja dengan bidang larik menggunakan <code translate="no">array_contains</code>, <code translate="no">array_length</code>, dll.</li>
-<li><strong>Operasi JSON</strong>: Mengajukan pertanyaan ke bidang JSON dengan operator khusus</li>
+<li><strong>Basic Operators</strong>: Comparison operators like <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code></li>
+<li><strong>Boolean Operators</strong>: Logical operators like <code translate="no">and</code>, <code translate="no">or</code>, <code translate="no">not</code> for complex conditions</li>
+<li><strong>String Operations</strong>: Pattern matching with <code translate="no">like</code> and other string functions</li>
+<li><strong>Array Operations</strong>: Working with array fields using <code translate="no">array_contains</code>, <code translate="no">array_length</code>, etc.</li>
+<li><strong>JSON Operations</strong>: Querying JSON fields with specialized operators</li>
 </ul>
-<p>Dengan mengintegrasikan LLM dengan dokumentasi Milvus, kita dapat membuat sistem cerdas yang memahami kueri bahasa alami dan menghasilkan ekspresi filter yang benar secara sintaksis. Tutorial ini akan memandu Anda dalam proses menyiapkan sistem ini, menyoroti keefektifannya dalam berbagai skenario penyaringan.</p>
-<h2 id="Dependencies-and-Environment" class="common-anchor-header">Ketergantungan dan Lingkungan<button data-href="#Dependencies-and-Environment" class="anchor-icon" translate="no">
+<p>By integrating LLMs with Milvus documentation, we can create an intelligent system that understands natural language queries and generates syntactically correct filter expressions. This tutorial will walk through the process of setting up this system, highlighting its effectiveness in various filtering scenarios.</p>
+<h2 id="Dependencies-and-Environment" class="common-anchor-header">Dependencies and Environment<button data-href="#Dependencies-and-Environment" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -52,7 +51,7 @@ title: Menghasilkan Ekspresi Filter Kueri Milvus dengan Model Bahasa Besar
     </button></h2><pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip install --upgrade pymilvus openai requests docling beautifulsoup4</span>
 print(&quot;Environment setup complete!&quot;)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Set-up-environment-variables" class="common-anchor-header">Menyiapkan variabel lingkungan<button data-href="#Set-up-environment-variables" class="anchor-icon" translate="no">
+<h2 id="Set-up-environment-variables" class="common-anchor-header">Set up environment variables<button data-href="#Set-up-environment-variables" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,7 +66,7 @@ print(&quot;Environment setup complete!&quot;)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Konfigurasikan kredensial API OpenAI Anda untuk mengaktifkan pembuatan embedding dan pembuatan ekspresi filter berbasis LLM. Ganti <code translate="no">'your_openai_api_key'</code> dengan kunci API OpenAI Anda yang sebenarnya.</p>
+    </button></h2><p>Configure your OpenAI API credentials to enable embedding generation and LLM-based filter expression creation. Replace <code translate="no">'your_openai_api_key'</code> with your actual OpenAI API key.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">import</span> openai
 
@@ -80,7 +79,7 @@ api_key = os.getenv(<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>)
 openai.api_key = api_key
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;API key loaded.&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Create-a-Sample-Collection" class="common-anchor-header">Membuat Koleksi Sampel<button data-href="#Create-a-Sample-Collection" class="anchor-icon" translate="no">
+<h2 id="Create-a-Sample-Collection" class="common-anchor-header">Create a Sample Collection<button data-href="#Create-a-Sample-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,7 +94,7 @@ openai.api_key = api_key
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sekarang mari kita buat contoh koleksi Milvus dengan data pengguna. Koleksi ini akan berisi bidang skalar (untuk penyaringan) dan penyematan vektor (untuk pencarian semantik). Kita akan menggunakan model penyematan teks OpenAI untuk menghasilkan representasi vektor dari informasi pengguna.</p>
+    </button></h2><p>Now let’s create a sample Milvus collection with user data. This collection will contain both scalar fields (for filtering) and vector embeddings (for semantic search). We’ll use OpenAI’s text embedding model to generate vector representations of user information.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, FieldSchema, CollectionSchema, DataType
 <span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
@@ -186,7 +185,7 @@ client.insert(collection_name=collection_name, data=insert_data)
 
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Collection &#x27;<span class="hljs-subst">{collection_name}</span>&#x27; has been created and data has been inserted.&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Print-3-sample-data" class="common-anchor-header">Mencetak 3 data sampel<button data-href="#Print-3-sample-data" class="anchor-icon" translate="no">
+<h2 id="Print-3-sample-data" class="common-anchor-header">Print 3 sample data<button data-href="#Print-3-sample-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -201,16 +200,16 @@ client.insert(collection_name=collection_name, data=insert_data)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Kode di atas membuat koleksi Milvus dengan struktur sebagai berikut:</p>
+    </button></h2><p>The code above creates a Milvus collection with the following structure:</p>
 <ul>
-<li><strong>pk</strong>: Bidang kunci utama (VARCHAR)</li>
-<li><strong>nama</strong>: Nama pengguna (VARCHAR)</li>
-<li><strong>usia</strong>: Usia pengguna (INT64)</li>
-<li><strong>kota</strong>: Kota pengguna (VARCHAR)</li>
-<li><strong>hobi</strong>: Hobi pengguna (VARCHAR)</li>
-<li><strong>penyematan</strong>: Penyematan vektor (FLOAT_VECTOR, 1536 dimensi)</li>
+<li><strong>pk</strong>: Primary key field (VARCHAR)</li>
+<li><strong>name</strong>: User name (VARCHAR)</li>
+<li><strong>age</strong>: User age (INT64)</li>
+<li><strong>city</strong>: User city (VARCHAR)</li>
+<li><strong>hobby</strong>: User hobby (VARCHAR)</li>
+<li><strong>embedding</strong>: Vector embedding (FLOAT_VECTOR, 1536 dimensions)</li>
 </ul>
-<p>Kami telah memasukkan 11 sampel pengguna dengan informasi pribadi mereka dan menghasilkan penyematan untuk kemampuan pencarian semantik. Setiap informasi pengguna diubah menjadi teks deskriptif yang menangkap nama, lokasi, usia, dan minat mereka sebelum disematkan. Mari kita verifikasi bahwa koleksi kita telah berhasil dibuat dan berisi data yang diharapkan dengan melakukan kueri pada beberapa catatan sampel.</p>
+<p>We have inserted 11 sample users with their personal information and generate embeddings for semantic search capabilities. Each user’s information is converted into a descriptive text that captures their name, location, age, and interests before being embedded. Let’s verify that our collection was created successfully and contains the expected data by querying a few sample records.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
@@ -230,7 +229,7 @@ result = client.query(
 <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> result:
     <span class="hljs-built_in">print</span>(record)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Collecting-Milvus-Filter-Expression-Documentation" class="common-anchor-header">Mengumpulkan Dokumentasi Ekspresi Filter Milvus<button data-href="#Collecting-Milvus-Filter-Expression-Documentation" class="anchor-icon" translate="no">
+<h2 id="Collecting-Milvus-Filter-Expression-Documentation" class="common-anchor-header">Collecting Milvus Filter Expression Documentation<button data-href="#Collecting-Milvus-Filter-Expression-Documentation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -245,15 +244,15 @@ result = client.query(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Untuk membantu model bahasa besar lebih memahami sintaks ekspresi filter Milvus, kita perlu menyediakan dokumentasi resmi yang relevan. Kita akan menggunakan pustaka <code translate="no">docling</code> untuk mengambil beberapa halaman utama dari situs web resmi Milvus.</p>
-<p>Halaman-halaman ini berisi informasi rinci tentang:</p>
+    </button></h2><p>To help the large language model better understand Milvus’s filter expression syntax, we need to provide it with relevant official documentation. We’ll use the <code translate="no">docling</code> library to scrape several key pages from the official Milvus website.</p>
+<p>These pages contain detailed information about:</p>
 <ul>
-<li><strong>Operator Boolean</strong>: <code translate="no">and</code>, <code translate="no">or</code>, <code translate="no">not</code> untuk kondisi logika yang kompleks</li>
-<li><strong>Operator dasar</strong>: Operator perbandingan seperti <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code></li>
-<li><strong>Template pemfilteran</strong>: Pola dan sintaks pemfilteran tingkat lanjut</li>
-<li><strong>Pencocokan string</strong>: Pencocokan pola dengan <code translate="no">like</code> dan operasi string lainnya</li>
+<li><strong>Boolean operators</strong>: <code translate="no">and</code>, <code translate="no">or</code>, <code translate="no">not</code> for complex logical conditions</li>
+<li><strong>Basic operators</strong>: Comparison operators like <code translate="no">==</code>, <code translate="no">!=</code>, <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;=</code></li>
+<li><strong>Filtering templates</strong>: Advanced filtering patterns and syntax</li>
+<li><strong>String matching</strong>: Pattern matching with <code translate="no">like</code> and other string operations</li>
 </ul>
-<p>Dokumentasi ini akan berfungsi sebagai basis pengetahuan bagi LLM kami untuk menghasilkan ekspresi filter yang akurat.</p>
+<p>This documentation will serve as the knowledge base for our LLM to generate accurate filter expressions.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> docling
 <span class="hljs-keyword">from</span> docling.document_converter <span class="hljs-keyword">import</span> DocumentConverter
 
@@ -270,8 +269,8 @@ docs = [
 <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> docs[:<span class="hljs-number">3</span>]:
     <span class="hljs-built_in">print</span>(doc.document.export_to_markdown())
 <button class="copy-code-btn"></button></code></pre>
-<p>Penggalian dokumentasi menyediakan cakupan yang komprehensif dari sintaks filter Milvus. Basis pengetahuan ini akan memungkinkan LLM kami untuk memahami nuansa konstruksi ekspresi filter, termasuk penggunaan operator yang tepat, referensi bidang, dan kombinasi kondisi yang kompleks.</p>
-<h2 id="LLM-Powered-Filter-Generation" class="common-anchor-header">Pembuatan Filter yang Didukung LLM<button data-href="#LLM-Powered-Filter-Generation" class="anchor-icon" translate="no">
+<p>The documentation scraping provides comprehensive coverage of Milvus filter syntax. This knowledge base will enable our LLM to understand the nuances of filter expression construction, including proper operator usage, field referencing, and complex condition combinations.</p>
+<h2 id="LLM-Powered-Filter-Generation" class="common-anchor-header">LLM-Powered Filter Generation<button data-href="#LLM-Powered-Filter-Generation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -286,15 +285,15 @@ docs = [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sekarang kita telah memiliki konteks dokumentasi, mari kita siapkan sistem LLM untuk menghasilkan ekspresi filter. Kita akan membuat prompt terstruktur yang menggabungkan dokumentasi yang telah di-scan dengan pertanyaan pengguna untuk menghasilkan ekspresi filter Milvus yang benar secara sintaksis.</p>
-<p>Sistem pembuatan filter kami menggunakan prompt yang dibuat dengan hati-hati:</p>
+    </button></h2><p>Now that we have the documentation context, let’s set up the LLM system to generate filter expressions. We’ll create a structured prompt that combines the scraped documentation with user queries to produce syntactically correct Milvus filter expressions.</p>
+<p>Our filter generation system uses a carefully crafted prompt that:</p>
 <ol>
-<li><strong>Menyediakan konteks</strong>: Mencakup dokumentasi Milvus yang lengkap sebagai bahan referensi</li>
-<li><strong>Menetapkan batasan</strong>: Memastikan LLM hanya menggunakan sintaks dan fitur yang terdokumentasi</li>
-<li><strong>Menegakkan akurasi</strong>: Memerlukan ekspresi yang benar secara sintaksis</li>
-<li><strong>Mempertahankan fokus</strong>: Hanya mengembalikan ekspresi filter tanpa penjelasan</li>
+<li><strong>Provides context</strong>: Includes the complete Milvus documentation as reference material</li>
+<li><strong>Sets constraints</strong>: Ensures the LLM only uses documented syntax and features</li>
+<li><strong>Enforces accuracy</strong>: Requires syntactically correct expressions</li>
+<li><strong>Maintains focus</strong>: Returns only the filter expression without explanations</li>
 </ol>
-<p>Mari kita uji dengan kueri bahasa alami dan lihat seberapa baik kinerja LLM.</p>
+<p>Let’s test this with a natural language query and see how well the LLM performs.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
 <span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">from</span> IPython.display <span class="hljs-keyword">import</span> display, Markdown
@@ -346,14 +345,14 @@ filter_expr = generate_filter_expr(user_query)
 
 <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Generated filter expression: <span class="hljs-subst">{filter_expr}</span>&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>LLM berhasil menghasilkan ekspresi filter yang menggabungkan beberapa kondisi:</p>
+<p>The LLM successfully generated a filter expression that combines multiple conditions:</p>
 <ul>
-<li>Perbandingan usia menggunakan <code translate="no">&gt;</code></li>
-<li>Pencocokan beberapa kota menggunakan operator <code translate="no">in</code> </li>
-<li>Perujukan dan sintaksis bidang yang tepat</li>
+<li>Age comparison using <code translate="no">&gt;</code></li>
+<li>Multiple city matching using <code translate="no">in</code> operator</li>
+<li>Proper field referencing and syntax</li>
 </ul>
-<p>Hal ini menunjukkan kekuatan dari penyediaan konteks dokumentasi yang komprehensif untuk memandu pembuatan filter LLM.</p>
-<h2 id="Test-the-Generated-Filter" class="common-anchor-header">Menguji Filter yang Dihasilkan<button data-href="#Test-the-Generated-Filter" class="anchor-icon" translate="no">
+<p>This demonstrates the power of providing comprehensive documentation context to guide LLM filter generation.</p>
+<h2 id="Test-the-Generated-Filter" class="common-anchor-header">Test the Generated Filter<button data-href="#Test-the-Generated-Filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -368,7 +367,7 @@ filter_expr = generate_filter_expr(user_query)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sekarang mari kita uji ekspresi filter yang telah dihasilkan dengan menggunakannya dalam operasi pencarian Milvus yang sebenarnya. Kami akan menggabungkan pencarian semantik dengan penyaringan yang tepat untuk menemukan pengguna yang sesuai dengan maksud kueri dan kriteria tertentu.</p>
+    </button></h2><p>Now let’s test our generated filter expression by using it in an actual Milvus search operation. We’ll combine semantic search with precise filtering to find users that match both the query intent and the specific criteria.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
 <span class="hljs-keyword">import</span> os
@@ -408,7 +407,7 @@ search_results = client.search(
         <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;  - <span class="hljs-subst">{hit}</span>&quot;</span>)
     <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Results-Analysis" class="common-anchor-header">Analisis Hasil<button data-href="#Results-Analysis" class="anchor-icon" translate="no">
+<h2 id="Results-Analysis" class="common-anchor-header">Results Analysis<button data-href="#Results-Analysis" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -423,10 +422,10 @@ search_results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Hasil pencarian menunjukkan keberhasilan integrasi filter yang dihasilkan LLM dengan pencarian vektor Milvus. Penyaringan mengidentifikasi dengan tepat pengguna yang:</p>
+    </button></h2><p>The search results demonstrate successful integration of LLM-generated filters with Milvus vector search. The filter correctly identified users who:</p>
 <ul>
-<li>Berusia lebih dari 30 tahun</li>
-<li>Tinggal di London, Tokyo, atau Toronto</li>
-<li>Sesuai dengan konteks semantik kueri</li>
+<li>Are older than 30 years</li>
+<li>Live in London, Tokyo, or Toronto</li>
+<li>Match the semantic context of the query</li>
 </ul>
-<p>Pendekatan ini menggabungkan ketepatan pemfilteran terstruktur dengan fleksibilitas input bahasa alami, sehingga database vektor lebih mudah diakses oleh pengguna yang mungkin tidak terbiasa dengan sintaksis kueri tertentu.</p>
+<p>This approach combines the precision of structured filtering with the flexibility of natural language input, making vector databases more accessible to users who may not be familiar with specific query syntax.</p>

@@ -2,10 +2,10 @@
 id: cohere-ranker.md
 title: Cohere RankerCompatible with Milvus 2.6.x
 summary: >-
-  Cohere Ranker использует мощные модели реранкинга Cohere для повышения
-  релевантности поиска путем семантического реранкинга. Он предоставляет
-  возможности ранжирования корпоративного уровня с надежной инфраструктурой API
-  и оптимизированной производительностью для производственных сред.
+  The Cohere Ranker leverages Cohere's powerful rerank models to enhance search
+  relevance through semantic reranking. It provides enterprise-grade reranking
+  capabilities with robust API infrastructure and optimized performance for
+  production environments.
 beta: Milvus 2.6.x
 ---
 <h1 id="Cohere-Ranker" class="common-anchor-header">Cohere Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Cohere-Ranker" class="anchor-icon" translate="no">
@@ -23,15 +23,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Cohere Ranker использует мощные модели ранжирования <a href="https://cohere.com/">Cohere</a> для повышения релевантности поиска путем семантического ранжирования. Он предоставляет возможности ранжирования корпоративного уровня с надежной инфраструктурой API и оптимизированной производительностью для производственных сред.</p>
-<p>Cohere Ranker особенно ценен для приложений, требующих:</p>
+    </button></h1><p>The Cohere Ranker leverages <a href="https://cohere.com/">Cohere’s</a> powerful rerank models to enhance search relevance through semantic reranking. It provides enterprise-grade reranking capabilities with robust API infrastructure and optimized performance for production environments.</p>
+<p>Cohere Ranker is particularly valuable for applications requiring:</p>
 <ul>
-<li><p>Высококачественное понимание семантики с использованием самых современных моделей ранжирования</p></li>
-<li><p>Надежность и масштабируемость корпоративного уровня для производственных рабочих нагрузок</p></li>
-<li><p>возможности многоязычного ранжирования для различных типов контента</p></li>
-<li><p>Постоянная производительность API со встроенным ограничением скорости и обработкой ошибок.</p></li>
+<li><p>High-quality semantic understanding with state-of-the-art rerank models</p></li>
+<li><p>Enterprise-grade reliability and scalability for production workloads</p></li>
+<li><p>Multilingual reranking capabilities across diverse content types</p></li>
+<li><p>Consistent API performance with built-in rate limiting and error handling</p></li>
 </ul>
-<h2 id="Prerequisites" class="common-anchor-header">Предварительные условия<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -46,16 +46,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Прежде чем внедрять Cohere Ranker в Milvus, убедитесь, что у вас есть:</p>
+    </button></h2><p>Before implementing Cohere Ranker in Milvus, ensure you have:</p>
 <ul>
-<li><p>Коллекция Milvus с полем <code translate="no">VARCHAR</code>, содержащим текст для ранжирования.</p></li>
-<li><p>Действительный API-ключ Cohere с доступом к моделям ранжирования. Зарегистрируйтесь на <a href="https://dashboard.cohere.com/">платформе Cohere</a>, чтобы получить учетные данные API. Вы можете либо:</p>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A valid Cohere API key with access to reranking models. Sign up at <a href="https://dashboard.cohere.com/">Cohere’s platform</a> to obtain your API credentials. You can either:</p>
 <ul>
-<li><p>Задать переменную окружения <code translate="no">COHERE_API_KEY</code>, либо</p></li>
-<li><p>Указать ключ API непосредственно в <code translate="no">credential</code> <a href="/docs/ru/cohere-ranker.md#Create-a-Cohere-ranker-function">конфигурации ранжировщика</a>.</p></li>
+<li><p>Set the <code translate="no">COHERE_API_KEY</code> environment variable, or</p></li>
+<li><p>Specify the API key directly in the <code translate="no">credential</code> of the <a href="/docs/ru/cohere-ranker.md#Create-a-Cohere-ranker-function">ranker configuration</a></p></li>
 </ul></li>
 </ul>
-<h2 id="Create-a-Cohere-ranker-function" class="common-anchor-header">Создание функции ранжирования Cohere<button data-href="#Create-a-Cohere-ranker-function" class="anchor-icon" translate="no">
+<h2 id="Create-a-Cohere-ranker-function" class="common-anchor-header">Create a Cohere ranker function<button data-href="#Create-a-Cohere-ranker-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,9 +70,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Чтобы использовать Cohere Ranker в вашем приложении Milvus, создайте объект Function, который определяет, как должно работать ранжирование. Эта функция будет передаваться в поисковые операции Milvus для улучшения ранжирования результатов.</p>
+    </button></h2><p>To use Cohere Ranker in your Milvus application, create a Function object that specifies how the reranking should operate. This function will be passed to Milvus search operations to enhance result ranking.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -124,7 +129,7 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Cohere-ranker-specific-parameters" class="common-anchor-header">Специфические параметры ранжировщика Cohere<button data-href="#Cohere-ranker-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="Cohere-ranker-specific-parameters" class="common-anchor-header">Cohere ranker-specific parameters<button data-href="#Cohere-ranker-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -139,61 +144,61 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Следующие параметры специфичны для ранжировщика Cohere:</p>
+    </button></h3><p>The following parameters are specific to the Cohere ranker:</p>
 <table>
    <tr>
-     <th><p><strong>Параметр</strong></p></th>
-     <th><p><strong>Требуемый?</strong></p></th>
-     <th><p><strong>Описание</strong></p></th>
-     <th><p><strong>Значение / Пример</strong></p></th>
+     <th><p><strong>Parameter</strong></p></th>
+     <th><p><strong>Required?</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
+     <th><p><strong>Value / Example</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reranker</code></p></td>
-     <td><p>Да</p></td>
-     <td><p>Должно быть установлено значение <code translate="no">"model"</code>, чтобы включить повторное ранжирование моделей.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>Да</p></td>
-     <td><p>Поставщик услуг модели, который будет использоваться для повторного ранжирования.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"cohere"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">model_name</code></p></td>
-     <td><p>Да</p></td>
-     <td><p>Модель рерайтинга Cohere, которую следует использовать из поддерживаемых моделей на платформе Cohere.</p><p>Список доступных моделей реранкинга см. в <a href="https://docs.cohere.com/docs/rerank">документации Cohere</a>.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The Cohere rerank model to use from supported models on Cohere platform.</p><p>For a list of rerank models available, refer to <a href="https://docs.cohere.com/docs/rerank">Cohere documentation</a>.</p></td>
      <td><p><code translate="no">"rerank-english-v3.0"</code>, <code translate="no">"rerank-multilingual-v3.0"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queries</code></p></td>
-     <td><p>Да</p></td>
-     <td><p>Список строк запросов, используемых моделью ранжирования для расчета баллов релевантности. Количество строк запросов должно точно соответствовать количеству запросов в вашей поисковой операции (даже при использовании векторов запросов вместо текста), иначе будет выдана ошибка.</p></td>
-     <td><p><em>["поисковый запрос"].</em></p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the rerank model to calculate relevance scores. The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
+     <td><p><em>["search query"]</em></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>Нет</p></td>
-     <td><p>Поскольку сервисы моделей могут обрабатывать не все данные сразу, здесь задается размер пакета для обращения к сервису моделей при нескольких запросах.</p></td>
-     <td><p><code translate="no">128</code> (по умолчанию)</p></td>
+     <td><p>No</p></td>
+     <td><p>Since model services may not process all data at once, this sets the batch size for accessing the model service in multiple requests.</p></td>
+     <td><p><code translate="no">128</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_tokens_per_doc</code></p></td>
-     <td><p>Нет</p></td>
-     <td><p>Максимальное количество лексем в одном документе. Длинные документы будут автоматически усекаться до указанного количества лексем.</p></td>
-     <td><p><code translate="no">4096</code> (по умолчанию)</p></td>
+     <td><p>No</p></td>
+     <td><p>Maximum number of tokens per document. Long documents will be automatically truncated to the specified number of tokens.</p></td>
+     <td><p><code translate="no">4096</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">credential</code></p></td>
-     <td><p>Нет</p></td>
-     <td><p>Учетные данные для аутентификации при доступе к сервисам Cohere API. Если не указано, система будет искать переменную окружения <code translate="no">COHERE_API_KEY</code>.</p></td>
+     <td><p>No</p></td>
+     <td><p>Authentication credential for accessing Cohere API services. If not specified, the system will look for the <code translate="no">COHERE_API_KEY</code> environment variable.</p></td>
      <td><p><em>"your-cohere-api-key"</em></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>Общие параметры, общие для всех ранжировщиков моделей (например, <code translate="no">provider</code>, <code translate="no">queries</code>), см. в разделе <a href="/docs/ru/model-ranker-overview.md#Create-a-model-ranker">Создание ранжировщика моделей</a>.</p>
+<p>For general parameters shared across all model rankers (e.g., <code translate="no">provider</code>, <code translate="no">queries</code>), refer to <a href="/docs/ru/model-ranker-overview.md#Create-a-model-ranker">Create a model ranker</a>.</p>
 </div>
-<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Применение к стандартному векторному поиску<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -208,9 +213,14 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Чтобы применить Cohere Ranker к стандартному векторному поиску:</p>
+    </button></h2><p>To apply Cohere Ranker to a standard vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Execute search with Cohere reranking</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;your_collection&quot;</span>,

@@ -1,11 +1,11 @@
 ---
 id: bulk_import_in_cdc_replication.md
 summary: >-
-  Узнайте, как выполнить массовый импорт в кластеры Milvus, использующие
-  репликацию CDC.
-title: Массовый импорт в репликации CDC
+  Learn how to run a bulk import against Milvus clusters that use CDC
+  replication.
+title: Bulk Import in CDC Replication
 ---
-<h1 id="Bulk-Import-in-CDC-Replication" class="common-anchor-header">Массовый импорт в репликации CDC<button data-href="#Bulk-Import-in-CDC-Replication" class="anchor-icon" translate="no">
+<h1 id="Bulk-Import-in-CDC-Replication" class="common-anchor-header">Bulk Import in CDC Replication<button data-href="#Bulk-Import-in-CDC-Replication" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,10 +20,10 @@ title: Массовый импорт в репликации CDC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>В данном руководстве объясняется, как выполнить массовый импорт в кластеры Milvus, входящие в топологию репликации CDC. В кластере с репликацией при массовом импорте необходимо использовать двухфазную фиксацию (2PC), чтобы импорт фиксировался как единая упорядоченная операция как в основном, так и в резервном кластерах.</p>
-<p>В данном руководстве основной кластер — это исходный кластер Milvus, а резервный кластер — целевой кластер Milvus.</p>
-<p>Прежде чем приступить к работе, убедитесь, что между вашими кластерами уже настроена репликация CDC. Подробности см. в разделе <a href="/docs/ru/set_up_cdc_replication.md">«Настройка репликации CDC</a>».</p>
-<h2 id="Why-2PC-is-required" class="common-anchor-header">Почему требуется 2PC<button data-href="#Why-2PC-is-required" class="anchor-icon" translate="no">
+    </button></h1><p>This guide explains how to run a bulk import against Milvus clusters that are part of a CDC replication topology. In a replicating cluster, bulk import must use two-phase commit (2PC) so that the import is committed as a single, ordered point across the primary and standby clusters.</p>
+<p>In this guide, the primary cluster is the source Milvus cluster, and the standby cluster is the target Milvus cluster.</p>
+<p>Before you begin, make sure CDC replication is already configured between your clusters. For details, refer to <a href="/docs/ru/set_up_cdc_replication.md">Set Up CDC Replication</a>.</p>
+<h2 id="Why-2PC-is-required" class="common-anchor-header">Why 2PC is required<button data-href="#Why-2PC-is-required" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,13 +38,13 @@ title: Массовый импорт в репликации CDC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Обычный массовый импорт автоматически фиксируется по завершении задания импорта, благодаря чему импортированные данные становятся видимыми немедленно. В топологии репликации CDC такое поведение недопустимо, поскольку основной и резервный кластеры должны сделать импортированные данные видимыми в один и тот же логический момент времени.</p>
-<p>Вместо этого запустите импорт в режиме двухфазной фиксации, установив параметр « <code translate="no">auto_commit=false</code> »:</p>
+    </button></h2><p>A normal bulk import auto-commits when the import job finishes, which makes the imported data visible immediately. In a CDC replication topology, this behavior is not allowed because the primary and standby clusters must make the imported data visible at the same logical point.</p>
+<p>Instead, run the import in two-phase commit mode by setting <code translate="no">auto_commit=false</code>:</p>
 <ol>
-<li><p><strong>Фаза импорта</strong>: Milvus загружает данные в основной кластер и реплицирует импорт в резервный кластер, но импортированные данные остаются невидимыми. Задание импорта останавливается в состоянии « <code translate="no">Uncommitted</code> » и переходит в режим ожидания.</p></li>
-<li><p><strong>Фаза фиксации</strong>: вы явно фиксируете задание импорта на первичном кластере. Фиксация реплицируется на резервный кластер в виде одного упорядоченного барьера, поэтому оба кластера делают импортированные данные видимыми в одной и той же логической точке.</p></li>
+<li><p><strong>Import phase</strong>: Milvus loads the data on the primary cluster and replicates the import to the standby cluster, but the imported data remains invisible. The import job stops at the <code translate="no">Uncommitted</code> state and waits.</p></li>
+<li><p><strong>Commit phase</strong>: You explicitly commit the import job on the primary cluster. The commit is replicated to the standby cluster as a single ordered fence, so both clusters make the imported data visible at the same logical point.</p></li>
 </ol>
-<h2 id="Step-1-Enable-import-in-a-replicating-cluster" class="common-anchor-header">Шаг 1. Включение импорта в кластере с репликацией<button data-href="#Step-1-Enable-import-in-a-replicating-cluster" class="anchor-icon" translate="no">
+<h2 id="Step-1-Enable-import-in-a-replicating-cluster" class="common-anchor-header">Step 1: Enable import in a replicating cluster<button data-href="#Step-1-Enable-import-in-a-replicating-cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,31 +59,31 @@ title: Массовый импорт в репликации CDC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Импорт в кластере с репликацией по умолчанию отключен. Включите его, установив для параметра ` <code translate="no">dataCoord.import.enableInReplicatingCluster</code> ` значение ` <code translate="no">true</code> ` как в основном, так и в резервном кластере.</p>
-<p>Если вы развертываете Milvus с помощью Milvus Operator, добавьте следующий параметр в файл ` <code translate="no">spec.config</code> ` каждого ресурса ` <code translate="no">Milvus</code> `:</p>
+    </button></h2><p>Import in a replicating cluster is disabled by default. Enable it by setting <code translate="no">dataCoord.import.enableInReplicatingCluster</code> to <code translate="no">true</code> on both the primary and standby clusters.</p>
+<p>If you deploy Milvus with Milvus Operator, add the following setting to <code translate="no">spec.config</code> of each <code translate="no">Milvus</code> resource:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">spec:</span>
   <span class="hljs-attr">config:</span>
     <span class="hljs-attr">dataCoord:</span>
       <span class="hljs-attr">import:</span>
         <span class="hljs-attr">enableInReplicatingCluster:</span> <span class="hljs-literal">true</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Если вы настраиваете Milvus напрямую через файл ` <code translate="no">milvus.yaml</code>`, добавьте следующий параметр:</p>
+<p>If you configure Milvus directly through <code translate="no">milvus.yaml</code>, add the following setting:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">dataCoord:</span>
   <span class="hljs-attr">import:</span>
     <span class="hljs-attr">enableInReplicatingCluster:</span> <span class="hljs-literal">true</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Этот параметр можно обновить, поэтому он вступает в силу без полного перезапуска.</p>
-<p>Когда этот параметр включен, кластер репликации принимает только импорты с <code translate="no">auto_commit=false</code>. В следующей таблице перечислены типичные отклоняемые запросы:</p>
+<p>This setting is refreshable, so it can take effect without a full restart.</p>
+<p>When this setting is enabled, a replicating cluster accepts only imports with <code translate="no">auto_commit=false</code>. The following table lists common rejected requests:</p>
 <table>
 <thead>
-<tr><th>Ситуация</th><th>Сообщение об ошибке</th></tr>
+<tr><th>Situation</th><th>Error message</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">dataCoord.import.enableInReplicatingCluster</code> не включено</td><td><code translate="no">import in replicating cluster is not supported yet</code></td></tr>
-<tr><td><code translate="no">auto_commit=true</code> Отправлен</td><td><code translate="no">auto_commit=true import in replicating cluster is not supported</code></td></tr>
+<tr><td><code translate="no">dataCoord.import.enableInReplicatingCluster</code> is not enabled</td><td><code translate="no">import in replicating cluster is not supported yet</code></td></tr>
+<tr><td><code translate="no">auto_commit=true</code> is submitted</td><td><code translate="no">auto_commit=true import in replicating cluster is not supported</code></td></tr>
 </tbody>
 </table>
-<h2 id="Step-2-Run-a-2PC-import" class="common-anchor-header">Шаг 2: Запуск импорта с использованием 2PC<button data-href="#Step-2-Run-a-2PC-import" class="anchor-icon" translate="no">
+<h2 id="Step-2-Run-a-2PC-import" class="common-anchor-header">Step 2: Run a 2PC import<button data-href="#Step-2-Run-a-2PC-import" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,9 +98,9 @@ title: Массовый импорт в репликации CDC
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Запустите все вызовы импорта на основном кластере. Импортированные данные и решение о фиксации автоматически реплицируются на резервный кластер, поэтому не отправляйте и не фиксируйте импорт на резервном кластере самостоятельно.</p>
-<p>Каждый кластер считывает файлы импорта из собственного объектного хранилища. Убедитесь, что файлы для импорта присутствуют как в основном, так и в резервном объектном хранилище. Вы можете загрузить файлы в оба кластера или использовать объектное хранилище, доступное для чтения обоим кластерам. Если файлы отсутствуют в резервном кластере, репликация импорта в этом кластере завершится с ошибкой «объект не найден».</p>
-<p>В следующем примере используются вспомогательные функции импорта на основе REST из <code translate="no">pymilvus.bulk_writer</code>. Значения <code translate="no">url</code> — это те же адреса Milvus, которые вы используете для других вызовов API.</p>
+    </button></h2><p>Run all import calls against the primary cluster. The imported data and the commit decision are replicated to the standby cluster automatically, so do not submit or commit the import on the standby cluster yourself.</p>
+<p>Each cluster reads the import files from its own object storage. Make sure the files to import exist in both the primary and standby object storage. You can upload the files to both clusters, or use object storage that both clusters can read. If the files are missing on the standby cluster, the replicated import fails there with an object-not-found error.</p>
+<p>The following example uses the REST-based import helpers from <code translate="no">pymilvus.bulk_writer</code>. The <code translate="no">url</code> values are the same Milvus addresses you use for other API calls.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> time
 
 <span class="hljs-keyword">from</span> pymilvus.bulk_writer <span class="hljs-keyword">import</span> bulk_import, commit_import, get_import_progress
@@ -162,7 +162,7 @@ wait_for_state(primary_url, job_id, <span class="hljs-string">&quot;Completed&qu
 wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&quot;</span>)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;import committed and visible on both clusters&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Why-wait-for-Uncommitted-on-both-clusters" class="common-anchor-header">Почему нужно дождаться завершения <code translate="no">Uncommitted</code> на обоих кластерах<button data-href="#Why-wait-for-Uncommitted-on-both-clusters" class="anchor-icon" translate="no">
+<h3 id="Why-wait-for-Uncommitted-on-both-clusters" class="common-anchor-header">Why wait for <code translate="no">Uncommitted</code> on both clusters<button data-href="#Why-wait-for-Uncommitted-on-both-clusters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -177,8 +177,8 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Фиксация изменений до завершения импорта в резервном кластере не приводит к повреждению данных, но на момент применения фиксации резервный кластер всё ещё находится в процессе синхронизации. Ожидание, пока и основной, и резервный кластеры не сообщат о <code translate="no">Uncommitted</code>, подтверждает, что импортированные данные полностью реплицированы и оба кластера готовы одновременно сделать их видимыми.</p>
-<h2 id="Step-3-Verify-the-data" class="common-anchor-header">Шаг 3. Проверка данных<button data-href="#Step-3-Verify-the-data" class="anchor-icon" translate="no">
+    </button></h3><p>Committing before the standby cluster has finished importing does not corrupt data, but the standby cluster is still catching up when the commit is applied. Waiting until both the primary and standby clusters report <code translate="no">Uncommitted</code> confirms that the imported data has fully replicated and both clusters are ready to make it visible together.</p>
+<h2 id="Step-3-Verify-the-data" class="common-anchor-header">Step 3: Verify the data<button data-href="#Step-3-Verify-the-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -193,9 +193,9 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>После того как задание достигнет состояния « <code translate="no">Completed</code> », импортированные сущности становятся видимыми в обоих кластерах. Загрузите коллекцию и выполните запрос к ней в основном кластере, затем выполните тот же запрос в резервном кластере, не загружая коллекцию туда вручную, и убедитесь, что импортированные сущности присутствуют в обоих кластерах.</p>
-<p>Резервный кластер находится в режиме «только для чтения», пока он остается резервным. Не отправляйте команды импорта, фиксации или другие операции DDL и DCL непосредственно на резервный кластер. Выполняйте эти операции на основной кластере и позвольте репликации CDC применить их к резервному кластеру.</p>
-<h2 id="FAQ" class="common-anchor-header">Часто задаваемые вопросы<button data-href="#FAQ" class="anchor-icon" translate="no">
+    </button></h2><p>After the job reaches <code translate="no">Completed</code>, the imported entities are visible on both clusters. Load and query the collection on the primary cluster, then run the same query on the standby cluster without manually loading the collection there and confirm that the imported entities are present on both clusters.</p>
+<p>The standby cluster is read-only while it remains a standby. Do not submit imports, commits, or other DDL or DCL operations directly to the standby cluster. Perform these operations on the primary cluster and let CDC replication apply them to the standby cluster.</p>
+<h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -210,7 +210,7 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Which-cluster-should-I-run-the-import-and-commit-on" class="common-anchor-header">На каком кластере следует выполнять импорт и фиксацию?<button data-href="#Which-cluster-should-I-run-the-import-and-commit-on" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Which-cluster-should-I-run-the-import-and-commit-on" class="common-anchor-header">Which cluster should I run the import and commit on?<button data-href="#Which-cluster-should-I-run-the-import-and-commit-on" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -225,8 +225,8 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Выполняйте импорт и фиксацию на основном кластере. Резервный кластер получает как импортированные данные, так и фиксацию посредством репликации CDC.</p>
-<h3 id="Do-I-need-to-commit-on-the-standby-cluster" class="common-anchor-header">Нужно ли выполнять фиксацию на резервном кластере?<button data-href="#Do-I-need-to-commit-on-the-standby-cluster" class="anchor-icon" translate="no">
+    </button></h3><p>Run the import and commit on the primary cluster. The standby cluster receives both the imported data and the commit through CDC replication.</p>
+<h3 id="Do-I-need-to-commit-on-the-standby-cluster" class="common-anchor-header">Do I need to commit on the standby cluster?<button data-href="#Do-I-need-to-commit-on-the-standby-cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -241,8 +241,8 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Нет. Фиксация на первичном кластере приводит к репликации фиксации в резервный кластер в виде одного упорядоченного блока.</p>
-<h3 id="Why-does-my-import-fail-with-import-in-replicating-cluster-is-not-supported-yet" class="common-anchor-header">Почему мой импорт завершается с ошибкой « <code translate="no">import in replicating cluster is not supported yet</code> »?<button data-href="#Why-does-my-import-fail-with-import-in-replicating-cluster-is-not-supported-yet" class="anchor-icon" translate="no">
+    </button></h3><p>No. Committing on the primary cluster replicates the commit to the standby cluster as a single ordered fence.</p>
+<h3 id="Why-does-my-import-fail-with-import-in-replicating-cluster-is-not-supported-yet" class="common-anchor-header">Why does my import fail with <code translate="no">import in replicating cluster is not supported yet</code>?<button data-href="#Why-does-my-import-fail-with-import-in-replicating-cluster-is-not-supported-yet" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -257,8 +257,8 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">dataCoord.import.enableInReplicatingCluster</code> не включена в этом кластере. Установите значение « <code translate="no">true</code> » как на основном, так и на резервном кластерах.</p>
-<h3 id="Why-does-my-import-fail-with-autocommittrue-import-in-replicating-cluster-is-not-supported" class="common-anchor-header">Почему мой импорт завершается с ошибкой « <code translate="no">auto_commit=true import in replicating cluster is not supported</code> »?<button data-href="#Why-does-my-import-fail-with-autocommittrue-import-in-replicating-cluster-is-not-supported" class="anchor-icon" translate="no">
+    </button></h3><p><code translate="no">dataCoord.import.enableInReplicatingCluster</code> is not enabled on that cluster. Set it to <code translate="no">true</code> on both the primary and standby clusters.</p>
+<h3 id="Why-does-my-import-fail-with-autocommittrue-import-in-replicating-cluster-is-not-supported" class="common-anchor-header">Why does my import fail with <code translate="no">auto_commit=true import in replicating cluster is not supported</code>?<button data-href="#Why-does-my-import-fail-with-autocommittrue-import-in-replicating-cluster-is-not-supported" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -273,4 +273,4 @@ wait_for_state(standby_url, job_id, <span class="hljs-string">&quot;Completed&qu
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>В кластере с репликацией принимаются только импорты 2PC с параметром « <code translate="no">auto_commit=false</code> ». Укажите параметр « <code translate="no">options={&quot;auto_commit&quot;: &quot;false&quot;}</code> » в запросе на импорт.</p>
+    </button></h3><p>In a replicating cluster, only 2PC imports with <code translate="no">auto_commit=false</code> are accepted. Set <code translate="no">options={&quot;auto_commit&quot;: &quot;false&quot;}</code> on the import request.</p>

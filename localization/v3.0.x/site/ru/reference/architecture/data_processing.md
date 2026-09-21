@@ -1,9 +1,9 @@
 ---
 id: data_processing.md
-summary: Узнайте о процедуре обработки данных в Milvus.
-title: Обработка данных
+summary: Learn about the data processing procedure in Milvus.
+title: Data Processing
 ---
-<h1 id="Data-Processing" class="common-anchor-header">Обработка данных<button data-href="#Data-Processing" class="anchor-icon" translate="no">
+<h1 id="Data-Processing" class="common-anchor-header">Data Processing<button data-href="#Data-Processing" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +18,8 @@ title: Обработка данных
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Эта статья содержит подробное описание реализации в Milvus вставки данных, построения индекса и запроса данных.</p>
-<h2 id="Data-insertion" class="common-anchor-header">Вставка данных<button data-href="#Data-insertion" class="anchor-icon" translate="no">
+    </button></h1><p>This article provides a detailed description of the implementation of data insertion, index building, and data query in Milvus.</p>
+<h2 id="Data-insertion" class="common-anchor-header">Data insertion<button data-href="#Data-insertion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,29 +34,35 @@ title: Обработка данных
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В Milvus вы можете выбрать, сколько шардов будет использоваться в коллекции - каждый шард сопоставляется с виртуальным каналом<em>(vchannel</em>). Как показано ниже, Milvus присваивает каждому <em>vchannel</em> физический канал<em>(pchannel</em>), а каждый <em>pchannel</em> привязывается к определенному узлу потоковой передачи.</p>
+    </button></h2><p>You can choose how many shards a collection uses in Milvus—each shard maps to a virtual channel (<em>vchannel</em>). As illustrated below, Milvus then assigns every <em>vchannel</em> to a physical channel (<em>pchannel</em>), and each <em>pchannel</em> is bound to a specific Streaming Node.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/pvchannel_wal.png" alt="VChannel PChannel and StreamingNode" class="doc-image" id="vchannel-pchannel-and-streamingnode" />
-   </span> <span class="img-wrapper"> <span>VChannel PChannel и StreamingNode</span> </span></p>
-<p>После проверки данных прокси разделит записанное сообщение на различные пакеты данных в соответствии с заданными правилами маршрутизации шардов.</p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/pvchannel_wal.png" alt="VChannel PChannel and StreamingNode" class="doc-image" id="vchannel-pchannel-and-streamingnode" />
+    <span>VChannel PChannel and StreamingNode</span>
+  </span>
+</p>
+<p>After data verification, the proxy will split the written message into various data package of shards according to the specified shard routing rules.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/channels_1.png" alt="Channels 1" class="doc-image" id="channels-1" />
-   </span> <span class="img-wrapper"> <span>Каналы 1</span> </span></p>
-<p>Затем записанные данные одного шарда<em>(vchannel</em>) отправляются на соответствующий стриминговый узел <em>pchannel</em>.</p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/channels_1.png" alt="Channels 1" class="doc-image" id="channels-1" />
+    <span>Channels 1</span>
+  </span>
+</p>
+<p>Then the written data of one shard (<em>vchannel</em>) is sent to the corresponding Streaming Node of <em>pchannel</em>.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/written_data_flow.png" alt="write flow" class="doc-image" id="write-flow" />
-   </span> <span class="img-wrapper"> <span>поток записи</span> </span></p>
-<p>Потоковый узел назначает оракул временных меток (TSO) каждому пакету данных, чтобы установить общий порядок операций. Он выполняет проверку согласованности полезной нагрузки перед записью в базовый журнал с опережением записи (WAL). После того как данные зафиксированы в WAL, они гарантированно не будут потеряны - даже в случае сбоя потоковый узел может воспроизвести WAL для полного восстановления всех незавершенных операций.</p>
-<p>Тем временем потоковый узел также асинхронно разбивает зафиксированные записи WAL на отдельные сегменты. Существует два типа сегментов:</p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/written_data_flow.png" alt="write flow" class="doc-image" id="write-flow" />
+    <span>write flow</span>
+  </span>
+</p>
+<p>The Streaming Node assigns a Timestamp Oracle (TSO) to each data packet to establish a total ordering of operations. It performs consistency checks on the payload before writing it into the underlying write-ahead log (WAL). Once data is durably committed to the WAL, it’s guaranteed not to be lost—even in the event of a crash, the Streaming Node can replay the WAL to fully recover all pending operations.</p>
+<p>Meanwhile, the StreamingNode also asynchronously chops the committed WAL entries into discrete segments. There are two segment types:</p>
 <ul>
-<li><strong>Растущий сегмент</strong>: все данные, которые не были предварительно помещены в объектное хранилище.</li>
-<li><strong>Запечатанный сегмент</strong>: все данные были сохранены в хранилище объектов, данные запечатанного сегмента неизменяемы.</li>
+<li><strong>Growing segment</strong>: any data that has not been presisted into the object storage.</li>
+<li><strong>Sealed segment</strong>: all data has been persisted into the object storage, the data of sealed segment is immutable.</li>
 </ul>
-<p>Переход растущего сегмента в закрытый сегмент называется промывкой. Потоковый узел запускает промывку, как только он проглотил и записал все доступные записи WAL для этого сегмента - т. е. когда в базовом журнале опережающей записи больше нет ожидающих записей - в этот момент сегмент завершается и становится оптимизированным для чтения.</p>
-<h2 id="Index-building" class="common-anchor-header">Построение индекса<button data-href="#Index-building" class="anchor-icon" translate="no">
+<p>The transition of a growing segment into a sealed segment is called a flush. The Streaming Node triggers a flush as soon as it has ingested and written all available WAL entries for that segment—i.e., when there are no more pending records in the underlying write-ahead log—at which point the segment is finalized and made read-optimized.</p>
+<h2 id="Index-building" class="common-anchor-header">Index building<button data-href="#Index-building" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -71,16 +77,18 @@ title: Обработка данных
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Построение индекса выполняется узлом данных. Чтобы избежать частого создания индексов при обновлении данных, коллекция в Milvus делится на сегменты, каждый из которых имеет свой собственный индекс.</p>
+    </button></h2><p>Index building is performed by data node. To avoid frequent index building for data updates, a collection in Milvus is divided further into segments, each with its own index.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/index_building.png" alt="Index building" class="doc-image" id="index-building" />
-   </span> <span class="img-wrapper"> <span>Построение индекса</span> </span></p>
-<p>Milvus поддерживает построение индекса для каждого векторного поля, скалярного поля и первичного поля. Как на входе, так и на выходе построения индекса происходит взаимодействие с хранилищем объектов: Узел данных загружает снимки журнала для индексации из сегмента (который находится в объектном хранилище) в память, десериализует соответствующие данные и метаданные для построения индекса, сериализует индекс по завершении построения индекса и записывает его обратно в объектное хранилище.</p>
-<p>Построение индекса в основном включает в себя операции с векторами и матрицами и, следовательно, требует больших затрат вычислений и памяти. Векторы не могут быть эффективно проиндексированы традиционными древовидными индексами из-за их высокой размерности, но могут быть проиндексированы методами, которые более развиты в этой области, такими как кластерные или графовые индексы. Независимо от типа, построение индекса предполагает массивные итерационные вычисления для крупномасштабных векторов, такие как Kmeans или graph traverse.</p>
-<p>В отличие от индексирования скалярных данных, построение векторного индекса должно в полной мере использовать преимущества ускорения SIMD (single instruction, multiple data). Milvus имеет встроенную поддержку наборов инструкций SIMD, например, SSE, AVX2 и AVX512. Учитывая "заминки" и ресурсоемкость построения векторных индексов, эластичность становится крайне важной для Milvus с экономической точки зрения. В будущих релизах Milvus будут продолжены исследования в области гетерогенных вычислений и бессерверных вычислений для снижения соответствующих затрат.</p>
-<p>Кроме того, Milvus поддерживает скалярную фильтрацию и запросы по первичному полю. Для повышения эффективности запросов в нем имеются встроенные индексы, например, индексы фильтра Блума, хеш-индексы, древовидные индексы и инвертированные индексы, а также планируется внедрение внешних индексов, например, растровых индексов и грубых индексов.</p>
-<h2 id="Data-query" class="common-anchor-header">Запрос данных<button data-href="#Data-query" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/index_building.png" alt="Index building" class="doc-image" id="index-building" />
+    <span>Index building</span>
+  </span>
+</p>
+<p>Milvus supports building index for each vector field, scalar field and primary field. Both the input and output of index building engage with object storage: The data node loads the log snapshots to index from a segment (which is in object storage) to memory, deserializes the corresponding data and metadata to build index, serializes the index when index building completes, and writes it back to object storage.</p>
+<p>Index building mainly involves vector and matrix operations and hence is computation- and memory-intensive. Vectors cannot be efficiently indexed with traditional tree-based indexes due to their high-dimensional nature, but can be indexed with techniques that are more mature in this subject, such as cluster- or graph-based indexes. Regardless its type, building index involves massive iterative calculations for large-scale vectors, such as Kmeans or graph traverse.</p>
+<p>Unlike indexing for scalar data, building vector index has to take full advantage of SIMD (single instruction, multiple data) acceleration. Milvus has innate support for SIMD instruction sets, e.g., SSE, AVX2, and AVX512. Given the “hiccup” and resource-intensive nature of vector index building, elasticity becomes crucially important to Milvus in economical terms. Future Milvus releases will further explorations in heterogeneous computing and serverless computation to bring down the related costs.</p>
+<p>Besides, Milvus also supports scalar filtering and primary field query. It has inbuilt indexes to improve query efficiency, e.g., Bloom filter indexes, hash indexes, tree-based indexes, and inverted indexes, and plans to introduce more external indexes, e.g., bitmap indexes and rough indexes.</p>
+<h2 id="Data-query" class="common-anchor-header">Data query<button data-href="#Data-query" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,22 +103,26 @@ title: Обработка данных
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Запрос данных - это процесс поиска в заданной коллекции <em>k-го</em> количества векторов, ближайших к целевому вектору, или <em>всех</em> векторов в заданном диапазоне расстояний до вектора. Векторы возвращаются вместе с соответствующими первичными ключами и полями.</p>
+    </button></h2><p>Data query refers to the process of searching a specified collection for <em>k</em> number of vectors nearest to a target vector or for <em>all</em> vectors within a specified distance range to the vector. Vectors are returned together with their corresponding primary key and fields.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/data_query.jpg" alt="Data query" class="doc-image" id="data-query" />
-   </span> <span class="img-wrapper"> <span>Запрос данных</span> </span></p>
-<p>Коллекция в Milvus разбивается на несколько сегментов; потоковый узел загружает растущие сегменты и поддерживает данные в реальном времени, а узлы запросов загружают закрытые сегменты.</p>
-<p>Когда поступает запрос на запрос/поиск, прокси транслирует его всем потоковым узлам, отвечающим за соответствующие шарды, для одновременного поиска.</p>
-<p>Когда поступает запрос на поиск, прокси одновременно запрашивает потоковые узлы, на которых находятся соответствующие шарды, на выполнение поиска.</p>
-<p>Каждый потоковый узел генерирует план запроса, выполняет поиск в своих локальных растущих данных и одновременно обращается к удаленным узлам запросов для получения исторических результатов, а затем объединяет их в единый результат по шардам.</p>
-<p>Наконец, прокси собирает все результаты шардов, объединяет их в окончательный результат и возвращает его клиенту.</p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/data_query.jpg" alt="Data query" class="doc-image" id="data-query" />
+    <span>Data query</span>
+  </span>
+</p>
+<p>A collection in Milvus is split into multiple segments; the Streaming Node loads growing segments and maintains real-time data, while the Query Nodes load sealed segments.</p>
+<p>When a query/search request arrives, the proxy broadcasts the request to all Streaming Nodes responsible for the related shards for concurrent search.</p>
+<p>When a query request arrives, the proxy concurrently requests the Streaming Nodes that hold the corresponding shards to execute the search.</p>
+<p>Each Streaming Node generates a query plan, searches its local growing data, and simultaneously contacts remote Query Nodes to retrieve historical results, then aggregates these into a single shard result.</p>
+<p>Finally, the proxy collects all shard results, merges them into the final outcome, and returns it to the client.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/handoff.png" alt="Handoff" class="doc-image" id="handoff" />
-   </span> <span class="img-wrapper"> <span>Передача</span> </span></p>
-<p>Когда растущий сегмент на потоковом узле сливается в закрытый сегмент или когда узел данных завершает уплотнение, координатор инициирует операцию handoff для преобразования растущих данных в исторические. Затем координатор равномерно распределяет запечатанные сегменты между всеми узлами запроса, балансируя использование памяти, нагрузку на ЦП и количество сегментов, и освобождает все избыточные сегменты.</p>
-<h2 id="Whats-next" class="common-anchor-header">Что дальше<button data-href="#Whats-next" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/handoff.png" alt="Handoff" class="doc-image" id="handoff" />
+    <span>Handoff</span>
+  </span>
+</p>
+<p>When the growing segment on a Streaming Node is flushed into a sealed segment—or when a Data Node completes a compaction—the Coordinator initiates a handoff operation to convert that growing data into historical data. The Coordinator then evenly distributes the sealed segments across all Query Nodes, balancing memory usage, CPU overhead, and segment count, and releases any redundant segment.</p>
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -126,7 +138,7 @@ title: Обработка данных
         ></path>
       </svg>
     </button></h2><ul>
-<li>Узнайте, как <a href="https://milvus.io/blog/deep-dive-5-real-time-query.md">использовать векторную базу данных Milvus для запросов в реальном времени</a>.</li>
-<li>Узнайте о <a href="https://milvus.io/blog/deep-dive-4-data-insertion-and-data-persistence.md">вставке данных и их сохранении в Milvus</a>.</li>
-<li>Узнайте, как <a href="https://milvus.io/blog/deep-dive-3-data-processing.md">обрабатываются данные в Milvus</a>.</li>
+<li>Learn about how to <a href="https://milvus.io/blog/deep-dive-5-real-time-query.md">use the Milvus vector database for real-time query</a>.</li>
+<li>Learn about <a href="https://milvus.io/blog/deep-dive-4-data-insertion-and-data-persistence.md">data insertion and data persistence in Milvus</a>.</li>
+<li>Learn how <a href="https://milvus.io/blog/deep-dive-3-data-processing.md">data is processed in Milvus</a>.</li>
 </ul>

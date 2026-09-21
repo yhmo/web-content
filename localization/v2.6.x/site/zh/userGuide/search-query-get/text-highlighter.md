@@ -1,12 +1,14 @@
 ---
 id: text-highlighter.md
-title: 文本高亮显示Compatible with Milvus 2.6.8+
+title: Text HighlighterCompatible with Milvus 2.6.8+
 summary: >-
-  Milvus 中的高亮显示器通过使用可定制的标签对文本字段中的匹配术语进行注释。高亮显示有助于解释文档匹配的原因，提高结果的可读性，并支持在搜索和 RAG
-  应用程序中进行丰富的渲染。
+  The Highlighter in Milvus annotates matched terms in text fields by wrapping
+  them with customizable tags. Highlighting helps explain why a document
+  matches, improves result readability, and supports rich rendering in search
+  and RAG applications.
 beta: Milvus 2.6.8+
 ---
-<h1 id="Text-Highlighter" class="common-anchor-header">文本高亮显示<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#Text-Highlighter" class="anchor-icon" translate="no">
+<h1 id="Text-Highlighter" class="common-anchor-header">Text Highlighter<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#Text-Highlighter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,19 +23,19 @@ beta: Milvus 2.6.8+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus 的高亮显示器通过使用可定制的标签对文本字段中的匹配术语进行注释。高亮有助于解释文档匹配的原因，提高结果的可读性，并支持在搜索和 RAG 应用程序中进行丰富的渲染。</p>
-<p>高亮显示是作为最终搜索结果集的后处理步骤执行的。它不会影响候选检索、过滤逻辑、排序或评分。</p>
-<p>高亮工具提供三个独立的控制维度：</p>
+    </button></h1><p>The Highlighter in Milvus annotates matched terms in text fields by wrapping them with customizable tags. Highlighting helps explain why a document matches, improves result readability, and supports rich rendering in search and RAG applications.</p>
+<p>Highlighting is executed as a post-processing step on the final search result set. It does not affect candidate retrieval, filtering logic, ranking, or scoring.</p>
+<p>The Highlighter provides three independent dimensions of control:</p>
 <ul>
-<li><p><strong>高亮显示哪些术语</strong></p>
-<p>您可以选择高亮显示的术语来自何处。例如，高亮显示<strong>BM25 全文搜索</strong>中使用的搜索词，或<strong>基于文本的过滤表达式</strong>（如<code translate="no">TEXT_MATCH</code> 条件）中指定的查询词。</p></li>
-<li><p><strong>高亮显示术语的呈现方式</strong></p>
-<p>您可以通过配置在每个匹配词前后插入的标记来控制匹配词在高亮输出中的显示方式。例如，使用<code translate="no">{}</code> 等简单标记或<code translate="no">&lt;em&gt;&lt;/em&gt;</code> 等 HTML 标记进行丰富的呈现。</p></li>
-<li><p><strong>高亮文本的返回方式</strong></p>
-<p>您可以控制高亮结果如何以片段形式返回，包括片段的起始位置、长度以及返回的片段数量。</p></li>
+<li><p><strong>Which terms are highlighted</strong></p>
+<p>You can choose where highlighted terms come from. For example, highlight search terms used in <strong>BM25 full text search</strong>, or query terms specified in <strong>text-based filtering expressions</strong> (such as <code translate="no">TEXT_MATCH</code> conditions).</p></li>
+<li><p><strong>How highlighted terms are rendered</strong></p>
+<p>You can control how matched terms appear in the highlighting output by configuring the tags inserted before and after each match. For example, use simple markers like <code translate="no">{}</code> or HTML tags such as <code translate="no">&lt;em&gt;&lt;/em&gt;</code> for rich rendering.</p></li>
+<li><p><strong>How highlighted text is returned</strong></p>
+<p>You can control how highlighted results are returned as fragments, including where fragments start, how long they are, and how many fragments are returned.</p></li>
 </ul>
-<p>以下章节将介绍这些情况。</p>
-<h2 id="Search-term-highlighting-in-BM25-full-text-search" class="common-anchor-header">在 BM25 全文搜索中高亮显示搜索词<button data-href="#Search-term-highlighting-in-BM25-full-text-search" class="anchor-icon" translate="no">
+<p>The following sections walk through these scenarios.</p>
+<h2 id="Search-term-highlighting-in-BM25-full-text-search" class="common-anchor-header">Search term highlighting in BM25 full text search<button data-href="#Search-term-highlighting-in-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -48,13 +50,13 @@ beta: Milvus 2.6.8+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>执行 BM25 全文搜索时，可在返回结果中高亮显示<strong>搜索词</strong>，以帮助解释文档与查询匹配的原因。要了解有关 BM25 全文搜索的更多信息，请参阅全文<a href="/docs/zh/full-text-search.md">搜索</a>。</p>
-<p>在这种情况下，高亮显示的术语直接来自 BM25 全文搜索中使用的搜索术语。高亮显示器使用这些术语在最终结果中注释匹配的文本。</p>
-<p>假设文本字段中存储了以下内容：</p>
+    </button></h2><p>When you perform a BM25 full text search, you can highlight the <strong>search terms</strong> in the returned result to help explain why a document matches the query. To learn more about BM25 full text search, refer to <a href="/docs/zh/v2.6.x/full-text-search.md">Full Text Search</a>.</p>
+<p>In this scenario, highlighted terms come directly from the search terms used in BM25 full text search. The Highlighter uses these terms to annotate matched text in the final result.</p>
+<p>Assume the following content is stored in a text field:</p>
 <pre><code translate="no" class="language-plaintext">Milvus supports full text search. Use BM25 for keyword relevance. Filters can narrow results.
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>高亮显示配置</strong></p>
-<p>要在 BM25 全文搜索中突出显示搜索词，请创建<code translate="no">LexicalHighlighter</code> 并启用 BM25 全文搜索的搜索词突出显示功能：</p>
+<p><strong>Highlighter configuration</strong></p>
+<p>To highlight search terms in BM25 full text search, create a <code translate="no">LexicalHighlighter</code> and enable search term highlighting for BM25 full text search:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> LexicalHighlighter
 
 highlighter = LexicalHighlighter(
@@ -63,21 +65,21 @@ highlighter = LexicalHighlighter(
     highlight_search_text=<span class="hljs-literal">True</span>   <span class="hljs-comment"># Enable search term highlighting for BM25 full text search</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>在此示例中：</p>
+<p>In this example:</p>
 <ul>
-<li><p><code translate="no">pre_tags</code> 和<code translate="no">post_tags</code> 控制高亮文本在输出中的显示方式。在本例中，匹配的术语由<code translate="no">{}</code> 包装（例如，<code translate="no">{term}</code> ）。您也可以以列表形式提供多个标记（例如，<code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code> ）。当多个术语被高亮显示时，标记将按顺序应用，并根据匹配序列旋转。</p></li>
-<li><p><code translate="no">highlight_search_text=True</code> 告诉 Milvus 使用 BM25 全文搜索中的搜索词作为高亮显示词的来源。</p></li>
+<li><p><code translate="no">pre_tags</code> and <code translate="no">post_tags</code> control how highlighted text appears in the output. In this case, matched terms are wrapped by <code translate="no">{}</code> (for example, <code translate="no">{term}</code>). You can also provide multiple tags as a list (for example, <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). When multiple terms are highlighted, tags are applied in order and rotated by match sequence.</p></li>
+<li><p><code translate="no">highlight_search_text=True</code> tells Milvus to use the search terms in BM25 full text search as the source of highlighted terms.</p></li>
 </ul>
-<p>创建高亮对象后，将其配置应用于 BM25 全文搜索请求：</p>
+<p>Once the Highlighter object is created, apply its configuration to your BM25 full text search request:</p>
 <pre><code translate="no" class="language-python">results = client.search(
     ...,
     data=[<span class="hljs-string">&quot;BM25&quot;</span>],      <span class="hljs-comment"># Search term used in BM25 full text search</span>
 <span class="highlighted-wrapper-line">    highlighter=highlighter <span class="hljs-comment"># Pass highlighter config here</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>高亮输出</strong></p>
-<p>启用高亮输出后，Milvus 会在专用的<code translate="no">highlight</code> 字段中返回高亮文本。默认情况下，高亮输出以片段形式返回，从第一个匹配词开始。</p>
-<p>在本例中，搜索词是<code translate="no">&quot;BM25&quot;</code> ，因此它在返回结果中被高亮显示：</p>
+<p><strong>Highlighting output</strong></p>
+<p>When highlighting is enabled, Milvus returns highlighted text in a dedicated <code translate="no">highlight</code> field. By default, highlighted output is returned as a fragment starting from the first matched term.</p>
+<p>In this example, the search term is <code translate="no">&quot;BM25&quot;</code>, so it is highlighted in the returned result:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     ...<span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;highlight&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -87,8 +89,8 @@ highlighter = LexicalHighlighter(
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>要控制返回片段的位置、长度和数量，请参阅<a href="/docs/zh/text-highlighter.md#Fragment-based-highlighting-output">以片段形式返回高亮文本</a>。</p>
-<h2 id="Query-term-highlighting-in-filtering" class="common-anchor-header">在筛选中高亮显示查询词<button data-href="#Query-term-highlighting-in-filtering" class="anchor-icon" translate="no">
+<p>To control the position, length, and number of returned fragments, see <a href="/docs/zh/v2.6.x/text-highlighter.md#Fragment-based-highlighting-output">Return highlighted text as fragments</a>.</p>
+<h2 id="Query-term-highlighting-in-filtering" class="common-anchor-header">Query term highlighting in filtering<button data-href="#Query-term-highlighting-in-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,16 +105,16 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>除了高亮显示搜索条件外，还可以高亮显示基于文本的筛选表达式中使用的条件。</p>
+    </button></h2><p>In addition to highlighting search terms, you can highlight terms used in text-based filtering expressions.</p>
 <div class="alert note">
-<p>目前，查询术语高亮显示只支持<code translate="no">TEXT_MATCH</code> 过滤条件。要了解更多信息，请参阅<a href="/docs/zh/keyword-match.md">文本匹配</a>。</p>
+<p>Currently, only the <code translate="no">TEXT_MATCH</code> filtering condition is supported for query term highlighting. To learn more, refer to <a href="/docs/zh/v2.6.x/keyword-match.md">Text Match</a>.</p>
 </div>
-<p>在这种情况下，高亮显示的术语来自基于文本的过滤表达式。过滤决定哪些文档匹配，而高亮显示器则注释匹配的文本跨度。</p>
-<p>假设以下内容存储在文本字段中：</p>
+<p>In this scenario, highlighted terms come from text-based filtering expressions. Filtering determines which documents match, while the Highlighter annotates the matched text spans.</p>
+<p>Assume the following content is stored in a text field:</p>
 <pre><code translate="no" class="language-python">This document explains how text filtering works <span class="hljs-keyword">in</span> Milvus.
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>高亮显示配置</strong></p>
-<p>要高亮显示过滤中使用的查询词，请创建<code translate="no">LexicalHighlighter</code> 并定义与过滤条件相对应的<code translate="no">highlight_query</code> ：</p>
+<p><strong>Highlighter configuration</strong></p>
+<p>To highlight query terms used in filtering, create a <code translate="no">LexicalHighlighter</code> and define a <code translate="no">highlight_query</code> that corresponds to the filtering condition:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> LexicalHighlighter
 
 highlighter = LexicalHighlighter(
@@ -125,21 +127,21 @@ highlighter = LexicalHighlighter(
     }]
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>在此配置中：</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">pre_tags</code> 和<code translate="no">post_tags</code> 控制高亮文本在输出中的显示方式。在这种情况下，匹配的术语由<code translate="no">{}</code> 封装（例如，<code translate="no">{term}</code> ）。您也可以以列表形式提供多个标记（例如，<code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code> ）。当多个术语被高亮显示时，标记将按顺序应用，并根据匹配序列旋转。</p></li>
-<li><p><code translate="no">highlight_query</code> 定义应高亮显示哪些过滤词。</p></li>
+<li><p><code translate="no">pre_tags</code> and <code translate="no">post_tags</code> control how highlighted text appears in the output. In this case, matched terms are wrapped by <code translate="no">{}</code> (for example, <code translate="no">{term}</code>). You can also provide multiple tags as a list (for example, <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). When multiple terms are highlighted, tags are applied in order and rotated by match sequence.</p></li>
+<li><p><code translate="no">highlight_query</code> defines which filtering terms should be highlighted.</p></li>
 </ul>
-<p>创建高亮对象后，将相同的过滤表达式和高亮配置应用到搜索请求中：</p>
+<p>Once the Highlighter object is created, apply the same filtering expression and the highlighter configuration to your search request:</p>
 <pre><code translate="no" class="language-python">results = client.search(
     ...,
     <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;TEXT_MATCH(text, &quot;text filtering&quot;)&#x27;</span>,
 <span class="highlighted-wrapper-line">    highlighter=highlighter <span class="hljs-comment"># Pass highlighter config here</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>高亮输出</strong></p>
-<p>当过滤启用查询词高亮时，Milvus 会在专门的<code translate="no">highlight</code> 字段中返回高亮文本。默认情况下，高亮输出以片段形式返回，从第一个匹配词开始。</p>
-<p>在本例中，第一个匹配词是<code translate="no">&quot;text&quot;</code> ，因此返回的高亮文本从该位置开始：</p>
+<p><strong>Highlighting output</strong></p>
+<p>When query term highlighting is enabled for filtering, Milvus returns highlighted text in a dedicated <code translate="no">highlight</code> field. By default, highlighted output is returned as a fragment starting from the first matched term.</p>
+<p>In this example, the first matched term is <code translate="no">&quot;text&quot;</code>, so the returned highlighted text starts from that position:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     ...<span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;highlight&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -149,8 +151,8 @@ highlighter = LexicalHighlighter(
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>要控制返回片段的位置、长度和数量，请参阅<a href="/docs/zh/text-highlighter.md#Fragment-based-highlighting-output">以片段形式返回高亮文本</a>。</p>
-<h2 id="Fragment-based-highlighting-output" class="common-anchor-header">基于片段的高亮输出<button data-href="#Fragment-based-highlighting-output" class="anchor-icon" translate="no">
+<p>To control the position, length, and number of returned fragments, see <a href="/docs/zh/v2.6.x/text-highlighter.md#Fragment-based-highlighting-output">Return highlighted text as fragments</a>.</p>
+<h2 id="Fragment-based-highlighting-output" class="common-anchor-header">Fragment-based highlighting output<button data-href="#Fragment-based-highlighting-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -165,12 +167,12 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>默认情况下，Milvus 以片段形式返回高亮文本，从第一个匹配词开始。片段相关设置允许你进一步控制片段的返回方式，而不改变高亮显示的术语。</p>
-<p>假设以下内容存储在一个文本字段中：</p>
+    </button></h2><p>By default, Milvus returns highlighted text as fragments starting from the first matched term. Fragment-related settings allow you to further control how fragments are returned, without changing which terms are highlighted.</p>
+<p>Assume the following content is stored in a text field:</p>
 <pre><code translate="no" class="language-plaintext">Milvus supports full text search. Use BM25 for keyword relevance. Filters can narrow results.
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>高亮显示配置</strong></p>
-<p>要控制高亮显示片段的形状，请在<code translate="no">LexicalHighlighter</code> 中配置片段相关选项：</p>
+<p><strong>Highlighter configuration</strong></p>
+<p>To control the shape of highlighted fragments, configure fragment-related options in the <code translate="no">LexicalHighlighter</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> LexicalHighlighter
 
 highlighter = LexicalHighlighter(
@@ -182,21 +184,21 @@ highlighter = LexicalHighlighter(
     num_of_fragments=<span class="hljs-number">1</span>     <span class="hljs-comment"># Max. number of fragments to return</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>在此配置中</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">fragment_offset</code> 在第一个高亮显示术语之前保留前导上下文。</p></li>
-<li><p><code translate="no">fragment_size</code> 限制每个片段包含多少文本。</p></li>
-<li><p><code translate="no">num_of_fragments</code> 控制返回片段的数量。</p></li>
+<li><p><code translate="no">fragment_offset</code> reserves leading context before the first highlighted term.</p></li>
+<li><p><code translate="no">fragment_size</code> limits how much text is included in each fragment.</p></li>
+<li><p><code translate="no">num_of_fragments</code> controls how many fragments are returned.</p></li>
 </ul>
-<p>创建高亮对象后，将高亮配置应用于搜索请求：</p>
+<p>Once the Highlighter object is created, apply the highlighter configuration to your search request:</p>
 <pre><code translate="no" class="language-python">results = client.search(
     ...,
     data=[<span class="hljs-string">&quot;BM25&quot;</span>],
 <span class="highlighted-wrapper-line">    highlighter=highlighter <span class="hljs-comment"># Pass highlighter config here</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>高亮输出</strong></p>
-<p>启用基于片段的高亮后，Milvus 会在<code translate="no">highlight</code> 字段中以片段形式返回高亮文本：</p>
+<p><strong>Highlighting output</strong></p>
+<p>With fragment-based highlighting enabled, Milvus returns highlighted text as fragments in the <code translate="no">highlight</code> field:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     ...<span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;highlight&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -206,13 +208,13 @@ highlighter = LexicalHighlighter(
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>在此输出中：</p>
+<p>In this output:</p>
 <ul>
-<li><p>片段并不完全从<code translate="no">{BM25}</code> 开始，因为<code translate="no">fragment_offset</code> 已设置。</p></li>
-<li><p>只返回一个片段，因为<code translate="no">num_of_fragments</code> 为 1。</p></li>
-<li><p>片段长度以<code translate="no">fragment_size</code> 为上限。</p></li>
+<li><p>The fragment does not start exactly at <code translate="no">{BM25}</code> because <code translate="no">fragment_offset</code> is set.</p></li>
+<li><p>Only one fragment is returned because <code translate="no">num_of_fragments</code> is 1.</p></li>
+<li><p>The length of the fragment is capped by <code translate="no">fragment_size</code>.</p></li>
 </ul>
-<h2 id="Examples" class="common-anchor-header">示例<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -227,7 +229,7 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Preparation" class="common-anchor-header">准备工作<button data-href="#Preparation" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Preparation" class="common-anchor-header">Preparation<button data-href="#Preparation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -242,10 +244,10 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>使用荧光笔之前，请确保正确配置了您的 Collections。</p>
-<p>下面的示例创建了一个支持 BM25 全文搜索和<code translate="no">TEXT_MATCH</code> 查询的 Collections，然后插入了示例文档。</p>
+    </button></h3><p>Before using the highlighter, ensure your collection is properly configured.</p>
+<p>The example below creates a collection that supports BM25 full text search and <code translate="no">TEXT_MATCH</code> queries, then inserts sample documents.</p>
 <p><details></p>
-<p><summary><strong>准备您的 Collections</strong></summary></p>
+<p><summary><strong>Prepare your collection</strong></summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
     DataType,
@@ -310,7 +312,7 @@ SEARCH_PARAMS = {<span class="hljs-string">&quot;metric_type&quot;</span>: <span
 <span class="hljs-comment"># ✓ Collection created with 4 documents</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-1-Highlight-search-terms-in-BM25-full-text-search" class="common-anchor-header">示例 1：在 BM25 全文搜索中突出显示搜索词<button data-href="#Example-1-Highlight-search-terms-in-BM25-full-text-search" class="anchor-icon" translate="no">
+<h3 id="Example-1-Highlight-search-terms-in-BM25-full-text-search" class="common-anchor-header">Example 1: Highlight search terms in BM25 full text search<button data-href="#Example-1-Highlight-search-terms-in-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -325,10 +327,10 @@ SEARCH_PARAMS = {<span class="hljs-string">&quot;metric_type&quot;</span>: <span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>本例演示如何在 BM25 全文搜索中突出显示搜索条件。</p>
+    </button></h3><p>This example shows how to highlight search terms in BM25 full text search.</p>
 <ul>
-<li><p>BM25 全文搜索使用<code translate="no">&quot;test&quot;</code> 作为搜索词</p></li>
-<li><p>高亮显示器用<code translate="no">{</code> 和<code translate="no">}</code> 标记包裹所有出现的 "test"。</p></li>
+<li><p>BM25 full text search uses <code translate="no">&quot;test&quot;</code> as the search term</p></li>
+<li><p>The highlighter wraps all occurrences of “test” with <code translate="no">{</code> and <code translate="no">}</code> tags</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -351,14 +353,14 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>预期输出</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;{test} doc&#x27;]
 [&#x27;{test} doc&#x27;]
 [&#x27;{test} doc. Milvus is an open-source vector database built for GenAI applications.&#x27;]
 [&#x27;{test} doc. Milvus is an open-source vector database that suits AI applications of every size from run&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-2-Highlight-query-terms-in-filtering" class="common-anchor-header">示例 2：在筛选中高亮显示查询词<button data-href="#Example-2-Highlight-query-terms-in-filtering" class="anchor-icon" translate="no">
+<h3 id="Example-2-Highlight-query-terms-in-filtering" class="common-anchor-header">Example 2: Highlight query terms in filtering<button data-href="#Example-2-Highlight-query-terms-in-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -373,11 +375,11 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>本例展示了如何高亮显示<code translate="no">TEXT_MATCH</code> 过滤器匹配的术语。</p>
+    </button></h3><p>This example shows how to highlight terms matched by a <code translate="no">TEXT_MATCH</code> filter.</p>
 <ul>
-<li><p>BM25 全文搜索使用<code translate="no">&quot;test&quot;</code> 作为查询词</p></li>
-<li><p><code translate="no">queries</code> 参数将<code translate="no">&quot;my doc&quot;</code> 添加到高亮列表中</p></li>
-<li><p>高亮显示器将所有匹配词（<code translate="no">&quot;my&quot;</code>,<code translate="no">&quot;test&quot;</code>,<code translate="no">&quot;doc&quot;</code> ）与<code translate="no">{</code> 和 包在一起。<code translate="no">}</code></p></li>
+<li><p>BM25 full text search uses <code translate="no">&quot;test&quot;</code> as the query term</p></li>
+<li><p>The <code translate="no">queries</code> parameter adds <code translate="no">&quot;my doc&quot;</code> to the highlight list</p></li>
+<li><p>The highlighter wraps all matched terms (<code translate="no">&quot;my&quot;</code>, <code translate="no">&quot;test&quot;</code>, <code translate="no">&quot;doc&quot;</code>) with <code translate="no">{</code> and <code translate="no">}</code></p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -403,14 +405,14 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>预期输出</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;{my} first {test} {doc}&#x27;]
 [&#x27;{my} second {test} {doc}&#x27;]
 [&#x27;{my} first {test} {doc}. Milvus is an open-source vector database built for GenAI applications.&#x27;]
 [&#x27;{my} second {test} {doc}. Milvus is an open-source vector database that suits AI applications of every siz&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-3-Return-highlights-as-fragments" class="common-anchor-header">例 3：以片段形式返回高亮显示<button data-href="#Example-3-Return-highlights-as-fragments" class="anchor-icon" translate="no">
+<h3 id="Example-3-Return-highlights-as-fragments" class="common-anchor-header">Example 3: Return highlights as fragments<button data-href="#Example-3-Return-highlights-as-fragments" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -425,11 +427,11 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在此示例中，查询搜索<code translate="no">&quot;Milvus&quot;</code> 并按以下设置返回高亮片段：</p>
+    </button></h3><p>In this example, the query searches for <code translate="no">&quot;Milvus&quot;</code> and returns highlight fragments in the following settings:</p>
 <ul>
-<li><p><code translate="no">fragment_offset</code> 保留第一个高亮跨度前最多 20 个字符作为前导上下文（默认为 0）。</p></li>
-<li><p><code translate="no">fragment_size</code> 将每个片段限制为大约 60 个字符（默认值为 100）。</p></li>
-<li><p><code translate="no">num_of_fragments</code> 限制每个文本值返回的片段数量（默认为 5）。</p></li>
+<li><p><code translate="no">fragment_offset</code> keeps up to 20 characters before the first highlighted span as leading context (default is 0).</p></li>
+<li><p><code translate="no">fragment_size</code> limits each fragment to approximately 60 characters (default is 100).</p></li>
+<li><p><code translate="no">num_of_fragments</code> limits the number of returned fragments per text value (default is 5).</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -455,12 +457,12 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>预期输出</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Doc 1: [&#x27;my first test doc. {Milvus} is an open-source vector database &#x27;]
 Doc 2: [&#x27;my second test doc. {Milvus} is an open-source vector database&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-4-Multi-query-highlighting" class="common-anchor-header">例 4：多查询高亮显示<button data-href="#Example-4-Multi-query-highlighting" class="anchor-icon" translate="no">
+<h3 id="Example-4-Multi-query-highlighting" class="common-anchor-header">Example 4: Multi-query highlighting<button data-href="#Example-4-Multi-query-highlighting" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -475,11 +477,11 @@ Doc 2: [&#x27;my second test doc. {Milvus} is an open-source vector database&#x2
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在 BM25 全文搜索中使用多个查询进行搜索时，每个查询的结果都会单独高亮显示。第一个查询结果包含其搜索词的高亮显示，第二个查询结果包含其搜索词的高亮显示，以此类推。每个查询都使用相同的<code translate="no">highlighter</code> 配置，但各自独立应用。</p>
-<p>在下面的示例中</p>
+    </button></h3><p>When searching with multiple queries in BM25 full text search, each query’s results are highlighted independently. The first query’s results contain highlights for its search term, and the second query’s results contain highlights for its search term, and so on. Each query uses the same <code translate="no">highlighter</code> configuration but applies it independently.</p>
+<p>In the example below:</p>
 <ul>
-<li><p>第一个查询在其结果集中高亮显示<code translate="no">&quot;test&quot;</code> </p></li>
-<li><p>第二个查询在其结果集中高亮显示<code translate="no">&quot;Milvus&quot;</code> </p></li>
+<li><p>First query highlights <code translate="no">&quot;test&quot;</code> in its result set</p></li>
+<li><p>Second query highlights <code translate="no">&quot;Milvus&quot;</code> in its result set</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -505,7 +507,7 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>预期输出</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Query &#x27;test&#x27;:
   [&#x27;{test} doc&#x27;]
   [&#x27;{test} doc&#x27;]
@@ -514,7 +516,7 @@ Query &#x27;Milvus&#x27;:
   [&#x27;{Milvus} is an open-source vector database that suits AI applications of every size from running a dem&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-5-Custom-HTML-tags" class="common-anchor-header">例 5：自定义 HTML 标记<button data-href="#Example-5-Custom-HTML-tags" class="anchor-icon" translate="no">
+<h3 id="Example-5-Custom-HTML-tags" class="common-anchor-header">Example 5: Custom HTML tags<button data-href="#Example-5-Custom-HTML-tags" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -529,7 +531,7 @@ Query &#x27;Milvus&#x27;:
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>您可以使用任何标记进行高亮显示，例如用于网络用户界面的 HTML 安全标记。这在浏览器中呈现搜索结果时非常有用。</p>
+    </button></h3><p>You can use any tags for highlighting, such as HTML-safe tags for web UIs. This is useful when rendering search results in a browser.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;&lt;mark&gt;&quot;</span>],</span>
 <span class="highlighted-comment-line">    post_tags=[<span class="hljs-string">&quot;&lt;/mark&gt;&quot;</span>],</span>
@@ -551,7 +553,7 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>预期输出</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;&lt;mark&gt;test&lt;/mark&gt; doc&#x27;]
 [&#x27;&lt;mark&gt;test&lt;/mark&gt; doc&#x27;]
 <button class="copy-code-btn"></button></code></pre>

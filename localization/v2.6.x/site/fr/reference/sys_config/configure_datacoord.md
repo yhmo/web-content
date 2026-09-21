@@ -2,7 +2,7 @@
 id: configure_datacoord.md
 related_key: configure
 group: system_configuration.md
-summary: Découvrez comment configurer dataCoord pour Milvus.
+summary: Learn how to configure dataCoord for Milvus.
 ---
 <h1 id="dataCoord-related-Configurations" class="common-anchor-header">dataCoord-related Configurations<button data-href="#dataCoord-related-Configurations" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -37,13 +37,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.channel.watchTimeoutInterval">
   <thead>
     <tr>
-      <th class="width80">Description de la configuration</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Délai d'attente pour l'observation des chaînes (en secondes). La progression de la surveillance de la mise à jour du tickler d'un code de données réinitialise le délai d'attente.      </td>
+      <td>        Timeout on watching channels (in seconds). Datanode tickler update watch progress will reset timeout timer.      </td>
       <td>300</td>
     </tr>
   </tbody>
@@ -67,12 +67,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Les datanodes &lt;= cette version sont considérés comme des nœuds anciens, qui n'ont pas de watch() basé sur rpc. Cette valeur n'est utilisée que lors d'une mise à jour progressive, lorsque les nœuds hérités ne reçoivent pas de nouveaux canaux.      </td>
+      <td>        Datanodes <= this version are considered as legacy nodes, which doesn't have rpc based watch(). This is only used during rolling upgrade where legacy nodes won't get new channels      </td>
       <td>2.4.1</td>
     </tr>
   </tbody>
@@ -96,12 +96,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Durée après laquelle le gestionnaire de canal commence à équilibrer les canaux en arrière-plan.      </td>
+      <td>        The duration after which the channel manager start background channel balancing      </td>
       <td>300</td>
     </tr>
   </tbody>
@@ -124,13 +124,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.channel.balanceInterval">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Intervalle avec lequel le gestionnaire de canaux vérifie l'état de l'équilibrage des canaux dml   </td>
+      <td>        The interval with which the channel manager check dml channel balance status      </td>
       <td>360</td>
     </tr>
   </tbody>
@@ -153,13 +153,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.channel.checkInterval">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Intervalle en secondes avec lequel le gestionnaire de canal avance les états des canaux      </td>
+      <td>        The interval in seconds with which the channel manager advances channel states      </td>
       <td>1</td>
     </tr>
   </tbody>
@@ -183,12 +183,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Délai de notification des opérations sur les canaux (en secondes).      </td>
+      <td>        Timeout notifing channel operations (in seconds).      </td>
       <td>5</td>
     </tr>
   </tbody>
@@ -211,13 +211,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.segment.maxSize">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Taille maximale d'un segment, unité : Mo : MB. datacoord.segment.maxSize et datacoord.segment.sealProportion déterminent ensemble si un segment peut être scellé.      </td>
+      <td>        The maximum size of a segment, unit: MB. datacoord.segment.maxSize and datacoord.segment.sealProportion together determine if a segment can be sealed.      </td>
       <td>1024</td>
     </tr>
   </tbody>
@@ -241,12 +241,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Taille maximale d'un segment en Mo pour la collection qui a un index de disque.      </td>
+      <td>        Maximun size of a segment in MB for collection which has Disk index      </td>
       <td>2048</td>
     </tr>
   </tbody>
@@ -269,13 +269,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.segment.sealProportion">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        La proportion minimale de datacoord.segment.maxSize pour sceller un segment. datacoord.segment.maxSize et datacoord.segment.sealProportion déterminent ensemble si un segment peut être scellé.      </td>
+      <td>        The minimum proportion to datacoord.segment.maxSize to seal a segment. datacoord.segment.maxSize and datacoord.segment.sealProportion together determine if a segment can be sealed.      </td>
       <td>0.12</td>
     </tr>
   </tbody>
@@ -298,13 +298,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.segment.sealProportionJitter">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Rapport de gigue de la proportion de scellement du segment, valeur par défaut 0,1(10%), si la proportion de scellement est de 12%, avec gigue=0,1, le rapport appliqué sera de 10,8~12%.      </td>
+      <td>        segment seal proportion jitter ratio, default value 0.1(10%), if seal proportion is 12%, with jitter=0.1, the actuall applied ratio will be 10.8~12%      </td>
       <td>0.1</td>
     </tr>
   </tbody>
@@ -327,13 +327,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.segment.assignmentExpiration">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Temps d'expiration de l'assignation de segment, unité : ms  </td>
+      <td>        Expiration time of the segment assignment, unit: ms      </td>
       <td>2000</td>
     </tr>
   </tbody>
@@ -357,12 +357,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Temps de tentative d'allocation du dernier lastExpire de rootCoord après un redémarrage      </td>
+      <td>        The time attempting to alloc latest lastExpire from rootCoord after restart      </td>
       <td>200</td>
     </tr>
   </tbody>
@@ -385,13 +385,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.segment.maxLife">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Durée de vie maximale du segment en secondes, 24*60*60      </td>
+      <td>        The max lifetime of segment in seconds, 24*60*60      </td>
       <td>86400</td>
     </tr>
   </tbody>
@@ -414,16 +414,16 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.segment.maxIdleTime">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Si un segment n'a pas accepté d'enregistrements dml dans maxIdleTime et que la taille du segment est supérieure à</li>      
-        <li>minSizeFromIdleToSealed, Milvus le scelle automatiquement.</li>      
-        <li>Temps d'inactivité maximum du segment en secondes, 10*60.</li>      </td>
+        <li>If a segment didn't accept dml records in maxIdleTime and the size of segment is greater than</li>      
+        <li>minSizeFromIdleToSealed, Milvus will automatically seal it.</li>      
+        <li>The max idle time of segment in seconds, 10*60.</li>      </td>
       <td>600</td>
     </tr>
   </tbody>
@@ -446,13 +446,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.segment.minSizeFromIdleToSealed">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Taille minimale en Mo du segment qui peut être mis en veille ou scellé.      </td>
+      <td>        The min size in MB of segment which can be idle from sealed.      </td>
       <td>16</td>
     </tr>
   </tbody>
@@ -476,14 +476,14 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Nombre maximal de fichiers journaux (égal au nombre de fichiers journaux de la clé primaire) pour un segment, </li>      
-        <li>le segment sera fermé si le nombre de fichiers binlog atteint la valeur maximale.</li>      </td>
+        <li>The max number of binlog (which is equal to the binlog file num of primary key) for one segment, </li>      
+        <li>the segment will be sealed if the number of binlog file reaches to max value.</li>      </td>
       <td>32</td>
     </tr>
   </tbody>
@@ -507,12 +507,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Le segment est considéré comme "petit segment" lorsque son nombre de lignes est inférieur à  </td>
+      <td>        The segment is considered as "small segment" when its # of rows is smaller than      </td>
       <td>0.5</td>
     </tr>
   </tbody>
@@ -535,15 +535,15 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.segment.compactableProportion">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
         <li>(smallProportion * segment max # of rows).</li>      
-        <li>Un compactage aura lieu sur des petits segments si le segment après compactage aura</li>      </td>
+        <li>A compaction will happen on small segments if the segment after compaction will have</li>      </td>
       <td>0.85</td>
     </tr>
   </tbody>
@@ -566,16 +566,16 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.segment.expansionRate">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>plus de (compactableProportion * segment max # of rows) lignes.</li>      
-        <li>DOIT ÊTRE SUPÉRIEUR OU ÉGAL À <smallProportion>! !!</li>      
-        <li>Pendant le compactage, la taille du segment # de lignes peut dépasser le segment max # de lignes de (expansionRate-1) * 100%. </li>      </td>
+        <li>over (compactableProportion * segment max # of rows) rows.</li>      
+        <li>MUST BE GREATER THAN OR EQUAL TO <smallProportion>!!!</li>      
+        <li>During compaction, the size of segment # of rows is able to exceed segment max # of rows by (expansionRate-1) * 100%. </li>      </td>
       <td>1.25</td>
     </tr>
   </tbody>
@@ -598,15 +598,15 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.sealPolicy.channel.growingSegmentsMemSize">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Seuil de taille en Mo, si la taille totale des segments croissants de chaque tesson dépasse ce seuil, le segment croissant le plus grand est supprimé. </li>      
-        <li>dépasse ce seuil, le segment croissant le plus grand sera scellé.</li>      </td>
+        <li>The size threshold in MB, if the total size of growing segments of each shard </li>      
+        <li>exceeds this threshold, the largest growing segment will be sealed.</li>      </td>
       <td>4096</td>
     </tr>
   </tbody>
@@ -630,13 +630,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        si la mise à jour automatique de l'index du segment vers la version du moteur d'indexation est nécessaire      </td>
-      <td>faux</td>
+      <td>        whether auto upgrade segment index to index engine's version      </td>
+      <td>false</td>
     </tr>
   </tbody>
 </table>
@@ -658,13 +658,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.segmentFlushInterval">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        la durée minimale de l'intervalle (unité : secondes) entre deux opérations de fusion sur le même segment      </td>
+      <td>        the minimal interval duration(unit: Seconds) between flusing operation on same segment      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -688,15 +688,15 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Valeur du commutateur permettant d'activer ou non le compactage des segments. </li>      
-        <li>Le compactage fusionne des segments de petite taille en un grand segment et efface les entités supprimées au-delà de la durée de rétention du Time Travel.</li>      </td>
-      <td>vrai</td>
+        <li>Switch value to control if to enable segment compaction. </li>      
+        <li>Compaction merges small-size segments into a large segment, and clears the entities deleted beyond the rentention duration of Time Travel.</li>      </td>
+      <td>true</td>
     </tr>
   </tbody>
 </table>
@@ -719,15 +719,15 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>Valeur du commutateur permettant d'activer ou non le compactage automatique des segments, au cours duquel data coord localise et fusionne les segments compactables en arrière-plan.</li>      
-        <li>Cette configuration ne prend effet que lorsque dataCoord.enableCompaction est défini comme true.</li>      </td>
-      <td>true (vrai)</td>
+        <li>Switch value to control if to enable automatic segment compaction during which data coord locates and merges compactable segments in the background.</li>      
+        <li>This configuration takes effect only when dataCoord.enableCompaction is set as true.</li>      </td>
+      <td>true</td>
     </tr>
   </tbody>
 </table>
@@ -749,18 +749,18 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.taskPrioritizer">
   <thead>
     <tr>
-      <th class="width80">Description de la configuration</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>compaction task prioritizer, options : [default, level, mix]. </li>      
-        <li>La valeur par défaut est FIFO.</li>      
-        <li>Le niveau est priorisé par niveau : Les compactions L0 d'abord, puis les compactions de mélange, puis les compactions de regroupement.</li>      
-        <li>mix est priorisé par niveau : d'abord les compactions mix, puis les compactions L0, puis les compactions clustering.</li>      </td>
-      <td>défaut</td>
+        <li>compaction task prioritizer, options: [default, level, mix]. </li>      
+        <li>default is FIFO.</li>      
+        <li>level is prioritized by level: L0 compactions first, then mix compactions, then clustering compactions.</li>      
+        <li>mix is prioritized by level: mix compactions first, then L0 compactions, then clustering compactions.</li>      </td>
+      <td>default</td>
     </tr>
   </tbody>
 </table>
@@ -782,13 +782,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.taskQueueCapacity">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        taille de la file d'attente des tâches de compactage      </td>
+      <td>        compaction task queue size      </td>
       <td>100000</td>
     </tr>
   </tbody>
@@ -811,13 +811,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.dropTolerance">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        La tâche de compactage sera nettoyée après une durée supérieure à ce délai (en secondes).      </td>
+      <td>        Compaction task will be cleaned after finish longer than this time(in seconds)      </td>
       <td>86400</td>
     </tr>
   </tbody>
@@ -840,13 +840,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.gcInterval">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Intervalle de temps en secondes pour le compactage gc  </td>
+      <td>        The time interval in seconds for compaction gc      </td>
       <td>1800</td>
     </tr>
   </tbody>
@@ -869,13 +869,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.mix.triggerInterval">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Intervalle de temps en secondes pour déclencher le compactage du mélange      </td>
+      <td>        The time interval in seconds to trigger mix compaction      </td>
       <td>60</td>
     </tr>
   </tbody>
@@ -898,13 +898,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.levelzero.triggerInterval">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Intervalle de temps en secondes pour déclencher le compactage L0  </td>
+      <td>        The time interval in seconds for trigger L0 compaction      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -927,13 +927,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.levelzero.forceTrigger.minSize">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        La taille minimale en octets pour forcer le déclenchement d'un compactage de niveau zéro, par défaut 8MB   </td>
+      <td>        The minmum size in bytes to force trigger a LevelZero Compaction, default as 8MB      </td>
       <td>8388608</td>
     </tr>
   </tbody>
@@ -956,13 +956,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.levelzero.forceTrigger.maxSize">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        La taille maximale en octets pour forcer le déclenchement d'un compactage LevelZero, par défaut 64MB    </td>
+      <td>        The maxmum size in bytes to force trigger a LevelZero Compaction, default as 64MB      </td>
       <td>67108864</td>
     </tr>
   </tbody>
@@ -985,13 +985,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.levelzero.forceTrigger.deltalogMinNum">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Le nombre minimum de fichiers deltalog pour forcer le déclenchement d'un compactage LevelZero      </td>
+      <td>        The minimum number of deltalog files to force trigger a LevelZero Compaction      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -1014,13 +1014,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.levelzero.forceTrigger.deltalogMaxNum">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Le nombre maximum de fichiers deltalog pour forcer le déclenchement d'un LevelZero Compaction, par défaut 30  </td>
+      <td>        The maxmum number of deltalog files to force trigger a LevelZero Compaction, default as 30      </td>
       <td>30</td>
     </tr>
   </tbody>
@@ -1043,13 +1043,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.single.ratio.threshold">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Le seuil de rapport d'un segment pour déclencher un seul compactage, par défaut 0.2   </td>
+      <td>        The ratio threshold of a segment to trigger a single compaction, default as 0.2      </td>
       <td>0.2</td>
     </tr>
   </tbody>
@@ -1072,13 +1072,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.single.deltalog.maxsize">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        La taille deltalog d'un segment pour déclencher un seul compactage, par défaut 16MB    </td>
+      <td>        The deltalog size of a segment to trigger a single compaction, default as 16MB      </td>
       <td>16777216</td>
     </tr>
   </tbody>
@@ -1101,13 +1101,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.single.deltalog.maxnum">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Le nombre de deltalogues d'un segment pour déclencher un compactage, par défaut 200   </td>
+      <td>        The deltalog count of a segment to trigger a compaction, default as 200      </td>
       <td>200</td>
     </tr>
   </tbody>
@@ -1130,13 +1130,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.single.expiredlog.maxsize">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        La taille du journal expiré d'un segment pour déclencher un compactage, par défaut 10MB    </td>
+      <td>        The expired log size of a segment to trigger a compaction, default as 10MB      </td>
       <td>10485760</td>
     </tr>
   </tbody>
@@ -1159,14 +1159,14 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.clustering.enable">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Activer le compactage du clustering      </td>
-      <td>vrai</td>
+      <td>        Enable clustering compaction      </td>
+      <td>true</td>
     </tr>
   </tbody>
 </table>
@@ -1189,13 +1189,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Activer le compactage automatique du clustering      </td>
-      <td>faux</td>
+      <td>        Enable auto clustering compaction      </td>
+      <td>false</td>
     </tr>
   </tbody>
 </table>
@@ -1218,12 +1218,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Intervalle de déclenchement du compactage en grappes en secondes      </td>
+      <td>        clustering compaction trigger interval in seconds      </td>
       <td>600</td>
     </tr>
   </tbody>
@@ -1246,13 +1246,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.clustering.minInterval">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Intervalle minimum entre les exécutions de compactage en grappe d'une collection, afin d'éviter un compactage redondant.      </td>
+      <td>        The minimum interval between clustering compaction executions of one collection, to avoid redundant compaction      </td>
       <td>3600</td>
     </tr>
   </tbody>
@@ -1275,13 +1275,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.clustering.maxInterval">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Si une collection n'a pas été compactée par clustering depuis plus longtemps que maxInterval, forcer le compactage      </td>
+      <td>        If a collection haven't been clustering compacted for longer than maxInterval, force compact      </td>
       <td>259200</td>
     </tr>
   </tbody>
@@ -1304,13 +1304,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.clustering.newDataSizeThreshold">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Si la nouvelle taille des données est supérieure à newDataSizeThreshold, exécuter le compactage en grappe.      </td>
+      <td>        If new data size is large than newDataSizeThreshold, execute clustering compaction      </td>
       <td>512m</td>
     </tr>
   </tbody>
@@ -1333,13 +1333,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.clustering.maxTrainSizeRatio">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        ratio maximum de taille de données dans le train Kmeans, s'il est plus grand, l'échantillonnage sera réduit pour respecter cette limite.      </td>
+      <td>        max data size ratio in Kmeans train, if larger than it, will down sampling to meet this limit      </td>
       <td>0.8</td>
     </tr>
   </tbody>
@@ -1362,13 +1362,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.clustering.maxCentroidsNum">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        nombre maximum de centroïdes dans le train de Kmeans      </td>
+      <td>        maximum centroids number in Kmeans train      </td>
       <td>10240</td>
     </tr>
   </tbody>
@@ -1391,13 +1391,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.clustering.minCentroidsNum">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        nombre minimum de centroïdes dans le train de Kmeans      </td>
+      <td>        minimum centroids number in Kmeans train      </td>
       <td>16</td>
     </tr>
   </tbody>
@@ -1420,13 +1420,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.clustering.minClusterSizeRatio">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        taille minimale des clusters / taille moyenne dans le train de Kmeans      </td>
+      <td>        minimum cluster size / avg size in Kmeans train      </td>
       <td>0.01</td>
     </tr>
   </tbody>
@@ -1449,13 +1449,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.clustering.maxClusterSizeRatio">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        taille maximale de la grappe / taille moyenne dans le train de Kmeans      </td>
+      <td>        maximum cluster size / avg size in Kmeans train      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -1478,13 +1478,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.compaction.clustering.maxClusterSize">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        taille maximale des grappes dans le train de Kmeans      </td>
+      <td>        maximum cluster size in Kmeans train      </td>
       <td>5g</td>
     </tr>
   </tbody>
@@ -1507,13 +1507,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.syncSegmentsInterval">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Intervalle de temps pour la synchronisation régulière des segments      </td>
+      <td>        The time interval for regularly syncing segments      </td>
       <td>300</td>
     </tr>
   </tbody>
@@ -1536,13 +1536,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.index.memSizeEstimateMultiplier">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Lorsque la taille de la mémoire n'est pas définie par la procédure d'indexation, multiplicateur pour estimer la taille de la mémoire des données d'index.      </td>
+      <td>        When the memory size is not setup by index procedure, multiplier to estimate the memory size of index data      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -1565,14 +1565,14 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.enableGarbageCollection">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Valeur de commutation permettant de contrôler l'activation du ramassage des ordures pour effacer les données rejetées dans le service MinIO ou S3.      </td>
-      <td>vrai</td>
+      <td>        Switch value to control if to enable garbage collection to clear the discarded data in MinIO or S3 service.      </td>
+      <td>true</td>
     </tr>
   </tbody>
 </table>
@@ -1595,12 +1595,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Intervalle auquel la coordonnée des données effectue le ramassage des ordures, unité : seconde.      </td>
+      <td>        The interval at which data coord performs garbage collection, unit: second.      </td>
       <td>3600</td>
     </tr>
   </tbody>
@@ -1624,12 +1624,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Durée de conservation des fichiers binaires non enregistrés (binlog). La définition d'une valeur raisonnablement élevée pour ce paramètre permet d'éviter de supprimer par erreur les fichiers binlog nouvellement créés et dépourvus de métadonnées. Unité : seconde.      </td>
+      <td>        The retention duration of the unrecorded binary log (binlog) files. Setting a reasonably large value for this parameter avoids erroneously deleting the newly created binlog files that lack metadata. Unit: second.      </td>
       <td>86400</td>
     </tr>
   </tbody>
@@ -1652,13 +1652,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.gc.dropTolerance">
   <thead>
     <tr>
-      <th class="width80">Description du paramètre</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Durée de conservation des fichiers binlog des segments supprimés avant qu'ils ne soient effacés, unité : seconde.      </td>
+      <td>        The retention duration of the binlog files of the deleted segments before they are cleared, unit: second.      </td>
       <td>10800</td>
     </tr>
   </tbody>
@@ -1682,12 +1682,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        nombre de goroutines simultanées pour supprimer les objets s3 abandonnés      </td>
+      <td>        number of concurrent goroutines to remove dropped s3 objects      </td>
       <td>32</td>
     </tr>
   </tbody>
@@ -1710,13 +1710,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.gc.scanInterval">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        fichier orphelin (fichier sur oss mais qui n'a pas été enregistré sur meta) sur le stockage d'objets intervalle d'analyse du ramasse-miettes en heures      </td>
+      <td>        orphan file (file on oss but has not been registered on meta) on object storage garbage collection scanning interval in hours      </td>
       <td>168</td>
     </tr>
   </tbody>
@@ -1739,8 +1739,8 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.brokerTimeout">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
@@ -1768,14 +1768,14 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.autoBalance">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Activer l'équilibrage automatique      </td>
-      <td>vrai</td>
+      <td>        Enable auto balance      </td>
+      <td>true</td>
     </tr>
   </tbody>
 </table>
@@ -1798,12 +1798,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Intervalle de vérification de l'équilibre automatique configuré      </td>
+      <td>        the interval of check auto balance config      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -1827,12 +1827,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Nombre maximal de fichiers autorisés par tâche de pré-importation.      </td>
+      <td>        The maximum number of files allowed per pre-import task.      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -1856,12 +1856,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        La période de rétention en secondes pour les tâches dans l'état Terminé ou Échoué.      </td>
+      <td>        The retention period in seconds for tasks in the Completed or Failed state.      </td>
       <td>10800</td>
     </tr>
   </tbody>
@@ -1884,13 +1884,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.import.maxSizeInMBPerImportTask">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Pour éviter la génération de petits segments, nous regrouperons les fichiers importés. Ce paramètre représente la somme des tailles de fichiers dans chaque groupe (chaque tâche d'importation).      </td>
+      <td>        To prevent generating of small segments, we will re-group imported files. This parameter represents the sum of file sizes in each group (each ImportTask).      </td>
       <td>6144</td>
     </tr>
   </tbody>
@@ -1914,12 +1914,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Intervalle de programmation de l'importation, mesuré en secondes.      </td>
+      <td>        The interval for scheduling import, measured in seconds.      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -1942,13 +1942,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.import.checkIntervalHigh">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        L'intervalle de vérification des importations, mesuré en secondes, est fixé à une fréquence élevée pour le vérificateur d'importations.      </td>
+      <td>        The interval for checking import, measured in seconds, is set to a high frequency for the import checker.      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -1971,13 +1971,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.import.checkIntervalLow">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        L'intervalle de vérification des importations, mesuré en secondes, est fixé à une fréquence faible pour le vérificateur d'importations.      </td>
+      <td>        The interval for checking import, measured in seconds, is set to a low frequency for the import checker.      </td>
       <td>120</td>
     </tr>
   </tbody>
@@ -2001,12 +2001,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Nombre maximal de fichiers autorisés par demande d'importation.      </td>
+      <td>        The maximum number of files allowed per single import request.      </td>
       <td>1024</td>
     </tr>
   </tbody>
@@ -2029,13 +2029,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.import.maxImportJobNum">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Nombre maximal de tâches d'importation en cours d'exécution ou en attente.      </td>
+      <td>        Maximum number of import jobs that are executing or pending.      </td>
       <td>1024</td>
     </tr>
   </tbody>
@@ -2058,14 +2058,14 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.import.waitForIndex">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Indique si l'opération d'importation attend la fin de la construction de l'index.      </td>
-      <td>vrai</td>
+      <td>        Indicates whether the import operation waits for the completion of index building.      </td>
+      <td>true</td>
     </tr>
   </tbody>
 </table>
@@ -2088,12 +2088,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        secondes. force stop node without graceful stop    </td>
+      <td>        seconds. force stop node without graceful stop      </td>
       <td>5</td>
     </tr>
   </tbody>
@@ -2117,12 +2117,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Utilisation du slot du travail de compactage du clustering.      </td>
+      <td>        slot usage of clustering compaction job.      </td>
       <td>16</td>
     </tr>
   </tbody>
@@ -2145,13 +2145,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.slot.mixCompactionUsage">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Utilisation des créneaux horaires pour le travail de compactage par mélange.      </td>
+      <td>        slot usage of mix compaction job.      </td>
       <td>8</td>
     </tr>
   </tbody>
@@ -2175,12 +2175,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Utilisation du slot pour la tâche de compactage l0.      </td>
+      <td>        slot usage of l0 compaction job.      </td>
       <td>8</td>
     </tr>
   </tbody>
@@ -2204,12 +2204,12 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
   <thead>
     <tr>
       <th class="width80">Description</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Adresse TCP/IP de dataCoord. Si elle n'est pas spécifiée, la première adresse non diffusable est utilisée.      </td>
+      <td>        TCP/IP address of dataCoord. If not specified, use the first unicastable address      </td>
       <td></td>
     </tr>
   </tbody>
@@ -2232,13 +2232,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.port">
   <thead>
     <tr>
-      <th class="width80">Description Valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Port TCP de dataCoord      </td>
+      <td>        TCP port of dataCoord      </td>
       <td>13333</td>
     </tr>
   </tbody>
@@ -2261,13 +2261,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.grpc.serverMaxSendSize">
   <thead>
     <tr>
-      <th class="width80">Valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Taille maximale de chaque requête RPC que le dataCoord peut envoyer, unité : octet     </td>
+      <td>        The maximum size of each RPC request that the dataCoord can send, unit: byte      </td>
       <td>536870912</td>
     </tr>
   </tbody>
@@ -2290,13 +2290,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.grpc.serverMaxRecvSize">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Taille maximale de chaque requête RPC que le dataCoord peut recevoir, unité : octet     </td>
+      <td>        The maximum size of each RPC request that the dataCoord can receive, unit: byte      </td>
       <td>268435456</td>
     </tr>
   </tbody>
@@ -2319,13 +2319,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.grpc.clientMaxSendSize">
   <thead>
     <tr>
-      <th class="width80">Valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        La taille maximale de chaque requête RPC que les clients du dataCoord peuvent envoyer, unité : byte    </td>
+      <td>        The maximum size of each RPC request that the clients on dataCoord can send, unit: byte      </td>
       <td>268435456</td>
     </tr>
   </tbody>
@@ -2348,13 +2348,13 @@ summary: Découvrez comment configurer dataCoord pour Milvus.
     </button></h2><table id="dataCoord.grpc.clientMaxRecvSize">
   <thead>
     <tr>
-      <th class="width80">Description de la valeur par défaut</th>
-      <th class="width20">Valeur par défaut</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Taille maximale de chaque requête RPC que les clients de dataCoord peuvent recevoir, unité : octet     </td>
+      <td>        The maximum size of each RPC request that the clients on dataCoord can receive, unit: byte      </td>
       <td>536870912</td>
     </tr>
   </tbody>

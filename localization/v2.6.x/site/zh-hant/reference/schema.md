@@ -1,9 +1,12 @@
 ---
 id: schema.md
-title: 模式說明
-summary: 模式定義了集合的資料結構。在建立一個集合之前，您需要先設計它的模式。本頁可協助您瞭解集合模式，並自行設計一個範例模式。
+title: Schema Explained
+summary: >-
+  A schema defines the data structure of a collection. Before creating a
+  collection, you need to work out a design of its schema. This page helps you
+  understand the collection schema and design an example schema on your own.
 ---
-<h1 id="Schema-Explained" class="common-anchor-header">模式說明<button data-href="#Schema-Explained" class="anchor-icon" translate="no">
+<h1 id="Schema-Explained" class="common-anchor-header">Schema Explained<button data-href="#Schema-Explained" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +21,8 @@ summary: 模式定義了集合的資料結構。在建立一個集合之前，�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>模式定義了集合的資料結構。在建立一個資料集之前，您需要設計一個模式。本頁可協助您瞭解集合模式，並自行設計一個範例模式。</p>
-<h2 id="Overview" class="common-anchor-header">概觀<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>A schema defines the data structure of a collection. Before creating a collection, you need to work out a design of its schema. This page helps you understand the collection schema and design an example schema on your own.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,16 +37,18 @@ summary: 模式定義了集合的資料結構。在建立一個集合之前，�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在 Milvus 上，集合模式組合了關聯式資料庫中的一個表，它定義了 Milvus 如何組織集合中的資料。</p>
-<p>一個設計良好的模式是非常重要的，因為它抽象了資料模型，並決定您是否可以透過搜尋來達成業務目標。此外，由於插入到資料集中的每一行資料都必須遵循模式，因此它有助於維持資料的一致性和長期品質。從技術角度來看，定義良好的模式可帶來組織良好的列資料儲存和更乾淨的索引結構，從而提升搜尋效能。</p>
-<p>集合模式有一個主索引鍵、至少一個向量欄位和幾個標量欄位。下圖說明如何將文章映射到模式欄位清單。</p>
+    </button></h2><p>On Milvus, a collection schema assembles a table in a relational database, which defines how Milvus organizes data in the collection.</p>
+<p>A well-designed schema is essential as it abstracts the data model and decides if you can achieve the business objectives through a search. Furthermore, since every row of data inserted into the collection must follow the schema, it helps maintain data consistency and long-term quality. From a technical perspective, a well-defined schema leads to well-organized column data storage and a cleaner index structure, boosting search performance.</p>
+<p>A collection schema has a primary key, at least one vector field, and several scalar fields. The following diagram illustrates how to map an article to a list of schema fields.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/schema-design-anatomy.png" alt="Schema Design Anatomy" class="doc-image" id="schema-design-anatomy" />
-   </span> <span class="img-wrapper"> <span>模式設計剖析</span> </span></p>
-<p>搜尋系統的資料模型設計包括分析業務需求，並將資訊抽象為模式表達的資料模型。舉例來說，搜尋一段文字必須透過「嵌入」將字面字串轉換為向量，並啟用向量搜尋來「建立索引」。除了這個基本要求之外，儲存其他屬性（例如出版時間戳和作者）可能也是必要的。這些元資料允許透過篩選來精細語意搜尋，僅傳回在特定日期之後或由特定作者出版的文字。您也可以擷取這些標量與主要文字，以便在應用程式中呈現搜尋結果。每個標量都應該指定一個唯一的識別碼，以整數或字串的形式來組織這些文字片段。這些元素對於達成精密的搜尋邏輯是不可或缺的。</p>
-<p>請參閱<a href="/docs/zh-hant/schema-hands-on.md">模式設計實作</a>，以瞭解如何製作設計良好的模式。</p>
-<h2 id="Create-Schema" class="common-anchor-header">建立模式<button data-href="#Create-Schema" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/schema-design-anatomy.png" alt="Schema Design Anatomy" class="doc-image" id="schema-design-anatomy" />
+    <span>Schema Design Anatomy</span>
+  </span>
+</p>
+<p>The data model design of a search system involves analyzing business needs and abstracting information into a schema-expressed data model. For instance, searching a piece of text must be “indexed” by converting the literal string into a vector through “embedding” and enabling vector search. Beyond this essential requirement, storing other properties such as publication timestamp and author may be necessary. This metadata allows for semantic searches to be refined through filtering, returning only texts published after a specific date or by a particular author. You can also retrieve these scalars with the main text to render the search result in the application. Each should be assigned a unique identifier to organize these text pieces, expressed as an integer or string. These elements are essential for achieving sophisticated search logic.</p>
+<p>Refer to <a href="/docs/zh-hant/v2.6.x/schema-hands-on.md">Schema Design Hands-On</a> to figure out how to make a well-designed schema.</p>
+<h2 id="Create-Schema" class="common-anchor-header">Create Schema<button data-href="#Create-Schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -58,9 +63,14 @@ summary: 模式定義了集合的資料結構。在建立一個集合之前，�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下程式碼片段示範如何建立模式。</p>
+    </button></h2><p>The following code snippet demonstrates how to create a schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 schema = MilvusClient.create_schema()
@@ -81,7 +91,7 @@ schema := entity.NewSchema()
     &quot;fields&quot;: []
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Add-Primary-Field" class="common-anchor-header">新增主要欄位<button data-href="#Add-Primary-Field" class="anchor-icon" translate="no">
+<h2 id="Add-Primary-Field" class="common-anchor-header">Add Primary Field<button data-href="#Add-Primary-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,9 +106,14 @@ schema := entity.NewSchema()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>集合中的 primary 欄位唯一地識別一個實體。它只接受<strong>Int64</strong>或<strong>VarChar</strong>值。以下程式碼片段示範如何新增主字段。</p>
+    </button></h2><p>The primary field in a collection uniquely identifies an entity. It only accepts <strong>Int64</strong> or <strong>VarChar</strong> values. The following code snippets demonstrate how to add the primary field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_id&quot;</span>,
     datatype=DataType.INT64,
@@ -142,13 +157,13 @@ schema.addField(AddFieldReq.builder()
     ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>新增欄位時，您可以透過設定其<code translate="no">is_primary</code> 屬性為<code translate="no">True</code> ，明確地將該欄位澄清為主要欄位。primary 欄位預設接受<strong>Int64</strong>值。在這種情況下，主字段值應該是類似<code translate="no">12345</code> 的整數。如果您選擇在主字段中使用<strong>VarChar</strong>值，則值應該是類似<code translate="no">my_entity_1234</code> 的字串。</p>
-<p>您也可以設定<code translate="no">autoId</code> 屬性為<code translate="no">True</code> ，讓 Milvus 在插入資料時自動分配主字段值。</p>
+<p>When adding a field, you can explicitly clarify the field as the primary field by setting its <code translate="no">is_primary</code> property to <code translate="no">True</code>. A primary field accepts <strong>Int64</strong> values by default. In this case, the primary field value should be integers similar to <code translate="no">12345</code>. If you choose to use <strong>VarChar</strong> values in the primary field, the value should be strings similar to <code translate="no">my_entity_1234</code>.</p>
+<p>You can also set the <code translate="no">autoId</code> properties to <code translate="no">True</code> to make Milvus automatically allocate primary field values upon data insertions.</p>
 <div class="alert note">
-<p>除非手動設定主鍵有好處，否則建議您在所有情況下都依賴<code translate="no">autoId</code> 。</p>
+<p>You are advised to rely on <code translate="no">autoId</code> in all cases unless manually setting primary keys is beneficial.</p>
 </div>
-<p>詳情請參考<a href="/docs/zh-hant/primary-field.md">Primary Field &amp; AutoId</a>。</p>
-<h2 id="Add-Vector-Fields" class="common-anchor-header">新增向量欄位<button data-href="#Add-Vector-Fields" class="anchor-icon" translate="no">
+<p>For details, refer to <a href="/docs/zh-hant/v2.6.x/primary-field.md">Primary Field & AutoId</a>.</p>
+<h2 id="Add-Vector-Fields" class="common-anchor-header">Add Vector Fields<button data-href="#Add-Vector-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -163,9 +178,14 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>向量欄位接受各種稀疏和密集的向量嵌入。在 Milvus 上，您可以新增四個向量欄位到一個集合。以下程式碼片段示範如何新增向量欄位。</p>
+    </button></h2><p>Vector fields accept various sparse and dense vector embeddings. On Milvus, you can add four vector fields to a collection. The following code snippets demonstrate how to add a vector field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_vector&quot;</span>,
     datatype=DataType.FLOAT_VECTOR,
@@ -205,20 +225,20 @@ schema.addField(AddFieldReq.builder()
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>上述程式碼片段中的<code translate="no">dim</code> 參數表示向量欄位中要容納的向量內嵌的維度。<code translate="no">FLOAT_VECTOR</code> 的值表示向量欄位持有 32 位元浮動數的清單，通常用來表示反斜率。除此之外，Milvus 也支援下列類型的向量嵌入：</p>
+<p>The <code translate="no">dim</code> paramter in the above code snippets indicates the dimensionality of the vector embeddings to be held in the vector field. The <code translate="no">FLOAT_VECTOR</code> value indicates that the vector field holds a list of 32-bit floating numbers, which are usually used to represent antilogarithms.In addition to that, Milvus also supports the following types of vector embeddings:</p>
 <ul>
 <li><p><code translate="no">FLOAT16_VECTOR</code></p>
-<p>此類型的向量欄位會保存 16 位元半精度浮點數的清單，通常適用於記憶體或頻寬受限的深度學習或基於 GPU 的運算情境。</p></li>
+<p>A vector field of this type holds a list of 16-bit half-precision floating numbers and usually applies to memory- or bandwidth-restricted deep learning or GPU-based computing scenarios.</p></li>
 <li><p><code translate="no">BFLOAT16_VECTOR</code></p>
-<p>此類型的向量欄位會存放 16 位元浮點數的清單，這些浮點數的精確度降低，但指數範圍與 Float32 相同。這種類型的資料常用於深度學習情境，因為它可以減少記憶體使用量，卻不會顯著影響精確度。</p></li>
+<p>A vector field of this type holds a list of 16-bit floating-point numbers that have reduced precision but the same exponent range as Float32. This type of data is commonly used in deep learning scenarios, as it reduces memory usage without significantly impacting accuracy.</p></li>
 <li><p><code translate="no">INT8_VECTOR</code></p>
-<p>此類型的向量欄位會儲存由 8 位元有符號整數 (int8) 組成的向量，每個元件的範圍為 -128 到 127。它專為量化深度學習架構 (例如 ResNet 和 EfficientNet) 量身打造，可大幅縮小模型大小並提升推論速度，同時只會造成極小的精確度損失。<strong>注意</strong>：此向量類型僅支援 HNSW 索引。</p></li>
+<p>A vector field of this type stores vectors composed of 8-bit signed integers (int8), with each component ranging from –128 to 127. Tailored for quantized deep learning architectures—such as ResNet and EfficientNet—it substantially shrinks model size and boosts inference speed, all while incurring only minimal precision loss. <strong>Note</strong>: This vector type is supported only for HNSW indexes.</p></li>
 <li><p><code translate="no">BINARY_VECTOR</code></p>
-<p>此類型的向量欄位持有 0 和 1 的清單。在影像處理和資訊檢索的情況下，它們可作為表示資料的精簡特徵。</p></li>
+<p>A vector field of this type holds a list of 0s and 1s. They serve as compact features for representing data in image processing and information retrieval scenarios.</p></li>
 <li><p><code translate="no">SPARSE_FLOAT_VECTOR</code></p>
-<p>此類型的向量欄位可保存非零數字清單及其序列號，以表示稀疏向量內嵌。</p></li>
+<p>A vector field of this type holds a list of non-zero numbers and their sequence numbers to represent sparse vector embeddings.</p></li>
 </ul>
-<h2 id="Add-Scalar-Fields" class="common-anchor-header">新增標量欄位<button data-href="#Add-Scalar-Fields" class="anchor-icon" translate="no">
+<h2 id="Add-Scalar-Fields" class="common-anchor-header">Add Scalar Fields<button data-href="#Add-Scalar-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -233,8 +253,8 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在常見的情況下，您可以使用標量欄位來儲存 Milvus 所儲存的向量內嵌的元資料，並利用元資料篩選來進行 ANN 搜尋，以提高搜尋結果的正確性。Milvus 支援多種標量欄位類型，包括<strong>VarChar</strong>、<strong>Boolean</strong>、<strong>Int</strong>、<strong>Float</strong> 及<strong>Double</strong>。</p>
-<h3 id="Add-String-Fields" class="common-anchor-header">新增字串欄位<button data-href="#Add-String-Fields" class="anchor-icon" translate="no">
+    </button></h2><p>In common cases, you can use scalar fields to store the metadata of the vector embeddings stored in Milvus, and conduct ANN searches with metadata filtering to improve the correctness of the search results. Milvus supports multiple scalar field types, including <strong>VarChar</strong>, <strong>Boolean</strong>, <strong>Int</strong>, <strong>Float</strong>, and <strong>Double</strong>.</p>
+<h3 id="Add-String-Fields" class="common-anchor-header">Add String Fields<button data-href="#Add-String-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -249,9 +269,14 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在 Milvus 中，您可以使用 VarChar 欄位來儲存字串。關於 VarChar 欄位的更多資訊，請參考<a href="/docs/zh-hant/string.md">String Field</a>。</p>
+    </button></h3><p>In Milvus, you can use VarChar fields to store strings. For more on the VarChar field, refer to <a href="/docs/zh-hant/v2.6.x/string.md">String Field</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_varchar&quot;</span>,
     datatype=DataType.VARCHAR,
@@ -292,7 +317,7 @@ schema.addField(AddFieldReq.builder()
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Add-Number-Fields" class="common-anchor-header">新增數字欄位<button data-href="#Add-Number-Fields" class="anchor-icon" translate="no">
+<h3 id="Add-Number-Fields" class="common-anchor-header">Add Number Fields<button data-href="#Add-Number-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -307,9 +332,14 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 支援的數字類型有<code translate="no">Int8</code>,<code translate="no">Int16</code>,<code translate="no">Int32</code>,<code translate="no">Int64</code>,<code translate="no">Float</code>, 和<code translate="no">Double</code> 。有關數字欄位的詳細資訊，請參閱數字<a href="/docs/zh-hant/number.md">欄位</a>。</p>
+    </button></h3><p>The types of numbers that Milvus supports are <code translate="no">Int8</code>, <code translate="no">Int16</code>, <code translate="no">Int32</code>, <code translate="no">Int64</code>, <code translate="no">Float</code>, and <code translate="no">Double</code>. For more on the number fields, refer to <a href="/docs/zh-hant/v2.6.x/number.md">Number Field</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_int64&quot;</span>,
     datatype=DataType.INT64,
@@ -344,7 +374,7 @@ schema.addField(AddFieldReq.builder()
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Add-Boolean-Fields" class="common-anchor-header">新增布林欄位<button data-href="#Add-Boolean-Fields" class="anchor-icon" translate="no">
+<h3 id="Add-Boolean-Fields" class="common-anchor-header">Add Boolean Fields<button data-href="#Add-Boolean-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -359,9 +389,14 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 支援布林欄位。以下程式碼片段示範如何新增布林欄位。</p>
+    </button></h3><p>Milvus supports boolean fields. The following code snippets demonstrate how to add a boolean field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_bool&quot;</span>,
     datatype=DataType.BOOL,
@@ -397,7 +432,7 @@ schema.addField(AddFieldReq.builder()
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Add-Composite-Fields" class="common-anchor-header">新增複合欄位<button data-href="#Add-Composite-Fields" class="anchor-icon" translate="no">
+<h2 id="Add-Composite-Fields" class="common-anchor-header">Add Composite Fields<button data-href="#Add-Composite-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -412,8 +447,8 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在 Milvus 中，複合字段是一個可以分成較小子字段的字段，例如 JSON 字段中的鍵或陣列字段中的索引。</p>
-<h3 id="Add-JSON-fields" class="common-anchor-header">新增 JSON 欄位<button data-href="#Add-JSON-fields" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, a composite field is a field that can be divided into smaller sub-fields, such as the keys in a JSON field or the indices in an Array field.</p>
+<h3 id="Add-JSON-fields" class="common-anchor-header">Add JSON fields<button data-href="#Add-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -428,9 +463,14 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>JSON 欄位通常儲存半結構化的 JSON 資料。有關 JSON 欄位的詳細資訊，請參閱<a href="/docs/zh-hant/json-field">JSON</a> 欄位。</p>
+    </button></h3><p>A JSON field usually stores half-structured JSON data. For more on the JSON fields, refer to <a href="/docs/zh-hant/v2.6.x/json-field">JSON Field</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_json&quot;</span>,
     datatype=DataType.JSON,
@@ -467,7 +507,7 @@ schema.addField(AddFieldReq.builder()
     ]
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Add-Array-Fields" class="common-anchor-header">新增陣列欄位<button data-href="#Add-Array-Fields" class="anchor-icon" translate="no">
+<h3 id="Add-Array-Fields" class="common-anchor-header">Add Array Fields<button data-href="#Add-Array-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -482,9 +522,14 @@ schema.addField(AddFieldReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>陣列欄位儲存元素清單。陣列欄位中所有元素的資料類型應該相同。有關陣列欄位的更多資訊，請參閱<a href="/docs/zh-hant/array_data_type.md">陣列</a>欄位。</p>
+    </button></h3><p>An array field stores a list of elements. The data types of all elements in an array field should be the same. For more on the array fields, refer to <a href="/docs/zh-hant/v2.6.x/array_data_type.md">Array Field</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;my_array&quot;</span>,
     datatype=DataType.ARRAY,

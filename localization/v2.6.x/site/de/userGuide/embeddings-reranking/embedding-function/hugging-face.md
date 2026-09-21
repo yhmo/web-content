@@ -2,8 +2,8 @@
 id: hugging-face.md
 title: Hugging FaceCompatible with Milvus v2.6.20+
 summary: >-
-  In diesem Thema wird beschrieben, wie Sie gehostete Hugging
-  Face-Inferenz-Provider für die Text-Einbettung in Milvus verwenden können.
+  This topic describes how to use hosted Hugging Face Inference Providers for
+  text embedding in Milvus.
 beta: Milvus v2.6.20+
 ---
 <h1 id="Hugging-Face" class="common-anchor-header">Hugging Face<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.6.20+</span><button data-href="#Hugging-Face" class="anchor-icon" translate="no">
@@ -21,9 +21,9 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Die Verwendung eines Hugging Face-Embedding-Modells erfordert normalerweise, dass Ihre Anwendung Anmeldedaten verwaltet, das Modell separat aufruft und Embeddings für eingefügte Daten und Suchanfragen konsistent generiert. Mit einer Text-Embedding-Funktion ruft Milvus gehostete <a href="https://huggingface.co/docs/inference-providers/index">Hugging Face-Inferenz-Provider</a> auf, um Rohtext beim Einfügen und bei der Suche in Vektoren umzuwandeln.</p>
-<p>Diese Integration nutzt den gehosteten Hugging Face-Router. Informationen zur Anbindung von Milvus an einen separat bereitgestellten Text Embeddings Inference (TEI)-Dienst finden Sie unter <a href="/docs/de/v2.6.x/hugging-face-tei.md">Hugging Face TEI</a>.</p>
-<h2 id="Limits" class="common-anchor-header">Einschränkungen<button data-href="#Limits" class="anchor-icon" translate="no">
+    </button></h1><p>Using a Hugging Face embedding model normally requires your application to manage credentials, call the model separately, and generate embeddings consistently for inserted data and search queries. With a Text Embedding Function, Milvus calls hosted <a href="https://huggingface.co/docs/inference-providers/index">Hugging Face Inference Providers</a> to convert raw text into vectors during insert and search.</p>
+<p>This integration uses the hosted Hugging Face router. To connect Milvus to a separately deployed Text Embeddings Inference (TEI) service, see <a href="/docs/de/v2.6.x/hugging-face-tei.md">Hugging Face TEI</a>.</p>
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,10 +39,10 @@ beta: Milvus v2.6.20+
         ></path>
       </svg>
     </button></h2><ul>
-<li>Das Ausgabefeld der Funktion muss den Datentyp „ <code translate="no">FLOAT_VECTOR</code> “ verwenden. Die Hugging-Face-Einbettung in Milvus unterstützt keine Ausgabefelder vom Typ „ <code translate="no">INT8_VECTOR</code> “, „ <code translate="no">BINARY_VECTOR</code> “, „ <code translate="no">FLOAT16_VECTOR</code> “ oder „ <code translate="no">BFLOAT16_VECTOR</code> “.</li>
-<li>Die Dimension des Ausgabefelds „Function“ muss mit der Ausgabedimension des ausgewählten Modells übereinstimmen.</li>
+<li>The Function output field must use the <code translate="no">FLOAT_VECTOR</code> data type. Hugging Face embedding in Milvus does not support <code translate="no">INT8_VECTOR</code>, <code translate="no">BINARY_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, or <code translate="no">BFLOAT16_VECTOR</code> output fields.</li>
+<li>The Function output field dimension must match the selected model’s output dimension.</li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">So funktioniert es<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,20 +57,20 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v2.6.x/assets/hugging-face-embedding-flow.png" alt="Hugging Face text embedding workflow" class="doc-image" id="hugging-face-text-embedding-workflow" /> 
-   <span>Workflow für Hugging Face-Text-Embeddings</span>
-  
- </span></p>
-<p>Der Workflow umfasst drei Schritte:</p>
+    </button></h2><p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/hugging-face-embedding-flow.png" alt="Hugging Face text embedding workflow" class="doc-image" id="hugging-face-text-embedding-workflow" />
+    <span>Hugging Face text embedding workflow</span>
+  </span>
+</p>
+<p>The workflow has three stages:</p>
 <ol>
-<li><strong>Rohtext senden.</strong> Ihre Anwendung stellt den Rohtext in einer Einfüge- oder Suchanfrage bereit.</li>
-<li><strong>Einbettung generieren.</strong> Die Text-Embedding-Funktion leitet den Text über „ <code translate="no">hf-inference</code> “ an die Hugging Face-Pipeline „ <code translate="no">feature-extraction</code> “ weiter. Die Funktion wählt das Modell mithilfe von „ <code translate="no">model_name</code> “ aus und kann unterstützte Inferenzoptionen wie Normalisierung und Trunkierung übergeben.</li>
-<li><strong>Verwenden Sie die Einbettung.</strong> Hugging Face gibt pro Eingabetext eine Gleitkomma-Einbettung zurück. Beim Einfügen speichert Milvus den Vektor im Ausgabefeld der Funktion. Bei der Suche verwendet Milvus den Vektor als Abfragevektor.</li>
+<li><strong>Send raw text.</strong> Your application provides raw text in an insert or search request.</li>
+<li><strong>Generate an embedding.</strong> The Text Embedding Function sends the text through <code translate="no">hf-inference</code> to the Hugging Face <code translate="no">feature-extraction</code> pipeline. The Function uses <code translate="no">model_name</code> to select the model and can pass supported inference options such as normalization and truncation.</li>
+<li><strong>Use the embedding.</strong> Hugging Face returns one floating-point embedding per input text. During insert, Milvus stores the vector in the Function output field. During search, Milvus uses the vector as the query vector.</li>
 </ol>
-<p>Dieselbe Funktionskonfiguration übernimmt sowohl das Einfügen als auch die Suche, wodurch das Modell und die Inferenzparameter bei beiden Vorgängen konsistent bleiben.</p>
-<h2 id="Before-you-start" class="common-anchor-header">Bevor Sie beginnen<button data-href="#Before-you-start" class="anchor-icon" translate="no">
+<p>The same Function configuration handles insert and search, keeping the model and inference parameters consistent across both operations.</p>
+<h2 id="Before-you-start" class="common-anchor-header">Before you start<button data-href="#Before-you-start" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -85,18 +85,18 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Bevor Sie die gehostete Hugging-Face-Text-Einbettung verwenden, stellen Sie sicher, dass Sie über Folgendes verfügen:</p>
+    </button></h2><p>Before using hosted Hugging Face text embedding, ensure that you have:</p>
 <ul>
-<li>Milvus 2.6.20 oder höher aus der 2.6-Release-Reihe.</li>
-<li>PyMilvus 2.6.16 oder höher.</li>
-<li>Ein Hugging Face-Benutzerzugriffstoken, mit dem Inferenz-Provider aufgerufen werden können.</li>
-<li>Ein Modell, das derzeit von <code translate="no">hf-inference</code> für die <a href="https://huggingface.co/docs/inference-providers/en/tasks/feature-extraction"><code translate="no">feature-extraction</code></a> Aufgabe bereitgestellt wird.</li>
+<li>Milvus 2.6.20 or later in the 2.6 release line.</li>
+<li>PyMilvus 2.6.16 or later.</li>
+<li>A Hugging Face User Access Token that can call Inference Providers.</li>
+<li>A model currently served by <code translate="no">hf-inference</code> for the <a href="https://huggingface.co/docs/inference-providers/en/tasks/feature-extraction"><code translate="no">feature-extraction</code></a> task.</li>
 </ul>
 <div class="alert note">
-<p>Milvus hat keinen Einfluss darauf, ob ein Hugging-Face-Modell über <code translate="no">hf-inference</code> weiterhin verfügbar bleibt oder ob das Modell Ihre Anforderungen an Stabilität, Latenz und Ausgabequalität erfüllt. Überprüfen Sie das Modell auf Hugging Face und bewerten Sie es im Hinblick auf Ihre Arbeitslast, bevor Sie es in der Produktion einsetzen.</p>
+<p>Milvus does not control whether a Hugging Face model remains available through <code translate="no">hf-inference</code>, or whether the model meets your stability, latency, and output-quality requirements. Verify the model on Hugging Face and evaluate it for your workload before using it in production.</p>
 </div>
-<p>In den Beispielen wird <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2"><code translate="no">sentence-transformers/all-MiniLM-L6-v2</code></a>, das 384-dimensionale Einbettungen erzeugt. Das Modell dient lediglich zur Veranschaulichung der Konfiguration und stellt keine Empfehlung oder Zertifizierung durch Milvus dar.</p>
-<h2 id="Configure-credentials" class="common-anchor-header">Anmeldedaten konfigurieren<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
+<p>The examples use <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2"><code translate="no">sentence-transformers/all-MiniLM-L6-v2</code></a>, which produces 384-dimensional embeddings. The model is used only to demonstrate the configuration and is not a Milvus recommendation or certification.</p>
+<h2 id="Configure-credentials" class="common-anchor-header">Configure credentials<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -111,11 +111,11 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus benötigt ein Hugging-Face-Benutzerzugriffstoken, um den gehosteten Router aufzurufen. Sie können das Token unter <code translate="no">milvus.yaml</code> oder über eine Umgebungsvariable konfigurieren.</p>
-<p>Die Prioritätsreihenfolge der Anmeldedaten lautet:</p>
+    </button></h2><p>Milvus requires a Hugging Face User Access Token to call the hosted router. You can configure the token in <code translate="no">milvus.yaml</code> or through an environment variable.</p>
+<p>Credential precedence is:</p>
 <pre><code translate="no" class="language-text">Function credential label -&gt; provider credential label in milvus.yaml -&gt; environment variable
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Option-1-Configuration-file" class="common-anchor-header">Option 1: Konfigurationsdatei<button data-href="#Option-1-Configuration-file" class="anchor-icon" translate="no">
+<h3 id="Option-1-Configuration-file" class="common-anchor-header">Option 1: Configuration file<button data-href="#Option-1-Configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -130,7 +130,7 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Definieren Sie das Token im obersten Abschnitt „ <code translate="no">credential</code> “ unter <code translate="no">milvus.yaml</code> und verweisen Sie den Hugging-Face-Einbettungsanbieter auf dieses Anmelde-Label:</p>
+    </button></h3><p>Define the token under the top-level <code translate="no">credential</code> section of <code translate="no">milvus.yaml</code>, then point the Hugging Face embedding provider to that credential label:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">credential:</span>
   <span class="hljs-attr">huggingface_apikey:</span>
@@ -143,8 +143,8 @@ beta: Milvus v2.6.20+
         <span class="hljs-attr">credential:</span> <span class="hljs-string">huggingface_apikey</span>
         <span class="hljs-comment"># url: https://router.huggingface.co</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Sie können „ <code translate="no">credential</code> “ auch in den Funktionsparametern festlegen. Der Wert muss das im obersten Abschnitt „ <code translate="no">credential</code> “ definierte Label sein, nicht das Token selbst. Ein Anmelde-Label auf Funktionsebene hat Vorrang vor dem Label auf Anbieterebene.</p>
-<h3 id="Option-2-Environment-variable" class="common-anchor-header">Option 2: Umgebungsvariable<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
+<p>You can also set <code translate="no">credential</code> in the Function parameters. The value must be the label defined in the top-level <code translate="no">credential</code> section, not the token itself. A Function-level credential label takes precedence over the provider-level label.</p>
+<h3 id="Option-2-Environment-variable" class="common-anchor-header">Option 2: Environment variable<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -159,15 +159,15 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Wenn weder in der Funktions- noch in der Anbieter-Konfiguration ein Anmelde-Label angegeben ist, liest Milvus das Token aus „ <code translate="no">MILVUS_HUGGINGFACE_API_KEY</code> “ aus.</p>
-<p>Für Docker Compose setzen Sie die Variable im Milvus-Standalone-Dienst:</p>
+    </button></h3><p>If neither the Function nor the provider configuration specifies a credential label, Milvus reads the token from <code translate="no">MILVUS_HUGGINGFACE_API_KEY</code>.</p>
+<p>For Docker Compose, set the variable in the Milvus standalone service:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># docker-compose.yaml</span>
 <span class="hljs-attr">standalone:</span>
   <span class="hljs-attr">environment:</span>
     <span class="hljs-attr">MILVUS_HUGGINGFACE_API_KEY:</span> <span class="hljs-string">&lt;YOUR_HUGGING_FACE_TOKEN&gt;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Einzelheiten zur Anwendung von Docker-Compose-Einstellungen finden Sie unter <a href="/docs/de/v2.6.x/configure-docker.md">„Milvus mit Docker Compose konfigurieren</a>“.</p>
-<h2 id="Use-Hugging-Face-text-embedding" class="common-anchor-header">Hugging Face-Text-Embedding verwenden<button data-href="#Use-Hugging-Face-text-embedding" class="anchor-icon" translate="no">
+<p>For details on applying Docker Compose settings, see <a href="/docs/de/v2.6.x/configure-docker.md">Configure Milvus with Docker Compose</a>.</p>
+<h2 id="Use-Hugging-Face-text-embedding" class="common-anchor-header">Use Hugging Face text embedding<button data-href="#Use-Hugging-Face-text-embedding" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -182,7 +182,7 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Create-a-collection-with-a-Text-Embedding-Function" class="common-anchor-header">Schritt 1: Erstellen Sie eine Sammlung mit einer Text-Embedding-Funktion<button data-href="#Step-1-Create-a-collection-with-a-Text-Embedding-Function" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Create-a-collection-with-a-Text-Embedding-Function" class="common-anchor-header">Step 1: Create a collection with a Text Embedding Function<button data-href="#Step-1-Create-a-collection-with-a-Text-Embedding-Function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -197,7 +197,7 @@ beta: Milvus v2.6.20+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Erstellen Sie ein Schema mit einem Primärfeld, einem Eingabefeld „ <code translate="no">VARCHAR</code> “ und einem Ausgabefeld „ <code translate="no">FLOAT_VECTOR</code> “. Die Ausgabedimension muss mit dem ausgewählten Modell übereinstimmen.</p>
+    </button></h3><p>Create a schema with a primary field, a <code translate="no">VARCHAR</code> input field, and a <code translate="no">FLOAT_VECTOR</code> output field. The output dimension must match the selected model.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, Function, FunctionType, MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -222,7 +222,7 @@ schema.add_field(
 <span class="highlighted-wrapper-line">    dim=<span class="hljs-number">384</span>,</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Definieren Sie eine „ <code translate="no">TEXTEMBEDDING</code> “-Funktion, die Einbettungen von „ <code translate="no">document</code> “ in „ <code translate="no">dense</code> “ schreibt:</p>
+<p>Define a <code translate="no">TEXTEMBEDDING</code> Function that writes embeddings from <code translate="no">document</code> to <code translate="no">dense</code>:</p>
 <pre><code translate="no" class="language-python">text_embedding_function = Function(
     name=<span class="hljs-string">&quot;hugging_face_embedding&quot;</span>,
     input_field_names=[<span class="hljs-string">&quot;document&quot;</span>],
@@ -241,8 +241,8 @@ schema.add_field(
 
 schema.add_function(text_embedding_function)
 <button class="copy-code-btn"></button></code></pre>
-<p>Wenn Sie nur die Anmeldeinformationen auf Anbieterebene oder die Umgebungsvariable verwenden, lassen Sie „ <code translate="no">credential</code> “ in den Funktionsparametern weg.</p>
-<p>Konfigurieren Sie einen Index für das Ausgabefeld und erstellen Sie anschließend die Sammlung:</p>
+<p>If you use only the provider-level credential or environment variable, omit <code translate="no">credential</code> from the Function parameters.</p>
+<p>Configure an index for the output field, then create the collection:</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;dense&quot;</span>,
@@ -256,24 +256,24 @@ client.create_collection(
     index_params=index_params,
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Die folgende Tabelle beschreibt die Hugging Face-spezifischen Funktionsparameter:</p>
+<p>The following table describes the Hugging Face-specific Function parameters:</p>
 <table>
 <thead>
-<tr><th>Parameter</th><th>Erforderlich?</th><th>Beschreibung</th></tr>
+<tr><th>Parameter</th><th>Required?</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">provider</code></td><td>Ja</td><td>Der Anbieter des Einbettungsmodells. Setzen Sie diesen Wert auf „ <code translate="no">huggingface</code> “.</td></tr>
-<tr><td><code translate="no">model_name</code></td><td>Ja</td><td>Die Hugging-Face-Modell-ID für ein Modell, das über <code translate="no">hf-inference</code> für die Aufgabe „ <code translate="no">feature-extraction</code> “ bereitgestellt wird.</td></tr>
-<tr><td><code translate="no">hf_provider</code></td><td>Nein</td><td>Die Route des Hugging Face-Inferenzanbieters. Der Standardwert und der einzige in Milvus 2.6.20 unterstützte Wert ist <code translate="no">hf-inference</code>.</td></tr>
-<tr><td><code translate="no">credential</code></td><td>Nein</td><td>Die Bezeichnung einer Anmeldeinformation, die im obersten Abschnitt „ <code translate="no">credential</code> “ von „ <code translate="no">milvus.yaml</code> “ definiert ist. Dieser Wert ist nicht das Token selbst.</td></tr>
-<tr><td><code translate="no">normalize</code></td><td>Nein</td><td>Gibt an, ob Hugging Face normalisierte Embeddings zurückgeben soll. Unterstützte Werte sind „ <code translate="no">true</code> “ und „ <code translate="no">false</code> “. Wird dieser Wert weggelassen, setzt Milvus diese Option in der Anfrage nicht.</td></tr>
-<tr><td><code translate="no">prompt_name</code></td><td>Nein</td><td>Der Name eines Prompts, der in der „Sentence Transformers“-Konfiguration des ausgewählten Modells definiert ist.</td></tr>
-<tr><td><code translate="no">truncate</code></td><td>Nein</td><td>Ob Hugging Face eine Eingabe kürzen soll, die die vom Modell unterstützte Länge überschreitet. Unterstützte Werte sind „ <code translate="no">true</code> “ und „ <code translate="no">false</code> “.</td></tr>
-<tr><td><code translate="no">truncation_direction</code></td><td>Nein</td><td>Die Richtung, aus der Hugging Face eine Eingabe abschneidet. Unterstützte Werte sind „ <code translate="no">left</code> “ und „ <code translate="no">right</code> “.</td></tr>
-<tr><td><code translate="no">max_client_batch_size</code></td><td>Nein</td><td>Die maximale Anzahl an Eingabetexten, die in einer Hugging-Face-Anfrage gesendet werden. Der Standardwert ist „ <code translate="no">128</code> “, und der Wert muss größer als „ <code translate="no">0</code> “ sein.</td></tr>
+<tr><td><code translate="no">provider</code></td><td>Yes</td><td>The embedding model provider. Set this value to <code translate="no">huggingface</code>.</td></tr>
+<tr><td><code translate="no">model_name</code></td><td>Yes</td><td>The Hugging Face model ID for a model served through <code translate="no">hf-inference</code> for the <code translate="no">feature-extraction</code> task.</td></tr>
+<tr><td><code translate="no">hf_provider</code></td><td>No</td><td>The Hugging Face Inference Provider route. The default and only supported value in Milvus 2.6.20 is <code translate="no">hf-inference</code>.</td></tr>
+<tr><td><code translate="no">credential</code></td><td>No</td><td>The label of a credential defined in the top-level <code translate="no">credential</code> section of <code translate="no">milvus.yaml</code>. This value is not the token itself.</td></tr>
+<tr><td><code translate="no">normalize</code></td><td>No</td><td>Whether Hugging Face should return normalized embeddings. Supported values are <code translate="no">true</code> and <code translate="no">false</code>. If omitted, Milvus does not set this option in the request.</td></tr>
+<tr><td><code translate="no">prompt_name</code></td><td>No</td><td>The name of a prompt defined in the selected model’s Sentence Transformers configuration.</td></tr>
+<tr><td><code translate="no">truncate</code></td><td>No</td><td>Whether Hugging Face should truncate an input that exceeds the model’s supported length. Supported values are <code translate="no">true</code> and <code translate="no">false</code>.</td></tr>
+<tr><td><code translate="no">truncation_direction</code></td><td>No</td><td>The direction from which Hugging Face truncates an input. Supported values are <code translate="no">left</code> and <code translate="no">right</code>.</td></tr>
+<tr><td><code translate="no">max_client_batch_size</code></td><td>No</td><td>The maximum number of input texts sent in one Hugging Face request. The default value is <code translate="no">128</code>, and the value must be greater than <code translate="no">0</code>.</td></tr>
 </tbody>
 </table>
-<h3 id="Step-2-Insert-raw-text" class="common-anchor-header">Schritt 2: Rohtext einfügen<button data-href="#Step-2-Insert-raw-text" class="anchor-icon" translate="no">
+<h3 id="Step-2-Insert-raw-text" class="common-anchor-header">Step 2: Insert raw text<button data-href="#Step-2-Insert-raw-text" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -288,7 +288,7 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Fügen Sie Text ein, ohne Vektoren anzugeben. Milvus ruft Hugging Face auf und schreibt die generierten Embeddings in „ <code translate="no">dense</code> “.</p>
+    </button></h3><p>Insert text without providing vectors. Milvus calls Hugging Face and writes the generated embeddings to <code translate="no">dense</code>.</p>
 <pre><code translate="no" class="language-python">client.insert(
     collection_name=collection_name,
     data=[
@@ -307,7 +307,7 @@ client.create_collection(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Search-with-raw-text" class="common-anchor-header">Schritt 3: Suche mit Rohtext<button data-href="#Step-3-Search-with-raw-text" class="anchor-icon" translate="no">
+<h3 id="Step-3-Search-with-raw-text" class="common-anchor-header">Step 3: Search with raw text<button data-href="#Step-3-Search-with-raw-text" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -322,7 +322,7 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Suche mit einer Textabfrage. Milvus wendet dieselbe Funktionskonfiguration an, um den Abfragevektor zu erstellen, bevor die Vektorsuche ausgeführt wird.</p>
+    </button></h3><p>Search with a text query. Milvus applies the same Function configuration to create the query vector before running vector search.</p>
 <pre><code translate="no" class="language-python">results = client.search(
     collection_name=collection_name,
     data=[<span class="hljs-string">&quot;How does Milvus handle semantic search?&quot;</span>],
@@ -334,8 +334,8 @@ client.create_collection(
 
 <span class="hljs-built_in">print</span>(results)
 <button class="copy-code-btn"></button></code></pre>
-<p>Das Ergebnis enthält die für den Suchtext relevantesten Dokumente, sortiert nach Kosinus-Ähnlichkeit.</p>
-<h2 id="Troubleshooting" class="common-anchor-header">Fehlerbehebung<button data-href="#Troubleshooting" class="anchor-icon" translate="no">
+<p>The result contains the documents most relevant to the query text, ordered by cosine similarity.</p>
+<h2 id="Troubleshooting" class="common-anchor-header">Troubleshooting<button data-href="#Troubleshooting" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -350,7 +350,7 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="The-model-is-unavailable-for-feature-extraction" class="common-anchor-header">Das Modell ist für die Merkmalsextraktion nicht verfügbar<button data-href="#The-model-is-unavailable-for-feature-extraction" class="anchor-icon" translate="no">
+    </button></h2><h3 id="The-model-is-unavailable-for-feature-extraction" class="common-anchor-header">The model is unavailable for feature extraction<button data-href="#The-model-is-unavailable-for-feature-extraction" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -365,8 +365,8 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Öffnen Sie die Modellseite auf Hugging Face und überprüfen Sie den Abschnitt <strong>„Inference Providers</strong> “. Vergewissern Sie sich, dass „ <code translate="no">hf-inference</code> “ das Modell für „ <code translate="no">feature-extraction</code> “ bereitstellt. Ist dies nicht der Fall, wählen Sie ein anderes Modell aus und passen Sie gegebenenfalls die Vektorfelddimension an.</p>
-<h3 id="The-returned-vector-dimension-does-not-match-the-field" class="common-anchor-header">Die zurückgegebene Vektordimension stimmt nicht mit dem Feld überein<button data-href="#The-returned-vector-dimension-does-not-match-the-field" class="anchor-icon" translate="no">
+    </button></h3><p>Open the model page on Hugging Face and check the <strong>Inference Providers</strong> section. Confirm that <code translate="no">hf-inference</code> serves the model for <code translate="no">feature-extraction</code>. If not, select another model and update the vector field dimension if necessary.</p>
+<h3 id="The-returned-vector-dimension-does-not-match-the-field" class="common-anchor-header">The returned vector dimension does not match the field<button data-href="#The-returned-vector-dimension-does-not-match-the-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -381,8 +381,8 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Überprüfen Sie die Ausgabedimension des Modells und vergleichen Sie diese mit <code translate="no">dim</code> im Feld „Function output“. Milvus lehnt eine Antwort ab, deren Vektordimension von der Felddimension unter <code translate="no">FLOAT_VECTOR</code> abweicht.</p>
-<h3 id="Milvus-reports-missing-Hugging-Face-credentials" class="common-anchor-header">Milvus meldet fehlende Hugging-Face-Anmeldedaten<button data-href="#Milvus-reports-missing-Hugging-Face-credentials" class="anchor-icon" translate="no">
+    </button></h3><p>Check the model output dimension and compare it with <code translate="no">dim</code> on the Function output field. Milvus rejects a response whose vector dimension differs from the <code translate="no">FLOAT_VECTOR</code> field dimension.</p>
+<h3 id="Milvus-reports-missing-Hugging-Face-credentials" class="common-anchor-header">Milvus reports missing Hugging Face credentials<button data-href="#Milvus-reports-missing-Hugging-Face-credentials" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -397,8 +397,8 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Stellen Sie sicher, dass das Label „Function credential“ im obersten Abschnitt „ <code translate="no">credential</code> “ vorhanden ist, dass das Label auf Anbieterebene gültig ist oder dass „ <code translate="no">MILVUS_HUGGINGFACE_API_KEY</code> “ in der Milvus-Serviceumgebung vorhanden ist.</p>
-<h2 id="Next-steps" class="common-anchor-header">Nächste Schritte<button data-href="#Next-steps" class="anchor-icon" translate="no">
+    </button></h3><p>Confirm that the Function credential label exists in the top-level <code translate="no">credential</code> section, that the provider-level label is valid, or that <code translate="no">MILVUS_HUGGINGFACE_API_KEY</code> is present in the Milvus service environment.</p>
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -414,6 +414,6 @@ client.create_collection(
         ></path>
       </svg>
     </button></h2><ul>
-<li>Allgemeine Konzepte zu „Function“ sowie Informationen zum Einfüge- und Suchverhalten finden Sie unter <a href="/docs/de/v2.6.x/embedding-function-overview.md">„Embedding Function – Übersicht</a>“.</li>
-<li>Informationen zum erneuten Ranking von Kandidaten bei der Vektorsuche mit gehosteten Hugging-Face-Satzähnlichkeitswerten finden Sie unter <a href="/docs/de/v2.6.x/hugging-face-ranker.md">„Hugging Face Ranker</a>“.</li>
+<li>For general Function concepts and insert/search behavior, see <a href="/docs/de/v2.6.x/embedding-function-overview.md">Embedding Function Overview</a>.</li>
+<li>To rerank vector-search candidates with hosted Hugging Face sentence-similarity scores, see <a href="/docs/de/v2.6.x/hugging-face-ranker.md">Hugging Face Ranker</a>.</li>
 </ul>

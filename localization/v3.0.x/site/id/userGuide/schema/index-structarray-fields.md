@@ -1,13 +1,13 @@
 ---
 id: index-structarray-fields.md
-title: Indeks Bidang StructArray
+title: Index StructArray Fields
 summary: >-
-  Buat indeks pada subbidang StructArray sebelum Anda menjalankan pencarian
-  vektor atau mempercepat penyaringan skalar. Untuk bidang StructArray, target
-  indeks adalah jalur subbidang, seperti chunks[emb_list_vector], chunks[emb],
-  atau chunks[section].
+  Create indexes on StructArray subfields before you run vector search or
+  accelerate scalar filtering. For a StructArray field, the index target is a
+  subfield path, such as chunks[emb_list_vector], chunks[emb], or
+  chunks[section].
 ---
-<h1 id="Index-StructArray-Fields" class="common-anchor-header">Indeks Bidang StructArray<button data-href="#Index-StructArray-Fields" class="anchor-icon" translate="no">
+<h1 id="Index-StructArray-Fields" class="common-anchor-header">Index StructArray Fields<button data-href="#Index-StructArray-Fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Buat indeks pada subbidang StructArray sebelum menjalankan pencarian vektor atau mempercepat penyaringan skalar. Untuk bidang StructArray, target indeks adalah jalur subbidang, seperti <code translate="no">chunks[emb_list_vector]</code>, <code translate="no">chunks[emb]</code>, atau <code translate="no">chunks[section]</code>.</p>
-<p>Halaman ini menggunakan koleksi ` <code translate="no">tech_articles</code> ` dari <a href="/docs/id/create-structarray-field.md">"Membuat Bidang StructArray</a>". Bidang StructArray ` <code translate="no">chunks</code> ` berisi subbidang skalar untuk penyaringan dan subbidang vektor untuk pencarian.</p>
-<h2 id="Before-you-begin" class="common-anchor-header">Sebelum Anda mulai<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+    </button></h1><p>Create indexes on StructArray subfields before you run vector search or accelerate scalar filtering. For a StructArray field, the index target is a subfield path, such as <code translate="no">chunks[emb_list_vector]</code>, <code translate="no">chunks[emb]</code>, or <code translate="no">chunks[section]</code>.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/id/create-structarray-field.md">Create a StructArray Field</a>. The <code translate="no">chunks</code> StructArray field contains scalar subfields for filtering and vector subfields for search.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,23 +39,23 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pastikan skema koleksi sudah berisi bidang StructArray " <code translate="no">chunks</code> " dan data telah dimasukkan.</p>
+    </button></h2><p>Make sure the collection schema already contains the <code translate="no">chunks</code> StructArray field and data has been inserted.</p>
 <table>
 <thead>
-<tr><th>Jalur subbidang</th><th>Jenis</th><th>Tujuan indeks</th></tr>
+<tr><th>Subfield path</th><th>Type</th><th>Index purpose</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">chunks[emb_list_vector]</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Pencarian EmbeddingList dengan metrik <code translate="no">MAX_SIM*</code>.</td></tr>
-<tr><td><code translate="no">chunks[emb]</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Pencarian tingkat elemen dengan metrik vektor biasa.</td></tr>
-<tr><td><code translate="no">chunks[section]</code></td><td><code translate="no">VARCHAR</code></td><td>Penyaringan kategorikal.</td></tr>
-<tr><td><code translate="no">chunks[quality_score]</code></td><td><code translate="no">FLOAT</code></td><td>Penyaringan numerik dan predikat bergaya rentang.</td></tr>
-<tr><td><code translate="no">chunks[has_code]</code></td><td><code translate="no">BOOL</code></td><td>Penyaringan Boolean.</td></tr>
+<tr><td><code translate="no">chunks[emb_list_vector]</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>EmbeddingList search with <code translate="no">MAX_SIM*</code> metrics.</td></tr>
+<tr><td><code translate="no">chunks[emb]</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td>Element-level search with regular vector metrics.</td></tr>
+<tr><td><code translate="no">chunks[section]</code></td><td><code translate="no">VARCHAR</code></td><td>Categorical filtering.</td></tr>
+<tr><td><code translate="no">chunks[quality_score]</code></td><td><code translate="no">FLOAT</code></td><td>Numeric filtering and range-style predicates.</td></tr>
+<tr><td><code translate="no">chunks[has_code]</code></td><td><code translate="no">BOOL</code></td><td>Boolean filtering.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>Sebuah bidang vektor atau subbidang vektor hanya menerima satu indeks. Jika Anda memerlukan pencarian EmbeddingList dan pencarian tingkat elemen, buat dua subbidang vektor terpisah dan indekskan masing-masing secara terpisah. Pada halaman ini, <code translate="no">chunks[emb_list_vector]</code> diindeks untuk pencarian EmbeddingList, dan <code translate="no">chunks[emb]</code> diindeks untuk pencarian tingkat elemen.</p>
+<p>A vector field or vector subfield accepts only one index. If you need both EmbeddingList search and element-level search, create two separate vector subfields and index them separately. In this page, <code translate="no">chunks[emb_list_vector]</code> is indexed for EmbeddingList search, and <code translate="no">chunks[emb]</code> is indexed for element-level search.</p>
 </div>
-<h2 id="Choose-indexes" class="common-anchor-header">Pilih indeks<button data-href="#Choose-indexes" class="anchor-icon" translate="no">
+<h2 id="Choose-indexes" class="common-anchor-header">Choose indexes<button data-href="#Choose-indexes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,21 +70,21 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan mode pencarian untuk memilih keluarga metrik vektor.</p>
+    </button></h2><p>Use the search mode to choose the vector metric family.</p>
 <table>
 <thead>
-<tr><th>Tujuan pencarian atau penyaringan</th><th>Jalur target</th><th>Apa yang harus dipilih</th></tr>
+<tr><th>Search or filter goal</th><th>Target path</th><th>What to choose</th></tr>
 </thead>
 <tbody>
-<tr><td>Pencarian EmbeddingList</td><td><code translate="no">chunks[emb_list_vector]</code></td><td>Keluarga metrik " <code translate="no">MAX_SIM*</code> ".</td></tr>
-<tr><td>Pencarian vektor tingkat elemen</td><td><code translate="no">chunks[emb]</code></td><td>Keluarga metrik vektor biasa, seperti <code translate="no">COSINE</code>, <code translate="no">IP</code>, atau <code translate="no">L2</code>.</td></tr>
-<tr><td>Saring berdasarkan string atau kategori</td><td><code translate="no">chunks[section]</code></td><td>Indeks skalar yang didukung oleh target Anda.</td></tr>
-<tr><td>Saring berdasarkan rentang numerik</td><td><code translate="no">chunks[quality_score]</code>, <code translate="no">chunks[page]</code></td><td>Indeks skalar yang didukung oleh target Anda.</td></tr>
-<tr><td>Saring berdasarkan nilai boolean</td><td><code translate="no">chunks[has_code]</code></td><td>Indeks skalar yang didukung oleh target Anda.</td></tr>
+<tr><td>EmbeddingList search</td><td><code translate="no">chunks[emb_list_vector]</code></td><td>A <code translate="no">MAX_SIM*</code> metric family.</td></tr>
+<tr><td>Element-level vector search</td><td><code translate="no">chunks[emb]</code></td><td>A regular vector metric family, such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</td></tr>
+<tr><td>Filter by string or category</td><td><code translate="no">chunks[section]</code></td><td>A scalar index supported by your target.</td></tr>
+<tr><td>Filter by numeric range</td><td><code translate="no">chunks[quality_score]</code>, <code translate="no">chunks[page]</code></td><td>A scalar index supported by your target.</td></tr>
+<tr><td>Filter by boolean value</td><td><code translate="no">chunks[has_code]</code></td><td>A scalar index supported by your target.</td></tr>
 </tbody>
 </table>
-<p>Pencarian EmbeddingList memperlakukan vektor-vektor dalam subbidang vektor StructArray sebagai daftar embedding dan mengembalikan hasil tingkat entitas. Pencarian tingkat elemen mencari setiap elemen Struct secara terpisah dan dapat mengembalikan offset elemen yang cocok.</p>
-<h2 id="Create-vector-indexes" class="common-anchor-header">Membuat indeks vektor<button data-href="#Create-vector-indexes" class="anchor-icon" translate="no">
+<p>EmbeddingList search treats the vectors in a StructArray vector subfield as an embedding list and returns entity-level results. Element-level search searches each Struct element independently and can return the matched element offset.</p>
+<h2 id="Create-vector-indexes" class="common-anchor-header">Create vector indexes<button data-href="#Create-vector-indexes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -99,7 +99,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Contoh berikut membuat dua indeks vektor. Indeks pertama menggunakan metrik " <code translate="no">MAX_SIM*</code> " untuk pencarian EmbeddingList. Indeks kedua menggunakan metrik vektor biasa untuk pencarian tingkat elemen.</p>
+    </button></h2><p>The following example creates two vector indexes. The first index uses a <code translate="no">MAX_SIM*</code> metric for EmbeddingList search. The second index uses a regular vector metric for element-level search.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -139,10 +139,10 @@ client.create_index(
 )
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Peringatan
-Jangan membuat indeks <code translate="no">MAX_SIM*</code> dan indeks metrik vektor biasa pada subbidang vektor yang sama. Jika kedua mode pencarian diperlukan, tulis vektor ke dua subbidang vektor terpisah dan buat satu indeks pada setiap subbidang.</p>
+<p>Warning
+Do not create a <code translate="no">MAX_SIM*</code> index and a regular vector-metric index on the same vector subfield. If both search modes are required, write vectors to two separate vector subfields and create one index on each subfield.</p>
 </div>
-<h2 id="Create-scalar-indexes" class="common-anchor-header">Buat indeks skalar<button data-href="#Create-scalar-indexes" class="anchor-icon" translate="no">
+<h2 id="Create-scalar-indexes" class="common-anchor-header">Create scalar indexes<button data-href="#Create-scalar-indexes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -157,7 +157,7 @@ Jangan membuat indeks <code translate="no">MAX_SIM*</code> dan indeks metrik vek
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Buat indeks skalar pada subbidang skalar StructArray saat Anda menggunakannya dalam filter. Gunakan sintaks jalur <code translate="no">structArray[subfield]</code> yang sama.</p>
+    </button></h2><p>Create scalar indexes on StructArray scalar subfields when you use them in filters. Use the same <code translate="no">structArray[subfield]</code> path syntax.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
 index_params.add_index(
@@ -189,8 +189,8 @@ client.create_index(
     index_params=index_params,
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Indeks skalar bersifat opsional tetapi berguna ketika subbidang skalar StructArray sering muncul dalam filter, seperti <code translate="no">element_filter(chunks, $[quality_score] &gt; 0.9)</code> atau <code translate="no">MATCH_ANY(chunks, $[section] == &quot;index&quot;)</code>.</p>
-<h2 id="Index-metric-compatibility" class="common-anchor-header">Kompatibilitas metrik indeks<button data-href="#Index-metric-compatibility" class="anchor-icon" translate="no">
+<p>Scalar indexes are optional but useful when StructArray scalar subfields appear frequently in filters, such as <code translate="no">element_filter(chunks, $[quality_score] &gt; 0.9)</code> or <code translate="no">MATCH_ANY(chunks, $[section] == &quot;index&quot;)</code>.</p>
+<h2 id="Index-metric-compatibility" class="common-anchor-header">Index metric compatibility<button data-href="#Index-metric-compatibility" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -205,9 +205,9 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan tabel berikut untuk memilih jenis indeks dan jenis metrik untuk subbidang vektor StructArray. Mulailah dari target, lalu pilih keluarga metrik berdasarkan mode pencarian.</p>
-<p>Pilih jenis indeks Milvus dan jenis metrik dari tabel kompatibilitas berikut.</p>
-<h3 id="EmbeddingList-search" class="common-anchor-header">Pencarian EmbeddingList<button data-href="#EmbeddingList-search" class="anchor-icon" translate="no">
+    </button></h2><p>Use the following tables to choose an index type and metric type for a StructArray vector subfield. Start from the target, then choose the metric family by search mode.</p>
+<p>Choose a Milvus index type and metric type from the following compatibility tables.</p>
+<h3 id="EmbeddingList-search" class="common-anchor-header">EmbeddingList search<button data-href="#EmbeddingList-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -222,10 +222,10 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Pencarian EmbeddingList menggunakan metrik <code translate="no">MAX_SIM*</code>. Pencarian ini memperlakukan vektor dalam subbidang vektor StructArray sebagai daftar embedding dan mengembalikan hasil tingkat entitas.</p>
+    </button></h3><p>EmbeddingList search uses <code translate="no">MAX_SIM*</code> metrics. It treats the vectors in a StructArray vector subfield as an embedding list and returns entity-level results.</p>
 <table>
 <thead>
-<tr><th>Tipe data subbidang vektor</th><th>Jenis indeks</th><th>Jenis metrik</th></tr>
+<tr><th>Vector subfield data type</th><th>Index type</th><th>Metric type</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">FLOAT_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code></td><td><code translate="no">IVF_FLAT</code>, <code translate="no">IVF_FLAT_CC</code>, <code translate="no">HNSW</code>, <code translate="no">HNSW_SQ</code>, <code translate="no">HNSW_PQ</code>, <code translate="no">HNSW_PRQ</code>, <code translate="no">DISKANN</code></td><td><code translate="no">MAX_SIM</code>, <code translate="no">MAX_SIM_COSINE</code>, <code translate="no">MAX_SIM_IP</code>, <code translate="no">MAX_SIM_L2</code></td></tr>
@@ -233,7 +233,7 @@ client.create_index(
 <tr><td><code translate="no">BINARY_VECTOR</code></td><td><code translate="no">HNSW</code></td><td><code translate="no">MAX_SIM_HAMMING</code>, <code translate="no">MAX_SIM_JACCARD</code></td></tr>
 </tbody>
 </table>
-<h3 id="Element-level-search" class="common-anchor-header">Pencarian tingkat elemen<button data-href="#Element-level-search" class="anchor-icon" translate="no">
+<h3 id="Element-level-search" class="common-anchor-header">Element-level search<button data-href="#Element-level-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -248,10 +248,10 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Pencarian tingkat elemen menggunakan metrik vektor biasa. Pencarian ini memeriksa setiap elemen Struct secara terpisah dan dapat mengembalikan offset elemen yang cocok.</p>
+    </button></h3><p>Element-level search uses regular vector metrics. It searches each Struct element independently and can return the matched element offset.</p>
 <table>
 <thead>
-<tr><th>Tipe data subbidang vektor</th><th>Jenis indeks</th><th>Jenis metrik</th></tr>
+<tr><th>Vector subfield data type</th><th>Index type</th><th>Metric type</th></tr>
 </thead>
 <tbody>
 <tr><td><code translate="no">FLOAT_VECTOR</code>, <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code></td><td><code translate="no">FLAT</code>, <code translate="no">IVF_FLAT</code>, <code translate="no">IVF_FLAT_CC</code>, <code translate="no">IVF_SQ8</code>, <code translate="no">IVF_SQ_CC</code>, <code translate="no">IVF_PQ</code>, <code translate="no">SCANN</code>, <code translate="no">IVF_RABITQ</code>, <code translate="no">IVF_RABITQ_FASTSCAN</code>, <code translate="no">HNSW</code>, <code translate="no">HNSW_SQ</code>, <code translate="no">HNSW_PQ</code>, <code translate="no">HNSW_PRQ</code>, <code translate="no">DISKANN</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td></tr>
@@ -261,8 +261,8 @@ client.create_index(
 <tr><td><code translate="no">BINARY_VECTOR</code></td><td><code translate="no">BIN_IVF_FLAT</code></td><td><code translate="no">HAMMING</code>, <code translate="no">JACCARD</code></td></tr>
 </tbody>
 </table>
-<p>Untuk dukungan khusus versi dan batasan lainnya, lihat <a href="/docs/id/structarray-limits.md">Batasan StructArray</a>.</p>
-<h2 id="Verify-indexes" class="common-anchor-header">Verifikasi indeks<button data-href="#Verify-indexes" class="anchor-icon" translate="no">
+<p>For version-specific support and other limits, see <a href="/docs/id/structarray-limits.md">StructArray Limits</a>.</p>
+<h2 id="Verify-indexes" class="common-anchor-header">Verify indexes<button data-href="#Verify-indexes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -277,14 +277,14 @@ client.create_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Setelah membuat indeks, deskripsikan koleksi atau daftar indeks untuk memastikan bahwa jalur subbidang yang diharapkan telah diindeks.</p>
+    </button></h2><p>After creating indexes, describe the collection or list indexes to confirm that the expected subfield paths are indexed.</p>
 <pre><code translate="no" class="language-python">indexes = client.list_indexes(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
 )
 
 <span class="hljs-built_in">print</span>(indexes)
 <button class="copy-code-btn"></button></code></pre>
-<p>Anda juga dapat mendeskripsikan indeks tertentu jika versi SDK Anda menyediakan API deskripsi indeks.</p>
+<p>You can also describe a specific index if your SDK version exposes index-description APIs.</p>
 <pre><code translate="no" class="language-python">index = client.describe_index(
     collection_name=<span class="hljs-string">&quot;tech_articles&quot;</span>,
     index_name=<span class="hljs-string">&quot;chunks_emb_cosine&quot;</span>,
@@ -292,7 +292,7 @@ client.create_index(
 
 <span class="hljs-built_in">print</span>(index)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Index-rules" class="common-anchor-header">Aturan indeks<button data-href="#Index-rules" class="anchor-icon" translate="no">
+<h2 id="Index-rules" class="common-anchor-header">Index rules<button data-href="#Index-rules" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -309,18 +309,18 @@ client.create_index(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>Aturan</th><th>Penjelasan</th></tr>
+<tr><th>Rule</th><th>Explanation</th></tr>
 </thead>
 <tbody>
-<tr><td>Gunakan sintaks jalur untuk indeks subbidang.</td><td><code translate="no">chunks[emb]</code>, bukan <code translate="no">emb</code> atau <code translate="no">chunks.emb</code>.</td></tr>
-<tr><td>Satu subbidang vektor hanya dapat memiliki satu indeks.</td><td>Gunakan subbidang vektor terpisah jika Anda memerlukan keluarga metrik yang berbeda.</td></tr>
-<tr><td>Gunakan metrik <code translate="no">MAX_SIM*</code> untuk pencarian EmbeddingList.</td><td>Data kueri EmbeddingList memerlukan indeks yang dibangun dengan metrik <code translate="no">MAX_SIM*</code>.</td></tr>
-<tr><td>Gunakan metrik vektor biasa untuk pencarian tingkat elemen.</td><td>Pencarian tingkat elemen menggunakan data kueri vektor biasa dan metrik seperti <code translate="no">COSINE</code>, <code translate="no">IP</code>, atau <code translate="no">L2</code>.</td></tr>
-<tr><td>Indeks subbidang skalar yang muncul dalam filter.</td><td>Gunakan tipe indeks skalar yang didukung oleh target Anda.</td></tr>
-<tr><td>Perhatikan batasan bidang vektor.</td><td>Jumlah total bidang vektor dan subbidang vektor dibatasi. Lihat Batasan StructArray sebelum menambahkan banyak subbidang vektor.</td></tr>
+<tr><td>Use path syntax for subfield indexes.</td><td>Index <code translate="no">chunks[emb]</code>, not <code translate="no">emb</code> or <code translate="no">chunks.emb</code>.</td></tr>
+<tr><td>One vector subfield accepts one index.</td><td>Use separate vector subfields if you need different metric families.</td></tr>
+<tr><td>Use <code translate="no">MAX_SIM*</code> metrics for EmbeddingList search.</td><td>EmbeddingList query data requires an index built with a <code translate="no">MAX_SIM*</code> metric.</td></tr>
+<tr><td>Use regular vector metrics for element-level search.</td><td>Element-level search uses regular vector query data and metrics such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</td></tr>
+<tr><td>Index scalar subfields that appear in filters.</td><td>Use scalar index types supported by your target.</td></tr>
+<tr><td>Keep vector-field limits in mind.</td><td>The total number of vector fields and vector subfields is limited. See StructArray Limits before adding many vector subfields.</td></tr>
 </tbody>
 </table>
-<h2 id="Common-mistakes" class="common-anchor-header">Kesalahan umum<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -336,14 +336,14 @@ client.create_index(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Membuat indeks pada ` <code translate="no">chunks.emb</code> ` alih-alih ` <code translate="no">chunks[emb]</code>`.</p></li>
-<li><p>Hanya membuat indeks <code translate="no">MAX_SIM*</code> dan kemudian mencoba menjalankan pencarian tingkat elemen pada subbidang yang sama.</p></li>
-<li><p>Hanya membuat indeks vektor biasa, lalu mencoba menjalankan pencarian EmbeddingList pada subbidang yang sama.</p></li>
-<li><p>Menggunakan kembali satu subbidang vektor untuk metrik <code translate="no">MAX_SIM*</code> dan vektor biasa.</p></li>
-<li><p>Melupakan indeks skalar untuk filter StructArray yang sering digunakan.</p></li>
-<li><p>Mengindeks subfield StructArray yang tidak ada dalam skema Struct.</p></li>
+<li><p>Creating an index on <code translate="no">chunks.emb</code> instead of <code translate="no">chunks[emb]</code>.</p></li>
+<li><p>Creating only a <code translate="no">MAX_SIM*</code> index and then trying to run element-level search on the same subfield.</p></li>
+<li><p>Creating only a regular vector index and then trying to run EmbeddingList search on the same subfield.</p></li>
+<li><p>Reusing one vector subfield for both <code translate="no">MAX_SIM*</code> and regular vector metrics.</p></li>
+<li><p>Forgetting scalar indexes for heavily used StructArray filters.</p></li>
+<li><p>Indexing a StructArray subfield that does not exist in the Struct schema.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">Langkah selanjutnya<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -359,7 +359,7 @@ client.create_index(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>Untuk menjalankan pencarian EmbeddingList tingkat entitas atau pencarian vektor tingkat elemen, baca <a href="/docs/id/basic-vector-search-with-structarray.md">Pencarian Vektor Dasar dengan StructArray</a>.</p></li>
-<li><p>Untuk menyaring subbidang skalar StructArray selama pencarian, baca " <a href="/docs/id/filtered-search-with-structarray.md">Pencarian yang Disaring dengan StructArray</a>".</p></li>
-<li><p>Untuk meninjau batasan indeks dan metrik, baca <a href="/docs/id/structarray-limits.md">Batasan StructArray</a>.</p></li>
+<li><p>To run entity-level EmbeddingList search or element-level vector search, read <a href="/docs/id/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To filter StructArray scalar subfields during search, read <a href="/docs/id/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
+<li><p>To review index and metric limits, read <a href="/docs/id/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

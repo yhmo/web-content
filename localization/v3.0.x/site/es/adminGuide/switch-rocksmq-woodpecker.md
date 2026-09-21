@@ -1,11 +1,11 @@
 ---
 id: switch-rocksmq-woodpecker.md
-title: Cambiar entre RocksMQ y Woodpecker
+title: Switch between RocksMQ and Woodpecker
 summary: >-
-  Cambia la cola de mensajes de una implementación de Milvus Standalone (Docker
-  Compose) de RocksMQ a Woodpecker.
+  Switch the message queue of a Milvus Standalone (Docker Compose) deployment
+  between RocksMQ and Woodpecker.
 ---
-<h1 id="Switch-between-RocksMQ-and-Woodpecker" class="common-anchor-header">Cambiar entre RocksMQ y Woodpecker<button data-href="#Switch-between-RocksMQ-and-Woodpecker" class="anchor-icon" translate="no">
+<h1 id="Switch-between-RocksMQ-and-Woodpecker" class="common-anchor-header">Switch between RocksMQ and Woodpecker<button data-href="#Switch-between-RocksMQ-and-Woodpecker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,14 +20,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>En esta página se describe cómo cambiar la cola de mensajes (MQ) de una implementación <strong>de Milvus Standalone (Docker Compose)</strong> entre <strong>RocksMQ</strong> y <strong>Woodpecker</strong> (backend local o MinIO), en ambas direcciones. Para conocer el flujo de trabajo general y los requisitos previos, consulta <a href="/docs/es/switch-mq-type.md">Cambiar la cola de mensajes</a>.</p>
+    </button></h1><p>This page describes how to switch the message queue (MQ) of a <strong>Milvus Standalone (Docker Compose)</strong> deployment between <strong>RocksMQ</strong> and <strong>Woodpecker</strong> (local or MinIO backend), in both directions. For the general workflow and prerequisites, see <a href="/docs/es/switch-mq-type.md">Switch Message Queue</a>.</p>
 <div class="alert note">
 <ul>
-<li><strong>Requisito previo:</strong> la función «Cambiar MQ» está disponible en <strong>Milvus 3.0 y versiones posteriores</strong>. Actualiza tu instancia de Milvus a Milvus 3.0 o una versión posterior antes de comenzar; la función no está disponible en versiones anteriores.</li>
-<li>El cambio de cola de mensajes requiere una implementación de Docker <strong>Compose</strong> (que habilita una fuente de configuración etcd). La implementación de Docker de un solo contenedor no admite el cambio.</li>
+<li><strong>Prerequisite:</strong> The Switch MQ feature is available in <strong>Milvus 3.0 and later</strong>. Upgrade your Milvus instance to Milvus 3.0 or later before you begin — the feature is not available on earlier versions.</li>
+<li>MQ switching requires the Docker <strong>Compose</strong> deployment (which enables an etcd config source). The single-container Docker deployment does not support switching.</li>
 </ul>
 </div>
-<h2 id="Switch-from-RocksMQ-to-Woodpecker" class="common-anchor-header">Cambiar de RocksMQ a Woodpecker<button data-href="#Switch-from-RocksMQ-to-Woodpecker" class="anchor-icon" translate="no">
+<h2 id="Switch-from-RocksMQ-to-Woodpecker" class="common-anchor-header">Switch from RocksMQ to Woodpecker<button data-href="#Switch-from-RocksMQ-to-Woodpecker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,7 +42,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Paso 1: Comprueba que la instancia de Milvus se esté ejecutando<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Step 1: Verify the Milvus instance is running<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -57,8 +57,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Comprueba que tu instancia de Milvus Standalone con Docker Compose se está ejecutando correctamente; por ejemplo, creando una colección de prueba, insertando datos y ejecutando una consulta.</p>
-<h3 id="Step-2-Configure-Woodpecker-storage" class="common-anchor-header">Paso 2: Configurar el almacenamiento de Woodpecker<button data-href="#Step-2-Configure-Woodpecker-storage" class="anchor-icon" translate="no">
+    </button></h3><p>Verify your Milvus Standalone Docker Compose instance is running properly — for example, by creating a test collection, inserting data, and running a query.</p>
+<h3 id="Step-2-Configure-Woodpecker-storage" class="common-anchor-header">Step 2: Configure Woodpecker storage<button data-href="#Step-2-Configure-Woodpecker-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,15 +73,15 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Añade los ajustes de Woodpecker a la configuración de Milvus <strong>sin</strong> modificar el valor de « <code translate="no">mqType</code> ». Ejecuta « <code translate="no">docker exec -it milvus-standalone bash</code> » para acceder al contenedor y, a continuación, edita « <code translate="no">/milvus/configs/user.yaml</code> »:</p>
+    </button></h3><p>Add the Woodpecker settings to the Milvus configuration <strong>without</strong> changing the <code translate="no">mqType</code> value. Run <code translate="no">docker exec -it milvus-standalone bash</code> to enter the container, then edit <code translate="no">/milvus/configs/user.yaml</code>:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">woodpecker:</span>
   <span class="hljs-attr">storage:</span>
     <span class="hljs-attr">type:</span> <span class="hljs-string">minio</span>   <span class="hljs-comment"># minio or local</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Reinicia la instancia de Milvus para aplicar la configuración:</p>
+<p>Restart the Milvus instance to apply the configuration:</p>
 <pre><code translate="no" class="language-shell">docker compose restart
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Execute-the-MQ-switch" class="common-anchor-header">Paso 3: Ejecutar el cambio a MQ<button data-href="#Step-3-Execute-the-MQ-switch" class="anchor-icon" translate="no">
+<h3 id="Step-3-Execute-the-MQ-switch" class="common-anchor-header">Step 3: Execute the MQ switch<button data-href="#Step-3-Execute-the-MQ-switch" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -97,14 +97,14 @@ summary: >-
         ></path>
       </svg>
     </button></h3><div class="alert note">
-<p>Si es la primera vez que cambia a Woodpecker, omita esta nota. De lo contrario, elimine los metadatos y datos residuales de Woodpecker antes de volver a cambiar; los datos residuales pueden provocar un comportamiento inesperado.</p>
+<p>If this is your first time switching to Woodpecker, skip this note. Otherwise, clean up residual Woodpecker meta and data before switching again — residual data may cause unexpected behavior.</p>
 </div>
 <pre><code translate="no" class="language-shell">curl -X POST http://&lt;mixcoord_addr&gt;:&lt;mixcoord_port&gt;/management/wal/alter \
   -H &quot;Content-Type: application/json&quot; \
   -d &#x27;{&quot;target_wal_name&quot;: &quot;woodpecker&quot;}&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>El puerto de MixCoord suele ser <code translate="no">9091</code>.</p>
-<h3 id="Step-4-Verify-the-switch-is-complete" class="common-anchor-header">Paso 4: Comprueba que el cambio se ha completado<button data-href="#Step-4-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
+<p>The MixCoord port is typically <code translate="no">9091</code>.</p>
+<h3 id="Step-4-Verify-the-switch-is-complete" class="common-anchor-header">Step 4: Verify the switch is complete<button data-href="#Step-4-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -121,8 +121,8 @@ summary: >-
       </svg>
     </button></h3><pre><code translate="no" class="language-shell">docker logs milvus-standalone | grep &quot;successfully updated mq.type configuration in etcd&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Si el cambio se ha realizado correctamente, se registra en <code translate="no">[mqTypeValue=woodpecker]</code>.</p>
-<h3 id="Step-5-Optional-Clean-up-RocksMQ-data" class="common-anchor-header">Paso 5: (Opcional) Limpia los datos de RocksMQ<button data-href="#Step-5-Optional-Clean-up-RocksMQ-data" class="anchor-icon" translate="no">
+<p>A successful switch logs <code translate="no">[mqTypeValue=woodpecker]</code>.</p>
+<h3 id="Step-5-Optional-Clean-up-RocksMQ-data" class="common-anchor-header">Step 5: (Optional) Clean up RocksMQ data<button data-href="#Step-5-Optional-Clean-up-RocksMQ-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -137,8 +137,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Los datos de RocksMQ se encuentran en los directorios <code translate="no">volumes/milvus/rdb_data</code> y <code translate="no">volumes/milvus/rdb_data_meta_kv</code>, definidos en <code translate="no">docker-compose.yaml</code>. Si tiene previsto volver a RocksMQ más adelante, elimine primero estos archivos para evitar conflictos.</p>
-<h2 id="Switch-from-Woodpecker-to-RocksMQ" class="common-anchor-header">Cambiar de Woodpecker a RocksMQ<button data-href="#Switch-from-Woodpecker-to-RocksMQ" class="anchor-icon" translate="no">
+    </button></h3><p>RocksMQ data is in the <code translate="no">volumes/milvus/rdb_data</code> and <code translate="no">volumes/milvus/rdb_data_meta_kv</code> directories defined in <code translate="no">docker-compose.yaml</code>. If you plan to switch back to RocksMQ later, clean up these files first to avoid conflicts.</p>
+<h2 id="Switch-from-Woodpecker-to-RocksMQ" class="common-anchor-header">Switch from Woodpecker to RocksMQ<button data-href="#Switch-from-Woodpecker-to-RocksMQ" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -153,7 +153,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Paso 1: Comprueba que la instancia de Milvus esté en ejecución<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Step 1: Verify the Milvus instance is running<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -168,8 +168,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Asegúrate de que tu instancia de Milvus Standalone Docker Compose se está ejecutando correctamente.</p>
-<h3 id="Step-2-Execute-the-MQ-switch" class="common-anchor-header">Paso 2: Ejecuta el cambio a MQ<button data-href="#Step-2-Execute-the-MQ-switch" class="anchor-icon" translate="no">
+    </button></h3><p>Ensure your Milvus Standalone Docker Compose instance is running properly.</p>
+<h3 id="Step-2-Execute-the-MQ-switch" class="common-anchor-header">Step 2: Execute the MQ switch<button data-href="#Step-2-Execute-the-MQ-switch" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -185,13 +185,13 @@ summary: >-
         ></path>
       </svg>
     </button></h3><div class="alert note">
-<p>Asegúrate de que la instancia no contenga datos residuales de RocksMQ de una ejecución anterior. Si es la primera vez que cambias a RocksMQ, omite esta nota; de lo contrario, elimina primero los metadatos y datos relacionados con RocksMQ.</p>
+<p>Ensure the instance has no residual RocksMQ data from a previous run. If this is your first time switching to RocksMQ, skip this note; otherwise clean up the related RocksMQ meta and data first.</p>
 </div>
 <pre><code translate="no" class="language-shell">curl -X POST http://&lt;mixcoord_addr&gt;:&lt;mixcoord_port&gt;/management/wal/alter \
   -H &quot;Content-Type: application/json&quot; \
   -d &#x27;{&quot;target_wal_name&quot;: &quot;rocksmq&quot;}&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Verify-the-switch-is-complete" class="common-anchor-header">Paso 3: Comprueba que el cambio se ha completado<button data-href="#Step-3-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
+<h3 id="Step-3-Verify-the-switch-is-complete" class="common-anchor-header">Step 3: Verify the switch is complete<button data-href="#Step-3-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -208,8 +208,8 @@ summary: >-
       </svg>
     </button></h3><pre><code translate="no" class="language-shell">docker logs milvus-standalone | grep &quot;successfully updated mq.type configuration in etcd&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Si la migración se ha realizado correctamente, se registrará en el archivo de registro « <code translate="no">[mqTypeValue=rocksmq]</code> ».</p>
-<h3 id="Step-4-Optional-Clean-up-Woodpecker-data" class="common-anchor-header">Paso 4: (Opcional) Limpia los datos de Woodpecker<button data-href="#Step-4-Optional-Clean-up-Woodpecker-data" class="anchor-icon" translate="no">
+<p>A successful switch logs <code translate="no">[mqTypeValue=rocksmq]</code>.</p>
+<h3 id="Step-4-Optional-Clean-up-Woodpecker-data" class="common-anchor-header">Step 4: (Optional) Clean up Woodpecker data<button data-href="#Step-4-Optional-Clean-up-Woodpecker-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -225,11 +225,11 @@ summary: >-
         ></path>
       </svg>
     </button></h3><ul>
-<li><strong>Metadatos (etcd):</strong> el prefijo de la clave de Woodpecker suele ser <code translate="no">woodpecker/...</code>. Consúltalo con <code translate="no">etcdctl get woodpecker --prefix</code> y, a continuación, elimínalo.</li>
-<li><strong>Datos de almacenamiento:</strong> en <strong>modo MinIO</strong>, elimina los datos de registro que se encuentran en <code translate="no">&lt;rootPath&gt;/wp/...</code> (normalmente <code translate="no">files/wp/...</code>) dentro del bucket; en <strong>modo local</strong>, los datos se encuentran en el disco local en <code translate="no">volumes/milvus/data/wp/...</code>.</li>
+<li><strong>Metadata (etcd):</strong> the Woodpecker key prefix is typically <code translate="no">woodpecker/...</code>. View it with <code translate="no">etcdctl get woodpecker --prefix</code>, then delete it.</li>
+<li><strong>Storage data:</strong> in <strong>MinIO mode</strong>, delete the log data under <code translate="no">&lt;rootPath&gt;/wp/...</code> (typically <code translate="no">files/wp/...</code>) in the bucket; in <strong>local mode</strong>, the data is on local disk at <code translate="no">volumes/milvus/data/wp/...</code>.</li>
 </ul>
-<p>Si tiene previsto volver a Woodpecker más adelante, elimine primero estos archivos para evitar conflictos.</p>
-<h2 id="Supported-scenarios" class="common-anchor-header">Escenarios compatibles<button data-href="#Supported-scenarios" class="anchor-icon" translate="no">
+<p>If you plan to switch back to Woodpecker later, clean up these files first to avoid conflicts.</p>
+<h2 id="Supported-scenarios" class="common-anchor-header">Supported scenarios<button data-href="#Supported-scenarios" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -246,13 +246,13 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>MQ de origen</th><th>MQ de destino</th><th>Estado</th><th>Notas</th></tr>
+<tr><th>Source MQ</th><th>Target MQ</th><th>Status</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td>RocksMQ</td><td>Woodpecker (MinIO/local)</td><td><strong>Compatible</strong></td><td></td></tr>
-<tr><td>Woodpecker (MinIO/local)</td><td>RocksMQ</td><td><strong>Compatible</strong></td><td></td></tr>
-<tr><td>Woodpecker MinIO</td><td>Woodpecker local</td><td><strong>No compatible</strong></td><td>El cambio entre los modos de almacenamiento de Woodpecker requiere una gestión adicional de metadatos, que aún no es compatible.</td></tr>
-<tr><td>Woodpecker local</td><td>Woodpecker MinIO</td><td><strong>No compatible</strong></td><td>Lo mismo que arriba.</td></tr>
-<tr><td>RocksMQ / Woodpecker</td><td>Pulsar externo / Kafka</td><td><strong>Compatible, pero no recomendado</strong></td><td>Mantén las instancias independientes lo más sencillas posible.</td></tr>
+<tr><td>RocksMQ</td><td>Woodpecker (MinIO/local)</td><td><strong>Supported</strong></td><td></td></tr>
+<tr><td>Woodpecker (MinIO/local)</td><td>RocksMQ</td><td><strong>Supported</strong></td><td></td></tr>
+<tr><td>Woodpecker MinIO</td><td>Woodpecker local</td><td><strong>Not supported</strong></td><td>Switching between Woodpecker storage modes requires additional metadata handling, which is not yet supported.</td></tr>
+<tr><td>Woodpecker local</td><td>Woodpecker MinIO</td><td><strong>Not supported</strong></td><td>Same as above.</td></tr>
+<tr><td>RocksMQ / Woodpecker</td><td>External Pulsar / Kafka</td><td><strong>Supported but not recommended</strong></td><td>Keep standalone instances as simple as possible.</td></tr>
 </tbody>
 </table>

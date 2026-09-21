@@ -1,9 +1,11 @@
 ---
 id: evaluation_with_phoenix.md
-summary: 本指南演示了如何使用 Arize Pheonix 评估基于 Milvus 的检索增强生成（RAG）管道。
-title: 使用 Arize Pheonix 进行评估
+summary: >-
+  This guide demonstrates how to use Arize Pheonix to evaluate a
+  Retrieval-Augmented Generation (RAG) pipeline built upon Milvus.
+title: Evaluation with Arize Pheonix
 ---
-<h1 id="Evaluation-with-Arize-Pheonix" class="common-anchor-header">使用 Arize Pheonix 进行评估<button data-href="#Evaluation-with-Arize-Pheonix" class="anchor-icon" translate="no">
+<h1 id="Evaluation-with-Arize-Pheonix" class="common-anchor-header">Evaluation with Arize Pheonix<button data-href="#Evaluation-with-Arize-Pheonix" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,10 +22,10 @@ title: 使用 Arize Pheonix 进行评估
       </svg>
     </button></h1><p><a href="https://colab.research.google.com/github/milvus-io/bootcamp/blob/master/integration/evaluation_with_phoenix.ipynb" target="_parent"><img translate="no" src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/evaluation_with_phoenix.ipynb" target="_blank"><img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/></a></p>
-<p>本指南演示了如何使用<a href="https://phoenix.arize.com/">Arize Pheonix</a>评估基于<a href="https://milvus.io/">Milvus</a> 的检索增强生成（RAG）管道。</p>
-<p>RAG 系统将检索系统与生成模型相结合，根据给定提示生成新文本。该系统首先使用 Milvus 从语料库中检索相关文档，然后使用生成模型根据检索到的文档生成新文本。</p>
-<p>Arize Pheonix 是一个帮助您评估 RAG 管道的框架。现有的工具和框架可以帮助您构建这些管道，但评估和量化管道性能可能很难。这就是 Arize Pheonix 的用武之地。</p>
-<h2 id="Prerequisites" class="common-anchor-header">前提条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>This guide demonstrates how to use <a href="https://phoenix.arize.com/">Arize Pheonix</a> to evaluate a Retrieval-Augmented Generation (RAG) pipeline built upon <a href="https://milvus.io/">Milvus</a>.</p>
+<p>The RAG system combines a retrieval system with a generative model to generate new text based on a given prompt. The system first retrieves relevant documents from a corpus using Milvus, and then uses a generative model to generate new text based on the retrieved documents.</p>
+<p>Arize Pheonix is a framework that helps you evaluate your RAG pipelines. There are existing tools and frameworks that help you build these pipelines but evaluating it and quantifying your pipeline performance can be hard. This is where Arize Pheonix comes in.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,18 +40,18 @@ title: 使用 Arize Pheonix 进行评估
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在运行本笔记本之前，请确保已安装以下依赖项：</p>
+    </button></h2><p>Before running this notebook, make sure you have the following dependencies installed:</p>
 <pre><code translate="no" class="language-python">$ pip install --upgrade pymilvus milvus-lite openai requests tqdm pandas <span class="hljs-string">&quot;arize-phoenix&gt;=4.29.0&quot;</span> nest_asyncio
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>如果使用的是 Google Colab，要启用刚刚安装的依赖项，可能需要<strong>重启运行时</strong>（点击屏幕上方的 "运行时 "菜单，从下拉菜单中选择 "重启会话"）。</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </div>
-<p>在本例中，我们将使用 OpenAI 作为 LLM。您应将<a href="https://platform.openai.com/docs/quickstart">api key</a> <code translate="no">OPENAI_API_KEY</code> 作为环境变量。</p>
+<p>We will use OpenAI as the LLM in this example. You should prepare the <a href="https://platform.openai.com/docs/quickstart">api key</a> <code translate="no">OPENAI_API_KEY</code> as an environment variable.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 <span class="hljs-comment"># os.environ[&quot;OPENAI_API_KEY&quot;] = &quot;sk-*****************&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Define-the-RAG-pipeline" class="common-anchor-header">定义 RAG 管道<button data-href="#Define-the-RAG-pipeline" class="anchor-icon" translate="no">
+<h2 id="Define-the-RAG-pipeline" class="common-anchor-header">Define the RAG pipeline<button data-href="#Define-the-RAG-pipeline" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -64,7 +66,8 @@ title: 使用 Arize Pheonix 进行评估
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>我们将定义使用 Milvus 作为向量存储、OpenAI 作为 LLM 的 RAG 类。该类包含<code translate="no">load</code> 方法（将文本数据加载到 Milvus）、<code translate="no">retrieve</code> 方法（检索与给定问题最相似的文本数据）和<code translate="no">answer</code> 方法（使用检索到的知识回答给定问题）。</p>
+    </button></h2><p>We will define the RAG class that use Milvus as the vector store, and OpenAI as the LLM.
+The class contains the <code translate="no">load</code> method, which loads the text data into Milvus, the <code translate="no">retrieve</code> method, which retrieves the most similar text data to the given question, and the <code translate="no">answer</code> method, which answers the given question with the retrieved knowledge.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">List</span>
 <span class="hljs-keyword">from</span> tqdm <span class="hljs-keyword">import</span> tqdm
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
@@ -172,21 +175,21 @@ title: 使用 Arize Pheonix 进行评估
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">return</span> response.choices[<span class="hljs-number">0</span>].message.content, retrieved_texts
 <button class="copy-code-btn"></button></code></pre>
-<p>让我们用 OpenAI 和 Milvus 客户端初始化 RAG 类。</p>
+<p>Let’s initialize the RAG class with OpenAI and Milvus clients.</p>
 <pre><code translate="no" class="language-python">openai_client = OpenAI()
 milvus_client = MilvusClient(uri=<span class="hljs-string">&quot;./milvus_demo.db&quot;</span>)
 
 my_rag = RAG(openai_client=openai_client, milvus_client=milvus_client)
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>至于<code translate="no">MilvusClient</code> 的参数：</p>
+<p>As for the argument of <code translate="no">MilvusClient</code>:</p>
 <ul>
-<li>将<code translate="no">uri</code> 设置为本地文件，如<code translate="no">./milvus.db</code> ，是最方便的方法，因为它会自动利用<a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a>将所有数据存储在此文件中。</li>
-<li>如果数据规模较大，可以在<a href="https://milvus.io/docs/quickstart.md">docker 或 kubernetes</a> 上设置性能更强的 Milvus 服务器。在此设置中，请使用服务器 uri，例如<code translate="no">http://localhost:19530</code> ，作为您的<code translate="no">uri</code> 。</li>
-<li>如果你想使用<a href="https://zilliz.com/cloud">Zilliz Cloud</a>（Milvus 的完全托管云服务），请调整<code translate="no">uri</code> 和<code translate="no">token</code> ，它们与 Zilliz Cloud 中的<a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">公共端点和 Api 密钥</a>相对应。</li>
+<li>Setting the <code translate="no">uri</code> as a local file, e.g.<code translate="no">./milvus.db</code>, is the most convenient method, as it automatically utilizes <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> to store all data in this file.</li>
+<li>If you have large scale of data, you can set up a more performant Milvus server on <a href="https://milvus.io/docs/quickstart.md">docker or kubernetes</a>. In this setup, please use the server uri, e.g.<code translate="no">http://localhost:19530</code>, as your <code translate="no">uri</code>.</li>
+<li>If you want to use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, the fully managed cloud service for Milvus, adjust the <code translate="no">uri</code> and <code translate="no">token</code>, which correspond to the <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and Api key</a> in Zilliz Cloud.</li>
 </ul>
 </div>
-<h2 id="Run-the-RAG-pipeline-and-get-results" class="common-anchor-header">运行 RAG 管道并获取结果<button data-href="#Run-the-RAG-pipeline-and-get-results" class="anchor-icon" translate="no">
+<h2 id="Run-the-RAG-pipeline-and-get-results" class="common-anchor-header">Run the RAG pipeline and get results<button data-href="#Run-the-RAG-pipeline-and-get-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -201,8 +204,8 @@ my_rag = RAG(openai_client=openai_client, milvus_client=milvus_client)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>我们使用<a href="https://github.com/milvus-io/milvus/blob/master/DEVELOPMENT.md">Milvus 开发指南</a>作为 RAG 中的私有知识，它是简单 RAG 管道的良好数据源。</p>
-<p>下载并将其加载到 RAG 管道中。</p>
+    </button></h2><p>We use the <a href="https://github.com/milvus-io/milvus/blob/master/DEVELOPMENT.md">Milvus development guide</a> to be as the private knowledge in our RAG, which is a good data source for a simple RAG pipeline.</p>
+<p>Download it and load it into the rag pipeline.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> urllib.request
 <span class="hljs-keyword">import</span> os
 
@@ -219,7 +222,7 @@ my_rag.load(text_lines)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">Creating embeddings: 100%|██████████| 47/47 [00:12&lt;00:00,  3.84it/s]
 </code></pre>
-<p>让我们定义一个关于开发指南文档内容的查询问题。然后使用<code translate="no">answer</code> 方法获取答案和检索到的上下文文本。</p>
+<p>Let’s define a query question about the content of the development guide documentation. And then use the <code translate="no">answer</code> method to get the answer and the retrieved context texts.</p>
 <pre><code translate="no" class="language-python">question = <span class="hljs-string">&quot;what is the hardware requirements specification if I want to build Milvus and run from source code?&quot;</span>
 my_rag.answer(question, return_retrieved_text=<span class="hljs-literal">True</span>)
 <button class="copy-code-btn"></button></code></pre>
@@ -228,7 +231,7 @@ my_rag.answer(question, return_retrieved_text=<span class="hljs-literal">True</s
   'Building Milvus on a local OS/shell environment\n\nThe details below outline the hardware and software requirements for building on Linux and MacOS.\n\n##',
   &quot;Software Requirements\n\nAll Linux distributions are available for Milvus development. However a majority of our contributor worked with Ubuntu or CentOS systems, with a small portion of Mac (both x86_64 and Apple Silicon) contributors. If you would like Milvus to build and run on other distributions, you are more than welcome to file an issue and contribute!\n\nHere's a list of verified OS types where Milvus can successfully build and run:\n\n- Debian/Ubuntu\n- Amazon Linux\n- MacOS (x86_64)\n- MacOS (Apple Silicon)\n\n##&quot;])
 </code></pre>
-<p>现在，让我们准备一些问题及其相应的地面实况答案。我们从 RAG 管道中获取答案和上下文。</p>
+<p>Now let’s prepare some questions with its corresponding ground truth answers. We get answers and contexts from our RAG pipeline.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> datasets <span class="hljs-keyword">import</span> Dataset
 <span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 
@@ -266,7 +269,10 @@ Answering questions: 100%|██████████| 3/3 [00:03&lt;00:00,  
 </code></pre>
 <div>
 <style scoped>
-    .dataframe tbody tr th:only-of-type { vertical-align: middle; }<pre><code translate="no">.dataframe tbody tr th {
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code translate="no">.dataframe tbody tr th {
     vertical-align: top;
 }
 
@@ -279,38 +285,38 @@ Answering questions: 100%|██████████| 3/3 [00:03&lt;00:00,  
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>问题</th>
-      <th>上下文</th>
-      <th>答案</th>
-      <th>地面真相</th>
+      <th>question</th>
+      <th>contexts</th>
+      <th>answer</th>
+      <th>ground_truth</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>硬件要求是什么？</td>
-      <td>[硬件要求（Hardware Requirements/n）：以下是硬件要求规格。</td>
-      <td>构建Milvus的硬件要求规范...</td>
-      <td>如果您想构建 Milvus 并从源代码中运行...</td>
+      <td>what is the hardware requirements specificatio...</td>
+      <td>[Hardware Requirements\n\nThe following specif...</td>
+      <td>The hardware requirements specification to bui...</td>
+      <td>If you want to build Milvus and run from sourc...</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>用什么编程语言来编写Milvus...</td>
-      <td>[CMake &amp; Conan\n\nMilvus 的算法库...</td>
-      <td>编写 Knowherus 的编程语言是什么？</td>
-      <td>用来编写知乎的编程语言...</td>
+      <td>What is the programming language used to write...</td>
+      <td>[CMake &amp; Conan\n\nThe algorithm library of Mil...</td>
+      <td>The programming language used to write Knowher...</td>
+      <td>The programming language used to write Knowher...</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>运行代码覆盖前应确保什么？</td>
-      <td>[代码覆盖（Code coverage）]在提交您的pull...</td>
-      <td>在运行代码覆盖之前，应该确保...</td>
-      <td>在运行代码覆盖之前，应该确保 ...</td>
+      <td>What should be ensured before running code cov...</td>
+      <td>[Code coverage\n\nBefore submitting your pull ...</td>
+      <td>Before running code coverage, it should be ens...</td>
+      <td>Before running code coverage, you should make ...</td>
     </tr>
   </tbody>
 </table>
 </div>
-<h2 id="Evaluation-with-Arize-Phoenix" class="common-anchor-header">使用 Arize Phoenix 进行评估<button data-href="#Evaluation-with-Arize-Phoenix" class="anchor-icon" translate="no">
+<h2 id="Evaluation-with-Arize-Phoenix" class="common-anchor-header">Evaluation with Arize Phoenix<button data-href="#Evaluation-with-Arize-Phoenix" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -325,18 +331,18 @@ Answering questions: 100%|██████████| 3/3 [00:03&lt;00:00,  
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>我们使用 Arize Phoenix 来评估我们的检索增强生成（RAG）管道，重点关注两个关键指标：</p>
+    </button></h2><p>We use Arize Phoenix to evaluate our retrieval-augmented generation (RAG) pipeline, focusing on two key metrics:</p>
 <ul>
-<li><p><strong>幻觉评估</strong>：确定内容是事实还是幻觉（没有上下文依据的信息），确保数据完整性。</p>
+<li><p><strong>Hallucination Evaluation</strong>: Determines if the content is factual or hallucinatory (information not grounded in context), ensuring data integrity.</p>
 <ul>
-<li><strong>幻觉解释</strong>：解释回复是否符合事实的原因。</li>
+<li><strong>Hallucination Explanation</strong>: Explains why a response is factual or not.</li>
 </ul></li>
-<li><p><strong>QA 评估</strong>：评估输入查询的模型答案的准确性。</p>
+<li><p><strong>QA Evaluation</strong>: Assesses the accuracy of model answers to input queries.</p>
 <ul>
-<li><strong>QA 解释</strong>：详细说明答案正确或不正确的原因。</li>
+<li><strong>QA Explanation</strong>: Details why an answer is correct or incorrect.</li>
 </ul></li>
 </ul>
-<h3 id="Phoenix-Tracing-Overview" class="common-anchor-header">Phoenix 跟踪概述<button data-href="#Phoenix-Tracing-Overview" class="anchor-icon" translate="no">
+<h3 id="Phoenix-Tracing-Overview" class="common-anchor-header">Phoenix Tracing Overview<button data-href="#Phoenix-Tracing-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -351,14 +357,14 @@ Answering questions: 100%|██████████| 3/3 [00:03&lt;00:00,  
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Phoenix 为 LLM 应用程序提供<strong>与 OTEL 兼容的跟踪</strong>功能，并与<strong>Langchain</strong>、<strong>LlamaIndex</strong> 等框架以及<strong>OpenAI</strong>和<strong>Mistral</strong> 等 SDK 集成。跟踪功能可捕获整个请求流，深入了解以下内容：</p>
+    </button></h3><p>Phoenix provides <strong>OTEL-compatible tracing</strong> for LLM applications, with integrations for frameworks like <strong>Langchain</strong>, <strong>LlamaIndex</strong>, and SDKs such as <strong>OpenAI</strong> and <strong>Mistral</strong>. Tracing captures the entire request flow, offering insights into:</p>
 <ul>
-<li><strong>应用程序延迟</strong>：识别并优化缓慢的 LLM 调用和组件性能。</li>
-<li><strong>令牌使用情况</strong>：分解令牌消耗，优化成本。</li>
-<li><strong>运行时异常</strong>：捕捉速率限制等关键问题。</li>
-<li><strong>检索文档</strong>分析文档检索、得分和顺序。</li>
+<li><strong>Application Latency</strong>: Identify and optimize slow LLM invocations and component performance.</li>
+<li><strong>Token Usage</strong>: Break down token consumption for cost optimization.</li>
+<li><strong>Runtime Exceptions</strong>: Capture critical issues like rate-limiting.</li>
+<li><strong>Retrieved Documents</strong>: Analyze document retrieval, score, and order.</li>
 </ul>
-<p>利用 Phoenix 的跟踪功能，您可以<strong>识别瓶颈</strong>、<strong>优化资源</strong>，并<strong>确保</strong>各种框架和语言的<strong>系统可靠性</strong>。</p>
+<p>By utilizing Phoenix’s tracing, you can <strong>identify bottlenecks</strong>, <strong>optimize resources</strong>, and <strong>ensure system reliability</strong> across various frameworks and languages.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> phoenix <span class="hljs-keyword">as</span> px
 <span class="hljs-keyword">from</span> phoenix.trace.openai <span class="hljs-keyword">import</span> OpenAIInstrumentor
 
@@ -372,9 +378,11 @@ OpenAIInstrumentor().instrument()
 📖 For more information on how to use Phoenix, check out https://docs.arize.com/phoenix
 </code></pre>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/phoenix01.png" alt="Alt Text" class="doc-image" id="alt-text" />
-   </span> <span class="img-wrapper"> <span>文本</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/phoenix01.png" alt="Alt Text" class="doc-image" id="alt-text" />
+    <span>Alt Text</span>
+  </span>
+</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> nest_asyncio
 
 <span class="hljs-keyword">from</span> phoenix.evals <span class="hljs-keyword">import</span> HallucinationEvaluator, OpenAIModel, QAEvaluator, run_evals
@@ -417,7 +425,10 @@ results_df.head()
 <button class="copy-code-btn"></button></code></pre>
 <div>
 <style scoped>
-    .dataframe tbody tr th:only-of-type { vertical-align: middle; }<pre><code translate="no">.dataframe tbody tr th {
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+<pre><code translate="no">.dataframe tbody tr th {
     vertical-align: top;
 }
 
@@ -430,14 +441,14 @@ results_df.head()
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>输入</th>
-      <th>上下文</th>
-      <th>输出</th>
-      <th>地面实况</th>
-      <th>上下文</th>
-      <th>参考</th>
-      <th>幻觉评估</th>
-      <th>幻觉解释</th>
+      <th>input</th>
+      <th>contexts</th>
+      <th>output</th>
+      <th>ground_truth</th>
+      <th>context</th>
+      <th>reference</th>
+      <th>hallucination_eval</th>
+      <th>hallucination_explanation</th>
       <th>qa_eval</th>
       <th>qa_explanation</th>
     </tr>
@@ -445,42 +456,42 @@ results_df.head()
   <tbody>
     <tr>
       <th>0</th>
-      <td>硬件要求是什么？</td>
-      <td>[硬件要求（Hardware Requirements/n...</td>
-      <td>构建Milvus的硬件要求规范...</td>
-      <td>如果您想从源代码中构建并运行Milvus...</td>
-      <td>[硬件要求（Hardware Requirements）：以下是对硬件要求的具体说明。</td>
-      <td>[硬件要求（Hardware Requirements）：以下是对硬件要求的具体说明...</td>
-      <td>事实</td>
-      <td>要确定答案是事实还是幻...</td>
-      <td>正确</td>
-      <td>要确定答案是否正确，我们需要...</td>
+      <td>what is the hardware requirements specificatio...</td>
+      <td>[Hardware Requirements\n\nThe following specif...</td>
+      <td>The hardware requirements specification to bui...</td>
+      <td>If you want to build Milvus and run from sourc...</td>
+      <td>[Hardware Requirements\n\nThe following specif...</td>
+      <td>[Hardware Requirements\n\nThe following specif...</td>
+      <td>factual</td>
+      <td>To determine if the answer is factual or hallu...</td>
+      <td>correct</td>
+      <td>To determine if the answer is correct, we need...</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>用什么编程语言编写...</td>
+      <td>What is the programming language used to write...</td>
       <td>[CMake &amp; Conan\n\nThe algorithm library of Mil...</td>
-      <td>编写知乎的编程语言是什么？</td>
-      <td>用来编写知乎的编程语言是什么？</td>
+      <td>The programming language used to write Knowher...</td>
+      <td>The programming language used to write Knowher...</td>
       <td>[CMake &amp; Conan\n\nThe algorithm library of Mil...</td>
-      <td>[CMake &amp; Conan\nThe algorithm library of Mil...</td>
-      <td>事实</td>
-      <td>确定答案是事实性的还是含糊...</td>
-      <td>正确</td>
-      <td>要确定答案是否正确，我们需要...</td>
+      <td>[CMake &amp; Conan\n\nThe algorithm library of Mil...</td>
+      <td>factual</td>
+      <td>To determine if the answer is factual or hallu...</td>
+      <td>correct</td>
+      <td>To determine if the answer is correct, we need...</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>运行代码覆盖前应确保什么？</td>
-      <td>[代码覆盖（Code coverage/n/n）在提交您的 pull ...</td>
-      <td>在运行代码覆盖之前，应该确保...</td>
-      <td>在运行代码覆盖之前，应该确保 ...</td>
-      <td>[在提交你的 pull 之前...</td>
-      <td>[在运行代码覆盖之前，应该确保 ...</td>
-      <td>事实</td>
-      <td>参考文献规定，在运行代码覆盖之前...</td>
-      <td>正确</td>
-      <td>要确定答案是否正确，我们需要...</td>
+      <td>What should be ensured before running code cov...</td>
+      <td>[Code coverage\n\nBefore submitting your pull ...</td>
+      <td>Before running code coverage, it should be ens...</td>
+      <td>Before running code coverage, you should make ...</td>
+      <td>[Code coverage\n\nBefore submitting your pull ...</td>
+      <td>[Code coverage\n\nBefore submitting your pull ...</td>
+      <td>factual</td>
+      <td>The reference text specifies that before runni...</td>
+      <td>correct</td>
+      <td>To determine if the answer is correct, we need...</td>
     </tr>
   </tbody>
 </table>

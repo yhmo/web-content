@@ -1,9 +1,9 @@
 ---
 id: choose-the-right-analyzer-for-your-use-case.md
-title: 根据您的使用场景选择合适的分析器
-summary: 注释
+title: Choose the Right Analyzer for Your Use Case
+summary: Notes
 ---
-<h1 id="Choose-the-Right-Analyzer-for-Your-Use-Case" class="common-anchor-header">根据您的使用场景选择合适的分析器<button data-href="#Choose-the-Right-Analyzer-for-Your-Use-Case" class="anchor-icon" translate="no">
+<h1 id="Choose-the-Right-Analyzer-for-Your-Use-Case" class="common-anchor-header">Choose the Right Analyzer for Your Use Case<button data-href="#Choose-the-Right-Analyzer-for-Your-Use-Case" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,9 +19,9 @@ summary: 注释
         ></path>
       </svg>
     </button></h1><div class="alert note">
-<p>本指南侧重于分析仪选型的实际决策。有关分析仪组件的技术细节以及如何添加分析仪参数，请参阅《<a href="/docs/zh/analyzer-overview.md">分析仪概述</a>》。</p>
+<p>This guide focuses on practical decision-making for analyzer selection. For technical details about analyzer components and how to add analyzer parameters, refer to <a href="/docs/zh/analyzer-overview.md">Analyzer Overview</a>.</p>
 </div>
-<h2 id="Understand-analyzers-in-2-minutes" class="common-anchor-header">2 分钟了解分析器<button data-href="#Understand-analyzers-in-2-minutes" class="anchor-icon" translate="no">
+<h2 id="Understand-analyzers-in-2-minutes" class="common-anchor-header">Understand analyzers in 2 minutes<button data-href="#Understand-analyzers-in-2-minutes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,24 +36,24 @@ summary: 注释
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在 Milvus 中，分析器会处理存储在此字段中的文本，使其可用于<a href="/docs/zh/full-text-search.md">全文检索</a>（BM25）、<a href="/docs/zh/phrase-match.md">短语匹配</a>或<a href="/docs/zh/keyword-match.md">文本匹配</a>等功能。您可以将其视为一种文本处理器，将原始内容转换为可检索的令牌。</p>
-<p>分析器的处理流程遵循简单的两阶段管道：</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/analyzer-workflow.png" alt="Analyzer Workflow" class="doc-image" id="analyzer-workflow" /> 
-   <span>分析器工作流</span>
-  
- </span></p>
+    </button></h2><p>In Milvus, an analyzer processes the text stored in this field to make it searchable for features like <a href="/docs/zh/full-text-search.md">full text search</a> (BM25), <a href="/docs/zh/phrase-match.md">phrase match</a>, or <a href="/docs/zh/keyword-match.md">text match</a>. Think of it as a text processor that transforms your raw content into searchable tokens.</p>
+<p>An analyzer works in a simple, two-stage pipeline:</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/analyzer-workflow.png" alt="Analyzer Workflow" class="doc-image" id="analyzer-workflow" />
+    <span>Analyzer Workflow</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>分词（必选）：</strong>此初始阶段应用<strong>分词器</strong>，将连续的文本字符串拆分为离散且有意义的单元，即分词。分词方法会因语言和内容类型而存在显著差异。</p></li>
-<li><p><strong>词元过滤（可选）：</strong>词元化完成后，会应用<strong>过滤器</strong>来修改、删除或优化词元。这些操作可能包括将所有词元转换为小写、移除常见的无意义词（如停用词），或将单词还原为词干形式（词干化）。</p></li>
+<li><p><strong>Tokenization (required):</strong> This initial stage applies a <strong>tokenizer</strong> to break a continuous string of text into discrete, meaningful units called tokens. The tokenization method can vary significantly depending on the language and content type.</p></li>
+<li><p><strong>Token filtering (optional):</strong> After tokenization, <strong>filters</strong> are applied to modify, remove, or refine the tokens. These operations can include converting all tokens to lowercase, removing common meaningless words (such as stopwords), or reducing words to their root form (stemming).</p></li>
 </ol>
-<p><strong>示例</strong>：</p>
+<p><strong>Example</strong>:</p>
 <pre><code translate="no" class="language-plaintext">Input: &quot;Hello World!&quot; 
        1. Tokenization → [&quot;Hello&quot;, &quot;World&quot;, &quot;!&quot;]
        2. Lowercase &amp; Punctuation Filtering → [&quot;hello&quot;, &quot;world&quot;]
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Why-the-choice-of-analyzer-matters" class="common-anchor-header">为何分析器的选择至关重要<button data-href="#Why-the-choice-of-analyzer-matters" class="anchor-icon" translate="no">
+<h2 id="Why-the-choice-of-analyzer-matters" class="common-anchor-header">Why the choice of analyzer matters<button data-href="#Why-the-choice-of-analyzer-matters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,46 +68,46 @@ summary: 注释
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>选择错误的分析器可能会导致相关文档无法被检索，或返回不相关的结果。</p>
-<p>下表总结了因分析器选择不当而导致的常见问题，并提供了用于诊断搜索问题的切实可行的解决方案。</p>
+    </button></h2><p>Choosing the wrong analyzer can make relevant documents unsearchable or return irrelevant results.</p>
+<p>The following table summarizes common problems caused by improper analyzer selection and provides actionable solutions for diagnosing search issues.</p>
 <table>
    <tr>
-     <th><p>问题</p></th>
-     <th><p>症状</p></th>
-     <th><p>示例（输入与输出）</p></th>
-     <th><p>原因（分析器不合适）</p></th>
-     <th><p>解决方案（合适的分析器）</p></th>
+     <th><p>Problem</p></th>
+     <th><p>Symptom</p></th>
+     <th><p>Example (Input &amp; Output)</p></th>
+     <th><p>Cause (Bad Analyzer)</p></th>
+     <th><p>Solution (Good Analyzer)</p></th>
    </tr>
    <tr>
-     <td><p>过度分词</p></td>
-     <td><p>针对技术术语、标识符或URL的文本查询无法找到相关文档。</p></td>
-     <td><ul><li><p><code translate="no">"user_id"</code> →<code translate="no">['user', 'id']</code></p></li><li><p><code translate="no">"C++"</code> →<code translate="no">['c']</code></p></li></ul></td>
-     <td><p><a href="/docs/zh/standard-analyzer.md"><code translate="no">standard</code></a> 分析器</p></td>
-     <td><p>使用 <a href="/docs/zh/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> 分词器；并配合使用 <a href="/docs/zh/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> 过滤器。</p></td>
+     <td><p>Over-tokenization</p></td>
+     <td><p>Text queries for technical terms, identifiers, or URLs fail to find relevant documents.</p></td>
+     <td><ul><li><p><code translate="no">"user_id"</code> → <code translate="no">['user', 'id']</code></p></li><li><p><code translate="no">"C++"</code> → <code translate="no">['c']</code></p></li></ul></td>
+     <td><p><a href="/docs/zh/standard-analyzer.md"><code translate="no">standard</code></a> analyzer</p></td>
+     <td><p>Use a <a href="/docs/zh/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer; combine with an <a href="/docs/zh/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> filter.</p></td>
    </tr>
    <tr>
-     <td><p>分词不足</p></td>
-     <td><p>搜索多词短语中的某个组成部分时，无法返回包含该完整短语的文档。</p></td>
-     <td><p><code translate="no">"state-of-the-art"</code> →<code translate="no">['state-of-the-art']</code></p></td>
-     <td><p>使用 <a href="/docs/zh/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> 分词器</p></td>
-     <td><p>使用一个 <a href="/docs/zh/standard-tokenizer.md"><code translate="no">standard</code></a> 分词器按标点符号和空格进行分割；使用自定义<a href="/docs/zh/regex-filter.md">正则表达式</a>过滤器。</p></td>
+     <td><p>Under-tokenization</p></td>
+     <td><p>Search for a component of a multi-word phrase fails to return documents containing the full phrase.</p></td>
+     <td><p><code translate="no">"state-of-the-art"</code> → <code translate="no">['state-of-the-art']</code></p></td>
+     <td><p>Analyzer with a <a href="/docs/zh/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer</p></td>
+     <td><p>Use a <a href="/docs/zh/standard-tokenizer.md"><code translate="no">standard</code></a> tokenizer to split on punctuation and spaces; use a custom <a href="/docs/zh/regex-filter.md">regex</a> filter.</p></td>
    </tr>
    <tr>
-     <td><p>语言不匹配</p></td>
-     <td><p>特定语言的搜索结果毫无意义或根本不存在。</p></td>
-     <td><p>中文文本：<code translate="no">"机器学习"</code> →<code translate="no">['机器学习']</code> （一个词元）</p></td>
-     <td><p><a href="/docs/zh/english-analyzer.md"><code translate="no">english</code></a> 分析器</p></td>
-     <td><p>使用特定语言的分析器，例如 <a href="/docs/zh/chinese-analyzer.md"><code translate="no">chinese</code></a>。</p></td>
+     <td><p>Language Mismatches</p></td>
+     <td><p>Search results for a specific language are nonsensical or nonexistent.</p></td>
+     <td><p>Chinese text: <code translate="no">"机器学习"</code> → <code translate="no">['机器学习']</code> (one token)</p></td>
+     <td><p><a href="/docs/zh/english-analyzer.md"><code translate="no">english</code></a> analyzer</p></td>
+     <td><p>Use a language-specific analyzer, such as <a href="/docs/zh/chinese-analyzer.md"><code translate="no">chinese</code></a>.</p></td>
    </tr>
    <tr>
-     <td><p>输入法不匹配</p></td>
-     <td><p>用户输入拼音，但索引文本使用汉字。</p></td>
-     <td><p>中文文本：<code translate="no">"足球"</code> ；查询文本：<code translate="no">"zuqiu"</code></p></td>
-     <td><p>仅输出汉字分词的分析器</p></td>
-     <td><p>使用自定义分析器，并配置 <a href="/docs/zh/jieba-tokenizer.md"><code translate="no">jieba</code></a> 分词器和 <a href="/docs/zh/pinyin-filter.md"><code translate="no">pinyin</code></a> 过滤器。</p></td>
+     <td><p>Input method mismatch</p></td>
+     <td><p>Users type Pinyin, but the indexed text uses Chinese characters.</p></td>
+     <td><p>Chinese text: <code translate="no">"足球"</code>; query text: <code translate="no">"zuqiu"</code></p></td>
+     <td><p>Analyzer that emits only Chinese-character tokens</p></td>
+     <td><p>Use a custom analyzer with the <a href="/docs/zh/jieba-tokenizer.md"><code translate="no">jieba</code></a> tokenizer and <a href="/docs/zh/pinyin-filter.md"><code translate="no">pinyin</code></a> filter.</p></td>
    </tr>
 </table>
-<h2 id="First-question-Do-you-need-to-choose-an-analyzer" class="common-anchor-header">第一个问题：您需要选择分析器吗？<button data-href="#First-question-Do-you-need-to-choose-an-analyzer" class="anchor-icon" translate="no">
+<h2 id="First-question-Do-you-need-to-choose-an-analyzer" class="common-anchor-header">First question: Do you need to choose an analyzer?<button data-href="#First-question-Do-you-need-to-choose-an-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,8 +122,8 @@ summary: 注释
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>对于许多用例，您无需进行任何特殊操作。让我们确定您的情况是否属于其中之一。</p>
-<h3 id="Default-behavior-standard-analyzer" class="common-anchor-header">默认行为：<code translate="no">standard</code> 分析器<button data-href="#Default-behavior-standard-analyzer" class="anchor-icon" translate="no">
+    </button></h2><p>For many use cases, you don’t need to do anything special. Let’s determine if you’re one of them.</p>
+<h3 id="Default-behavior-standard-analyzer" class="common-anchor-header">Default behavior: <code translate="no">standard</code> analyzer<button data-href="#Default-behavior-standard-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -138,18 +138,18 @@ summary: 注释
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>如果您在使用全文检索等功能时未指定分析器，Milvus 会自动使用 <a href="/docs/zh/standard-analyzer.md"><code translate="no">standard</code></a> 分析器。</p>
-<p><code translate="no">standard</code> 分析器：</p>
+    </button></h3><p>If you don’t specify an analyzer when using text retrieval features like full text search, Milvus automatically uses the <a href="/docs/zh/standard-analyzer.md"><code translate="no">standard</code></a> analyzer.</p>
+<p>The <code translate="no">standard</code> analyzer:</p>
 <ul>
-<li><p>根据空格和标点符号分割文本</p></li>
-<li><p>将所有词元转换为小写</p></li>
-<li><p>移除一组内置的常见英语停用词以及大部分标点符号</p></li>
+<li><p>Splits text on spaces and punctuation</p></li>
+<li><p>Converts all tokens to lowercase</p></li>
+<li><p>Removes a built-in set of common English stop words and most punctuation</p></li>
 </ul>
-<p><strong>转换示例</strong>：</p>
+<p><strong>Example transformation</strong>:</p>
 <pre><code translate="no" class="language-plaintext">Input:  &quot;The Milvus vector database is built for scale!&quot;
 Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database&#x27;, &#x27;is&#x27;, &#x27;built&#x27;, &#x27;scale&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Decision-criteria-A-quick-check" class="common-anchor-header">决策标准：快速检查<button data-href="#Decision-criteria-A-quick-check" class="anchor-icon" translate="no">
+<h3 id="Decision-criteria-A-quick-check" class="common-anchor-header">Decision criteria: A quick check<button data-href="#Decision-criteria-A-quick-check" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -164,63 +164,63 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>请参考此表快速判断默认的<code translate="no">standard</code> 分析器是否满足您的需求。若不满足，则需选择其他方案。</p>
+    </button></h3><p>Use this table to quickly determine if the default <code translate="no">standard</code> analyzer meets your needs. If it doesn’t, you’ll need to choose a different path.</p>
 <table>
    <tr>
-     <th><p>您的内容</p></th>
-     <th><p>标准分析器适用吗？</p></th>
-     <th><p>原因</p></th>
-     <th><p>您的需求</p></th>
+     <th><p>Your Content</p></th>
+     <th><p>Standard Analyzer OK?</p></th>
+     <th><p>Why</p></th>
+     <th><p>What You Need</p></th>
    </tr>
    <tr>
-     <td><p>英文博客文章</p></td>
-     <td><p>✅ 是</p></td>
-     <td><p>默认行为已足够。</p></td>
-     <td><p>使用默认设置（无需配置）。</p></td>
+     <td><p>English blog posts</p></td>
+     <td><p>✅ Yes</p></td>
+     <td><p>Default behavior is sufficient.</p></td>
+     <td><p>Use the default (no configuration needed).</p></td>
    </tr>
    <tr>
-     <td><p>中文文档</p></td>
-     <td><p>❌ 否</p></td>
-     <td><p>中文单词没有空格，将被视为一个词元。</p></td>
-     <td><p>使用内置的 <a href="/docs/zh/chinese-analyzer.md"><code translate="no">chinese</code></a> 词法分析器。</p></td>
+     <td><p>Chinese documents</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>Chinese words have no spaces and will be treated as one token.</p></td>
+     <td><p>Use a built-in <a href="/docs/zh/chinese-analyzer.md"><code translate="no">chinese</code></a> analyzer.</p></td>
    </tr>
    <tr>
-     <td><p>阿拉伯语文档</p></td>
-     <td><p>❌ 不</p></td>
-     <td><p>阿拉伯语文本可能包含字母变体、发音符号、Tatweel、阿拉伯-印度数字以及常见的阿拉伯语停用词，这些都需要针对该语言进行特殊处理。</p></td>
-     <td><p>使用内置的 <a href="/docs/zh/arabic-analyzer.md"><code translate="no">arabic</code></a> 分析器。</p></td>
+     <td><p>Arabic documents</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>Arabic text may include letter variants, diacritics, Tatweel, Arabic-Indic digits, and common Arabic stop words that need language-specific handling.</p></td>
+     <td><p>Use a built-in <a href="/docs/zh/arabic-analyzer.md"><code translate="no">arabic</code></a> analyzer.</p></td>
    </tr>
    <tr>
-     <td><p>泰语文档</p></td>
-     <td><p>❌ 不</p></td>
-     <td><p>泰语文本通常不在单词之间使用空格，因此需要针对该语言的词分词处理。</p></td>
-     <td><p>使用内置的 <a href="/docs/zh/thai-analyzer.md"><code translate="no">thai</code></a> 分析器。</p></td>
+     <td><p>Thai documents</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>Thai text usually does not use spaces between words, so it needs language-specific word segmentation.</p></td>
+     <td><p>Use a built-in <a href="/docs/zh/thai-analyzer.md"><code translate="no">thai</code></a> analyzer.</p></td>
    </tr>
    <tr>
-     <td><p>技术文档</p></td>
-     <td><p>❌ 否</p></td>
-     <td><p>诸如<code translate="no">C++</code> 之类的术语中的标点符号会被去除。</p></td>
-     <td><p>使用 <a href="/docs/zh/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> 分词器和 <a href="/docs/zh/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> 过滤器。</p></td>
+     <td><p>Technical documentation</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>Punctuation is stripped from terms like <code translate="no">C++</code>.</p></td>
+     <td><p>Create a custom analyzer with a <a href="/docs/zh/whitespace-tokenizer.md"><code translate="no">whitespace</code></a> tokenizer and an <a href="/docs/zh/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a> filter.</p></td>
    </tr>
    <tr>
-     <td><p>以空格分隔的语言，例如法语/西班牙语文本</p></td>
-     <td><p>⚠️ 可能</p></td>
-     <td><p>带重音的字符（<code translate="no">café</code> 与<code translate="no">cafe</code> ）可能无法匹配。</p></td>
-     <td><p>建议使用带有 <a href="/docs/zh/ascii-folding-filter.md"><code translate="no">asciifolding</code></a> 的自定义分析器可获得更佳效果。</p></td>
+     <td><p>Space-separated languages such as French/Spanish text</p></td>
+     <td><p>⚠️ Maybe</p></td>
+     <td><p>Accented characters (<code translate="no">café</code> vs. <code translate="no">cafe</code>) may not match.</p></td>
+     <td><p>A custom analyzer with the <a href="/docs/zh/ascii-folding-filter.md"><code translate="no">asciifolding</code></a> is recommended for better results.</p></td>
    </tr>
    <tr>
-     <td><p>多语言或未知语言</p></td>
-     <td><p>❌ 不支持</p></td>
-     <td><p><code translate="no">standard</code> 分析器缺乏处理不同字符集和分词规则所需的特定于语言的逻辑。</p></td>
-     <td><p>请使用带有 <a href="/docs/zh/icu-tokenizer.md"><code translate="no">icu</code></a> 令牌化器配合使用，以实现支持 Unicode 的令牌化。 </p><p>或者，可考虑配置<a href="/docs/zh/multi-language-analyzers.md">多语言分析器</a>或<a href="/docs/zh/language-identifier.md">语言标识符</a>，以更精确地处理多语言内容。</p></td>
+     <td><p>Multilingual or unknown languages</p></td>
+     <td><p>❌ No</p></td>
+     <td><p>The <code translate="no">standard</code> analyzer lacks the language-specific logic needed to handle different character sets and tokenization rules.</p></td>
+     <td><p>Use a custom analyzer with the <a href="/docs/zh/icu-tokenizer.md"><code translate="no">icu</code></a> tokenizer for unicode-aware tokenization. </p><p>Alternatively, consider configuring <a href="/docs/zh/multi-language-analyzers.md">multi-language analyzers</a> or a <a href="/docs/zh/language-identifier.md">language identifier</a> for more precise handling of multilingual content.</p></td>
    </tr>
 </table>
-<p>如果默认的<code translate="no">standard</code> 分析器无法满足您的需求，则需要实现一个不同的分析器。您有两种途径：</p>
+<p>If the default <code translate="no">standard</code> analyzer cannot meet your requirements, you need to implement a different one. You have two paths:</p>
 <ul>
-<li><p><a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md#Path-A-Use-built-in-analyzers">使用内置分析器</a>，或者</p></li>
-<li><p><a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md#Path-B-Create-a-custom-analyzer">创建自定义分析器</a></p></li>
+<li><p><a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md#Path-A-Use-built-in-analyzers">Using a built-in analyzer</a> or</p></li>
+<li><p><a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md#Path-B-Create-a-custom-analyzer">Creating a custom one</a></p></li>
 </ul>
-<h2 id="Path-A-Use-built-in-analyzers" class="common-anchor-header">方案 A：使用内置分析器<button data-href="#Path-A-Use-built-in-analyzers" class="anchor-icon" translate="no">
+<h2 id="Path-A-Use-built-in-analyzers" class="common-anchor-header">Path A: Use built-in analyzers<button data-href="#Path-A-Use-built-in-analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,8 +235,8 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>内置分析器是针对常见语言的预配置解决方案。当默认标准分析器无法完全满足需求时，这是最简单的入门方式。</p>
-<h3 id="Available-built-in-analyzers" class="common-anchor-header">可用的内置分析器<button data-href="#Available-built-in-analyzers" class="anchor-icon" translate="no">
+    </button></h2><p>Built-in analyzers are pre-configured solutions for common languages. They are the easiest way to get started when the default standard analyzer isn’t a perfect fit.</p>
+<h3 id="Available-built-in-analyzers" class="common-anchor-header">Available built-in analyzers<button data-href="#Available-built-in-analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -253,43 +253,43 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
       </svg>
     </button></h3><table>
    <tr>
-     <th><p>分析器</p></th>
-     <th><p>支持的语言</p></th>
-     <th><p>组件</p></th>
-     <th><p>备注</p></th>
+     <th><p>Analyzer</p></th>
+     <th><p>Language Support</p></th>
+     <th><p>Components</p></th>
+     <th><p>Notes</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/standard-analyzer.md"><code translate="no">standard</code></a></p></td>
-     <td><p>大多数以空格分隔的语言（英语、法语、德语、西班牙语等）</p></td>
-     <td><ul><li><p>分词器：<code translate="no">standard</code></p></li><li><p>过滤器：<code translate="no">lowercase</code></p></li></ul></td>
-     <td><p>用于初始文本处理的通用分析器。在单语种场景下，特定语言的分析器（如<code translate="no">english</code> ）能提供更好的性能。</p></td>
+     <td><p>Most space-separated languages (English, French, German, Spanish, etc.)</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">standard</code></p></li><li><p>Filters: <code translate="no">lowercase</code></p></li></ul></td>
+     <td><p>General-purpose analyzer for initial text processing. For monolingual scenarios, language-specific analyzers (like <code translate="no">english</code>) provide better performance.</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/english-analyzer.md"><code translate="no">english</code></a></p></td>
-     <td><p>专为英语设计，通过词干提取和停用词过滤，以实现更精准的英语语义匹配</p></td>
-     <td><ul><li><p>分词器：<code translate="no">standard</code></p></li><li><p>过滤器：<code translate="no">lowercase</code> 、<code translate="no">stemmer</code> 、<code translate="no">stop</code></p></li></ul></td>
-     <td><p>对于纯英语内容，建议优先使用此分析器而非<code translate="no">standard</code> 。</p></td>
+     <td><p>Dedicated to English, which applies stemming and stop word removal for better English semantic matching</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">standard</code></p></li><li><p>Filters: <code translate="no">lowercase</code>, <code translate="no">stemmer</code>, <code translate="no">stop</code></p></li></ul></td>
+     <td><p>Recommended for English-only content over <code translate="no">standard</code>.</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/chinese-analyzer.md"><code translate="no">chinese</code></a></p></td>
-     <td><p>中文</p></td>
-     <td><ul><li><p>分词器：<code translate="no">jieba</code></p></li><li><p>过滤器：<code translate="no">cnalphanumonly</code></p></li></ul></td>
-     <td><p>当前默认使用简体中文词典。</p></td>
+     <td><p>Chinese</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">jieba</code></p></li><li><p>Filters: <code translate="no">cnalphanumonly</code></p></li></ul></td>
+     <td><p>Currently uses Simplified Chinese dictionary by default.</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/arabic-analyzer.md"><code translate="no">arabic</code></a></p></td>
-     <td><p>阿拉伯语</p></td>
-     <td><ul><li><p>分词器：<code translate="no">standard</code></p></li><li><p>过滤器：<code translate="no">lowercase</code> 、<code translate="no">decimaldigit</code> 、<code translate="no">arabic_normalization</code> 、<code translate="no">stemmer</code> 、<code translate="no">stop</code></p></li></ul></td>
-     <td><p>对于阿拉伯语文本，建议优先使用<code translate="no">standard</code> 。</p></td>
+     <td><p>Arabic</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">standard</code></p></li><li><p>Filters: <code translate="no">lowercase</code>, <code translate="no">decimaldigit</code>, <code translate="no">arabic_normalization</code>, <code translate="no">stemmer</code>, <code translate="no">stop</code></p></li></ul></td>
+     <td><p>Recommended for Arabic text over <code translate="no">standard</code>.</p></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/thai-analyzer.md"><code translate="no">thai</code></a></p></td>
-     <td><p>泰语</p></td>
-     <td><ul><li><p>分词器：<code translate="no">thai</code></p></li><li><p>过滤器：<code translate="no">lowercase</code> 、<code translate="no">decimaldigit</code> 、<code translate="no">stop</code></p></li></ul></td>
-     <td><p>对于泰语文本，推荐使用<code translate="no">standard</code> ，而非基于空格的分词。</p></td>
+     <td><p>Thai</p></td>
+     <td><ul><li><p>Tokenizer: <code translate="no">thai</code></p></li><li><p>Filters: <code translate="no">lowercase</code>, <code translate="no">decimaldigit</code>, <code translate="no">stop</code></p></li></ul></td>
+     <td><p>Recommended for Thai text over <code translate="no">standard</code> or whitespace-based tokenization.</p></td>
    </tr>
 </table>
-<h3 id="Implementation-example" class="common-anchor-header">实现示例<button data-href="#Implementation-example" class="anchor-icon" translate="no">
+<h3 id="Implementation-example" class="common-anchor-header">Implementation example<button data-href="#Implementation-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -304,7 +304,7 @@ Output: [&#x27;the&#x27;, &#x27;milvus&#x27;, &#x27;vector&#x27;, &#x27;database
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要使用内置分析器，只需在定义字段Schema时，在<code translate="no">analyzer_params</code> 中指定其类型即可。</p>
+    </button></h3><p>To use a built-in analyzer, simply specify its type in the <code translate="no">analyzer_params</code> when defining your field schema.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Using built-in English analyzer</span>
 analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;english&quot;</span>
@@ -320,9 +320,9 @@ schema.add_field(
 )
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>有关详细用法，请参阅<a href="/docs/zh/full-text-search.md">“全文搜索”</a>、<a href="/docs/zh/keyword-match.md">“文本匹配</a>”或<a href="/docs/zh/phrase-match.md">“短语匹配</a>”。</p>
+<p>For detailed usage, refer to <a href="/docs/zh/full-text-search.md">Full Text Search</a>, <a href="/docs/zh/keyword-match.md">Text Match</a>, or <a href="/docs/zh/phrase-match.md">Phrase Match</a>.</p>
 </div>
-<h2 id="Path-B-Create-a-custom-analyzer" class="common-anchor-header">方案 B：创建自定义分析器<button data-href="#Path-B-Create-a-custom-analyzer" class="anchor-icon" translate="no">
+<h2 id="Path-B-Create-a-custom-analyzer" class="common-anchor-header">Path B: Create a custom analyzer<button data-href="#Path-B-Create-a-custom-analyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -337,8 +337,8 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>当<a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md#Available-built-in-analyzers">内置选项</a>无法满足您的需求时，您可以通过将分词器与一组过滤器组合来创建自定义分析器。这使您能够完全控制文本处理流程。</p>
-<h3 id="Step-1-Select-the-tokenizer-based-on-language" class="common-anchor-header">步骤 1：根据语言选择分词器<button data-href="#Step-1-Select-the-tokenizer-based-on-language" class="anchor-icon" translate="no">
+    </button></h2><p>When <a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md#Available-built-in-analyzers">built-in options</a> don’t meet your needs, you can create a custom analyzer by combining a tokenizer with a set of filters. This gives you full control over the text processing pipeline.</p>
+<h3 id="Step-1-Select-the-tokenizer-based-on-language" class="common-anchor-header">Step 1: Select the tokenizer based on language<button data-href="#Step-1-Select-the-tokenizer-based-on-language" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -353,110 +353,110 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>请根据内容的主要语言选择分词器：</p>
-<h4 id="Western-languages" class="common-anchor-header">西方语言</h4><p>对于以空格分隔的语言，您有以下选项：</p>
+    </button></h3><p>Choose your tokenizer based on your content’s primary language:</p>
+<h4 id="Western-languages" class="common-anchor-header">Western languages</h4><p>For space-separated languages, you have these options:</p>
 <table>
    <tr>
-     <th><p>分词器</p></th>
-     <th><p>工作原理</p></th>
-     <th><p>最适合</p></th>
-     <th><p>示例</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/standard-tokenizer.md"><code translate="no">standard</code></a></p></td>
-     <td><p>根据空格和标点符号分割文本</p></td>
-     <td><p>普通文本、混合标点</p></td>
-     <td><ul><li><p>输入：<code translate="no">"Hello, world! Visit example.com"</code></p></li><li><p>输出：<code translate="no">['Hello', 'world', 'Visit', 'example', 'com']</code></p></li></ul></td>
+     <td><p>Splits text based on spaces and punctuation marks</p></td>
+     <td><p>General text, mixed punctuation</p></td>
+     <td><ul><li><p>Input: <code translate="no">"Hello, world! Visit example.com"</code></p></li><li><p>Output: <code translate="no">['Hello', 'world', 'Visit', 'example', 'com']</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/whitespace-tokenizer.md"><code translate="no">whitespace</code></a></p></td>
-     <td><p>仅按空白字符分割</p></td>
-     <td><p>预处理内容、用户格式化的文本</p></td>
-     <td><ul><li><p>输入：<code translate="no">"user_id = get_user_data()"</code></p></li><li><p>输出：<code translate="no">['user_id', '=', 'get_user_data()']</code></p></li></ul></td>
+     <td><p>Splits only on whitespace characters</p></td>
+     <td><p>Pre-processed content, user-formatted text</p></td>
+     <td><ul><li><p>Input: <code translate="no">"user_id = get_user_data()"</code></p></li><li><p>Output: <code translate="no">['user_id', '=', 'get_user_data()']</code></p></li></ul></td>
    </tr>
 </table>
-<h4 id="East-Asian-languages" class="common-anchor-header">东亚语言</h4><p>在词与词之间未始终使用空格的语言，需要专用分词器才能进行正确的词分隔：</p>
-<h5 id="Chinese" class="common-anchor-header">中文</h5><table>
+<h4 id="East-Asian-languages" class="common-anchor-header">East Asian languages</h4><p>Languages that do not use spaces consistently between words require specialized tokenizers for proper word segmentation:</p>
+<h5 id="Chinese" class="common-anchor-header">Chinese</h5><table>
    <tr>
-     <th><p>分词器</p></th>
-     <th><p>工作原理</p></th>
-     <th><p>最适合</p></th>
-     <th><p>示例</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/jieba-tokenizer.md"><code translate="no">jieba</code></a></p></td>
-     <td><p>基于中文词典并结合智能算法的分词</p></td>
-     <td><p><strong>推荐用于中文内容</strong>——结合词典与智能算法，专为中文设计</p></td>
-     <td><ul><li><p>输入：<code translate="no">"机器学习是人工智能的一个分支"</code></p></li><li><p>输出：<code translate="no">['机器', '学习', '是', '人工', '智能', '人工智能', '的', '一个', '分支']</code></p></li></ul></td>
+     <td><p>Chinese dictionary-based segmentation with intelligent algorithm</p></td>
+     <td><p><strong>Recommended for Chinese content</strong> - combines dictionary with intelligent algorithms, specifically designed for Chinese</p></td>
+     <td><ul><li><p>Input: <code translate="no">"机器学习是人工智能的一个分支"</code></p></li><li><p>Output: <code translate="no">['机器', '学习', '是', '人工', '智能', '人工智能', '的', '一个', '分支']</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
-     <td><p>基于中文词典（<a href="https://cc-cedict.org/wiki/">cc-cedict</a>）的纯词典形态分析</p></td>
-     <td><p>与<code translate="no">jieba</code> 相比，以更通用方式处理中文文本</p></td>
-     <td><ul><li><p>输入：<code translate="no">"机器学习算法"</code></p></li><li><p>输出：<code translate="no">["机器", "学习", "算法"]</code></p></li></ul></td>
+     <td><p>Pure dictionary-based morphological analysis with Chinese dictionary (<a href="https://cc-cedict.org/wiki/">cc-cedict</a>)</p></td>
+     <td><p>Compared to <code translate="no">jieba</code>, processes Chinese text in a more generic manner</p></td>
+     <td><ul><li><p>Input: <code translate="no">"机器学习算法"</code></p></li><li><p>Output: <code translate="no">["机器", "学习", "算法"]</code></p></li></ul></td>
    </tr>
 </table>
-<h5 id="Thai" class="common-anchor-header">泰语</h5><p>对于大多数泰语文本，请使用内置的 <a href="/docs/zh/thai-analyzer.md"><code translate="no">thai</code></a> 分析器。仅当需要构建自定义分析器管道时，才使用独立的 <a href="/docs/zh/thai-tokenizer.md"><code translate="no">thai</code></a> 分词器仅在需要构建自定义分析器管道时使用。</p>
+<h5 id="Thai" class="common-anchor-header">Thai</h5><p>For most Thai text, use the built-in <a href="/docs/zh/thai-analyzer.md"><code translate="no">thai</code></a> analyzer. Use the standalone <a href="/docs/zh/thai-tokenizer.md"><code translate="no">thai</code></a> tokenizer only when you need to build a custom analyzer pipeline.</p>
 <table>
    <tr>
-     <th><p>分词器</p></th>
-     <th><p>工作原理</p></th>
-     <th><p>最适合</p></th>
-     <th><p>示例</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/thai-tokenizer.md"><code translate="no">thai</code></a></p></td>
-     <td><p>将泰语文本分割为单词令牌，并过滤掉仅包含空格和标点符号的片段</p></td>
-     <td><p>适用于泰语或泰语/英语混合文本的自定义分析器管道</p></td>
-     <td><ul><li><p>输入：<code translate="no">"สวัสดี! ทดสอบ, ระบบ Milvus"</code></p></li><li><p>输出：<code translate="no">['สวัสดี', 'ทดสอบ', 'ระบบ', 'Milvus']</code></p></li></ul></td>
+     <td><p>Segments Thai text into word tokens and filters out whitespace and punctuation-only segments</p></td>
+     <td><p>Custom analyzer pipelines for Thai or mixed Thai/English text</p></td>
+     <td><ul><li><p>Input: <code translate="no">"สวัสดี! ทดสอบ, ระบบ Milvus"</code></p></li><li><p>Output: <code translate="no">['สวัสดี', 'ทดสอบ', 'ระบบ', 'Milvus']</code></p></li></ul></td>
    </tr>
 </table>
-<h5 id="Japanese-and-Korean" class="common-anchor-header">日语和韩语</h5><table>
+<h5 id="Japanese-and-Korean" class="common-anchor-header">Japanese and Korean</h5><table>
    <tr>
-     <th><p>语言</p></th>
-     <th><p>分词器</p></th>
-     <th><p>词典选项</p></th>
-     <th><p>最适合</p></th>
-     <th><p>示例</p></th>
+     <th><p>Language</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>Dictionary Options</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
-     <td><p>日语</p></td>
+     <td><p>Japanese</p></td>
      <td><p><a href="/docs/zh/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
-     <td><p><a href="https://taku910.github.io/mecab/">ipadic</a>（通用型）、<a href="https://github.com/neologd/mecab-ipadic-neologd">ipadic-neologd</a>（现代术语）、<a href="https://clrd.ninjal.ac.jp/unidic/">unidic</a>（学术型）</p></td>
-     <td><p>支持专有名词处理的形态分析</p></td>
-     <td><ul><li><p>输入：<code translate="no">"東京都渋谷区"</code></p></li><li><p>输出：<code translate="no">["東京", "都", "渋谷", "区"]</code></p></li></ul></td>
+     <td><p><a href="https://taku910.github.io/mecab/">ipadic</a> (general-purpose), <a href="https://github.com/neologd/mecab-ipadic-neologd">ipadic-neologd</a> (modern terms), <a href="https://clrd.ninjal.ac.jp/unidic/">unidic</a> (academic)</p></td>
+     <td><p>Morphological analysis with proper noun handling</p></td>
+     <td><ul><li><p>Input: <code translate="no">"東京都渋谷区"</code></p></li><li><p>Output: <code translate="no">["東京", "都", "渋谷", "区"]</code></p></li></ul></td>
    </tr>
    <tr>
-     <td><p>韩语</p></td>
+     <td><p>Korean</p></td>
      <td><p><a href="/docs/zh/lindera-tokenizer.md"><code translate="no">lindera</code></a></p></td>
      <td><p><a href="https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/">ko-dic</a></p></td>
-     <td><p>韩语形态分析</p></td>
-     <td><ul><li><p>输入：<code translate="no">"안녕하세요"</code></p></li><li><p>输出：<code translate="no">["안녕", "하", "세요"]</code></p></li></ul></td>
+     <td><p>Korean morphological analysis</p></td>
+     <td><ul><li><p>Input: <code translate="no">"안녕하세요"</code></p></li><li><p>Output: <code translate="no">["안녕", "하", "세요"]</code></p></li></ul></td>
    </tr>
 </table>
-<h4 id="Multilingual-or-unknown-languages" class="common-anchor-header">多语言或未知语言</h4><p>针对文档内语言无法预测或混合的情况：</p>
+<h4 id="Multilingual-or-unknown-languages" class="common-anchor-header">Multilingual or unknown languages</h4><p>For content where languages are unpredictable or mixed within documents:</p>
 <table>
    <tr>
-     <th><p>分词器</p></th>
-     <th><p>工作原理</p></th>
-     <th><p>最适合</p></th>
-     <th><p>示例</p></th>
+     <th><p>Tokenizer</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Best For</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/icu-tokenizer.md"><code translate="no">icu</code></a></p></td>
-     <td><p>支持 Unicode 的分词（Unicode 国际组件）</p></td>
-     <td><p>混合脚本、未知语言，或仅需简单分词的情况</p></td>
-     <td><ul><li><p>输入：<code translate="no">"Hello 世界 مرحبا"</code></p></li><li><p>输出：<code translate="no">['Hello', ' ', '世界', ' ', 'مرحبا']</code></p></li></ul></td>
+     <td><p>Unicode-aware tokenization (International Components for Unicode)</p></td>
+     <td><p>Mixed scripts, unknown languages, or when simple tokenization is sufficient</p></td>
+     <td><ul><li><p>Input: <code translate="no">"Hello 世界 مرحبا"</code></p></li><li><p>Output: <code translate="no">['Hello', ' ', '世界', ' ', 'مرحبا']</code></p></li></ul></td>
    </tr>
 </table>
-<p><strong>何时使用 ICU</strong>：</p>
+<p><strong>When to use icu</strong>:</p>
 <ul>
-<li><p>在无法进行语言识别的混合语言场景中。</p></li>
-<li><p>您希望避免<a href="/docs/zh/multi-language-analyzers.md">多语言分析器</a>或<a href="/docs/zh/language-identifier.md">语言标识符</a>带来的额外开销。</p></li>
-<li><p>内容以某种主要语言为主，其中偶尔出现对整体含义影响较小的外来词（例如，英文文本中零星出现日语或法语的品牌名称或技术术语）。</p></li>
+<li><p>Mixed languages where language identification is impractical.</p></li>
+<li><p>You don’t want the overhead of <a href="/docs/zh/multi-language-analyzers.md">multi-language analyzers</a> or the <a href="/docs/zh/language-identifier.md">language identifier</a>.</p></li>
+<li><p>Content has a primary language with occasional foreign words that contribute little to the overall meaning (e.g., English text with sporadic brand names or technical terms in Japanese or French).</p></li>
 </ul>
-<p><strong>替代方案</strong>：若需更精确地处理多语言内容，请考虑使用多语言分析器或语言标识符。详情请参阅《<a href="/docs/zh/multi-language-analyzers.md">多语言分析器</a>》或《<a href="/docs/zh/language-identifier.md">语言标识符</a>》。</p>
-<h3 id="Step-2-Add-filters-for-precision" class="common-anchor-header">步骤 2：添加过滤器以提高精确度<button data-href="#Step-2-Add-filters-for-precision" class="anchor-icon" translate="no">
+<p><strong>Alternative approaches</strong>: For more precise handling of multilingual content, consider using multi-language analyzers or the language identifier. For details, refer to <a href="/docs/zh/multi-language-analyzers.md">Multi-language Analyzers</a> or <a href="/docs/zh/language-identifier.md">Language Identifier</a>.</p>
+<h3 id="Step-2-Add-filters-for-precision" class="common-anchor-header">Step 2: Add filters for precision<button data-href="#Step-2-Add-filters-for-precision" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -471,119 +471,119 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md#Step-1-Select-the-tokenizer-based-on-language">选择分词器</a>后，请根据具体的搜索需求和内容特征应用过滤器。</p>
-<h4 id="Commonly-used-filters" class="common-anchor-header">常用过滤器</h4><p>这些过滤器对于大多数以空格分隔的语言配置（英语、法语、德语、西班牙语等）至关重要，并能显著提高搜索质量：</p>
+    </button></h3><p>After <a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md#Step-1-Select-the-tokenizer-based-on-language">selecting your tokenizer</a>, apply filters based on your specific search requirements and content characteristics.</p>
+<h4 id="Commonly-used-filters" class="common-anchor-header">Commonly used filters</h4><p>These filters are essential for most space-separated language configurations (English, French, German, Spanish, etc.) and significantly improve search quality:</p>
 <table>
    <tr>
-     <th><p>过滤器</p></th>
-     <th><p>作用原理</p></th>
-     <th><p>适用场景</p></th>
-     <th><p>示例</p></th>
+     <th><p>Filter</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>When to Use</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/lowercase-filter.md"><code translate="no">lowercase</code></a></p></td>
-     <td><p>将所有词元转换为小写</p></td>
-     <td><p>通用——适用于所有区分大小写的语言</p></td>
-     <td><ul><li><p>输入：<code translate="no">["Apple", "iPhone"]</code></p></li><li><p>输出：<code translate="no">[['apple'], ['iphone']]</code></p></li></ul></td>
+     <td><p>Convert all tokens to lowercase</p></td>
+     <td><p>Universal - applies to all languages with case distinctions</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Apple", "iPhone"]</code></p></li><li><p>Output: <code translate="no">[['apple'], ['iphone']]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/stemmer-filter.md"><code translate="no">stemmer</code></a></p></td>
-     <td><p>将单词还原为词根形式</p></td>
-     <td><p>具有词形变格的语言（英语、法语、德语等）</p></td>
-     <td><p>以英语为例：</p><ul><li><p>输入：<code translate="no">["running", "runs", "ran"]</code></p></li><li><p>输出：<code translate="no">[['run'], ['run'], ['ran']]</code></p></li></ul></td>
+     <td><p>Reduce words to their root form</p></td>
+     <td><p>Languages with word inflections (English, French, German, etc.)</p></td>
+     <td><p>For English:</p><ul><li><p>Input: <code translate="no">["running", "runs", "ran"]</code></p></li><li><p>Output: <code translate="no">[['run'], ['run'], ['ran']]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/stop-filter.md"><code translate="no">stop</code></a></p></td>
-     <td><p>去除常见的无意义词</p></td>
-     <td><p>大多数语言——对以空格分隔的语言特别有效</p></td>
-     <td><ul><li><p>输入：<code translate="no">["the", "quick", "brown", "fox"]</code></p></li><li><p>输出：<code translate="no">[[], ['quick'], ['brown'], ['fox']]</code></p></li></ul></td>
+     <td><p>Remove common meaningless words</p></td>
+     <td><p>Most languages - particularly effective for space-separated languages</p></td>
+     <td><ul><li><p>Input: <code translate="no">["the", "quick", "brown", "fox"]</code></p></li><li><p>Output: <code translate="no">[[], ['quick'], ['brown'], ['fox']]</code></p></li></ul></td>
    </tr>
 </table>
 <div class="alert note">
-<p>对于东亚语言（中文、日语、韩语等），应重点采用<a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md#Language-specific-filters">针对该语言的特定过滤器</a>。这些语言通常采用不同的文本处理方法，词干提取可能无法带来显著效果。</p>
+<p>For East Asian languages (Chinese, Japanese, Korean, etc.), focus on <a href="/docs/zh/choose-the-right-analyzer-for-your-use-case.md#Language-specific-filters">language-specific filters</a> instead. These languages typically use different approaches for text processing and may not benefit significantly from stemming.</p>
 </div>
-<h4 id="Text-normalization-filters" class="common-anchor-header">文本规范化过滤器</h4><p>这些过滤器通过规范化文本变体来提高匹配的一致性：</p>
+<h4 id="Text-normalization-filters" class="common-anchor-header">Text normalization filters</h4><p>These filters standardize text variations to improve matching consistency:</p>
 <table>
    <tr>
-     <th><p>过滤器</p></th>
-     <th><p>工作原理</p></th>
-     <th><p>适用场景</p></th>
-     <th><p>示例</p></th>
+     <th><p>Filter</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>When to Use</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/ascii-folding-filter.md"><code translate="no">asciifolding</code></a></p></td>
-     <td><p>将带重音的字符转换为 ASCII 等效字符</p></td>
-     <td><p>国际内容、用户生成内容</p></td>
-     <td><ul><li><p>输入：<code translate="no">["café", "naïve", "résumé"]</code></p></li><li><p>输出：<code translate="no">[['cafe'], ['naive'], ['resume']]</code></p></li></ul></td>
+     <td><p>Convert accented characters to ASCII equivalents</p></td>
+     <td><p>International content, user-generated content</p></td>
+     <td><ul><li><p>Input: <code translate="no">["café", "naïve", "résumé"]</code></p></li><li><p>Output: <code translate="no">[['cafe'], ['naive'], ['resume']]</code></p></li></ul></td>
    </tr>
 </table>
-<h4 id="Token-filtering" class="common-anchor-header">令牌过滤</h4><p>根据字符内容或长度控制保留哪些词元：</p>
+<h4 id="Token-filtering" class="common-anchor-header">Token filtering</h4><p>Control which tokens are preserved based on character content or length:</p>
 <table>
    <tr>
-     <th><p>过滤</p></th>
-     <th><p>工作原理</p></th>
-     <th><p>何时使用</p></th>
-     <th><p>示例</p></th>
+     <th><p>Filter</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>When to Use</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/removepunct-filter.md"><code translate="no">removepunct</code></a></p></td>
-     <td><p>移除孤立的标点符号词</p></td>
-     <td><p>清理由<code translate="no">jieba</code> 、<code translate="no">lindera</code> 、<code translate="no">icu</code> 这些分词器生成的输出结果，这些分词器会将标点符号作为单个词元返回</p></td>
-     <td><ul><li><p>输入：<code translate="no">["Hello", "!", "world"]</code></p></li><li><p>输出：<code translate="no">[['Hello'], ['world']]</code></p></li></ul></td>
+     <td><p>Remove standalone punctuation tokens</p></td>
+     <td><p>Clean output from <code translate="no">jieba</code>, <code translate="no">lindera</code>, <code translate="no">icu</code> tokenizers, which will return punctuations as single tokens</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Hello", "!", "world"]</code></p></li><li><p>Output: <code translate="no">[['Hello'], ['world']]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/alphanumonly-filter.md"><code translate="no">alphanumonly</code></a></p></td>
-     <td><p>仅保留字母和数字</p></td>
-     <td><p>技术内容，文本清理处理</p></td>
-     <td><ul><li><p>输入：<code translate="no">["user123", "test@email.com"]</code></p></li><li><p>输出：<code translate="no">[['user123'], ['test', 'email', 'com']]</code></p></li></ul></td>
+     <td><p>Keep only letters and numbers</p></td>
+     <td><p>Technical content, clean text processing</p></td>
+     <td><ul><li><p>Input: <code translate="no">["user123", "test@email.com"]</code></p></li><li><p>Output: <code translate="no">[['user123'], ['test', 'email', 'com']]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/length-filter.md"><code translate="no">length</code></a></p></td>
-     <td><p>移除超出指定长度范围的令牌</p></td>
-     <td><p>过滤噪声（过长的令牌）</p></td>
-     <td><ul><li><p>输入：<code translate="no">["a", "very", "extraordinarily"]</code></p></li><li><p>输出：<code translate="no">[['a'], ['very'], []]</code> （若<strong>max=10</strong>）</p></li></ul></td>
+     <td><p>Remove tokens outside specified length range</p></td>
+     <td><p>Filter noise (exccessively long tokens)</p></td>
+     <td><ul><li><p>Input: <code translate="no">["a", "very", "extraordinarily"]</code></p></li><li><p>Output: <code translate="no">[['a'], ['very'], []]</code> (if <strong>max=10</strong>)</p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/regex-filter.md"><code translate="no">regex</code></a></p></td>
-     <td><p>基于自定义模式的过滤</p></td>
-     <td><p>特定领域的令牌要求</p></td>
-     <td><ul><li><p>输入：<code translate="no">["test123", "prod456"]</code></p></li><li><p>输出：<code translate="no">[[], ['prod456']]</code> （若<strong>expr="^prod"</strong>）</p></li></ul></td>
+     <td><p>Custom pattern-based filtering</p></td>
+     <td><p>Domain-specific token requirements</p></td>
+     <td><ul><li><p>Input: <code translate="no">["test123", "prod456"]</code></p></li><li><p>Output: <code translate="no">[[], ['prod456']]</code> (if <strong>expr="^prod"</strong>)</p></li></ul></td>
    </tr>
 </table>
-<h4 id="Language-specific-filters" class="common-anchor-header">特定语言的过滤器</h4><p>这些过滤器处理特定语言的特征：</p>
+<h4 id="Language-specific-filters" class="common-anchor-header">Language-specific filters</h4><p>These filters handle specific language characteristics:</p>
 <table>
    <tr>
-     <th><p>过滤器</p></th>
-     <th><p>语言</p></th>
-     <th><p>工作原理</p></th>
-     <th><p>示例</p></th>
+     <th><p>Filter</p></th>
+     <th><p>Language</p></th>
+     <th><p>How It Works</p></th>
+     <th><p>Examples</p></th>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/decompounder-filter.md"><code translate="no">decompounder</code></a></p></td>
-     <td><p>德语</p></td>
-     <td><p>将复合词拆分为可搜索的组成部分</p></td>
-     <td><ul><li><p>输入：<code translate="no">["dampfschifffahrt"]</code></p></li><li><p>输出：<code translate="no">[['dampf', 'schiff', 'fahrt']]</code></p></li></ul></td>
+     <td><p>German</p></td>
+     <td><p>Splits compound words into searchable components</p></td>
+     <td><ul><li><p>Input: <code translate="no">["dampfschifffahrt"]</code></p></li><li><p>Output: <code translate="no">[['dampf', 'schiff', 'fahrt']]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/cnalphanumonly-filter.md">cnalphanumonly</a></p></td>
-     <td><p>中文</p></td>
-     <td><p>保留汉字和字母数字</p></td>
-     <td><ul><li><p>输入：<code translate="no">["Hello", "世界", "123", "!@#"]</code></p></li><li><p>输出：<code translate="no">[['Hello'], ['世界'], ['123'], []]</code></p></li></ul></td>
+     <td><p>Chinese</p></td>
+     <td><p>Keeps Chinese characters + alphanumeric</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Hello", "世界", "123", "!@#"]</code></p></li><li><p>Output: <code translate="no">[['Hello'], ['世界'], ['123'], []]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/cncharonly-filter.md"><code translate="no">cncharonly</code></a></p></td>
-     <td><p>中文</p></td>
-     <td><p>仅保留汉字</p></td>
-     <td><ul><li><p>输入：<code translate="no">["Hello", "世界", "123"]</code></p></li><li><p>输出：<code translate="no">[[], ['世界'], []]</code></p></li></ul></td>
+     <td><p>Chinese</p></td>
+     <td><p>Keeps only Chinese characters</p></td>
+     <td><ul><li><p>Input: <code translate="no">["Hello", "世界", "123"]</code></p></li><li><p>Output: <code translate="no">[[], ['世界'], []]</code></p></li></ul></td>
    </tr>
    <tr>
      <td><p><a href="/docs/zh/pinyin-filter.md"><code translate="no">pinyin</code></a></p></td>
-     <td><p>中文</p></td>
-     <td><p>将中文词元转换为拼音词元</p></td>
-     <td><ul><li><p>输入：<code translate="no">["中文"]</code></p></li><li><p>输出：<code translate="no">[['中文', 'zhong', 'wen']]</code></p></li></ul></td>
+     <td><p>Chinese</p></td>
+     <td><p>Emits Pinyin token forms for Chinese tokens</p></td>
+     <td><ul><li><p>Input: <code translate="no">["中文"]</code></p></li><li><p>Output: <code translate="no">[['中文', 'zhong', 'wen']]</code></p></li></ul></td>
    </tr>
 </table>
-<h3 id="Step-3-Combine-and-implement" class="common-anchor-header">步骤 3：组合与实现<button data-href="#Step-3-Combine-and-implement" class="anchor-icon" translate="no">
+<h3 id="Step-3-Combine-and-implement" class="common-anchor-header">Step 3: Combine and implement<button data-href="#Step-3-Combine-and-implement" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -598,7 +598,7 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要创建自定义分析器，您需要在<code translate="no">analyzer_params</code> 字典中定义分词器和一组过滤器。过滤器将按其列出的顺序应用。</p>
+    </button></h3><p>To create your custom analyzer, you define the tokenizer and a list of filters in the <code translate="no">analyzer_params</code> dictionary. The filters are applied in the order they are listed.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Example: A custom analyzer for technical content</span>
 analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;whitespace&quot;</span>,
@@ -614,7 +614,7 @@ schema.add_field(
 <span class="highlighted-wrapper-line">    analyzer_params=analyzer_params,</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Final-Test-with-runanalyzer" class="common-anchor-header">最后：使用<code translate="no">run_analyzer</code><button data-href="#Final-Test-with-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Final-Test-with-runanalyzer" class="common-anchor-header">Final: Test with <code translate="no">run_analyzer</code><button data-href="#Final-Test-with-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -629,7 +629,7 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在将配置应用于 Collection 之前，请务必验证配置：</p>
+    </button></h3><p>Always validate your configuration before applying to a collection:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sample text to analyze</span>
 sample_text = <span class="hljs-string">&quot;The Milvus vector database is built for scale!&quot;</span>
 
@@ -637,14 +637,14 @@ sample_text = <span class="hljs-string">&quot;The Milvus vector database is buil
 result = client.run_analyzer(sample_text, analyzer_params)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Analyzer output:&quot;</span>, result)
 <button class="copy-code-btn"></button></code></pre>
-<p>需检查的常见问题：</p>
+<p>Common issues to check:</p>
 <ul>
-<li><p><strong>过度分词</strong>：技术术语被错误拆分</p></li>
-<li><p><strong>分词不足</strong>：短语未被正确拆分</p></li>
-<li><p><strong>缺失分词</strong>：重要术语被过滤掉</p></li>
+<li><p><strong>Over-tokenization</strong>: Technical terms being split incorrectly</p></li>
+<li><p><strong>Under-tokenization</strong>: Phrases not being separated properly</p></li>
+<li><p><strong>Missing tokens</strong>: Important terms being filtered out</p></li>
 </ul>
-<p>有关详细用法，请参阅<a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md">run_analyzer</a>。</p>
-<h2 id="Recommended-configurations-by-use-case" class="common-anchor-header">按使用场景推荐的配置<button data-href="#Recommended-configurations-by-use-case" class="anchor-icon" translate="no">
+<p>For detailed usage, refer to <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md">run_analyzer</a>.</p>
+<h2 id="Recommended-configurations-by-use-case" class="common-anchor-header">Recommended configurations by use case<button data-href="#Recommended-configurations-by-use-case" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -659,11 +659,11 @@ result = client.run_analyzer(sample_text, analyzer_params)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>本节针对在 Milvus 中使用分析器时的常见用例，提供了推荐的分词器和过滤器配置。请选择最符合您的内容类型和搜索需求的组合。</p>
+    </button></h2><p>This section provides recommended tokenizer and filter configurations for common use cases when working with analyzers in Milvus. Choose the combination that best matches your content type and search requirements.</p>
 <div class="alert note">
-<p>在将分析器应用于您的 Collection 之前，我们建议您使用 <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md"><code translate="no">run_analyzer</code></a> 进行测试并验证文本分析性能。</p>
+<p>Before applying an analyzer to your collection, we recommend you use <a href="https://milvus.io/api-reference/pymilvus/v2.6.x/MilvusClient/CollectionSchema/run_analyzer.md"><code translate="no">run_analyzer</code></a> to test and validate text analysis performance.</p>
 </div>
-<h3 id="Languages-with-accent-marks-French-Spanish-German-etc" class="common-anchor-header">带重音符号的语言（法语、西班牙语、德语等）<button data-href="#Languages-with-accent-marks-French-Spanish-German-etc" class="anchor-icon" translate="no">
+<h3 id="Languages-with-accent-marks-French-Spanish-German-etc" class="common-anchor-header">Languages with accent marks (French, Spanish, German, etc.)<button data-href="#Languages-with-accent-marks-French-Spanish-German-etc" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -678,7 +678,7 @@ result = client.run_analyzer(sample_text, analyzer_params)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>请使用<code translate="no">standard</code> 分词器，并启用小写转换、特定语言的词干提取以及停用词过滤。通过修改<code translate="no">language</code> 和<code translate="no">stop_words</code> 参数，此配置同样适用于其他欧洲语言。</p>
+    </button></h3><p>Use a <code translate="no">standard</code> tokenizer with lowercase conversion, language-specific stemming, and stopword removal. This configuration also works for other European languages by modifying the <code translate="no">language</code> and <code translate="no">stop_words</code> parameters.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># French example</span>
 analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -701,7 +701,7 @@ analyzer_params = {
 <span class="hljs-comment"># &quot;language&quot;: &quot;german&quot; for German</span>
 <span class="hljs-comment"># &quot;stop_words&quot;: [&quot;_spanish_&quot;] or [&quot;_german_&quot;] accordingly</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="English-content" class="common-anchor-header">英语内容<button data-href="#English-content" class="anchor-icon" translate="no">
+<h3 id="English-content" class="common-anchor-header">English content<button data-href="#English-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -716,7 +716,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>用于对英语文本进行处理并实施全面过滤。您还可以使用内置的 <a href="/docs/zh/english-analyzer.md"><code translate="no">english</code></a> 分析器：</p>
+    </button></h3><p>For English text processing with comprehensive filtering. You can also use the built-in <a href="/docs/zh/english-analyzer.md"><code translate="no">english</code></a> analyzer:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [
@@ -737,7 +737,7 @@ analyzer_params = {
     <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;english&quot;</span>
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Chinese-content" class="common-anchor-header">中文内容<button data-href="#Chinese-content" class="anchor-icon" translate="no">
+<h3 id="Chinese-content" class="common-anchor-header">Chinese content<button data-href="#Chinese-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -752,7 +752,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>使用<code translate="no">jieba</code> 分词器，并应用字符过滤器，仅保留汉字、拉丁字母和数字。</p>
+    </button></h3><p>Use the <code translate="no">jieba</code> tokenizer and apply a character filter to retain only Chinese characters, Latin letters, and digits.</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [<span class="hljs-string">&quot;cnalphanumonly&quot;</span>]
@@ -764,15 +764,15 @@ analyzer_params = {
 }
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>对于简体中文，<code translate="no">cnalphanumonly</code> 会移除除汉字、字母数字文本和数字以外的所有词元。这可防止标点符号影响搜索质量。</p>
+<p>For Simplified Chinese, <code translate="no">cnalphanumonly</code> removes all tokens except Chinese characters, alphanumeric text, and digits. This prevents punctuation from affecting search quality.</p>
 </div>
-<p>如果用户可能通过输入拼音来搜索中文文本，请使用自定义分析器，其中包含<code translate="no">jieba</code> 分词器以及 <a href="/docs/zh/pinyin-filter.md"><code translate="no">pinyin</code></a> 过滤器，而非内置的<code translate="no">chinese</code> 分析器。</p>
+<p>If users may search Chinese text by typing Pinyin, use a custom analyzer with the <code translate="no">jieba</code> tokenizer and the <a href="/docs/zh/pinyin-filter.md"><code translate="no">pinyin</code></a> filter instead of the built-in <code translate="no">chinese</code> analyzer.</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;jieba&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [<span class="hljs-string">&quot;pinyin&quot;</span>]
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Japanese-content" class="common-anchor-header">日语内容<button data-href="#Japanese-content" class="anchor-icon" translate="no">
+<h3 id="Japanese-content" class="common-anchor-header">Japanese content<button data-href="#Japanese-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -787,7 +787,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>请使用配备日语词典和过滤器的<code translate="no">lindera</code> 分词器，以清理标点符号并控制词元长度：</p>
+    </button></h3><p>Use the <code translate="no">lindera</code> tokenizer with Japanese dictionary and filters to clean punctuation and control token length:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
         <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;lindera&quot;</span>,
@@ -803,7 +803,7 @@ analyzer_params = {
     ]
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Korean-content" class="common-anchor-header">韩语内容<button data-href="#Korean-content" class="anchor-icon" translate="no">
+<h3 id="Korean-content" class="common-anchor-header">Korean content<button data-href="#Korean-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -818,7 +818,7 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>与日语类似，使用<code translate="no">lindera</code> 分词器并配合韩语词典：</p>
+    </button></h3><p>Similar to Japanese, using <code translate="no">lindera</code> tokenizer with Korean dictionary:</p>
 <pre><code translate="no" class="language-json">analyzer_params = <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;tokenizer&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
         <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;lindera&quot;</span><span class="hljs-punctuation">,</span>
@@ -834,7 +834,7 @@ analyzer_params = {
     <span class="hljs-punctuation">]</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Mixed-or-multilingual-content" class="common-anchor-header">混合或多语言内容<button data-href="#Mixed-or-multilingual-content" class="anchor-icon" translate="no">
+<h3 id="Mixed-or-multilingual-content" class="common-anchor-header">Mixed or multilingual content<button data-href="#Mixed-or-multilingual-content" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -849,20 +849,20 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>处理涉及多种语言或使用方式难以预料的字符集的内容时，请优先使用<code translate="no">icu</code> 分析器。该分析器支持Unicode，可有效处理混合字符集和符号。</p>
-<p><strong>基本多语言配置（不进行词干提取）</strong>：</p>
+    </button></h3><p>When working with content that spans multiple languages or uses scripts unpredictably, start with the <code translate="no">icu</code> analyzer. This Unicode-aware analyzer handles mixed scripts and symbols effectively.</p>
+<p><strong>Basic multilingual configuration (no stemming)</strong>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;icu&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [<span class="hljs-string">&quot;lowercase&quot;</span>, <span class="hljs-string">&quot;asciifolding&quot;</span>]
 }
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>高级多语言处理</strong>：</p>
-<p>若需更好地控制不同语言下的分词行为：</p>
+<p><strong>Advanced multilingual processing</strong>:</p>
+<p>For better control over token behavior across different languages:</p>
 <ul>
-<li><p>请使用<strong>多语言分析器</strong>配置。有关详细信息，请参阅《<a href="/docs/zh/multi-language-analyzers.md">多语言分析器</a>》。</p></li>
-<li><p>在您的内容中实现<strong>语言标识符</strong>。有关详细信息，请参阅《<a href="/docs/zh/language-identifier.md">语言标识符</a>》。</p></li>
+<li><p>Use a <strong>multi-language analyzer</strong> configuration. For details, refer to <a href="/docs/zh/multi-language-analyzers.md">Multi-language Analyzers</a>.</p></li>
+<li><p>Implement a <strong>language identifier</strong> on your content. For details, refer to <a href="/docs/zh/language-identifier.md">Language Identifier</a>.</p></li>
 </ul>
-<h2 id="Integrate-with-text-retrieval-features" class="common-anchor-header">与文本检索功能集成<button data-href="#Integrate-with-text-retrieval-features" class="anchor-icon" translate="no">
+<h2 id="Integrate-with-text-retrieval-features" class="common-anchor-header">Integrate with text retrieval features<button data-href="#Integrate-with-text-retrieval-features" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -877,12 +877,12 @@ analyzer_params = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>选择分析器后，您可以将其与 Milvus 提供的文本检索功能集成。</p>
+    </button></h2><p>After selecting your analyzer, you can integrate it with text retrieval features provided by Milvus.</p>
 <ul>
-<li><p><strong>全文搜索</strong></p>
-<p>分析器通过生成稀疏向量，直接影响基于BM25的全文搜索。请在索引和查询中使用相同的分析器，以确保分词的一致性。特定语言的分析器通常比通用分析器能提供更好的BM25评分。有关实现的详细信息，请参阅《<a href="/docs/zh/full-text-search.md">全文搜索</a>》。</p></li>
-<li><p><strong>文本匹配</strong></p>
-<p>文本匹配操作基于分析器的输出结果，在查询与索引内容之间执行精确的词元匹配。有关实现细节，请参阅《<a href="/docs/zh/keyword-match.md">文本匹配</a>》。</p></li>
-<li><p><strong>短语匹配</strong></p>
-<p>短语匹配要求对多词表达式进行一致的分词处理，以保持短语边界和语义。有关实现细节，请参阅《<a href="/docs/zh/phrase-match.md">短语匹配</a>》。</p></li>
+<li><p><strong>Full text search</strong></p>
+<p>Analyzers directly impact BM25-based full text search through sparse vector generation. Use the same analyzer for both indexing and querying to ensure consistent tokenization. Language-specific analyzers generally provide better BM25 scoring than generic ones. For implementation details, refer to <a href="/docs/zh/full-text-search.md">Full Text Search</a>.</p></li>
+<li><p><strong>Text match</strong></p>
+<p>Text match operations perform exact token matching between queries and indexed content based on your analyzer output. For implementation details, refer to <a href="/docs/zh/keyword-match.md">Text Match</a>.</p></li>
+<li><p><strong>Phrase match</strong></p>
+<p>Phrase match requires consistent tokenization across multi-word expressions to maintain phrase boundaries and meaning. For implementation details, refer to <a href="/docs/zh/phrase-match.md">Phrase Match</a>.</p></li>
 </ul>

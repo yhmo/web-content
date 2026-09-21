@@ -2,9 +2,9 @@
 id: configure_datacoord.md
 related_key: configure
 group: system_configuration.md
-summary: 了解如何为 Milvus 配置 dataCoord。
+summary: Learn how to configure dataCoord for Milvus.
 ---
-<h1 id="dataCoord-related-Configurations" class="common-anchor-header">与 dataCoord 相关的配置<button data-href="#dataCoord-related-Configurations" class="anchor-icon" translate="no">
+<h1 id="dataCoord-related-Configurations" class="common-anchor-header">dataCoord-related Configurations<button data-href="#dataCoord-related-Configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,13 +37,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.channel.watchTimeoutInterval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        监听通道的超时时间（单位：秒）。Datanode 提醒程序更新监听进度时，将重置超时计时器。      </td>
+      <td>        Timeout on watching channels (in seconds). Datanode tickler update watch progress will reset timeout timer.      </td>
       <td>300</td>
     </tr>
   </tbody>
@@ -66,13 +66,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.channel.legacyVersionWithoutRPCWatch">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        版本号小于等于该版本的数据节点被视为旧版节点，这些节点不支持基于 RPC 的 watch() 功能。此选项仅在滚动升级过程中使用，此时旧版节点将无法获取新频道      </td>
+      <td>        Datanodes <= this version are considered as legacy nodes, which doesn't have rpc based watch(). This is only used during rolling upgrade where legacy nodes won't get new channels      </td>
       <td>2.4.1</td>
     </tr>
   </tbody>
@@ -95,13 +95,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.channel.balanceSilentDuration">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        通道管理器开始进行后台通道平衡所需的延迟时间      </td>
+      <td>        The duration after which the channel manager start background channel balancing      </td>
       <td>300</td>
     </tr>
   </tbody>
@@ -124,13 +124,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.channel.balanceInterval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        通道管理器检查 DML 通道平衡状态的间隔时间      </td>
+      <td>        The interval with which the channel manager check dml channel balance status      </td>
       <td>360</td>
     </tr>
   </tbody>
@@ -153,13 +153,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.channel.checkInterval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        通道管理器更新通道状态的时间间隔（以秒为单位）      </td>
+      <td>        The interval in seconds with which the channel manager advances channel states      </td>
       <td>1</td>
     </tr>
   </tbody>
@@ -182,13 +182,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.channel.notifyChannelOperationTimeout">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        通道操作通知超时时间（单位：秒）。      </td>
+      <td>        Timeout notifing channel operations (in seconds).      </td>
       <td>5</td>
     </tr>
   </tbody>
@@ -211,13 +211,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.maxSize">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        分段的最大大小，单位：MB。datacoord.segment.maxSize 和 datacoord.segment.sealProportion 共同决定一个分段是否可以被封存。      </td>
+      <td>        The maximum size of a segment, unit: MB. datacoord.segment.maxSize and datacoord.segment.sealProportion together determine if a segment can be sealed.      </td>
       <td>1024</td>
     </tr>
   </tbody>
@@ -240,13 +240,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.diskSegmentMaxSize">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        具有磁盘索引的Collection中，分段的最大大小（单位：MB）      </td>
+      <td>        Maximun size of a segment in MB for collection which has Disk index      </td>
       <td>2048</td>
     </tr>
   </tbody>
@@ -269,13 +269,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.sealProportion">
   <thead>
     <tr>
-      <th class="width80">说明</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        封存一个分段所需的 datacoord.segment.maxSize 的最小比例。datacoord.segment.maxSize 和 datacoord.segment.sealProportion 共同决定一个分段是否可以被封存。      </td>
+      <td>        The minimum proportion to datacoord.segment.maxSize to seal a segment. datacoord.segment.maxSize and datacoord.segment.sealProportion together determine if a segment can be sealed.      </td>
       <td>0.12</td>
     </tr>
   </tbody>
@@ -298,13 +298,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.sealProportionJitter">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        分段封存比例的抖动比率，默认值为 0.1（10%）；如果封存比例为 12%，且抖动值为 0.1，则实际应用的比例将为 10.8~12%      </td>
+      <td>        segment seal proportion jitter ratio, default value 0.1(10%), if seal proportion is 12%, with jitter=0.1, the actuall applied ratio will be 10.8~12%      </td>
       <td>0.1</td>
     </tr>
   </tbody>
@@ -327,13 +327,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.assignmentExpiration">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        段分配的过期时间，单位：毫秒      </td>
+      <td>        Expiration time of the segment assignment, unit: ms      </td>
       <td>2000</td>
     </tr>
   </tbody>
@@ -356,13 +356,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.allocLatestExpireAttempt">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        重启后尝试从 rootCoord 分配最新 lastExpire 的时间间隔      </td>
+      <td>        The time attempting to alloc latest lastExpire from rootCoord after restart      </td>
       <td>200</td>
     </tr>
   </tbody>
@@ -385,13 +385,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.maxLife">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        分段的最大生存时间（以秒为单位），即 24×60×60      </td>
+      <td>        The max lifetime of segment in seconds, 24*60*60      </td>
       <td>86400</td>
     </tr>
   </tbody>
@@ -414,16 +414,16 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.maxIdleTime">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>如果某个分段在 maxIdleTime 内未接受任何 DML 记录，且该分段的大小大于</li>      
-        <li>minSizeFromIdleToSealed，Milvus 将自动将其封存。</li>      
-        <li>分段的最大空闲时间（以秒为单位），10*60。</li>      </td>
+        <li>If a segment didn't accept dml records in maxIdleTime and the size of segment is greater than</li>      
+        <li>minSizeFromIdleToSealed, Milvus will automatically seal it.</li>      
+        <li>The max idle time of segment in seconds, 10*60.</li>      </td>
       <td>600</td>
     </tr>
   </tbody>
@@ -446,13 +446,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.minSizeFromIdleToSealed">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        段从密封状态转为空闲所需的最小大小（以 MB 为单位）。      </td>
+      <td>        The min size in MB of segment which can be idle from sealed.      </td>
       <td>16</td>
     </tr>
   </tbody>
@@ -475,15 +475,15 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.maxBinlogFileNumber">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>一个分段的二进制日志最大数量（等于主键的二进制日志文件数）， </li>      
-        <li>当二进制日志文件数量达到最大值时，该分段将被密封。</li>      </td>
+        <li>The max number of binlog (which is equal to the binlog file num of primary key) for one segment, </li>      
+        <li>the segment will be sealed if the number of binlog file reaches to max value.</li>      </td>
       <td>32</td>
     </tr>
   </tbody>
@@ -506,13 +506,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.smallProportion">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        当分区的行数小于      </td>
+      <td>        The segment is considered as "small segment" when its # of rows is smaller than      </td>
       <td>0.5</td>
     </tr>
   </tbody>
@@ -535,15 +535,15 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.compactableProportion">
   <thead>
     <tr>
-      <th class="width80">说明</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>(smallProportion * 该分段的最大行数)。</li>      
-        <li>如果紧凑化后的分段行数将达到</li>      </td>
+        <li>(smallProportion * segment max # of rows).</li>      
+        <li>A compaction will happen on small segments if the segment after compaction will have</li>      </td>
       <td>0.85</td>
     </tr>
   </tbody>
@@ -566,16 +566,16 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segment.expansionRate">
   <thead>
     <tr>
-      <th class="width80">说明</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>超过 (compactableProportion * 段最大行数) 行。</li>      
-        <li>必须大于或等于<smallProportion> ！！！</li>      
-        <li>在压缩过程中，第#行段的大小可以超过段的最大行数，超出幅度为(expansionRate-1) * 100%。 </li>      </td>
+        <li>over (compactableProportion * segment max # of rows) rows.</li>      
+        <li>MUST BE GREATER THAN OR EQUAL TO <smallProportion>!!!</li>      
+        <li>During compaction, the size of segment # of rows is able to exceed segment max # of rows by (expansionRate-1) * 100%. </li>      </td>
       <td>1.25</td>
     </tr>
   </tbody>
@@ -598,15 +598,15 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.sealPolicy.channel.growingSegmentsMemSize">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>以 MB 为单位的阈值，如果每个分片的增长分段的总大小 </li>      
-        <li>超过此阈值，则最大的增长分段将被封存。</li>      </td>
+        <li>The size threshold in MB, if the total size of growing segments of each shard </li>      
+        <li>exceeds this threshold, the largest growing segment will be sealed.</li>      </td>
       <td>4096</td>
     </tr>
   </tbody>
@@ -629,13 +629,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.autoUpgradeSegmentIndex">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        是否自动将分片索引升级到索引引擎的版本      </td>
+      <td>        whether auto upgrade segment index to index engine's version      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -658,13 +658,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.segmentFlushInterval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        同一分段上两次刷新操作之间的最小间隔时间（单位：秒）      </td>
+      <td>        the minimal interval duration(unit: Seconds) between flusing operation on same segment      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -687,15 +687,15 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.enableCompaction">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>开关值，用于控制是否启用分段压缩。 </li>      
-        <li>压缩操作会将小段合并为大段，并清除那些已超过“时间旅行”保留期限的已删除实体。</li>      </td>
+        <li>Switch value to control if to enable segment compaction. </li>      
+        <li>Compaction merges small-size segments into a large segment, and clears the entities deleted beyond the rentention duration of Time Travel.</li>      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -718,15 +718,15 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.enableAutoCompaction">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>此开关值用于控制是否启用自动分段压缩，在此过程中，Data coord 会在后台定位并合并可压缩的分段。</li>      
-        <li>只有当 dataCoord.enableCompaction 设置为 true 时，此配置才生效。</li>      </td>
+        <li>Switch value to control if to enable automatic segment compaction during which data coord locates and merges compactable segments in the background.</li>      
+        <li>This configuration takes effect only when dataCoord.enableCompaction is set as true.</li>      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -749,13 +749,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.storageVersion.enabled">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th>
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        紧凑操作是否可以将符合条件的现有数据重写到当前存储版本。此参数可刷新。      </td>
+      <td>        Whether compaction can rewrite eligible existing data to the current storage version. This parameter is refreshable.      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -778,13 +778,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.bumpSchemaVersion.enabled">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th>
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        紧凑操作是否可以将Schema版本变更应用到现有数据，包括对新添加函数生成的字段进行回填。此参数可刷新。      </td>
+      <td>        Whether compaction can apply schema-version changes to existing data, including backfill for fields generated by a newly added Function. This parameter is refreshable.      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -807,18 +807,18 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.taskPrioritizer">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>压缩任务优先级设置，选项：[default, level, mix]。 </li>      
-        <li>默认值为 FIFO。</li>      
-        <li>“level” 按级别优先：首先进行 L0 压缩，然后是混合压缩，最后是聚类压缩。</li>      
-        <li>“mix” 按级别优先：先进行混合压缩，然后是 L0 压缩，最后是聚类压缩。</li>      </td>
-      <td>默认</td>
+        <li>compaction task prioritizer, options: [default, level, mix]. </li>      
+        <li>default is FIFO.</li>      
+        <li>level is prioritized by level: L0 compactions first, then mix compactions, then clustering compactions.</li>      
+        <li>mix is prioritized by level: mix compactions first, then L0 compactions, then clustering compactions.</li>      </td>
+      <td>default</td>
     </tr>
   </tbody>
 </table>
@@ -840,13 +840,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.taskQueueCapacity">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        压缩任务队列大小      </td>
+      <td>        compaction task queue size      </td>
       <td>100000</td>
     </tr>
   </tbody>
@@ -869,13 +869,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.dropTolerance">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        如果压缩任务完成时间超过此时间（以秒为单位），该任务将被清理      </td>
+      <td>        Compaction task will be cleaned after finish longer than this time(in seconds)      </td>
       <td>86400</td>
     </tr>
   </tbody>
@@ -898,13 +898,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.gcInterval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        紧凑型垃圾回收的时间间隔（以秒为单位）      </td>
+      <td>        The time interval in seconds for compaction gc      </td>
       <td>1800</td>
     </tr>
   </tbody>
@@ -927,13 +927,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.mix.triggerInterval">
   <thead>
     <tr>
-      <th class="width80">说明</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        触发混合压缩的时间间隔（以秒为单位）      </td>
+      <td>        The time interval in seconds to trigger mix compaction      </td>
       <td>60</td>
     </tr>
   </tbody>
@@ -956,13 +956,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.levelzero.triggerInterval">
   <thead>
     <tr>
-      <th class="width80">说明</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        触发 L0 压缩所需的时间间隔（以秒为单位）      </td>
+      <td>        The time interval in seconds for trigger L0 compaction      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -985,13 +985,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.levelzero.forceTrigger.minSize">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        强制触发 LevelZero 压缩所需的最小大小（以字节为单位），默认值为 8MB      </td>
+      <td>        The minmum size in bytes to force trigger a LevelZero Compaction, default as 8MB      </td>
       <td>8388608</td>
     </tr>
   </tbody>
@@ -1014,13 +1014,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.levelzero.forceTrigger.maxSize">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        强制触发 LevelZero 压缩的最大大小（以字节为单位），默认值为 64MB      </td>
+      <td>        The maxmum size in bytes to force trigger a LevelZero Compaction, default as 64MB      </td>
       <td>67108864</td>
     </tr>
   </tbody>
@@ -1043,13 +1043,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.levelzero.forceTrigger.deltalogMinNum">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        强制触发 LevelZero 压缩所需的最小增量日志文件数量      </td>
+      <td>        The minimum number of deltalog files to force trigger a LevelZero Compaction      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -1072,13 +1072,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.levelzero.forceTrigger.deltalogMaxNum">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        强制触发 LevelZero 压缩所需的 deltalog 文件最大数量，默认值为 30      </td>
+      <td>        The maxmum number of deltalog files to force trigger a LevelZero Compaction, default as 30      </td>
       <td>30</td>
     </tr>
   </tbody>
@@ -1101,13 +1101,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.single.ratio.threshold">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        触发单次压缩的分段比例阈值，默认值为 0.2      </td>
+      <td>        The ratio threshold of a segment to trigger a single compaction, default as 0.2      </td>
       <td>0.2</td>
     </tr>
   </tbody>
@@ -1130,13 +1130,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.single.deltalog.maxsize">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        触发单次压缩的分段增量日志大小，默认值为 16MB      </td>
+      <td>        The deltalog size of a segment to trigger a single compaction, default as 16MB      </td>
       <td>16777216</td>
     </tr>
   </tbody>
@@ -1159,13 +1159,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.single.deltalog.maxnum">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        一个分段需要累积多少个增量日志条目才会触发一次压缩，默认值为 200      </td>
+      <td>        The deltalog count of a segment to trigger a compaction, default as 200      </td>
       <td>200</td>
     </tr>
   </tbody>
@@ -1188,13 +1188,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.single.expiredlog.maxsize">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        触发分段压缩所需的过期日志大小，默认值为 10MB      </td>
+      <td>        The expired log size of a segment to trigger a compaction, default as 10MB      </td>
       <td>10485760</td>
     </tr>
   </tbody>
@@ -1217,13 +1217,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.clustering.enable">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        启用集群压缩      </td>
+      <td>        Enable clustering compaction      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -1246,13 +1246,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.clustering.autoEnable">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        启用自动集群压缩      </td>
+      <td>        Enable auto clustering compaction      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -1275,13 +1275,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.clustering.triggerInterval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        聚簇压缩触发间隔（以秒为单位）      </td>
+      <td>        clustering compaction trigger interval in seconds      </td>
       <td>600</td>
     </tr>
   </tbody>
@@ -1304,13 +1304,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.clustering.minInterval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        同一Collection中聚簇压缩执行之间的最小间隔，用于避免冗余压缩      </td>
+      <td>        The minimum interval between clustering compaction executions of one collection, to avoid redundant compaction      </td>
       <td>3600</td>
     </tr>
   </tbody>
@@ -1333,13 +1333,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.clustering.maxInterval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        如果某个 Collection 超过 maxInterval 时间未进行集群压缩，则强制执行压缩      </td>
+      <td>        If a collection haven't been clustering compacted for longer than maxInterval, force compact      </td>
       <td>259200</td>
     </tr>
   </tbody>
@@ -1362,13 +1362,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.clustering.newDataSizeThreshold">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        如果新数据大小大于 newDataSizeThreshold，则执行集群压缩      </td>
+      <td>        If new data size is large than newDataSizeThreshold, execute clustering compaction      </td>
       <td>512m</td>
     </tr>
   </tbody>
@@ -1391,13 +1391,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.clustering.maxTrainSizeRatio">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        K-means 训练中的最大数据大小比率，如果超过该值，将进行下采样以满足此限制      </td>
+      <td>        max data size ratio in Kmeans train, if larger than it, will down sampling to meet this limit      </td>
       <td>0.8</td>
     </tr>
   </tbody>
@@ -1420,13 +1420,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.clustering.maxCentroidsNum">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        K-means 训练中的最大聚类中心数量      </td>
+      <td>        maximum centroids number in Kmeans train      </td>
       <td>10240</td>
     </tr>
   </tbody>
@@ -1449,13 +1449,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.clustering.minCentroidsNum">
   <thead>
     <tr>
-      <th class="width80">说明</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        K-means 训练中的最小聚类中心数目      </td>
+      <td>        minimum centroids number in Kmeans train      </td>
       <td>16</td>
     </tr>
   </tbody>
@@ -1478,13 +1478,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.clustering.minClusterSizeRatio">
   <thead>
     <tr>
-      <th class="width80">说明</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        K-means 训练中的最小簇大小 / 平均簇大小      </td>
+      <td>        minimum cluster size / avg size in Kmeans train      </td>
       <td>0.01</td>
     </tr>
   </tbody>
@@ -1507,13 +1507,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.clustering.maxClusterSizeRatio">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        K-means 训练中的最大簇大小 / 平均大小      </td>
+      <td>        maximum cluster size / avg size in Kmeans train      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -1536,13 +1536,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.compaction.clustering.maxClusterSize">
   <thead>
     <tr>
-      <th class="width80">说明</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        K-means 训练中的最大簇大小      </td>
+      <td>        maximum cluster size in Kmeans train      </td>
       <td>5g</td>
     </tr>
   </tbody>
@@ -1565,13 +1565,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.syncSegmentsInterval">
   <thead>
     <tr>
-      <th class="width80">说明</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        定期同步分段的时间间隔      </td>
+      <td>        The time interval for regularly syncing segments      </td>
       <td>300</td>
     </tr>
   </tbody>
@@ -1594,13 +1594,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.index.memSizeEstimateMultiplier">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        当内存大小未通过索引过程设置时，用于估算索引数据内存大小的倍数      </td>
+      <td>        When the memory size is not setup by index procedure, multiplier to estimate the memory size of index data      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -1623,13 +1623,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.enableGarbageCollection">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        用于控制是否启用垃圾回收以清除 MinIO 或 S3 服务中已丢弃数据的开关值。      </td>
+      <td>        Switch value to control if to enable garbage collection to clear the discarded data in MinIO or S3 service.      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -1652,13 +1652,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.gc.interval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Data coord执行垃圾回收的间隔，单位：秒。      </td>
+      <td>        The interval at which data coord performs garbage collection, unit: second.      </td>
       <td>3600</td>
     </tr>
   </tbody>
@@ -1681,13 +1681,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.gc.missingTolerance">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        未记录的二进制日志 (binlog) 文件的保留时长。为该参数设置一个合理较大的值，可避免误删缺乏元数据的新创建二进制日志文件。单位：秒。      </td>
+      <td>        The retention duration of the unrecorded binary log (binlog) files. Setting a reasonably large value for this parameter avoids erroneously deleting the newly created binlog files that lack metadata. Unit: second.      </td>
       <td>86400</td>
     </tr>
   </tbody>
@@ -1710,13 +1710,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.gc.dropTolerance">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        已删除段的二进制日志文件在被清除前的保留时长，单位：秒。      </td>
+      <td>        The retention duration of the binlog files of the deleted segments before they are cleared, unit: second.      </td>
       <td>10800</td>
     </tr>
   </tbody>
@@ -1739,13 +1739,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.gc.removeConcurrent">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        用于删除已删除 S3 对象的并发 goroutine 数量      </td>
+      <td>        number of concurrent goroutines to remove dropped s3 objects      </td>
       <td>32</td>
     </tr>
   </tbody>
@@ -1768,13 +1768,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.gc.scanInterval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        对象存储垃圾回收中，孤立文件（位于 OSS 上但未在元数据中注册的文件）的扫描间隔（单位：小时）      </td>
+      <td>        orphan file (file on oss but has not been registered on meta) on object storage garbage collection scanning interval in hours      </td>
       <td>168</td>
     </tr>
   </tbody>
@@ -1797,13 +1797,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.gc.lob.enabled">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th>
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        是否为 TEXT 字段值创建的、未被引用的 LOB 文件启用垃圾回收。      </td>
+      <td>        Whether to enable garbage collection for unreferenced LOB files created for TEXT field values.      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -1826,13 +1826,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.gc.lob.safetyWindow">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th>
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        未被引用的 TEXT LOB 文件必须达到的最小存留时间（以秒为单位），垃圾回收才能将其删除。      </td>
+      <td>        The minimum age, in seconds, that an unreferenced TEXT LOB file must reach before garbage collection can delete it.      </td>
       <td>3600</td>
     </tr>
   </tbody>
@@ -1855,13 +1855,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.gc.lob.checkInterval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th>
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        Milvus 扫描存储以查找为 TEXT 字段值创建的未被引用的 LOB 文件的间隔（单位：秒）。      </td>
+      <td>        The interval, in seconds, at which Milvus scans storage for unreferenced LOB files created for TEXT field values.      </td>
       <td>1800</td>
     </tr>
   </tbody>
@@ -1884,13 +1884,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.brokerTimeout">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        5000毫秒，dataCoord 代理 RPC 超时      </td>
+      <td>        5000ms, dataCoord broker rpc timeout      </td>
       <td>5000</td>
     </tr>
   </tbody>
@@ -1913,13 +1913,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.autoBalance">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        启用自动负载均衡      </td>
+      <td>        Enable auto balance      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -1942,13 +1942,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.checkAutoBalanceConfigInterval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        检查自动平衡配置的间隔      </td>
+      <td>        the interval of check auto balance config      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -1971,13 +1971,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.import.filesPerPreImportTask">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        每个预导入任务允许的文件最大数量。      </td>
+      <td>        The maximum number of files allowed per pre-import task.      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -2000,13 +2000,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.import.taskRetention">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        处于“已完成”或“失败”状态的任务的保留时间（以秒为单位）。      </td>
+      <td>        The retention period in seconds for tasks in the Completed or Failed state.      </td>
       <td>10800</td>
     </tr>
   </tbody>
@@ -2029,13 +2029,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.import.maxSizeInMBPerImportTask">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        为避免生成过小的分段，我们将对导入的文件进行重新分组。此参数表示每个组（每个 ImportTask）中文件大小的总和。      </td>
+      <td>        To prevent generating of small segments, we will re-group imported files. This parameter represents the sum of file sizes in each group (each ImportTask).      </td>
       <td>6144</td>
     </tr>
   </tbody>
@@ -2058,13 +2058,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.import.scheduleInterval">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        用于安排导入的间隔，单位为秒。      </td>
+      <td>        The interval for scheduling import, measured in seconds.      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -2087,13 +2087,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.import.checkIntervalHigh">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        检查导入的间隔（以秒为单位），该值设置为高频率，用于导入检查器。      </td>
+      <td>        The interval for checking import, measured in seconds, is set to a high frequency for the import checker.      </td>
       <td>2</td>
     </tr>
   </tbody>
@@ -2116,13 +2116,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.import.checkIntervalLow">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        导入检查器的检查间隔（以秒为单位）被设置为较低频率。      </td>
+      <td>        The interval for checking import, measured in seconds, is set to a low frequency for the import checker.      </td>
       <td>120</td>
     </tr>
   </tbody>
@@ -2145,13 +2145,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.import.maxImportFileNumPerReq">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        单个导入请求允许的文件最大数量。      </td>
+      <td>        The maximum number of files allowed per single import request.      </td>
       <td>1024</td>
     </tr>
   </tbody>
@@ -2174,13 +2174,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.import.maxImportJobNum">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        正在执行或待处理的导入作业的最大数量。      </td>
+      <td>        Maximum number of import jobs that are executing or pending.      </td>
       <td>1024</td>
     </tr>
   </tbody>
@@ -2203,13 +2203,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.import.waitForIndex">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        指示导入操作是否等待索引构建完成。      </td>
+      <td>        Indicates whether the import operation waits for the completion of index building.      </td>
       <td>true</td>
     </tr>
   </tbody>
@@ -2232,13 +2232,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.gracefulStopTimeout">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        秒。强制停止节点，不进行优雅停止      </td>
+      <td>        seconds. force stop node without graceful stop      </td>
       <td>5</td>
     </tr>
   </tbody>
@@ -2261,13 +2261,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.slot.clusteringCompactionUsage">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        集群压缩任务的槽位使用情况。      </td>
+      <td>        slot usage of clustering compaction job.      </td>
       <td>16</td>
     </tr>
   </tbody>
@@ -2290,13 +2290,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.slot.mixCompactionUsage">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        混合压缩作业的槽位使用情况。      </td>
+      <td>        slot usage of mix compaction job.      </td>
       <td>8</td>
     </tr>
   </tbody>
@@ -2319,13 +2319,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.slot.l0DeleteCompactionUsage">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        l0 压缩作业的槽位使用情况。      </td>
+      <td>        slot usage of l0 compaction job.      </td>
       <td>8</td>
     </tr>
   </tbody>
@@ -2348,13 +2348,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.ip">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        dataCoord 的 TCP/IP 地址。若未指定，则使用第一个可进行单播的地址      </td>
+      <td>        TCP/IP address of dataCoord. If not specified, use the first unicastable address      </td>
       <td></td>
     </tr>
   </tbody>
@@ -2377,13 +2377,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.port">
   <thead>
     <tr>
-      <th class="width80">说明</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        dataCoord 的 TCP 端口      </td>
+      <td>        TCP port of dataCoord      </td>
       <td>13333</td>
     </tr>
   </tbody>
@@ -2406,13 +2406,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.grpc.serverMaxSendSize">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        dataCoord 可发送的每个 RPC 请求的最大大小，单位：字节      </td>
+      <td>        The maximum size of each RPC request that the dataCoord can send, unit: byte      </td>
       <td>536870912</td>
     </tr>
   </tbody>
@@ -2435,13 +2435,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.grpc.serverMaxRecvSize">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        dataCoord 可以接收的每个 RPC 请求的最大大小，单位：字节      </td>
+      <td>        The maximum size of each RPC request that the dataCoord can receive, unit: byte      </td>
       <td>268435456</td>
     </tr>
   </tbody>
@@ -2464,13 +2464,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.grpc.clientMaxSendSize">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        dataCoord 上的客户端可发送的每个 RPC 请求的最大大小，单位：字节      </td>
+      <td>        The maximum size of each RPC request that the clients on dataCoord can send, unit: byte      </td>
       <td>268435456</td>
     </tr>
   </tbody>
@@ -2493,13 +2493,13 @@ summary: 了解如何为 Milvus 配置 dataCoord。
     </button></h2><table id="dataCoord.grpc.clientMaxRecvSize">
   <thead>
     <tr>
-      <th class="width80">描述</th>
-      <th class="width20">默认值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        dataCoord 上的客户端可接收的每个 RPC 请求的最大大小，单位：字节      </td>
+      <td>        The maximum size of each RPC request that the clients on dataCoord can receive, unit: byte      </td>
       <td>536870912</td>
     </tr>
   </tbody>

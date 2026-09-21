@@ -2,10 +2,10 @@
 id: install_standalone-docker-compose.md
 label: Docker Compose
 related_key: Docker Compose
-summary: Pelajari cara menginstal Milvus versi mandiri menggunakan Docker Compose.
-title: Menjalankan Milvus dengan Docker Compose (Linux)
+summary: Learn how to install Milvus standalone with Docker Compose.
+title: Run Milvus with Docker Compose (Linux)
 ---
-<h1 id="Run-Milvus-with-Docker-Compose-Linux" class="common-anchor-header">Menjalankan Milvus dengan Docker Compose (Linux)<button data-href="#Run-Milvus-with-Docker-Compose-Linux" class="anchor-icon" translate="no">
+<h1 id="Run-Milvus-with-Docker-Compose-Linux" class="common-anchor-header">Run Milvus with Docker Compose (Linux)<button data-href="#Run-Milvus-with-Docker-Compose-Linux" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: Menjalankan Milvus dengan Docker Compose (Linux)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Halaman ini menjelaskan cara menjalankan instance Milvus di Docker menggunakan Docker Compose.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Persyaratan<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This page illustrates how to launch a Milvus instance in Docker using Docker Compose.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,10 +37,10 @@ title: Menjalankan Milvus dengan Docker Compose (Linux)
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="https://docs.docker.com/get-docker/">Instal Docker</a>.</li>
-<li><a href="/docs/id/v2.6.x/prerequisite-docker.md">Periksa persyaratan perangkat keras dan perangkat lunak</a> sebelum melakukan instalasi.</li>
+<li><a href="https://docs.docker.com/get-docker/">Install Docker</a>.</li>
+<li><a href="/docs/id/v2.6.x/prerequisite-docker.md">Check the requirements for hardware and software</a> prior to your installation.</li>
 </ul>
-<h2 id="Install-Milvus" class="common-anchor-header">Instal Milvus<button data-href="#Install-Milvus" class="anchor-icon" translate="no">
+<h2 id="Install-Milvus" class="common-anchor-header">Install Milvus<button data-href="#Install-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,9 +55,9 @@ title: Menjalankan Milvus dengan Docker Compose (Linux)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus menyediakan berkas konfigurasi Docker Compose di repositori Milvus. Untuk menginstal Milvus menggunakan Docker Compose, cukup jalankan</p>
+    </button></h2><p>Milvus provides a Docker Compose configuration file in the Milvus repository. To install Milvus using Docker Compose, just run</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Download the configuration file</span>
-<span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://github.com/milvus-io/milvus/releases/download/v2.6.23/milvus-standalone-docker-compose.yml -O docker-compose.yml</span>
+<span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://github.com/milvus-io/milvus/releases/download/v2.6.24/milvus-standalone-docker-compose.yml -O docker-compose.yml</span>
 <span class="hljs-meta prompt_">
 # </span><span class="language-bash">Start Milvus</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> docker compose up -d</span>
@@ -67,28 +67,28 @@ Creating milvus-minio ... done
 Creating milvus-standalone ... done
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><strong>Apa yang baru di v2.6.23:</strong></p>
+<p><strong>What’s new in v2.6.24:</strong></p>
 <ul>
-<li><strong>Arsitektur yang Ditingkatkan</strong>: Dilengkapi dengan Streaming Node baru dan komponen yang dioptimalkan</li>
-<li><strong>Dependensi yang Diperbarui</strong>: Termasuk versi terbaru MinIO dan etcd</li>
-<li><strong>Konfigurasi yang Ditingkatkan</strong>: Pengaturan yang dioptimalkan untuk performa yang lebih baik</li>
+<li><strong>Enhanced Architecture</strong>: Features the new Streaming Node and optimized components</li>
+<li><strong>Updated Dependencies</strong>: Includes the latest MinIO and etcd versions</li>
+<li><strong>Improved Configuration</strong>: Optimized settings for better performance</li>
 </ul>
-<p>Selalu unduh konfigurasi Docker Compose terbaru untuk memastikan kompatibilitas dengan fitur-fitur v2.6.23.</p>
+<p>Always download the latest Docker Compose configuration to ensure compatibility with v2.6.24 features.</p>
 <ul>
-<li><p>Jika Anda gagal menjalankan perintah di atas, silakan periksa apakah sistem Anda telah menginstal Docker Compose V1. Jika demikian, Anda disarankan untuk bermigrasi ke Docker Compose V2 sesuai dengan catatan di <a href="https://docs.docker.com/compose/">halaman ini</a>.</p></li>
-<li><p>Jika Anda mengalami masalah saat mengunduh gambar, hubungi kami di <a href="mailto:community@zilliz.com">community@zilliz.com</a> dengan detail masalahnya, dan kami akan memberikan dukungan yang diperlukan.</p></li>
+<li><p>If you failed to run the above command, please check whether your system has Docker Compose V1 installed. If this is the case, you are advised to migrate to Docker Compose V2 due to the notes on <a href="https://docs.docker.com/compose/">this page</a>.</p></li>
+<li><p>If you encounter any issues pulling the image, contact us at <a href="mailto:community@zilliz.com">community@zilliz.com</a> with details about the problem, and we’ll provide you with the necessary support.</p></li>
 </ul>
 </div>
-<p>Setelah Milvus dimulai,</p>
+<p>After starting up Milvus,</p>
 <ul>
-<li>kontainer bernama <strong>milvus-standalone</strong>, <strong>milvus-minio</strong>, dan <strong>milvus-etcd</strong> sudah aktif.
+<li>Containers named <strong>milvus-standalone</strong>, <strong>milvus-minio</strong>, and <strong>milvus-etcd</strong> are up.
 <ul>
-<li>Kontainer <strong>milvus-etcd</strong> tidak mengekspos port apa pun ke host dan memetakan datanya ke <strong>volumes/etcd</strong> di folder saat ini.</li>
-<li>Kontainer <strong>milvus-minio</strong> melayani port <strong>9090</strong> dan <strong>9091</strong> secara lokal dengan kredensial otentikasi default dan memetakan datanya ke <strong>volumes/minio</strong> di folder saat ini.</li>
-<li>Kontainer <strong>milvus-standalone</strong> melayani port <strong>19530</strong> secara lokal dengan pengaturan default dan memetakan datanya ke <strong>volumes/milvus</strong> di folder saat ini.</li>
+<li>The <strong>milvus-etcd</strong> container does not expose any ports to the host and maps its data to <strong>volumes/etcd</strong> in the current folder.</li>
+<li>The <strong>milvus-minio</strong> container serves ports <strong>9090</strong> and <strong>9091</strong> locally with the default authentication credentials and maps its data to <strong>volumes/minio</strong> in the current folder.</li>
+<li>The <strong>milvus-standalone</strong> container serves ports <strong>19530</strong> locally with the default settings and maps its data to <strong>volumes/milvus</strong> in the current folder.</li>
 </ul></li>
 </ul>
-<p>Anda dapat memeriksa apakah kontainer-kontainer tersebut aktif dan berjalan menggunakan perintah berikut:</p>
+<p>You can check if the containers are up and running using the following command:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> docker-compose ps</span>
 
       Name                     Command                  State                            Ports
@@ -97,8 +97,8 @@ milvus-etcd         etcd -advertise-client-url ...   Up             2379/tcp, 23
 milvus-minio        /usr/bin/docker-entrypoint ...   Up (healthy)   9000/tcp
 milvus-standalone   /tini -- milvus run standalone   Up             0.0.0.0:19530-&gt;19530/tcp, 0.0.0.0:9091-&gt;9091/tcp
 <button class="copy-code-btn"></button></code></pre>
-<p>Anda juga dapat mengakses Milvus WebUI di <code translate="no">http://127.0.0.1:9091/webui/</code> untuk mempelajari lebih lanjut tentang instance Milvus Anda. Untuk detailnya, lihat <a href="/docs/id/v2.6.x/milvus-webui.md">Milvus WebUI</a>.</p>
-<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Opsional) Memperbarui Konfigurasi Milvus<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
+<p>You can also access Milvus WebUI at <code translate="no">http://127.0.0.1:9091/webui/</code> to learn more about the your Milvus instance. For details, refer to <a href="/docs/id/v2.6.x/milvus-webui.md">Milvus WebUI</a>.</p>
+<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Optional) Update Milvus configurations<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -113,24 +113,24 @@ milvus-standalone   /tini -- milvus run standalone   Up             0.0.0.0:1953
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Untuk memperbarui konfigurasi Milvus agar sesuai dengan kebutuhan Anda, Anda perlu memodifikasi berkas ` <code translate="no">/milvus/configs/user.yaml</code> ` di dalam kontainer ` <code translate="no">milvus-standalone</code> `.</p>
+    </button></h2><p>To update Milvus configuration to suit your needs, you need to modify the <code translate="no">/milvus/configs/user.yaml</code> file within the <code translate="no">milvus-standalone</code> container.</p>
 <ol>
-<li><p>Akses kontainer <code translate="no">milvus-standalone</code>.</p>
+<li><p>Access the <code translate="no">milvus-standalone</code> container.</p>
 <pre><code translate="no" class="language-shell">docker exec -it milvus-standalone bash
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Tambahkan konfigurasi tambahan untuk menggantikan konfigurasi default.
-Berikut ini mengasumsikan bahwa Anda perlu menggantikan konfigurasi default di ` <code translate="no">proxy.healthCheckTimeout</code>`. Untuk item konfigurasi yang berlaku, lihat <a href="/docs/id/v2.6.x/system_configuration.md">Konfigurasi Sistem</a>.</p>
+<li><p>Add extra configurations to override the default ones.
+The following assumes that you need to override the default <code translate="no">proxy.healthCheckTimeout</code>. For applicable configuration items, refer to <a href="/docs/id/v2.6.x/system_configuration.md">System Configuration</a>.</p>
 <pre><code translate="no" class="language-shell">cat &lt;&lt; EOF &gt; /milvus/configs/user.yaml
 <span class="hljs-meta prompt_"># </span><span class="language-bash">Extra config to override default milvus.yaml</span>
 proxy:
   healthCheckTimeout: 1000 # ms, the interval that to do component healthy check
 EOF
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Mulai ulang kontainer <code translate="no">milvus-standalone</code> untuk menerapkan perubahan.</p>
+<li><p>Restart the <code translate="no">milvus-standalone</code> container to apply the changes.</p>
 <pre><code translate="no" class="language-shell">docker restart milvus-standalone
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h2 id="Stop-and-delete-Milvus" class="common-anchor-header">Hentikan dan hapus Milvus<button data-href="#Stop-and-delete-Milvus" class="anchor-icon" translate="no">
+<h2 id="Stop-and-delete-Milvus" class="common-anchor-header">Stop and delete Milvus<button data-href="#Stop-and-delete-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -145,14 +145,14 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Anda dapat menghentikan dan menghapus kontainer ini sebagai berikut</p>
+    </button></h2><p>You can stop and delete this container as follows</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Stop Milvus</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> docker compose down</span>
 <span class="hljs-meta prompt_">
 # </span><span class="language-bash">Delete service data</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">rm</span> -rf volumes</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Whats-next" class="common-anchor-header">Langkah Selanjutnya<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -167,29 +167,29 @@ EOF
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Setelah menginstal Milvus di Docker, Anda dapat:</p>
+    </button></h2><p>Having installed Milvus in Docker, you can:</p>
 <ul>
-<li><p>Lihat <a href="/docs/id/v2.6.x/quickstart.md">Panduan Cepat</a> untuk mengetahui apa saja yang dapat dilakukan Milvus.</p></li>
-<li><p>Pelajari operasi dasar Milvus:</p>
+<li><p>Check <a href="/docs/id/v2.6.x/quickstart.md">Quickstart</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/id/v2.6.x/manage_databases.md">Mengelola Basis Data</a></li>
-<li><a href="/docs/id/v2.6.x/manage-collections.md">Mengelola Koleksi</a></li>
-<li><a href="/docs/id/v2.6.x/manage-partitions.md">Mengelola Partisi</a></li>
-<li><a href="/docs/id/v2.6.x/insert-update-delete.md">Sisipkan, Upsert, &amp; Hapus</a></li>
-<li><a href="/docs/id/v2.6.x/single-vector-search.md">Pencarian Vektor Tunggal</a></li>
-<li><a href="/docs/id/v2.6.x/multi-vector-search.md">Pencarian Hibrida</a></li>
+<li><a href="/docs/id/v2.6.x/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/id/v2.6.x/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/id/v2.6.x/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/id/v2.6.x/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/id/v2.6.x/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/id/v2.6.x/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p><a href="/docs/id/v2.6.x/upgrade_milvus_cluster-helm.md">Tingkatkan Milvus Menggunakan Helm Chart</a>.</p></li>
-<li><p><a href="/docs/id/v2.6.x/scaleout.md">Skalakan klaster Milvus Anda</a>.</p></li>
-<li><p>Terapkan klaster Milvus Anda di cloud:</p>
+<li><p><a href="/docs/id/v2.6.x/upgrade_milvus_cluster-helm.md">Upgrade Milvus Using Helm Chart</a>.</p></li>
+<li><p><a href="/docs/id/v2.6.x/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvus cluster on clouds:</p>
 <ul>
 <li><a href="/docs/id/v2.6.x/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/id/v2.6.x/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/id/v2.6.x/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>Jelajahi <a href="/docs/id/v2.6.x/milvus-webui.md">Milvus WebUI</a>, antarmuka web yang intuitif untuk pemantauan dan pengelolaan Milvus.</p></li>
-<li><p>Jelajahi <a href="/docs/id/v2.6.x/milvus_backup_overview.md">Milvus Backup</a>, alat sumber terbuka untuk pencadangan data Milvus.</p></li>
-<li><p>Jelajahi <a href="/docs/id/v2.6.x/birdwatcher_overview.md">Birdwatcher</a>, alat sumber terbuka untuk debugging Milvus dan pembaruan konfigurasi dinamis.</p></li>
-<li><p>Jelajahi <a href="https://github.com/zilliztech/attu">Attu</a>, alat GUI open-source untuk pengelolaan Milvus yang intuitif.</p></li>
-<li><p><a href="/docs/id/v2.6.x/monitor.md">Pantau Milvus dengan Prometheus</a>.</p></li>
+<li><p>Explore <a href="/docs/id/v2.6.x/milvus-webui.md">Milvus WebUI</a>, an intuitive web interface for Milvus observability and management.</p></li>
+<li><p>Explore <a href="/docs/id/v2.6.x/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/id/v2.6.x/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/id/v2.6.x/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

@@ -1,11 +1,12 @@
 ---
 id: primary-field.md
-title: 기본 필드 및 자동 ID
+title: Primary Field & AutoID
 summary: >-
-  Milvus의 모든 컬렉션에는 각 엔티티를 고유하게 식별하는 기본 필드가 있어야 합니다. 이 필드를 통해 모든 엔티티를 모호함 없이 삽입,
-  업데이트, 쿼리 또는 삭제할 수 있습니다.
+  Every collection in Milvus must have a primary field to uniquely identify each
+  entity. This field ensures that every entity can be inserted, updated,
+  queried, or deleted without ambiguity.
 ---
-<h1 id="Primary-Field--AutoID" class="common-anchor-header">기본 필드 및 자동 ID<button data-href="#Primary-Field--AutoID" class="anchor-icon" translate="no">
+<h1 id="Primary-Field--AutoID" class="common-anchor-header">Primary Field & AutoID<button data-href="#Primary-Field--AutoID" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +21,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus의 모든 컬렉션에는 각 엔티티를 고유하게 식별하는 기본 필드가 있어야 합니다. 이 필드는 모든 엔티티를 모호함 없이 삽입, 업데이트, 쿼리 또는 삭제할 수 있도록 해줍니다.</p>
-<p>사용 사례에 따라 Milvus가 자동으로 ID를 생성(AutoID)하도록 하거나 직접 ID를 수동으로 할당할 수 있습니다.</p>
-<h2 id="What-is-a-primary-field" class="common-anchor-header">기본 필드란 무엇인가요?<button data-href="#What-is-a-primary-field" class="anchor-icon" translate="no">
+    </button></h1><p>Every collection in Milvus must have a primary field to uniquely identify each entity. This field ensures that every entity can be inserted, updated, queried, or deleted without ambiguity.</p>
+<p>Depending on your use case, you can either let Milvus automatically generate IDs (AutoID) or assign your own IDs manually.</p>
+<h2 id="What-is-a-primary-field" class="common-anchor-header">What is a primary field?<button data-href="#What-is-a-primary-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,14 +38,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>기본 필드는 기존 데이터베이스의 기본 키와 유사하게 컬렉션의 각 엔티티에 대한 고유 키 역할을 합니다. Milvus는 기본 필드를 사용하여 삽입, 업서트, 삭제 및 쿼리 작업 중에 엔티티를 관리합니다.</p>
-<p>기본 요구 사항:</p>
+    </button></h2><p>A primary field acts as the unique key for each entity in a collection, similar to a primary key in a traditional database. Milvus uses the primary field to manage entities during insert, upsert, delete, and query operations.</p>
+<p>Key requirements:</p>
 <ul>
-<li><p>각 컬렉션에는 <strong>정확히 하나의</strong> 기본 필드가 있어야 합니다.</p></li>
-<li><p>기본 필드 값은 null일 수 없습니다.</p></li>
-<li><p>데이터 유형은 생성 시 지정해야 하며 나중에 변경할 수 없습니다.</p></li>
+<li><p>Each collection must have <strong>exactly one</strong> primary field.</p></li>
+<li><p>Primary field values cannot be null.</p></li>
+<li><p>The data type must be specified at creation and cannot be changed later.</p></li>
 </ul>
-<h2 id="Supported-data-types" class="common-anchor-header">지원되는 데이터 유형<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
+<h2 id="Supported-data-types" class="common-anchor-header">Supported data types<button data-href="#Supported-data-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,22 +60,22 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>기본 필드는 엔티티를 고유하게 식별할 수 있는 지원되는 스칼라 데이터 유형을 사용해야 합니다.</p>
+    </button></h2><p>The primary field must use a supported scalar data type that can uniquely identify entities.</p>
 <table>
    <tr>
-     <th><p>데이터 유형</p></th>
-     <th><p>설명</p></th>
+     <th><p>Data Type</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">INT64</code></p></td>
-     <td><p>64비트 정수 유형으로, AutoID에 일반적으로 사용됩니다. 대부분의 사용 사례에 권장되는 옵션입니다.</p></td>
+     <td><p>64-bit integer type, commonly used with AutoID. This is the recommended option for most use cases.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">VARCHAR</code></p></td>
-     <td><p>가변 길이 문자열 유형. 엔티티 식별자가 외부 시스템(예: 제품 코드 또는 사용자 ID)에서 가져온 경우 이 옵션을 사용합니다. 값당 허용되는 최대 바이트 수를 정의하려면 <code translate="no">max_length</code> 속성이 필요합니다.</p></td>
+     <td><p>Variable-length string type. Use this when entity identifiers come from external systems (for example, product codes or user IDs). Requires the <code translate="no">max_length</code> property to define the maximum number of bytes allowed per value.</p></td>
    </tr>
 </table>
-<h2 id="Choose-between-AutoID-and-Manual-IDs" class="common-anchor-header">자동 ID와 수동 ID 중에서 선택<button data-href="#Choose-between-AutoID-and-Manual-IDs" class="anchor-icon" translate="no">
+<h2 id="Choose-between-AutoID-and-Manual-IDs" class="common-anchor-header">Choose between AutoID and Manual IDs<button data-href="#Choose-between-AutoID-and-Manual-IDs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -89,31 +90,31 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus는 기본 키 값을 할당하기 위해 두 가지 모드를 지원합니다.</p>
+    </button></h2><p>Milvus supports two modes for assigning primary key values.</p>
 <table>
    <tr>
-     <th><p>모드</p></th>
-     <th><p>설명</p></th>
-     <th><p>권장 대상</p></th>
+     <th><p>Mode</p></th>
+     <th><p>Description</p></th>
+     <th><p>Recommended For</p></th>
    </tr>
    <tr>
-     <td><p>자동 ID</p></td>
-     <td><p>Milvus는 삽입하거나 가져온 엔티티에 대한 고유 식별자를 자동으로 생성합니다.</p></td>
-     <td><p>ID를 수동으로 관리할 필요가 없는 대부분의 시나리오에 적합합니다.</p></td>
+     <td><p>AutoID</p></td>
+     <td><p>Milvus automatically generates unique identifiers for inserted or imported entities.</p></td>
+     <td><p>Most scenarios where you don’t need to manage IDs manually.</p></td>
    </tr>
    <tr>
-     <td><p>수동 ID</p></td>
-     <td><p>데이터를 삽입하거나 가져올 때 고유 ID를 직접 입력합니다.</p></td>
-     <td><p>ID를 외부 시스템 또는 기존 데이터 세트와 일치시켜야 하는 경우.</p></td>
+     <td><p>Manual ID</p></td>
+     <td><p>You provide unique IDs yourself when inserting or importing data.</p></td>
+     <td><p>When IDs must align with external systems or pre-existing datasets.</p></td>
    </tr>
 </table>
 <div class="alert note">
 <ul>
-<li><p>어떤 모드를 선택해야 할지 잘 모르겠다면, 더 간단한 수집과 고유성 보장을 위해 <a href="/docs/ko/v2.6.x/primary-field.md#Quickstart-Use-AutoID">자동 ID로 시작하세요</a>.</p></li>
-<li><p>기본 키를 수동으로 설정하는 것이 유리한 경우가 아니라면 모든 경우에 <code translate="no">autoId</code> 을 사용하는 것이 좋습니다.</p></li>
+<li><p>If you are unsure which mode to choose, <a href="/docs/ko/v2.6.x/primary-field.md#Quickstart-Use-AutoID">start with AutoID</a> for simpler ingestion and guaranteed uniqueness.</p></li>
+<li><p>You are advised to rely on <code translate="no">autoId</code> in all cases unless manually setting primary keys is beneficial.</p></li>
 </ul>
 </div>
-<h2 id="Quickstart-Use-AutoID" class="common-anchor-header">빠른 시작: AutoID 사용<button data-href="#Quickstart-Use-AutoID" class="anchor-icon" translate="no">
+<h2 id="Quickstart-Use-AutoID" class="common-anchor-header">Quickstart: Use AutoID<button data-href="#Quickstart-Use-AutoID" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -128,8 +129,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus가 ID 생성을 자동으로 처리하도록 할 수 있습니다.</p>
-<h3 id="Step-1-Create-a-collection-with-AutoID" class="common-anchor-header">1단계: AutoID를 사용하여 컬렉션 만들기<button data-href="#Step-1-Create-a-collection-with-AutoID" class="anchor-icon" translate="no">
+    </button></h2><p>You can let Milvus handle ID generation automatically.</p>
+<h3 id="Step-1-Create-a-collection-with-AutoID" class="common-anchor-header">Step 1: Create a collection with AutoID<button data-href="#Step-1-Create-a-collection-with-AutoID" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,9 +145,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>기본 필드 정의에서 <code translate="no">auto_id=True</code> 을 활성화합니다. Milvus가 ID 생성을 자동으로 처리합니다.</p>
+    </button></h3><p>Enable <code translate="no">auto_id=True</code> in your primary field definition. Milvus will handle ID generation automatically.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -284,7 +290,7 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
     \&quot;schema\&quot;: <span class="hljs-variable">$SCHEMA</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Insert-Data" class="common-anchor-header">2단계: 데이터 삽입<button data-href="#Step-2-Insert-Data" class="anchor-icon" translate="no">
+<h3 id="Step-2-Insert-Data" class="common-anchor-header">Step 2: Insert Data<button data-href="#Step-2-Insert-Data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -299,9 +305,14 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>중요:</strong> 데이터에 기본 필드 열을 포함하지 마세요. Milvus는 자동으로 ID를 생성합니다.</p>
+    </button></h3><p><strong>Important:</strong> Do not include the primary field column in your data. Milvus generates IDs automatically.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">data = [
     {<span class="hljs-string">&quot;embedding&quot;</span>: [<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>], <span class="hljs-string">&quot;category&quot;</span>: <span class="hljs-string">&quot;book&quot;</span>},
     {<span class="hljs-string">&quot;embedding&quot;</span>: [<span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>, <span class="hljs-number">0.5</span>], <span class="hljs-string">&quot;category&quot;</span>: <span class="hljs-string">&quot;toy&quot;</span>},
@@ -370,9 +381,9 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>기존 엔티티로 작업할 때는 <code translate="no">insert()</code> 대신 <code translate="no">upsert()</code> 을 사용하여 중복 ID 오류를 방지하세요.</p>
+<p>Use <code translate="no">upsert()</code> instead of <code translate="no">insert()</code> when working with existing entities to avoid duplicate ID errors.</p>
 </div>
-<h2 id="Use-manual-IDs" class="common-anchor-header">수동 ID 사용<button data-href="#Use-manual-IDs" class="anchor-icon" translate="no">
+<h2 id="Use-manual-IDs" class="common-anchor-header">Use manual IDs<button data-href="#Use-manual-IDs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -387,8 +398,8 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>ID를 수동으로 제어해야 하는 경우 자동 ID를 비활성화하고 직접 값을 입력하세요.</p>
-<h3 id="Step-1-Create-a-collection-without-AutoID" class="common-anchor-header">1단계: AutoID를 사용하지 않고 컬렉션 만들기<button data-href="#Step-1-Create-a-collection-without-AutoID" class="anchor-icon" translate="no">
+    </button></h2><p>If you need to control IDs manually, disable AutoID and provide your own values.</p>
+<h3 id="Step-1-Create-a-collection-without-AutoID" class="common-anchor-header">Step 1: Create a collection without AutoID<button data-href="#Step-1-Create-a-collection-without-AutoID" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -404,7 +415,12 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -544,7 +560,7 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
     \&quot;schema\&quot;: <span class="hljs-variable">$SCHEMA</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-2-Insert-data-with-your-IDs" class="common-anchor-header">2단계: ID를 사용하여 데이터 삽입하기<button data-href="#Step-2-Insert-data-with-your-IDs" class="anchor-icon" translate="no">
+<h3 id="Step-2-Insert-data-with-your-IDs" class="common-anchor-header">Step 2: Insert data with your IDs<button data-href="#Step-2-Insert-data-with-your-IDs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -559,9 +575,14 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>모든 삽입 작업에서 기본 필드 열을 포함해야 합니다.</p>
+    </button></h3><p>You must include the primary field column in every insert operation.</p>
 <div class="multipleCode">
-   <a href="#python">파이썬</a> <a href="#java">자바</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Each entity must contain the primary field `product_id`</span>
 data = [
     {<span class="hljs-string">&quot;product_id&quot;</span>: <span class="hljs-string">&quot;PROD-001&quot;</span>, <span class="hljs-string">&quot;embedding&quot;</span>: [<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>], <span class="hljs-string">&quot;category&quot;</span>: <span class="hljs-string">&quot;book&quot;</span>},
@@ -636,13 +657,13 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
     \&quot;data\&quot;: <span class="hljs-variable">$INSERT_DATA</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>귀하의 책임:</p>
+<p>Your responsibilities:</p>
 <ul>
-<li><p>모든 ID가 모든 엔티티에서 고유한지 확인합니다.</p></li>
-<li><p>모든 삽입/가져오기 작업에 기본 필드 포함</p></li>
-<li><p>ID 충돌 및 중복 감지 직접 처리</p></li>
+<li><p>Ensure all IDs are unique across all entities</p></li>
+<li><p>Include the primary field in every insert/import operation</p></li>
+<li><p>Handle ID conflicts and duplicate detection yourself</p></li>
 </ul>
-<h2 id="Advanced-usage" class="common-anchor-header">고급 사용 방법<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
+<h2 id="Advanced-usage" class="common-anchor-header">Advanced usage<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -657,7 +678,7 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Migrate-data-with-existing-AutoIDs" class="common-anchor-header">기존 자동 ID가 있는 데이터 마이그레이션<button data-href="#Migrate-data-with-existing-AutoIDs" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Migrate-data-with-existing-AutoIDs" class="common-anchor-header">Migrate data with existing AutoIDs<button data-href="#Migrate-data-with-existing-AutoIDs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -672,9 +693,9 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>데이터 마이그레이션 중에 기존 ID를 유지하려면 <code translate="no">alter_collection_properties</code> 호출을 통해 <code translate="no">allow_insert_auto_id</code> 속성을 활성화하세요. true로 설정하면 AutoID가 활성화되어 있어도 Milvus는 사용자가 제공한 ID를 허용합니다.</p>
-<p>구성에 대한 자세한 내용은 <a href="/docs/ko/v2.6.x/modify-collection.md#Example-5-Enable-allowinsertautoid">컬렉션 수정을</a> 참조하세요.</p>
-<h3 id="Ensure-global-AutoID-uniqueness-across-clusters" class="common-anchor-header">클러스터 전반에서 글로벌 AutoID 고유성 보장하기<button data-href="#Ensure-global-AutoID-uniqueness-across-clusters" class="anchor-icon" translate="no">
+    </button></h3><p>To preserve existing IDs during data migration, enable the <code translate="no">allow_insert_auto_id</code> property by making the <code translate="no">alter_collection_properties</code> call. When set to true, Milvus accepts user-provided IDs even if AutoID is enabled.</p>
+<p>For configuration details, refer to <a href="/docs/ko/v2.6.x/modify-collection.md#Example-5-Enable-allowinsertautoid">Modify Collection</a>.</p>
+<h3 id="Ensure-global-AutoID-uniqueness-across-clusters" class="common-anchor-header">Ensure global AutoID uniqueness across clusters<button data-href="#Ensure-global-AutoID-uniqueness-across-clusters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -689,16 +710,16 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>여러 Milvus 클러스터를 실행하는 경우 각 클러스터에 대해 고유한 클러스터 ID를 구성하여 AutoID가 겹치지 않도록 하세요.</p>
-<p><strong>구성:</strong> 클러스터를 초기화하기 전에 <code translate="no">milvus.yaml</code> 에서 <code translate="no">common.clusterID</code> 구성을 편집하세요:</p>
+    </button></h3><p>When running multiple Milvus clusters, configure a unique cluster ID for each to ensure AutoIDs never overlap.</p>
+<p><strong>Configuration:</strong> Edit the <code translate="no">common.clusterID</code> config in <code translate="no">milvus.yaml</code> before initializing your cluster:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">common:</span>
   <span class="hljs-attr">clusterID:</span> <span class="hljs-number">3</span>   <span class="hljs-comment"># Must be unique across all clusters (Range: 0-7)</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>이 구성에서 <code translate="no">clusterID</code> 은 AutoID 생성에 사용되는 고유 식별자를 0에서 7까지 지정합니다(최대 8개 클러스터 지원).</p>
+<p>In this config, <code translate="no">clusterID</code> specifies the unique identifier used in AutoID generation, ranging from 0 to 7 (supports up to eight clusters).</p>
 <div class="alert note">
-<p>Milvus는 내부적으로 비트 반전을 처리하여 향후 ID 중복 없이 확장할 수 있습니다. 클러스터 ID를 설정하는 것 외에는 수동 구성이 필요하지 않습니다.</p>
+<p>Milvus handles bit-reversal internally to enable future expansion without ID overlap. No manual configuration needed beyond setting the cluster ID.</p>
 </div>
-<h2 id="Reference-How-AutoID-works" class="common-anchor-header">참조: AutoID 작동 방식<button data-href="#Reference-How-AutoID-works" class="anchor-icon" translate="no">
+<h2 id="Reference-How-AutoID-works" class="common-anchor-header">Reference: How AutoID works<button data-href="#Reference-How-AutoID-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -713,32 +734,32 @@ curl -X POST <span class="hljs-string">&#x27;http://localhost:19530/v2/vectordb/
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>AutoID가 내부적으로 고유 식별자를 생성하는 방법을 이해하면 <a href="/docs/ko/v2.6.x/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">클러스터 ID를</a> 올바르게 <a href="/docs/ko/v2.6.x/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">구성하고</a> ID 관련 문제를 해결하는 데 도움이 될 수 있습니다.</p>
-<p>AutoID는 구조화된 64비트 형식을 사용하여 고유성을 보장합니다:</p>
+    </button></h2><p>Understanding how AutoID generates unique identifiers internally can help you <a href="/docs/ko/v2.6.x/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">configure cluster IDs</a> correctly and troubleshoot ID-related issues.</p>
+<p>AutoID uses a structured 64-bit format to guarantee uniqueness:</p>
 <pre><code translate="no" class="language-plaintext">[sign_bit][cluster_id][physical_ts][logical_ts]
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>세그먼트</p></th>
-     <th><p>설명</p></th>
+     <th><p>Segment</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">sign_bit</code></p></td>
-     <td><p>내부용으로 예약됨</p></td>
+     <td><p>Reserved for internal use</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">cluster_id</code></p></td>
-     <td><p>ID를 생성한 클러스터를 식별합니다(값 범위: 0~7).</p></td>
+     <td><p>Identifies which cluster generated the ID (value range: 0-7)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">physical_ts</code></p></td>
-     <td><p>ID가 생성된 시간(밀리초) 타임스탬프</p></td>
+     <td><p>Timestamp in milliseconds when the ID was generated</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">logical_ts</code></p></td>
-     <td><p>동일한 밀리초 내에 생성된 ID를 구분하기 위한 카운터입니다.</p></td>
+     <td><p>Counter to distinguish IDs created in the same millisecond</p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>데이터 유형이 <code translate="no">VARCHAR</code> 로 자동 ID가 활성화되어 있어도 Milvus는 여전히 숫자 ID를 생성합니다. 이는 최대 길이 20자(uint64 범위)의 숫자 문자열로 저장됩니다.</p>
+<p>Even when AutoID is enabled with <code translate="no">VARCHAR</code> as the data type, Milvus still generates numeric IDs. These are stored as numeric strings with a maximum length of 20 characters (uint64 range).</p>
 </div>

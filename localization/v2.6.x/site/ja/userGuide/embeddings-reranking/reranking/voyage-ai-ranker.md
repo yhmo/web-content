@@ -1,12 +1,14 @@
 ---
 id: voyage-ai-ranker.md
-title: Voyage AI ランカーCompatible with Milvus 2.6.x
+title: Voyage AI RankerCompatible with Milvus 2.6.x
 summary: >-
-  Voyage AI Rankerは、Voyage
-  AIに特化したリランカーを活用し、セマンティック・リランキングによって検索の関連性を高めます。検索拡張世代（RAG）や検索アプリケーションに最適化された高性能なリランキング機能を提供します。
+  The Voyage AI Ranker leverages Voyage AI's specialized rerankers to enhance
+  search relevance through semantic reranking. It provides high-performance
+  reranking capabilities optimized for retrieval-augmented generation (RAG) and
+  search applications.
 beta: Milvus 2.6.x
 ---
-<h1 id="Voyage-AI-Ranker" class="common-anchor-header">Voyage AI ランカー<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Voyage-AI-Ranker" class="anchor-icon" translate="no">
+<h1 id="Voyage-AI-Ranker" class="common-anchor-header">Voyage AI Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Voyage-AI-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,15 +23,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Voyage AI Rankerは、<a href="https://www.voyageai.com/">Voyage AIに</a>特化したリランカーを活用し、セマンティックなリランキングによって検索の関連性を高めます。Voyage AI Rankerは、検索拡張世代（RAG）や検索アプリケーションに最適化された高性能なリランキング機能を提供します。</p>
-<p>Voyage AI Rankerは特に以下のようなアプリケーションに最適です：</p>
+    </button></h1><p>The Voyage AI Ranker leverages <a href="https://www.voyageai.com/">Voyage AI’s</a> specialized rerankers to enhance search relevance through semantic reranking. It provides high-performance reranking capabilities optimized for retrieval-augmented generation (RAG) and search applications.</p>
+<p>Voyage AI Ranker is particularly valuable for applications requiring:</p>
 <ul>
-<li><p>リランキングタスクのために特別に訓練されたモデルによる高度な意味理解</p></li>
-<li><p>本番ワークロード用に最適化された推論による高性能処理</p></li>
-<li><p>様々な長さのドキュメントを扱うための柔軟なトランケーションコントロール</p></li>
-<li><p>さまざまなモデルバリアント（rerank-2、rerank-liteなど）にわたって微調整されたパフォーマンス。</p></li>
+<li><p>Advanced semantic understanding with models specifically trained for reranking tasks</p></li>
+<li><p>High-performance processing with optimized inference for production workloads</p></li>
+<li><p>Flexible truncation controls for handling diverse document lengths</p></li>
+<li><p>Fine-tuned performance across different model variants (rerank-2, rerank-lite, etc.)</p></li>
 </ul>
-<h2 id="Prerequisites" class="common-anchor-header">前提条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,16 +46,16 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>MilvusにVoyage AI Rankerを実装する前に、以下を確認してください：</p>
+    </button></h2><p>Before implementing Voyage AI Ranker in Milvus, ensure you have:</p>
 <ul>
-<li><p>Milvusコレクションに<code translate="no">VARCHAR</code> 、リランクされるテキストが含まれていること。</p></li>
-<li><p>リランカーにアクセスできる有効なVoyage AI APIキー。<a href="https://www.voyageai.com/">Voyage AIプラットフォームに</a>サインアップしてAPIクレデンシャルを取得してください。以下のいずれかを行います：</p>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A valid Voyage AI API key with access to rerankers. Sign up at <a href="https://www.voyageai.com/">Voyage AI’s platform</a> to obtain your API credentials. You can either:</p>
 <ul>
-<li><p><code translate="no">VOYAGE_API_KEY</code> 環境変数を設定する。</p></li>
-<li><p>ランカー設定に直接APIキーを指定する。</p></li>
+<li><p>Set the <code translate="no">VOYAGE_API_KEY</code> environment variable, or</p></li>
+<li><p>Specify the API key directly in the ranker configuration</p></li>
 </ul></li>
 </ul>
-<h2 id="Create-a-Voyage-AI-ranker-function" class="common-anchor-header">Voyage AI ランカー関数を作成する<button data-href="#Create-a-Voyage-AI-ranker-function" class="anchor-icon" translate="no">
+<h2 id="Create-a-Voyage-AI-ranker-function" class="common-anchor-header">Create a Voyage AI ranker function<button data-href="#Create-a-Voyage-AI-ranker-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,9 +70,14 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus アプリケーションで Voyage AI ランカーを使用するには、リランキングの動作方法を指定する Function オブジェクトを作成します。この関数はMilvusの検索操作に渡され、結果のランキングを向上させます。</p>
+    </button></h2><p>To use Voyage AI Ranker in your Milvus application, create a Function object that specifies how the reranking should operate. This function will be passed to Milvus search operations to enhance result ranking.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -122,7 +129,7 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Voyage-AI-ranker-specific-parameters" class="common-anchor-header">Voyage AI ランカー固有のパラメータ<button data-href="#Voyage-AI-ranker-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="Voyage-AI-ranker-specific-parameters" class="common-anchor-header">Voyage AI ranker-specific parameters<button data-href="#Voyage-AI-ranker-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -137,61 +144,61 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>以下のパラメータはVoyage AI ランカー固有のものです：</p>
+    </button></h3><p>The following parameters are specific to the Voyage AI ranker:</p>
 <table>
    <tr>
-     <th><p><strong>パラメータ</strong></p></th>
-     <th><p><strong>必須か？</strong></p></th>
-     <th><p><strong>パラメータ 説明</strong></p></th>
-     <th><p><strong>値 / 例</strong></p></th>
+     <th><p><strong>Parameter</strong></p></th>
+     <th><p><strong>Required?</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
+     <th><p><strong>Value / Example</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reranker</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>モデルの再ランキングを有効にするには、<code translate="no">"model"</code> に設定する必要がある。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
      <td><p>Yes</p></td>
-     <td><p>リランキングに使用するモデルサービスプロバイダ。</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"voyageai"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">model_name</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>Voyage AIプラットフォームでサポートされているモデルから使用するVoyage AIリランカー。</p><p>利用可能なリランカーのリストについては、<a href="https://docs.voyageai.com/docs/reranker">Voyage AI</a><a href="https://docs.voyageai.com/docs/reranker"> ドキュメントを</a>参照してください。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The Voyage AI reranker to use from supported models on Voyage AI platform.</p><p>For a list of rerankers available, refer to <a href="https://docs.voyageai.com/docs/reranker">Voyage AI</a><a href="https://docs.voyageai.com/docs/reranker"> documentation</a>.</p></td>
      <td><p><code translate="no">"rerank-2.5"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queries</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>リランクモデルが関連性スコアを計算するために使用するクエリ文字列のリスト。クエリ文字列の数は、検索操作のクエリの数と正確に一致する必要があります（テキストの代わりにクエリベクトルを使用する場合も同様）。</p></td>
-     <td><p><em>[検索クエリ］</em></p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the rerank model to calculate relevance scores. The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
+     <td><p><em>["search query"]</em></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p>モデルサービスはすべてのデータを一度に処理するわけではないので、複数のリクエストでモデルサービスにアクセスする際のバッチサイズを設定します。</p></td>
-     <td><p><code translate="no">128</code> (デフォルト)</p></td>
+     <td><p>No</p></td>
+     <td><p>Since model services may not process all data at once, this sets the batch size for accessing the model service in multiple requests.</p></td>
+     <td><p><code translate="no">128</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">truncation</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p>クエリとドキュメントの「コンテキストの長さ制限」を満たすために入力を切り捨てるかどうか。</p><ul><li><p><code translate="no">True</code> の場合、リランカーモデルで処理する前に、クエリとドキュメントはコンテキストの長さの制限内に収まるように切り詰められます。</p></li><li><p><code translate="no">False</code> の場合、クエリが<code translate="no">rerank-2.5</code> と<code translate="no">rerank-2.5-lite</code> で8,000トークンを超えたとき、<code translate="no">rerank-2</code> で4,000トークンを超えたとき、<code translate="no">rerank-2-lite</code> と<code translate="no">rerank-1</code> で2,000トークンを超えたとき、<code translate="no">rerank-lite-1</code> で1,000トークンを超えたとき、あるいは、クエリのトークン数とドキュメントのトークン数の合計が<code translate="no">rerank-2</code> で16,000を超えたとき、<code translate="no">rerank-2-lite</code> と<code translate="no">rerank-1</code> で8,000を超えたとき、<code translate="no">rerank-lite-1</code> で4,000を超えたときにエラーが発生する。</p></li></ul></td>
-     <td><p><code translate="no">True</code> (デフォルト) または<code translate="no">False</code></p></td>
+     <td><p>No</p></td>
+     <td><p>Whether to truncate the input to satisfy the "context length limit" on the query and the documents.</p><ul><li><p>If <code translate="no">True</code>, the query and documents will be truncated to fit within the context length limit, before processed by the reranker model.</p></li><li><p>If <code translate="no">False</code>, an error will be raised when the query exceeds 8,000 tokens for <code translate="no">rerank-2.5</code> and <code translate="no">rerank-2.5-lite</code>; 4,000 tokens for <code translate="no">rerank-2</code>; 2,000 tokens <code translate="no">rerank-2-lite</code> and <code translate="no">rerank-1</code>; and 1,000 tokens for <code translate="no">rerank-lite-1</code>, or the sum of the number of tokens in the query and the number of tokens in any single document exceeds 16,000 for <code translate="no">rerank-2</code>; 8,000 for <code translate="no">rerank-2-lite</code> and <code translate="no">rerank-1</code>; and 4,000 for <code translate="no">rerank-lite-1</code>.</p></li></ul></td>
+     <td><p><code translate="no">True</code> (default) or <code translate="no">False</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">credential</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p>Voyage AI API サービスにアクセスするための認証クレデンシャル。指定がない場合、システムは<code translate="no">VOYAGE_API_KEY</code> 環境変数を探します。</p></td>
-     <td><p><em>"あなたの-voyage-api-key"</em></p></td>
+     <td><p>No</p></td>
+     <td><p>Authentication credential for accessing Voyage AI API services. If not specified, the system will look for the <code translate="no">VOYAGE_API_KEY</code> environment variable.</p></td>
+     <td><p><em>"your-voyage-api-key"</em></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>すべてのモデルランカーで共有される一般的なパラメータ（例：<code translate="no">provider</code> 、<code translate="no">queries</code> ）については、<a href="/docs/ja/model-ranker-overview.md#Create-a-model-ranker">モデルランカーの作成を</a>参照してください。</p>
+<p>For general parameters shared across all model rankers (e.g., <code translate="no">provider</code>, <code translate="no">queries</code>), refer to <a href="/docs/ja/v2.6.x/model-ranker-overview.md#Create-a-model-ranker">Create a model ranker</a>.</p>
 </div>
-<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">標準的なベクトル検索に適用する<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -206,9 +213,14 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Voyage AI Rankerを標準的なベクトル検索に適用する：</p>
+    </button></h2><p>To apply Voyage AI Ranker to a standard vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Execute search with Voyage AI reranker</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;your_collection&quot;</span>,

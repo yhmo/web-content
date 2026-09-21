@@ -1,9 +1,11 @@
 ---
 id: build_RAG_with_milvus_and_exa.md
 summary: >-
-  이 튜토리얼에서는 공개 웹(Exa를 통해)과 비공개 지식창고(Milvus를 통해)를 모두 검색한 다음 통합된 답변을 합성하는 에이전트를
-  구축하는 방법을 보여드립니다. 에이전트는 OpenAI의 함수 호출을 사용하여 사용자의 질문에 따라 쿼리할 소스를 자동으로 결정합니다.
-title: Exa 및 Milvus를 사용하여 이중 소스 RAG 에이전트 구축하기
+  This tutorial demonstrates how to build an agent that searches both the public
+  web (via Exa) and a private knowledge base (via Milvus), then synthesizes a
+  unified answer. The agent uses OpenAI's function calling to automatically
+  decide which source to query based on the user's question.
+title: Building a Dual-Source RAG Agent with Exa and Milvus
 ---
 <p><a href="https://colab.research.google.com/github/milvus-io/bootcamp/blob/master/integration/build_RAG_with_milvus_and_exa.ipynb" target="_parent">
 <img translate="no" src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
@@ -11,7 +13,7 @@ title: Exa 및 Milvus를 사용하여 이중 소스 RAG 에이전트 구축하�
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/build_RAG_with_milvus_and_exa.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<h1 id="Building-a-Dual-Source-RAG-Agent-with-Exa-and-Milvus" class="common-anchor-header">Exa 및 Milvus를 사용하여 이중 소스 RAG 에이전트 구축하기<button data-href="#Building-a-Dual-Source-RAG-Agent-with-Exa-and-Milvus" class="anchor-icon" translate="no">
+<h1 id="Building-a-Dual-Source-RAG-Agent-with-Exa-and-Milvus" class="common-anchor-header">Building a Dual-Source RAG Agent with Exa and Milvus<button data-href="#Building-a-Dual-Source-RAG-Agent-with-Exa-and-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,9 +28,9 @@ title: Exa 및 Milvus를 사용하여 이중 소스 RAG 에이전트 구축하�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>이 튜토리얼에서는 <strong>공개 웹</strong> ( <a href="https://exa.ai/">Exa를</a> 통해)과 <strong>비공개 지식창고</strong> ( <a href="https://milvus.io/">Milvus를</a> 통해)를 모두 검색한 다음 통합된 답변을 합성하는 에이전트를 구축하는 방법을 보여드립니다. 에이전트는 OpenAI의 함수 호출을 사용하여 사용자의 질문에 따라 쿼리할 소스를 자동으로 결정합니다.</p>
-<p><a href="https://exa.ai/">Exa는</a> AI 애플리케이션을 위해 설계된 검색 API로, <a href="https://zilliz.com/cloud">Zilliz Cloud</a> (완전 관리형 Milvus)에 의해 자랑스럽게 구동됩니다. 기존의 키워드 기반 검색 엔진과 달리 Exa는 자연어로 원하는 것을 설명하면 그 의도를 이해하는 시맨틱(신경망) 검색을 지원합니다. 또한 콘텐츠 추출, 하이라이트, 카테고리 기반 필터링 기능도 제공합니다. <a href="https://milvus.io/">Milvus는</a> 확장 가능한 유사도 검색을 위해 구축된 오픈 소스 벡터 데이터베이스입니다. 이를 LLM 에이전트와 결합하면 단일 워크플로우에서 내부 독점 데이터와 최신 웹 정보를 모두 검색하는 시스템을 구축할 수 있습니다.</p>
-<h2 id="Prerequisites" class="common-anchor-header">전제 조건<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This tutorial demonstrates how to build an agent that searches both <strong>the public web</strong> (via <a href="https://exa.ai/">Exa</a>) and <strong>a private knowledge base</strong> (via <a href="https://milvus.io/">Milvus</a>), then synthesizes a unified answer. The agent uses OpenAI’s function calling to automatically decide which source to query based on the user’s question.</p>
+<p><a href="https://exa.ai/">Exa</a> is a search API designed for AI applications, which is proudly powered by <a href="https://zilliz.com/cloud">Zilliz Cloud</a> (fully managed Milvus). Unlike traditional keyword-based search engines, Exa supports semantic (neural) search — you describe what you want in natural language and it understands your intent. It also provides content extraction, highlights, and category-based filtering. <a href="https://milvus.io/">Milvus</a> is an open-source vector database built for scalable similarity search. By combining them with an LLM agent, you can build a system that retrieves both internal proprietary data and up-to-date web information in a single workflow.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,19 +45,19 @@ title: Exa 및 Milvus를 사용하여 이중 소스 RAG 에이전트 구축하�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이 노트북을 실행하기 전에 다음 종속성이 설치되어 있는지 확인하세요:</p>
+    </button></h2><p>Before running this notebook, make sure you have the following dependencies installed:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip install exa_py pymilvus openai</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Google Colab을 사용하는 경우, 방금 설치한 종속성을 사용하려면 <strong>런타임을 다시 시작해야</strong> 할 수 있습니다(화면 상단의 '런타임' 메뉴를 클릭하고 드롭다운 메뉴에서 '세션 다시 시작'을 선택).</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </div>
-<p><a href="https://dashboard.exa.ai/api-keys">Exa</a> 및 <a href="https://platform.openai.com/api-keys">OpenAI의</a> API 키가 필요합니다. 이를 환경 변수로 설정합니다:</p>
+<p>You will need API keys from <a href="https://dashboard.exa.ai/api-keys">Exa</a> and <a href="https://platform.openai.com/api-keys">OpenAI</a>. Set them as environment variables:</p>
 <pre><code translate="no" class="language-shell">import os
 
 os.environ[&quot;EXA_API_KEY&quot;] = &quot;***********&quot;
 os.environ[&quot;OPENAI_API_KEY&quot;] = &quot;sk-***********&quot;
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Initialize-Clients" class="common-anchor-header">클라이언트 초기화<button data-href="#Initialize-Clients" class="anchor-icon" translate="no">
+<h2 id="Initialize-Clients" class="common-anchor-header">Initialize Clients<button data-href="#Initialize-Clients" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -70,7 +72,7 @@ os.environ[&quot;OPENAI_API_KEY&quot;] = &quot;sk-***********&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Exa, OpenAI, Milvus 클라이언트를 설정합니다. 벡터 임베딩을 생성하기 위해 OpenAI의 <code translate="no">text-embedding-3-small</code> 모델을 사용하고, 인프라 설정이 필요 없는 로컬 벡터 스토리지에는 Milvus Lite를 사용합니다.</p>
+    </button></h2><p>Set up the Exa, OpenAI, and Milvus clients. We use OpenAI’s <code translate="no">text-embedding-3-small</code> model to generate vector embeddings, and Milvus Lite for local vector storage with zero infrastructure setup.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
@@ -85,14 +87,14 @@ EMBED_DIM = <span class="hljs-number">1536</span>
 COLLECTION = <span class="hljs-string">&quot;private_kb&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p><code translate="no">MilvusVectorAdapter</code> 및 <code translate="no">MilvusClient</code> 의 인수는 다음과 같습니다:</p>
+<p>As for the argument of <code translate="no">MilvusVectorAdapter</code> and <code translate="no">MilvusClient</code>:</p>
 <ul>
-<li><code translate="no">uri</code> 을 로컬 파일(예:<code translate="no">./milvus.db</code>)로 설정하는 것이 가장 편리한 방법인데, 이 파일에 모든 데이터를 저장하기 위해 <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite를</a> 자동으로 활용하기 때문입니다.</li>
-<li>백만 개 이상의 벡터와 같이 대량의 데이터가 있는 경우, <a href="https://milvus.io/docs/quickstart.md">Docker 또는 Kubernetes에</a> 더 성능이 뛰어난 Milvus 서버를 설정할 수 있습니다. 이 설정에서는 서버 주소와 포트를 URI로 사용하세요(예:<code translate="no">http://localhost:19530</code>). Milvus에서 인증 기능을 활성화하는 경우 토큰으로 "<your_username>:<your_password>"을 사용하고, 그렇지 않은 경우 토큰을 설정하지 마세요.</li>
-<li>밀버스의 완전 관리형 클라우드 서비스인 <a href="https://zilliz.com/cloud">질리즈 클라우드를</a> 사용하려면, 질리즈 클라우드의 <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">퍼블릭 엔드포인트와 API 키에</a> 해당하는 <code translate="no">uri</code> 와 <code translate="no">token</code> 를 조정합니다.</li>
+<li>Setting the <code translate="no">uri</code> as a local file, e.g.<code translate="no">./milvus.db</code>, is the most convenient method, as it automatically utilizes <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> to store all data in this file.</li>
+<li>If you have large scale of data, say more than a million vectors, you can set up a more performant Milvus server on <a href="https://milvus.io/docs/quickstart.md">Docker or Kubernetes</a>. In this setup, please use the server address and port as your uri, e.g.<code translate="no">http://localhost:19530</code>. If you enable the authentication feature on Milvus, use “<your_username>:<your_password>” as the token, otherwise don’t set the token.</li>
+<li>If you want to use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, the fully managed cloud service for Milvus, adjust the <code translate="no">uri</code> and <code translate="no">token</code>, which correspond to the <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and Api key</a> in Zilliz Cloud.</li>
 </ul>
 </div>
-<p>임베딩을 생성하는 헬퍼 함수를 정의합니다. 이를 노트북 전체에서 인덱싱과 쿼리 모두에 재사용할 것입니다:</p>
+<p>Define a helper function to generate embeddings. We will reuse this across the notebook for both indexing and querying:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">embed_text</span>(<span class="hljs-params">text: <span class="hljs-built_in">str</span> | <span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>]</span>) -&gt; <span class="hljs-built_in">list</span>:
     <span class="hljs-string">&quot;&quot;&quot;Generate embedding vector(s) using OpenAI.&quot;&quot;&quot;</span>
     resp = llm.embeddings.create(
@@ -103,7 +105,7 @@ COLLECTION = <span class="hljs-string">&quot;private_kb&quot;</span>
         <span class="hljs-keyword">return</span> [item.embedding <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> resp.data]
     <span class="hljs-keyword">return</span> resp.data[<span class="hljs-number">0</span>].embedding
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Build-the-Private-Knowledge-Base-Milvus" class="common-anchor-header">비공개 지식 베이스 구축(Milvus)<button data-href="#Build-the-Private-Knowledge-Base-Milvus" class="anchor-icon" translate="no">
+<h2 id="Build-the-Private-Knowledge-Base-Milvus" class="common-anchor-header">Build the Private Knowledge Base (Milvus)<button data-href="#Build-the-Private-Knowledge-Base-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -118,7 +120,7 @@ COLLECTION = <span class="hljs-string">&quot;private_kb&quot;</span>
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>제품 사양, 정책, 수익 보고서, API 문서 등 공개 웹에는 나타나지 않는 회사 내부 문서 세트를 시뮬레이션합니다. 실제 시나리오에서 이러한 문서는 내부 위키, 데이터베이스 또는 문서 관리 시스템에서 가져올 수 있습니다.</p>
+    </button></h2><p>We simulate a set of internal company documents — product specs, policies, earnings reports, and API docs — that would not appear on the public web. In a real scenario, these could come from your internal wikis, databases, or document management systems.</p>
 <pre><code translate="no" class="language-python">private_docs = [
     {
         <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>,
@@ -167,7 +169,7 @@ COLLECTION = <span class="hljs-string">&quot;private_kb&quot;</span>
     },
 ]
 <button class="copy-code-btn"></button></code></pre>
-<p>명시적인 스키마로 Milvus 컬렉션을 만들고 문서를 임베드한 다음 삽입합니다:</p>
+<p>Create the Milvus collection with an explicit schema, embed the documents, and insert them:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">if</span> milvus.has_collection(COLLECTION):
     milvus.drop_collection(COLLECTION)
 
@@ -209,7 +211,7 @@ milvus.insert(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">Inserted 5 documents into Milvus.
 </code></pre>
-<p>간단한 테스트 쿼리를 통해 검색이 제대로 작동하는지 확인해 보겠습니다:</p>
+<p>Let’s verify the retrieval works with a quick test query:</p>
 <pre><code translate="no" class="language-python">query = <span class="hljs-string">&quot;What is the return policy?&quot;</span>
 results = milvus.search(
     collection_name=COLLECTION,
@@ -229,7 +231,7 @@ results = milvus.search(
 [score=0.119] (q3-earnings.pdf)
   Q3 2025 revenue was $4.2M, up 18% from Q2. The growth was primarily driven by enterprise customers adopting Widget Pro. ...
 </code></pre>
-<h2 id="Explore-Exa-Search-Capabilities" class="common-anchor-header">Exa 검색 기능 살펴보기<button data-href="#Explore-Exa-Search-Capabilities" class="anchor-icon" translate="no">
+<h2 id="Explore-Exa-Search-Capabilities" class="common-anchor-header">Explore Exa Search Capabilities<button data-href="#Explore-Exa-Search-Capabilities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -244,8 +246,8 @@ results = milvus.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>에이전트를 구축하기 전에 Exa의 검색 기능을 살펴봅시다. Exa는 다양한 시나리오에 유용한 여러 검색 모드를 지원합니다.</p>
-<p>콘텐츠 추출을 통한<strong>시맨틱 검색</strong> - Exa는 한 번의 요청으로 링크뿐만 아니라 문서 텍스트, 주요 하이라이트, AI가 생성한 요약까지 반환할 수 있습니다:</p>
+    </button></h2><p>Before building the agent, let’s explore Exa’s search features. Exa supports multiple search modes that are useful for different scenarios.</p>
+<p><strong>Semantic search</strong> with content extraction — Exa can return not only links but also the article text, key highlights, and AI-generated summaries in a single request:</p>
 <pre><code translate="no" class="language-python">web_results = exa.search_and_contents(
     query=<span class="hljs-string">&quot;latest trends in AI agents 2026&quot;</span>,
     <span class="hljs-built_in">type</span>=<span class="hljs-string">&quot;auto&quot;</span>,
@@ -273,7 +275,7 @@ results = milvus.search(
   URL: https://www.marketdrafts.com/2026/02/rise-of-agentic-ai-2026-trends.html?m=1
   Highlight:  The era of &quot;Generative AI&quot; (which creates content) is being superseded by &quot;Agentic AI&quot; (which executes actions). We are witnessing a fundamental arch...
 </code></pre>
-<p><strong>카테고리 기반 필터링</strong> - <code translate="no">&quot;research paper&quot;</code>, <code translate="no">&quot;news&quot;</code>, <code translate="no">&quot;company&quot;</code>, <code translate="no">&quot;tweet&quot;</code> 과 같은 특정 콘텐츠 유형으로 결과를 제한할 수 있습니다. 이는 고품질 소스를 원하고 노이즈를 피하고 싶을 때 유용합니다:</p>
+<p><strong>Category-based filtering</strong> — you can restrict results to specific content types such as <code translate="no">&quot;research paper&quot;</code>, <code translate="no">&quot;news&quot;</code>, <code translate="no">&quot;company&quot;</code>, or <code translate="no">&quot;tweet&quot;</code>. This is useful when you want high-quality sources and want to avoid noise:</p>
 <pre><code translate="no" class="language-python">filtered_results = exa.search_and_contents(
     query=<span class="hljs-string">&quot;retrieval augmented generation real world applications&quot;</span>,
     category=<span class="hljs-string">&quot;research paper&quot;</span>,
@@ -294,7 +296,7 @@ results = milvus.search(
 - 
   https://www.arxiv.org/pdf/2502.14930
 </code></pre>
-<p><strong>유사한 기사 찾기</strong> - URL이 주어지면 Exa는 유사한 콘텐츠를 가진 다른 기사를 찾을 수 있습니다. 이는 좋은 출발점에서 연구를 확장하는 데 유용합니다:</p>
+<p><strong>Find similar articles</strong> — given a URL, Exa can find other articles with similar content. This is helpful for expanding research from a good starting point:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">if</span> web_results.results:
     source_url = web_results.results[<span class="hljs-number">0</span>].url
     similar = exa.find_similar_and_contents(
@@ -315,7 +317,7 @@ results = milvus.search(
 - The Most Important AI Trends to Watch in 2026
   https://medium.com/the-ai-studio/the-most-important-ai-trends-to-watch-in-2026-54af64d45021
 </code></pre>
-<h2 id="Define-the-Agent-Tools" class="common-anchor-header">에이전트 도구 정의<button data-href="#Define-the-Agent-Tools" class="anchor-icon" translate="no">
+<h2 id="Define-the-Agent-Tools" class="common-anchor-header">Define the Agent Tools<button data-href="#Define-the-Agent-Tools" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -330,7 +332,7 @@ results = milvus.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이제 에이전트가 사용할 두 가지 도구 기능을 정의합니다. 비공개 KB 도구는 벡터 유사성을 사용하여 Milvus를 검색하고, 웹 도구는 Exa를 통해 퍼블릭 인터넷을 검색합니다:</p>
+    </button></h2><p>Now we define the two tool functions that the agent will use. The private KB tool searches Milvus using vector similarity, while the web tool searches the public internet via Exa:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">search_private_kb</span>(<span class="hljs-params">query: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:
     <span class="hljs-string">&quot;&quot;&quot;Search the internal knowledge base using Milvus vector search.&quot;&quot;&quot;</span>
     results = milvus.search(
@@ -365,7 +367,7 @@ TOOL_FNS = {
     <span class="hljs-string">&quot;search_web&quot;</span>: search_web,
 }
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Build-the-Agent" class="common-anchor-header">에이전트 구축<button data-href="#Build-the-Agent" class="anchor-icon" translate="no">
+<h2 id="Build-the-Agent" class="common-anchor-header">Build the Agent<button data-href="#Build-the-Agent" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -380,7 +382,7 @@ TOOL_FNS = {
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>에이전트는 OpenAI의 <a href="https://platform.openai.com/docs/guides/function-calling">함수 호출을</a> 사용하여 어떤 도구를 호출할지 결정합니다. LLM은 사용자 쿼리를 수신하고, 호출할 도구(있는 경우)를 결정한 다음, 이를 실행하고, 검색된 컨텍스트에서 최종 답변을 합성하는 간단한 루프를 따릅니다.</p>
+    </button></h2><p>The agent uses OpenAI’s <a href="https://platform.openai.com/docs/guides/function-calling">function calling</a> to decide which tool(s) to invoke. It follows a simple loop: the LLM receives the user query, decides which tools to call (if any), executes them, and then synthesizes a final answer from the retrieved context.</p>
 <pre><code translate="no" class="language-python">TOOLS = [
     {
         <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;function&quot;</span>,
@@ -481,7 +483,7 @@ Always cite your sources. For internal docs, mention the filename. For web resul
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;\nAgent:\n<span class="hljs-subst">{answer}</span>&quot;</span>)
     <span class="hljs-keyword">return</span> answer
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Demo" class="common-anchor-header">데모<button data-href="#Demo" class="anchor-icon" translate="no">
+<h2 id="Demo" class="common-anchor-header">Demo<button data-href="#Demo" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -496,8 +498,8 @@ Always cite your sources. For internal docs, mention the filename. For web resul
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이제 서로 다른 라우팅 동작을 보여주는 세 가지 시나리오로 에이전트를 테스트해 보겠습니다.</p>
-<h3 id="Scenario-A-Internal-question-routes-to-Milvus" class="common-anchor-header">시나리오 A: 내부 질문(Milvus로 라우팅)<button data-href="#Scenario-A-Internal-question-routes-to-Milvus" class="anchor-icon" translate="no">
+    </button></h2><p>Now let’s test the agent with three scenarios that demonstrate different routing behaviors.</p>
+<h3 id="Scenario-A-Internal-question-routes-to-Milvus" class="common-anchor-header">Scenario A: Internal question (routes to Milvus)<button data-href="#Scenario-A-Internal-question-routes-to-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -512,7 +514,7 @@ Always cite your sources. For internal docs, mention the filename. For web resul
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>내부 정책에 대한 질문 - 상담원은 <code translate="no">search_private_kb</code> 으로 전화하여 비공개 문서에서 답변을 검색해야 합니다:</p>
+    </button></h3><p>Ask about an internal policy — the agent should call <code translate="no">search_private_kb</code> and retrieve the answer from our private documents:</p>
 <pre><code translate="no" class="language-python">run_agent(<span class="hljs-string">&quot;What is the return policy for Acme products?&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">User: What is the return policy for Acme products?
@@ -532,7 +534,7 @@ The Acme products return policy allows customers to return any product within 30
 
 &quot;The Acme products return policy allows customers to return any product within 30 days of purchase for a full refund. After 30 days, only store credit is offered. It's important to note that damaged items must be reported within 48 hours of receipt ([source: return-policy.md]).&quot;
 </code></pre>
-<h3 id="Scenario-B-External-question-routes-to-Exa" class="common-anchor-header">시나리오 B: 외부 질문(Exa로 라우팅)<button data-href="#Scenario-B-External-question-routes-to-Exa" class="anchor-icon" translate="no">
+<h3 id="Scenario-B-External-question-routes-to-Exa" class="common-anchor-header">Scenario B: External question (routes to Exa)<button data-href="#Scenario-B-External-question-routes-to-Exa" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -547,7 +549,7 @@ The Acme products return policy allows customers to return any product within 30
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>외부 동향에 대한 질문 - 상담원은 <code translate="no">search_web</code> 으로 전화하여 공개 인터넷에서 최신 정보를 가져와야 합니다:</p>
+    </button></h3><p>Ask about external trends — the agent should call <code translate="no">search_web</code> to fetch up-to-date information from the public internet:</p>
 <pre><code translate="no" class="language-python">run_agent(<span class="hljs-string">&quot;What are the latest AI agent frameworks trending in 2026?&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">User: What are the latest AI agent frameworks trending in 2026?
@@ -582,7 +584,7 @@ Sources:
 
 &quot;In 2026, several AI agent frameworks are trending, each offering unique features and capabilities that cater to various needs. Here are some of the most prominent ones:\n\n1. **LangChain and LangGraph**: These frameworks remain highly popular for building large language model (LLM)-powered applications. LangGraph, in particular, models agents as state graphs, which is useful for action-oriented workflows. LangChain continues to dominate due to its comprehensive feature set for production-grade control and orchestration.\n\n2. **LangSmith Agent Builder**: Released into general availability in 2026, this tool allows teams to create AI agents using natural language, simplifying the process of agent development.\n\n3. **Semantic Kernel and AutoGen**: These have been integrated into Azure AI Foundry, creating a unified framework. Semantic Kernel uses a plugin-based middleware pattern, enhancing existing applications with AI capabilities efficiently.\n\n4. **OpenClaw**: An open-source framework that operates locally, OpenClaw transforms your computer into an autonomous agent host, differing from cloud-based solutions by keeping data and operations localized. This framework supports a large community and includes extensive skills for customization.\n\nThese frameworks cater to various requirements, whether it's production-grade solutions, open-source options, or frameworks focused on local deployment. Each framework has its strengths, depending on the use case and the existing ecosystem it fits into.\n\nSources:\n- [Agentic AI Frameworks: The Complete Guide (2026)](https://aiagentskit.com/blog/agentic-ai-frameworks/)\n- [OpenClaw: The Open-Source AI Agent Framework That Runs Your Life Locally](https://www.clawbot.blog/blog/openclaw-the-open-source-ai-agent-framework-that-runs-your-life-locally)\n- [The Best AI Agent Frameworks for 2026](https://medium.com/data-science-collective/the-best-ai-agent-frameworks-for-2026-tier-list-b3a4362fac0d)&quot;
 </code></pre>
-<h3 id="Scenario-C-Hybrid-question-routes-to-both" class="common-anchor-header">시나리오 C: 하이브리드 질문(두 가지 모두에 대한 경로)<button data-href="#Scenario-C-Hybrid-question-routes-to-both" class="anchor-icon" translate="no">
+<h3 id="Scenario-C-Hybrid-question-routes-to-both" class="common-anchor-header">Scenario C: Hybrid question (routes to both)<button data-href="#Scenario-C-Hybrid-question-routes-to-both" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -597,7 +599,7 @@ Sources:
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>내부 사양과 외부 벤치마크가 모두 필요한 질문 - 상담원이 두 도구를 모두 호출하여 비교를 종합해야 합니다:</p>
+    </button></h3><p>Ask a question that requires both internal specs and external benchmarks — the agent should call both tools and synthesize a comparison:</p>
 <pre><code translate="no" class="language-python">run_agent(
     <span class="hljs-string">&quot;How does our Widget Pro&#x27;s throughput compare to &quot;</span>
     <span class="hljs-string">&quot;open-source alternatives on the market?&quot;</span>
@@ -640,7 +642,7 @@ In conclusion, Widget Pro appears to offer high throughput suitable for enterpri
 
 &quot;The throughput of our Widget Pro is quite competitive when compared to open-source alternatives on the market. Here's a detailed comparison:\n\n### Widget Pro\n\n- **Concurrent Connections**: Supports up to 10,000 concurrent connections.\n- **Compression**: Utilizes AcmeZip v3, a proprietary compression algorithm that reduces payload size by 72% compared to gzip (source: [product-spec.pdf]).\n- **API Rate Limits**: Offers different tiers:\n  - Free tier: 100 requests/minute.\n  - Pro tier: 5,000 requests/minute.\n  - Enterprise tier: 50,000 requests/minute (source: [api-docs.md]).\n\n### Open-Source Alternatives\n\nFrom the available resources, open-source widget solutions such as Chatwoot and Tiledesk are popular in handling customer engagement with a flexible and customizable approach (source: [ChatMaxima article](https://chatmaxima.com/blog/15-open-source-free-live-chat-widget-solutions-to-boost-your-customer-engagement-in-2024/)). However, specific throughput metrics such as maximum concurrent connections or API limits are generally not highlighted in open-source product descriptions unless directly benchmarked.\n\nThese alternatives often emphasize customization, control, and integration with AI-driven capabilities but do not always specify throughput in terms comparable with Widget Pro. They might be more suited for organizations looking to tailor solutions to specific needs rather than focusing solely on throughput efficiency.\n\nIn conclusion, Widget Pro appears to offer high throughput suitable for enterprises with robust API support, while open-source options offer flexibility and customization with varying degrees of performance metrics.&quot;
 </code></pre>
-<h2 id="Cleanup" class="common-anchor-header">정리<button data-href="#Cleanup" class="anchor-icon" translate="no">
+<h2 id="Cleanup" class="common-anchor-header">Cleanup<button data-href="#Cleanup" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -655,10 +657,10 @@ In conclusion, Widget Pro appears to offer high throughput suitable for enterpri
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>완료되면 컬렉션을 무료 리소스로 내려놓습니다.</p>
+    </button></h2><p>When you are done, drop the collection to free resources.</p>
 <pre><code translate="no" class="language-python">milvus.drop_collection(COLLECTION)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Conclusion" class="common-anchor-header">결론<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<h2 id="Conclusion" class="common-anchor-header">Conclusion<button data-href="#Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -673,10 +675,10 @@ In conclusion, Widget Pro appears to offer high throughput suitable for enterpri
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>이 튜토리얼에서는 비공개 지식 검색을 위한 Milvus와 공개 웹 검색을 위한 Exa를 결합한 이중 소스 RAG 에이전트를 구축했습니다. 핵심 구성 요소는 다음과 같습니다:</p>
+    </button></h2><p>In this tutorial, we built a dual-source RAG agent that combines Milvus for private knowledge retrieval with Exa for public web search. The key components are:</p>
 <ul>
-<li><strong>Milvus는</strong> 벡터 유사성 검색을 통해 내부 문서를 저장하고 검색하여 독점 데이터를 비공개로 유지하고 검색할 수 있도록 합니다.</li>
-<li><strong>Exa는</strong> 카테고리 필터링, 콘텐츠 추출, 유사 문서 검색과 같은 기능을 통해 시맨틱 웹 검색을 제공합니다.</li>
-<li><strong>OpenAI 함수 호출을</strong> 통해 LLM은 질문의 의도에 따라 쿼리를 적절한 소스 또는 두 가지 모두로 자동 라우팅할 수 있습니다.</li>
+<li><strong>Milvus</strong> stores and retrieves internal documents via vector similarity search, ensuring proprietary data stays private and searchable.</li>
+<li><strong>Exa</strong> provides semantic web search with features like category filtering, content extraction, and similar article discovery.</li>
+<li><strong>OpenAI function calling</strong> enables the LLM to automatically route queries to the right source — or both — based on the question’s intent.</li>
 </ul>
-<p>이 패턴은 AI 어시스턴트가 기밀 내부 문서와 실시간 외부 정보에 모두 액세스해야 하는 기업 사용 사례에 적용할 수 있습니다.</p>
+<p>This pattern is applicable to enterprise use cases where an AI assistant needs access to both confidential internal documents and real-time external information.</p>

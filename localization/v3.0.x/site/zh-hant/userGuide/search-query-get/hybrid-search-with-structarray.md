@@ -1,11 +1,13 @@
 ---
 id: hybrid-search-with-structarray.md
-title: 使用 StructArray 進行混合搜尋
+title: Hybrid Search with StructArray
 summary: >-
-  請使用此頁面，將 StructArray 向量搜尋與其他向量搜尋結合，形成單一的混合搜尋請求。StructArray
-  混合搜尋可產生實體層級的結果或元素層級的結果，具體取決於您所組合的 AnnSearchRequest 物件。
+  Use this page to combine StructArray vector search with other vector searches
+  in one hybrid search request. StructArray hybrid search can produce either
+  entity-level results or element-level results, depending on the
+  AnnSearchRequest objects you combine.
 ---
-<h1 id="Hybrid-Search-with-StructArray" class="common-anchor-header">使用 StructArray 進行混合搜尋<button data-href="#Hybrid-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Hybrid-Search-with-StructArray" class="common-anchor-header">Hybrid Search with StructArray<button data-href="#Hybrid-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>請使用此頁面，將 StructArray 向量搜尋與其他向量搜尋結合，整合為單一的混合搜尋請求。StructArray 混合搜尋可產生實體層級或元素層級的結果，具體取決於您所組合的<code translate="no">AnnSearchRequest</code> 物件。</p>
-<p>本頁面使用來自<a href="/docs/zh-hant/create-structarray-field.md">「建立 StructArray 欄位」</a>中的<code translate="no">tech_articles</code> 集合。該集合包含一個名為<code translate="no">title_vector</code> 的頂層向量欄位，以及一個名為<code translate="no">chunks</code> 的 StructArray 欄位。<code translate="no">chunks[emb_list_vector]</code> 子欄位已建立索引以供 EmbeddingList 搜尋使用，而<code translate="no">chunks[emb]</code> 則已建立索引以供元素層級搜尋使用。</p>
-<h2 id="How-hybrid-search-applies-to-StructArray" class="common-anchor-header">混合搜尋如何應用於 StructArray<button data-href="#How-hybrid-search-applies-to-StructArray" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to combine StructArray vector search with other vector searches in one hybrid search request. StructArray hybrid search can produce either entity-level results or element-level results, depending on the <code translate="no">AnnSearchRequest</code> objects you combine.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/zh-hant/create-structarray-field.md">Create a StructArray Field</a>. The collection has a top-level vector field named <code translate="no">title_vector</code> and a StructArray field named <code translate="no">chunks</code>. The <code translate="no">chunks[emb_list_vector]</code> subfield is indexed for EmbeddingList search, and <code translate="no">chunks[emb]</code> is indexed for element-level search.</p>
+<h2 id="How-hybrid-search-applies-to-StructArray" class="common-anchor-header">How hybrid search applies to StructArray<button data-href="#How-hybrid-search-applies-to-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,20 +41,20 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th><code translate="no">AnnSearchRequest</code> 組合</th><th>最終候選範圍</th><th>結果行為</th><th><code translate="no">element_scope</code></th></tr>
+<tr><th><code translate="no">AnnSearchRequest</code> combination</th><th>Final candidate scope</th><th>Result behavior</th><th><code translate="no">element_scope</code></th></tr>
 </thead>
 <tbody>
-<tr><td>集合層級向量欄位 + StructArray 的 EmbeddingList 子欄位</td><td>實體層級</td><td>最終候選項以主鍵作為索引。</td><td>請勿使用。</td></tr>
-<tr><td>集合層級向量場 + StructArray 元素層級子欄位</td><td>實體層級</td><td>元素層級的命中結果會在混合重新排序之前，彙總為實體層級的候選結果。</td><td>StructArray 元素層級<code translate="no">AnnSearchRequest</code> 上的可選摺疊設定。</td></tr>
-<tr><td>同一 StructArray 欄位下的多個元素層級子欄位</td><td>元素層級</td><td>最終候選項以主鍵加上 Struct 元素偏移量作為索引。</td><td>請勿使用。</td></tr>
-<tr><td>位於不同 StructArray 字段下的元素層級子字段</td><td>實體層級</td><td>元素偏移量不共享標識，因此每個 StructArray 元素層級的<code translate="no">AnnSearchRequest</code> 都會在重新排序前被摺疊。</td><td>每個 StructArray 元素級別的<code translate="no">AnnSearchRequest</code> 皆可選用摺疊設定。</td></tr>
+<tr><td>Collection-level vector field + StructArray EmbeddingList subfield</td><td>Entity level</td><td>Final candidates are keyed by primary key.</td><td>Do not use.</td></tr>
+<tr><td>Collection-level vector field + StructArray element-level subfield</td><td>Entity level</td><td>Element-level hits are collapsed to entity-level candidates before hybrid reranking.</td><td>Optional collapse config on the StructArray element-level <code translate="no">AnnSearchRequest</code>.</td></tr>
+<tr><td>Multiple element-level subfields under the same StructArray field</td><td>Element level</td><td>Final candidates are keyed by primary key plus Struct element offset.</td><td>Do not use.</td></tr>
+<tr><td>Element-level subfields under different StructArray fields</td><td>Entity level</td><td>Element offsets do not share identity, so each StructArray element-level <code translate="no">AnnSearchRequest</code> is collapsed before reranking.</td><td>Optional collapse config on each StructArray element-level <code translate="no">AnnSearchRequest</code>.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>警告</p>
-<p>僅應在非同結構的元素層級混合搜尋中，使用 `<code translate="no">element_scope</code> ` 來配置 StructArray 元素層級 `<code translate="no">AnnSearchRequest</code> ` 物件的摺疊設定。請勿將其用於 EmbeddingList 請求、集合層級向量請求，或同結構的 StructArray 元素層級混合搜尋。</p>
+<p>Warning</p>
+<p>Use <code translate="no">element_scope</code> only to configure collapse for StructArray element-level <code translate="no">AnnSearchRequest</code> objects in a non-same-struct element-level hybrid search. Do not use it for EmbeddingList requests, collection-level vector requests, or same-StructArray element-level hybrid search.</p>
 </div>
-<h2 id="Before-you-begin" class="common-anchor-header">開始之前<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,20 +69,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在執行混合搜尋之前，請先準備好集合、資料及索引。</p>
+    </button></h2><p>Prepare the collection, data, and indexes before running hybrid search.</p>
 <table>
 <thead>
-<tr><th>需求</th><th>詳細資訊</th></tr>
+<tr><th>Requirement</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>StructArray 欄位</td><td>該集合包含一個 StructArray 欄位，例如<code translate="no">chunks</code> 。</td></tr>
-<tr><td>向量子欄位</td><td>請分別使用獨立的向量子欄位來執行 EmbeddingList 搜尋與元素層級搜尋。</td></tr>
-<tr><td>索引</td><td><code translate="no">chunks[emb_list_vector]</code> 使用<code translate="no">MAX_SIM*</code> 指標。<code translate="no">chunks[emb]</code> 則使用常規向量指標，例如<code translate="no">COSINE</code> 、<code translate="no">IP</code> 或<code translate="no">L2</code> 。</td></tr>
-<tr><td>重新排序器</td><td>請選擇混合型重新排序器，例如<code translate="no">RRFRanker</code> 或您應用程式所支援的其他重新排序器。</td></tr>
+<tr><td>StructArray field</td><td>The collection contains a StructArray field such as <code translate="no">chunks</code>.</td></tr>
+<tr><td>Vector subfields</td><td>Use separate vector subfields for EmbeddingList search and element-level search.</td></tr>
+<tr><td>Indexes</td><td><code translate="no">chunks[emb_list_vector]</code> uses a <code translate="no">MAX_SIM*</code> metric. <code translate="no">chunks[emb]</code> uses a regular vector metric such as <code translate="no">COSINE</code>, <code translate="no">IP</code>, or <code translate="no">L2</code>.</td></tr>
+<tr><td>Reranker</td><td>Choose a hybrid reranker such as <code translate="no">RRFRanker</code> or another reranker supported by your application.</td></tr>
 </tbody>
 </table>
-<p>有關索引設定，請參閱《<a href="/docs/zh-hant/index-structarray-fields.md">Index StructArray 欄位</a>》。</p>
-<h2 id="Run-hybrid-search-with-an-EmbeddingList-request" class="common-anchor-header">使用 EmbeddingList 請求執行混合搜尋<button data-href="#Run-hybrid-search-with-an-EmbeddingList-request" class="anchor-icon" translate="no">
+<p>For index setup, see <a href="/docs/zh-hant/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Run-hybrid-search-with-an-EmbeddingList-request" class="common-anchor-header">Run hybrid search with an EmbeddingList request<button data-href="#Run-hybrid-search-with-an-EmbeddingList-request" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -95,7 +97,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在混合搜尋中，針對 StructArray 向量子欄位的 EmbeddingList 搜尋屬於實體層級。其運作方式類似實體層級的向量搜尋請求，且不會返回單一匹配的 Struct 元素偏移量。</p>
+    </button></h2><p>EmbeddingList search on a StructArray vector subfield is entity-level in hybrid search. It behaves like an entity-level vector search request and does not return one matched Struct element offset.</p>
 <pre><code translate="no">from pymilvus import AnnSearchRequest, MilvusClient, RRFRanker
 from pymilvus.client.embedding_list import EmbeddingList
 
@@ -136,8 +138,8 @@ results = client.hybrid_search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>在此範例中，兩個<code translate="no">AnnSearchRequest</code> 物件均產生實體層級的候選結果。最終結果以父實體的主鍵作為索引。請勿將 `<code translate="no">element_scope</code> ` 加入 EmbeddingList 請求中。</p>
-<h2 id="Run-same-StructArray-element-level-hybrid-search" class="common-anchor-header">執行同 StructArray 元素層級混合搜尋<button data-href="#Run-same-StructArray-element-level-hybrid-search" class="anchor-icon" translate="no">
+<p>In this example, both <code translate="no">AnnSearchRequest</code> objects produce entity-level candidates. The final result is keyed by the parent entity primary key. Do not add <code translate="no">element_scope</code> to the EmbeddingList request.</p>
+<h2 id="Run-same-StructArray-element-level-hybrid-search" class="common-anchor-header">Run same-StructArray element-level hybrid search<button data-href="#Run-same-StructArray-element-level-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -152,8 +154,8 @@ results = client.hybrid_search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>當所有 `<code translate="no">AnnSearchRequest</code> ` 物件皆針對同一 `StructArray` 欄位下的元素層級向量子欄位時，混合搜尋可透過重新排序來保留元素層級候選結果。這是唯一一種最終結果仍維持在元素層級的 `StructArray` 混合模式。</p>
-<p>以下範例假設<code translate="no">chunks</code> 的 StructArray 欄位包含兩個元素級向量子欄位：<code translate="no">chunks[emb]</code> 與<code translate="no">chunks[code_emb]</code> ，且兩者均使用標準向量度量。</p>
+    </button></h2><p>When all <code translate="no">AnnSearchRequest</code> objects target element-level vector subfields under the same StructArray field, hybrid search can keep element-level candidates through reranking. This is the only StructArray hybrid mode where final results remain element-level.</p>
+<p>The following example assumes the <code translate="no">chunks</code> StructArray field has two element-level vector subfields, <code translate="no">chunks[emb]</code> and <code translate="no">chunks[code_emb]</code>, and both use regular vector metrics.</p>
 <pre><code translate="no">index_chunk_req = AnnSearchRequest(
     data=[query_vector],
     anns_field=<span class="hljs-string">&quot;chunks[emb]&quot;</span>,
@@ -191,8 +193,8 @@ results = client.hybrid_search(
             <span class="hljs-string">&quot;entity:&quot;</span>, hit[<span class="hljs-string">&quot;entity&quot;</span>],
         )
 <button class="copy-code-btn"></button></code></pre>
-<p>兩個<code translate="no">AnnSearchRequest</code> 物件皆在<code translate="no">chunks</code> 下搜尋向量子欄位。由於相同的以零為起點的偏移量指向同一個 Struct 元素，因此混合重新排序器可直接對元素候選項進行排序。請勿在此模式下設定<code translate="no">element_scope</code> ，因為不會執行實體層級的彙總。</p>
-<h2 id="Collapse-element-level-hits-for-entity-level-hybrid-search" class="common-anchor-header">針對實體層級混合搜尋彙總元素層級的搜尋結果<button data-href="#Collapse-element-level-hits-for-entity-level-hybrid-search" class="anchor-icon" translate="no">
+<p>Both <code translate="no">AnnSearchRequest</code> objects search vector subfields under <code translate="no">chunks</code>. The same zero-based offset refers to the same Struct element, so the hybrid reranker can rank element candidates directly. Do not set <code translate="no">element_scope</code> in this mode because no entity-level collapse is performed.</p>
+<h2 id="Collapse-element-level-hits-for-entity-level-hybrid-search" class="common-anchor-header">Collapse element-level hits for entity-level hybrid search<button data-href="#Collapse-element-level-hits-for-entity-level-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -207,8 +209,8 @@ results = client.hybrid_search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若混合搜尋同時包含 StructArray 元素層級的<code translate="no">AnnSearchRequest</code> ，以及集合層級的向量請求、EmbeddingList 請求，或位於不同 StructArray 欄位下的元素層級請求，則最終候選範圍為實體層級。在此情況下，每個 StructArray 元素層級的<code translate="no">AnnSearchRequest</code> 都會在混合重新排序前，彙總為實體層級的候選項目。</p>
-<p>當您需要控制如何彙總來自同一實體的多個匹配元素時，請在 StructArray 元素層級<code translate="no">AnnSearchRequest</code> 的<code translate="no">params</code> 中使用<code translate="no">element_scope</code> 。</p>
+    </button></h2><p>If a hybrid search mixes a StructArray element-level <code translate="no">AnnSearchRequest</code> with a collection-level vector request, an EmbeddingList request, or an element-level request under a different StructArray field, the final candidate scope is entity-level. In this case, each StructArray element-level <code translate="no">AnnSearchRequest</code> is collapsed to entity-level candidates before hybrid reranking.</p>
+<p>Use <code translate="no">element_scope</code> inside the <code translate="no">params</code> of the StructArray element-level <code translate="no">AnnSearchRequest</code> when you need to control how multiple matched elements from the same entity are collapsed.</p>
 <pre><code translate="no">title_req = AnnSearchRequest(
     data=[query_vector],
     anns_field=<span class="hljs-string">&quot;title_vector&quot;</span>,
@@ -247,8 +249,8 @@ results = client.hybrid_search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>在此範例中，<code translate="no">title_req</code> 為實體層級，因此最終的混合結果亦為實體層級。<code translate="no">chunk_req</code> 請求會先從<code translate="no">chunks[emb]</code> 返回元素命中結果，接著透過將來自同一實體的返回元素中最佳的三個元素分數相加，來彙總這些元素。若在需要實體層級彙總時省略<code translate="no">element_scope</code> ，彙總策略將預設為<code translate="no">max</code> 。</p>
-<h2 id="Choose-a-collapse-strategy" class="common-anchor-header">選擇彙總策略<button data-href="#Choose-a-collapse-strategy" class="anchor-icon" translate="no">
+<p>In this example, <code translate="no">title_req</code> is entity-level, so the final hybrid result is also entity-level. The <code translate="no">chunk_req</code> request first returns element hits from <code translate="no">chunks[emb]</code>, then collapses the returned elements from the same entity by summing the best three element scores. If <code translate="no">element_scope</code> is omitted when entity-level collapse is needed, the collapse strategy defaults to <code translate="no">max</code>.</p>
+<h2 id="Choose-a-collapse-strategy" class="common-anchor-header">Choose a collapse strategy<button data-href="#Choose-a-collapse-strategy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -265,18 +267,18 @@ results = client.hybrid_search(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>策略</th><th>行為</th><th><code translate="no">topk</code></th><th>指標要求</th></tr>
+<tr><th>Strategy</th><th>Behavior</th><th><code translate="no">topk</code></th><th>Metric requirement</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">max</code></td><td>保留該實體所返回的最佳元素分數。</td><td>不允許。</td><td>任何受支援的常規向量指標。</td></tr>
-<tr><td><code translate="no">sum</code></td><td>將該實體所有回傳元素的分數相加。</td><td>不允許。</td><td>僅限正相關指標，例如<code translate="no">IP</code> 或<code translate="no">COSINE</code> 。</td></tr>
-<tr><td><code translate="no">avg</code></td><td>將該實體所有回傳元素的評分求平均值。</td><td>不允許。</td><td>任何受支援的常規向量指標。</td></tr>
-<tr><td><code translate="no">topk_sum</code></td><td>將該實體所返回的元素中最佳的<code translate="no">K</code> 分數相加。</td><td>此為必填項目，且數值必須為正數。</td><td>僅限正相關指標，例如<code translate="no">IP</code> 或<code translate="no">COSINE</code> 。</td></tr>
-<tr><td><code translate="no">topk_avg</code></td><td>對該實體所返回的最佳<code translate="no">K</code> 元素分數求平均值。</td><td>此參數為必填且必須為正數。</td><td>任何受支援的常規向量指標。</td></tr>
+<tr><td><code translate="no">max</code></td><td>Keep the best returned element score for the entity.</td><td>Not allowed.</td><td>Any supported regular vector metric.</td></tr>
+<tr><td><code translate="no">sum</code></td><td>Sum all returned element scores for the entity.</td><td>Not allowed.</td><td>Positive-correlation metrics only, such as <code translate="no">IP</code> or <code translate="no">COSINE</code>.</td></tr>
+<tr><td><code translate="no">avg</code></td><td>Average all returned element scores for the entity.</td><td>Not allowed.</td><td>Any supported regular vector metric.</td></tr>
+<tr><td><code translate="no">topk_sum</code></td><td>Sum the best <code translate="no">K</code> returned element scores for the entity.</td><td>Required and must be positive.</td><td>Positive-correlation metrics only, such as <code translate="no">IP</code> or <code translate="no">COSINE</code>.</td></tr>
+<tr><td><code translate="no">topk_avg</code></td><td>Average the best <code translate="no">K</code> returned element scores for the entity.</td><td>Required and must be positive.</td><td>Any supported regular vector metric.</td></tr>
 </tbody>
 </table>
-<p>Collapse 僅使用該 StructArray 元素級別<code translate="no">AnnSearchRequest</code> 所返回的元素命中結果。它在 ANN 搜尋後不會掃描實體中的每個 Struct 元素。請將請求的<code translate="no">limit</code> 設定得足夠高，以提供您希望用於 Collapse 的元素。</p>
-<h2 id="Add-filters-range-search-and-grouping" class="common-anchor-header">新增篩選器、範圍搜尋與分組<button data-href="#Add-filters-range-search-and-grouping" class="anchor-icon" translate="no">
+<p>Collapse uses only the element hits returned by that StructArray element-level <code translate="no">AnnSearchRequest</code>. It does not scan every Struct element in the entity after ANN search. Set the request <code translate="no">limit</code> high enough to provide the elements you want available for collapse.</p>
+<h2 id="Add-filters-range-search-and-grouping" class="common-anchor-header">Add filters, range search, and grouping<button data-href="#Add-filters-range-search-and-grouping" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -291,10 +293,10 @@ results = client.hybrid_search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>當標量條件需套用至參與向量搜尋的相同 Struct 元素時，可將<code translate="no">element_filter</code> 附加至 StructArray 元素層級的<code translate="no">AnnSearchRequest</code> 。您亦可針對父實體條件，在<code translate="no">hybrid_search()</code> 上使用頂層的<code translate="no">filter</code> 。</p>
-<p>StructArray 元素層級向量欄位在混合搜尋中支援範圍搜尋。請將<code translate="no">radius</code> 以及（若需）<code translate="no">range_filter</code> 新增至元素層級的<code translate="no">AnnSearchRequest</code> 中。EmbeddingList 層級的 StructArray 請求不支援範圍搜尋。</p>
-<p>僅當所有 `<code translate="no">AnnSearchRequest</code> ` 物件皆針對同一 `StructArray` 欄位下的元素層級向量欄位，且 `<code translate="no">group_by_field</code> ` 必須為主鍵時，才支援元素層級的混合分組。若請求混合了集合層級的向量欄位、不同的 `StructArray` 欄位，或 `EmbeddingList` 層級的請求，則不支援混合分組。請勿將範圍搜尋與分組結合使用。</p>
-<h2 id="Interpret-hybrid-results" class="common-anchor-header">解讀混合結果<button data-href="#Interpret-hybrid-results" class="anchor-icon" translate="no">
+    </button></h2><p>You can attach <code translate="no">element_filter</code> to a StructArray element-level <code translate="no">AnnSearchRequest</code> when scalar conditions should apply to the same Struct elements that participate in vector search. You can also use a top-level <code translate="no">filter</code> on <code translate="no">hybrid_search()</code> for parent-entity conditions.</p>
+<p>StructArray element-level vector fields support range search in hybrid search. Add <code translate="no">radius</code> and, optionally, <code translate="no">range_filter</code> to the element-level <code translate="no">AnnSearchRequest</code>. EmbeddingList-level StructArray requests do not support range search.</p>
+<p>Element-level hybrid grouping is supported only when all <code translate="no">AnnSearchRequest</code> objects target element-level vector fields under the same StructArray field, and <code translate="no">group_by_field</code> must be the primary key. Hybrid grouping is not supported when the request mixes collection-level vector fields, different StructArray fields, or EmbeddingList-level requests. Do not combine range search with grouping.</p>
+<h2 id="Interpret-hybrid-results" class="common-anchor-header">Interpret hybrid results<button data-href="#Interpret-hybrid-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -311,14 +313,14 @@ results = client.hybrid_search(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>最終候選範圍</th><th>結果鍵</th><th>偏移量行為</th><th>發生時</th></tr>
+<tr><th>Final candidate scope</th><th>Result key</th><th>Offset behavior</th><th>When it happens</th></tr>
 </thead>
 <tbody>
-<tr><td>實體層級</td><td>主鍵。</td><td>最終結果中不包含元素偏移量。</td><td>混合請求包含集合層級的向量欄位、EmbeddingList 請求，或位於不同 StructArray 欄位下的元素層級請求。</td></tr>
-<tr><td>元素層級</td><td>主鍵加上父級 StructArray 欄位，再加上元素偏移量。</td><td>當 API 或 SDK 公開時，可返回所選元素的偏移量。</td><td>所有 `<code translate="no">AnnSearchRequest</code> ` 物件均為元素層級，且位於同一個 `StructArray` 欄位之下。</td></tr>
+<tr><td>Entity level</td><td>Primary key.</td><td>No element offset in the final result.</td><td>The hybrid request includes a collection-level vector field, an EmbeddingList request, or element-level requests under different StructArray fields.</td></tr>
+<tr><td>Element level</td><td>Primary key plus parent StructArray field plus element offset.</td><td>The selected element offset can be returned when exposed by the API or SDK.</td><td>All <code translate="no">AnnSearchRequest</code> objects are element-level and under the same StructArray field.</td></tr>
 </tbody>
 </table>
-<h2 id="Limitations" class="common-anchor-header">限制<button data-href="#Limitations" class="anchor-icon" translate="no">
+<h2 id="Limitations" class="common-anchor-header">Limitations<button data-href="#Limitations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -334,15 +336,15 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>請僅將 `<code translate="no">element_scope</code> ` 用於 StructArray 元素層級的 `<code translate="no">AnnSearchRequest</code> ` 物件，這些物件在混合搜尋中必須摺疊為實體層級的候選項目。</p></li>
-<li><p>請勿將<code translate="no">element_scope</code> 用於 EmbeddingList 請求、集合層級向量請求，或同一 StructArray 元素層級的混合搜尋。</p></li>
-<li><p><code translate="no">sum</code> 以及<code translate="no">topk_sum</code> 收斂策略均需正相關指標，例如<code translate="no">IP</code> 或<code translate="no">COSINE</code> 。請勿將其與<code translate="no">L2</code> 搭配使用。</p></li>
-<li><p><code translate="no">topk_sum</code> 且<code translate="no">topk_avg</code> 需要正的<code translate="no">topk</code> 值。其他彙總策略不得包含<code translate="no">topk</code> 。</p></li>
-<li><p>嵌入式清單層級的 StructArray 請求不支援範圍搜尋或分組。</p></li>
-<li><p>混合分組僅支援相同 StructArray 元素層級的混合搜尋，且僅限透過主鍵進行。</p></li>
-<li><p>請勿將範圍搜尋與分組操作結合使用。</p></li>
+<li><p>Use <code translate="no">element_scope</code> only for StructArray element-level <code translate="no">AnnSearchRequest</code> objects that must be collapsed to entity-level candidates in hybrid search.</p></li>
+<li><p>Do not use <code translate="no">element_scope</code> for EmbeddingList requests, collection-level vector requests, or same-StructArray element-level hybrid search.</p></li>
+<li><p><code translate="no">sum</code> and <code translate="no">topk_sum</code> collapse strategies require positive-correlation metrics, such as <code translate="no">IP</code> or <code translate="no">COSINE</code>. Do not use them with <code translate="no">L2</code>.</p></li>
+<li><p><code translate="no">topk_sum</code> and <code translate="no">topk_avg</code> require a positive <code translate="no">topk</code> value. Other collapse strategies must not include <code translate="no">topk</code>.</p></li>
+<li><p>EmbeddingList-level StructArray requests do not support range search or group-by.</p></li>
+<li><p>Hybrid group-by is supported only for same-StructArray element-level hybrid search and only by primary key.</p></li>
+<li><p>Do not combine range search with group-by.</p></li>
 </ul>
-<h2 id="Common-mistakes" class="common-anchor-header">常見錯誤<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -358,13 +360,13 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>在同一 StructArray 元素層級的混合請求中加入<code translate="no">element_scope</code> 。該請求仍維持在元素層級，且不會執行實體層級的彙總。</p></li>
-<li><p>將 `<code translate="no">element_scope</code> ` 新增至 `<code translate="no">chunks[emb_list_vector]</code>`。`EmbeddingList` 搜尋本身已是實體層級的。</p></li>
-<li><p>假設兩個 StructArray 欄位共享元素偏移量。<code translate="no">chunks</code> 中的偏移量<code translate="no">3</code> 與另一個 StructArray 欄位中的偏移量<code translate="no">3</code> 對應不同的元素，因此混合請求將轉為實體層級。</p></li>
-<li><p>若使用<code translate="no">topk_sum</code> 搭配<code translate="no">L2</code> ，請使用<code translate="no">max</code> 、<code translate="no">avg</code> 或<code translate="no">topk_avg</code> 來處理負數距離度量值。</p></li>
-<li><p>預期實體層級的混合結果在摺疊後將包含所選的 Struct 元素偏移量。</p></li>
+<li><p>Adding <code translate="no">element_scope</code> to a same-StructArray element-level hybrid request. That request remains element-level and does not perform entity-level collapse.</p></li>
+<li><p>Adding <code translate="no">element_scope</code> to <code translate="no">chunks[emb_list_vector]</code>. EmbeddingList search is already entity-level.</p></li>
+<li><p>Assuming two StructArray fields share element offsets. Offset <code translate="no">3</code> in <code translate="no">chunks</code> and offset <code translate="no">3</code> in another StructArray field are different elements, so the hybrid request becomes entity-level.</p></li>
+<li><p>Using <code translate="no">topk_sum</code> with <code translate="no">L2</code>. Use <code translate="no">max</code>, <code translate="no">avg</code>, or <code translate="no">topk_avg</code> for negative distance metrics.</p></li>
+<li><p>Expecting entity-level hybrid results to include the selected Struct element offset after collapse.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">後續步驟<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -380,9 +382,9 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>若要了解兩種基本的 StructArray 向量搜尋模式，請參閱《<a href="/docs/zh-hant/basic-vector-search-with-structarray.md">使用 StructArray 進行基本向量搜尋</a>》。</p></li>
-<li><p>若要將標量篩選器新增至混合搜尋，請參閱《<a href="/docs/zh-hant/filtered-search-with-structarray.md">使用 StructArray 進行篩選搜尋</a>》。</p></li>
-<li><p>若要在混合搜尋中使用分數或距離範圍，請參閱《<a href="/docs/zh-hant/range-search-with-structarray.md">使用 StructArray 進行範圍搜尋</a>》。</p></li>
-<li><p>若要依父實體將元素層級的混合搜尋結果分組，請參閱《<a href="/docs/zh-hant/grouping-search-with-structarray.md">使用 StructArray 進行分組搜尋</a>》。</p></li>
-<li><p>若要查看 StructArray 的搜尋限制，請參閱《<a href="/docs/zh-hant/structarray-limits.md">StructArray 限制》</a>。</p></li>
+<li><p>To learn the two basic StructArray vector search modes, read <a href="/docs/zh-hant/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To add scalar filters to hybrid search, read <a href="/docs/zh-hant/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
+<li><p>To use score or distance boundaries in hybrid search, read <a href="/docs/zh-hant/range-search-with-structarray.md">Range Search with StructArray</a>.</p></li>
+<li><p>To group element-level hybrid results by parent entity, read <a href="/docs/zh-hant/grouping-search-with-structarray.md">Grouping Search with StructArray</a>.</p></li>
+<li><p>To check StructArray search limits, read <a href="/docs/zh-hant/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

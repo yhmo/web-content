@@ -1,13 +1,19 @@
 ---
 id: multi-vector-search.md
-title: 多向量混合搜尋
+title: Multi-Vector Hybrid Search
 summary: >-
-  在許多應用程式中，可以透過豐富的資訊（例如標題和描述）或多種模式（例如文字、影像和音訊）來搜尋物件。例如，包含一段文字和一張圖片的
-  tweet，如果文字或圖片符合搜尋查詢的語意，就會被搜尋。混合搜尋透過結合這些不同領域的搜尋來增強搜尋體驗。Milvus
-  支援此功能，允許在多向量領域進行搜尋，同時進行多個近似近鄰 (ANN)
-  搜尋。如果您想要同時搜尋文字與影像、描述同一物件的多個文字欄位，或是密集與稀疏向量，多向量混合搜尋對改善搜尋品質特別有用。
+  In many applications, an object can be searched by a rich set of information
+  such as title and description, or with multiple modalities such as text,
+  images, and audio. For example, a tweet with a piece of text and an image
+  shall be searched if either the text or the image matches the semantic of the
+  search query. Hybrid search enhances search experience by combining searches
+  across these diverse fields. Milvus supports this by allowing search on
+  multiple vector fields, conducting several Approximate Nearest Neighbor (ANN)
+  searches simultaneously. Multi-vector hybrid search is particularly useful if
+  you want to search both text and images, multiple text fields that describe
+  the same object, or dense and sparse vectors to improve search quality.
 ---
-<h1 id="Multi-Vector-Hybrid-Search" class="common-anchor-header">多向量混合搜尋<button data-href="#Multi-Vector-Hybrid-Search" class="anchor-icon" translate="no">
+<h1 id="Multi-Vector-Hybrid-Search" class="common-anchor-header">Multi-Vector Hybrid Search<button data-href="#Multi-Vector-Hybrid-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,17 +28,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>在許多應用程式中，可以透過豐富的資訊（例如標題和描述）或多種模式（例如文字、影像和音訊）來搜尋物件。例如，包含一段文字和一張圖片的 tweet，如果文字或圖片符合搜尋查詢的語意，就會被搜尋。混合搜尋透過結合這些不同領域的搜尋來增強搜尋體驗。Milvus 支援此功能，允許在多向量領域進行搜尋，同時進行多個近似近鄰 (ANN) 搜尋。如果您要同時搜尋文字和影像、描述同一物件的多個文字欄位，或密集和稀疏向量以改善搜尋品質，多向量混合搜尋就特別有用。</p>
+    </button></h1><p>In many applications, an object can be searched by a rich set of information such as title and description, or with multiple modalities such as text, images, and audio. For example, a tweet with a piece of text and an image shall be searched if either the text or the image matches the semantic of the search query. Hybrid search enhances search experience by combining searches across these diverse fields. Milvus supports this by allowing search on multiple vector fields, conducting several Approximate Nearest Neighbor (ANN) searches simultaneously. Multi-vector hybrid search is particularly useful if you want to search both text and images, multiple text fields that describe the same object, or dense and sparse vectors to improve search quality.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/hybrid-search-workflow.png" alt="Hybrid Search Workflow" class="doc-image" id="hybrid-search-workflow" />
-   </span> <span class="img-wrapper"> <span>混合搜尋工作流程</span> </span></p>
-<p>多向量混合搜尋整合了不同的搜尋方法，或跨越各種模式的嵌入：</p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/hybrid-search-workflow.png" alt="Hybrid Search Workflow" class="doc-image" id="hybrid-search-workflow" />
+    <span>Hybrid Search Workflow</span>
+  </span>
+</p>
+<p>The multi-vector hybrid search integrates different search methods or spans embeddings from various modalities:</p>
 <ul>
-<li><p><strong>稀疏-密集向量搜尋</strong>：<a href="/docs/zh-hant/v2.6.x/dense-vector.md">Dense Vector</a>是捕捉語意關係的絕佳方法，而<a href="/docs/zh-hant/v2.6.x/sparse_vector.md">Sparse Vector</a>則是精確關鍵字比對的高效方法。混合搜尋結合了這些方法，既能提供廣泛的概念理解，又能提供精確的詞彙相關性，從而改善搜尋結果。混合搜尋利用每種方法的優點，克服獨立方法的限制，為複雜的查詢提供更好的效能。以下是結合語意搜尋與全文檢索的混合式檢索的詳細<a href="/docs/zh-hant/v2.6.x/full_text_search_with_milvus.md">指南</a>。</p></li>
-<li><p><strong>多模式向量搜尋</strong>：多模態向量搜尋是一種功能強大的技術，可讓您跨各種資料類型進行搜尋，包括文字、影像、音訊等。此方法的主要優勢在於它能將不同的模式統一為無縫且具凝聚力的搜尋體驗。例如，在產品搜尋中，使用者可能會輸入文字查詢，以尋找以文字和影像描述的產品。透過混合搜尋方法結合這些模式，您可以提高搜尋準確度或豐富搜尋結果。</p></li>
+<li><p><strong>Sparse-Dense Vector Search</strong>: <a href="/docs/zh-hant/v2.6.x/dense-vector.md">Dense Vector</a> are excellent for capturing semantic relationships, while <a href="/docs/zh-hant/v2.6.x/sparse_vector.md">Sparse Vector</a> are highly effective for precise keyword matching. Hybrid search combines these approaches to provide both a broad conceptual understanding and exact term relevance, thus improving search results. By leveraging the strengths of each method, hybrid search overcomes the limitations of indiviual approaches, offering better performance for complex queries. Here is more detailed <a href="/docs/zh-hant/v2.6.x/full_text_search_with_milvus.md">guide</a> on hybrid retrieval that combines semantic search with full-text search.</p></li>
+<li><p><strong>Multimodal Vector Search</strong>: Multimodal vector search is a powerful technique that allows you to search across various data types, including text, images, audio, and others. The main advantage of this approach is its ability to unify different modalities into a seamless and cohesive search experience. For instance, in product search, a user might input a text query to find products described with both text and images. By combining these modalities through a hybrid search method, you can enhance search accuracy or enrich the search results.</p></li>
 </ul>
-<h2 id="Example" class="common-anchor-header">範例<button data-href="#Example" class="anchor-icon" translate="no">
+<h2 id="Example" class="common-anchor-header">Example<button data-href="#Example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -47,14 +55,14 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>讓我們考慮一個真實世界的使用案例，其中每個產品都包含文字說明和圖片。根據可用的資料，我們可以進行三種類型的搜尋：</p>
+    </button></h2><p>Let’s consider a real world use case where each product includes a text description and an image. Based on the available data, we can conduct three types of searches:</p>
 <ul>
-<li><p><strong>語意文字搜尋：</strong>這包括使用密集向量來查詢產品的文字描述。可以使用<a href="https://zilliz.com/learn/explore-colbert-token-level-embedding-and-ranking-model-for-similarity-search?_gl=1*d243m9*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.#A-Quick-Recap-of-BERT">BERT</a>和<a href="https://zilliz.com/learn/NLP-essentials-understanding-transformers-in-AI?_gl=1*d243m9*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.">Transformers</a>等模型或<a href="https://zilliz.com/learn/guide-to-using-openai-text-embedding-models">OpenAI</a> 等服務來產生文字內嵌。</p></li>
-<li><p><strong>全文檢索</strong>：在此，我們使用關鍵字匹配稀疏向量來查詢產品的文字描述。<a href="https://zilliz.com/learn/mastering-bm25-a-deep-dive-into-the-algorithm-and-application-in-milvus">BM25</a>等演算法或<a href="https://zilliz.com/learn/bge-m3-and-splade-two-machine-learning-models-for-generating-sparse-embeddings?_gl=1*1cde1oq*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.#BGE-M3">BGE-M3</a>或<a href="https://zilliz.com/learn/bge-m3-and-splade-two-machine-learning-models-for-generating-sparse-embeddings?_gl=1*ov2die*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.#SPLADE">SPLADE</a>等稀疏嵌入模型都可以用來達到此目的。</p></li>
-<li><p><strong>多模態影像搜尋：</strong>此方法使用密集向量的文字查詢來查詢影像。圖像嵌入可以使用<a href="https://zilliz.com/learn/exploring-openai-clip-the-future-of-multimodal-ai-learning">CLIP</a> 等模型產生。</p></li>
+<li><p><strong>Semantic Text Search:</strong> This involves querying the text description of the product using dense vectors. Text embeddings can be generated using models such as <a href="https://zilliz.com/learn/explore-colbert-token-level-embedding-and-ranking-model-for-similarity-search?_gl=1*d243m9*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.#A-Quick-Recap-of-BERT">BERT</a> and <a href="https://zilliz.com/learn/NLP-essentials-understanding-transformers-in-AI?_gl=1*d243m9*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.">Transformers</a> or services like <a href="https://zilliz.com/learn/guide-to-using-openai-text-embedding-models">OpenAI</a>.</p></li>
+<li><p><strong>Full-Text Search</strong>: Here, we query the text description of the product using a keyword match with sparse vectors. Algorithms like <a href="https://zilliz.com/learn/mastering-bm25-a-deep-dive-into-the-algorithm-and-application-in-milvus">BM25</a> or sparse embedding models such as <a href="https://zilliz.com/learn/bge-m3-and-splade-two-machine-learning-models-for-generating-sparse-embeddings?_gl=1*1cde1oq*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.#BGE-M3">BGE-M3</a> or <a href="https://zilliz.com/learn/bge-m3-and-splade-two-machine-learning-models-for-generating-sparse-embeddings?_gl=1*ov2die*_gcl_au*MjcyNTAwMzUyLjE3NDMxMzE1MjY.*_ga*MTQ3OTI4MDc5My4xNzQzMTMxNTI2*_ga_KKMVYG8YF2*MTc0NTkwODU0Mi45NC4xLjE3NDU5MDg4MzcuMC4wLjA.#SPLADE">SPLADE</a> can be utilized for this purpose.</p></li>
+<li><p><strong>Multimodal Image Search:</strong> This method queries over the image using a text query with dense vectors. Image embeddings can be generated with models like <a href="https://zilliz.com/learn/exploring-openai-clip-the-future-of-multimodal-ai-learning">CLIP</a>.</p></li>
 </ul>
-<p>本指南將引導您參考一個結合上述搜尋方法的多模態混合搜尋範例，給定產品的原始文字描述和圖像嵌入。我們將示範如何儲存多向量資料，並使用重排策略執行混合搜尋。</p>
-<h2 id="Create-a-collection-with-multiple-vector-fields" class="common-anchor-header">以多向量欄位建立集合<button data-href="#Create-a-collection-with-multiple-vector-fields" class="anchor-icon" translate="no">
+<p>This guide will walk you through an example of a multimodal hybrid search combining the above search methods, given the raw text description and image embeddings of products. We will demonstrate how to store multi-vector data and perform hybrid searches with a reranking strategy.</p>
+<h2 id="Create-a-collection-with-multiple-vector-fields" class="common-anchor-header">Create a collection with multiple vector fields<button data-href="#Create-a-collection-with-multiple-vector-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -69,8 +77,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>建立集合的過程包含三個關鍵步驟：定義集合模式、配置索引參數，以及建立集合。</p>
-<h3 id="Define-schema" class="common-anchor-header">定義模式<button data-href="#Define-schema" class="anchor-icon" translate="no">
+    </button></h2><p>The process of creating a collection involves three key steps: defining the collection schema, configuring the index parameters, and creating the collection.</p>
+<h3 id="Define-schema" class="common-anchor-header">Define schema<button data-href="#Define-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -85,18 +93,23 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>對於多向量混合搜尋，我們應該在一個集合模式中定義多個向量欄位。有關集合中允許的向量欄位數量限制的詳細資訊，請參閱<a href="https://zilliverse.feishu.cn/wiki/PuxkwMWvbiHxvTkHsVkcMZP9n5f#E5yxdHM16okh57xV3WKcTJsYn0f">Zilliz Cloud Limits</a>。  不過，如有必要，您可以調整 <a href="/docs/zh-hant/v2.6.x/configure_proxy.md#proxymaxVectorFieldNum"><code translate="no">proxy.maxVectorFieldNum</code></a>以根據需要在集合中包含最多 10 個向量欄位。</p>
-<p>本範例在模式中加入下列欄位：</p>
+    </button></h3><p>For multi-vector hybrid search, we should define multiple vector fields within a collection schema. For details about the limits on the number of vector fields allowed in a collection, see <a href="https://zilliverse.feishu.cn/wiki/PuxkwMWvbiHxvTkHsVkcMZP9n5f#E5yxdHM16okh57xV3WKcTJsYn0f">Zilliz Cloud Limits</a>.  However, if necessary, you can adjust the <a href="/docs/zh-hant/v2.6.x/configure_proxy.md#proxymaxVectorFieldNum"><code translate="no">proxy.maxVectorFieldNum</code></a> to include up to 10 vector fields in a collection as needed.</p>
+<p>This example incorporates the following fields into the schema:</p>
 <ul>
-<li><p><code translate="no">id</code>:作為儲存文字 ID 的主索引鍵。這個欄位的資料類型是<code translate="no">INT64</code> 。</p></li>
-<li><p><code translate="no">text</code>:用於儲存文字內容。此欄位的資料類型為<code translate="no">VARCHAR</code> ，最大長度為 1000 位元組。<code translate="no">enable_analyzer</code> 選項設定為<code translate="no">True</code> ，以方便全文檢索。</p></li>
-<li><p><code translate="no">text_dense</code>:用於儲存文字的密集向量。此欄位的資料類型為<code translate="no">FLOAT_VECTOR</code> ，向量尺寸為 768。</p></li>
-<li><p><code translate="no">text_sparse</code>:用於儲存文字的稀疏向量。這個欄位的資料類型是<code translate="no">SPARSE_FLOAT_VECTOR</code> 。</p></li>
-<li><p><code translate="no">image_dense</code>:用於儲存產品影像的密集向量。此欄位的資料類型為<code translate="no">FLOAT_VETOR</code> ，向量維度為 512。</p></li>
+<li><p><code translate="no">id</code>: Serves as the primary key for storing text IDs. This field is of data type <code translate="no">INT64</code>.</p></li>
+<li><p><code translate="no">text</code>: Used for storing textual content. This field is of the data type <code translate="no">VARCHAR</code> with a maximum length of 1000 bytes. The <code translate="no">enable_analyzer</code> option is set to <code translate="no">True</code> to facilitate full-text search.</p></li>
+<li><p><code translate="no">text_dense</code>: Used to store dense vectors of the texts. This field is of the data type <code translate="no">FLOAT_VECTOR</code> with a vector dimension of 768.</p></li>
+<li><p><code translate="no">text_sparse</code>: Used to store sparse vectors of the texts. This field is of the data type <code translate="no">SPARSE_FLOAT_VECTOR</code>.</p></li>
+<li><p><code translate="no">image_dense</code>: Used to store dense vectors of the product images. This field is of the data type <code translate="no">FLOAT_VETOR</code> with a vector dimension of 512.</p></li>
 </ul>
-<p>由於我們會使用內建的 BM25 演算法來對文字欄位執行全文檢索，因此有必要在模式中加入 Milvus<code translate="no">Function</code> 。如需詳細資訊，請參閱<a href="/docs/zh-hant/v2.6.x/full-text-search.md">全文</a>檢索。</p>
+<p>Since we will use the built-in BM25 algorithm to perform a full-text search on the text field, it is necessary to add the Milvus <code translate="no">Function</code> to the schema. For further details, please refer to <a href="/docs/zh-hant/v2.6.x/full-text-search.md">Full Text Search</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient, DataType, Function, FunctionType
 )
@@ -327,7 +340,7 @@ schema.WithField(entity.NewField().
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Create-index" class="common-anchor-header">建立索引<button data-href="#Create-index" class="anchor-icon" translate="no">
+<h3 id="Create-index" class="common-anchor-header">Create index<button data-href="#Create-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -342,15 +355,20 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>定義資料集模式之後，下一步就是設定向量索引並指定相似度指標。在給出的範例中</p>
+    </button></h3><p>After defining the collection schema, the next step is to configure the vector indexes and specify the similarity metrics. In the given example:</p>
 <ul>
-<li><p><code translate="no">text_dense_index</code>：針對文字密集向量欄位建立<code translate="no">AUTOINDEX</code> 類型的索引，其公制類型為<code translate="no">IP</code> 。</p></li>
-<li><p><code translate="no">text_sparse_index</code>：使用<code translate="no">BM25</code> 公制類型的<code translate="no">SPARSE_INVERTED_INDEX</code>類型索引用於文字稀疏向量場。</p></li>
-<li><p><code translate="no">image_dense_index</code>：為影像密集向量場建立<code translate="no">AUTOINDEX</code> 與<code translate="no">IP</code> 公制類型的索引。</p></li>
+<li><p><code translate="no">text_dense_index</code>: an index of type <code translate="no">AUTOINDEX</code> with <code translate="no">IP</code> metric type is created for the text dense vector field.</p></li>
+<li><p><code translate="no">text_sparse_index</code>: an index of type<code translate="no">SPARSE_INVERTED_INDEX</code>with <code translate="no">BM25</code> metric type is used for the text sparse vector field.</p></li>
+<li><p><code translate="no">image_dense_index</code>: an index of type <code translate="no">AUTOINDEX</code> with <code translate="no">IP</code> metric type is created for the image dense vector field.</p></li>
 </ul>
-<p>您可以根據需要選擇其他索引類型，以最適合您的需求和資料類型。如需支援索引類型的進一步資訊，請參閱<a href="/docs/zh-hant/v2.6.x/index-vector-fields.md">可用索引類型的</a>說明文件。</p>
+<p>You can choose other index types as necessary to best suit your needs and data types. For further information on the supported index types, please refer to the documentation on <a href="/docs/zh-hant/v2.6.x/index-vector-fields.md">available index types</a>.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Prepare index parameters</span>
 index_params = client.prepare_index_params()
 
@@ -461,7 +479,7 @@ indexOption3 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quo
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Create-collection" class="common-anchor-header">建立集合<button data-href="#Create-collection" class="anchor-icon" translate="no">
+<h3 id="Create-collection" class="common-anchor-header">Create collection<button data-href="#Create-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -476,9 +494,14 @@ indexOption3 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quo
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>使用前兩個步驟中配置的集合模式和索引，建立一個名為<code translate="no">demo</code> 的集合。</p>
+    </button></h3><p>Create a collection named <code translate="no">demo</code> with the collection schema and indexes configured in the previous two steps.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
     schema=schema,
@@ -520,7 +543,7 @@ curl --request POST \
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-data" class="common-anchor-header">插入資料<button data-href="#Insert-data" class="anchor-icon" translate="no">
+<h2 id="Insert-data" class="common-anchor-header">Insert data<button data-href="#Insert-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -535,17 +558,22 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>本節根據之前定義的模式將資料插入<code translate="no">my_collection</code> 集合。在插入過程中，確保所有欄位 (有自動產生數值的欄位除外) 都有正確格式的資料。在此範例中</p>
+    </button></h2><p>This section inserts data into the <code translate="no">my_collection</code> collection based on the schema defined earlier. During insert, ensure all fields, except those with auto-generated values, are provided with data in the correct format. In this example:</p>
 <ul>
-<li><p><code translate="no">id</code>代表產品 ID 的整數</p></li>
-<li><p><code translate="no">text</code>：包含產品描述的字串</p></li>
-<li><p><code translate="no">text_dense</code>：768 個浮點值的清單，代表文字描述的密集嵌入</p></li>
-<li><p><code translate="no">image_dense</code>代表產品圖片密集嵌入的 512 個浮點值清單。</p></li>
+<li><p><code translate="no">id</code>: an integer representing the product ID</p></li>
+<li><p><code translate="no">text</code>: a string containing the product description</p></li>
+<li><p><code translate="no">text_dense</code>: a list of 768 floating-point values representing the dense embedding of the text description</p></li>
+<li><p><code translate="no">image_dense</code>: a list of 512 floating-point values representing the dense embedding of the product image</p></li>
 </ul>
-<p>您可以使用相同或不同的模型為每個欄位產生密集內嵌。在這個範例中，兩個密集內嵌有不同的尺寸，顯示它們是由不同的模型產生。稍後定義每項搜尋時，請務必使用對應的模型來產生適當的查詢內嵌。</p>
-<p>由於本範例使用內建的 BM25 函式從文字欄位產生稀疏內嵌，因此您不需要手動提供稀疏向量。但是，如果您選擇不使用 BM25，則必須自行預先計算並提供稀疏內嵌。</p>
+<p>You may use the same or different models to generate dense embeddings for each field. In this example, the two dense embeddings have different dimensions, suggesting they were generated by different models. When defining each search later, be sure to use the corresponding model to generate the appropriate query embedding.</p>
+<p>Since this example uses the built-in BM25 function to generate sparse embeddings from the text field, you do not need to supply sparse vectors manually. However, if you opt not to use BM25, you must precompute and provide the sparse embeddings yourself.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 
 <span class="hljs-comment"># Generate example vectors</span>
@@ -659,7 +687,7 @@ List&lt;JsonObject&gt; data = Arrays.asList(row1, row2, row3);
     &quot;collectionName&quot;: &quot;my_collection&quot;
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Perform-Hybrid-Search" class="common-anchor-header">執行混合搜尋<button data-href="#Perform-Hybrid-Search" class="anchor-icon" translate="no">
+<h2 id="Perform-Hybrid-Search" class="common-anchor-header">Perform Hybrid Search<button data-href="#Perform-Hybrid-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -674,7 +702,7 @@ List&lt;JsonObject&gt; data = Arrays.asList(row1, row2, row3);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Step-1-Create-multiple-AnnSearchRequest-instances" class="common-anchor-header">步驟 1：建立多個 AnnSearchRequest 實體<button data-href="#Step-1-Create-multiple-AnnSearchRequest-instances" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Step-1-Create-multiple-AnnSearchRequest-instances" class="common-anchor-header">Step 1: Create multiple AnnSearchRequest instances<button data-href="#Step-1-Create-multiple-AnnSearchRequest-instances" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -689,19 +717,24 @@ List&lt;JsonObject&gt; data = Arrays.asList(row1, row2, row3);
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Hybrid Search 是透過在<code translate="no">hybrid_search()</code> 函式中建立多個<code translate="no">AnnSearchRequest</code> 來實作，其中每個<code translate="no">AnnSearchRequest</code> 代表特定向量領域的基本 ANN 搜尋請求。因此，在進行 Hybrid Search 之前，必須為每個向量領域建立一個<code translate="no">AnnSearchRequest</code> 。</p>
-<p>此外，透過在<code translate="no">AnnSearchRequest</code> 中設定<code translate="no">expr</code> 參數，您可以設定混合搜尋的過濾條件。請參閱<a href="/docs/zh-hant/v2.6.x/filtered-search.md">過濾搜尋與</a> <a href="/docs/zh-hant/v2.6.x/boolean.md">過濾說明</a>。</p>
+    </button></h3><p>Hybrid Search is implemented by creating multiple <code translate="no">AnnSearchRequest</code> in the <code translate="no">hybrid_search()</code> function, where each <code translate="no">AnnSearchRequest</code> represents a basic ANN search request for a specific vector field. Therefore, before conducting a Hybrid Search, it is necessary to create an <code translate="no">AnnSearchRequest</code> for each vector field.</p>
+<p>In addition, by configuring the <code translate="no">expr</code> parameter in an <code translate="no">AnnSearchRequest</code>, you can set the filtering conditions for your hybrid search. Please refer to <a href="/docs/zh-hant/v2.6.x/filtered-search.md">Filtered Search</a> and <a href="/docs/zh-hant/v2.6.x/boolean.md">Filtering Explained</a>.</p>
 <div class="alert note">
-<p>在混合搜尋中，每個<code translate="no">AnnSearchRequest</code> 只支援一個查詢資料。</p>
+<p>In Hybrid Search, each <code translate="no">AnnSearchRequest</code> supports only one query data.</p>
 </div>
-<p>為了示範各種搜尋向量字段的功能，我們將使用一個範例查詢來建構三個<code translate="no">AnnSearchRequest</code> 搜尋請求。在此過程中，我們也會使用其預先計算的密集向量。搜尋請求將以下列向量領域為目標：</p>
+<p>To demonstrate the capabilities of various search vector fields, we will construct three <code translate="no">AnnSearchRequest</code> search requests using a sample query. We will also use its pre-computed dense vectors for this process. The search requests will target the following vector fields:</p>
 <ul>
-<li><p><code translate="no">text_dense</code> 用於語意文字搜尋，允許基於意義而非直接關鍵字匹配進行上下文理解和檢索。</p></li>
-<li><p><code translate="no">text_sparse</code>用於全文檢索或關鍵字比對，著重於文字中的精確單字或短語匹配。</p></li>
-<li><p><code translate="no">image_dense</code>用於多模式文字到圖片搜尋，根據查詢的語意內容擷取相關的產品圖片。</p></li>
+<li><p><code translate="no">text_dense</code> for semantic text search, allowing for contextual understanding and retrieval based on meaning rather than direct keyword matching.</p></li>
+<li><p><code translate="no">text_sparse</code>for full-text search or keyword matching, focusing on exact word or phrase matches within the text.</p></li>
+<li><p><code translate="no">image_dense</code>for multimodal text-to-image search, to retrieve relevant product images based on the semantic content of the query.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> AnnSearchRequest
 
 query_text = <span class="hljs-string">&quot;white headphones, quiet and comfortable&quot;</span>
@@ -828,8 +861,8 @@ request3 := milvusclient.NewAnnRequest(<span class="hljs-string">&quot;image_den
     }
  ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>鑑於參數<code translate="no">limit</code> 設定為 2，每個<code translate="no">AnnSearchRequest</code> 會返回 2 個搜尋結果。在本範例中，會建立 3 個<code translate="no">AnnSearchRequest</code> 實體，總共產生 6 個搜尋結果。</p>
-<h3 id="Step-2-Configure-a-reranking-strategy" class="common-anchor-header">步驟 2：設定重新排序策略<button data-href="#Step-2-Configure-a-reranking-strategy" class="anchor-icon" translate="no">
+<p>Given that the parameter <code translate="no">limit</code> is set to 2, each <code translate="no">AnnSearchRequest</code> returns 2 search results. In this example, 3 <code translate="no">AnnSearchRequest</code> instances are created, resulting in a total of 6 search results.</p>
+<h3 id="Step-2-Configure-a-reranking-strategy" class="common-anchor-header">Step 2: Configure a reranking strategy<button data-href="#Step-2-Configure-a-reranking-strategy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -844,10 +877,15 @@ request3 := milvusclient.NewAnnRequest(<span class="hljs-string">&quot;image_den
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>要合併 ANN 搜尋結果集並重新排序，選擇適當的重新排序策略是必要的。Milvus 提供多種重排策略。有關這些重新排名機制的詳細資訊，請參閱<a href="/docs/zh-hant/v2.6.x/weighted-ranker.md">Weighted Ranker</a>或<a href="/docs/zh-hant/v2.6.x/rrf-ranker.md">RRF Ranker</a>。</p>
-<p>在本範例中，由於沒有特別強調特定的搜尋查詢，我們將採用 RRFRanker 策略。</p>
+    </button></h3><p>To merge and rerank the sets of ANN search results, selecting an appropriate reranking strategy is essential. Milvus offers several types of reranking strategies. For more details on these reranking mechanisms, please refer to <a href="/docs/zh-hant/v2.6.x/weighted-ranker.md">Weighted Ranker</a> or <a href="/docs/zh-hant/v2.6.x/rrf-ranker.md">RRF Ranker</a>.</p>
+<p>In this example, since there is no particular emphasis on specific search queries, we will proceed with the RRFRanker strategy.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">ranker = Function(
     name=<span class="hljs-string">&quot;rrf&quot;</span>,
     input_field_names=[], <span class="hljs-comment"># Must be an empty list</span>
@@ -905,7 +943,7 @@ ranker := entity.NewFunction().
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Perform-a-Hybrid-Search" class="common-anchor-header">步驟 3：執行混合搜尋<button data-href="#Step-3-Perform-a-Hybrid-Search" class="anchor-icon" translate="no">
+<h3 id="Step-3-Perform-a-Hybrid-Search" class="common-anchor-header">Step 3: Perform a Hybrid Search<button data-href="#Step-3-Perform-a-Hybrid-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -920,9 +958,14 @@ ranker := entity.NewFunction().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>在啟動混合搜尋之前，請確保資料集已載入。如果集合中的任何向量欄位缺乏索引或未載入記憶體，在執行 Hybrid Search 方法時將會發生錯誤。</p>
+    </button></h3><p>Before initiating a Hybrid Search, ensure that the collection is loaded. If any vector fields within the collection lack an index or are not loaded into memory, an error will occur upon executing the Hybrid Search method.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">res = client.hybrid_search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
     reqs=reqs,
@@ -994,11 +1037,11 @@ res = <span class="hljs-keyword">await</span> client.<span class="hljs-title fun
     \&quot;limit\&quot;: 2
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>輸出如下：</p>
+<p>The following is the output:</p>
 <pre><code translate="no" class="language-python">[<span class="hljs-string">&quot;[&#x27;id: 1, distance: 0.006047376897186041, entity: {}&#x27;, &#x27;id: 2, distance: 0.006422005593776703, entity: {}&#x27;]&quot;</span>]
 <button class="copy-code-btn"></button></code></pre>
-<p>在為 Hybrid Search 指定<code translate="no">limit=2</code> 參數後，Milvus 會將三次搜尋所得的六個結果重新排序。最終只會返回最相似的前兩個結果。</p>
-<h2 id="Advanced-usage" class="common-anchor-header">進階用法<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
+<p>With the <code translate="no">limit=2</code> parameter specified for the Hybrid Search, Milvus will rerank the six results obtained from the three searches. Ultimately, they will return only the top two most similar results.</p>
+<h2 id="Advanced-usage" class="common-anchor-header">Advanced usage<button data-href="#Advanced-usage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1013,7 +1056,7 @@ res = <span class="hljs-keyword">await</span> client.<span class="hljs-title fun
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Temporarily-set-a-timezone-for-a-hybrid-search" class="common-anchor-header">為混合搜尋暫時設定時區<button data-href="#Temporarily-set-a-timezone-for-a-hybrid-search" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Temporarily-set-a-timezone-for-a-hybrid-search" class="common-anchor-header">Temporarily set a timezone for a hybrid search<button data-href="#Temporarily-set-a-timezone-for-a-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1028,9 +1071,9 @@ res = <span class="hljs-keyword">await</span> client.<span class="hljs-title fun
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>如果您的資料集中有<code translate="no">TIMESTAMPTZ</code> 欄位，您可以透過在混合搜尋呼叫中設定<code translate="no">timezone</code> 參數，在單一作業中暫時覆寫資料庫或資料集中的預設時區。這可以控制<code translate="no">TIMESTAMPTZ</code> 值在操作中的顯示和比較方式。</p>
-<p><code translate="no">timezone</code> 的值必須是有效的<a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANA 時區識別碼</a>（例如，<strong>亞洲/上海</strong>、<strong>美國/芝加哥</strong>或<strong>UTC</strong>）。有關如何使用<code translate="no">TIMESTAMPTZ</code> 欄位的詳細資訊，請參閱<a href="/docs/zh-hant/v2.6.x/timestamptz-field.md">TIMESTAMPTZ 欄位</a>。</p>
-<p>以下範例顯示如何為混合搜尋作業暫時設定時區：</p>
+    </button></h3><p>If your collection has a <code translate="no">TIMESTAMPTZ</code> field, you can temporarily override the database or collection default timezone for a single operation by setting the <code translate="no">timezone</code> parameter in the hybrid search call. This controls how <code translate="no">TIMESTAMPTZ</code> values are displayed and compared during the operation.</p>
+<p>The value of <code translate="no">timezone</code> must be a valid <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">IANA time zone identifier</a> (for example, <strong>Asia/Shanghai</strong>, <strong>America/Chicago</strong>, or <strong>UTC</strong>). For details on how to use a <code translate="no">TIMESTAMPTZ</code> field, refer to <a href="/docs/zh-hant/v2.6.x/timestamptz-field.md">TIMESTAMPTZ Field</a>.</p>
+<p>The example below shows how to temporarily set a timezone for a hybrid search operation:</p>
 <pre><code translate="no" class="language-python">res = client.hybrid_search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
     reqs=reqs,

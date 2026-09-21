@@ -2,10 +2,10 @@
 id: install_cluster-helm.md
 label: Helm
 related_key: Kubernetes
-summary: 瞭解如何在 Kubernetes 上安裝 Milvus 叢集。
-title: 使用 Helm 安裝 Milvus 叢集
+summary: Learn how to install Milvus cluster on Kubernetes.
+title: Install Milvus Cluster with Helm
 ---
-<h1 id="Run-Milvus-in-Kubernetes-with-Helm" class="common-anchor-header">使用 Helm 在 Kubernetes 中執行 Milvus<button data-href="#Run-Milvus-in-Kubernetes-with-Helm" class="anchor-icon" translate="no">
+<h1 id="Run-Milvus-in-Kubernetes-with-Helm" class="common-anchor-header">Run Milvus in Kubernetes with Helm<button data-href="#Run-Milvus-in-Kubernetes-with-Helm" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: 使用 Helm 安裝 Milvus 叢集
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>本頁面說明如何使用<a href="https://github.com/zilliztech/milvus-helm">Milvus Helm 圖表在</a> Kubernetes 中啟動 Milvus 執行個體。</p>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>This page illustrates how to start a Milvus instance in Kubernetes using <a href="https://github.com/zilliztech/milvus-helm">Milvus Helm charts</a>.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -36,8 +36,8 @@ title: 使用 Helm 安裝 Milvus 叢集
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Helm 使用一種稱為「圖表（charts）」的封裝格式。圖表是一組檔案的集合，用以描述一組相關的 Kubernetes 資源。Milvus 提供了一組圖表，以協助您部署 Milvus 的依賴項與組件。</p>
-<h2 id="Prerequisites" class="common-anchor-header">先決條件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h2><p>Helm uses a packaging format called charts. A chart is a collection of files that describe a related set of Kubernetes resources. Milvus provides a set of charts to help you deploy Milvus dependencies and components.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -53,21 +53,21 @@ title: 使用 Helm 安裝 Milvus 叢集
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><a href="https://helm.sh/docs/intro/install/">安裝 Helm CLI</a>。</p></li>
-<li><p><a href="/docs/zh-hant/v2.6.x/prerequisite-helm.md#How-can-I-start-a-K8s-cluster-locally-for-test-purposes">建立一個 K8s 叢集</a>。</p></li>
-<li><p>安裝<a href="https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/">StorageClass</a>。您可以透過以下方式檢查已安裝的 StorageClass。</p>
+<li><p><a href="https://helm.sh/docs/intro/install/">Install Helm CLI</a>.</p></li>
+<li><p><a href="/docs/zh-hant/v2.6.x/prerequisite-helm.md#How-can-I-start-a-K8s-cluster-locally-for-test-purposes">Create a K8s cluster</a>.</p></li>
+<li><p>Install a <a href="https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/">StorageClass</a>. You can check the installed StorageClass as follows.</p>
 <pre><code translate="no" class="language-bash">$ kubectl get sc
 
 NAME                  PROVISIONER                  RECLAIMPOLICY    VOLUMEBIINDINGMODE    ALLOWVOLUMEEXPANSION     AGE
 standard (default)    k8s.io/minikube-hostpath     Delete           Immediate             <span class="hljs-literal">false</span> 
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>安裝前請<a href="/docs/zh-hant/v2.6.x/prerequisite-helm.md">先確認硬體與軟體需求</a>。</p></li>
-<li><p>在安裝 Milvus 之前，建議使用<a href="https://milvus.io/tools/sizing">Milvus 規模評估工具，</a>根據您的資料量估算硬體需求。這有助於確保您的 Milvus 安裝能獲得最佳效能與資源分配。</p></li>
+<li><p>Check <a href="/docs/zh-hant/v2.6.x/prerequisite-helm.md">the hardware and software requirements</a> before installation.</p></li>
+<li><p>Before installing Milvus, it is recommended to use the <a href="https://milvus.io/tools/sizing">Milvus Sizing Tool</a> to estimate the hardware requirements based on your data size. This helps ensure optimal performance and resource allocation for your Milvus installation.</p></li>
 </ul>
 <div class="alert note">
-<p>若在拉取映像檔時遇到任何問題，請透過<a href="mailto:community@zilliz.com">community@zilliz.com</a>聯絡我們，並提供問題詳情，我們將為您提供必要的支援。</p>
+<p>If you encounter any issues pulling the image, contact us at <a href="mailto:community@zilliz.com">community@zilliz.com</a> with details about the problem, and we’ll provide you with the necessary support.</p>
 </div>
-<h2 id="Install-Milvus-Helm-Chart" class="common-anchor-header">安裝 Milvus Helm Chart<button data-href="#Install-Milvus-Helm-Chart" class="anchor-icon" translate="no">
+<h2 id="Install-Milvus-Helm-Chart" class="common-anchor-header">Install Milvus Helm Chart<button data-href="#Install-Milvus-Helm-Chart" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -82,17 +82,17 @@ standard (default)    k8s.io/minikube-hostpath     Delete           Immediate   
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在安裝 Milvus Helm Chart 之前，您需要新增 Milvus Helm 儲存庫。</p>
+    </button></h2><p>Before installing Milvus Helm Charts, you need to add Milvus Helm repository.</p>
 <pre><code translate="no" class="language-bash">helm repo add zilliztech https://zilliztech.github.io/milvus-helm/
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>位於<code translate="no">https://github.com/milvus-io/milvus-helm</code> 的 Milvus Helm Charts 儲存庫已歸檔。我們現在使用位於<code translate="no">https://github.com/zilliztech/milvus-helm</code> 的新儲存庫。歸檔的儲存庫仍可提供 4.0.31 及更早版本的圖表，但後續版本請使用新儲存庫。</p>
+<p>The Milvus Helm Charts repo at <code translate="no">https://github.com/milvus-io/milvus-helm</code> has been archived. We now use the new repository at <code translate="no">https://github.com/zilliztech/milvus-helm</code>. The archived repo is still available for charts up to 4.0.31, but use the new repo for later releases.</p>
 </div>
-<p>接著請依照以下步驟從儲存庫取得 Milvus Helm Charts：</p>
+<p>Then fetch Milvus charts from the repository as follows:</p>
 <pre><code translate="no"><span class="hljs-variable">$ </span>helm repo update
 <button class="copy-code-btn"></button></code></pre>
-<p>您可以隨時執行此指令以取得最新的 Milvus Helm Charts。</p>
-<h2 id="Online-install" class="common-anchor-header">線上安裝<button data-href="#Online-install" class="anchor-icon" translate="no">
+<p>You can always run this command to fetch the latest Milvus Helm charts.</p>
+<h2 id="Online-install" class="common-anchor-header">Online install<button data-href="#Online-install" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -107,7 +107,7 @@ standard (default)    k8s.io/minikube-hostpath     Delete           Immediate   
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="1-Deploy-a-Milvus-cluster" class="common-anchor-header">1. 部署 Milvus 叢集<button data-href="#1-Deploy-a-Milvus-cluster" class="anchor-icon" translate="no">
+    </button></h2><h3 id="1-Deploy-a-Milvus-cluster" class="common-anchor-header">1. Deploy a Milvus cluster<button data-href="#1-Deploy-a-Milvus-cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -122,63 +122,63 @@ standard (default)    k8s.io/minikube-hostpath     Delete           Immediate   
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>安裝 Helm 圖表後，即可在 Kubernetes 上啟動 Milvus。本節將引導您部署 Milvus 叢集。</p>
+    </button></h3><p>Once you have installed the Helm chart, you can start Milvus on Kubernetes. This section guides you through deploying a Milvus cluster.</p>
 <div class="alert note" id="standalone-deployment-note">
-<p><strong>需要獨立部署嗎？</strong></p>
-<p>若您希望以獨立模式（單節點）部署 Milvus 進行開發或測試，請使用以下指令：</p>
+<p><strong>Need standalone deployment instead?</strong></p>
+<p>If you prefer to deploy Milvus in standalone mode (single node) for development or testing, use this command:</p>
 <pre><code translate="no" class="language-bash">helm install my-release zilliztech/milvus \
-  --<span class="hljs-built_in">set</span> image.all.tag=v2.6.23 \
+  --<span class="hljs-built_in">set</span> image.all.tag=v2.6.24 \
   --<span class="hljs-built_in">set</span> cluster.enabled=<span class="hljs-literal">false</span> \
   --<span class="hljs-built_in">set</span> pulsarv3.enabled=<span class="hljs-literal">false</span> \
   --<span class="hljs-built_in">set</span> standalone.messageQueue=woodpecker \
   --<span class="hljs-built_in">set</span> woodpecker.enabled=<span class="hljs-literal">true</span> \
   --<span class="hljs-built_in">set</span> streaming.enabled=<span class="hljs-literal">true</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>注意</strong>：獨立模式預設使用 Woodpecker 作為訊息佇列，並啟用 Streaming Node 元件。詳細資訊請參閱《<a href="/docs/zh-hant/v2.6.x/architecture_overview.md">架構概覽</a>》及《<a href="/docs/zh-hant/v2.6.x/use-woodpecker.md">使用 Woodpecker</a>》。</p>
+<p><strong>Note</strong>: Standalone mode uses Woodpecker as the default message queue and enables the Streaming Node component. For details, refer to the <a href="/docs/zh-hant/v2.6.x/architecture_overview.md">Architecture Overview</a> and <a href="/docs/zh-hant/v2.6.x/use-woodpecker.md">Use Woodpecker</a>.</p>
 </div>
-<p><strong>部署 Milvus 叢集：</strong></p>
-<p>以下命令將部署一個針對 v2.6.23 進行過最佳化設定的 Milvus 叢集，並使用 Woodpecker 作為推薦的訊息佇列：</p>
+<p><strong>Deploy Milvus cluster:</strong></p>
+<p>The following command deploys a Milvus cluster with optimized settings for v2.6.24, using Woodpecker as the recommended message queue:</p>
 <pre><code translate="no" class="language-bash">helm install my-release zilliztech/milvus \
-  --<span class="hljs-built_in">set</span> image.all.tag=v2.6.23 \
+  --<span class="hljs-built_in">set</span> image.all.tag=v2.6.24 \
   --<span class="hljs-built_in">set</span> pulsarv3.enabled=<span class="hljs-literal">false</span> \
   --<span class="hljs-built_in">set</span> woodpecker.enabled=<span class="hljs-literal">true</span> \
   --<span class="hljs-built_in">set</span> streaming.enabled=<span class="hljs-literal">true</span> \
   --<span class="hljs-built_in">set</span> indexNode.enabled=<span class="hljs-literal">false</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>此命令的功能：</strong></p>
+<p><strong>What this command does:</strong></p>
 <ul>
-<li>使用<strong>Woodpecker</strong>作為訊息佇列（建議採用以減少維護工作）</li>
-<li>啟用新的「<strong>串流節點 (Streaming Node</strong>)」元件以提升效能</li>
-<li>停用舊版<strong>索引節點</strong>（相關功能現由資料節點處理）</li>
-<li>停用 Pulsar，改用 Woodpecker</li>
+<li>Uses <strong>Woodpecker</strong> as the message queue (recommended for reduced maintenance)</li>
+<li>Enables the new <strong>Streaming Node</strong> component for improved performance</li>
+<li>Disables the legacy <strong>Index Node</strong> (functionality is now handled by Data Node)</li>
+<li>Disables Pulsar to use Woodpecker instead</li>
 </ul>
 <div class="alert note">
-<p><strong>Milvus 2.6.x 的架構變更：</strong></p>
+<p><strong>Architecture Changes in Milvus 2.6.x:</strong></p>
 <ul>
-<li><strong>訊息佇列</strong>：現建議使用<strong>Woodpecker</strong>（相較於 Pulsar，可減少基礎架構維護工作）</li>
-<li><strong>新元件</strong>：引入「<strong>串流節點</strong>」，並預設啟用</li>
-<li><strong>整合的元件</strong>：<strong>索引節點</strong>與<strong>資料節點</strong>合併為單一的<strong>資料節點</strong></li>
+<li><strong>Message Queue</strong>: <strong>Woodpecker</strong> is now recommended (reduces infrastructure maintenance compared to Pulsar)</li>
+<li><strong>New Component</strong>: <strong>Streaming Node</strong> is introduced and enabled by default</li>
+<li><strong>Merged Components</strong>: <strong>Index Node</strong> and <strong>Data Node</strong> are combined into a single <strong>Data Node</strong></li>
 </ul>
-<p>完整的架構詳情，請參閱《<a href="/docs/zh-hant/v2.6.x/architecture_overview.md">架構概覽</a>》。</p>
+<p>For complete architecture details, refer to the <a href="/docs/zh-hant/v2.6.x/architecture_overview.md">Architecture Overview</a>.</p>
 </div>
-<p><strong>其他訊息佇列選項：</strong></p>
-<p>若您偏好使用<strong>Pulsar</strong>（傳統選擇）而非 Woodpecker：</p>
+<p><strong>Alternative Message Queue Options:</strong></p>
+<p>If you prefer to use <strong>Pulsar</strong> (traditional choice) instead of Woodpecker:</p>
 <pre><code translate="no" class="language-bash">helm install my-release zilliztech/milvus \
-  --<span class="hljs-built_in">set</span> image.all.tag=v2.6.23 \
+  --<span class="hljs-built_in">set</span> image.all.tag=v2.6.24 \
   --<span class="hljs-built_in">set</span> streaming.enabled=<span class="hljs-literal">true</span> \
   --<span class="hljs-built_in">set</span> indexNode.enabled=<span class="hljs-literal">false</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>後續步驟：</strong>
-上述指令會以建議的設定部署 Milvus。若要投入生產環境使用：</p>
+<p><strong>Next steps:</strong>
+The command above deploys Milvus with recommended configurations. For production use:</p>
 <ul>
-<li>請使用<a href="https://milvus.io/tools/sizing">Milvus 規模估算工具</a>，根據您的資料量來優化設定</li>
-<li>請參閱《<a href="https://milvus.io/docs/system_configuration.md">Milvus 系統配置檢查清單</a>》以了解進階配置選項</li>
+<li>Use the <a href="https://milvus.io/tools/sizing">Milvus Sizing Tool</a> to optimize settings based on your data size</li>
+<li>Review <a href="https://milvus.io/docs/system_configuration.md">Milvus System Configurations Checklist</a> for advanced configuration options</li>
 </ul>
 <div class="alert note">
-<p><strong>重要注意事項：</strong></p>
+<p><strong>Important notes:</strong></p>
 <ul>
-<li><strong>版本命名</strong>：僅可使用字母、數字和連字號（不允許使用點號）</li>
-<li><strong>Kubernetes v1.25 以上版本</strong>：若遇到 PodDisruptionBudget 相關問題，請採用此解決方案：
+<li><strong>Release naming</strong>: Use only letters, numbers, and dashes (no dots allowed)</li>
+<li><strong>Kubernetes v1.25+</strong>: If you encounter PodDisruptionBudget issues, use this workaround:
 <pre><code translate="no" class="language-bash">helm install my-release zilliztech/milvus \
   --<span class="hljs-built_in">set</span> pulsar.bookkeeper.pdb.usePolicy=<span class="hljs-literal">false</span> \
   --<span class="hljs-built_in">set</span> pulsar.broker.pdb.usePolicy=<span class="hljs-literal">false</span> \
@@ -186,9 +186,9 @@ standard (default)    k8s.io/minikube-hostpath     Delete           Immediate   
   --<span class="hljs-built_in">set</span> pulsar.zookeeper.pdb.usePolicy=<span class="hljs-literal">false</span>
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<p>如需更多資訊，請參閱<a href="https://artifacthub.io/packages/helm/milvus/milvus">Milvus Helm Chart</a>及<a href="https://helm.sh/docs/">Helm 文件</a>。</p>
+<p>For more information, see <a href="https://artifacthub.io/packages/helm/milvus/milvus">Milvus Helm Chart</a> and <a href="https://helm.sh/docs/">Helm documentation</a>.</p>
 </div>
-<h3 id="2-Check-Milvus-cluster-status" class="common-anchor-header">2. 檢查 Milvus 叢集狀態<button data-href="#2-Check-Milvus-cluster-status" class="anchor-icon" translate="no">
+<h3 id="2-Check-Milvus-cluster-status" class="common-anchor-header">2. Check Milvus cluster status<button data-href="#2-Check-Milvus-cluster-status" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -203,10 +203,10 @@ standard (default)    k8s.io/minikube-hostpath     Delete           Immediate   
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>透過檢查 Pod 狀態來確認部署是否成功：</p>
+    </button></h3><p>Verify that your deployment is successful by checking the pod status:</p>
 <pre><code translate="no" class="language-bash">kubectl get pods
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>請等待所有 Pod 顯示「Running」狀態。</strong>採用 v2.6.23 配置時，您應會看到類似以下的 Pod 狀態：</p>
+<p><strong>Wait for all pods to show “Running” status.</strong> With the v2.6.24 configuration, you should see pods similar to:</p>
 <pre><code translate="no">NAME                                             READY  STATUS   RESTARTS  AGE
 my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><span class="hljs-operator">-</span>etcd<span class="hljs-number">-0</span>                                <span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">1</span>    <span class="hljs-keyword">Running</span>   <span class="hljs-number">0</span>        <span class="hljs-number">3</span>m23s
 my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><span class="hljs-operator">-</span>etcd<span class="hljs-number">-1</span>                                <span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">1</span>    <span class="hljs-keyword">Running</span>   <span class="hljs-number">0</span>        <span class="hljs-number">3</span>m23s
@@ -228,13 +228,13 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
 my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><span class="hljs-operator">-</span>pulsar<span class="hljs-operator">-</span>zookeeper<span class="hljs-number">-0</span>                    <span class="hljs-number">1</span><span class="hljs-operator">/</span><span class="hljs-number">1</span>    <span class="hljs-keyword">Running</span>   <span class="hljs-number">0</span>        <span class="hljs-number">3</span>m23s
 my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><span class="hljs-operator">-</span>pulsar<span class="hljs-operator">-</span>zookeeper<span class="hljs-operator">-</span>metadata<span class="hljs-number">-98</span>zbr       <span class="hljs-number">0</span><span class="hljs-operator">/</span><span class="hljs-number">1</span>   Completed  <span class="hljs-number">0</span>        <span class="hljs-number">3</span>m24s
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>需驗證的關鍵元件：</strong></p>
+<p><strong>Key components to verify:</strong></p>
 <ul>
-<li><strong>Milvus 元件</strong>：<code translate="no">mixcoord</code> 、<code translate="no">datanode</code> 、<code translate="no">querynode</code> 、<code translate="no">proxy</code> 、<code translate="no">streaming-node</code></li>
-<li><strong>依賴項</strong>：<code translate="no">etcd</code> （元資料）、<code translate="no">minio</code> （物件儲存）、<code translate="no">pulsar</code> （訊息佇列）</li>
+<li><strong>Milvus components</strong>: <code translate="no">mixcoord</code>, <code translate="no">datanode</code>, <code translate="no">querynode</code>, <code translate="no">proxy</code>, <code translate="no">streaming-node</code></li>
+<li><strong>Dependencies</strong>: <code translate="no">etcd</code> (metadata), <code translate="no">minio</code> (object storage), <code translate="no">pulsar</code> (message queue)</li>
 </ul>
-<p>設定完畢端口轉發後（請參閱下一步），您亦可透過<code translate="no">http://127.0.0.1:9091/webui/</code> 存取<strong>Milvus WebUI</strong>。詳情請參閱<a href="/docs/zh-hant/v2.6.x/milvus-webui.md">Milvus WebUI</a>。</p>
-<h3 id="3-Connect-to-Milvus" class="common-anchor-header">3. 連線至 Milvus<button data-href="#3-Connect-to-Milvus" class="anchor-icon" translate="no">
+<p>You can also access the <strong>Milvus WebUI</strong> at <code translate="no">http://127.0.0.1:9091/webui/</code> once port forwarding is set up (see next step). For details, refer to <a href="/docs/zh-hant/v2.6.x/milvus-webui.md">Milvus WebUI</a>.</p>
+<h3 id="3-Connect-to-Milvus" class="common-anchor-header">3. Connect to Milvus<button data-href="#3-Connect-to-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -249,30 +249,30 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>若要在 Kubernetes 外部連線至您的 Milvus 叢集，您需要設定端口轉發。</p>
-<p><strong>設定埠轉發：</strong></p>
+    </button></h3><p>To connect to your Milvus cluster from outside Kubernetes, you need to set up port forwarding.</p>
+<p><strong>Set up port forwarding:</strong></p>
 <pre><code translate="no" class="language-bash">kubectl port-forward service/my-release-milvus 27017:19530
 <button class="copy-code-btn"></button></code></pre>
-<p>此指令會將您的本地埠<code translate="no">27017</code> 轉發至 Milvus 埠<code translate="no">19530</code> 。您應會看到：</p>
+<p>This command forwards your local port <code translate="no">27017</code> to Milvus port <code translate="no">19530</code>. You should see:</p>
 <pre><code translate="no"><span class="hljs-attribute">Forwarding</span> from <span class="hljs-number">127.0.0.1:27017</span> -&gt; <span class="hljs-number">19530</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>連線詳細資訊：</strong></p>
+<p><strong>Connection details:</strong></p>
 <ul>
-<li><strong>本地端連線</strong>：<code translate="no">localhost:27017</code></li>
-<li><strong>Milvus 預設埠</strong>：<code translate="no">19530</code></li>
+<li><strong>Local connection</strong>: <code translate="no">localhost:27017</code></li>
+<li><strong>Milvus default port</strong>: <code translate="no">19530</code></li>
 </ul>
 <div class="alert note">
-<p><strong>端口轉發選項：</strong></p>
+<p><strong>Options for port forwarding:</strong></p>
 <ul>
-<li><strong>自動指派本機埠</strong>：使用<code translate="no">:19530</code> 取代<code translate="no">27017:19530</code> ，讓 kubectl 自行選擇可用埠</li>
-<li><strong>監聽所有介面</strong>：新增<code translate="no">--address 0.0.0.0</code> 以允許其他機器建立連線：
+<li><strong>Auto-assign local port</strong>: Use <code translate="no">:19530</code> instead of <code translate="no">27017:19530</code> to let kubectl choose an available port</li>
+<li><strong>Listen on all interfaces</strong>: Add <code translate="no">--address 0.0.0.0</code> to allow connections from other machines:
 <pre><code translate="no" class="language-bash">kubectl port-forward --address 0.0.0.0 service/my-release-milvus 27017:19530
 <button class="copy-code-btn"></button></code></pre></li>
-<li><strong>獨立部署</strong>：若使用獨立模式，服務名稱保持不變</li>
+<li><strong>Standalone deployment</strong>: If using standalone mode, the service name remains the same</li>
 </ul>
 </div>
-<p>使用 Milvus 期間<strong>請保持此終端機開啟</strong>。現在您可以透過任何 Milvus SDK 連線至<code translate="no">localhost:27017</code> 來存取 Milvus。</p>
-<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">（可選）更新 Milvus 設定<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
+<p><strong>Keep this terminal open</strong> while using Milvus. You can now connect to Milvus using any Milvus SDK at <code translate="no">localhost:27017</code>.</p>
+<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Optional) Update Milvus configurations<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -287,28 +287,28 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您可以透過編輯<code translate="no">values.yaml</code> 檔案並重新套用，來更新 Milvus 叢集的設定。</p>
+    </button></h2><p>You can update the configurations of your Milvus cluster by editing the <code translate="no">values.yaml</code> file and applying it again.</p>
 <ol>
-<li><p>建立一個包含所需設定的<code translate="no">values.yaml</code> 檔案。</p>
-<p>以下說明假設您要啟用<code translate="no">proxy.http</code> 。</p>
+<li><p>Create a <code translate="no">values.yaml</code> file with the desired configurations.</p>
+<p>The following assumes that you want to enable <code translate="no">proxy.http</code>.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">extraConfigFiles:</span>
   <span class="hljs-attr">user.yaml:</span> <span class="hljs-string">|+
     proxy:
       http:
         enabled: true
 </span><button class="copy-code-btn"></button></code></pre>
-<p>有關適用的設定項目，請參閱「<a href="/docs/zh-hant/v2.6.x/system_configuration.md">系統設定</a>」。</p></li>
-<li><p>套用<code translate="no">values.yaml</code> 檔案。</p></li>
+<p>For applicable configuration items, refer to <a href="/docs/zh-hant/v2.6.x/system_configuration.md">System Configuration</a>.</p></li>
+<li><p>Apply the <code translate="no">values.yaml</code> file.</p></li>
 </ol>
 <pre><code translate="no" class="language-shell">helm upgrade my-release zilliztech/milvus --namespace my-namespace -f values.yaml
 <button class="copy-code-btn"></button></code></pre>
 <ol>
-<li><p>檢查已更新的設定。</p>
+<li><p>Check the updated configurations.</p>
 <pre><code translate="no" class="language-shell">helm get values my-release
 <button class="copy-code-btn"></button></code></pre>
-<p>輸出結果應顯示已更新的設定。</p></li>
+<p>The output should show the updated configurations.</p></li>
 </ol>
-<h2 id="Access-Milvus-WebUI" class="common-anchor-header">存取 Milvus WebUI<button data-href="#Access-Milvus-WebUI" class="anchor-icon" translate="no">
+<h2 id="Access-Milvus-WebUI" class="common-anchor-header">Access Milvus WebUI<button data-href="#Access-Milvus-WebUI" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -323,13 +323,13 @@ my<span class="hljs-operator">-</span><span class="hljs-keyword">release</span><
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus 內建名為 Milvus WebUI 的圖形化使用者介面工具，您可透過瀏覽器存取。Milvus WebUI 透過簡單直覺的介面，提升系統的可觀察性。您可以使用 Milvus WebUI 觀察 Milvus 各元件及依賴項的統計資料與指標、檢查資料庫與收集項的詳細資訊，並列出詳細的 Milvus 設定。 有關 Milvus WebUI 的詳細資訊，請參閱<a href="/docs/zh-hant/v2.6.x/milvus-webui.md">Milvus WebUI</a></p>
-<p>若要啟用對 Milvus WebUI 的存取，您需要將代理 Pod 進行端口轉發至本機端口。</p>
+    </button></h2><p>Milvus ships with a built-in GUI tool called Milvus WebUI that you can access through your browser. Milvus Web UI enhances system observability with a simple and intuitive interface. You can use Milvus Web UI to observe the statistics and metrics of the components and dependencies of Milvus, check database and collection details, and list detailed Milvus configurations. For details about Milvus Web UI, see <a href="/docs/zh-hant/v2.6.x/milvus-webui.md">Milvus WebUI</a></p>
+<p>To enable the access to the Milvus Web UI, you need to port-forward the proxy pod to a local port.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl port-forward --address 0.0.0.0 service/my-release-milvus 27018:9091</span>
 Forwarding from 0.0.0.0:27018 -&gt; 9091
 <button class="copy-code-btn"></button></code></pre>
-<p>現在，您可透過<code translate="no">http://localhost:27018</code> 存取 Milvus WebUI。</p>
-<h2 id="Offline-install" class="common-anchor-header">離線安裝<button data-href="#Offline-install" class="anchor-icon" translate="no">
+<p>Now, you can access Milvus Web UI at <code translate="no">http://localhost:27018</code>.</p>
+<h2 id="Offline-install" class="common-anchor-header">Offline install<button data-href="#Offline-install" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -344,8 +344,8 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若您身處網路受限環境，請依照本節所述步驟啟動 Milvus 叢集。</p>
-<h3 id="1-Get-Milvus-manifest" class="common-anchor-header">1. 取得 Milvus 配置檔<button data-href="#1-Get-Milvus-manifest" class="anchor-icon" translate="no">
+    </button></h2><p>If you are in a network-restricted environment, follow the procedure in this section to start a Milvus cluster.</p>
+<h3 id="1-Get-Milvus-manifest" class="common-anchor-header">1. Get Milvus manifest<button data-href="#1-Get-Milvus-manifest" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -360,17 +360,17 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>執行以下指令以取得 Milvus 配置檔。</p>
+    </button></h3><p>Run the following command to get the Milvus manifest.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">helm template my-release zilliztech/milvus &gt; milvus_manifest.yaml</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>上述命令會為 Milvus 叢集渲染圖表模板，並將輸出結果儲存至名為<code translate="no">milvus_manifest.yaml</code> 的 manifests 檔案中。透過此 manifests 檔案，您可以安裝一個 Milvus 叢集，其各組件與依賴項將分別置於不同的 Pod 中。</p>
+<p>The above command renders chart templates for a Milvus cluster and saves the output to a manifest file named <code translate="no">milvus_manifest.yaml</code>. Using this manifest, you can install a Milvus cluster with its components and dependencies in separate pods.</p>
 <div class="alert note">
 <ul>
-<li>若要以獨立模式安裝 Milvus 實例（即所有 Milvus 元件均包含於單一 Pod 中），則應執行<code translate="no">helm template my-release --set cluster.enabled=false --set etcd.replicaCount=1 --set minio.mode=standalone --set pulsarv3.enabled=false zilliztech/milvus &gt; milvus_manifest.yaml</code> ，以生成獨立模式下 Milvus 實例的圖表範本。</li>
-<li>若要變更 Milvus 設定，請下載 <a href="https://raw.githubusercontent.com/milvus-io/milvus-helm/master/charts/milvus/values.yaml"><code translate="no">value.yaml</code></a> 範本，在其中填入您所需的設定，並使用<code translate="no">helm template -f values.yaml my-release zilliztech/milvus &gt; milvus_manifest.yaml</code> 據此渲染對應的宣言檔。</li>
+<li>To install a Milvus instance in the standalone mode where all Milvus components are contained within a single pod, you should run <code translate="no">helm template my-release --set cluster.enabled=false --set etcd.replicaCount=1 --set minio.mode=standalone --set pulsarv3.enabled=false zilliztech/milvus &gt; milvus_manifest.yaml</code> instead to render chart templates for a Milvus instance in a standalone mode.</li>
+<li>To change Milvus configurations, download the <a href="https://raw.githubusercontent.com/milvus-io/milvus-helm/master/charts/milvus/values.yaml"><code translate="no">value.yaml</code></a> template, place your desired settings in it, and use <code translate="no">helm template -f values.yaml my-release zilliztech/milvus &gt; milvus_manifest.yaml</code> to render the manifest accordingly.</li>
 </ul>
 </div>
-<h3 id="2-Download-image-pulling-script" class="common-anchor-header">2. 下載映像拉取腳本<button data-href="#2-Download-image-pulling-script" class="anchor-icon" translate="no">
+<h3 id="2-Download-image-pulling-script" class="common-anchor-header">2. Download image-pulling script<button data-href="#2-Download-image-pulling-script" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -385,11 +385,11 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>映像拉取腳本是以 Python 開發的。您應將該腳本及其依賴項一併從<code translate="no">requirement.txt</code> 檔案中下載。</p>
+    </button></h3><p>The image-pulling script is developed in Python. You should download the script along with its dependencies in the <code translate="no">requirement.txt</code> file.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://raw.githubusercontent.com/milvus-io/milvus/master/deployments/offline/requirements.txt</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">wget https://raw.githubusercontent.com/milvus-io/milvus/master/deployments/offline/save_image.py</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="3-Pull-and-save-images" class="common-anchor-header">3. 拉取並儲存映像檔<button data-href="#3-Pull-and-save-images" class="anchor-icon" translate="no">
+<h3 id="3-Pull-and-save-images" class="common-anchor-header">3. Pull and save images<button data-href="#3-Pull-and-save-images" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -404,12 +404,12 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>執行以下指令以拉取並儲存所需的影像。</p>
+    </button></h3><p>Run the following command to pull and save the required images.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip3 install -r requirements.txt</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">python3 save_image.py --manifest milvus_manifest.yaml</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>圖片將被拉取至當前目錄下名為<code translate="no">images</code> 的子資料夾中。</p>
-<h3 id="4-Load-images" class="common-anchor-header">4. 載入圖片<button data-href="#4-Load-images" class="anchor-icon" translate="no">
+<p>The images are pulled into a sub-folder named <code translate="no">images</code> in the current directory.</p>
+<h3 id="4-Load-images" class="common-anchor-header">4. Load images<button data-href="#4-Load-images" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -424,10 +424,10 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>現在您可以按照以下步驟，將影像載入至網路受限環境中的主機：</p>
+    </button></h3><p>You can now load the images to the hosts in the network-restricted environment as follows:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-keyword">for</span> image <span class="hljs-keyword">in</span> $(find . -<span class="hljs-built_in">type</span> f -name <span class="hljs-string">&quot;*.tar.gz&quot;</span>) ; <span class="hljs-keyword">do</span> gunzip -c <span class="hljs-variable">$image</span> | docker load; <span class="hljs-keyword">done</span></span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="5-Deploy-Milvus" class="common-anchor-header">5. 部署 Milvus<button data-href="#5-Deploy-Milvus" class="anchor-icon" translate="no">
+<h3 id="5-Deploy-Milvus" class="common-anchor-header">5. Deploy Milvus<button data-href="#5-Deploy-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -444,8 +444,8 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
       </svg>
     </button></h3><pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">kubectl apply -f milvus_manifest.yaml</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>至此，您可以依照線上安裝指南的步驟<a href="#2-Check-Milvus-cluster-status">2</a>和<a href="#3-Forward-a-local-port-to-Milvus">3，</a>檢查叢集狀態並將本地端埠轉發至 Milvus。</p>
-<h2 id="Upgrade-running-Milvus-cluster" class="common-anchor-header">升級正在運行的 Milvus 叢集<button data-href="#Upgrade-running-Milvus-cluster" class="anchor-icon" translate="no">
+<p>Till now, you can follow steps <a href="#2-Check-Milvus-cluster-status">2</a> and <a href="#3-Forward-a-local-port-to-Milvus">3</a> of the online install to check the cluster status and forward a local port to Milvus.</p>
+<h2 id="Upgrade-running-Milvus-cluster" class="common-anchor-header">Upgrade running Milvus cluster<button data-href="#Upgrade-running-Milvus-cluster" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -460,11 +460,11 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>執行以下指令，將您正在運行的 Milvus 叢集升級至最新版本：</p>
+    </button></h2><p>Run the following command to upgrade your running Milvus cluster to the latest version:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">helm repo update</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">helm upgrade my-release zilliztech/milvus --reset-then-reuse-values</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Uninstall-Milvus" class="common-anchor-header">解除安裝 Milvus<button data-href="#Uninstall-Milvus" class="anchor-icon" translate="no">
+<h2 id="Uninstall-Milvus" class="common-anchor-header">Uninstall Milvus<button data-href="#Uninstall-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -479,10 +479,10 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>執行以下指令以解除安裝 Milvus。</p>
+    </button></h2><p>Run the following command to uninstall Milvus.</p>
 <pre><code translate="no" class="language-bash">$ helm uninstall my-release
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Whats-next" class="common-anchor-header">接下來該做什麼<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -497,29 +497,29 @@ Forwarding from 0.0.0.0:27018 -&gt; 9091
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在 Docker 中安裝 Milvus 後，您可以：</p>
+    </button></h2><p>Having installed Milvus in Docker, you can:</p>
 <ul>
-<li><p>查看「<a href="/docs/zh-hant/v2.6.x/quickstart.md">Hello Milvus</a>」以了解 Milvus 的功能。</p></li>
-<li><p>學習 Milvus 的基本操作：</p>
+<li><p>Check <a href="/docs/zh-hant/v2.6.x/quickstart.md">Hello Milvus</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/zh-hant/v2.6.x/manage_databases.md">管理資料庫</a></li>
-<li><a href="/docs/zh-hant/v2.6.x/manage-collections.md">管理集合</a></li>
-<li><a href="/docs/zh-hant/v2.6.x/manage-partitions.md">管理分區</a></li>
-<li><a href="/docs/zh-hant/v2.6.x/insert-update-delete.md">插入、Upsert 與刪除</a></li>
-<li><a href="/docs/zh-hant/v2.6.x/single-vector-search.md">單向量搜尋</a></li>
-<li><a href="/docs/zh-hant/v2.6.x/multi-vector-search.md">混合搜尋</a></li>
+<li><a href="/docs/zh-hant/v2.6.x/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/zh-hant/v2.6.x/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/zh-hant/v2.6.x/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/zh-hant/v2.6.x/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/zh-hant/v2.6.x/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/zh-hant/v2.6.x/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p><a href="/docs/zh-hant/v2.6.x/upgrade_milvus_cluster-helm.md">使用 Helm Chart 升級 Milvus</a>。</p></li>
-<li><p><a href="/docs/zh-hant/v2.6.x/scaleout.md">擴展您的 Milvus 叢集</a>。</p></li>
-<li><p>在雲端部署您的 Milvus 叢集：</p>
+<li><p><a href="/docs/zh-hant/v2.6.x/upgrade_milvus_cluster-helm.md">Upgrade Milvus Using Helm Chart</a>.</p></li>
+<li><p><a href="/docs/zh-hant/v2.6.x/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvus cluster on clouds:</p>
 <ul>
 <li><a href="/docs/zh-hant/v2.6.x/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/zh-hant/v2.6.x/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/zh-hant/v2.6.x/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>探索<a href="/docs/zh-hant/v2.6.x/milvus-webui.md">Milvus WebUI</a>，這是專為 Milvus 可觀察性與管理設計的直觀網頁介面。</p></li>
-<li><p>探索<a href="/docs/zh-hant/v2.6.x/milvus_backup_overview.md">Milvus Backup</a>，這是一款用於 Milvus 資料備份的開源工具。</p></li>
-<li><p>探索<a href="/docs/zh-hant/v2.6.x/birdwatcher_overview.md">Birdwatcher</a>——一款用於 Milvus 除錯及動態配置更新的開源工具。</p></li>
-<li><p>探索<a href="https://github.com/zilliztech/attu">Attu，</a>這是一款用於直觀管理 Milvus 的開源 GUI 工具。</p></li>
-<li><p><a href="/docs/zh-hant/v2.6.x/monitor.md">使用 Prometheus 監控 Milvus</a>。</p></li>
+<li><p>Explore <a href="/docs/zh-hant/v2.6.x/milvus-webui.md">Milvus WebUI</a>, an intuitive web interface for Milvus observability and management.</p></li>
+<li><p>Explore <a href="/docs/zh-hant/v2.6.x/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/zh-hant/v2.6.x/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/zh-hant/v2.6.x/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

@@ -1,17 +1,17 @@
 ---
 id: language-identifier.md
-title: Pengidentifikasi BahasaCompatible with Milvus v2.5.15+
+title: Language IdentifierCompatible with Milvus v2.5.15+
 summary: >-
-  Pengenal_bahasa adalah pengenal khusus yang dirancang untuk meningkatkan
-  kemampuan pencarian teks Milvus dengan mengotomatiskan proses analisis bahasa.
-  Fungsi utamanya adalah untuk mendeteksi bahasa bidang teks dan kemudian secara
-  dinamis menerapkan penganalisis yang telah dikonfigurasi sebelumnya yang
-  paling sesuai untuk bahasa tersebut. Hal ini sangat berharga untuk aplikasi
-  yang menangani berbagai bahasa, karena menghilangkan kebutuhan untuk penetapan
-  bahasa secara manual berdasarkan per input.
+  The language_identifier is a specialized tokenizer designed to enhance the
+  text search capabilities of Milvus by automating the language analysis
+  process. Its primary function is to detect the language of a text field and
+  then dynamically apply a pre-configured analyzer that is most suitable for
+  that language. This is particularly valuable for applications that handle a
+  variety of languages, as it eliminates the need for manual language assignment
+  on a per-input basis.
 beta: Milvus v2.5.15+
 ---
-<h1 id="Language-Identifier" class="common-anchor-header">Pengidentifikasi Bahasa<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.5.15+</span><button data-href="#Language-Identifier" class="anchor-icon" translate="no">
+<h1 id="Language-Identifier" class="common-anchor-header">Language Identifier<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus v2.5.15+</span><button data-href="#Language-Identifier" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,9 +26,9 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">language_identifier</code> adalah tokenizer khusus yang dirancang untuk meningkatkan kemampuan pencarian teks Milvus dengan mengotomatiskan proses analisis bahasa. Fungsi utamanya adalah untuk mendeteksi bahasa bidang teks dan kemudian secara dinamis menerapkan penganalisis yang telah dikonfigurasi sebelumnya yang paling sesuai untuk bahasa tersebut. Hal ini sangat berharga untuk aplikasi yang menangani berbagai bahasa, karena menghilangkan kebutuhan untuk penetapan bahasa secara manual berdasarkan per input.</p>
-<p>Dengan merutekan data teks secara cerdas ke jalur pemrosesan yang sesuai, <code translate="no">language_identifier</code> merampingkan konsumsi data multibahasa dan memastikan tokenisasi yang akurat untuk operasi pencarian dan pengambilan selanjutnya.</p>
-<h2 id="Language-detection-workflow" class="common-anchor-header">Alur kerja deteksi bahasa<button data-href="#Language-detection-workflow" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">language_identifier</code> is a specialized tokenizer designed to enhance the text search capabilities of Milvus by automating the language analysis process. Its primary function is to detect the language of a text field and then dynamically apply a pre-configured analyzer that is most suitable for that language. This is particularly valuable for applications that handle a variety of languages, as it eliminates the need for manual language assignment on a per-input basis.</p>
+<p>By intelligently routing text data to the appropriate processing pipeline, the <code translate="no">language_identifier</code> streamlines multilingual data ingestion and ensures accurate tokenization for subsequent search and retrieval operations.</p>
+<h2 id="Language-detection-workflow" class="common-anchor-header">Language detection workflow<button data-href="#Language-detection-workflow" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,22 +43,24 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">language_identifier</code> melakukan serangkaian langkah untuk memproses string teks, sebuah alur kerja yang sangat penting bagi pengguna untuk memahami cara mengonfigurasinya dengan benar.</p>
+    </button></h2><p>The <code translate="no">language_identifier</code> performs a series of steps to process a text string, a workflow that is critical for users to understand how to configure it correctly.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="/docs/v2.6.x/assets/language-detection-workflow.png" alt="Language Detection Workflow" class="doc-image" id="language-detection-workflow" />
-   </span> <span class="img-wrapper"> <span>Alur Kerja Deteksi Bahasa</span> </span></p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v2.6.x/assets/language-detection-workflow.png" alt="Language Detection Workflow" class="doc-image" id="language-detection-workflow" />
+    <span>Language Detection Workflow</span>
+  </span>
+</p>
 <ol>
-<li><p><strong>Masukan:</strong> Alur kerja dimulai dengan string teks sebagai masukan.</p></li>
-<li><p><strong>Deteksi bahasa:</strong> String ini pertama-tama diteruskan ke mesin pendeteksi bahasa, yang mencoba mengidentifikasi bahasa. Milvus mendukung dua mesin: <strong>whatlang</strong> dan <strong>lingua</strong>.</p></li>
-<li><p><strong>Pemilihan penganalisis:</strong></p>
+<li><p><strong>Input:</strong> The workflow begins with a text string as input.</p></li>
+<li><p><strong>Language detection:</strong> This string is first passed to a language detection engine, which attempts to identify the language. Milvus supports two engines: <strong>whatlang</strong> and <strong>lingua</strong>.</p></li>
+<li><p><strong>Analyzer selection:</strong></p>
 <ul>
-<li><p><strong>Sukses:</strong> Jika bahasa berhasil dideteksi, sistem akan memeriksa apakah nama bahasa yang terdeteksi memiliki penganalisis yang sesuai yang dikonfigurasikan dalam kamus <code translate="no">analyzers</code> Anda. Jika ditemukan kecocokan, sistem akan menerapkan penganalisis yang ditentukan pada teks masukan. Sebagai contoh, teks "Mandarin" yang terdeteksi akan dialihkan ke tokenizer <code translate="no">jieba</code>.</p></li>
-<li><p><strong>Mundur:</strong> Jika pendeteksian gagal, atau jika bahasa berhasil dideteksi namun Anda belum menyediakan penganalisis khusus untuk bahasa tersebut, sistem akan beralih ke <strong>penganalisis default</strong> yang telah dikonfigurasi sebelumnya. Ini adalah titik klarifikasi yang penting; penganalisis <code translate="no">default</code> adalah fallback untuk kegagalan deteksi dan ketiadaan penganalisis yang cocok.</p></li>
+<li><p><strong>Success:</strong> If the language is successfully detected, the system checks if the detected language name has a corresponding analyzer configured in your <code translate="no">analyzers</code> dictionary. If a match is found, the system applies the specified analyzer to the input text. For example, a detected “Mandarin” text would be routed to a <code translate="no">jieba</code> tokenizer.</p></li>
+<li><p><strong>Fallback:</strong> If detection fails, or if a language is successfully detected but you have not provided a specific analyzer for it, the system defaults to a pre-configured <strong>default analyzer</strong>. This is a crucial point of clarification; the <code translate="no">default</code> analyzer is a fallback for both detection failure and an absence of a matching analyzer.</p></li>
 </ul></li>
 </ol>
-<p>Setelah penganalisis yang sesuai dipilih, teks diberi tanda dan diproses, menyelesaikan alur kerja.</p>
-<h2 id="Available-language-detection-engines" class="common-anchor-header">Mesin pendeteksi bahasa yang tersedia<button data-href="#Available-language-detection-engines" class="anchor-icon" translate="no">
+<p>After the appropriate analyzer is chosen, the text is tokenized and processed, completing the workflow.</p>
+<h2 id="Available-language-detection-engines" class="common-anchor-header">Available language detection engines<button data-href="#Available-language-detection-engines" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -73,37 +75,37 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus menawarkan pilihan antara dua mesin pendeteksi bahasa:</p>
+    </button></h2><p>Milvus offers a choice between two language detection engines:</p>
 <ul>
 <li><p><a href="https://github.com/greyblake/whatlang-rs">whatlang</a></p></li>
 <li><p><a href="https://github.com/pemistahl/lingua">lingua</a></p></li>
 </ul>
-<p>Pemilihannya tergantung pada kinerja spesifik dan persyaratan akurasi aplikasi Anda.</p>
+<p>The selection depends on the specific performance and accuracy requirements of your application.</p>
 <table>
    <tr>
-     <th><p>Mesin</p></th>
-     <th><p>Kecepatan</p></th>
-     <th><p>Akurasi</p></th>
-     <th><p>Format Keluaran</p></th>
-     <th><p>Terbaik Untuk</p></th>
+     <th><p>Engine</p></th>
+     <th><p>Speed</p></th>
+     <th><p>Accuracy</p></th>
+     <th><p>Output Format</p></th>
+     <th><p>Best For</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">whatlang</code></p></td>
-     <td><p>Cepat</p></td>
-     <td><p>Baik untuk sebagian besar bahasa</p></td>
-     <td><p>Nama bahasa (misalnya, <code translate="no">"English"</code>, <code translate="no">"Mandarin"</code>, <code translate="no">"Japanese"</code>)</p><p><strong>Referensi</strong> <a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">Kolom bahasa dalam tabel bahasa yang didukung</a></p></td>
-     <td><p>Aplikasi waktu nyata di mana kecepatan sangat penting</p></td>
+     <td><p>Fast</p></td>
+     <td><p>Good for most languages</p></td>
+     <td><p>Language names (e.g., <code translate="no">"English"</code>,  <code translate="no">"Mandarin"</code>, <code translate="no">"Japanese"</code>)</p><p><strong>Reference:</strong> <a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">Language column in supported languages table</a></p></td>
+     <td><p>Real-time applications where speed is critical</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">lingua</code></p></td>
-     <td><p>Lebih lambat</p></td>
-     <td><p>Ketepatan yang lebih tinggi, terutama untuk teks pendek</p></td>
-     <td><p>Nama dalam bahasa Inggris (misalnya, <code translate="no">"English"</code>, <code translate="no">"Chinese"</code>, <code translate="no">"Japanese"</code>)</p><p><strong>Referensi:</strong> <a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">Daftar bahasa yang didukung</a></p></td>
-     <td><p>Aplikasi yang mengutamakan keakuratan daripada kecepatan</p></td>
+     <td><p>Slower</p></td>
+     <td><p>Higher precision, especially for short texts</p></td>
+     <td><p>English language names (e.g., <code translate="no">"English"</code>, <code translate="no">"Chinese"</code>, <code translate="no">"Japanese"</code>)</p><p><strong>Reference:</strong> <a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">Supported languages list</a></p></td>
+     <td><p>Applications where accuracy is more important than speed</p></td>
    </tr>
 </table>
-<p>Pertimbangan penting adalah konvensi penamaan mesin. Meskipun kedua mesin mengembalikan nama bahasa dalam bahasa Inggris, mereka menggunakan istilah yang berbeda untuk beberapa bahasa (misalnya, <code translate="no">whatlang</code> mengembalikan <code translate="no">Mandarin</code>, sementara <code translate="no">lingua</code> mengembalikan <code translate="no">Chinese</code>). Kunci penganalisis harus sama persis dengan nama yang dikembalikan oleh mesin pendeteksi yang dipilih.</p>
-<h2 id="Configuration" class="common-anchor-header">Konfigurasi<button data-href="#Configuration" class="anchor-icon" translate="no">
+<p>A critical consideration is the engine’s naming convention. While both engines return language names in English, they use different terms for some languages (e.g., <code translate="no">whatlang</code> returns <code translate="no">Mandarin</code>, while <code translate="no">lingua</code> returns <code translate="no">Chinese</code>). The analyzer’s key must be an exact match to the name returned by the chosen detection engine.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -118,8 +120,8 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Untuk menggunakan tokenizer <code translate="no">language_identifier</code> dengan benar, langkah-langkah berikut harus diambil untuk menentukan dan menerapkan konfigurasinya.</p>
-<h3 id="Step-1-Choose-your-languages-and-analyzers" class="common-anchor-header">Langkah 1: Pilih bahasa dan penganalisis Anda<button data-href="#Step-1-Choose-your-languages-and-analyzers" class="anchor-icon" translate="no">
+    </button></h2><p>To correctly use the <code translate="no">language_identifier</code> tokenizer, the following steps must be taken to define and apply its configuration.</p>
+<h3 id="Step-1-Choose-your-languages-and-analyzers" class="common-anchor-header">Step 1: Choose your languages and analyzers<button data-href="#Step-1-Choose-your-languages-and-analyzers" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,43 +136,43 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Inti dari pengaturan <code translate="no">language_identifier</code> adalah menyesuaikan penganalisis Anda dengan bahasa tertentu yang Anda rencanakan untuk didukung. Sistem bekerja dengan mencocokkan bahasa yang terdeteksi dengan penganalisis yang tepat, sehingga langkah ini sangat penting untuk pemrosesan teks yang akurat.</p>
-<p>Di bawah ini adalah pemetaan bahasa yang direkomendasikan ke penganalisis Milvus yang sesuai. Tabel ini berfungsi sebagai jembatan antara output mesin pendeteksi bahasa dan alat terbaik untuk pekerjaan tersebut.</p>
+    </button></h3><p>The core of setting up the <code translate="no">language_identifier</code> is tailoring your analyzers to the specific languages you plan to support. The system works by matching the detected language with the correct analyzer, so this step is crucial for accurate text processing.</p>
+<p>Below is a recommended mapping of languages to suitable Milvus analyzers. This table serves as a bridge between the output of the language detection engine and the best tool for the job.</p>
 <table>
    <tr>
-     <th><p>Bahasa (Keluaran Detektor)</p></th>
-     <th><p>Penganalisis yang Direkomendasikan</p></th>
-     <th><p>Deskripsi</p></th>
+     <th><p>Language (Detector Output)</p></th>
+     <th><p>Recommended Analyzer</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">English</code></p></td>
      <td><p><code translate="no">type: english</code></p></td>
-     <td><p>Tokenisasi bahasa Inggris standar dengan pemangkasan dan penyaringan kata henti.</p></td>
+     <td><p>Standard English tokenization with stemming and stop-word filtering.</p></td>
    </tr>
    <tr>
-     <td><p><code translate="no">Mandarin</code> (via whatlang) atau <code translate="no">Chinese</code> (via lingua)</p></td>
+     <td><p><code translate="no">Mandarin</code> (via whatlang) or <code translate="no">Chinese</code> (via lingua)</p></td>
      <td><p><code translate="no">tokenizer: jieba</code></p></td>
-     <td><p>Segmentasi kata dalam bahasa Mandarin untuk teks yang tidak dibatasi spasi.</p></td>
+     <td><p>Chinese word segmentation for non-space-delimited text.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">Japanese</code></p></td>
      <td><p><code translate="no">tokenizer: icu</code></p></td>
-     <td><p>Tokenisasi yang kuat untuk skrip yang kompleks, termasuk bahasa Jepang.</p></td>
+     <td><p>A robust tokenizer for complex scripts, including Japanese.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">French</code></p></td>
      <td><p><code translate="no">type: standard</code>, <code translate="no">filter: ["lowercase", "asciifolding"]</code></p></td>
-     <td><p>Konfigurasi khusus yang menangani aksen dan karakter bahasa Prancis.</p></td>
+     <td><p>A custom configuration that handles French accents and characters.</p></td>
    </tr>
 </table>
 <div class="alert note">
 <ul>
-<li><p><strong>Pencocokan adalah Kuncinya:</strong> Nama penganalisis Anda <strong>harus sama persis</strong> dengan keluaran bahasa mesin pendeteksi. Misalnya, jika Anda menggunakan <code translate="no">whatlang</code>, kunci untuk teks bahasa Mandarin harus <code translate="no">Mandarin</code>.</p></li>
-<li><p><strong>Praktik terbaik:</strong> Tabel di atas menyediakan konfigurasi yang direkomendasikan untuk beberapa bahasa yang umum, tetapi ini bukan daftar yang lengkap. Untuk panduan yang lebih komprehensif dalam memilih penganalisis, lihat <a href="/docs/id/choose-the-right-analyzer-for-your-use-case.md">Memilih Penganalisis yang Tepat untuk Kasus Penggunaan Anda</a>.</p></li>
-<li><p><strong>Keluaran detektor</strong>: Untuk daftar lengkap nama bahasa yang dikembalikan oleh mesin pendeteksi, lihat <a href="https://github.com/greyblake/whatlang-rs">tabel bahasa yang didukung Whatlang</a> dan <a href="https://github.com/pemistahl/lingua-rs">daftar bahasa yang didukung Lingua</a>.</p></li>
+<li><p><strong>Matching is Key:</strong> The name of your analyzer <strong>must exactly match</strong> the language output of the detection engine. For instance, if you’re using <code translate="no">whatlang</code>, the key for Chinese text must be <code translate="no">Mandarin</code>.</p></li>
+<li><p><strong>Best practices:</strong> The table above provides recommended configurations for a few common languages, but it is not an exhaustive list. For a more comprehensive guide on choosing analyzers, refer to <a href="/docs/id/v2.6.x/choose-the-right-analyzer-for-your-use-case.md">Choose the Right Analyzer for Your Use Case</a>.</p></li>
+<li><p><strong>Detector output</strong>: For a complete list of language names returned by the detection engines, refer to <a href="https://github.com/greyblake/whatlang-rs">Whatlang supported languages table</a> and the <a href="https://github.com/pemistahl/lingua-rs">Lingua supported languages list</a>.</p></li>
 </ul>
 </div>
-<h3 id="Step-2-Define-analyzerparams" class="common-anchor-header">Langkah 2: Tentukan parameter penganalisis<button data-href="#Step-2-Define-analyzerparams" class="anchor-icon" translate="no">
+<h3 id="Step-2-Define-analyzerparams" class="common-anchor-header">Step 2: Define analyzer_params<button data-href="#Step-2-Define-analyzerparams" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -185,30 +187,30 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Untuk menggunakan tokenizer <code translate="no">language_identifier</code> di Milvus, buatlah kamus yang berisi komponen-komponen kunci berikut ini:</p>
-<p><strong>Komponen yang diperlukan:</strong></p>
+    </button></h3><p>To use the <code translate="no">language_identifier</code> tokenizer in Milvus, create a dictionary containing these key components:</p>
+<p><strong>Required components:</strong></p>
 <ul>
-<li><p><code translate="no">analyzers</code> config set - Kamus yang berisi semua konfigurasi penganalisis, yang harus disertakan:</p>
+<li><p><code translate="no">analyzers</code> config set – A dictionary containing all analyzer configurations, which must include:</p>
 <ul>
-<li><p><code translate="no">default</code> - Penganalisis mundur yang digunakan ketika deteksi bahasa gagal atau tidak ada penganalisis yang cocok yang ditemukan</p></li>
-<li><p><strong>Penganalisis khusus bahasa</strong> - Masing-masing didefinisikan sebagai <code translate="no">&lt;analyzer_name&gt;: &lt;analyzer_config&gt;</code>, di mana:</p>
+<li><p><code translate="no">default</code> – The fallback analyzer used when language detection fails or no matching analyzer is found</p></li>
+<li><p><strong>Language-specific analyzers</strong> – Each defined as <code translate="no">&lt;analyzer_name&gt;: &lt;analyzer_config&gt;</code>, where:</p>
 <ul>
-<li><p><code translate="no">analyzer_name</code> cocok dengan keluaran mesin deteksi yang Anda pilih (misalnya, <code translate="no">&quot;English&quot;</code>, <code translate="no">&quot;Japanese&quot;</code>)</p></li>
-<li><p><code translate="no">analyzer_config</code> mengikuti format parameter penganalisis standar (lihat <a href="/docs/id/analyzer-overview.md#Analyzer-types">Ikhtisar Penganalisis</a>)</p></li>
+<li><p><code translate="no">analyzer_name</code> matches your chosen detection engine’s output (e.g., <code translate="no">&quot;English&quot;</code>, <code translate="no">&quot;Japanese&quot;</code>)</p></li>
+<li><p><code translate="no">analyzer_config</code> follows standard analyzer parameter format (see <a href="/docs/id/v2.6.x/analyzer-overview.md#Analyzer-types">Analyzer Overview</a>)</p></li>
 </ul></li>
 </ul></li>
 </ul>
-<p><strong>Komponen opsional:</strong></p>
+<p><strong>Optional components:</strong></p>
 <ul>
-<li><p><code translate="no">identifier</code> - Menentukan mesin pendeteksi bahasa mana yang akan digunakan (<code translate="no">whatlang</code> atau <code translate="no">lingua</code>). Setelan default ke <code translate="no">whatlang</code> jika tidak ditentukan</p></li>
-<li><p><code translate="no">mapping</code> - Membuat alias khusus untuk penganalisis Anda, sehingga Anda dapat menggunakan nama deskriptif alih-alih format keluaran mesin pendeteksi yang tepat</p></li>
+<li><p><code translate="no">identifier</code> – Specifies which language detection engine to use (<code translate="no">whatlang</code> or <code translate="no">lingua</code>). Defaults to <code translate="no">whatlang</code> if not specified</p></li>
+<li><p><code translate="no">mapping</code> – Creates custom aliases for your analyzers, allowing you to use descriptive names instead of the detection engine’s exact output format</p></li>
 </ul>
-<p>Tokenizer bekerja dengan pertama-tama mendeteksi bahasa teks input, kemudian memilih penganalisis yang sesuai dari konfigurasi Anda. Jika deteksi gagal atau tidak ada penganalisis yang cocok, maka secara otomatis akan kembali ke penganalisis <code translate="no">default</code>.</p>
-<h4 id="Recommended-Direct-name-matching" class="common-anchor-header">Direkomendasikan: Pencocokan nama langsung</h4><p>Nama penganalisis Anda harus sama persis dengan keluaran mesin pendeteksi bahasa yang Anda pilih. Pendekatan ini lebih sederhana dan menghindari potensi kebingungan.</p>
-<p>Untuk <code translate="no">whatlang</code> dan <code translate="no">lingua</code>, gunakan nama bahasa seperti yang ditunjukkan dalam dokumentasi masing-masing:</p>
+<p>The tokenizer works by first detecting the language of input text, then selecting the appropriate analyzer from your configuration. If detection fails or no matching analyzer exists, it automatically falls back to your <code translate="no">default</code> analyzer.</p>
+<h4 id="Recommended-Direct-name-matching" class="common-anchor-header">Recommended: Direct name matching</h4><p>Your analyzer names should exactly match the output of your chosen language detection engine. This approach is simpler and avoids potential confusion.</p>
+<p>For both <code translate="no">whatlang</code> and <code translate="no">lingua</code>, use the language names as shown in their respective documentation:</p>
 <ul>
-<li><p><a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">bahasa yang didukung whatlang</a> (gunakan kolom<strong>"Bahasa</strong>")</p></li>
-<li><p><a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">bahasa yang didukung lingua</a></p></li>
+<li><p><a href="https://github.com/greyblake/whatlang-rs/blob/master/SUPPORTED_LANGUAGES.md">whatlang supported languages</a> (use the "<strong>Language</strong>" column)</p></li>
+<li><p><a href="https://github.com/pemistahl/lingua?tab=readme-ov-file#3-which-languages-are-supported">lingua supported languages</a></p></li>
 </ul>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
@@ -228,7 +230,7 @@ beta: Milvus v2.5.15+
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Alternative-approach-Custom-names-with-mapping" class="common-anchor-header">Pendekatan alternatif: Nama khusus dengan pemetaan</h4><p>Jika Anda lebih suka menggunakan nama penganalisis khusus atau perlu menjaga kompatibilitas dengan konfigurasi yang ada, Anda dapat menggunakan parameter <code translate="no">mapping</code>. Hal ini akan membuat alias untuk penganalisis Anda-baik nama mesin pendeteksi asli maupun nama kustom Anda akan berfungsi.</p>
+<h4 id="Alternative-approach-Custom-names-with-mapping" class="common-anchor-header">Alternative approach: Custom names with mapping</h4><p>If you prefer to use custom analyzer names or need to maintain compatibility with existing configurations, you can use the <code translate="no">mapping</code> parameter. This creates aliases for your analyzers—both the original detection engine names and your custom names will work.</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
         <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;language_identifier&quot;</span>,
@@ -251,8 +253,8 @@ beta: Milvus v2.5.15+
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>Setelah mendefinisikan <code translate="no">analyzer_params</code>, Anda dapat menerapkannya ke bidang <code translate="no">VARCHAR</code> ketika mendefinisikan skema koleksi. Hal ini memungkinkan Milvus untuk memproses teks dalam bidang tersebut menggunakan penganalisis yang ditentukan untuk tokenisasi dan pemfilteran yang efisien. Untuk detailnya, lihat <a href="/docs/id/analyzer-overview.md#Example-use">Contoh penggunaan</a>.</p>
-<h2 id="Examples" class="common-anchor-header">Contoh<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/id/v2.6.x/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -267,8 +269,8 @@ beta: Milvus v2.5.15+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Berikut adalah beberapa konfigurasi siap pakai untuk skenario umum. Setiap contoh menyertakan kode konfigurasi dan verifikasi sehingga Anda dapat langsung menguji penyiapannya.</p>
-<h3 id="English-and-Chinese-detection" class="common-anchor-header">Deteksi bahasa Inggris dan Cina<button data-href="#English-and-Chinese-detection" class="anchor-icon" translate="no">
+    </button></h2><p>Here are some ready-to-use configurations for common scenarios. Each example includes both the configuration and verification code so you can test the setup immediately.</p>
+<h3 id="English-and-Chinese-detection" class="common-anchor-header">English and Chinese detection<button data-href="#English-and-Chinese-detection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -316,7 +318,7 @@ result_cn = client.run_analyzer(<span class="hljs-string">&quot;Milvus向量数�
 <span class="hljs-comment"># Output: </span>
 <span class="hljs-comment"># Chinese: [&#x27;Milvus&#x27;, &#x27;向量&#x27;, &#x27;数据&#x27;, &#x27;据库&#x27;, &#x27;数据库&#x27;, &#x27;专&#x27;, &#x27;为&#x27;, &#x27;大规&#x27;, &#x27;规模&#x27;, &#x27;大规模&#x27;, &#x27;应用&#x27;, &#x27;而&#x27;, &#x27;设计&#x27;]</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="European-languages-with-accent-normalization" class="common-anchor-header">Bahasa Eropa dengan normalisasi aksen<button data-href="#European-languages-with-accent-normalization" class="anchor-icon" translate="no">
+<h3 id="European-languages-with-accent-normalization" class="common-anchor-header">European languages with accent normalization<button data-href="#European-languages-with-accent-normalization" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -353,7 +355,7 @@ result_fr = client.run_analyzer(<span class="hljs-string">&quot;Café français 
 <span class="hljs-comment"># Output: </span>
 <span class="hljs-comment"># French: [&#x27;cafe&#x27;, &#x27;francais&#x27;, &#x27;tres&#x27;, &#x27;delicieux&#x27;]</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Usage-notes" class="common-anchor-header">Catatan penggunaan<button data-href="#Usage-notes" class="anchor-icon" translate="no">
+<h2 id="Usage-notes" class="common-anchor-header">Usage notes<button data-href="#Usage-notes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -369,7 +371,7 @@ result_fr = client.run_analyzer(<span class="hljs-string">&quot;Café français 
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><strong>Bahasa tunggal per bidang:</strong> Fitur ini beroperasi pada sebuah bidang sebagai satu unit teks yang homogen. Fitur ini dirancang untuk menangani bahasa yang berbeda di berbagai catatan data yang berbeda, seperti satu catatan yang berisi kalimat bahasa Inggris dan catatan berikutnya berisi kalimat bahasa Prancis.</p></li>
-<li><p><strong>Tidak ada string bahasa campuran:</strong> <strong>Tidak</strong> dirancang untuk menangani string tunggal yang berisi teks dari berbagai bahasa. Sebagai contoh, satu bidang <code translate="no">VARCHAR</code> yang berisi kalimat bahasa Inggris dan frasa bahasa Jepang yang dikutip akan diproses sebagai satu bahasa.</p></li>
-<li><p><strong>Pemrosesan bahasa dominan:</strong> Dalam skenario bahasa campuran, mesin pendeteksi kemungkinan akan mengidentifikasi bahasa yang dominan, dan penganalisis yang sesuai akan diterapkan ke seluruh teks. Hal ini akan menghasilkan tokenisasi yang buruk atau tidak ada sama sekali untuk teks asing yang disematkan.</p></li>
+<li><p><strong>Single-language per field:</strong> It operates on a field as a single, homogenous unit of text. It is designed to handle different languages across different data records, such as one record containing an English sentence and the next containing a French sentence.</p></li>
+<li><p><strong>No mixed-language strings:</strong> It is <strong>not</strong> designed to handle a single string that contains text from multiple languages. For example, a single <code translate="no">VARCHAR</code> field containing both an English sentence and a quoted Japanese phrase will be processed as a single language.</p></li>
+<li><p><strong>Dominant language processing:</strong> In mixed-language scenarios, the detection engine will likely identify the dominant language, and the corresponding analyzer will be applied to the entire text. This will result in poor or no tokenization for the embedded foreign text.</p></li>
 </ul>

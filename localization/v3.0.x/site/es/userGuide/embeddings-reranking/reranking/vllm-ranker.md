@@ -1,14 +1,13 @@
 ---
 id: vllm-ranker.md
-title: Clasificador vLLMCompatible with Milvus 2.6.x
+title: vLLM RankerCompatible with Milvus 2.6.x
 summary: >-
-  El vLLM Ranker aprovecha el marco de inferencia vLLM para mejorar la
-  relevancia de las búsquedas mediante la reordenación semántica. Representa un
-  enfoque avanzado de la ordenación de los resultados de búsqueda que va más
-  allá de la similitud vectorial tradicional.
+  The vLLM Ranker leverages the vLLM inference framework to enhance search
+  relevance through semantic reranking. It represents an advanced approach to
+  search result ordering that goes beyond traditional vector similarity.
 beta: Milvus 2.6.x
 ---
-<h1 id="vLLM-Ranker" class="common-anchor-header">Clasificador vLLM<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#vLLM-Ranker" class="anchor-icon" translate="no">
+<h1 id="vLLM-Ranker" class="common-anchor-header">vLLM Ranker<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#vLLM-Ranker" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,15 +22,15 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>El clasificador vLLM aprovecha el marco de inferencia <a href="https://docs.vllm.ai/en/latest/index.html">vLLM</a> para mejorar la relevancia de las búsquedas mediante la reordenación semántica. Representa un enfoque avanzado de la ordenación de resultados de búsqueda que va más allá de la tradicional similitud vectorial.</p>
-<p>vLLM Ranker es especialmente valioso para aplicaciones en las que la precisión y el contexto son fundamentales, como:</p>
+    </button></h1><p>The vLLM Ranker leverages the <a href="https://docs.vllm.ai/en/latest/index.html">vLLM</a> inference framework to enhance search relevance through semantic reranking. It represents an advanced approach to search result ordering that goes beyond traditional vector similarity.</p>
+<p>vLLM Ranker is particularly valuable for applications where precision and context are critical, such as:</p>
 <ul>
-<li><p>Búsqueda de documentación técnica que requiere una comprensión profunda de los conceptos</p></li>
-<li><p>Bases de datos de investigación en las que las relaciones semánticas pesan más que la concordancia de palabras clave.</p></li>
-<li><p>Sistemas de atención al cliente que deben relacionar los problemas de los usuarios con las soluciones pertinentes.</p></li>
-<li><p>Búsqueda en comercio electrónico que debe comprender los atributos del producto y la intención del usuario.</p></li>
+<li><p>Technical documentation search requiring deep understanding of concepts</p></li>
+<li><p>Research databases where semantic relationships outweigh keyword matching</p></li>
+<li><p>Customer support systems that need to match user problems with relevant solutions</p></li>
+<li><p>E-commerce search that must understand product attributes and user intent</p></li>
 </ul>
-<h2 id="Prerequisites" class="common-anchor-header">Requisitos previos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -46,10 +45,10 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Antes de implementar vLLM Ranker en Milvus, asegúrese de que dispone de:</p>
+    </button></h2><p>Before implementing vLLM Ranker in Milvus, ensure you have:</p>
 <ul>
-<li><p>Una colección Milvus con un campo <code translate="no">VARCHAR</code> que contenga el texto que se va a volver a clasificar</p></li>
-<li><p>Un servicio vLLM en ejecución con capacidades de renumeración. Para obtener instrucciones detalladas sobre la configuración de un servicio vLLM, consulte la <a href="https://docs.vllm.ai/en/latest/getting_started/installation.html">documentación oficial de vLLM</a>. Para verificar la disponibilidad del servicio vLLM:</p>
+<li><p>A Milvus collection with a <code translate="no">VARCHAR</code> field containing the text to be reranked</p></li>
+<li><p>A running vLLM service with reranking capabilities. For detailed instructions on setting up a vLLM service, refer to the <a href="https://docs.vllm.ai/en/latest/getting_started/installation.html">official vLLM documentation</a>. To verify vLLM service availability:</p>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># Replace YOUR_VLLM_ENDPOINT_URL with the actual URL (e.g., http://&lt;service-ip&gt;:&lt;port&gt;/v1/rerank)</span>
 <span class="hljs-comment"># Replace &#x27;BAAI/bge-reranker-base&#x27; if you deployed a different model</span>
 
@@ -67,10 +66,10 @@ curl -X <span class="hljs-string">&#x27;POST&#x27;</span> \
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Una respuesta correcta debería devolver los documentos clasificados por puntuaciones de relevancia, de forma similar a la respuesta de la API rerank de OpenAI.</p>
-<p>Consulte la <a href="https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html#re-rank-api">documentación del servidor compatible con OpenAI de</a> vLLM para obtener más argumentos y opciones del servidor.</p></li>
+<p>A successful response should return the documents ranked by relevance scores, similar to the OpenAI rerank API response.</p>
+<p>Refer to the <a href="https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html#re-rank-api">vLLM OpenAI Compatible Server documentation</a> for more server arguments and options.</p></li>
 </ul>
-<h2 id="Create-a-vLLM-ranker-function" class="common-anchor-header">Crear una función vLLM ranker<button data-href="#Create-a-vLLM-ranker-function" class="anchor-icon" translate="no">
+<h2 id="Create-a-vLLM-ranker-function" class="common-anchor-header">Create a vLLM ranker function<button data-href="#Create-a-vLLM-ranker-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -85,9 +84,14 @@ curl -X <span class="hljs-string">&#x27;POST&#x27;</span> \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para utilizar vLLM Ranker en su aplicación Milvus, cree un objeto Function que especifique cómo debe operar el reranking. Esta función se pasará a las operaciones de búsqueda de Milvus para mejorar la clasificación de los resultados.</p>
+    </button></h2><p>To use vLLM Ranker in your Milvus application, create a Function object that specifies how the reranking should operate. This function will be passed to Milvus search operations to enhance result ranking.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, Function, FunctionType
 
 <span class="hljs-comment"># Connect to your Milvus server</span>
@@ -137,7 +141,7 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="vLLM-ranker-specific-parameters" class="common-anchor-header">Parámetros específicos de vLLM ranker<button data-href="#vLLM-ranker-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="vLLM-ranker-specific-parameters" class="common-anchor-header">vLLM ranker-specific parameters<button data-href="#vLLM-ranker-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -152,55 +156,55 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Los siguientes parámetros son específicos del clasificador vLLM:</p>
+    </button></h3><p>The following parameters are specific to the vLLM ranker:</p>
 <table>
    <tr>
-     <th><p>Parámetro</p></th>
-     <th><p>¿Requerido?</p></th>
-     <th><p>Descripción</p></th>
-     <th><p>Valor / Ejemplo</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value / Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">reranker</code></p></td>
-     <td><p>Sí</p></td>
-     <td><p>Debe establecerse en <code translate="no">"model"</code> para habilitar la reordenación de modelos.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Must be set to <code translate="no">"model"</code> to enable model reranking.</p></td>
      <td><p><code translate="no">"model"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>Sí</p></td>
-     <td><p>El proveedor de servicios de modelos que se utilizará para la reordenación.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The model service provider to use for reranking.</p></td>
      <td><p><code translate="no">"vllm"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">queries</code></p></td>
-     <td><p>Sí</p></td>
-     <td><p>Lista de cadenas de consulta utilizadas por el modelo rerank para calcular las puntuaciones de relevancia. El número de cadenas de consulta debe coincidir exactamente con el número de consultas de la operación de búsqueda (incluso cuando se utilizan vectores de consulta en lugar de texto); de lo contrario, se informará de un error.</p></td>
-     <td><p><em>["consulta de búsqueda"]</em></p></td>
+     <td><p>Yes</p></td>
+     <td><p>List of query strings used by the rerank model to calculate relevance scores. The number of query strings must match exactly the number of queries in your search operation (even when using query vectors instead of text), otherwise an error will be reported.</p></td>
+     <td><p><em>["search query"]</em></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">endpoint</code></p></td>
-     <td><p>Sí</p></td>
-     <td><p>Su dirección de servicio vLLM.</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Your vLLM service address.</p></td>
      <td><p><code translate="no">"http://localhost:8080"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">max_client_batch_size</code></p></td>
      <td><p>No</p></td>
-     <td><p>Dado que los servicios modelo pueden no procesar todos los datos a la vez, esto establece el tamaño del lote para acceder al servicio modelo en múltiples peticiones.</p></td>
-     <td><p><code translate="no">32</code> (por defecto)</p></td>
+     <td><p>Since model services may not process all data at once, this sets the batch size for accessing the model service in multiple requests.</p></td>
+     <td><p><code translate="no">32</code> (default)</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">truncate_prompt_tokens</code></p></td>
      <td><p>No</p></td>
-     <td><p>Si se establece en un número entero <em>k</em>, sólo se utilizarán los últimos <em>k</em> tokens de la solicitud (es decir, truncamiento a la izquierda). Por defecto es Ninguno (es decir, sin truncamiento).</p></td>
+     <td><p>If set to an integer <em>k</em>, will use only the last <em>k</em> tokens from the prompt (i.e., left truncation). Defaults to None (i.e., no truncation).</p></td>
      <td><p><code translate="no">256</code></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>Para conocer los parámetros generales que comparten todos los <a href="/docs/es/model-ranker-overview.md#Create-a-model-ranker">clasificadores de modelos</a>(por ejemplo, <code translate="no">provider</code>, <code translate="no">queries</code>), consulte <a href="/docs/es/model-ranker-overview.md#Create-a-model-ranker">Crear un clasificador de modelos</a>.</p>
+<p>For general parameters shared across all model rankers (e.g., <code translate="no">provider</code>, <code translate="no">queries</code>), refer to <a href="/docs/es/model-ranker-overview.md#Create-a-model-ranker">Create a model ranker</a>.</p>
 </div>
-<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Aplicar a la búsqueda vectorial estándar<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
+<h2 id="Apply-to-standard-vector-search" class="common-anchor-header">Apply to standard vector search<button data-href="#Apply-to-standard-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -215,9 +219,14 @@ CreateCollectionReq.<span class="hljs-type">Function</span> <span class="hljs-va
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Para aplicar vLLM Ranker a una búsqueda vectorial estándar:</p>
+    </button></h2><p>To apply vLLM Ranker to a standard vector search:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Execute search with vLLM reranking</span>
 results = client.search(
     collection_name=<span class="hljs-string">&quot;your_collection&quot;</span>,

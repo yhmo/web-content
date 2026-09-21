@@ -2,10 +2,10 @@
 id: install_standalone-binary.md
 label: RPM/DEB Package
 related_key: RPM/DEB Package
-summary: 瞭解如何使用預先建置的 RPM/DEB 套件安裝 Milvus 獨立版本。
-title: 使用 RPM/DEB 套件安裝 Milvus 獨立版本
+summary: Learn how to install Milvus standalone with a pre-built RPM/DEB package.
+title: Install Milvus Standalone with RPM/DEB Package
 ---
-<h1 id="Install-Milvus-Standalone-with-RPMDEB-Package" class="common-anchor-header">使用 RPM/DEB 套件安裝 Milvus 獨立版本<button data-href="#Install-Milvus-Standalone-with-RPMDEB-Package" class="anchor-icon" translate="no">
+<h1 id="Install-Milvus-Standalone-with-RPMDEB-Package" class="common-anchor-header">Install Milvus Standalone with RPM/DEB Package<button data-href="#Install-Milvus-Standalone-with-RPMDEB-Package" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: 使用 RPM/DEB 套件安裝 Milvus 獨立版本
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>本頁面說明如何使用預先建置的 RPM/DEB 套件安裝 Milvus 獨立版。</p>
-<h2 id="Prerequisites" class="common-anchor-header">先決條件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This page illustrates how to install Milvus standalone with a pre-built RPM/DEB package.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,10 +37,10 @@ title: 使用 RPM/DEB 套件安裝 Milvus 獨立版本
         ></path>
       </svg>
     </button></h2><ul>
-<li>您已安裝 libstdc++ 8.5.0 或更新版本。</li>
-<li>安裝前<a href="/docs/zh-hant/v2.6.x/prerequisite-docker.md">請先確認硬體與軟體的系統需求</a>。</li>
+<li>You have already installed libstdc++ 8.5.0 or a later version.</li>
+<li><a href="/docs/zh-hant/v2.6.x/prerequisite-docker.md">Check the requirements for hardware and software</a> prior to your installation.</li>
 </ul>
-<h2 id="Download-the-RPMDEB-Package" class="common-anchor-header">下載 RPM/DEB 套件<button data-href="#Download-the-RPMDEB-Package" class="anchor-icon" translate="no">
+<h2 id="Download-the-RPMDEB-Package" class="common-anchor-header">Download the RPM/DEB Package<button data-href="#Download-the-RPMDEB-Package" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,15 +55,15 @@ title: 使用 RPM/DEB 套件安裝 Milvus 獨立版本
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您可以從<a href="https://github.com/milvus-io/milvus/releases/tag/v2.6.23">Milvus 發行版頁面</a>，根據您的系統架構下載 RPM/DEB 套件。</p>
+    </button></h2><p>You can download the RPM/DEB package according to your system architecture from the <a href="https://github.com/milvus-io/milvus/releases/tag/v2.6.24">Milvus Releases page</a>.</p>
 <ul>
-<li>若為 x86_64/amd64 架構，請下載<strong>milvus_2.6.23-1_amd64.deb</strong>或<strong>milvus_2.6.23-1_amd64.rpm</strong>套件。</li>
-<li>若為 ARM64 架構，請下載<strong>milvus_2.6.23-1_arm64.deb</strong>或<strong>milvus_2.6.23-1_arm64.rpm</strong>套件。</li>
+<li>For x86_64/amd64, download the <strong>milvus_2.6.24-1_amd64.deb</strong> or <strong>milvus_2.6.24-1_amd64.rpm</strong> package.</li>
+<li>For ARM64, download the <strong>milvus_2.6.24-1_arm64.deb</strong> or <strong>milvus_2.6.24-1_arm64.rpm</strong> package.</li>
 </ul>
-<p>以下指令假設您將在 x86_64/amd64 機器上執行 Milvus 獨立版。</p>
-<pre><code translate="no" class="language-shell">wget https://github.com/milvus-io/milvus/releases/download/v2.6.23/milvus_2.6.23-1_amd64.rpm -O milvus_2.6.23-1_amd64.rpm
+<p>The following command assumes that you are going to run Milvus Standalone on a x86_64/amd64 machine.</p>
+<pre><code translate="no" class="language-shell">wget https://github.com/milvus-io/milvus/releases/download/v2.6.24/milvus_2.6.24-1_amd64.rpm -O milvus_2.6.24-1_amd64.rpm
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Install-the-RPMDEB-Package" class="common-anchor-header">安裝 RPM/DEB 套件<button data-href="#Install-the-RPMDEB-Package" class="anchor-icon" translate="no">
+<h2 id="Install-the-RPMDEB-Package" class="common-anchor-header">Install the RPM/DEB Package<button data-href="#Install-the-RPMDEB-Package" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,16 +78,16 @@ title: 使用 RPM/DEB 套件安裝 Milvus 獨立版本
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要安裝 RPM/DEB 套件，您可以使用系統的套件管理員。</p>
-<p>對於基於 RPM 的系統（例如 CentOS、Fedora 和 RHEL），請使用 `<code translate="no">yum</code> ` 指令安裝套件。</p>
-<pre><code translate="no" class="language-shell">yum install -y ./milvus_2.6.23-1_amd64.rpm
+    </button></h2><p>To install the RPM/DEB package, you can use the package manager of your system.</p>
+<p>For RPM-based systems (such as CentOS, Fedora, and RHEL), use the <code translate="no">yum</code> command to install the package.</p>
+<pre><code translate="no" class="language-shell">yum install -y ./milvus_2.6.24-1_amd64.rpm
 rpm -qa| grep milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>對於基於 DEB 的系統（例如 Ubuntu 和 Debian），請使用<code translate="no">apt</code> 指令來安裝套件。</p>
-<pre><code translate="no" class="language-shell">apt install -y  ./milvus_2.6.23-1_amd64.deb
+<p>For DEB-based systems (such as Ubuntu and Debian), use the <code translate="no">apt</code> command to install the package.</p>
+<pre><code translate="no" class="language-shell">apt install -y  ./milvus_2.6.24-1_amd64.deb
 dpkg -l | grep milvus
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Start-Milvus-Standalone" class="common-anchor-header">啟動 Milvus 獨立模式<button data-href="#Start-Milvus-Standalone" class="anchor-icon" translate="no">
+<h2 id="Start-Milvus-Standalone" class="common-anchor-header">Start Milvus Standalone<button data-href="#Start-Milvus-Standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,13 +102,13 @@ dpkg -l | grep milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>安裝完成後，Milvus 會以 systemd 服務的形式安裝，並可透過以下指令啟動：</p>
+    </button></h2><p>After the installation is complete, Milvus is installed as a systemd service and can be started using the following command:</p>
 <pre><code translate="no" class="language-shell">systemctl start milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>您可以使用以下命令檢查 Milvus 服務的狀態：</p>
+<p>You can check the status of the Milvus service using the following command:</p>
 <pre><code translate="no" class="language-shell">systemctl status milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>若 Milvus 運行正常，您應會看到以下輸出：</p>
+<p>If Milvus is running successfully, you should see the following output:</p>
 <pre><code translate="no"><span class="hljs-string">●</span> <span class="hljs-string">milvus.service</span> <span class="hljs-bullet">-</span> <span class="hljs-string">Milvus</span> <span class="hljs-string">Standalone</span> <span class="hljs-string">Server</span>
    <span class="hljs-attr">Loaded:</span> <span class="hljs-string">loaded</span> <span class="hljs-string">(/lib/systemd/system/milvus.service;</span> <span class="hljs-string">enabled;</span> <span class="hljs-attr">vendor preset:</span> <span class="hljs-string">enabled)</span>
    <span class="hljs-attr">Active:</span> <span class="hljs-string">active</span> <span class="hljs-string">(running)</span> <span class="hljs-string">since</span> <span class="hljs-string">Fri</span> <span class="hljs-number">2025-08-10 10:30:00 </span><span class="hljs-string">UTC;</span> <span class="hljs-string">5s</span> <span class="hljs-string">ago</span>
@@ -117,8 +117,8 @@ dpkg -l | grep milvus
    <span class="hljs-attr">CGroup:</span> <span class="hljs-string">/system.slice/milvus.service</span>
            <span class="hljs-string">└─1044122</span> <span class="hljs-string">/usr/bin/milvus</span> <span class="hljs-string">run</span> <span class="hljs-string">standalone</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>您可以在<code translate="no">/usr/bin/milvus</code> 找到 Milvus 二進位檔，在<code translate="no">/lib/systemd/system/milvus.service</code> 找到 systemd 服務檔案，並在<code translate="no">/usr/lib/milvus/</code> 找到依賴項。</p>
-<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(可選) 更新 Milvus 設定<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
+<p>You can find the Milvus binary at <code translate="no">/usr/bin/milvus</code>, the systemd service file at <code translate="no">/lib/systemd/system/milvus.service</code>, and the dependencies at <code translate="no">/usr/lib/milvus/</code>.</p>
+<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Optional) Update Milvus configurations<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -133,8 +133,8 @@ dpkg -l | grep milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您可修改<code translate="no">/etc/milvus/configs/milvus.yaml</code> 檔案中的 Milvus 設定。例如，若要將<code translate="no">proxy.healthCheckTimeout</code> 變更為<code translate="no">1000</code> ms，可搜尋 target 參數並據此修改。有關適用的設定項目，請參閱<a href="/docs/zh-hant/v2.6.x/system_configuration.md">《系統設定》</a>。</p>
-<h2 id="Stop-Milvus-Standalone" class="common-anchor-header">停止 Milvus 獨立執行模式<button data-href="#Stop-Milvus-Standalone" class="anchor-icon" translate="no">
+    </button></h2><p>You can modify the Milvus configurations in the <code translate="no">/etc/milvus/configs/milvus.yaml</code> file. For example, to change the <code translate="no">proxy.healthCheckTimeout</code> to <code translate="no">1000</code> ms, you can search for the target parameter and modify accordingly. For applicable configuration items, refer to <a href="/docs/zh-hant/v2.6.x/system_configuration.md">System Configuration</a>.</p>
+<h2 id="Stop-Milvus-Standalone" class="common-anchor-header">Stop Milvus Standalone<button data-href="#Stop-Milvus-Standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -149,10 +149,10 @@ dpkg -l | grep milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要停止 Milvus 獨立版，可使用以下指令：</p>
+    </button></h2><p>To stop Milvus Standalone, you can use the following command:</p>
 <pre><code translate="no" class="language-shell">systemctl stop milvus
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Uninstall-Milvus-Standalone" class="common-anchor-header">解除安裝 Milvus Standalone<button data-href="#Uninstall-Milvus-Standalone" class="anchor-icon" translate="no">
+<h2 id="Uninstall-Milvus-Standalone" class="common-anchor-header">Uninstall Milvus Standalone<button data-href="#Uninstall-Milvus-Standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -167,14 +167,14 @@ dpkg -l | grep milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>若要解除安裝 Milvus 獨立版，請使用以下命令：</p>
-<p>針對基於 RPM 的系統：</p>
+    </button></h2><p>To uninstall Milvus Standalone, you can use the following command:</p>
+<p>For RPM-based systems:</p>
 <pre><code translate="no" class="language-shell">rpm -e milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>針對基於 DEB 的系統：</p>
+<p>For DEB-based systems:</p>
 <pre><code translate="no" class="language-shell">apt remove milvus
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Whats-next" class="common-anchor-header">接下來該做什麼<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -189,29 +189,29 @@ dpkg -l | grep milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>安裝完 Milvus Standalone 後，您可以：</p>
+    </button></h2><p>Having installed Milvus Standalone, you can:</p>
 <ul>
-<li><p>請參閱<a href="/docs/zh-hant/v2.6.x/quickstart.md">《快速入門》</a>以了解 Milvus 的功能。</p></li>
-<li><p>學習 Milvus 的基本操作：</p>
+<li><p>Check <a href="/docs/zh-hant/v2.6.x/quickstart.md">Quickstart</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/zh-hant/v2.6.x/manage_databases.md">管理資料庫</a></li>
-<li><a href="/docs/zh-hant/v2.6.x/manage-collections.md">管理集合</a></li>
-<li><a href="/docs/zh-hant/v2.6.x/manage-partitions.md">管理分區</a></li>
-<li><a href="/docs/zh-hant/v2.6.x/insert-update-delete.md">插入、更新或插入（Upsert）及刪除</a></li>
-<li><a href="/docs/zh-hant/v2.6.x/single-vector-search.md">單向量搜尋</a></li>
-<li><a href="/docs/zh-hant/v2.6.x/multi-vector-search.md">混合搜尋</a></li>
+<li><a href="/docs/zh-hant/v2.6.x/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/zh-hant/v2.6.x/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/zh-hant/v2.6.x/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/zh-hant/v2.6.x/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/zh-hant/v2.6.x/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/zh-hant/v2.6.x/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p><a href="/docs/zh-hant/v2.6.x/upgrade_milvus_cluster-helm.md">使用 Helm Chart 升級 Milvus</a>。</p></li>
-<li><p><a href="/docs/zh-hant/v2.6.x/scaleout.md">擴展您的 Milvus 叢集</a>。</p></li>
-<li><p>在雲端部署您的 Milvus 叢集：</p>
+<li><p><a href="/docs/zh-hant/v2.6.x/upgrade_milvus_cluster-helm.md">Upgrade Milvus Using Helm Chart</a>.</p></li>
+<li><p><a href="/docs/zh-hant/v2.6.x/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvu cluster on clouds:</p>
 <ul>
 <li><a href="/docs/zh-hant/v2.6.x/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/zh-hant/v2.6.x/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/zh-hant/v2.6.x/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>探索<a href="/docs/zh-hant/v2.6.x/milvus-webui.md">Milvus WebUI</a>，這是專為 Milvus 可觀察性與管理設計的直觀網頁介面。</p></li>
-<li><p>探索<a href="/docs/zh-hant/v2.6.x/milvus_backup_overview.md">Milvus Backup</a>，這是一款用於 Milvus 資料備份的開源工具。</p></li>
-<li><p>探索<a href="/docs/zh-hant/v2.6.x/birdwatcher_overview.md">Birdwatcher，這</a>是一款用於 Milvus 除錯與動態配置更新的開源工具。</p></li>
-<li><p>探索<a href="https://github.com/zilliztech/attu">Attu，</a>這是一款用於直觀管理 Milvus 的開源 GUI 工具。</p></li>
-<li><p><a href="/docs/zh-hant/v2.6.x/monitor.md">使用 Prometheus 監控 Milvus</a>。</p></li>
+<li><p>Explore <a href="/docs/zh-hant/v2.6.x/milvus-webui.md">Milvus WebUI</a>, an intuitive web interface for Milvus observability and management.</p></li>
+<li><p>Explore <a href="/docs/zh-hant/v2.6.x/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/zh-hant/v2.6.x/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/zh-hant/v2.6.x/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

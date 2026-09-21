@@ -1,9 +1,12 @@
 ---
 id: insert-update-delete.md
-title: 插入實體
-summary: 集合中的實體是指具有相同欄位集的資料記錄。每筆資料記錄中的欄位值共同構成一個實體。本頁將介紹如何將實體插入集合中。
+title: Insert Entities
+summary: >-
+  Entities in a collection are data records that share the same set of fields.
+  Field values in every data record form an entity. This page introduces how to
+  insert entities into a collection.
 ---
-<h1 id="Insert-Entities" class="common-anchor-header">插入實體<button data-href="#Insert-Entities" class="anchor-icon" translate="no">
+<h1 id="Insert-Entities" class="common-anchor-header">Insert Entities<button data-href="#Insert-Entities" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,14 +21,14 @@ summary: 集合中的實體是指具有相同欄位集的資料記錄。每筆�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>集合中的實體是指具有相同欄位集的資料記錄。每筆資料記錄中的欄位值共同構成一個實體。本頁將介紹如何將實體插入至集合中。</p>
+    </button></h1><p>Entities in a collection are data records that share the same set of fields. Field values in every data record form an entity. This page introduces how to insert entities into a collection.</p>
 <div class="alert note">
 <ul>
-<li><p><strong>建立集合後新增的欄位</strong>：若在建立集合後新增欄位，且在插入時未指定值，Milvus 會自動填入已定義的預設值；若未設定預設值，則填入<code translate="no">NULL</code> 。詳細資訊請參閱「<a href="/docs/zh-hant/add-fields-to-an-existing-collection.md">變更集合架構</a>」。</p></li>
-<li><p><strong>重複資料處理</strong>：標準的 `<code translate="no">insert</code> ` 操作不會檢查主鍵是否重複。若插入的主鍵與現有主鍵相同，系統會建立一個具有相同主鍵的新實體，導致資料重複並可能引發應用程式問題。若要更新現有實體或避免重複，請改用 <strong><code translate="no">upsert</code></strong> 操作。如需更多資訊，請參閱「<a href="/docs/zh-hant/upsert-entities.md">Upsert 實體</a>」。</p></li>
+<li><p><strong>Fields added after collection creation</strong>: If you add new fields to a collection after creation and do not specify values during insertion, Milvus automatically populates them with defined default values or <code translate="no">NULL</code> if no defaults are set. For details, refer to <a href="/docs/zh-hant/add-fields-to-an-existing-collection.md">Alter Collection Schema</a>.</p></li>
+<li><p><strong>Duplicate handling</strong>: The standard <code translate="no">insert</code> operation does not check for duplicate primary keys. Inserting data with an existing primary key creates a new entity with the same key, leading to data duplication and potential application issues. To update existing entities or avoid duplicates, use the <strong><code translate="no">upsert</code></strong> operation instead. For more information, refer to <a href="/docs/zh-hant/upsert-entities.md">Upsert Entities</a>.</p></li>
 </ul>
 </div>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,10 +43,10 @@ summary: 集合中的實體是指具有相同欄位集的資料記錄。每筆�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在 Milvus 中，「<strong>實體」</strong> <strong>指的是集合中</strong>具有相同<strong>模式的</strong>資料記錄，且每一行中各欄位的資料共同構成一個實體。因此，同一集合內的實體具有相同的屬性（例如欄位名稱、資料類型及其他限制條件）。</p>
-<p>將實體插入集合時，若該實體未包含模式中定義的所有欄位，則無法成功新增。 插入的實體將依照插入順序進入名為<strong>_default</strong>的分區。若某個分區已存在，您亦可透過在插入請求中指定分區名稱，將實體插入該分區。</p>
-<p>Milvus 亦支援動態欄位，以維持 Collection 的可擴展性。當啟用動態欄位時，您可以將未在 Schema 中定義的欄位插入 Collection。這些欄位及其值將以鍵值對的形式，儲存於名為<strong>$meta</strong> 的保留欄位中。有關動態欄位的更多資訊，請參閱「動態欄位」。</p>
-<h2 id="Insert-Entities-into-a-Collection" class="common-anchor-header">將實體插入集合<button data-href="#Insert-Entities-into-a-Collection" class="anchor-icon" translate="no">
+    </button></h2><p>In Milvus, an <strong>Entity</strong> refers to data records in a <strong>Collection</strong> that share the same <strong>Schema</strong>, with the data in each field of a row constituting an Entity. Therefore, the Entities within the same Collection have the same attributes (such as field names, data types, and other constraints).</p>
+<p>When inserting an Entity into a Collection, the Entity to be inserted can only be successfully added if it contains all the fields defined in the Schema. The inserted Entity will enter a Partition named <strong>_default</strong> in the order of insertion. Provided that a certain Partition exists, you can also insert Entities into that Partition by specifying the Partition name in the insertion request.</p>
+<p>Milvus also supports dynamic fields to maintain the scalability of the Collection. When the dynamic field is enabled, you can insert fields that are not defined in the Schema into the Collection. These fields and values will be stored as key-value pairs in a reserved field named <strong>$meta</strong>. For more information about dynamic fields, please refer to Dynamic Field.</p>
+<h2 id="Insert-Entities-into-a-Collection" class="common-anchor-header">Insert Entities into a Collection<button data-href="#Insert-Entities-into-a-Collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -58,14 +61,14 @@ summary: 集合中的實體是指具有相同欄位集的資料記錄。每筆�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在插入資料之前，您需要根據資料結構將資料組織成一組字典清單，每個字典代表一個實體，並包含資料結構中定義的所有欄位。若集合已啟用動態欄位，每個字典亦可包含資料結構中未定義的欄位。</p>
-<p>在本節中，您將把實體插入以快速設定方式建立的集合中。以此方式建立的集合僅有兩個欄位，分別名為<strong>id</strong>和<strong>vector</strong>。此外，此集合已啟用動態欄位，因此範例程式碼中的實體包含一個名為<strong>color 的</strong>欄位，該欄位未在架構中定義。</p>
+    </button></h2><p>Before inserting data, you need to organize your data into a list of dictionaries according to the Schema, with each dictionary representing an Entity and containing all the fields defined in the Schema. If the Collection has the dynamic field enabled, each dictionary can also include fields that are not defined in the Schema.</p>
+<p>In this section, you will insert entities into a Collection created in the quick-setup manner. A Collection created in this manner has only two fields, named <strong>id</strong> and <strong>vector</strong>. Additionally, this Collection has the dynamic field enabled, so the Entities in the example code include a field called <strong>color</strong> that is not defined in the Schema.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -258,7 +261,7 @@ curl --request POST \
 <span class="hljs-comment">#     }</span>
 <span class="hljs-comment"># }</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-Entities-into-a-Partition" class="common-anchor-header">將實體插入分區<button data-href="#Insert-Entities-into-a-Partition" class="anchor-icon" translate="no">
+<h2 id="Insert-Entities-into-a-Partition" class="common-anchor-header">Insert Entities into a Partition<button data-href="#Insert-Entities-into-a-Partition" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -273,13 +276,13 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您也可以將實體插入到指定的分區中。以下程式碼片段假設您的集合中已有一個名為<strong>PartitionA</strong>的分區。</p>
+    </button></h2><p>You can also insert entities into a specified partition. The following code snippets assume that you have a partition named <strong>PartitionA</strong> in your collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">data=[
     {<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-string">&quot;vector&quot;</span>: [<span class="hljs-number">0.3580376395471989</span>, -<span class="hljs-number">0.6023495712049978</span>, <span class="hljs-number">0.18414012509913835</span>, -<span class="hljs-number">0.26286205330961354</span>, <span class="hljs-number">0.9029438446296592</span>], <span class="hljs-string">&quot;color&quot;</span>: <span class="hljs-string">&quot;pink_8682&quot;</span>},

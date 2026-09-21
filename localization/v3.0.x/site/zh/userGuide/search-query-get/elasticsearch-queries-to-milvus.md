@@ -2,9 +2,14 @@
 id: elasticsearch-queries-to-milvus.md
 title: Elasticsearch Queries to Milvus
 summary: >-
-  基于 Apache Lucene 构建的 Elasticsearch
-  是领先的开源搜索引擎。然而，它在现代人工智能应用中面临着各种挑战，包括更新成本高、实时性差、分片管理效率低、非云原生设计以及资源需求过高。作为云原生向量数据库，Milvus
-  通过解耦存储和计算、高效的高维数据索引以及与现代基础设施的无缝集成，克服了这些问题。它为人工智能工作负载提供了卓越的性能和可扩展性。
+  Elasticsearch, built on Apache Lucene, is a leading open-source search engine.
+  However, it faces challenges in modern AI applications, including high update
+  costs, poor real-time performance, inefficient shard management, a
+  non-cloud-native design, and excessive resource demands. As a cloud-native
+  vector database, Milvus overcomes these issues with decoupled storage and
+  computing, efficient indexing for high-dimensional data, and seamless
+  integration with modern infrastructures. It offers superior performance and
+  scalability for AI workloads.
 ---
 <h1 id="Elasticsearch-Queries-to-Milvus" class="common-anchor-header">Elasticsearch Queries to Milvus<button data-href="#Elasticsearch-Queries-to-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"

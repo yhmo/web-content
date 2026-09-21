@@ -1,12 +1,12 @@
 ---
 id: struct-array-operators.md
-title: Operadores StructArrayCompatible with Milvus 3.0.x
+title: StructArray OperatorsCompatible with Milvus 3.0.x
 summary: >-
-  Utilice filtros de elementos y operadores match-family para filtrar subcampos
-  escalares dentro de campos StructArray.
+  Use element filters and match-family operators to filter scalar sub-fields
+  inside StructArray fields.
 beta: Milvus 3.0.x
 ---
-<h1 id="StructArray-Operators" class="common-anchor-header">Operadores StructArray<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#StructArray-Operators" class="anchor-icon" translate="no">
+<h1 id="StructArray-Operators" class="common-anchor-header">StructArray Operators<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#StructArray-Operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,12 +21,12 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>La Matriz de Structs, o StructArray, en una entidad almacena un conjunto ordenado de elementos Struct. Cada Struct de la Matriz comparte el mismo esquema predefinido, que comprende múltiples vectores y campos escalares. Cuando un subcampo escalar de una Struct está indexado, puede utilizar <strong>filtros de elementos</strong> y <strong>operadores de la familia match</strong> para realizar un filtrado escalar sobre él.</p>
-<p>Un filtro de elementos selecciona entidades que contengan al menos un valor en un campo StructArray que coincida con el predicado especificado. En cambio, los operadores de la familia match se utilizan para buscar entidades que contengan números o proporciones específicos de valores en un campo StructArray que coincida con el predicado especificado.</p>
+    </button></h1><p>The Array of Structs, or StructArray, in an entity stores an ordered set of Struct elements. Each Struct in the Array shares the same predefined schema, which comprises multiple vectors and scalar fields. When a scalar sub-field in a Struct is indexed, you can use <strong>element filters</strong> and <strong>operators in the match family</strong> to perform scalar filtering on it.</p>
+<p>An element filter selects entities that contain at least one value in a StructArray field matching the specified predicate. In contrast, the match family operators are used to find entities that contain specific numbers or proportions of values in a StructArray field matching the specified predicate.</p>
 <div class="alert note">
-<p>Al crear predicados a partir de <code translate="no">$[subField]</code>, asegúrese de que el subcampo está indexado si trabaja con conjuntos de datos a gran escala, ya que estos operadores requieren iterar por los elementos de la matriz para cada entidad candidata.</p>
+<p>When building predicates against <code translate="no">$[subField]</code>, ensure the sub-field is indexed if you are working with large-scale datasets, as these operators require iterating through the array elements for each candidate entity.</p>
 </div>
-<h2 id="Element-filter" class="common-anchor-header">Filtro de elementos<button data-href="#Element-filter" class="anchor-icon" translate="no">
+<h2 id="Element-filter" class="common-anchor-header">Element filter<button data-href="#Element-filter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,19 +41,19 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilice los filtros de elementos cuando necesite comprobar si una entidad contiene los valores que coinciden con un predicado específico en su campo StructArray.</p>
+    </button></h2><p>Use element filters when you need to check whether an entity contains the values that match a specific predicate in its StructArray field.</p>
 <pre><code translate="no" class="language-python">element_filter(chunks, $[text] LIKE <span class="hljs-string">&quot;Red%&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Como se muestra en la expresión de filtro de elementos anterior, el filtro de elementos devuelve entidades que contienen al menos un fragmento que empieza por "Red" en el subcampo <code translate="no">text</code>. El primer parámetro es el nombre del campo StructArray, mientras que el segundo es el predicado que se aplica al subcampo Struct.</p>
-<p>Puede utilizar operadores de comparación, rango y aritméticos para construir la condición, y operadores lógicos para concatenar varias condiciones, como se muestra en <a href="/docs/es/v2.6.x/basic-operators.md">Operadores básicos</a>.</p>
-<p>Sin embargo, cuando se construye una expresión de filtro que combina un predicado a nivel de entidad y un filtro de elemento, siempre se debe colocar el filtro de elemento al final, como se muestra en el siguiente ejemplo.</p>
+<p>As shown in the above element filter expression, the element filter returns entities that contain at least one chunk that starts with “Red” in the <code translate="no">text</code> sub-field. The first parameter is the name of the StructArray field, while the second parameter is the predicate that applies to the Struct sub-field.</p>
+<p>You can use comparison, range, and arithmetic operators to build the condition, and logical operators to concatenate multiple conditions, as shown in <a href="/docs/es/v2.6.x/basic-operators.md">Basic Operators</a>.</p>
+<p>However, when you build a filter expression that combines both an entity-level predicate and an element filter, you should always place the element fltler at the end, as shown in the following example.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># correct</span>
 <span class="hljs-built_in">id</span> &gt; <span class="hljs-number">0</span> &amp;&amp; element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>)
 
 <span class="hljs-comment"># incorrect, resulting errors</span>
 element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; <span class="hljs-built_in">id</span> &gt; <span class="hljs-number">0</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Match-family-operators" class="common-anchor-header">Operadores de familia de coincidencias<button data-href="#Match-family-operators" class="anchor-icon" translate="no">
+<h2 id="Match-family-operators" class="common-anchor-header">Match family operators<button data-href="#Match-family-operators" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,13 +68,13 @@ element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Los operadores de familia de coincidencias también funcionan sobre un campo StructArray. En lugar de comprobar simplemente si existe un elemento, puede determinar cuántos elementos (o qué proporción) deben satisfacer un predicado de elemento.</p>
+    </button></h2><p>The match family operators work over a StructArray field, too. Instead of simply checking whether an element exists, you can determine how many elements (or what proportion) must satisfy an element predicate.</p>
 <ul>
-<li><p><a href="/docs/es/v2.6.x/struct-array-operators.md#MATCHANY"><code translate="no">MATCH_ANY(identifier, predicate)</code></a>: devuelve entidades que contengan al menos un trozo que empiece por "Rojo" en el subcampo <code translate="no">text</code>; semánticamente, esto equivale a <code translate="no">element_filter</code>.</p></li>
-<li><p><a href="/docs/es/v2.6.x/struct-array-operators.md#MATCHALL"><code translate="no">MATCH_ALL(identifier, predicate)</code></a>: devuelve entidades cuyos subcampos de texto en todos los trozos empiecen por "Rojo".</p></li>
-<li><p><a href="/docs/es/v2.6.x/struct-array-operators.md#MATCHLEAST"><code translate="no">MATCH_LEAST(identifier, predicate, k)</code></a><code translate="no">text</code>: devuelve entidades que contengan al menos <code translate="no">k</code> trozos que empiecen por "Rojo" en el subcampo .</p></li>
-<li><p><a href="/docs/es/v2.6.x/struct-array-operators.md#MATCHMOST"><code translate="no">MATCH_MOST(identifier, predicate, k)</code></a>devuelve entidades que contengan como máximo <code translate="no">k</code> trozos que empiecen por "Rojo" en el subcampo <code translate="no">text</code>.</p></li>
-<li><p><a href="/docs/es/v2.6.x/struct-array-operators.md#MATCHEXACT"><code translate="no">MATCH_EXACT(identifier, predicate, k)</code></a>devuelve entidades que contienen exactamente <code translate="no">k</code> trozos que empiezan por "Rojo" en el subcampo <code translate="no">text</code>.</p></li>
+<li><p><a href="/docs/es/v2.6.x/struct-array-operators.md#MATCHANY"><code translate="no">MATCH_ANY(identifier, predicate)</code></a>: returns entities that contain at least one chunk that starts with “Red” in the <code translate="no">text</code> sub-field; semantically, this is equivalent to <code translate="no">element_filter</code>.</p></li>
+<li><p><a href="/docs/es/v2.6.x/struct-array-operators.md#MATCHALL"><code translate="no">MATCH_ALL(identifier, predicate)</code></a>: returns entities whose text sub-fields in all chunks start with "Red".</p></li>
+<li><p><a href="/docs/es/v2.6.x/struct-array-operators.md#MATCHLEAST"><code translate="no">MATCH_LEAST(identifier, predicate, k)</code></a>: returns entities that contain at least <code translate="no">k</code> chunks that start with “Red” in the <code translate="no">text</code> sub-field.</p></li>
+<li><p><a href="/docs/es/v2.6.x/struct-array-operators.md#MATCHMOST"><code translate="no">MATCH_MOST(identifier, predicate, k)</code></a>: returns entities that contain at most <code translate="no">k</code> chunks that start with “Red” in the <code translate="no">text</code> sub-field.</p></li>
+<li><p><a href="/docs/es/v2.6.x/struct-array-operators.md#MATCHEXACT"><code translate="no">MATCH_EXACT(identifier, predicate, k)</code></a>: returns entities that contain exactly <code translate="no">k</code> chunks that start with “Red” in the <code translate="no">text</code> sub-field.</p></li>
 </ul>
 <h3 id="MATCHANY" class="common-anchor-header">MATCH_ANY<button data-href="#MATCHANY" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -91,10 +91,10 @@ element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Este operador se evalúa como verdadero si <strong>al menos un</strong> elemento de la matriz satisface el predicado, lo que indica que el equivalente estructural de un <code translate="no">OR</code> lógico a través de todos los elementos de la matriz.</p>
-<p>Los operadores MATCH_ANY y los filtros de elementos son semánticamente iguales y pueden utilizarse indistintamente. Cuando necesite expresar la lógica <code translate="no">count(matches) &gt;= 1</code>, deberá utilizarlos.</p>
-<p><strong>EJEMPLO:</strong></p>
-<p>El siguiente ejemplo devuelve entidades en las que cualquier parte del documento empieza por "Rojo".</p>
+    </button></h3><p>This operator evaluates to true if <strong>at least one</strong> element in the array satisfies the predicate, which indicates that the structural equivalent of a logical <code translate="no">OR</code> across all array elements.</p>
+<p>MATCH_ANY operators and element filters are semantically the same, and you can use them interchangeably. When you need to express the logic <code translate="no">count(matches) &gt;= 1</code>, you should use them.</p>
+<p><strong>EXAMPLE:</strong></p>
+<p>The following example returns entities where any part of the document starts with "Red".</p>
 <pre><code translate="no" class="language-python">MATCH_ANY(chunks, $[text] LIKE <span class="hljs-string">&#x27;Red%&#x27;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <h3 id="MATCHALL" class="common-anchor-header">MATCH_ALL<button data-href="#MATCHALL" class="anchor-icon" translate="no">
@@ -112,9 +112,9 @@ element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Este operador sólo es verdadero si <strong>todos los</strong> elementos de la matriz cumplen el predicado.</p>
-<p>Cuando necesite expresar la lógica <code translate="no">count(matches) == total elements</code>, utilice este operador.</p>
-<p><strong>EJEMPLO:</strong></p>
+    </button></h3><p>This operator evaluates to true only if <strong>every single</strong> element in the array satisfies the predicate.</p>
+<p>When you need to express the logic <code translate="no">count(matches) == total elements</code>, use this operator.</p>
+<p><strong>EXAMPLE:</strong></p>
 <pre><code translate="no" class="language-python">MATCH_ALL(chunks, $[text] LIKE <span class="hljs-string">&#x27;Red%&#x27;</span>)
 <button class="copy-code-btn"></button></code></pre>
 <h3 id="MATCHLEAST" class="common-anchor-header">MATCH_LEAST<button data-href="#MATCHLEAST" class="anchor-icon" translate="no">
@@ -132,9 +132,9 @@ element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Este operador es un filtro cuantitativo que devuelve verdadero si el número de elementos que satisfacen el predicado es <strong>mayor o igual que</strong> una constante especificada <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">kk</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span></span></span></span> k.</p>
-<p>Cuando necesite expresar la lógica <code translate="no">count(matches) &gt;= k</code>, utilice este operador.</p>
-<p><strong>EJEMPLO:</strong></p>
+    </button></h3><p>This operator is a quantitative filter that returns true if the number of elements satisfying the predicate is <strong>greater than or equal to</strong> a specified constant <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span>.</p>
+<p>When you need to express the logic <code translate="no">count(matches) &gt;= k</code>, use this operator.</p>
+<p><strong>EXAMPLE:</strong></p>
 <pre><code translate="no" class="language-python">MATCH_LEAST(chunks, $[text] LIKE <span class="hljs-string">&#x27;Red%&#x27;</span>, <span class="hljs-number">3</span>)
 <button class="copy-code-btn"></button></code></pre>
 <h3 id="MATCHMOST" class="common-anchor-header">MATCH_MOST<button data-href="#MATCHMOST" class="anchor-icon" translate="no">
@@ -152,9 +152,9 @@ element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Este operador es un filtro cuantitativo que devuelve verdadero si el número de elementos que satisfacen el predicado es <strong>menor o igual que</strong> una constante especificada <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">kk</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span></span></span></span> k.</p>
-<p>Resulta especialmente útil para filtrar las entidades que apuntan demasiado a una palabra clave específica (reducción del ruido).</p>
-<p><strong>EJEMPLO:</strong></p>
+    </button></h3><p>This operator is a quantitative filter that returns true if the number of elements satisfying the predicate is <strong>less than or equal to</strong> a specified constant <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span>.</p>
+<p>This is particularly useful for filtering out entities that over-target a specific keyword (noise reduction).</p>
+<p><strong>EXAMPLE:</strong></p>
 <pre><code translate="no" class="language-python">MATCH_MOST(chunks, $[text] LIKE <span class="hljs-string">&#x27;Red%&#x27;</span>, <span class="hljs-number">3</span>)
 <button class="copy-code-btn"></button></code></pre>
 <h3 id="MATCHEXACT" class="common-anchor-header">MATCH_EXACT<button data-href="#MATCHEXACT" class="anchor-icon" translate="no">
@@ -172,7 +172,7 @@ element_filter(chunks, $[x] &gt; <span class="hljs-number">1</span>) &amp;&amp; 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Este operador es el operador cuantitativo más restrictivo de la familia. Devuelve verdadero si y sólo si el número de elementos que satisfacen el predicado es <strong>exactamente</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><annotation encoding="application/x-tex">kk</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span></span></span></span> k.</p>
-<p><strong>EJEMPLO:</strong></p>
+    </button></h3><p>This operator is the most restrictive quantitative operator in the family. It returns true if and only if the number of elements satisfying the predicate is <strong>exactly</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span>.</p>
+<p><strong>EXAMPLE:</strong></p>
 <pre><code translate="no" class="language-python">MATCH_EXACT(chunks, $[text] LIKE <span class="hljs-string">&#x27;Red%&#x27;</span>, <span class="hljs-number">3</span>)
 <button class="copy-code-btn"></button></code></pre>

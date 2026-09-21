@@ -1,12 +1,14 @@
 ---
 id: text-highlighter.md
-title: 텍스트 하이라이터Compatible with Milvus 2.6.8+
+title: Text HighlighterCompatible with Milvus 2.6.8+
 summary: >-
-  Milvus의 하이라이터는 텍스트 필드에서 일치하는 용어를 사용자 지정 가능한 태그로 감싸서 주석을 달 수 있습니다. 하이라이팅은 문서가
-  일치하는 이유를 설명하고, 결과 가독성을 높이며, 검색 및 RAG 애플리케이션에서 풍부한 렌더링을 지원하는 데 도움이 됩니다.
+  The Highlighter in Milvus annotates matched terms in text fields by wrapping
+  them with customizable tags. Highlighting helps explain why a document
+  matches, improves result readability, and supports rich rendering in search
+  and RAG applications.
 beta: Milvus 2.6.8+
 ---
-<h1 id="Text-Highlighter" class="common-anchor-header">텍스트 하이라이터<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#Text-Highlighter" class="anchor-icon" translate="no">
+<h1 id="Text-Highlighter" class="common-anchor-header">Text Highlighter<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.8+</span><button data-href="#Text-Highlighter" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -21,19 +23,19 @@ beta: Milvus 2.6.8+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus의 하이라이터는 텍스트 필드에서 일치하는 용어를 사용자 지정 가능한 태그로 감싸서 주석을 달 수 있습니다. 하이라이팅은 문서가 일치하는 이유를 설명하고, 결과 가독성을 높이며, 검색 및 RAG 애플리케이션에서 풍부한 렌더링을 지원하는 데 도움이 됩니다.</p>
-<p>강조 표시는 최종 검색 결과 세트의 후처리 단계로 실행됩니다. 후보 검색, 필터링 로직, 순위 또는 채점에는 영향을 미치지 않습니다.</p>
-<p>하이라이터는 세 가지 독립적인 차원의 제어 기능을 제공합니다:</p>
+    </button></h1><p>The Highlighter in Milvus annotates matched terms in text fields by wrapping them with customizable tags. Highlighting helps explain why a document matches, improves result readability, and supports rich rendering in search and RAG applications.</p>
+<p>Highlighting is executed as a post-processing step on the final search result set. It does not affect candidate retrieval, filtering logic, ranking, or scoring.</p>
+<p>The Highlighter provides three independent dimensions of control:</p>
 <ul>
-<li><p><strong>강조 표시되는 용어</strong></p>
-<p>강조 표시되는 용어의 출처를 선택할 수 있습니다. 예를 들어, <strong>BM25 전체 텍스트 검색에</strong> 사용되는 검색어 또는 <strong>텍스트 기반 필터링 표현식</strong> (예: <code translate="no">TEXT_MATCH</code> 조건)에 지정된 쿼리 용어를 강조 표시할 수 있습니다.</p></li>
-<li><p><strong>강조 표시된 용어가 렌더링되는 방식</strong></p>
-<p>각 검색어 전후에 삽입되는 태그를 구성하여 일치하는 용어가 강조 표시 출력에 표시되는 방식을 제어할 수 있습니다. 예를 들어 <code translate="no">{}</code> 같은 간단한 마커나 <code translate="no">&lt;em&gt;&lt;/em&gt;</code> 같은 HTML 태그를 사용하여 리치 렌더링할 수 있습니다.</p></li>
-<li><p><strong>강조 표시된 텍스트가 반환되는 방식</strong></p>
-<p>조각이 시작되는 위치, 길이, 반환되는 조각 수 등 강조 표시된 결과가 조각으로 반환되는 방식을 제어할 수 있습니다.</p></li>
+<li><p><strong>Which terms are highlighted</strong></p>
+<p>You can choose where highlighted terms come from. For example, highlight search terms used in <strong>BM25 full text search</strong>, or query terms specified in <strong>text-based filtering expressions</strong> (such as <code translate="no">TEXT_MATCH</code> conditions).</p></li>
+<li><p><strong>How highlighted terms are rendered</strong></p>
+<p>You can control how matched terms appear in the highlighting output by configuring the tags inserted before and after each match. For example, use simple markers like <code translate="no">{}</code> or HTML tags such as <code translate="no">&lt;em&gt;&lt;/em&gt;</code> for rich rendering.</p></li>
+<li><p><strong>How highlighted text is returned</strong></p>
+<p>You can control how highlighted results are returned as fragments, including where fragments start, how long they are, and how many fragments are returned.</p></li>
 </ul>
-<p>다음 섹션에서는 이러한 시나리오에 대해 설명합니다.</p>
-<h2 id="Search-term-highlighting-in-BM25-full-text-search" class="common-anchor-header">BM25 전체 텍스트 검색에서 검색어 강조 표시하기<button data-href="#Search-term-highlighting-in-BM25-full-text-search" class="anchor-icon" translate="no">
+<p>The following sections walk through these scenarios.</p>
+<h2 id="Search-term-highlighting-in-BM25-full-text-search" class="common-anchor-header">Search term highlighting in BM25 full text search<button data-href="#Search-term-highlighting-in-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -48,13 +50,13 @@ beta: Milvus 2.6.8+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>BM25 전체 텍스트 검색을 수행할 때 반환된 결과에서 <strong>검색어를</strong> 강조 표시하여 문서가 쿼리와 일치하는 이유를 설명하는 데 도움을 줄 수 있습니다. BM25 전체 텍스트 검색에 대해 자세히 알아보려면 <a href="/docs/ko/full-text-search.md">전체 텍스트 검색을</a> 참조하세요.</p>
-<p>이 시나리오에서 강조 표시된 용어는 BM25 전체 텍스트 검색에 사용된 검색어에서 직접 가져옵니다. 하이라이터는 이러한 용어를 사용하여 최종 결과에서 일치하는 텍스트에 주석을 달 수 있습니다.</p>
-<p>다음 콘텐츠가 텍스트 필드에 저장되어 있다고 가정합니다:</p>
+    </button></h2><p>When you perform a BM25 full text search, you can highlight the <strong>search terms</strong> in the returned result to help explain why a document matches the query. To learn more about BM25 full text search, refer to <a href="/docs/ko/full-text-search.md">Full Text Search</a>.</p>
+<p>In this scenario, highlighted terms come directly from the search terms used in BM25 full text search. The Highlighter uses these terms to annotate matched text in the final result.</p>
+<p>Assume the following content is stored in a text field:</p>
 <pre><code translate="no" class="language-plaintext">Milvus supports full text search. Use BM25 for keyword relevance. Filters can narrow results.
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>하이라이터 구성</strong></p>
-<p>BM25 전체 텍스트 검색에서 검색어를 강조 표시하려면 <code translate="no">LexicalHighlighter</code> 을 만들고 BM25 전체 텍스트 검색에 대해 검색어 강조 표시를 사용하도록 설정합니다:</p>
+<p><strong>Highlighter configuration</strong></p>
+<p>To highlight search terms in BM25 full text search, create a <code translate="no">LexicalHighlighter</code> and enable search term highlighting for BM25 full text search:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> LexicalHighlighter
 
 highlighter = LexicalHighlighter(
@@ -63,21 +65,21 @@ highlighter = LexicalHighlighter(
     highlight_search_text=<span class="hljs-literal">True</span>   <span class="hljs-comment"># Enable search term highlighting for BM25 full text search</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>이 예제에서는</p>
+<p>In this example:</p>
 <ul>
-<li><p><code translate="no">pre_tags</code> 과 <code translate="no">post_tags</code> 은 강조 표시된 텍스트가 출력에 표시되는 방식을 제어합니다. 이 경우 일치하는 용어는 <code translate="no">{}</code> (예: <code translate="no">{term}</code>)로 래핑됩니다. 여러 개의 태그를 목록으로 제공할 수도 있습니다(예: <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). 여러 용어가 강조 표시되면 태그가 순서대로 적용되고 일치 순서에 따라 회전합니다.</p></li>
-<li><p><code translate="no">highlight_search_text=True</code> 는 밀버스에게 BM25 전체 텍스트 검색의 검색어를 강조 표시된 용어의 소스로 사용하도록 지시합니다.</p></li>
+<li><p><code translate="no">pre_tags</code> and <code translate="no">post_tags</code> control how highlighted text appears in the output. In this case, matched terms are wrapped by <code translate="no">{}</code> (for example, <code translate="no">{term}</code>). You can also provide multiple tags as a list (for example, <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). When multiple terms are highlighted, tags are applied in order and rotated by match sequence.</p></li>
+<li><p><code translate="no">highlight_search_text=True</code> tells Milvus to use the search terms in BM25 full text search as the source of highlighted terms.</p></li>
 </ul>
-<p>하이라이터 개체가 생성되면 해당 구성을 BM25 전체 텍스트 검색 요청에 적용합니다:</p>
+<p>Once the Highlighter object is created, apply its configuration to your BM25 full text search request:</p>
 <pre><code translate="no" class="language-python">results = client.search(
     ...,
     data=[<span class="hljs-string">&quot;BM25&quot;</span>],      <span class="hljs-comment"># Search term used in BM25 full text search</span>
 <span class="highlighted-wrapper-line">    highlighter=highlighter <span class="hljs-comment"># Pass highlighter config here</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>강조 표시 출력</strong></p>
-<p>강조 표시가 활성화되면 Milvus는 전용 <code translate="no">highlight</code> 필드에 강조 표시된 텍스트를 반환합니다. 기본적으로 강조 표시된 출력은 일치하는 첫 번째 용어부터 시작하여 조각으로 반환됩니다.</p>
-<p>이 예에서 검색어는 <code translate="no">&quot;BM25&quot;</code> 이므로 반환된 결과에서 강조 표시되어 있습니다:</p>
+<p><strong>Highlighting output</strong></p>
+<p>When highlighting is enabled, Milvus returns highlighted text in a dedicated <code translate="no">highlight</code> field. By default, highlighted output is returned as a fragment starting from the first matched term.</p>
+<p>In this example, the search term is <code translate="no">&quot;BM25&quot;</code>, so it is highlighted in the returned result:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     ...<span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;highlight&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -87,8 +89,8 @@ highlighter = LexicalHighlighter(
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>반환되는 조각의 위치, 길이 및 개수를 제어하려면 <a href="/docs/ko/text-highlighter.md#Fragment-based-highlighting-output">강조 표시된 텍스트를 조각으로 반환하기를</a> 참조하세요.</p>
-<h2 id="Query-term-highlighting-in-filtering" class="common-anchor-header">필터링에서 검색어 강조 표시<button data-href="#Query-term-highlighting-in-filtering" class="anchor-icon" translate="no">
+<p>To control the position, length, and number of returned fragments, see <a href="/docs/ko/text-highlighter.md#Fragment-based-highlighting-output">Return highlighted text as fragments</a>.</p>
+<h2 id="Query-term-highlighting-in-filtering" class="common-anchor-header">Query term highlighting in filtering<button data-href="#Query-term-highlighting-in-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -103,16 +105,16 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>검색어를 강조 표시하는 것 외에도 텍스트 기반 필터링 표현식에 사용된 용어를 강조 표시할 수 있습니다.</p>
+    </button></h2><p>In addition to highlighting search terms, you can highlight terms used in text-based filtering expressions.</p>
 <div class="alert note">
-<p>현재 쿼리 용어 강조 표시에는 <code translate="no">TEXT_MATCH</code> 필터링 조건만 지원됩니다. 자세히 알아보려면 <a href="/docs/ko/keyword-match.md">텍스트 일치를</a> 참조하세요.</p>
+<p>Currently, only the <code translate="no">TEXT_MATCH</code> filtering condition is supported for query term highlighting. To learn more, refer to <a href="/docs/ko/keyword-match.md">Text Match</a>.</p>
 </div>
-<p>이 시나리오에서 강조 표시된 용어는 텍스트 기반 필터링 표현식에서 나옵니다. 필터링은 일치하는 문서를 결정하고, 하이라이터는 일치하는 텍스트 스팬에 주석을 달게 됩니다.</p>
-<p>다음 콘텐츠가 텍스트 필드에 저장되어 있다고 가정합니다:</p>
+<p>In this scenario, highlighted terms come from text-based filtering expressions. Filtering determines which documents match, while the Highlighter annotates the matched text spans.</p>
+<p>Assume the following content is stored in a text field:</p>
 <pre><code translate="no" class="language-python">This document explains how text filtering works <span class="hljs-keyword">in</span> Milvus.
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>하이라이터 구성</strong></p>
-<p>필터링에 사용되는 쿼리 용어를 강조 표시하려면 <code translate="no">LexicalHighlighter</code> 을 만들고 필터링 조건에 해당하는 <code translate="no">highlight_query</code> 을 정의합니다:</p>
+<p><strong>Highlighter configuration</strong></p>
+<p>To highlight query terms used in filtering, create a <code translate="no">LexicalHighlighter</code> and define a <code translate="no">highlight_query</code> that corresponds to the filtering condition:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> LexicalHighlighter
 
 highlighter = LexicalHighlighter(
@@ -125,21 +127,21 @@ highlighter = LexicalHighlighter(
     }]
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>이 구성에서</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">pre_tags</code> 및 <code translate="no">post_tags</code> 은 강조 표시된 텍스트가 출력에 표시되는 방식을 제어합니다. 이 경우 일치하는 용어는 <code translate="no">{}</code> (예: <code translate="no">{term}</code>)로 래핑됩니다. 여러 개의 태그를 목록으로 제공할 수도 있습니다(예: <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). 여러 개의 용어가 강조 표시되면 태그가 순서대로 적용되고 일치 순서에 따라 회전합니다.</p></li>
-<li><p><code translate="no">highlight_query</code> 는 강조 표시할 필터링 용어를 정의합니다.</p></li>
+<li><p><code translate="no">pre_tags</code> and <code translate="no">post_tags</code> control how highlighted text appears in the output. In this case, matched terms are wrapped by <code translate="no">{}</code> (for example, <code translate="no">{term}</code>). You can also provide multiple tags as a list (for example, <code translate="no">[&quot;&lt;b&gt;&quot;, &quot;&lt;i&gt;&quot;]</code>). When multiple terms are highlighted, tags are applied in order and rotated by match sequence.</p></li>
+<li><p><code translate="no">highlight_query</code> defines which filtering terms should be highlighted.</p></li>
 </ul>
-<p>하이라이터 개체가 생성되면 동일한 필터링 표현식과 하이라이터 구성을 검색 요청에 적용합니다:</p>
+<p>Once the Highlighter object is created, apply the same filtering expression and the highlighter configuration to your search request:</p>
 <pre><code translate="no" class="language-python">results = client.search(
     ...,
     <span class="hljs-built_in">filter</span>=<span class="hljs-string">&#x27;TEXT_MATCH(text, &quot;text filtering&quot;)&#x27;</span>,
 <span class="highlighted-wrapper-line">    highlighter=highlighter <span class="hljs-comment"># Pass highlighter config here</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>강조 표시 출력</strong></p>
-<p>필터링에 쿼리 용어 강조 표시가 활성화된 경우, Milvus는 전용 <code translate="no">highlight</code> 필드에 강조 표시된 텍스트를 반환합니다. 기본적으로 강조 표시된 출력은 일치하는 첫 번째 용어부터 시작되는 조각으로 반환됩니다.</p>
-<p>이 예에서 일치하는 첫 번째 용어는 <code translate="no">&quot;text&quot;</code> 이므로 반환된 강조 표시된 텍스트는 해당 위치부터 시작됩니다:</p>
+<p><strong>Highlighting output</strong></p>
+<p>When query term highlighting is enabled for filtering, Milvus returns highlighted text in a dedicated <code translate="no">highlight</code> field. By default, highlighted output is returned as a fragment starting from the first matched term.</p>
+<p>In this example, the first matched term is <code translate="no">&quot;text&quot;</code>, so the returned highlighted text starts from that position:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     ...<span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;highlight&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -149,8 +151,8 @@ highlighter = LexicalHighlighter(
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>반환되는 조각의 위치, 길이 및 개수를 제어하려면 <a href="/docs/ko/text-highlighter.md#Fragment-based-highlighting-output">강조 표시된 텍스트를 조각으로 반환하기를</a> 참조하세요.</p>
-<h2 id="Fragment-based-highlighting-output" class="common-anchor-header">프래그먼트 기반 강조 표시 출력<button data-href="#Fragment-based-highlighting-output" class="anchor-icon" translate="no">
+<p>To control the position, length, and number of returned fragments, see <a href="/docs/ko/text-highlighter.md#Fragment-based-highlighting-output">Return highlighted text as fragments</a>.</p>
+<h2 id="Fragment-based-highlighting-output" class="common-anchor-header">Fragment-based highlighting output<button data-href="#Fragment-based-highlighting-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -165,12 +167,12 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>기본적으로 Milvus는 일치하는 첫 번째 용어부터 시작하여 강조 표시된 텍스트를 조각으로 반환합니다. 조각 관련 설정을 사용하면 강조 표시되는 용어를 변경하지 않고도 조각이 반환되는 방식을 추가로 제어할 수 있습니다.</p>
-<p>텍스트 필드에 다음과 같은 콘텐츠가 저장되어 있다고 가정해 보겠습니다:</p>
+    </button></h2><p>By default, Milvus returns highlighted text as fragments starting from the first matched term. Fragment-related settings allow you to further control how fragments are returned, without changing which terms are highlighted.</p>
+<p>Assume the following content is stored in a text field:</p>
 <pre><code translate="no" class="language-plaintext">Milvus supports full text search. Use BM25 for keyword relevance. Filters can narrow results.
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>하이라이터 구성</strong></p>
-<p>강조 표시된 조각의 모양을 제어하려면 <code translate="no">LexicalHighlighter</code> 에서 조각 관련 옵션을 구성합니다:</p>
+<p><strong>Highlighter configuration</strong></p>
+<p>To control the shape of highlighted fragments, configure fragment-related options in the <code translate="no">LexicalHighlighter</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> LexicalHighlighter
 
 highlighter = LexicalHighlighter(
@@ -182,21 +184,21 @@ highlighter = LexicalHighlighter(
     num_of_fragments=<span class="hljs-number">1</span>     <span class="hljs-comment"># Max. number of fragments to return</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>이 구성에서</p>
+<p>In this configuration:</p>
 <ul>
-<li><p><code translate="no">fragment_offset</code> 첫 번째 강조 표시된 용어 앞에 선행 문맥을 예약합니다.</p></li>
-<li><p><code translate="no">fragment_size</code> 각 조각에 포함되는 텍스트의 양을 제한합니다.</p></li>
-<li><p><code translate="no">num_of_fragments</code> 반환되는 조각 수를 제어합니다.</p></li>
+<li><p><code translate="no">fragment_offset</code> reserves leading context before the first highlighted term.</p></li>
+<li><p><code translate="no">fragment_size</code> limits how much text is included in each fragment.</p></li>
+<li><p><code translate="no">num_of_fragments</code> controls how many fragments are returned.</p></li>
 </ul>
-<p>하이라이터 객체가 생성되면 검색 요청에 하이라이터 구성을 적용합니다:</p>
+<p>Once the Highlighter object is created, apply the highlighter configuration to your search request:</p>
 <pre><code translate="no" class="language-python">results = client.search(
     ...,
     data=[<span class="hljs-string">&quot;BM25&quot;</span>],
 <span class="highlighted-wrapper-line">    highlighter=highlighter <span class="hljs-comment"># Pass highlighter config here</span></span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>하이라이팅 출력</strong></p>
-<p>조각 기반 강조 표시를 활성화하면 Milvus는 <code translate="no">highlight</code> 필드에 강조 표시된 텍스트를 조각으로 반환합니다:</p>
+<p><strong>Highlighting output</strong></p>
+<p>With fragment-based highlighting enabled, Milvus returns highlighted text as fragments in the <code translate="no">highlight</code> field:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
     ...<span class="hljs-punctuation">,</span>
     <span class="hljs-attr">&quot;highlight&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
@@ -206,13 +208,13 @@ highlighter = LexicalHighlighter(
     <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>이 출력에서:</p>
+<p>In this output:</p>
 <ul>
-<li><p><code translate="no">fragment_offset</code> 이 설정되어 있기 때문에 조각이 <code translate="no">{BM25}</code> 에서 정확히 시작되지 않습니다.</p></li>
-<li><p><code translate="no">num_of_fragments</code> 이 1이기 때문에 하나의 조각만 반환됩니다.</p></li>
-<li><p>조각의 길이는 <code translate="no">fragment_size</code> 로 제한됩니다.</p></li>
+<li><p>The fragment does not start exactly at <code translate="no">{BM25}</code> because <code translate="no">fragment_offset</code> is set.</p></li>
+<li><p>Only one fragment is returned because <code translate="no">num_of_fragments</code> is 1.</p></li>
+<li><p>The length of the fragment is capped by <code translate="no">fragment_size</code>.</p></li>
 </ul>
-<h2 id="Examples" class="common-anchor-header">예제<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -227,7 +229,7 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Preparation" class="common-anchor-header">준비<button data-href="#Preparation" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Preparation" class="common-anchor-header">Preparation<button data-href="#Preparation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -242,10 +244,10 @@ highlighter = LexicalHighlighter(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>형광펜을 사용하기 전에 컬렉션이 올바르게 구성되어 있는지 확인하세요.</p>
-<p>아래 예에서는 BM25 전체 텍스트 검색 및 <code translate="no">TEXT_MATCH</code> 쿼리를 지원하는 컬렉션을 만든 다음 샘플 문서를 삽입합니다.</p>
+    </button></h3><p>Before using the highlighter, ensure your collection is properly configured.</p>
+<p>The example below creates a collection that supports BM25 full text search and <code translate="no">TEXT_MATCH</code> queries, then inserts sample documents.</p>
 <p><details></p>
-<p><summary><strong>컬렉션 준비하기</strong></summary></p>
+<p><summary><strong>Prepare your collection</strong></summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
     DataType,
@@ -310,7 +312,7 @@ SEARCH_PARAMS = {<span class="hljs-string">&quot;metric_type&quot;</span>: <span
 <span class="hljs-comment"># ✓ Collection created with 4 documents</span>
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-1-Highlight-search-terms-in-BM25-full-text-search" class="common-anchor-header">예 1: BM25 전체 텍스트 검색에서 검색어 강조 표시하기<button data-href="#Example-1-Highlight-search-terms-in-BM25-full-text-search" class="anchor-icon" translate="no">
+<h3 id="Example-1-Highlight-search-terms-in-BM25-full-text-search" class="common-anchor-header">Example 1: Highlight search terms in BM25 full text search<button data-href="#Example-1-Highlight-search-terms-in-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -325,10 +327,10 @@ SEARCH_PARAMS = {<span class="hljs-string">&quot;metric_type&quot;</span>: <span
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 예에서는 BM25 전체 텍스트 검색에서 검색어를 강조 표시하는 방법을 보여 줍니다.</p>
+    </button></h3><p>This example shows how to highlight search terms in BM25 full text search.</p>
 <ul>
-<li><p>BM25 전체 텍스트 검색에서 검색어로 <code translate="no">&quot;test&quot;</code> 사용</p></li>
-<li><p>형광펜은 "test"가 나오는 모든 항목을 <code translate="no">{</code> 및 <code translate="no">}</code> 태그로 래핑합니다.</p></li>
+<li><p>BM25 full text search uses <code translate="no">&quot;test&quot;</code> as the search term</p></li>
+<li><p>The highlighter wraps all occurrences of “test” with <code translate="no">{</code> and <code translate="no">}</code> tags</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -351,14 +353,14 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>예상 출력</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;{test} doc&#x27;]
 [&#x27;{test} doc&#x27;]
 [&#x27;{test} doc. Milvus is an open-source vector database built for GenAI applications.&#x27;]
 [&#x27;{test} doc. Milvus is an open-source vector database that suits AI applications of every size from run&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-2-Highlight-query-terms-in-filtering" class="common-anchor-header">예 2: 필터링에서 쿼리 용어 강조 표시하기<button data-href="#Example-2-Highlight-query-terms-in-filtering" class="anchor-icon" translate="no">
+<h3 id="Example-2-Highlight-query-terms-in-filtering" class="common-anchor-header">Example 2: Highlight query terms in filtering<button data-href="#Example-2-Highlight-query-terms-in-filtering" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -373,11 +375,11 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 예에서는 <code translate="no">TEXT_MATCH</code> 필터와 일치하는 용어를 강조 표시하는 방법을 보여 줍니다.</p>
+    </button></h3><p>This example shows how to highlight terms matched by a <code translate="no">TEXT_MATCH</code> filter.</p>
 <ul>
-<li><p>BM25 전체 텍스트 검색은 <code translate="no">&quot;test&quot;</code> 을 쿼리 용어로 사용합니다.</p></li>
-<li><p><code translate="no">queries</code> 매개변수는 <code translate="no">&quot;my doc&quot;</code> 을 하이라이트 목록에 추가합니다.</p></li>
-<li><p>하이라이터는 일치하는 모든 용어(<code translate="no">&quot;my&quot;</code>, <code translate="no">&quot;test&quot;</code>, <code translate="no">&quot;doc&quot;</code>)를 <code translate="no">{</code> 및 <code translate="no">}</code></p></li>
+<li><p>BM25 full text search uses <code translate="no">&quot;test&quot;</code> as the query term</p></li>
+<li><p>The <code translate="no">queries</code> parameter adds <code translate="no">&quot;my doc&quot;</code> to the highlight list</p></li>
+<li><p>The highlighter wraps all matched terms (<code translate="no">&quot;my&quot;</code>, <code translate="no">&quot;test&quot;</code>, <code translate="no">&quot;doc&quot;</code>) with <code translate="no">{</code> and <code translate="no">}</code></p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -403,14 +405,14 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>예상 출력</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;{my} first {test} {doc}&#x27;]
 [&#x27;{my} second {test} {doc}&#x27;]
 [&#x27;{my} first {test} {doc}. Milvus is an open-source vector database built for GenAI applications.&#x27;]
 [&#x27;{my} second {test} {doc}. Milvus is an open-source vector database that suits AI applications of every siz&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-3-Return-highlights-as-fragments" class="common-anchor-header">예 3: 하이라이트를 조각으로 반환<button data-href="#Example-3-Return-highlights-as-fragments" class="anchor-icon" translate="no">
+<h3 id="Example-3-Return-highlights-as-fragments" class="common-anchor-header">Example 3: Return highlights as fragments<button data-href="#Example-3-Return-highlights-as-fragments" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -425,11 +427,11 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 예제에서는 쿼리가 <code translate="no">&quot;Milvus&quot;</code> 을 검색하고 다음 설정으로 하이라이트 조각을 반환합니다:</p>
+    </button></h3><p>In this example, the query searches for <code translate="no">&quot;Milvus&quot;</code> and returns highlight fragments in the following settings:</p>
 <ul>
-<li><p><code translate="no">fragment_offset</code> 첫 번째 강조 표시된 스팬 앞의 최대 20자를 선행 컨텍스트로 유지합니다(기본값은 0).</p></li>
-<li><p><code translate="no">fragment_size</code> 각 조각을 약 60자로 제한합니다(기본값은 100자).</p></li>
-<li><p><code translate="no">num_of_fragments</code> 텍스트 값당 반환되는 조각 수를 제한합니다(기본값은 5).</p></li>
+<li><p><code translate="no">fragment_offset</code> keeps up to 20 characters before the first highlighted span as leading context (default is 0).</p></li>
+<li><p><code translate="no">fragment_size</code> limits each fragment to approximately 60 characters (default is 100).</p></li>
+<li><p><code translate="no">num_of_fragments</code> limits the number of returned fragments per text value (default is 5).</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -455,12 +457,12 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>예상 출력</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Doc 1: [&#x27;my first test doc. {Milvus} is an open-source vector database &#x27;]
 Doc 2: [&#x27;my second test doc. {Milvus} is an open-source vector database&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-4-Multi-query-highlighting" class="common-anchor-header">예 4: 다중 쿼리 강조 표시<button data-href="#Example-4-Multi-query-highlighting" class="anchor-icon" translate="no">
+<h3 id="Example-4-Multi-query-highlighting" class="common-anchor-header">Example 4: Multi-query highlighting<button data-href="#Example-4-Multi-query-highlighting" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -475,11 +477,11 @@ Doc 2: [&#x27;my second test doc. {Milvus} is an open-source vector database&#x2
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>BM25 전체 텍스트 검색에서 여러 쿼리로 검색하는 경우 각 쿼리의 결과가 독립적으로 강조 표시됩니다. 첫 번째 쿼리의 결과에는 해당 검색어에 대한 하이라이트가 포함되고, 두 번째 쿼리의 결과에는 해당 검색어에 대한 하이라이트가 포함되는 등의 방식입니다. 각 쿼리는 동일한 <code translate="no">highlighter</code> 구성을 사용하지만 독립적으로 적용됩니다.</p>
-<p>아래 예시에서는</p>
+    </button></h3><p>When searching with multiple queries in BM25 full text search, each query’s results are highlighted independently. The first query’s results contain highlights for its search term, and the second query’s results contain highlights for its search term, and so on. Each query uses the same <code translate="no">highlighter</code> configuration but applies it independently.</p>
+<p>In the example below:</p>
 <ul>
-<li><p>첫 번째 쿼리는 결과 집합에서 <code translate="no">&quot;test&quot;</code> 을 강조 표시합니다.</p></li>
-<li><p>두 번째 쿼리는 결과 집합에서 <code translate="no">&quot;Milvus&quot;</code> 을 강조 표시합니다.</p></li>
+<li><p>First query highlights <code translate="no">&quot;test&quot;</code> in its result set</p></li>
+<li><p>Second query highlights <code translate="no">&quot;Milvus&quot;</code> in its result set</p></li>
 </ul>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;{&quot;</span>],</span>
@@ -505,7 +507,7 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>예상 출력</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">Query &#x27;test&#x27;:
   [&#x27;{test} doc&#x27;]
   [&#x27;{test} doc&#x27;]
@@ -514,7 +516,7 @@ Query &#x27;Milvus&#x27;:
   [&#x27;{Milvus} is an open-source vector database that suits AI applications of every size from running a dem&#x27;]
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Example-5-Custom-HTML-tags" class="common-anchor-header">예 5: 사용자 정의 HTML 태그<button data-href="#Example-5-Custom-HTML-tags" class="anchor-icon" translate="no">
+<h3 id="Example-5-Custom-HTML-tags" class="common-anchor-header">Example 5: Custom HTML tags<button data-href="#Example-5-Custom-HTML-tags" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -529,7 +531,7 @@ Query &#x27;Milvus&#x27;:
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>웹 UI용 HTML 안전 태그와 같은 모든 태그를 강조 표시하는 데 사용할 수 있습니다. 이는 브라우저에서 검색 결과를 렌더링할 때 유용합니다.</p>
+    </button></h3><p>You can use any tags for highlighting, such as HTML-safe tags for web UIs. This is useful when rendering search results in a browser.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">highlighter = LexicalHighlighter(</span>
 <span class="highlighted-comment-line">    pre_tags=[<span class="hljs-string">&quot;&lt;mark&gt;&quot;</span>],</span>
 <span class="highlighted-comment-line">    post_tags=[<span class="hljs-string">&quot;&lt;/mark&gt;&quot;</span>],</span>
@@ -551,7 +553,7 @@ results = client.search(
 <span class="hljs-built_in">print</span>()
 <button class="copy-code-btn"></button></code></pre>
 <p><details></p>
-<p><summary>예상 출력</summary></p>
+<p><summary>Expected output</summary></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;&lt;mark&gt;test&lt;/mark&gt; doc&#x27;]
 [&#x27;&lt;mark&gt;test&lt;/mark&gt; doc&#x27;]
 <button class="copy-code-btn"></button></code></pre>

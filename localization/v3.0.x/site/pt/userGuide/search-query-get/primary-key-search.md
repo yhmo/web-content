@@ -1,14 +1,14 @@
 ---
 id: primary-key-search.md
-title: Pesquisa por chave primáriaCompatible with Milvus 2.6.9+
+title: Primary-Key SearchCompatible with Milvus 2.6.9+
 summary: >-
-  Ao realizar pesquisas de similaridade, é-lhe sempre solicitado que forneça um
-  ou mais vetores de consulta, mesmo que esses vetores já estejam presentes na
-  coleção de destino. Para evitar a recuperação de vetores antes da pesquisa,
-  pode utilizar chaves primárias em vez disso.
+  When conducting similarity searches, you are always asked to provide one or
+  more query vectors, even if the query vectors are already present in the
+  target collection. To avoid retrieving vectors before the search, you can use
+  primary keys instead.
 beta: Milvus 2.6.9+
 ---
-<h1 id="Primary-Key-Search" class="common-anchor-header">Pesquisa por chave primária<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.9+</span><button data-href="#Primary-Key-Search" class="anchor-icon" translate="no">
+<h1 id="Primary-Key-Search" class="common-anchor-header">Primary-Key Search<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.9+</span><button data-href="#Primary-Key-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,8 +23,8 @@ beta: Milvus 2.6.9+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Ao realizar pesquisas de similaridade, é sempre solicitado que forneça um ou mais vetores de consulta, mesmo que esses vetores já estejam presentes na coleção de destino. Para evitar a recuperação de vetores antes da pesquisa, pode utilizar chaves primárias em vez disso.</p>
-<h2 id="Overview" class="common-anchor-header">Visão geral<button data-href="#Overview" class="anchor-icon" translate="no">
+    </button></h1><p>When conducting similarity searches, you are always asked to provide one or more query vectors, even if the query vectors are already present in the target collection. To avoid retrieving vectors before the search, you can use primary keys instead.</p>
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,11 +39,11 @@ beta: Milvus 2.6.9+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Nas plataformas de comércio eletrónico, os utilizadores podem introduzir uma palavra-chave para recuperar produtos que correspondam a essa palavra-chave. Assim que o utilizador aceder à página de detalhes de um produto, a plataforma também apresentará uma lista de produtos semelhantes na parte inferior da página para os utilizadores que pretendam compará-los.</p>
-<p>As recomendações são ordenadas de acordo com a sua semelhança com a palavra-chave ou com o produto atual. Para o conseguir, os programadores da plataforma precisam de recuperar a representação vetorial da palavra-chave ou do produto atual a partir do Milvus antes da pesquisa de semelhança propriamente dita, o que aumenta o número de idas e voltas entre a plataforma e o Milvus e resulta na transmissão de um grande número de valores de ponto flutuante de alta dimensão através da rede.</p>
-<p>Para simplificar a lógica de interação entre as suas aplicações e o Milvus, reduzir o número de idas e voltas e evitar a transmissão de grandes quantidades de valores de ponto flutuante de alta dimensão pela rede, considere a utilização de pesquisas por chave primária.</p>
-<p>Numa pesquisa por chave primária, não é necessário fornecer quaisquer vetores de consulta. Em vez disso, é-lhe pedido que forneça as chaves primárias (<code translate="no">ids</code>) das entidades que contêm os vetores de consulta.</p>
-<h2 id="Limits--restrictions" class="common-anchor-header">Limites e restrições<button data-href="#Limits--restrictions" class="anchor-icon" translate="no">
+    </button></h2><p>On e-commerce platforms, users can enter a keyword to retrieve products that match it. Once the user views a product detail page, the platform will also display a list of similar products at the bottom of the page for users who want to compare them.</p>
+<p>The recommendations are sorted by their similarity to the keyword or the current product. To achieve this, platform developers need to retrieve the vector representation of the keyword or the current product from Milvus before the actual similarity search, which increases the round-trip between the platform and Milvus and results in a large number of high-dimensional floats being transmitted across the network.</p>
+<p>To simplify the interaction logic between your applications and Milvus, reduce the number of round-trips, and avoid transmitting large amounts of high-dimensional floating-point values across the network, consider using primary key searches.</p>
+<p>In a primary key search, you do not need to provide any query vectors. Instead, you are asked to provide the primary keys (<code translate="no">ids</code>) of the entities that contain the query vectors.</p>
+<h2 id="Limits--restrictions" class="common-anchor-header">Limits & restrictions<button data-href="#Limits--restrictions" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,14 +59,14 @@ beta: Milvus 2.6.9+
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>As pesquisas que utilizam chaves primárias aplicam-se a todos os tipos de dados vetoriais, exceto campos vetoriais esparsos derivados de campos VarChar, como nas funções BM25.</p></li>
-<li><p>Pode utilizar chaves primárias em vez de vetores de consulta em pesquisas filtradas, por intervalo e de agrupamento, opcionalmente com a paginação ativada. No entanto, esta funcionalidade não se aplica a pesquisas híbridas nem a iteradores de pesquisa.</p></li>
-<li><p>Para pesquisas de similaridade que envolvam listas de incorporação, continua a ser necessário recuperar os vetores de consulta, organizá-los em listas de incorporação e executar as pesquisas.</p></li>
-<li><p>Não é possível utilizar chaves primárias em vez de vetores de consulta em APIs RESTful.</p></li>
-<li><p>No caso de chaves primárias inexistentes ou com formato incorreto, o Milvus apresentará mensagens de erro.</p></li>
-<li><p>As chaves primárias e os vetores de consulta são mutuamente exclusivos. Fornecer ambos também resulta em erros.</p></li>
+<li><p>Searches using primary keys apply to all vector data types, except sparse vector fields derived from VarChar fields, as in BM25 functions.</p></li>
+<li><p>You can use primary keys instead of query vectors in filtered, range, and grouping searches, optionally with pagination enabled. However, this feature does not apply to hybrid searches and search iterators.</p></li>
+<li><p>For similarity searches involving embedding lists, you still need to retrieve the query vectors, arrange them into embedding lists, and run the searches.</p></li>
+<li><p>You cannot use primary keys instead of query vectors in RESTful APIs.</p></li>
+<li><p>For any nonexistent primary keys or those in an incorrect format, Milvus will prompt errors.</p></li>
+<li><p>Primary keys and query vectors are mutually exclusive. Providing both also results in errors.</p></li>
 </ul>
-<h2 id="Examples" class="common-anchor-header">Exemplos<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -81,11 +81,11 @@ beta: Milvus 2.6.9+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Os exemplos seguintes partem do princípio de que todos os IDs Int64 fornecidos estão disponíveis na coleção de destino.</p>
+    </button></h2><p>The following examples assume that all provided Int64 IDs are available in the target collection.</p>
 <div class="alert note">
-<p>As chaves primárias não são utilizadas para filtragem; são utilizadas apenas para a recuperação de vetores.</p>
+<p>The primary keys are not used for filtering; they are used only for vector retrieval.</p>
 </div>
-<h3 id="Example-1-Basic-primary-key-search" class="common-anchor-header">Exemplo 1: Pesquisa básica por chave primária<button data-href="#Example-1-Basic-primary-key-search" class="anchor-icon" translate="no">
+<h3 id="Example-1-Basic-primary-key-search" class="common-anchor-header">Example 1: Basic primary-key search<button data-href="#Example-1-Basic-primary-key-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,14 +100,14 @@ beta: Milvus 2.6.9+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Para realizar uma pesquisa básica por chave primária, basta substituir os vetores de consulta por chaves primárias.</p>
+    </button></h3><p>To conduct a basic primary-key search, simply replace the query vectors with primary keys.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -242,7 +242,7 @@ milvus::SearchResponse searchResponse;
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-2-Filtered-search-using-primary-keys" class="common-anchor-header">Exemplo 2: Pesquisa filtrada utilizando chaves primárias<button data-href="#Example-2-Filtered-search-using-primary-keys" class="anchor-icon" translate="no">
+<h3 id="Example-2-Filtered-search-using-primary-keys" class="common-anchor-header">Example 2: Filtered search using primary keys<button data-href="#Example-2-Filtered-search-using-primary-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -257,14 +257,14 @@ milvus::SearchResponse searchResponse;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>O exemplo seguinte pressupõe que «color» e «likes» são dois campos definidos no esquema da coleção de destino.</p>
+    </button></h3><p>The following example assumes that color and likes are two schema-defined fields in the target collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -359,7 +359,7 @@ milvus::SearchResponse searchResponse;
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-3-Range-search-using-primary-keys" class="common-anchor-header">Exemplo 3: Pesquisa por intervalo utilizando chaves primárias<button data-href="#Example-3-Range-search-using-primary-keys" class="anchor-icon" translate="no">
+<h3 id="Example-3-Range-search-using-primary-keys" class="common-anchor-header">Example 3: Range search using primary keys<button data-href="#Example-3-Range-search-using-primary-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -375,12 +375,12 @@ milvus::SearchResponse searchResponse;
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -486,7 +486,7 @@ milvus::SearchResponse searchResponse;
     }
 }
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Example-4-Grouping-search-using-primary-keys" class="common-anchor-header">Exemplo 4: Pesquisa agrupada utilizando chaves primárias<button data-href="#Example-4-Grouping-search-using-primary-keys" class="anchor-icon" translate="no">
+<h3 id="Example-4-Grouping-search-using-primary-keys" class="common-anchor-header">Example 4: Grouping search using primary keys<button data-href="#Example-4-Grouping-search-using-primary-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -501,14 +501,14 @@ milvus::SearchResponse searchResponse;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>O exemplo seguinte pressupõe que « <code translate="no">docId</code> » é um campo definido no esquema da coleção de destino.</p>
+    </button></h3><p>The following example assumes <code translate="no">docId</code> is a schema-defined fields in the target collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
- <a href="#cpp">   C++</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+    <a href="#cpp">C++</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,

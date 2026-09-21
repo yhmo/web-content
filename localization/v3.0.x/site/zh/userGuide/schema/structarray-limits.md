@@ -1,11 +1,12 @@
 ---
 id: structarray-limits.md
-title: StructArray 限制
+title: StructArray Limits
 summary: >-
-  StructArray 的支持范围涵盖 Schema 定义、插入有效载荷、索引、搜索模式以及 StructArray 专用的过滤器。在生产环境中依赖
-  StructArray 的行为之前，请将本页面作为限制说明的参考。
+  StructArray support spans schema definition, insert payloads, indexing, search
+  modes, and StructArray-specific filters. Use this page as the limits reference
+  before you rely on StructArray behavior in production.
 ---
-<h1 id="StructArray-Limits" class="common-anchor-header">StructArray 限制<button data-href="#StructArray-Limits" class="anchor-icon" translate="no">
+<h1 id="StructArray-Limits" class="common-anchor-header">StructArray Limits<button data-href="#StructArray-Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,41 +21,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>StructArray 的支持范围涵盖 Schema 定义、插入有效载荷、索引、搜索模式以及 StructArray 专用的过滤器。在生产环境中依赖 StructArray 的行为之前，请将本页面作为限制参考。</p>
-<p>大多数 StructArray 限制源自以下三个方面之一：StructArray 模式 Schema、您为向量字段选择的搜索模式，以及您的 Collection 所运行的 Milvus 版本。</p>
-<h2 id="Limits-at-a-glance" class="common-anchor-header">限制一览<button data-href="#Limits-at-a-glance" class="anchor-icon" translate="no">
-      <svg translate="no"
-        aria-hidden="true"
-        focusable="false"
-        height="20"
-        version="1.1"
-        viewBox="0 0 16 16"
-        width="16"
-      >
-        <path
-          fill="#0092E4"
-          fill-rule="evenodd"
-          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
-        ></path>
-      </svg>
-    </button></h2><table>
-<thead>
-<tr><th>领域</th><th>限制</th></tr>
-</thead>
-<tbody>
-<tr><td>Schema结构</td><td>Struct 只能用作 Array 字段的元素类型。不支持将 Struct 用作顶级 Collection 字段。</td></tr>
-<tr><td>子字段Schema</td><td>同一 StructArray 字段中的所有 Struct 元素共享一个预定义的 Struct Schema。</td></tr>
-<tr><td>容量</td><td><code translate="no">max_capacity</code> 是必填字段，用于限制一个实体在 StructArray 字段中可存储的 Struct 元素数量。</td></tr>
-<tr><td>子字段更改</td><td>StructArray 字段创建后，无法向该现有 StructArray 字段添加子字段。</td></tr>
-<tr><td>子字段路径</td><td>请使用<code translate="no">structArray[subfield]</code> 路径（例如<code translate="no">chunks[emb]</code> ）作为索引、搜索目标、输出字段和过滤器。请勿使用<code translate="no">chunks.emb</code> 。</td></tr>
-<tr><td>插入结构</td><td>将 StructArray 字段作为对象数组插入。请勿在插入有效载荷中使用路径语法。</td></tr>
-<tr><td>向量索引</td><td>向量字段或向量子字段仅接受一个索引。请分别使用独立的向量子字段进行 EmbeddingList 搜索和元素级搜索。</td></tr>
-<tr><td>函数</td><td>StructArray 字段内的字段或子字段不支持字段函数。</td></tr>
-<tr><td>可为空字段</td><td>可为空的 StructArray 字段受版本限制。当受支持时，空值适用于整个 StructArray 字段，而非独立地适用于单个 Struct 元素。</td></tr>
-<tr><td>动态添加字段</td><td>向现有 Collection 添加 StructArray 字段受版本限制，且要求所添加的字段为可空字段。</td></tr>
-</tbody>
-</table>
-<h2 id="Schema-limits" class="common-anchor-header">Schema限制<button data-href="#Schema-limits" class="anchor-icon" translate="no">
+    </button></h1><p>StructArray support spans schema definition, insert payloads, indexing, search modes, and StructArray-specific filters. Use this page as the limits reference before you rely on StructArray behavior in production.</p>
+<p>Most StructArray limits come from one of three places: the StructArray schema model, the search mode you choose for vector subfields, and the Milvus version that your collection runs on.</p>
+<h2 id="Limits-at-a-glance" class="common-anchor-header">Limits at a glance<button data-href="#Limits-at-a-glance" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -71,19 +40,22 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>限制</th><th>详细信息</th></tr>
+<tr><th>Area</th><th>Limit</th></tr>
 </thead>
 <tbody>
-<tr><td>Struct 不是顶级字段类型。</td><td>将 StructArray 字段创建为<code translate="no">datatype=DataType.ARRAY</code> ，其<code translate="no">element_type=DataType.STRUCT</code> 和<code translate="no">struct_schema</code> 。</td></tr>
-<tr><td>所有元素共享一个Schema。</td><td>StructArray 字段中的每个 Struct 元素都遵循相同的子字段列表和子字段数据类型。</td></tr>
-<tr><td><code translate="no">max_capacity</code> 是必需的。</td><td>一个实体中的 Struct 元素数量不得超过为 StructArray 字段配置的<code translate="no">max_capacity</code> 。</td></tr>
-<tr><td>现有的子字段是固定的。</td><td>您无法将新子字段追加到现有的 StructArray 字段中。要更改子字段 Schema，请删除 StructArray 字段，然后使用更新的 Schema 再次添加该字段。</td></tr>
-<tr><td>不支持嵌套的 StructArray。</td><td>StructArray 字段不能包含嵌套的<code translate="no">Array</code> 、<code translate="no">ArrayOfVector</code> 、<code translate="no">Struct</code> 或<code translate="no">ArrayOfStruct</code> 子字段。</td></tr>
-<tr><td>StructArray内部不支持函数。</td><td>请勿为 StructArray 字段或其子字段定义字段函数。</td></tr>
+<tr><td>Schema shape</td><td>A Struct can be used only as the element type of an Array field. Struct is not supported as a top-level collection field.</td></tr>
+<tr><td>Subfield schema</td><td>All Struct elements in the same StructArray field share one predefined Struct schema.</td></tr>
+<tr><td>Capacity</td><td><code translate="no">max_capacity</code> is required and limits how many Struct elements one entity can store in the StructArray field.</td></tr>
+<tr><td>Subfield changes</td><td>After a StructArray field is created, you cannot add subfields to that existing StructArray field.</td></tr>
+<tr><td>Subfield path</td><td>Use <code translate="no">structArray[subfield]</code> paths, such as <code translate="no">chunks[emb]</code>, for indexes, search targets, output fields, and filters. Do not use <code translate="no">chunks.emb</code>.</td></tr>
+<tr><td>Insert shape</td><td>Insert a StructArray field as an array of objects. Do not use path syntax inside insert payloads.</td></tr>
+<tr><td>Vector indexes</td><td>A vector field or vector subfield accepts only one index. Use separate vector subfields for EmbeddingList search and element-level search.</td></tr>
+<tr><td>Functions</td><td>Field functions are not supported for fields or subfields inside a StructArray field.</td></tr>
+<tr><td>Nullable fields</td><td>Nullable StructArray fields are version-gated. When supported, null applies to the whole StructArray field, not to an individual Struct element independently.</td></tr>
+<tr><td>Dynamic add field</td><td>Adding a StructArray field to an existing collection is version-gated and requires the added field to be nullable.</td></tr>
 </tbody>
 </table>
-<p>有关 Schema 创建示例，请参阅<a href="/docs/zh/create-structarray-field.md">“创建 StructArray 字段”</a>。</p>
-<h2 id="Supported-subfield-data-types" class="common-anchor-header">支持的子字段数据类型<button data-href="#Supported-subfield-data-types" class="anchor-icon" translate="no">
+<h2 id="Schema-limits" class="common-anchor-header">Schema limits<button data-href="#Schema-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,31 +70,60 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray 子字段映射到物理数组风格的存储。下表列出了受支持和不受支持的物理类型。</p>
+    </button></h2><table>
+<thead>
+<tr><th>Limit</th><th>Details</th></tr>
+</thead>
+<tbody>
+<tr><td>Struct is not a top-level field type.</td><td>Create a StructArray field as <code translate="no">datatype=DataType.ARRAY</code> with <code translate="no">element_type=DataType.STRUCT</code> and a <code translate="no">struct_schema</code>.</td></tr>
+<tr><td>All elements share one schema.</td><td>Every Struct element in a StructArray field follows the same subfield list and subfield data types.</td></tr>
+<tr><td><code translate="no">max_capacity</code> is required.</td><td>The number of Struct elements in one entity must not exceed the <code translate="no">max_capacity</code> configured for the StructArray field.</td></tr>
+<tr><td>Existing subfields are fixed.</td><td>You cannot append new subfields to an existing StructArray field. To change the subfield schema, drop the StructArray field and add it again with the updated schema.</td></tr>
+<tr><td>Nested StructArray is not supported.</td><td>A StructArray field cannot contain nested <code translate="no">Array</code>, <code translate="no">ArrayOfVector</code>, <code translate="no">Struct</code>, or <code translate="no">ArrayOfStruct</code> subfields.</td></tr>
+<tr><td>Functions are not supported inside StructArray.</td><td>Do not define field functions for StructArray fields or their subfields.</td></tr>
+</tbody>
+</table>
+<p>For schema creation examples, see <a href="/docs/zh/create-structarray-field.md">Create a StructArray Field</a>.</p>
+<h2 id="Supported-subfield-data-types" class="common-anchor-header">Supported subfield data types<button data-href="#Supported-subfield-data-types" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><p>StructArray subfields map to physical array-style storage. The following table lists supported and unsupported physical types.</p>
 <table>
 <thead>
-<tr><th>Struct 子字段的物理类型</th><th>支持</th><th>备注</th></tr>
+<tr><th>Struct subfield physical type</th><th>Support</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Array</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.BOOL</code> 。</td></tr>
-<tr><td><code translate="no">Array</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.INT8</code> 、<code translate="no">DataType.INT16</code> 、<code translate="no">DataType.INT32</code> 或<code translate="no">DataType.INT64</code> 。</td></tr>
-<tr><td><code translate="no">Array</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.FLOAT</code> 或<code translate="no">DataType.DOUBLE</code> 。</td></tr>
-<tr><td><code translate="no">Array</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.VARCHAR</code> 并设置<code translate="no">max_length</code> 。</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.FLOAT_VECTOR</code> ，并设置<code translate="no">dim</code> 。</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.FLOAT16_VECTOR</code> ，并设置<code translate="no">dim</code> 。</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.BFLOAT16_VECTOR</code> ，并设置<code translate="no">dim</code> 。</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.INT8_VECTOR</code> ，并设置<code translate="no">dim</code> 。</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>受支持</td><td>将子字段定义为<code translate="no">DataType.BINARY_VECTOR</code> ，并设置<code translate="no">dim</code> 。</td></tr>
-<tr><td><code translate="no">ArrayOfVector</code></td><td>不支持</td><td>StructArray 字段不支持稀疏向量子场。</td></tr>
-<tr><td><code translate="no">Array</code></td><td>不支持</td><td>请使用<code translate="no">VARCHAR</code> ，而不是<code translate="no">String</code> 。</td></tr>
-<tr><td><code translate="no">Array</code></td><td>不支持</td><td>StructArray 字段不支持 JSON 子字段。</td></tr>
-<tr><td><code translate="no">Array</code></td><td>不支持</td><td>StructArray 字段中不支持几何子字段和 GIS 函数。</td></tr>
-<tr><td><code translate="no">Array</code></td><td>不支持</td><td>StructArray 字段不支持文本子字段。</td></tr>
-<tr><td><code translate="no">Array</code></td><td>不支持</td><td>StructArray 字段不支持 Timestamptz 子字段和特定时间的表达式。</td></tr>
-<tr><td>嵌套的<code translate="no">Array</code> 、<code translate="no">ArrayOfVector</code> 、<code translate="no">Struct</code> 或<code translate="no">ArrayOfStruct</code></td><td>不支持</td><td>StructArray 字段不支持嵌套的数组、向量数组、Struct 或 Array-of-Struct 子字段。</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BOOL</code>.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.INT8</code>, <code translate="no">DataType.INT16</code>, <code translate="no">DataType.INT32</code>, or <code translate="no">DataType.INT64</code>.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT</code> or <code translate="no">DataType.DOUBLE</code>.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.VARCHAR</code> and set <code translate="no">max_length</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.FLOAT16_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BFLOAT16_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.INT8_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Supported</td><td>Define the subfield as <code translate="no">DataType.BINARY_VECTOR</code> and set <code translate="no">dim</code>.</td></tr>
+<tr><td><code translate="no">ArrayOfVector</code></td><td>Not supported</td><td>Sparse vector subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>Use <code translate="no">VARCHAR</code>, not <code translate="no">String</code>.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>JSON subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>Geometry subfields and GIS functions are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>Text subfields are not supported in StructArray fields.</td></tr>
+<tr><td><code translate="no">Array</code></td><td>Not supported</td><td>Timestamptz subfields and time-specific expressions are not supported in StructArray fields.</td></tr>
+<tr><td>Nested <code translate="no">Array</code>, <code translate="no">ArrayOfVector</code>, <code translate="no">Struct</code>, or <code translate="no">ArrayOfStruct</code></td><td>Not supported</td><td>StructArray fields do not support nested array, vector-array, Struct, or Array-of-Struct subfields.</td></tr>
 </tbody>
 </table>
-<h2 id="Nullable-and-dynamic-schema-limits" class="common-anchor-header">可为空和动态Schema限制<button data-href="#Nullable-and-dynamic-schema-limits" class="anchor-icon" translate="no">
+<h2 id="Nullable-and-dynamic-schema-limits" class="common-anchor-header">Nullable and dynamic schema limits<button data-href="#Nullable-and-dynamic-schema-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -137,25 +138,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>可为空的 StructArray 行为和动态 StructArray 字段添加受版本限制。</p>
+    </button></h2><p>Nullable StructArray behavior and dynamic StructArray field addition are version-gated.</p>
 <table>
 <thead>
-<tr><th>功能</th><th>限制</th></tr>
+<tr><th>Capability</th><th>Limit</th></tr>
 </thead>
 <tbody>
-<tr><td>可空 StructArray 字段</td><td>在 Milvus 3.0.0 及更高版本中受支持。请在 StructArray 父对象上设置 `<code translate="no">nullable=True</code> `；请勿单独将 Struct 子字段配置为可空。</td></tr>
-<tr><td>Python 中的空值</td><td>在 Python 中使用 `<code translate="no">None</code> ` 插入空的 StructArray 值。请勿使用 `<code translate="no">Null</code> ` 或 `<code translate="no">null</code>`。</td></tr>
-<tr><td>空值作用域</td><td>空值适用于整个 StructArray 字段。例如，<code translate="no">chunks=None</code> 仅在<code translate="no">chunks</code> 可为空时才有效。</td></tr>
-<tr><td>部分为空的 StructArray 值</td><td>当 StructArray 字段包含有效的数组值时，请勿在同一值中将可为空的子字段数组与有效的子字段数组混用。</td></tr>
-<tr><td>动态添加 StructArray 字段</td><td>在 Milvus 3.0.0 及更高版本中支持。</td></tr>
-<tr><td>动态添加的空值要求</td><td>添加到现有 Collection 中的 StructArray 字段必须为可空，因为现有实体对于新字段尚无值。</td></tr>
-<tr><td>动态添加后的现有实体</td><td>现有实体会为新增的 StructArray 字段返回 `<code translate="no">null</code> `。</td></tr>
+<tr><td>Nullable StructArray field</td><td>Supported in Milvus 3.0.0 and later. Set <code translate="no">nullable=True</code> on the StructArray parent; do not configure Struct subfields as nullable independently.</td></tr>
+<tr><td>Null value in Python</td><td>Use <code translate="no">None</code> to insert a null StructArray value in Python. Do not use <code translate="no">Null</code> or <code translate="no">null</code>.</td></tr>
+<tr><td>Null scope</td><td>Null applies to the whole StructArray field. For example, <code translate="no">chunks=None</code> is valid only when <code translate="no">chunks</code> is nullable.</td></tr>
+<tr><td>Partially null StructArray value</td><td>When a StructArray field contains a valid array value, do not mix null subfield arrays with valid subfield arrays in the same value.</td></tr>
+<tr><td>Dynamic add StructArray field</td><td>Supported in Milvus 3.0.0 and later.</td></tr>
+<tr><td>Nullable requirement for dynamic add</td><td>A StructArray field added to an existing collection must be nullable because existing entities have no value for the new field.</td></tr>
+<tr><td>Existing entities after dynamic add</td><td>Existing entities return <code translate="no">null</code> for the added StructArray field.</td></tr>
 </tbody>
 </table>
-<p>Milvus 3.0.0及更高版本在独立部署和Distributed部署中均支持可为空的StructArray字段、可为空的向量数组以及动态添加StructArray字段。较早版本的Milvus不支持这些功能。</p>
-<p>在 Zilliz Cloud 中，这些功能可在运行 Milvus 3.0.0 或更高版本的按需集群上使用。服务集群不支持这些功能。</p>
-<p>有关可空 StructArray 字段的插入示例，请参阅《<a href="/docs/zh/insert-data-into-structarray-fields.md">向 StructArray 字段插入数据</a>》。</p>
-<h2 id="Insert-limits" class="common-anchor-header">插入限制<button data-href="#Insert-limits" class="anchor-icon" translate="no">
+<p>Milvus 3.0.0 and later releases support nullable StructArray fields, nullable vector arrays, and dynamic StructArray field addition in both Standalone and Distributed deployments. Earlier Milvus versions do not support these capabilities.</p>
+<p>In Zilliz Cloud, these capabilities are available on On-Demand Clusters running Milvus 3.0.0 or later. Serving Clusters do not support them.</p>
+<p>For insert examples with nullable StructArray fields, see <a href="/docs/zh/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p>
+<h2 id="Insert-limits" class="common-anchor-header">Insert limits<button data-href="#Insert-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -172,18 +173,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>限制</th><th>详细信息</th></tr>
+<tr><th>Limit</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>有效载荷结构</td><td>将 StructArray 字段作为 Struct 对象的数组插入，例如<code translate="no">chunks: [{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}]</code> 。</td></tr>
-<tr><td>子字段名称</td><td>在每个 Struct 对象内部，请使用子字段名称（例如<code translate="no">text</code> 和<code translate="no">emb</code> ），而不是路径（例如<code translate="no">chunks[text]</code> ）。</td></tr>
-<tr><td>Schema对齐</td><td>每个 Struct 元素都必须与 Struct Schema 相匹配。</td></tr>
-<tr><td>容量</td><td>一个实体中的 Struct 元素数量不得超过<code translate="no">max_capacity</code> 。</td></tr>
-<tr><td>向量维度</td><td>向量值必须与为其向量子字段配置的<code translate="no">dim</code> 相匹配。</td></tr>
-<tr><td>搜索模式重复</td><td>如果您同时需要 EmbeddingList 搜索和元素级搜索，请将向量写入两个独立的向量子字段。</td></tr>
+<tr><td>Payload shape</td><td>Insert the StructArray field as an array of Struct objects, such as <code translate="no">chunks: [{&quot;text&quot;: &quot;...&quot;, &quot;emb&quot;: [...]}]</code>.</td></tr>
+<tr><td>Subfield names</td><td>Inside each Struct object, use subfield names such as <code translate="no">text</code> and <code translate="no">emb</code>, not paths such as <code translate="no">chunks[text]</code>.</td></tr>
+<tr><td>Schema alignment</td><td>Each Struct element must match the Struct schema.</td></tr>
+<tr><td>Capacity</td><td>The number of Struct elements in one entity must not exceed <code translate="no">max_capacity</code>.</td></tr>
+<tr><td>Vector dimensions</td><td>Vector values must match the <code translate="no">dim</code> configured for their vector subfields.</td></tr>
+<tr><td>Search-mode duplication</td><td>If you need both EmbeddingList search and element-level search, write vectors to two separate vector subfields.</td></tr>
 </tbody>
 </table>
-<h2 id="Index-and-metric-limits" class="common-anchor-header">索引和度量限制<button data-href="#Index-and-metric-limits" class="anchor-icon" translate="no">
+<h2 id="Index-and-metric-limits" class="common-anchor-header">Index and metric limits<button data-href="#Index-and-metric-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -198,20 +199,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray 向量子字段可针对 EmbeddingList 搜索或元素级搜索进行索引。同一个向量子字段不能同时使用这两种度量族，因为每个向量字段或向量子字段仅接受一种索引。</p>
+    </button></h2><p>A StructArray vector subfield can be indexed for either EmbeddingList search or element-level search. The same vector subfield cannot use both metric families because each vector field or vector subfield accepts only one index.</p>
 <table>
 <thead>
-<tr><th>搜索模式</th><th>度量族</th><th>结果级别</th></tr>
+<tr><th>Search mode</th><th>Metric family</th><th>Result level</th></tr>
 </thead>
 <tbody>
-<tr><td>EmbeddingList 搜索</td><td><code translate="no">MAX_SIM</code>、<code translate="no">MAX_SIM_COSINE</code> 、<code translate="no">MAX_SIM_IP</code> 、<code translate="no">MAX_SIM_L2</code> 或二进制<code translate="no">MAX_SIM_*</code> 度量</td><td>实体级结果。</td></tr>
-<tr><td>元素级搜索</td><td>常规向量度量，例如<code translate="no">L2</code> 、<code translate="no">IP</code> 、<code translate="no">COSINE</code> 、<code translate="no">HAMMING</code> 或<code translate="no">JACCARD</code></td><td>可包含匹配元素偏移量的元素级结果。</td></tr>
+<tr><td>EmbeddingList search</td><td><code translate="no">MAX_SIM</code>, <code translate="no">MAX_SIM_COSINE</code>, <code translate="no">MAX_SIM_IP</code>, <code translate="no">MAX_SIM_L2</code>, or binary <code translate="no">MAX_SIM_*</code> metrics</td><td>Entity-level results.</td></tr>
+<tr><td>Element-level search</td><td>Regular vector metrics such as <code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code>, <code translate="no">HAMMING</code>, or <code translate="no">JACCARD</code></td><td>Element-level results that can include the matched element offset.</td></tr>
 </tbody>
 </table>
-<p>当需要同时使用这两种模式时，请使用独立的向量字段。例如，使用<code translate="no">chunks[emb_list_vector]</code> 进行 EmbeddingList 搜索，使用<code translate="no">chunks[emb]</code> 进行元素级搜索。</p>
-<p>在规划 Collection Schema 时，StructArray 向量字段应计入向量字段的总数。请确保向量字段和向量子字段的总数在目标版本和服务层级的限制范围内。</p>
-<p>有关受支持的索引类型和指标类型的矩阵，请参阅《<a href="/docs/zh/index-structarray-fields.md">索引 StructArray 字段</a>》。</p>
-<h2 id="Search-limits" class="common-anchor-header">搜索限制<button data-href="#Search-limits" class="anchor-icon" translate="no">
+<p>Use separate vector subfields when both modes are required. For example, use <code translate="no">chunks[emb_list_vector]</code> for EmbeddingList search and <code translate="no">chunks[emb]</code> for element-level search.</p>
+<p>StructArray vector subfields count as vector subfields when you plan your collection schema. Keep the total number of vector fields and vector subfields within the limits of your target version and service tier.</p>
+<p>For the supported index-type and metric-type matrix, see <a href="/docs/zh/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Search-limits" class="common-anchor-header">Search limits<button data-href="#Search-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -228,18 +229,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>搜索行为</th><th>支持与限制</th></tr>
+<tr><th>Search behavior</th><th>Support and limits</th></tr>
 </thead>
 <tbody>
-<tr><td>基本 EmbeddingList 搜索</td><td>支持对使用<code translate="no">MAX_SIM*</code> 度量进行索引的StructArray向量进行搜索。返回实体级别的结果。</td></tr>
-<tr><td>基本元素级搜索</td><td>支持在以常规向量度量为索引的 StructArray 向量子字段上进行搜索。可返回匹配元素的偏移量。</td></tr>
-<tr><td>范围搜索</td><td>根据目标版本的搜索模式以及索引/度量标准的支持情况而定。关于元素级 StructArray 请求中混合搜索范围的行为，请查阅目标版本文档。</td></tr>
-<tr><td>分组搜索</td><td>元素级分组搜索可返回偏移量。针对元素级 StructArray 请求的混合搜索分组行为取决于具体版本。</td></tr>
-<tr><td>混合搜索</td><td>混合搜索请求仅在目标版本支持该搜索组合时，才可包含 StructArray 向量子场请求。每个请求仍遵循被索引向量子场所属的度量家族。</td></tr>
-<tr><td>偏移量输出</td><td>元素级搜索结果支持偏移量。EmbeddingList 搜索返回实体级结果，且不使用元素偏移量作为主要结果单位。</td></tr>
+<tr><td>Basic EmbeddingList search</td><td>Supported on StructArray vector subfields indexed with <code translate="no">MAX_SIM*</code> metrics. Returns entity-level results.</td></tr>
+<tr><td>Basic element-level search</td><td>Supported on StructArray vector subfields indexed with regular vector metrics. Can return matched element offsets.</td></tr>
+<tr><td>Range search</td><td>Supported according to the search mode and index/metric support of the target version. For hybrid search range behavior on element-level StructArray requests, check your target version.</td></tr>
+<tr><td>Grouping search</td><td>Element-level grouping search can return offsets. Hybrid search group-by behavior for element-level StructArray requests is version-gated.</td></tr>
+<tr><td>Hybrid search</td><td>A hybrid search request can include StructArray vector subfield requests only where the target version supports that search combination. Each request still follows the metric family of the indexed vector subfield.</td></tr>
+<tr><td>Offset output</td><td>Offset is available for element-level search results. EmbeddingList search returns entity-level results and does not use element offsets as the primary result unit.</td></tr>
 </tbody>
 </table>
-<h2 id="Filter-and-operator-limits" class="common-anchor-header">过滤器和操作符限制<button data-href="#Filter-and-operator-limits" class="anchor-icon" translate="no">
+<h2 id="Filter-and-operator-limits" class="common-anchor-header">Filter and operator limits<button data-href="#Filter-and-operator-limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -254,16 +255,16 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>StructArray 的标量过滤由 StructArray 操作符处理，例如 `<code translate="no">element_filter</code> ` 以及 `<code translate="no">MATCH_*</code> ` 系列操作符。详细的谓词支持矩阵详见<a href="/docs/zh/struct-array-operators.md">“StructArray 操作符”部分</a>。</p>
-<p>总体而言：</p>
+    </button></h2><p>StructArray scalar filtering is handled by StructArray operators, such as <code translate="no">element_filter</code> and the <code translate="no">MATCH_*</code> family. The detailed predicate support matrix belongs in <a href="/docs/zh/struct-array-operators.md">StructArray Operators</a>.</p>
+<p>At a high level:</p>
 <ul>
-<li><p>仅在 StructArray 操作符内部使用 `<code translate="no">$[subfield]</code> `。</p></li>
-<li><p>请使用标量子字段作为标量谓词的输入。</p></li>
-<li><p>请勿将向量字段用作<code translate="no">$[...]</code> 标量谓词的输入。</p></li>
-<li><p>StructArray 元素级谓词不支持 JSON 路径语法、JSON 函数、数组容器函数、文本匹配函数、几何/GIS 函数以及 Timestamptz 表达式。</p></li>
-<li><p>建议使用显式的布尔比较（如 `<code translate="no">$[has_code] == true</code> `），而非裸布尔表达式。</p></li>
+<li><p>Use <code translate="no">$[subfield]</code> only inside StructArray operators.</p></li>
+<li><p>Use scalar subfields for scalar predicates.</p></li>
+<li><p>Do not use vector subfields as <code translate="no">$[...]</code> scalar predicate inputs.</p></li>
+<li><p>JSON path syntax, JSON functions, array container functions, text match functions, Geometry / GIS functions, and Timestamptz expressions are not supported for StructArray element-level predicates.</p></li>
+<li><p>Prefer explicit boolean comparisons such as <code translate="no">$[has_code] == true</code> instead of bare boolean expressions.</p></li>
 </ul>
-<h2 id="Related-pages" class="common-anchor-header">相关页面<button data-href="#Related-pages" class="anchor-icon" translate="no">
+<h2 id="Related-pages" class="common-anchor-header">Related pages<button data-href="#Related-pages" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -279,8 +280,8 @@ summary: >-
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>要创建 StructArray 字段，请参阅《<a href="/docs/zh/create-structarray-field.md">创建 StructArray 字段》</a>。</p></li>
-<li><p>要插入数据，请参阅《<a href="/docs/zh/insert-data-into-structarray-fields.md">将数据插入 StructArray 字段</a>》。</p></li>
-<li><p>要创建向量和标量索引，请参阅《<a href="/docs/zh/index-structarray-fields.md">索引 StructArray 字段</a>》。</p></li>
-<li><p>要复习 StructArray 过滤器语法，请参阅《<a href="/docs/zh/struct-array-operators.md">StructArray 操作符</a>》。</p></li>
+<li><p>To create a StructArray field, read <a href="/docs/zh/create-structarray-field.md">Create a StructArray Field</a>.</p></li>
+<li><p>To insert data, read <a href="/docs/zh/insert-data-into-structarray-fields.md">Insert Data into StructArray Fields</a>.</p></li>
+<li><p>To create vector and scalar indexes, read <a href="/docs/zh/index-structarray-fields.md">Index StructArray Fields</a>.</p></li>
+<li><p>To review StructArray filter syntax, read <a href="/docs/zh/struct-array-operators.md">StructArray Operators</a>.</p></li>
 </ol>

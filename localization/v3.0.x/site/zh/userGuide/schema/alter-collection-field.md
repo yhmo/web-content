@@ -1,9 +1,11 @@
 ---
 id: alter-collection-field.md
-title: 修改Collection字段
-summary: 您可以修改Collection字段的属性，以更改列约束或强制执行更严格的数据完整性规则。
+title: Alter Collection Field
+summary: >-
+  You can alter the properties of a collection field to change column
+  constraints or enforce stricter data integrity rules.
 ---
-<h1 id="Alter-Collection-Field" class="common-anchor-header">修改Collection字段<button data-href="#Alter-Collection-Field" class="anchor-icon" translate="no">
+<h1 id="Alter-Collection-Field" class="common-anchor-header">Alter Collection Field<button data-href="#Alter-Collection-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,15 +20,15 @@ summary: 您可以修改Collection字段的属性，以更改列约束或强制�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>您可以修改Collection字段的属性，以更改列约束或强制执行更严格的数据完整性规则。</p>
-<p>本页面介绍字段属性的修改，不涉及Schema结构的变更（例如添加或删除字段）。若要向现有Collection添加标量字段或从其中删除字段，请参阅<a href="/docs/zh/add-fields-to-an-existing-collection.md">“修改Collection Schema”</a>。</p>
+    </button></h1><p>You can alter the properties of a collection field to change column constraints or enforce stricter data integrity rules.</p>
+<p>This page covers field property changes, not schema-shape changes such as adding or dropping fields. To add scalar fields or drop fields from an existing collection, refer to <a href="/docs/zh/add-fields-to-an-existing-collection.md">Alter Collection Schema</a>.</p>
 <div class="alert note">
 <ul>
-<li><p>每个Collection仅包含一个主字段。该主字段在创建Collection时设定后，您将无法更改主字段或修改其属性。</p></li>
-<li><p>每个 Collection 只能有一个 Partition Key。在创建 Collection 时一旦设置，便无法更改 Partition Key。</p></li>
+<li><p>Each collection consists of only one primary field. Once set during collection creation, you cannot change the primary field or alter its properties.</p></li>
+<li><p>Each collection can have only one partition key. Once set during collection creation, you cannot change the partition key.</p></li>
 </ul>
 </div>
-<h2 id="Alter-VarChar-field" class="common-anchor-header">修改 VarChar 字段<button data-href="#Alter-VarChar-field" class="anchor-icon" translate="no">
+<h2 id="Alter-VarChar-field" class="common-anchor-header">Alter VarChar field<button data-href="#Alter-VarChar-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -41,11 +43,11 @@ summary: 您可以修改Collection字段的属性，以更改列约束或强制�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>VarChar 字段有一个名为 `<code translate="no">max_length</code>` 的属性，该属性限制了字段值可包含的最大字符数。您可以修改 `<code translate="no">max_length</code> ` 属性。</p>
-<p>以下示例假设Collection中有一个名为<code translate="no">varchar</code> 的VarChar字段，并设置其<code translate="no">max_length</code> 属性。</p>
+    </button></h2><p>A VarChar field has a property named <code translate="no">max_length</code>, which constrains the maximum number of characters the field values can contain. You can change the <code translate="no">max_length</code> property.</p>
+<p>The following example assumes the collection has a VarChar field named <code translate="no">varchar</code> and sets its <code translate="no">max_length</code> property.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -79,9 +81,9 @@ client.alterCollectionField(AlterCollectionFieldReq.builder()
         .build());
 <button class="copy-code-btn"></button></code></pre>
 <div class="multipleCode">
-   <a href="#javascript">NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-javascript"><span class="hljs-keyword">await</span> client.<span class="hljs-title function_">alterCollectionFieldProperties</span>({
   <span class="hljs-attr">collection_name</span>: <span class="hljs-variable constant_">LOAD_COLLECTION_NAME</span>,
@@ -132,7 +134,7 @@ curl --request POST \
     }
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Alter-ARRAY-field" class="common-anchor-header">修改 ARRAY 字段<button data-href="#Alter-ARRAY-field" class="anchor-icon" translate="no">
+<h2 id="Alter-ARRAY-field" class="common-anchor-header">Alter ARRAY field<button data-href="#Alter-ARRAY-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -147,14 +149,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>数组字段有两个属性，即<code translate="no">element_type</code> 和<code translate="no">max_capacity</code> 。前者决定数组中元素的数据类型，而后者限制数组中元素的最大数量。您只能修改<code translate="no">max_capacity</code> 属性。</p>
-<p>以下示例假设 Collection 中有一个名为<code translate="no">array</code> 的数组字段，并设置其<code translate="no">max_capacity</code> 属性。</p>
+    </button></h2><p>An array field has two properties, namely <code translate="no">element_type</code> and <code translate="no">max_capacity</code>. The former determines the data type of the elements in an array, while the latter constrains the maximum number of elements in the array. You can change the <code translate="no">max_capacity</code> property only.</p>
+<p>The following example assumes the collection has an array field named <code translate="no">array</code> and sets its <code translate="no">max_capacity</code> property.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.alter_collection_field(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,
@@ -198,7 +200,7 @@ curl --request POST \
     }
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Alter-field-level-mmap-settings" class="common-anchor-header">修改字段级 mmap 设置<button data-href="#Alter-field-level-mmap-settings" class="anchor-icon" translate="no">
+<h2 id="Alter-field-level-mmap-settings" class="common-anchor-header">Alter field-level mmap settings<button data-href="#Alter-field-level-mmap-settings" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -213,14 +215,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>内存映射（Mmap）支持直接访问磁盘上的大文件，使 Milvus 能够同时在内存和硬盘中存储索引和数据。这种方法有助于根据访问频率优化数据放置策略，在不影响搜索性能的情况下扩展 Collections 的存储容量。</p>
-<p>以下示例假设Collection中有一个名为<code translate="no">doc_chunk</code> 的字段，并设置其<code translate="no">mmap_enabled</code> 属性。</p>
+    </button></h2><p>Memory mapping (Mmap) enables direct memory access to large files on disk, allowing Milvus to store indexes and data in both memory and hard drives. This approach helps optimize data placement policy based on access frequency, expanding storage capacity for collections without impacting search performance.</p>
+<p>The following example assumes the collection has a field named <code translate="no">doc_chunk</code> and sets its <code translate="no">mmap_enabled</code> property.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.alter_collection_field(
     collection_name=<span class="hljs-string">&quot;my_collection&quot;</span>,

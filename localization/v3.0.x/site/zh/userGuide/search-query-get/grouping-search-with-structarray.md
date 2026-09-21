@@ -1,11 +1,13 @@
 ---
 id: grouping-search-with-structarray.md
-title: 使用 StructArray 进行分组搜索
+title: Grouping Search with StructArray
 summary: >-
-  使用此页面可按父实体对 StructArray 的元素级搜索结果进行分组。当多个 Struct
-  元素与查询条件匹配时，元素级搜索可能会返回来自同一实体的多个匹配结果。分组功能会将这些元素级匹配结果合并，从而确保每个父实体至多出现一次。
+  Use this page to group StructArray element-level search results by the parent
+  entity. Element-level search can return multiple hits from the same entity
+  when several Struct elements match the query. Grouping collapses those element
+  hits so each parent entity appears at most once.
 ---
-<h1 id="Grouping-Search-with-StructArray" class="common-anchor-header">使用 StructArray 进行分组搜索<button data-href="#Grouping-Search-with-StructArray" class="anchor-icon" translate="no">
+<h1 id="Grouping-Search-with-StructArray" class="common-anchor-header">Grouping Search with StructArray<button data-href="#Grouping-Search-with-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +22,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>使用本页面可按父实体对 StructArray 的元素级搜索结果进行分组。当多个 Struct 元素匹配查询条件时，元素级搜索可能会返回来自同一实体的多个匹配结果。分组功能会将这些元素级匹配结果合并，确保每个父实体最多只出现一次。</p>
-<p>本页面<a href="/docs/zh/create-structarray-field.md">使用“创建 StructArray 字段</a>”中的<code translate="no">tech_articles</code> Collection。该 Collection 包含一个名为<code translate="no">chunks</code> 的 StructArray 字段。其<code translate="no">chunks[emb]</code> 向量子字段已针对元素级搜索进行了索引，并采用常规向量度量标准。</p>
-<h2 id="How-grouping-applies-to-StructArray" class="common-anchor-header">分组如何应用于 StructArray<button data-href="#How-grouping-applies-to-StructArray" class="anchor-icon" translate="no">
+    </button></h1><p>Use this page to group StructArray element-level search results by the parent entity. Element-level search can return multiple hits from the same entity when several Struct elements match the query. Grouping collapses those element hits so each parent entity appears at most once.</p>
+<p>This page uses the <code translate="no">tech_articles</code> collection from <a href="/docs/zh/create-structarray-field.md">Create a StructArray Field</a>. The collection has a StructArray field named <code translate="no">chunks</code>. The <code translate="no">chunks[emb]</code> vector subfield is indexed for element-level search with a regular vector metric.</p>
+<h2 id="How-grouping-applies-to-StructArray" class="common-anchor-header">How grouping applies to StructArray<button data-href="#How-grouping-applies-to-StructArray" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,18 +41,18 @@ summary: >-
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>搜索模式</th><th>分组行为</th><th>结果行为</th></tr>
+<tr><th>Search mode</th><th>Grouping behavior</th><th>Result behavior</th></tr>
 </thead>
 <tbody>
-<tr><td>EmbeddingList 搜索</td><td>不支持。</td><td>不适用。</td></tr>
-<tr><td>元素级搜索</td><td>支持按主键分组。</td><td>每个父实体最多返回一个结果。元素级元数据得以保留，因此当 API 或 SDK 公开时，可以返回所选元素的索引或偏移量。</td></tr>
-<tr><td>混合搜索</td><td>仅当所有子搜索都针对同一 StructArray 字段下的元素级向量字段时才受支持。</td><td>在最终结果处理之前，元素级子搜索会按主键进行分组。</td></tr>
+<tr><td>EmbeddingList search</td><td>Not supported.</td><td>Not applicable.</td></tr>
+<tr><td>Element-level search</td><td>Supported by grouping on the primary key.</td><td>Returns at most one result per parent entity. Element-level metadata is preserved, so the selected element index or offset can be returned when exposed by the API or SDK.</td></tr>
+<tr><td>Hybrid search</td><td>Supported only when all sub-searches target element-level vector fields under the same StructArray field.</td><td>Element-level sub-searches are grouped by primary key before final result handling.</td></tr>
 </tbody>
 </table>
 <div class="alert note">
-<p>当未分组的元素级搜索返回过多重复的父实体时，请使用分组功能。若希望将每个匹配的 Struct 元素作为单独的命中结果，请使用不带 `<code translate="no">group_by_field</code>`<a href="/docs/zh/basic-vector-search-with-structarray.md">的 StructArray 基本向量搜索</a>。</p>
+<p>Use grouping when ungrouped element-level search returns too many duplicate parent entities. If you want every matching Struct element as an individual hit, use <a href="/docs/zh/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a> without <code translate="no">group_by_field</code>.</p>
 </div>
-<h2 id="Before-you-begin" class="common-anchor-header">开始之前<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -65,20 +67,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在运行分组搜索之前，请准备好Collection、数据和索引。</p>
+    </button></h2><p>Prepare the collection, data, and indexes before running grouping search.</p>
 <table>
 <thead>
-<tr><th>要求</th><th>详细信息</th></tr>
+<tr><th>Requirement</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>元素级向量子字段</td><td>请使用 StructArray 向量子字段（例如<code translate="no">chunks[emb]</code> ），并使用常规向量度量进行索引。</td></tr>
-<tr><td>常规向量查询</td><td>请使用常规查询向量，而非<code translate="no">EmbeddingList</code> 。</td></tr>
-<tr><td>主键分组</td><td>将Collection主键设置为<code translate="no">group_by_field</code> ，例如<code translate="no">doc_id</code> 。</td></tr>
-<tr><td>不使用范围参数</td><td>请勿将分组搜索与范围搜索参数（如<code translate="no">radius</code> 或<code translate="no">range_filter</code> ）结合使用。</td></tr>
+<tr><td>Element-level vector subfield</td><td>Use a StructArray vector subfield such as <code translate="no">chunks[emb]</code>, indexed with a regular vector metric.</td></tr>
+<tr><td>Regular vector query</td><td>Use a regular query vector, not an <code translate="no">EmbeddingList</code>.</td></tr>
+<tr><td>Primary key grouping</td><td>Use the collection primary key as <code translate="no">group_by_field</code>, such as <code translate="no">doc_id</code>.</td></tr>
+<tr><td>No range parameters</td><td>Do not combine grouping search with range-search parameters such as <code translate="no">radius</code> or <code translate="no">range_filter</code>.</td></tr>
 </tbody>
 </table>
-<p>有关索引设置，请参阅<a href="/docs/zh/index-structarray-fields.md">“Index StructArray Fields</a>”。</p>
-<h2 id="Run-grouped-element-level-search" class="common-anchor-header">运行分组元素级搜索<button data-href="#Run-grouped-element-level-search" class="anchor-icon" translate="no">
+<p>For index setup, see <a href="/docs/zh/index-structarray-fields.md">Index StructArray Fields</a>.</p>
+<h2 id="Run-grouped-element-level-search" class="common-anchor-header">Run grouped element-level search<button data-href="#Run-grouped-element-level-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,7 +95,7 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>以下示例首先搜索各个数据块，然后根据父实体的主键对元素匹配结果进行分组。</p>
+    </button></h2><p>The following example searches individual chunks first, then groups the element hits by the parent entity’s primary key.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(
@@ -128,8 +130,8 @@ results = client.search(
             <span class="hljs-string">&quot;entity:&quot;</span>, hit[<span class="hljs-string">&quot;entity&quot;</span>],
         )
 <button class="copy-code-btn"></button></code></pre>
-<p>如果不进行分组，当多个块匹配查询时，相同的 `<code translate="no">doc_id</code> ` 可能会出现多次。使用 `<code translate="no">group_by_field=&quot;doc_id&quot;</code>` 时，每个父实体最多出现一次。分组会保留元素级元数据，因此当 API 或 SDK 公开时，分组后的结果仍可包含所选的 Struct 元素索引或偏移量。</p>
-<h2 id="Add-scalar-filters" class="common-anchor-header">添加标量过滤器<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
+<p>Without grouping, the same <code translate="no">doc_id</code> can appear multiple times if several chunks match the query. With <code translate="no">group_by_field=&quot;doc_id&quot;</code>, each parent entity appears at most once. Grouping preserves element-level metadata, so the grouped result can still include the selected Struct element index or offset when the API or SDK exposes it.</p>
+<h2 id="Add-scalar-filters" class="common-anchor-header">Add scalar filters<button data-href="#Add-scalar-filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,7 +146,7 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>您可以将分组搜索与 StructArray 标量过滤相结合。当标量条件需要限制哪些 Struct 元素参与元素级向量搜索时，请使用 `<code translate="no">element_filter</code> `。</p>
+    </button></h2><p>You can combine grouping search with StructArray scalar filtering. Use <code translate="no">element_filter</code> when the scalar condition should constrain which Struct elements participate in element-level vector search.</p>
 <pre><code translate="no" class="language-python">filter_expr = (
     <span class="hljs-string">&#x27;category == &quot;search&quot; &amp;&amp; &#x27;</span>
     <span class="hljs-string">&#x27;element_filter(chunks, &#x27;</span>
@@ -169,8 +171,8 @@ results = client.search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>顶级谓词用于筛选候选实体。<code translate="no">element_filter</code> 谓词将元素级向量搜索限制在匹配的Struct元素范围内。随后，分组操作会根据主键将匹配的元素命中结果进行合并。</p>
-<h2 id="Use-grouping-in-hybrid-search" class="common-anchor-header">在混合搜索中使用分组<button data-href="#Use-grouping-in-hybrid-search" class="anchor-icon" translate="no">
+<p>The top-level predicate selects candidate entities. The <code translate="no">element_filter</code> predicate restricts element-level vector search to matching Struct elements. Grouping then collapses matching element hits by the primary key.</p>
+<h2 id="Use-grouping-in-hybrid-search" class="common-anchor-header">Use grouping in hybrid search<button data-href="#Use-grouping-in-hybrid-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -185,8 +187,8 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>与 StructArray 结合使用的混合分组是一项元素级功能。仅当所有子搜索都针对同一 StructArray 字段下的元素级向量字段时，才支持此功能。请勿在分组的 StructArray 混合搜索中使用 EmbeddingList 级请求。</p>
-<p>以下示例假设<code translate="no">chunks</code> 的StructArray字段包含两个元素级向量字段：<code translate="no">chunks[emb]</code> 和<code translate="no">chunks[code_emb]</code> ，且两者均使用常规向量度量进行索引。</p>
+    </button></h2><p>Hybrid grouping with StructArray is an element-level feature. It is supported only when all sub-searches target element-level vector fields under the same StructArray field. Do not use EmbeddingList-level requests in a grouped StructArray hybrid search.</p>
+<p>The following example assumes the <code translate="no">chunks</code> StructArray field has two element-level vector subfields, <code translate="no">chunks[emb]</code> and <code translate="no">chunks[code_emb]</code>, and both are indexed with regular vector metrics.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> AnnSearchRequest, RRFRanker
 
 index_chunk_req = AnnSearchRequest(
@@ -217,8 +219,8 @@ results = client.hybrid_search(
     ],
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>在此示例中，两个子请求均针对同一 StructArray 字段（<code translate="no">chunks</code> ）下的元素级向量字段。如果混合了普通向量字段、不同的 StructArray 字段或 EmbeddingList 级请求，混合搜索将不支持元素级分组。</p>
-<h2 id="Interpret-grouped-results" class="common-anchor-header">解析分组结果<button data-href="#Interpret-grouped-results" class="anchor-icon" translate="no">
+<p>In this example, both sub-requests target element-level vector fields under the same StructArray field, <code translate="no">chunks</code>. A hybrid search does not support element-level group-by if it mixes normal vector fields, different StructArray fields, or EmbeddingList-level requests.</p>
+<h2 id="Interpret-grouped-results" class="common-anchor-header">Interpret grouped results<button data-href="#Interpret-grouped-results" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,17 +237,17 @@ results = client.hybrid_search(
       </svg>
     </button></h2><table>
 <thead>
-<tr><th>结果项</th><th>含义</th></tr>
+<tr><th>Result item</th><th>Meaning</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">id</code></td><td>分组父实体的主键。</td></tr>
-<tr><td><code translate="no">distance</code> 或得分</td><td>该父实体的所选 Struct 元素的分数或距离。</td></tr>
-<tr><td><code translate="no">offset</code></td><td>返回时所选 Struct 元素的从零开始的索引位置。</td></tr>
-<tr><td>重复的主键</td><td>按主键分组时不应出现此情况。</td></tr>
-<tr><td><code translate="no">limit</code></td><td>适用于按父实体分组的结果。</td></tr>
+<tr><td><code translate="no">id</code></td><td>Primary key of the grouped parent entity.</td></tr>
+<tr><td><code translate="no">distance</code> or score</td><td>Score or distance of the selected Struct element for that parent entity.</td></tr>
+<tr><td><code translate="no">offset</code></td><td>Zero-based position of the selected Struct element when returned.</td></tr>
+<tr><td>Repeated primary keys</td><td>Not expected when grouping by the primary key.</td></tr>
+<tr><td><code translate="no">limit</code></td><td>Applies to grouped parent-entity results.</td></tr>
 </tbody>
 </table>
-<h2 id="Limitations" class="common-anchor-header">限制<button data-href="#Limitations" class="anchor-icon" translate="no">
+<h2 id="Limitations" class="common-anchor-header">Limitations<button data-href="#Limitations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -261,14 +263,14 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>分组搜索仅适用于元素级 StructArray 向量搜索。EmbeddingList 搜索和 EmbeddingList 级混合搜索不支持按组分组。</p></li>
-<li><p>请将主键用作<code translate="no">group_by_field</code> 。StructArray 元素级分组并非针对任意标量字段的通用分组操作。</p></li>
-<li><p>请勿将分组搜索与范围搜索结合使用。</p></li>
-<li><p>请勿在分组搜索中使用<code translate="no">EmbeddingList</code> 查询或<code translate="no">MAX_SIM*</code> 度量。</p></li>
-<li><p>仅当所有子搜索都针对同一 StructArray 字段下的元素级向量字段时，才支持混合分组。</p></li>
-<li><p>当混合搜索混合了普通向量字段、不同的 StructArray 字段或 EmbeddingList 级请求时，不支持混合分组。</p></li>
+<li><p>Grouping search applies only to element-level StructArray vector search. EmbeddingList search and EmbeddingList-level hybrid search do not support group-by.</p></li>
+<li><p>Use the primary key as <code translate="no">group_by_field</code>. StructArray element-level grouping is not a general-purpose group-by over arbitrary scalar fields.</p></li>
+<li><p>Do not combine grouping search with range search.</p></li>
+<li><p>Do not use an <code translate="no">EmbeddingList</code> query or a <code translate="no">MAX_SIM*</code> metric for grouping search.</p></li>
+<li><p>Hybrid grouping is supported only when all sub-searches target element-level vector fields under the same StructArray field.</p></li>
+<li><p>Hybrid grouping is not supported when the hybrid search mixes a normal vector field, a different StructArray field, or an EmbeddingList-level request.</p></li>
 </ul>
-<h2 id="Common-mistakes" class="common-anchor-header">常见错误<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
+<h2 id="Common-mistakes" class="common-anchor-header">Common mistakes<button data-href="#Common-mistakes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -284,14 +286,14 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>将分组与<code translate="no">chunks[emb_list_vector]</code> 结合使用，而该字段专用于EmbeddingList搜索。</p></li>
-<li><p>按非主键标量字段进行分组。</p></li>
-<li><p>按多个字段进行分组。元素级 StructArray 分组仅支持主键分组。</p></li>
-<li><p>期望分组结果能代表每个匹配的 Struct 元素。分组每个父实体最多返回一个结果。</p></li>
-<li><p>假设按元素级别分组的搜索会重新计算 EmbeddingList 风格的<code translate="no">MAX_SIM*</code> 得分。分组操作会合并元素级别的匹配结果，但不会改变评分模型。</p></li>
-<li><p>将<code translate="no">group_by_field</code> 与<code translate="no">radius</code> 或<code translate="no">range_filter</code> 结合使用。</p></li>
+<li><p>Using grouping with <code translate="no">chunks[emb_list_vector]</code>, which is intended for EmbeddingList search.</p></li>
+<li><p>Grouping by a non-primary-key scalar field.</p></li>
+<li><p>Grouping by multiple fields. Element-level StructArray grouping supports only primary-key grouping.</p></li>
+<li><p>Expecting grouped results to represent every matched Struct element. Grouping returns at most one result per parent entity.</p></li>
+<li><p>Assuming grouped element-level search recomputes an EmbeddingList-style <code translate="no">MAX_SIM*</code> score. Grouping collapses element-level hits; it does not change the scoring model.</p></li>
+<li><p>Combining <code translate="no">group_by_field</code> with <code translate="no">radius</code> or <code translate="no">range_filter</code>.</p></li>
 </ul>
-<h2 id="Next-steps" class="common-anchor-header">下一步<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -307,8 +309,8 @@ results = client.hybrid_search(
         ></path>
       </svg>
     </button></h2><ol>
-<li><p>若要先了解未分组的元素级搜索，请阅读《<a href="/docs/zh/basic-vector-search-with-structarray.md">使用 StructArray 进行基础向量搜索</a>》。</p></li>
-<li><p>若要为分组搜索添加标量过滤器，请阅读《<a href="/docs/zh/filtered-search-with-structarray.md">使用 StructArray 进行过滤搜索</a>》。</p></li>
-<li><p>若要使用得分或距离边界代替分组，请阅读《<a href="/docs/zh/range-search-with-structarray.md">使用 StructArray 进行范围搜索</a>》。</p></li>
-<li><p>要查看 StructArray 的搜索限制，请阅读《<a href="/docs/zh/structarray-limits.md">StructArray 限制</a>》。</p></li>
+<li><p>To learn ungrouped element-level search first, read <a href="/docs/zh/basic-vector-search-with-structarray.md">Basic Vector Search with StructArray</a>.</p></li>
+<li><p>To add scalar filters to grouped search, read <a href="/docs/zh/filtered-search-with-structarray.md">Filtered Search with StructArray</a>.</p></li>
+<li><p>To use score or distance boundaries instead of grouping, read <a href="/docs/zh/range-search-with-structarray.md">Range Search with StructArray</a>.</p></li>
+<li><p>To check StructArray search limits, read <a href="/docs/zh/structarray-limits.md">StructArray Limits</a>.</p></li>
 </ol>

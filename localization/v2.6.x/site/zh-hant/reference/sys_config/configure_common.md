@@ -2,9 +2,9 @@
 id: configure_common.md
 related_key: configure
 group: system_configuration.md
-summary: 學習如何為 Milvus 設定共用。
+summary: Learn how to configure common for Milvus.
 ---
-<h1 id="common-related-Configurations" class="common-anchor-header">共用相關組態<button data-href="#common-related-Configurations" class="anchor-icon" translate="no">
+<h1 id="common-related-Configurations" class="common-anchor-header">common-related Configurations<button data-href="#common-related-Configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,13 +37,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.defaultPartitionName">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        建立集合時的預設分割區名稱      </td>
+      <td>        Name of the default partition when a collection is created      </td>
       <td>_default</td>
     </tr>
   </tbody>
@@ -66,13 +66,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.defaultIndexName">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        索引名稱未指定時的名稱      </td>
+      <td>        Name of the index when it is created with name unspecified      </td>
       <td>_default_idx</td>
     </tr>
   </tbody>
@@ -95,13 +95,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.entityExpiration">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        實體過期時間，以秒為單位，注意 -1 表示永不過期      </td>
+      <td>        Entity expiration in seconds, CAUTION -1 means never expire      </td>
       <td>-1</td>
     </tr>
   </tbody>
@@ -124,13 +124,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.indexSliceSize">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        索引分割大小 (MB)    </td>
+      <td>        Index slice size in MB      </td>
       <td>16</td>
     </tr>
   </tbody>
@@ -153,13 +153,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.threadCoreCoefficient.highPriority">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        此參數指定線程數是高優先級池核心數的幾倍      </td>
+      <td>        This parameter specify how many times the number of threads is the number of cores in high priority pool      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -182,13 +182,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.threadCoreCoefficient.middlePriority">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        此參數指定線程數是中優先級池核心數的幾倍      </td>
+      <td>        This parameter specify how many times the number of threads is the number of cores in middle priority pool      </td>
       <td>5</td>
     </tr>
   </tbody>
@@ -211,13 +211,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.threadCoreCoefficient.lowPriority">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        此參數指定線程數是低優先級池核心數的幾倍      </td>
+      <td>        This parameter specify how many times the number of threads is the number of cores in low priority pool      </td>
       <td>1</td>
     </tr>
   </tbody>
@@ -240,13 +240,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.gracefulTime">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        毫秒。它表示在有界一致性的情況下，需要減去請求到達時間的間隔（以毫秒為單位）。      </td>
+      <td>        milliseconds. it represents the interval (in ms) by which the request arrival time needs to be subtracted in the case of Bounded Consistency.      </td>
       <td>5000</td>
     </tr>
   </tbody>
@@ -269,13 +269,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.gracefulStopTimeout">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        秒。如果在這段時間內未完成優化停止程序，它會強制退出伺服器。      </td>
+      <td>        seconds. it will force quit the server if the graceful stop process is not completed during this time.      </td>
       <td>1800</td>
     </tr>
   </tbody>
@@ -298,14 +298,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.storageType">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        請在內嵌的 Milvus 中調整：local，可用值為 [local、remote、opendal]，值 minio 已經被淘汰，請使用 remote 代替      </td>
-      <td>遠端</td>
+      <td>        please adjust in embedded Milvus: local, available values are [local, remote, opendal], value minio is deprecated, use remote instead      </td>
+      <td>remote</td>
     </tr>
   </tbody>
 </table>
@@ -327,17 +327,17 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.simdType">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>預設值：自動</li>      
-        <li>有效值：[自動、avx512、avx2、avx、sse4_2]</li>      
-        <li>此設定僅供 querynode 和 indexnode 使用，它選擇搜尋和建立索引的 CPU 指令集。</li>      </td>
-      <td>自動</td>
+        <li>Default value: auto</li>      
+        <li>Valid values: [auto, avx512, avx2, avx, sse4_2]</li>      
+        <li>This configuration is only used by querynode and indexnode, it selects CPU instruction set for Searching and Index-building.</li>      </td>
+      <td>auto</td>
     </tr>
   </tbody>
 </table>
@@ -359,15 +359,15 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.superUsers">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>超級使用者會忽略某些系統檢查程序、</li>      
-        <li>如更新認證時的舊密碼驗證。</li>      </td>
+        <li>The superusers will ignore some system check processes,</li>      
+        <li>like the old password verification when updating the credential</li>      </td>
       <td></td>
     </tr>
   </tbody>
@@ -390,14 +390,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.defaultRootPassword">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        root 使用者的預設密碼。最大長度為 72 個字元，且必須使用雙引號。      </td>
-      <td>密碼</td>
+      <td>        default password for root user. The maximum length is 72 characters, and double quotes are required.      </td>
+      <td>Milvus</td>
     </tr>
   </tbody>
 </table>
@@ -419,14 +419,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.rootShouldBindRole">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        啟用授權時，root 使用者是否應該綁定角色。      </td>
-      <td>假</td>
+      <td>        Whether the root user should bind a role when the authorization is enabled.      </td>
+      <td>false</td>
     </tr>
   </tbody>
 </table>
@@ -448,13 +448,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.rbac.overrideBuiltInPrivilegeGroups.enabled">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        是否覆寫內建的權限群組      </td>
+      <td>        Whether to override build-in privilege groups      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -477,13 +477,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.rbac.cluster.readonly.privileges">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        群集層級唯讀權限      </td>
+      <td>        Cluster level readonly privileges      </td>
       <td>ListDatabases,SelectOwnership,SelectUser,DescribeResourceGroup,ListResourceGroups,ListPrivilegeGroups</td>
     </tr>
   </tbody>
@@ -506,14 +506,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.rbac.cluster.readwrite.privileges">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        群集層級讀寫權限      </td>
-      <td>資料庫清單,選擇所有權,選擇使用者,描述資源群組,資源群組清單,權限群組清單,FlushAll,TransferNode,TransferReplica,UpdateResourceGroups...</td>
+      <td>        Cluster level readwrite privileges      </td>
+      <td>ListDatabases,SelectOwnership,SelectUser,DescribeResourceGroup,ListResourceGroups,ListPrivilegeGroups,FlushAll,TransferNode,TransferReplica,UpdateResourceGroups</td>
     </tr>
   </tbody>
 </table>
@@ -535,14 +535,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.rbac.cluster.admin.privileges">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        群集層級管理權限      </td>
-      <td>ListDatabases,SelectOwnership,SelectUser,DescribeResourceGroup,ListResourceGroups,ListPrivilegeGroups,FlushAll,TransferNode,TransferReplica,UpdateResourceGroups,BackupRBAC,RestoreRBAC,CreateDatabase、DropDatabase,CreateOwnership,DropOwnership,ManageOwnership,CreateResourceGroup,DropResourceGroup,UpdateUser,RenameCollection,CreatePrivilegeGroup,DropPrivilegeGroup,OperatePrivilegeGroup</td>
+      <td>        Cluster level admin privileges      </td>
+      <td>ListDatabases,SelectOwnership,SelectUser,DescribeResourceGroup,ListResourceGroups,ListPrivilegeGroups,FlushAll,TransferNode,TransferReplica,UpdateResourceGroups,BackupRBAC,RestoreRBAC,CreateDatabase,DropDatabase,CreateOwnership,DropOwnership,ManageOwnership,CreateResourceGroup,DropResourceGroup,UpdateUser,RenameCollection,CreatePrivilegeGroup,DropPrivilegeGroup,OperatePrivilegeGroup</td>
     </tr>
   </tbody>
 </table>
@@ -564,14 +564,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.rbac.database.readonly.privileges">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        資料庫層級的唯讀權限      </td>
-      <td>顯示資料集、描述資料庫</td>
+      <td>        Database level readonly privileges      </td>
+      <td>ShowCollections,DescribeDatabase</td>
     </tr>
   </tbody>
 </table>
@@ -593,14 +593,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.rbac.database.readwrite.privileges">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        資料庫層級讀寫權限      </td>
-      <td>顯示收藏集,描述資料庫,變更資料庫</td>
+      <td>        Database level readwrite privileges      </td>
+      <td>ShowCollections,DescribeDatabase,AlterDatabase</td>
     </tr>
   </tbody>
 </table>
@@ -622,13 +622,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.rbac.database.admin.privileges">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        資料庫層級管理權限      </td>
+      <td>        Database level admin privileges      </td>
       <td>ShowCollections,DescribeDatabase,AlterDatabase,CreateCollection,DropCollection</td>
     </tr>
   </tbody>
@@ -651,14 +651,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.rbac.collection.readonly.privileges">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        資料庫層級唯讀權限      </td>
-      <td>查詢,搜尋,索引詳細資料,GetFlushState,GetLoadState,GetLoadingProgress,HasPartition,ShowPartitions,DescribeCollection,DescribeAlias,GetStatistics,ListAliases。</td>
+      <td>        Collection level readonly privileges      </td>
+      <td>Query,Search,IndexDetail,GetFlushState,GetLoadState,GetLoadingProgress,HasPartition,ShowPartitions,DescribeCollection,DescribeAlias,GetStatistics,ListAliases</td>
     </tr>
   </tbody>
 </table>
@@ -680,14 +680,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.rbac.collection.readwrite.privileges">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        集合層級讀寫權限      </td>
-      <td>查詢,搜尋,IndexDetail,GetFlushState,GetLoadState,GetLoadingProgress,HasPartition,ShowPartitions,DescribeCollection,DescribeAlias,GetStatistics,ListAliases,Load,Release,Insert,Delete,Upsert,Import,Flush,Compaction,LoadBalance,CreateIndex,DropIndex,CreatePartition,DropPartition。</td>
+      <td>        Collection level readwrite privileges      </td>
+      <td>Query,Search,IndexDetail,GetFlushState,GetLoadState,GetLoadingProgress,HasPartition,ShowPartitions,DescribeCollection,DescribeAlias,GetStatistics,ListAliases,Load,Release,Insert,Delete,Upsert,Import,Flush,Compaction,LoadBalance,CreateIndex,DropIndex,CreatePartition,DropPartition</td>
     </tr>
   </tbody>
 </table>
@@ -709,13 +709,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.security.rbac.collection.admin.privileges">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        集合層級管理權限      </td>
+      <td>        Collection level admin privileges      </td>
       <td>Query,Search,IndexDetail,GetFlushState,GetLoadState,GetLoadingProgress,HasPartition,ShowPartitions,DescribeCollection,DescribeAlias,GetStatistics,ListAliases,Load,Release,Insert,Delete,Upsert,Import,Flush,Compaction,LoadBalance,CreateIndex,DropIndex,CreatePartition,DropPartition,CreateAlias,DropAlias</td>
     </tr>
   </tbody>
@@ -738,13 +738,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.session.ttl">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        會話授予註冊服務租約時的 ttl 值   </td>
+      <td>        ttl value when session granting a lease to register service      </td>
       <td>30</td>
     </tr>
   </tbody>
@@ -767,13 +767,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.session.retryTimes">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        會話發送 etcd 請求時的重試次數      </td>
+      <td>        retry times when session sending etcd requests      </td>
       <td>30</td>
     </tr>
   </tbody>
@@ -796,14 +796,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.locks.metrics.enable">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        是否收集度量鎖的統計資料      </td>
-      <td>假</td>
+      <td>        whether gather statistics for metrics locks      </td>
+      <td>false</td>
     </tr>
   </tbody>
 </table>
@@ -825,13 +825,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.locks.threshold.info">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        在資訊層級中列印持續時間的最小毫秒數      </td>
+      <td>        minimum milliseconds for printing durations in info level      </td>
       <td>500</td>
     </tr>
   </tbody>
@@ -854,13 +854,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.locks.threshold.warn">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        警告層級中列印時間的最小毫秒數      </td>
+      <td>        minimum milliseconds for printing durations in warn level      </td>
       <td>1000</td>
     </tr>
   </tbody>
@@ -883,13 +883,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.locks.maxWLockConditionalWaitTime">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        等待 wlock 條件的最長秒數      </td>
+      <td>        maximum seconds for waiting wlock conditional      </td>
       <td>600</td>
     </tr>
   </tbody>
@@ -912,17 +912,17 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.ttMsgEnabled">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>是否停用系統的內部時間訊息機制。 </li>      
-        <li>如果停用 (設定為 false)，系統將不允許 DML 操作，包括插入、刪除、查詢和搜尋。 </li>      
-        <li>這有助於 Milvus-CDC 同步增量資料</li>      </td>
-      <td>真</td>
+        <li>Whether to disable the internal time messaging mechanism for the system. </li>      
+        <li>If disabled (set to false), the system will not allow DML operations, including insertion, deletion, queries, and searches. </li>      
+        <li>This helps Milvus-CDC synchronize incremental data</li>      </td>
+      <td>true</td>
     </tr>
   </tbody>
 </table>
@@ -944,13 +944,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.traceLogMode">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        追蹤請求資訊      </td>
+      <td>        trace request info      </td>
       <td>0</td>
     </tr>
   </tbody>
@@ -973,13 +973,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.bloomFilterSize">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        bloom filter 初始大小      </td>
+      <td>        bloom filter initial size      </td>
       <td>100000</td>
     </tr>
   </tbody>
@@ -1002,14 +1002,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.bloomFilterType">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        bloom filter 類型，支援 BasicBloomFilter 和 BlockedBloomFilter      </td>
-      <td>封鎖 BloomFilter</td>
+      <td>        bloom filter type, support BasicBloomFilter and BlockedBloomFilter      </td>
+      <td>BlockedBloomFilter</td>
     </tr>
   </tbody>
 </table>
@@ -1031,13 +1031,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.maxBloomFalsePositive">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        bloom 過濾器的最大誤判率      </td>
+      <td>        max false positive rate for bloom filter      </td>
       <td>0.001</td>
     </tr>
   </tbody>
@@ -1060,13 +1060,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.bloomFilterApplyBatchSize">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        將 pk 應用於 bloom filter 時的批次大小      </td>
+      <td>        batch size when to apply pk to bloom filter      </td>
       <td>1000</td>
     </tr>
   </tbody>
@@ -1089,14 +1089,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.collectionReplicateEnable">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        是否啟用收集複製。      </td>
-      <td>假</td>
+      <td>        Whether to enable collection replication.      </td>
+      <td>false</td>
     </tr>
   </tbody>
 </table>
@@ -1118,14 +1118,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.usePartitionKeyAsClusteringKey">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        若為 true，則在分割區鍵欄位上執行群集壓縮和分割修剪      </td>
-      <td>假</td>
+      <td>        if true, do clustering compaction and segment prune on partition key field      </td>
+      <td>false</td>
     </tr>
   </tbody>
 </table>
@@ -1147,14 +1147,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.useVectorAsClusteringKey">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        如果為 true，會對向量欄位進行聚類壓縮和分割修剪      </td>
-      <td>假</td>
+      <td>        if true, do clustering compaction and segment prune on vector field      </td>
+      <td>false</td>
     </tr>
   </tbody>
 </table>
@@ -1176,14 +1176,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.enableVectorClusteringKey">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        如果為 true，啟用向量聚類關鍵和向量聚類壓縮      </td>
-      <td>假</td>
+      <td>        if true, enable vector clustering key and vector clustering compaction      </td>
+      <td>false</td>
     </tr>
   </tbody>
 </table>
@@ -1205,14 +1205,14 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.localRPCEnabled">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        當混合或獨立模式時，啟用本機 rpc 進行內部通訊。      </td>
-      <td>假</td>
+      <td>        enable local rpc for internal communication when mix or standalone mode.      </td>
+      <td>false</td>
     </tr>
   </tbody>
 </table>
@@ -1234,13 +1234,13 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.sync.taskPoolReleaseTimeoutSeconds">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        等待任務完成並釋放池中資源的最長時間      </td>
+      <td>        The maximum time to wait for the task to finish and release resources in the pool      </td>
       <td>60</td>
     </tr>
   </tbody>
@@ -1263,18 +1263,18 @@ summary: 學習如何為 Milvus 設定共用。
     </button></h2><table id="common.clusterID">
   <thead>
     <tr>
-      <th class="width80">說明</th>
-      <th class="width20">預設值</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>群集的唯一識別碼，用於自動識別碼的產生，以確保在多個 Milvus 群集中的全局唯一性。</li>      
-        <li>有效值：[0、1、2、3、4、5、6、7] (最多支援 8 個群集)</li>      
-        <li>每個群集必須有唯一的 clusterID，以防止執行多個群集時 AutoID 重疊。</li>      
-        <li>此 ID 嵌入在 64 位 AutoID 結構中，作為 cluster_id 段的一部分。</li>      
-        <li>如需詳細資訊，請參閱<a href="/docs/zh-hant/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">Primary Field &amp; AutoID</a>。</li>      </td>
+        <li>Unique identifier for the cluster used in AutoID generation to ensure global uniqueness across multiple Milvus clusters.</li>      
+        <li>Valid values: [0, 1, 2, 3, 4, 5, 6, 7] (supports up to 8 clusters)</li>      
+        <li>Each cluster must have a unique clusterID to prevent AutoID overlap when running multiple clusters.</li>      
+        <li>This ID is embedded in the 64-bit AutoID structure as part of the cluster_id segment.</li>      
+        <li>For more information, refer to <a href="/docs/zh-hant/v2.6.x/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">Primary Field & AutoID</a>.</li>      </td>
       <td>0</td>
     </tr>
   </tbody>

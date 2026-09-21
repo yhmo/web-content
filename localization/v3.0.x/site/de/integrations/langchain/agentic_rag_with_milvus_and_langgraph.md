@@ -1,14 +1,12 @@
 ---
 id: agentic_rag_with_milvus_and_langgraph.md
 summary: >-
-  Dieser Leitfaden zeigt, wie man mit LangGraph und Milvus ein fortschrittliches
-  Retrieval-Augmented Generation (RAG) System aufbaut. Im Gegensatz zu
-  traditionellen RAG-Systemen, die einfach nur abrufen und generieren, können
-  agentenbasierte RAG-Systeme intelligente Entscheidungen darüber treffen, wann
-  Informationen abgerufen werden sollen, wie mit irrelevanten Dokumenten
-  umgegangen werden soll und wann Abfragen für bessere Ergebnisse umgeschrieben
-  werden sollen.
-title: Agentisches RAG mit Milvus und LangGraph
+  This guide demonstrates how to build an advanced Retrieval-Augmented
+  Generation (RAG) system using LangGraph and Milvus. Unlike traditional RAG
+  systems that simply retrieve and generate, agentic RAG systems can make
+  intelligent decisions about when to retrieve information, how to handle
+  irrelevant documents, and when to rewrite queries for better results.
+title: Agentic RAG with Milvus and LangGraph
 ---
 <p><a href="https://colab.research.google.com/github/milvus-io/bootcamp/blob/master/integration/langchain/agentic_rag_with_milvus_and_langgraph.ipynb" target="_parent">
 <img translate="no" src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
@@ -16,7 +14,7 @@ title: Agentisches RAG mit Milvus und LangGraph
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/langchain/agentic_rag_with_milvus_and_langgraph.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<h1 id="Agentic-RAG-with-Milvus-and-LangGraph" class="common-anchor-header">Agentisches RAG mit Milvus und LangGraph<button data-href="#Agentic-RAG-with-Milvus-and-LangGraph" class="anchor-icon" translate="no">
+<h1 id="Agentic-RAG-with-Milvus-and-LangGraph" class="common-anchor-header">Agentic RAG with Milvus and LangGraph<button data-href="#Agentic-RAG-with-Milvus-and-LangGraph" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -31,20 +29,22 @@ title: Agentisches RAG mit Milvus und LangGraph
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Diese Anleitung zeigt, wie man ein fortschrittliches Retrieval-Augmented Generation (RAG) System mit LangGraph und Milvus aufbaut. Im Gegensatz zu traditionellen RAG-Systemen, die einfach nur abrufen und generieren, können agentenbasierte RAG-Systeme intelligente Entscheidungen darüber treffen, wann Informationen abgerufen werden sollen, wie mit irrelevanten Dokumenten umgegangen werden soll und wann Abfragen umgeschrieben werden sollen, um bessere Ergebnisse zu erzielen.</p>
+    </button></h1><p>This guide demonstrates how to build an advanced Retrieval-Augmented Generation (RAG) system using LangGraph and Milvus. Unlike traditional RAG systems that simply retrieve and generate, agentic RAG systems can make intelligent decisions about when to retrieve information, how to handle irrelevant documents, and when to rewrite queries for better results.</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/agentic_rag_with_langgraph_architecture.png" alt="Architecture of an agentic RAG system using LangGraph and Milvus" class="doc-image" id="architecture-of-an-agentic-rag-system-using-langgraph-and-milvus" />
-   </span> <span class="img-wrapper"> <span>Architektur eines agentenbasierten RAG-Systems mit LangGraph und Milvus</span> </span></p>
-<p><a href="https://langchain-ai.github.io/langgraph/">LangGraph</a> ist eine Bibliothek zur Erstellung von zustandsbehafteten, Multi-Aktor-Anwendungen mit LLMs, die auf LangChain aufbaut. <a href="https://milvus.io/">Milvus</a> ist die fortschrittlichste Open-Source-Vektordatenbank der Welt, die für die Einbettung von Ähnlichkeitssuche und KI-Anwendungen entwickelt wurde.</p>
-<p>In diesem Tutorial werden wir ein agentenbasiertes RAG-System aufbauen, das:</p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/agentic_rag_with_langgraph_architecture.png" alt="Architecture of an agentic RAG system using LangGraph and Milvus" class="doc-image" id="architecture-of-an-agentic-rag-system-using-langgraph-and-milvus" />
+    <span>Architecture of an agentic RAG system using LangGraph and Milvus</span>
+  </span>
+</p>
+<p><a href="https://langchain-ai.github.io/langgraph/">LangGraph</a> is a library for building stateful, multi-actor applications with LLMs, built on top of LangChain. <a href="https://milvus.io/">Milvus</a> is the world’s most advanced open-source vector database, built to power embedding similarity search and AI applications.</p>
+<p>In this tutorial, we will build an agentic RAG system that can:</p>
 <ul>
-<li>entscheiden kann, ob es Dokumente abruft oder direkt auf einfache Abfragen antwortet</li>
-<li>Abgerufene Dokumente nach Relevanz einstufen kann</li>
-<li>Fragen umschreiben kann, wenn die abgerufenen Dokumente nicht relevant sind</li>
-<li>Qualitativ hochwertige Antworten basierend auf relevantem Kontext generieren kann</li>
+<li>Decide whether to retrieve documents or respond directly to simple queries</li>
+<li>Grade retrieved documents for relevance</li>
+<li>Rewrite questions when retrieved documents are not relevant</li>
+<li>Generate high-quality answers based on relevant context</li>
 </ul>
-<h2 id="Prerequisites" class="common-anchor-header">Voraussetzungen<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -59,18 +59,18 @@ title: Agentisches RAG mit Milvus und LangGraph
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Vergewissern Sie sich, dass Sie die folgenden Abhängigkeiten installiert haben, bevor Sie dieses Notizbuch ausführen:</p>
+    </button></h2><p>Before running this notebook, make sure you have the following dependencies installed:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip install --upgrade langchain langchain-core langchain-community langchain-text-splitters langgraph langchain-milvus milvus-lite langchain-openai bs4</span>
 <button class="copy-code-btn"></button></code></pre>
 <blockquote>
-<p>Wenn Sie Google Colab verwenden, müssen Sie möglicherweise <strong>die Runtime neu starten</strong>, um die soeben installierten Abhängigkeiten zu aktivieren (klicken Sie auf das Menü "Runtime" am oberen Rand des Bildschirms und wählen Sie "Restart session" aus dem Dropdown-Menü).</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </blockquote>
-<p>Wir werden die Modelle von OpenAI verwenden. Sie sollten den <a href="https://platform.openai.com/docs/quickstart">Api-Schlüssel</a> <code translate="no">OPENAI_API_KEY</code> als Umgebungsvariable vorbereiten.</p>
+<p>We will use the models from OpenAI. You should prepare the <a href="https://platform.openai.com/docs/quickstart">api key</a> <code translate="no">OPENAI_API_KEY</code> as an environment variable.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 os.environ[<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>] = <span class="hljs-string">&quot;sk-***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Prepare-the-data" class="common-anchor-header">Bereiten Sie die Daten vor<button data-href="#Prepare-the-data" class="anchor-icon" translate="no">
+<h2 id="Prepare-the-data" class="common-anchor-header">Prepare the data<button data-href="#Prepare-the-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -85,7 +85,7 @@ os.environ[<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>] = <span 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Wir verwenden den Langchain <a href="https://python.langchain.com/docs/integrations/document_loaders/web_base/">WebBaseLoader</a>, um Dokumente aus den <a href="https://lilianweng.github.io/">Blogbeiträgen von Lilian Weng</a> zu laden und sie mit dem <a href="https://python.langchain.com/docs/how_to/recursive_text_splitter/">RecursiveCharacterTextSplitter</a> in Stücke zu zerlegen.</p>
+    </button></h2><p>We use the Langchain <a href="https://python.langchain.com/docs/integrations/document_loaders/web_base/">WebBaseLoader</a> to load documents from <a href="https://lilianweng.github.io/">Lilian Weng’s blog posts</a> and split them into chunks using the <a href="https://python.langchain.com/docs/how_to/recursive_text_splitter/">RecursiveCharacterTextSplitter</a>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> langchain_community.document_loaders <span class="hljs-keyword">import</span> WebBaseLoader
 <span class="hljs-keyword">from</span> langchain_text_splitters <span class="hljs-keyword">import</span> RecursiveCharacterTextSplitter
 
@@ -114,7 +114,7 @@ doc_splits = text_splitter.split_documents(docs_list)
 
 Total document chunks: 47
 </code></pre>
-<h2 id="Create-a-retriever-tool-with-Milvus" class="common-anchor-header">Erstellen eines Retriever-Tools mit Milvus<button data-href="#Create-a-retriever-tool-with-Milvus" class="anchor-icon" translate="no">
+<h2 id="Create-a-retriever-tool-with-Milvus" class="common-anchor-header">Create a retriever tool with Milvus<button data-href="#Create-a-retriever-tool-with-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -129,7 +129,7 @@ Total document chunks: 47
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Nun erstellen wir einen Vektorspeicher mit Milvus, um unsere Dokumentenstücke zu indizieren und ein Retriever-Tool zu erstellen, das unser Agent verwenden kann.</p>
+    </button></h2><p>Now we’ll create a vector store using Milvus to index our document chunks and create a retriever tool that our agent can use.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> langchain_milvus <span class="hljs-keyword">import</span> Milvus
 <span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> OpenAIEmbeddings
 <span class="hljs-keyword">from</span> langchain.tools.retriever <span class="hljs-keyword">import</span> create_retriever_tool
@@ -176,14 +176,14 @@ Automatic Prompt Design#
 Prompt is a sequence of prefix tokens that increase the probability of getting  desired output given input. Therefore we can treat them as trainable parameters and optimize them directly on the embedding space via gradient descent, such as AutoPrompt (Shin et al., 2020, Prefix-Tuning (Li &amp; Liang (2021)), P-tuning (Liu et al. 2021) and Prompt-Tuning (Lester et al. 2021). This section in my “Controllable Neural Text Generation” post has a 
 </code></pre>
 <blockquote>
-<p>Für die <code translate="no">connection_args</code>:</p>
+<p>For the <code translate="no">connection_args</code>:</p>
 <ul>
-<li>Das Einstellen von <code translate="no">uri</code> als lokale Datei, z. B.<code translate="no">./milvus_agentic_rag.db</code>, ist die bequemste Methode, da sie automatisch <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> verwendet, um alle Daten in dieser Datei zu speichern.</li>
-<li>Wenn Sie große Datenmengen haben, können Sie einen leistungsfähigeren Milvus-Server auf <a href="https://milvus.io/docs/quickstart.md">Docker oder Kubernetes</a> einrichten. Bei dieser Einrichtung verwenden Sie bitte die Server-Uri, z. B.<code translate="no">http://localhost:19530</code>, als <code translate="no">uri</code>.</li>
-<li>Wenn Sie <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, den vollständig verwalteten Cloud-Service für Milvus, verwenden möchten, passen Sie <code translate="no">uri</code> und <code translate="no">token</code> an, die dem <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">öffentlichen Endpunkt und dem Api-Schlüssel</a> in Zilliz Cloud entsprechen.</li>
+<li>Setting the <code translate="no">uri</code> as a local file, e.g.<code translate="no">./milvus_agentic_rag.db</code>, is the most convenient method, as it automatically utilizes <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> to store all data in this file.</li>
+<li>If you have large scale of data, you can set up a more performant Milvus server on <a href="https://milvus.io/docs/quickstart.md">docker or kubernetes</a>. In this setup, please use the server uri, e.g.<code translate="no">http://localhost:19530</code>, as your <code translate="no">uri</code>.</li>
+<li>If you want to use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, the fully managed cloud service for Milvus, adjust the <code translate="no">uri</code> and <code translate="no">token</code>, which correspond to the <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and Api key</a> in Zilliz Cloud.</li>
 </ul>
 </blockquote>
-<h2 id="Build-the-agentic-RAG-graph" class="common-anchor-header">Erstellen Sie den agentenbasierten RAG-Graphen<button data-href="#Build-the-agentic-RAG-graph" class="anchor-icon" translate="no">
+<h2 id="Build-the-agentic-RAG-graph" class="common-anchor-header">Build the agentic RAG graph<button data-href="#Build-the-agentic-RAG-graph" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -198,7 +198,7 @@ Prompt is a sequence of prefix tokens that increase the probability of getting  
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Define-the-graph-state" class="common-anchor-header">Definieren Sie den Zustand des Graphen<button data-href="#Define-the-graph-state" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Define-the-graph-state" class="common-anchor-header">Define the graph state<button data-href="#Define-the-graph-state" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -213,14 +213,14 @@ Prompt is a sequence of prefix tokens that increase the probability of getting  
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Wir verwenden <code translate="no">MessagesState</code> von LangGraph, das eine Liste der Nachrichten in der Konversation verwaltet.</p>
+    </button></h3><p>We’ll use LangGraph’s <code translate="no">MessagesState</code> which maintains a list of messages in the conversation.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> langgraph.graph <span class="hljs-keyword">import</span> MessagesState
 <span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> ChatOpenAI
 
 <span class="hljs-comment"># Initialize the language model</span>
 llm = ChatOpenAI(model=<span class="hljs-string">&quot;gpt-4o-mini&quot;</span>, temperature=<span class="hljs-number">0</span>)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Node-1-Generate-query-or-respond" class="common-anchor-header">Knoten 1: Abfrage generieren oder antworten<button data-href="#Node-1-Generate-query-or-respond" class="anchor-icon" translate="no">
+<h3 id="Node-1-Generate-query-or-respond" class="common-anchor-header">Node 1: Generate query or respond<button data-href="#Node-1-Generate-query-or-respond" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,7 +235,7 @@ llm = ChatOpenAI(model=<span class="hljs-string">&quot;gpt-4o-mini&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dieser Knoten entscheidet, ob das Retriever-Tool für die Suche nach Informationen verwendet werden soll oder ob dem Benutzer direkt geantwortet werden soll.</p>
+    </button></h3><p>This node decides whether to use the retriever tool to search for information or respond directly to the user.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">generate_query_or_respond</span>(<span class="hljs-params">state: MessagesState</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Decide whether to retrieve information or respond directly.
@@ -273,7 +273,7 @@ result = generate_query_or_respond(test_state)
 Model decided to use retrieval tool
 Tool call: {'name': 'retrieve_blog_posts', 'args': {'query': 'Chain of Thought prompting'}, 'id': 'call_UI804LXgqZ3Y7qFvdsWFuKZH', 'type': 'tool_call'}
 </code></pre>
-<h3 id="Node-2-Grade-documents" class="common-anchor-header">Knoten 2: Dokumente bewerten<button data-href="#Node-2-Grade-documents" class="anchor-icon" translate="no">
+<h3 id="Node-2-Grade-documents" class="common-anchor-header">Node 2: Grade documents<button data-href="#Node-2-Grade-documents" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -288,7 +288,7 @@ Tool call: {'name': 'retrieve_blog_posts', 'args': {'query': 'Chain of Thought p
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dieser Knoten bewertet, ob die abgerufenen Dokumente für die Frage des Benutzers relevant sind.</p>
+    </button></h3><p>This node evaluates whether the retrieved documents are relevant to the user’s question.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseModel, Field
 <span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">Literal</span>
 
@@ -343,7 +343,7 @@ Tool call: {'name': 'retrieve_blog_posts', 'args': {'query': 'Chain of Thought p
         <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;---DECISION: DOCS NOT RELEVANT---&quot;</span>)
         <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;rewrite&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Node-3-Rewrite-question" class="common-anchor-header">Knoten 3: Frage neu formulieren<button data-href="#Node-3-Rewrite-question" class="anchor-icon" translate="no">
+<h3 id="Node-3-Rewrite-question" class="common-anchor-header">Node 3: Rewrite question<button data-href="#Node-3-Rewrite-question" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -358,7 +358,7 @@ Tool call: {'name': 'retrieve_blog_posts', 'args': {'query': 'Chain of Thought p
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Wenn die Dokumente nicht relevant sind, schreibt dieser Knoten die Frage um, um die Suchergebnisse zu verbessern.</p>
+    </button></h3><p>If documents are not relevant, this node rewrites the question to improve retrieval results.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rewrite_question</span>(<span class="hljs-params">state: MessagesState</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Transform the query to produce a better question.
@@ -386,7 +386,7 @@ Tool call: {'name': 'retrieve_blog_posts', 'args': {'query': 'Chain of Thought p
 
     <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;messages&quot;</span>: [{<span class="hljs-string">&quot;role&quot;</span>: <span class="hljs-string">&quot;user&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>: response.content}]}
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Node-4-Generate-answer" class="common-anchor-header">Knoten 4: Antwort generieren<button data-href="#Node-4-Generate-answer" class="anchor-icon" translate="no">
+<h3 id="Node-4-Generate-answer" class="common-anchor-header">Node 4: Generate answer<button data-href="#Node-4-Generate-answer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -401,7 +401,7 @@ Tool call: {'name': 'retrieve_blog_posts', 'args': {'query': 'Chain of Thought p
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Dieser Knoten generiert die endgültige Antwort auf der Grundlage der abgerufenen relevanten Dokumente.</p>
+    </button></h3><p>This node generates the final answer based on the retrieved relevant documents.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">generate</span>(<span class="hljs-params">state: MessagesState</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Generate answer based on retrieved documents.
@@ -436,7 +436,7 @@ Tool call: {'name': 'retrieve_blog_posts', 'args': {'query': 'Chain of Thought p
 
     <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;messages&quot;</span>: [response]}
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Assemble-the-graph" class="common-anchor-header">Zusammensetzen des Graphen<button data-href="#Assemble-the-graph" class="anchor-icon" translate="no">
+<h3 id="Assemble-the-graph" class="common-anchor-header">Assemble the graph<button data-href="#Assemble-the-graph" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -451,7 +451,7 @@ Tool call: {'name': 'retrieve_blog_posts', 'args': {'query': 'Chain of Thought p
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Nun werden wir alle Knoten miteinander verbinden, um unseren agentenbasierten RAG-Workflow zu erstellen.</p>
+    </button></h3><p>Now we’ll connect all the nodes together to create our agentic RAG workflow.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> langgraph.graph <span class="hljs-keyword">import</span> StateGraph, START, END
 <span class="hljs-keyword">from</span> langgraph.prebuilt <span class="hljs-keyword">import</span> ToolNode, tools_condition
 
@@ -496,17 +496,19 @@ workflow.add_edge(<span class="hljs-string">&quot;generate&quot;</span>, END)
 <span class="hljs-comment"># Compile the graph</span>
 graph = workflow.<span class="hljs-built_in">compile</span>()
 <button class="copy-code-btn"></button></code></pre>
-<p>Lassen Sie uns die Graphenstruktur visualisieren, um den Arbeitsablauf zu verstehen:</p>
+<p>Let’s visualize the graph structure to understand the workflow:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> IPython.display <span class="hljs-keyword">import</span> Image, display
 
 <span class="hljs-comment"># Visualize the graph</span>
 display(Image(graph.get_graph().draw_mermaid_png()))
 <button class="copy-code-btn"></button></code></pre>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/agentic_rag_with_milvus_and_langgraph_21_0.png" alt="png" class="doc-image" id="png" />
-   </span> <span class="img-wrapper"> <span>png</span> </span></p>
-<h2 id="Run-the-agentic-RAG-system" class="common-anchor-header">Ausführen des agentenbasierten RAG-Systems<button data-href="#Run-the-agentic-RAG-system" class="anchor-icon" translate="no">
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/agentic_rag_with_milvus_and_langgraph_21_0.png" alt="png" class="doc-image" id="png" />
+    <span>png</span>
+  </span>
+</p>
+<h2 id="Run-the-agentic-RAG-system" class="common-anchor-header">Run the agentic RAG system<button data-href="#Run-the-agentic-RAG-system" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -521,8 +523,8 @@ display(Image(graph.get_graph().draw_mermaid_png()))
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Testen wir nun unser agentenbasiertes RAG-System mit verschiedenen Arten von Abfragen.</p>
-<h3 id="Test-1-Simple-greeting-no-retrieval-needed" class="common-anchor-header">Test 1: Einfache Begrüßung (keine Abfrage erforderlich)<button data-href="#Test-1-Simple-greeting-no-retrieval-needed" class="anchor-icon" translate="no">
+    </button></h2><p>Now let’s test our agentic RAG system with different types of queries.</p>
+<h3 id="Test-1-Simple-greeting-no-retrieval-needed" class="common-anchor-header">Test 1: Simple greeting (no retrieval needed)<button data-href="#Test-1-Simple-greeting-no-retrieval-needed" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -558,7 +560,7 @@ Node 'generate_query_or_respond':
 
 Hello! I'm just a program, so I don't have feelings, but I'm here and ready to help you. How can I assist you today?
 </code></pre>
-<h3 id="Test-2-Question-requiring-retrieval" class="common-anchor-header">Test 2: Frage, die einen Abruf erfordert<button data-href="#Test-2-Question-requiring-retrieval" class="anchor-icon" translate="no">
+<h3 id="Test-2-Question-requiring-retrieval" class="common-anchor-header">Test 2: Question requiring retrieval<button data-href="#Test-2-Question-requiring-retrieval" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -609,7 +611,7 @@ Node 'generate':
 content='The main components of an AI agent system include planning, memory, and tool use. Planning involves task decomposition and self-reflection to manage complex tasks effectively. Memory encompasses both short-term and long-term capabilities, while tool use allows the agent to access external APIs for additional information and functionalities.' additional_kwargs={'refusal': None} response_metadata={'token_usage': {'completion_tokens': 57, 'prompt_tokens': 1418, 'total_tokens': 1475, 'completion_tokens_details': {'accepted_prediction_tokens': 0, 'audio_tokens': 0, 'reasoning_tokens': 0, 'rejected_prediction_tokens': 0}, 'prompt_tokens_details': {'audio_tokens': 0, 'cached_tokens': 0}}, 'model_name': 'gpt-4o-mini-2024-07-18', 'system_fingerprint': 'fp_560af6e559', 'id': 'chatcmpl-CTjF1AqlJii7yqnIC3TcL41gM3elg', 'service_tier': 'default', 'finish_reason': 'stop', 'logprobs': None} id='run--10e8cfc1-5671-49a5-8b6c-b6b6ebc68492-0' usage_metadata={'input_tokens': 1418, 'output_tokens': 57, 'total_tokens': 1475, 'input_token_details': {'audio': 0, 'cache_read': 0}, 'output_token_details': {'audio': 0, 'reasoning': 0}}
 --------------------------------------------------
 </code></pre>
-<h3 id="Test-3-Question-that-might-trigger-rewrite" class="common-anchor-header">Test 3: Frage, die ein Rewrite auslösen könnte<button data-href="#Test-3-Question-that-might-trigger-rewrite" class="anchor-icon" translate="no">
+<h3 id="Test-3-Question-that-might-trigger-rewrite" class="common-anchor-header">Test 3: Question that might trigger rewrite<button data-href="#Test-3-Question-that-might-trigger-rewrite" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -672,7 +674,7 @@ Node 'generate':
 content='To defend against potential risks in AI systems, we can employ human red-teaming to identify and mitigate unsafe outputs through adversarial testing. This involves using tools that assist human trainers in finding failure cases and employing classifiers to judge harmful outputs. Additionally, training red-teamer models can help automate the process of generating adversarial inputs to improve system robustness.' additional_kwargs={'refusal': None} response_metadata={'token_usage': {'completion_tokens': 69, 'prompt_tokens': 988, 'total_tokens': 1057, 'completion_tokens_details': {'accepted_prediction_tokens': 0, 'audio_tokens': 0, 'reasoning_tokens': 0, 'rejected_prediction_tokens': 0}, 'prompt_tokens_details': {'audio_tokens': 0, 'cached_tokens': 0}}, 'model_name': 'gpt-4o-mini-2024-07-18', 'system_fingerprint': 'fp_560af6e559', 'id': 'chatcmpl-CTjFAhtrJfiBetBCYUeDD1llfGRoG', 'service_tier': 'default', 'finish_reason': 'stop', 'logprobs': None} id='run--7da130b2-fe12-47ce-9daa-9209d2f18a8e-0' usage_metadata={'input_tokens': 988, 'output_tokens': 69, 'total_tokens': 1057, 'input_token_details': {'audio': 0, 'cache_read': 0}, 'output_token_details': {'audio': 0, 'reasoning': 0}}
 --------------------------------------------------
 </code></pre>
-<h2 id="Summary" class="common-anchor-header">Zusammenfassung<button data-href="#Summary" class="anchor-icon" translate="no">
+<h2 id="Summary" class="common-anchor-header">Summary<button data-href="#Summary" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -687,4 +689,4 @@ content='To defend against potential risks in AI systems, we can employ human re
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>In diesem Tutorial haben wir ein agentenbasiertes RAG-System auf Basis von LangGraph und Milvus entwickelt, das auf intelligente Weise entscheiden kann, wann Informationen abgerufen werden müssen, die Relevanz von Dokumenten bewertet und Anfragen für bessere Ergebnisse umschreibt. Dieser Ansatz bietet erhebliche Vorteile gegenüber herkömmlichen RAG-Systemen, darunter eine bessere Benutzererfahrung durch intelligentes Routing, qualitativ hochwertigere Antworten durch die Bewertung von Dokumenten und eine verbesserte Suche durch das Umschreiben von Anfragen. Sie können dieses System weiter ausbauen, indem Sie eine ausgefeiltere Bewertungslogik hinzufügen, mehrere Abfragestrategien implementieren oder zusätzliche Tools und Datenquellen einbeziehen.</p>
+    </button></h2><p>In this tutorial, we built an agentic RAG system using LangGraph and Milvus that can intelligently decide when to retrieve information, evaluate document relevance, and rewrite queries for better results. This approach provides significant advantages over traditional RAG systems, including better user experience through intelligent routing, higher quality answers with document grading, and improved retrieval through query rewriting. You can extend this system further by adding more sophisticated grading logic, implementing multiple retrieval strategies, or incorporating additional tools and data sources.</p>

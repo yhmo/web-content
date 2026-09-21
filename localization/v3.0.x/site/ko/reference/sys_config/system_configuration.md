@@ -2,9 +2,9 @@
 id: system_configuration.md
 related_key: configure
 group: system_configuration.md
-summary: Milvus의 시스템 구성에 대해 알아보세요.
+summary: Learn about the system configuration of Milvus.
 ---
-<h1 id="Milvus-System-Configurations-Checklist" class="common-anchor-header">Milvus 시스템 구성 체크리스트<button data-href="#Milvus-System-Configurations-Checklist" class="anchor-icon" translate="no">
+<h1 id="Milvus-System-Configurations-Checklist" class="common-anchor-header">Milvus System Configurations Checklist<button data-href="#Milvus-System-Configurations-Checklist" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,12 +19,12 @@ summary: Milvus의 시스템 구성에 대해 알아보세요.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>이 항목에서는 Milvus의 시스템 구성에 대한 일반적인 내용을 소개합니다.</p>
-<p>Milvus는 시스템을 구성하는 상당수의 매개변수를 관리합니다. 각 구성 항목에는 기본값이 설정되어 있어 이를 바로 사용할 수 있습니다. Milvus가 사용자의 애플리케이션에 더 잘 부합하도록 이러한 매개변수를 유연하게 수정할 수 있습니다. 자세한 내용은 <a href="/docs/ko/configure-docker.md">Milvus 구성을</a> 참조하십시오.</p>
+    </button></h1><p>This topic introduces the general sections of the system configurations in Milvus.</p>
+<p>Milvus maintains a considerable number of parameters that configure the system. Each configuration has a default value, which can be used directly. You can modify these parameters flexibly so that Milvus can better serve your application. See <a href="/docs/ko/configure-docker.md">Configure Milvus</a> for more information.</p>
 <div class="alert note">
-현재 릴리스에서는 모든 매개변수가 Milvus 시작 시 구성되어야만 적용됩니다.
+In current release, all parameters take effect only after being configured at the startup of Milvus.
 </div>
-<h2 id="Sections" class="common-anchor-header">섹션<button data-href="#Sections" class="anchor-icon" translate="no">
+<h2 id="Sections" class="common-anchor-header">Sections<button data-href="#Sections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -39,7 +39,7 @@ summary: Milvus의 시스템 구성에 대해 알아보세요.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>유지 관리를 용이하게 하기 위해 Milvus는 구성 요소를 기반으로, 의존성 및 일반적인 사용 용도에 따라 구성을 섹션으로 분류합니다.</p>
+    </button></h2><p>For the convenience of maintenance, Milvus classifies its configurations into sections based on its components, dependencies, and general usage.</p>
 <h3 id="etcd" class="common-anchor-header"><code translate="no">etcd</code><button data-href="#etcd" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -55,8 +55,8 @@ summary: Milvus의 시스템 구성에 대해 알아보세요.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 메타데이터 및 서비스 검색을 저장하는 데 사용되는 etcd 관련 구성입니다.</p>
-<p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_etcd.md">etcd 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Related configuration of etcd, used to store Milvus metadata & service discovery.</p>
+<p>See <a href="/docs/ko/configure_etcd.md">etcd-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="metastore" class="common-anchor-header"><code translate="no">metastore</code><button data-href="#metastore" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -72,7 +72,7 @@ summary: Milvus의 시스템 구성에 대해 알아보세요.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_metastore.md">메타스토어 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>See <a href="/docs/ko/configure_metastore.md">metastore-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="tikv" class="common-anchor-header"><code translate="no">tikv</code><button data-href="#tikv" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -88,10 +88,10 @@ summary: Milvus의 시스템 구성에 대해 알아보세요.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus 메타데이터를 저장하는 데 사용되는 tikv 관련 구성입니다.</p>
-<p>메타스토어에 TiKV가 활성화된 경우에도 서비스 디스커버리를 위해서는 etcd가 여전히 필요합니다.</p>
-<p>메타데이터 크기로 인해 더 나은 수평적 확장성이 필요한 경우 TiKV를 사용하는 것이 좋습니다.</p>
-<p>이 섹션에 있는 각 매개 변수에 대한 자세한 설명은 <a href="/docs/ko/configure_tikv.md">tikv 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Related configuration of tikv, used to store Milvus metadata.</p>
+<p>Notice that when TiKV is enabled for metastore, you still need to have etcd for service discovery.</p>
+<p>TiKV is a good option when the metadata size requires better horizontal scalability.</p>
+<p>See <a href="/docs/ko/configure_tikv.md">tikv-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="localStorage" class="common-anchor-header"><code translate="no">localStorage</code><button data-href="#localStorage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -107,7 +107,7 @@ summary: Milvus의 시스템 구성에 대해 알아보세요.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 섹션의 각 매개 변수에 대한 자세한 설명은 <a href="/docs/ko/configure_localstorage.md">localStorage 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>See <a href="/docs/ko/configure_localstorage.md">localStorage-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="minio" class="common-anchor-header"><code translate="no">minio</code><button data-href="#minio" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -123,9 +123,9 @@ summary: Milvus의 시스템 구성에 대해 알아보세요.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>MinIO/S3/GCS 또는 S3 API를 지원하는 기타 서비스의 관련 구성은 Milvus의 데이터 영속성을 담당합니다.</p>
-<p>간편함을 위해 다음 설명에서는 스토리지 서비스를 MinIO/S3로 지칭합니다.</p>
-<p>이 섹션에 있는 각 매개 변수에 대한 자세한 설명은 <a href="/docs/ko/configure_minio.md">minio 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Related configuration of MinIO/S3/GCS or any other service supports S3 API, which is responsible for data persistence for Milvus.</p>
+<p>We refer to the storage service as MinIO/S3 in the following description for simplicity.</p>
+<p>See <a href="/docs/ko/configure_minio.md">minio-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="mq" class="common-anchor-header"><code translate="no">mq</code><button data-href="#mq" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -141,15 +141,15 @@ summary: Milvus의 시스템 구성에 대해 알아보세요.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus는 rocksmq(RockDB 기반), Pulsar, Kafka 및 Woodpecker의 네 가지 MQ를 지원합니다.</p>
-<p>mq.type 필드를 설정하여 MQ를 변경할 수 있습니다.</p>
-<p>mq.type 필드를 기본값으로 설정하지 않은 경우, 이 파일에 여러 MQ를 구성할 때 우선 순위를 활성화해야 한다는 참고 사항이 있습니다.</p>
+    </button></h3><p>Milvus supports four MQ: rocksmq(based on RockDB), Pulsar, Kafka and Woodpecker.</p>
+<p>You can change your mq by setting mq.type field.</p>
+<p>If you don’t set mq.type field as default, there is a note about enabling priority if we config multiple mq in this file.</p>
 <ol>
-<li><p>독립형(로컬) 모드: rocksmq(기본값) &gt; Pulsar &gt; Kafka</p></li>
-<li><p>클러스터 모드:  Pulsar(기본값) &gt; Kafka (클러스터 모드에서는 rocksmq를 지원하지 않음)</p></li>
-<li><p>mq.type을 woodpecker로 설정하면 Woodpecker를 독립 실행형 및 클러스터 모드 모두에서 사용할 수 있습니다.</p></li>
+<li><p>standalone(local) mode: rocksmq(default) > Pulsar > Kafka</p></li>
+<li><p>cluster mode:  Pulsar(default) > Kafka (rocksmq is unsupported in cluster mode)</p></li>
+<li><p>Woodpecker can be used in both standalone and cluster mode by setting mq.type to woodpecker.</p></li>
 </ol>
-<p>이 섹션의 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_mq.md">mq 관련 구성을</a> 참조하십시오.</p>
+<p>See <a href="/docs/ko/configure_mq.md">mq-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="pulsar" class="common-anchor-header"><code translate="no">pulsar</code><button data-href="#pulsar" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -165,8 +165,8 @@ summary: Milvus의 시스템 구성에 대해 알아보세요.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>최근 변경 작업에 대한 Milvus 로그, 출력 스트리밍 로그를 관리하고 로그 퍼블리시-서브스크라이브 서비스를 제공하는 데 사용되는 Pulsar의 관련 구성입니다.</p>
-<p>이 섹션에 있는 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_pulsar.md">Pulsar 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Related configuration of pulsar, used to manage Milvus logs of recent mutation operations, output streaming log, and provide log publish-subscribe services.</p>
+<p>See <a href="/docs/ko/configure_pulsar.md">pulsar-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="rocksmq" class="common-anchor-header"><code translate="no">rocksmq</code><button data-href="#rocksmq" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -182,13 +182,13 @@ summary: Milvus의 시스템 구성에 대해 알아보세요.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Kafka를 활성화하려면 pulsar 구성을 주석 처리해야 합니다.</p>
+    </button></h3><p>If you want to enable kafka, needs to comment the pulsar configs</p>
 <p>kafka:</p>
 <p>brokerList: localhost:9092</p>
 <p>saslUsername:</p>
 <p>saslPassword:</p>
 <p>saslMechanisms:</p>
-<p>보안 프로토콜:</p>
+<p>securityProtocol:</p>
 <p>ssl:</p>
 <pre><code translate="no">enabled: false # whether to enable ssl mode
 
@@ -200,8 +200,8 @@ tlsCaCert:  # file or directory path to CA certificate(s) for verifying the brok
 
 tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_ssl_cert(), if any
 </code></pre>
-<p>읽기 타임아웃: 10</p>
-<p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_rocksmq.md">rocksmq 관련 구성을</a> 참조하십시오.</p>
+<p>readTimeout: 10</p>
+<p>See <a href="/docs/ko/configure_rocksmq.md">rocksmq-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="rootCoord" class="common-anchor-header"><code translate="no">rootCoord</code><button data-href="#rootCoord" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -217,8 +217,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>데이터 정의 언어(DDL) 및 데이터 제어 언어(DCL) 요청을 처리하는 데 사용되는 rootCoord의 관련 구성</p>
-<p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_rootcoord.md">rootCoord 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Related configuration of rootCoord, used to handle data definition language (DDL) and data control language (DCL) requests</p>
+<p>See <a href="/docs/ko/configure_rootcoord.md">rootCoord-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="proxy" class="common-anchor-header"><code translate="no">proxy</code><button data-href="#proxy" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -234,8 +234,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>클라이언트 요청을 검증하고 반환되는 결과의 양을 줄이는 데 사용되는 proxy 관련 구성입니다.</p>
-<p>이 섹션에 있는 각 매개 변수에 대한 자세한 설명은 <a href="/docs/ko/configure_proxy.md">proxy 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Related configuration of proxy, used to validate client requests and reduce the returned results.</p>
+<p>See <a href="/docs/ko/configure_proxy.md">proxy-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="queryCoord" class="common-anchor-header"><code translate="no">queryCoord</code><button data-href="#queryCoord" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -251,8 +251,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>쿼리 노드의 토폴로지 및 부하 분산을 관리하고, 성장 중인 세그먼트에서 봉인된 세그먼트로 핸드오프하는 데 사용되는 queryCoord의 관련 구성입니다.</p>
-<p>이 섹션에 있는 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_querycoord.md">queryCoord 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Related configuration of queryCoord, used to manage topology and load balancing for the query nodes, and handoff from growing segments to sealed segments.</p>
+<p>See <a href="/docs/ko/configure_querycoord.md">queryCoord-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="queryNode" class="common-anchor-header"><code translate="no">queryNode</code><button data-href="#queryNode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -268,8 +268,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>벡터 및 스칼라 데이터 간의 하이브리드 검색을 실행하는 데 사용되는 queryNode 관련 구성입니다.</p>
-<p>이 섹션에 있는 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_querynode.md">queryNode 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Related configuration of queryNode, used to run hybrid search between vector and scalar data.</p>
+<p>See <a href="/docs/ko/configure_querynode.md">queryNode-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="indexCoord" class="common-anchor-header"><code translate="no">indexCoord</code><button data-href="#indexCoord" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -285,7 +285,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_indexcoord.md">indexCoord 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>See <a href="/docs/ko/configure_indexcoord.md">indexCoord-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="indexNode" class="common-anchor-header"><code translate="no">indexNode</code><button data-href="#indexNode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -301,7 +301,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 섹션에 있는 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_indexnode.md">indexNode 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>See <a href="/docs/ko/configure_indexnode.md">indexNode-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="dataCoord" class="common-anchor-header"><code translate="no">dataCoord</code><button data-href="#dataCoord" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -317,7 +317,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 섹션에 있는 각 매개 변수에 대한 자세한 설명은 <a href="/docs/ko/configure_datacoord.md">dataCoord 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>See <a href="/docs/ko/configure_datacoord.md">dataCoord-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="dataNode" class="common-anchor-header"><code translate="no">dataNode</code><button data-href="#dataNode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -333,7 +333,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 섹션에 있는 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_datanode.md">dataNode 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>See <a href="/docs/ko/configure_datanode.md">dataNode-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="msgChannel" class="common-anchor-header"><code translate="no">msgChannel</code><button data-href="#msgChannel" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -349,8 +349,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 항목에서는 Milvus의 메시지 채널 관련 구성을 소개합니다.</p>
-<p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_msgchannel.md">msgChannel 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>This topic introduces the message channel-related configurations of Milvus.</p>
+<p>See <a href="/docs/ko/configure_msgchannel.md">msgChannel-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="log" class="common-anchor-header"><code translate="no">log</code><button data-href="#log" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -366,8 +366,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>시스템 로그 출력을 구성합니다.</p>
-<p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_log.md">로그 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Configures the system log output.</p>
+<p>See <a href="/docs/ko/configure_log.md">log-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="grpc" class="common-anchor-header"><code translate="no">grpc</code><button data-href="#grpc" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -383,7 +383,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_grpc.md">grpc 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>See <a href="/docs/ko/configure_grpc.md">grpc-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="tls" class="common-anchor-header"><code translate="no">tls</code><button data-href="#tls" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -399,8 +399,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>외부 TLS를 구성합니다.</p>
-<p>이 섹션에 있는 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_tls.md">TLS 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Configure external tls.</p>
+<p>See <a href="/docs/ko/configure_tls.md">tls-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="internaltls" class="common-anchor-header"><code translate="no">internaltls</code><button data-href="#internaltls" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -416,8 +416,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>내부 TLS를 구성합니다.</p>
-<p>이 섹션에 있는 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_internaltls.md">internaltls 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Configure internal tls.</p>
+<p>See <a href="/docs/ko/configure_internaltls.md">internaltls-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="common" class="common-anchor-header"><code translate="no">common</code><button data-href="#common" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -433,7 +433,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 섹션에 있는 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_common.md">common 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>See <a href="/docs/ko/configure_common.md">common-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="quotaAndLimits" class="common-anchor-header"><code translate="no">quotaAndLimits</code><button data-href="#quotaAndLimits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -449,22 +449,22 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>QuotaConfig, Milvus 할당량 및 제한에 대한 구성입니다.</p>
-<p>기본적으로 다음을 활성화합니다.</p>
+    </button></h3><p>QuotaConfig, configurations of Milvus quota and limits.</p>
+<p>By default, we enable:</p>
 <ol>
-<li><p>TT 보호;</p></li>
-<li><p>메모리 보호.</p></li>
-<li><p>디스크 할당량 보호.</p></li>
+<li><p>TT protection;</p></li>
+<li><p>Memory protection.</p></li>
+<li><p>Disk quota protection.</p></li>
 </ol>
-<p>다음 기능을 활성화할 수 있습니다:</p>
+<p>You can enable:</p>
 <ol>
-<li><p>DML 처리량 제한;</p></li>
-<li><p>DDL, DQL QPS/RPS 제한;</p></li>
-<li><p>DQL 큐 길이/지연 시간 보호;</p></li>
-<li><p>DQL 결과 처리율 보호;</p></li>
+<li><p>DML throughput limitation;</p></li>
+<li><p>DDL, DQL qps/rps limitation;</p></li>
+<li><p>DQL Queue length/latency protection;</p></li>
+<li><p>DQL result rate protection;</p></li>
 </ol>
-<p>필요한 경우, RW 요청을 수동으로 강제 거부할 수도 있습니다.</p>
-<p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_quotaandlimits.md">quotaAndLimits 관련 구성을</a> 참조하십시오.</p>
+<p>If necessary, you can also manually force to deny RW requests.</p>
+<p>See <a href="/docs/ko/configure_quotaandlimits.md">quotaAndLimits-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="trace" class="common-anchor-header"><code translate="no">trace</code><button data-href="#trace" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -480,7 +480,7 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_trace.md">trace 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>See <a href="/docs/ko/configure_trace.md">trace-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="gpu" class="common-anchor-header"><code translate="no">gpu</code><button data-href="#gpu" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -496,13 +496,13 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>#GPU 인덱싱을 사용할 경우, Milvus는 빈번한 메모리 할당 및 해제 작업을 방지하기 위해 메모리 풀을 활용합니다.</p>
-<p>#여기서 메모리 풀이 차지하는 메모리 크기를 MB 단위로 설정할 수 있습니다.</p>
-<p>#실제 메모리 수요가 maxMemSize로 설정된 값을 초과할 경우 Milvus가 중단될 가능성이 있습니다.</p>
-<p>#initMemSize와 MaxMemSize가 모두 0으로 설정된 경우,</p>
-<p>#Milvus는 사용 가능한 GPU 메모리의 절반을 자동으로 초기화하며,</p>
-<p>#maxMemSize는 사용 가능한 전체 GPU 메모리를 할당합니다.</p>
-<p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_gpu.md">GPU 관련 구성</a> 항목을 참조하십시오.</p>
+    </button></h3><p>#when using GPU indexing, Milvus will utilize a memory pool to avoid frequent memory allocation and deallocation.</p>
+<p>#here, you can set the size of the memory occupied by the memory pool, with the unit being MB.</p>
+<p>#note that there is a possibility of Milvus crashing when the actual memory demand exceeds the value set by maxMemSize.</p>
+<p>#if initMemSize and MaxMemSize both set zero,</p>
+<p>#milvus will automatically initialize half of the available GPU memory,</p>
+<p>#maxMemSize will the whole available GPU memory.</p>
+<p>See <a href="/docs/ko/configure_gpu.md">gpu-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="streamingNode" class="common-anchor-header"><code translate="no">streamingNode</code><button data-href="#streamingNode" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -518,8 +518,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>스트리밍 노드 서버와 관련된 모든 구성입니다.</p>
-<p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_streamingnode.md">‘streamingNode 관련 설정’을</a> 참조하십시오.</p>
+    </button></h3><p>Any configuration related to the streaming node server.</p>
+<p>See <a href="/docs/ko/configure_streamingnode.md">streamingNode-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="streaming" class="common-anchor-header"><code translate="no">streaming</code><button data-href="#streaming" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -535,8 +535,8 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>스트리밍 서비스와 관련된 모든 구성입니다.</p>
-<p>이 섹션에 있는 각 매개 변수에 대한 자세한 설명은 <a href="/docs/ko/configure_streaming.md">스트리밍 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Any configuration related to the streaming service.</p>
+<p>See <a href="/docs/ko/configure_streaming.md">streaming-related Configurations</a> for detailed description for each parameter under this section.</p>
 <h3 id="knowhere" class="common-anchor-header"><code translate="no">knowhere</code><button data-href="#knowhere" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -552,5 +552,5 @@ tlsKeyPassword:  # private key passphrase for use with ssl.key.location and set_
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Knowhere 벡터 검색 엔진과 관련된 모든 구성</p>
-<p>이 섹션에 포함된 각 매개변수에 대한 자세한 설명은 <a href="/docs/ko/configure_knowhere.md">knowhere 관련 구성을</a> 참조하십시오.</p>
+    </button></h3><p>Any configuration related to the knowhere vector search engine</p>
+<p>See <a href="/docs/ko/configure_knowhere.md">knowhere-related Configurations</a> for detailed description for each parameter under this section.</p>

@@ -1,10 +1,12 @@
 ---
 id: text.md
-title: 텍스트 입력란Compatible with Milvus 3.0.x
-summary: 'TEXT는 Milvus에서 문서 텍스트, 구절 및 기타 긴 텍스트 콘텐츠를 저장하기 위한 스칼라 필드 유형입니다.'
+title: Text FieldCompatible with Milvus 3.0.x
+summary: >-
+  TEXT is a scalar field type for storing document text, passages, and other
+  long text content in Milvus.
 beta: Milvus 3.0.x
 ---
-<h1 id="Text-Field" class="common-anchor-header">텍스트 입력란<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Text-Field" class="anchor-icon" translate="no">
+<h1 id="Text-Field" class="common-anchor-header">Text Field<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Text-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,23 +21,23 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>AI 검색 애플리케이션에서 벡터 검색은 의미적으로 유사한 엔티티를 찾는 데 도움이 되지만, 애플리케이션은 종종 각 일치 항목의 원본 텍스트도 필요로 합니다. LLM이나 에이전트는 해당 텍스트를 컨텍스트로 활용하여 내용을 읽거나, 인용하거나, 요약하거나, 프롬프트에 결과를 포함시킬 수 있습니다.</p>
-<p>Milvus는 긴 원본 텍스트를 엔티티와 함께 직접 저장하기 위해 ` <code translate="no">TEXT</code> ` 스칼라 필드 유형을 제공합니다. 일반적인 값으로는 문장, 긴 문서, 기사 본문, 티켓 및 로그 등이 있습니다. 고정된 ` <code translate="no">max_length</code>`을 요구하는 ` <code translate="no">VARCHAR</code>`과 달리, ` <code translate="no">TEXT</code> `은 컬렉션 스키마에서 최대 바이트 길이를 설정할 필요가 없습니다.</p>
-<p><code translate="no">TEXT</code> 필드를 정의하려면 <code translate="no">datatype</code> 을 <code translate="no">DataType.TEXT</code> 로 설정하십시오.</p>
+    </button></h1><p>In AI search applications, vector search helps you find semantically similar entities, but the application often also needs the original source text behind each match. An LLM or agent can use that text as context to read, cite, summarize, or include the result in a prompt.</p>
+<p>Milvus provides the <code translate="no">TEXT</code> scalar field type for storing long source text directly with entities. Typical values include passages, long documents, article bodies, tickets, and logs. Unlike <code translate="no">VARCHAR</code>, which requires a fixed <code translate="no">max_length</code>, <code translate="no">TEXT</code> does not require you to set a maximum byte length in the collection schema.</p>
+<p>To define a <code translate="no">TEXT</code> field, set <code translate="no">datatype</code> to <code translate="no">DataType.TEXT</code>.</p>
 <div class="alert note">
-<p>이 기능을 사용하려면 Storage V3가 필요합니다. 활성화 방법 및 호환성 고려 사항에 대해서는 <a href="/docs/ko/storage-v3.md">Storage V3를</a> 참조하십시오.</p>
+<p>This feature requires Storage V3. For enablement instructions and compatibility considerations, see <a href="/docs/ko/storage-v3.md">Storage V3</a>.</p>
 </div>
-<p><a href="/docs/ko/configure_common.md#commonstorageuseLoonFFI"><code translate="no">common.storage.useLoonFFI</code></a> 기본값은 <code translate="no">false</code> 이며, 이는 Storage V3가 기본적으로 비활성화되어 있음을 의미합니다. <code translate="no">TEXT</code> 필드가 포함된 컬렉션을 생성하기 전에 이 매개변수를 <code translate="no">true</code> 로 설정해야 합니다. 그렇지 않으면 Milvus가 컬렉션 스키마를 거부합니다.</p>
+<p><a href="/docs/ko/configure_common.md#commonstorageuseLoonFFI"><code translate="no">common.storage.useLoonFFI</code></a> defaults to <code translate="no">false</code>, which means Storage V3 is disabled by default. Before creating a collection that contains a <code translate="no">TEXT</code> field, set this parameter to <code translate="no">true</code>; otherwise, Milvus rejects the collection schema.</p>
 <pre><code translate="no" class="language-python">schema.add_field(
     field_name=<span class="hljs-string">&quot;content&quot;</span>,
 <span class="highlighted-wrapper-line">    datatype=DataType.TEXT,</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>필드가 정의된 후에는 각 엔티티가 해당 필드에 문자열 값을 포함할 수 있습니다. <code translate="no">TEXT</code> 값은 다른 스칼라 필드와 마찬가지로 삽입할 수 있으며, <code translate="no">output_fields</code> 에 필드를 나열하여 쿼리 또는 검색 결과에서 반환할 수 있습니다.</p>
+<p>After the field is defined, each entity can include a string value in that field. You insert <code translate="no">TEXT</code> values like other scalar fields and return them from query or search results by listing the field in <code translate="no">output_fields</code>.</p>
 <div class="alert note">
-<p><code translate="no">TEXT</code> 필드는 null 값을 지원합니다. 이 기능을 활성화하려면 ` <code translate="no">nullable</code> `을 ` <code translate="no">True</code>`로 설정하십시오. 자세한 내용은 <a href="/docs/ko/nullable-and-default.md">‘Nullable Field’를</a> 참조하십시오.</p>
+<p><code translate="no">TEXT</code> fields support null values. To enable this feature, set <code translate="no">nullable</code> to <code translate="no">True</code>. For details, refer to <a href="/docs/ko/nullable-and-default.md">Nullable Field</a>.</p>
 </div>
-<h2 id="Limits" class="common-anchor-header">제한 사항<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,16 +53,16 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><ul>
-<li><code translate="no">TEXT</code> 필드는 기본 필드, 파티션 키 또는 클러스터링 키로 사용할 수 없습니다.</li>
-<li><code translate="no">TEXT</code> <code translate="no">ARRAY</code> 필드의 요소 유형으로 사용할 수 없으며, 여기에는 내의 스칼라 하위 필드도 포함됩니다. <code translate="no">StructArray</code></li>
-<li>Milvus 3.0.0에서 <code translate="no">TEXT</code> 필드는 기본값을 지원하지 않습니다.</li>
-<li>Milvus 3.0.0에서는 외부 컬렉션에서 <code translate="no">TEXT</code> 필드가 지원되지 않습니다.</li>
-<li>사용자는 <code translate="no">TEXT</code> 필드에 스칼라 인덱스를 생성할 수 없습니다. <code translate="no">enable_match=True</code> 인 경우, Milvus는 텍스트 매칭을 위해 시스템에서 관리하는 텍스트 인덱스를 구축합니다. 이 내부 인덱스는 사용자가 생성한 스칼라 인덱스가 아닙니다.</li>
-<li>일반 스칼라 필터 연산자는 <code translate="no">TEXT</code> 필드에 직접 적용할 수 없습니다. 여기에는 <code translate="no">==</code> 및 <code translate="no">!=</code> 와 같은 비교 연산자, <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;</code>, <code translate="no">&lt;=</code> 와 같은 범위 연산자, <code translate="no">IN</code>, <code translate="no">LIKE</code>, 정규식 연산자(<code translate="no">=~</code> 및 <code translate="no">!~</code>), 그리고 <code translate="no">IS NULL</code> 또는 <code translate="no">IS NOT NULL</code> 가 포함됩니다. 분석된 용어로 필터링하려면 <code translate="no">enable_analyzer=True</code> 및 <code translate="no">enable_match=True</code> 를 사용하여 필드를 정의하고, <a href="/docs/ko/keyword-match.md"><code translate="no">TEXT_MATCH</code> 또는 <code translate="no">TEXT_MATCH_FUZZY</code> 를</a> 사용하십시오. 관련도 순위 기반 전체 텍스트 검색의 경우 BM25를 사용하십시오.</li>
-<li>Milvus 3.0.0에서는 컬렉션 생성 시 <code translate="no">TEXT</code> 필드를 입력으로 사용하는 BM25 또는 MinHash 함수를 반드시 정의해야 합니다. 기존 컬렉션이 비어 있더라도 <code translate="no">add_function_field</code> 또는 <code translate="no">AlterCollectionSchema</code> 를 통해 나중에 추가할 수 없습니다. Milvus는 저장된 <code translate="no">TEXT</code> 값을 기반으로 함수 출력을 소급 적용할 수 없기 때문입니다. 기존 컬렉션에 이러한 함수를 추가하려면 ‘ <code translate="no">VARCHAR</code> ’ 입력 필드를 사용하거나, 해당 함수가 스키마에 포함된 상태로 컬렉션을 다시 생성해야 합니다. 함수 및 생성된 벡터 필드 추가에 대한 자세한 내용은 <a href="/docs/ko/add-fields-to-an-existing-collection.md#add-a-function-and-its-generated-vector-field--milvus-30x">‘Alter Collection Schema’를</a> 참조하십시오.</li>
-<li>텍스트 임베딩 함수(Text Embedding Functions)도 컬렉션 생성 시 정의되어야 합니다. Milvus 3.0.0은 런타임 시 이러한 함수를 추가하는 기능을 지원하지 않습니다.</li>
+<li>A <code translate="no">TEXT</code> field cannot be a primary field, partition key, or clustering key.</li>
+<li><code translate="no">TEXT</code> cannot be used as the element type of an <code translate="no">ARRAY</code> field, including a scalar subfield in a <code translate="no">StructArray</code>.</li>
+<li>In Milvus 3.0.0, <code translate="no">TEXT</code> fields do not support default values.</li>
+<li>In Milvus 3.0.0, <code translate="no">TEXT</code> fields are not supported in external collections.</li>
+<li>Users cannot create a scalar index on a <code translate="no">TEXT</code> field. When <code translate="no">enable_match=True</code>, Milvus builds a system-managed text index for text matching. This internal index is not a user-created scalar index.</li>
+<li>General scalar filter operators cannot be applied directly to a <code translate="no">TEXT</code> field. These include comparison operators such as <code translate="no">==</code> and <code translate="no">!=</code>, range operators such as <code translate="no">&gt;</code>, <code translate="no">&gt;=</code>, <code translate="no">&lt;</code>, and <code translate="no">&lt;=</code>, as well as <code translate="no">IN</code>, <code translate="no">LIKE</code>, regex operators (<code translate="no">=~</code> and <code translate="no">!~</code>), and <code translate="no">IS NULL</code> or <code translate="no">IS NOT NULL</code>. To filter by analyzed terms, define the field with <code translate="no">enable_analyzer=True</code> and <code translate="no">enable_match=True</code>, and use <a href="/docs/ko/keyword-match.md"><code translate="no">TEXT_MATCH</code> or <code translate="no">TEXT_MATCH_FUZZY</code></a>. For relevance-ranked full-text retrieval, use BM25.</li>
+<li>In Milvus 3.0.0, a BM25 or MinHash Function that uses a <code translate="no">TEXT</code> field as input must be defined when the collection is created. It cannot be added later through <code translate="no">add_function_field</code> or <code translate="no">AlterCollectionSchema</code>, even if the existing collection is empty, because Milvus cannot backfill the Function output from stored <code translate="no">TEXT</code> values. To add such a Function to an existing collection, use a <code translate="no">VARCHAR</code> input field, or recreate the collection with the Function included in its schema. For details about adding a Function and its generated vector field, refer to <a href="/docs/ko/add-fields-to-an-existing-collection.md#add-a-function-and-its-generated-vector-field--milvus-30x">Alter Collection Schema</a>.</li>
+<li>Text Embedding Functions also must be defined when the collection is created. Milvus 3.0.0 does not support adding them at runtime.</li>
 </ul>
-<h2 id="Choose-TEXT-or-VARCHAR" class="common-anchor-header">TEXT 또는 VARCHAR<button data-href="#Choose-TEXT-or-VARCHAR" class="anchor-icon" translate="no">
+<h2 id="Choose-TEXT-or-VARCHAR" class="common-anchor-header">Choose TEXT or VARCHAR<button data-href="#Choose-TEXT-or-VARCHAR" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -75,21 +77,21 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">TEXT</code> <code translate="no">VARCHAR</code> 는 모두 문자열 값을 저장하지만, 지원하는 애플리케이션 요구 사항은 서로 다릅니다. 엔티티를 식별, 분류 또는 필터링하는 짧고 범위가 제한된 메타데이터에는 ` `를 사용하십시오. LLM이나 에이전트가 내용을 읽고, 인용하고, 요약하거나 프롬프트를 생성하는 데 충분한 맥락을 제공하는 긴 소스 콘텐츠에는 ` `를 사용하십시오. <code translate="no">VARCHAR</code> <code translate="no">TEXT</code> </p>
+    </button></h2><p><code translate="no">TEXT</code> and <code translate="no">VARCHAR</code> both store string values, but they support different application needs. Use <code translate="no">VARCHAR</code> for short, bounded metadata that identifies, categorizes, or filters entities. Use <code translate="no">TEXT</code> for longer source content that gives an LLM or agent enough context to read, cite, summarize, or build a prompt.</p>
 <table>
 <thead>
-<tr><th>측면</th><th><code translate="no">VARCHAR</code></th><th><code translate="no">TEXT</code></th></tr>
+<tr><th>Aspect</th><th><code translate="no">VARCHAR</code></th><th><code translate="no">TEXT</code></th></tr>
 </thead>
 <tbody>
-<tr><td>가장 적합한 용도</td><td><code translate="no">title</code>, <code translate="no">tag</code>, <code translate="no">category</code> 또는 <code translate="no">external_id</code> 과 같이 엔티티를 식별, 분류 또는 필터링하는 데 사용되는 짧은 메타데이터.</td><td><code translate="no">content</code>, <code translate="no">passage</code>, <code translate="no">article_body</code>, <code translate="no">log_message</code> 등과 같이 LLM 또는 에이전트 워크플로우에서 사용되는 긴 소스 콘텐츠.</td></tr>
-<tr><td>길이 설정</td><td><code translate="no">max_length</code> 가 필요하며, 이는 필드가 저장할 수 있는 최대 바이트 수를 정의합니다. 최대 값은 <code translate="no">65,535</code> 바이트입니다. 값이 이 한도를 초과할 수 있는 경우 <code translate="no">TEXT</code> 를 사용하십시오.</td><td><code translate="no">max_length</code> 가 필요하지 않으므로, 스키마에 텍스트 값에 대한 고정된 바이트 제한을 지정할 필요가 없습니다.</td></tr>
-<tr><td>저장 동작</td><td>각 값은 필드에 구성된 <code translate="no">max_length</code> 내에 저장됩니다.</td><td>크기가 더 큰 텍스트 값의 경우 자동 저장소 선택 기능을 사용합니다. 자세한 내용은 <a href="#how-milvus-stores-large-text-values">Milvus가 대용량 TEXT 값을 저장하는 방법을</a> 참조하십시오.</td></tr>
-<tr><td>기본 필드 지원</td><td>주 필드로 사용할 수 있습니다.</td><td>주 필드로 사용할 수 없습니다.</td></tr>
-<tr><td>필터링</td><td><code translate="no">category == &quot;news&quot;</code> 이나 <code translate="no">tag in [&quot;ai&quot;, &quot;database&quot;]</code> 과 같이 필터 표현식에 포함되어야 하는 짧은 문자열 메타데이터에 사용합니다.</td><td>일반 스칼라 필터 연산자는 지원하지 않습니다. 분석된 용어 필터링의 경우 일치 기능이 활성화된 텍스트 연산자를 사용하거나, 관련도 순위가 매겨진 전체 텍스트 검색의 경우 BM25를 사용하십시오.</td></tr>
+<tr><td>Best for</td><td>Short metadata used to identify, categorize, or filter entities, such as <code translate="no">title</code>, <code translate="no">tag</code>, <code translate="no">category</code>, or <code translate="no">external_id</code>.</td><td>Longer source content used by LLM or agent workflows, such as <code translate="no">content</code>, <code translate="no">passage</code>, <code translate="no">article_body</code>, or <code translate="no">log_message</code>.</td></tr>
+<tr><td>Length setting</td><td>Requires <code translate="no">max_length</code>, which defines the maximum number of bytes the field can store. The maximum value is <code translate="no">65,535</code> bytes. If a value may exceed this limit, use <code translate="no">TEXT</code>.</td><td>Does not require <code translate="no">max_length</code>, so the schema does not need a fixed byte limit for the text value.</td></tr>
+<tr><td>Storage behavior</td><td>Stores each value within the field’s configured <code translate="no">max_length</code>.</td><td>Uses automatic storage selection for larger text values. For details, see <a href="#how-milvus-stores-large-text-values">How Milvus stores large TEXT values</a>.</td></tr>
+<tr><td>Primary field support</td><td>Can be used as a primary field.</td><td>Cannot be used as a primary field.</td></tr>
+<tr><td>Filtering</td><td>Use for short string metadata that needs to appear in filter expressions, such as <code translate="no">category == &quot;news&quot;</code> or <code translate="no">tag in [&quot;ai&quot;, &quot;database&quot;]</code>.</td><td>Does not support general scalar filter operators. Use match-enabled text operators for analyzed-term filtering, or BM25 for relevance-ranked full-text retrieval.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">VARCHAR</code> 필드에 대한 자세한 내용은 <a href="/docs/ko/string.md">VarChar 필드를</a> 참조하십시오.</p>
-<h2 id="How-Milvus-stores-large-TEXT-values" class="common-anchor-header">Milvus가 대용량 TEXT 값을 저장하는 방법<button data-href="#How-Milvus-stores-large-TEXT-values" class="anchor-icon" translate="no">
+<p>For details about <code translate="no">VARCHAR</code> fields, refer to <a href="/docs/ko/string.md">VarChar Field</a>.</p>
+<h2 id="How-Milvus-stores-large-TEXT-values" class="common-anchor-header">How Milvus stores large TEXT values<button data-href="#How-Milvus-stores-large-TEXT-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -105,23 +107,23 @@ beta: Milvus 3.0.x
         ></path>
       </svg>
     </button></h2><p><details></p>
-<p><summary>확장하여 작동 방식 확인</summary></p>
-<p>엔티티를 삽입할 때, <code translate="no">TEXT</code> 필드에 입력한 문자열이 <code translate="no">TEXT</code> 값이 됩니다. Milvus는 해당 값의 크기를 <a href="/docs/ko/configure_datanode.md#dataNodetextinlineThreshold">dataNode.text.inlineThreshold</a>(기본값은 <code translate="no">65,536</code> 바이트)와 비교한 다음, 두 가지 내부 저장 경로 중 하나를 선택합니다.</p>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/text-large-storage-flow.png" alt="Large text storage" class="doc-image" id="large-text-storage" /> 
-   <span>대용량 텍스트 저장</span>
-  
- </span></p>
+<p><summary>Expand to see how it works</summary></p>
+<p>When you insert an entity, the string you provide for a <code translate="no">TEXT</code> field is the <code translate="no">TEXT</code> value. Milvus compares the size of that value with <a href="/docs/ko/configure_datanode.md#dataNodetextinlineThreshold">dataNode.text.inlineThreshold</a>, which is <code translate="no">65,536</code> bytes by default, and then chooses one of two internal storage paths.</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/text-large-storage-flow.png" alt="Large text storage" class="doc-image" id="large-text-storage" />
+    <span>Large text storage</span>
+  </span>
+</p>
 <ul>
-<li><strong>인라인 저장</strong>: <code translate="no">TEXT</code> 값이 <code translate="no">dataNode.text.inlineThreshold</code> 보다 작으면, Milvus는 원본 텍스트 값을 <code translate="no">TEXT</code> 필드의 data에 직접 저장합니다.</li>
-<li><strong>LOB 저장</strong>: ` <code translate="no">TEXT</code> ` 값이 ` <code translate="no">dataNode.text.inlineThreshold</code>` 이상인 경우, Milvus는 해당 값을 대용량 객체로 간주하고 원본 텍스트를 MinIO와 같은 객체 저장소에 별도로 저장합니다. ` <code translate="no">TEXT</code> ` 필드 데이터에는 별도로 저장된 텍스트에 대한 내부 참조가 저장됩니다. 쿼리 또는 검색 결과에서 ` <code translate="no">TEXT</code> ` 필드가 요청되면, Milvus는 해당 참조를 사용하여 원본 텍스트를 검색하고 반환합니다.</li>
+<li><strong>Inline storage</strong>: If a <code translate="no">TEXT</code> value is smaller than <code translate="no">dataNode.text.inlineThreshold</code>, Milvus stores the original text value directly in the <code translate="no">TEXT</code> field data.</li>
+<li><strong>LOB storage</strong>: If a <code translate="no">TEXT</code> value is greater than or equal to <code translate="no">dataNode.text.inlineThreshold</code>, Milvus treats the value as a large object and stores the original text separately in object storage, such as MinIO. The <code translate="no">TEXT</code> field data stores an internal reference to the separately stored text. When the <code translate="no">TEXT</code> field is requested in query or search results, Milvus uses the reference to retrieve and return the original text.</li>
 </ul>
-<p>이러한 스토리지 선택은 내부적으로 이루어집니다. Milvus가 어떤 스토리지 경로를 사용하든 상관없이 <code translate="no">TEXT</code> 필드에 대한 삽입, 쿼리 및 검색은 동일한 방식으로 수행됩니다. 임계값이나 관련 스토리지, 압축 및 가비지 컬렉션 동작을 조정하려면 <a href="/docs/ko/configure_datanode.md">dataNode 관련 구성</a> 및 <a href="/docs/ko/configure_datacoord.md">dataCoord 관련 구성을</a> 참조하십시오.</p>
-<p>배포 환경에서 오브젝트 스토리지를 사용하는 경우, 큰 <code translate="no">TEXT</code> 값은 <code translate="no">lobs/...</code> 와 같은 경로 아래에 Milvus가 관리하는 오브젝트로 표시될 수 있습니다. 이러한 오브젝트는 구현 세부 사항이므로 수동으로 이동, 복사 또는 삭제해서는 안 됩니다. 엔티티를 삭제하거나, 파티션을 드롭하거나, 데이터를 압축한 후에도, Milvus 가비지 컬렉션이 안전 기간이 지난 후 참조되지 않는 대용량 객체 데이터를 제거해야만 객체 스토리지 사용량이 감소할 수 있습니다.</p>
+<p>This storage selection is internal. You insert, query, and search the <code translate="no">TEXT</code> field in the same way regardless of which storage path Milvus uses. To tune the threshold or related storage, compaction, and garbage-collection behavior, refer to <a href="/docs/ko/configure_datanode.md">dataNode-related Configurations</a> and <a href="/docs/ko/configure_datacoord.md">dataCoord-related Configurations</a>.</p>
+<p>If your deployment uses object storage, large <code translate="no">TEXT</code> values may appear as Milvus-managed objects under paths such as <code translate="no">lobs/...</code>. These objects are implementation details and should not be moved, copied, or deleted manually. After you delete entities, drop partitions, or compact data, object storage usage may decrease only after Milvus garbage collection removes unreferenced large-object data after its safety window.</p>
 <p></details></p>
-<p><code translate="no">TEXT</code> 의 일반적인 용도는 BM25를 활용한 전체 텍스트 검색입니다. 이 패턴에서 <code translate="no">TEXT</code> 필드는 원본 소스 콘텐츠를 저장하며, BM25는 텍스트를 분석하여 키워드 기반 일치 항목을 순위 매기기 위한 스파스 벡터를 생성합니다. 그런 다음 검색 결과는 일치하는 <code translate="no">TEXT</code> 값을 LLM 또는 에이전트 워크플로우의 컨텍스트로 반환할 수 있습니다. 다음 예제는 <code translate="no">TEXT</code> 필드를 BM25의 입력 필드로 사용하는 방법을 보여줍니다. 전체 텍스트 검색 개념 및 쿼리 옵션에 대한 자세한 내용은 <a href="/docs/ko/full-text-search.md">전체 텍스트 검색을</a> 참조하십시오.</p>
-<h2 id="Step-1-Create-a-collection-with-a-TEXT-field" class="common-anchor-header">1단계: TEXT 필드가 포함된 컬렉션 생성<button data-href="#Step-1-Create-a-collection-with-a-TEXT-field" class="anchor-icon" translate="no">
+<p>A common use of <code translate="no">TEXT</code> is Full Text Search with BM25. In this pattern, the <code translate="no">TEXT</code> field stores the original source content, and BM25 analyzes the text and generates sparse vectors for ranking keyword-based matches. Search results can then return the matched <code translate="no">TEXT</code> value as context for LLM or agent workflows. The following example shows how to use a <code translate="no">TEXT</code> field as the input field for BM25. To learn about Full Text Search concepts and query options, refer to <a href="/docs/ko/full-text-search.md">Full Text Search</a>.</p>
+<h2 id="Step-1-Create-a-collection-with-a-TEXT-field" class="common-anchor-header">Step 1: Create a collection with a TEXT field<button data-href="#Step-1-Create-a-collection-with-a-TEXT-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -136,8 +138,8 @@ beta: Milvus 3.0.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>다음 예제는 소스 콘텐츠를 위한 <code translate="no">TEXT</code> 필드와 BM25에서 생성된 스파스 벡터를 위한 스파스 벡터 필드를 포함하는 컬렉션을 생성합니다. BM25 함수는 <code translate="no">content</code> 의 토큰화된 텍스트를 <code translate="no">sparse</code> 에 저장된 스파스 벡터로 변환합니다.</p>
-<p>BM25 전체 텍스트 검색을 사용하려면 입력 <code translate="no">TEXT</code> 필드의 값을 <code translate="no">enable_analyzer=True</code> 로 설정해야 합니다.</p>
+    </button></h2><p>The following example creates a collection with a <code translate="no">TEXT</code> field for source content and a sparse vector field for BM25-generated sparse vectors. The BM25 function converts the tokenized text from <code translate="no">content</code> into sparse vectors stored in <code translate="no">sparse</code>.</p>
+<p>For BM25 full text search, the input <code translate="no">TEXT</code> field must set <code translate="no">enable_analyzer=True</code>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, Function, FunctionType, MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -163,7 +165,7 @@ schema.add_field(field_name=<span class="hljs-string">&quot;sparse&quot;</span>,
 <span class="highlighted-comment-line">)</span>
 <span class="highlighted-comment-line">schema.add_function(bm25_function)</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-2-Create-a-sparse-vector-index" class="common-anchor-header">2단계: 스파스 벡터 인덱스 생성<button data-href="#Step-2-Create-a-sparse-vector-index" class="anchor-icon" translate="no">
+<h2 id="Step-2-Create-a-sparse-vector-index" class="common-anchor-header">Step 2: Create a sparse vector index<button data-href="#Step-2-Create-a-sparse-vector-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -178,7 +180,7 @@ schema.add_field(field_name=<span class="hljs-string">&quot;sparse&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>BM25 함수에 의해 생성된 스파스 벡터 필드에 인덱스를 생성합니다. 메트릭 유형은 <code translate="no">BM25</code> 로 설정되어야 합니다.</p>
+    </button></h2><p>Create an index on the sparse vector field generated by the BM25 function. The metric type must be set to <code translate="no">BM25</code>.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 <span class="highlighted-comment-line">index_params.add_index(</span>
 <span class="highlighted-comment-line">    field_name=<span class="hljs-string">&quot;sparse&quot;</span>,</span>
@@ -197,7 +199,7 @@ client.create_collection(
     index_params=index_params,
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-3-Insert-TEXT-data" class="common-anchor-header">3단계: TEXT 데이터 삽입<button data-href="#Step-3-Insert-TEXT-data" class="anchor-icon" translate="no">
+<h2 id="Step-3-Insert-TEXT-data" class="common-anchor-header">Step 3: Insert TEXT data<button data-href="#Step-3-Insert-TEXT-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -212,7 +214,7 @@ client.create_collection(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">TEXT</code> 필드에 텍스트를 직접 입력합니다. <code translate="no">sparse</code> 필드에는 값을 입력하지 마십시오. Milvus는 <code translate="no">content</code> 에 BM25 함수를 적용하여 내부적으로 스파스 벡터를 생성합니다.</p>
+    </button></h2><p>Insert text directly into the <code translate="no">TEXT</code> field. Do not provide values for the <code translate="no">sparse</code> field. Milvus generates the sparse vectors internally by applying the BM25 function to <code translate="no">content</code>.</p>
 <pre><code translate="no" class="language-python">data = [
     {
         <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>,
@@ -231,7 +233,7 @@ client.create_collection(
 client.insert(collection_name=COLLECTION_NAME, data=data)
 client.load_collection(collection_name=COLLECTION_NAME)
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-4-Perform-BM25-full-text-search" class="common-anchor-header">4단계: BM25 전체 텍스트 검색 수행<button data-href="#Step-4-Perform-BM25-full-text-search" class="anchor-icon" translate="no">
+<h2 id="Step-4-Perform-BM25-full-text-search" class="common-anchor-header">Step 4: Perform BM25 full text search<button data-href="#Step-4-Perform-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -246,7 +248,7 @@ client.load_collection(collection_name=COLLECTION_NAME)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>원본 쿼리 텍스트를 검색 데이터로 사용하여 스파스 벡터 필드에 대해 검색합니다. Milvus는 쿼리 텍스트를 스파스 벡터로 변환하고, BM25를 사용하여 일치 항목을 순위 매긴 후, 요청된 <code translate="no">TEXT</code> 필드를 <code translate="no">output_fields</code> 에 반환합니다.</p>
+    </button></h2><p>Use raw query text as the search data and search against the sparse vector field. Milvus converts the query text into a sparse vector, ranks matches with BM25, and returns the requested <code translate="no">TEXT</code> field in <code translate="no">output_fields</code>.</p>
 <pre><code translate="no" class="language-python">results = client.search(
     collection_name=COLLECTION_NAME,
 <span class="highlighted-comment-line">    data=[<span class="hljs-string">&quot;how does Milvus store source text for retrieval&quot;</span>],</span>
@@ -255,7 +257,7 @@ client.load_collection(collection_name=COLLECTION_NAME)
 <span class="highlighted-comment-line">    output_fields=[<span class="hljs-string">&quot;content&quot;</span>],</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Step-5-Read-the-returned-TEXT-values" class="common-anchor-header">5단계: 반환된 TEXT 값 읽기<button data-href="#Step-5-Read-the-returned-TEXT-values" class="anchor-icon" translate="no">
+<h2 id="Step-5-Read-the-returned-TEXT-values" class="common-anchor-header">Step 5: Read the returned TEXT values<button data-href="#Step-5-Read-the-returned-TEXT-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -270,9 +272,9 @@ client.load_collection(collection_name=COLLECTION_NAME)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>각 검색 결과에는 BM25 점수와 원본 <code translate="no">TEXT</code> 값이 포함됩니다.</p>
+    </button></h2><p>Each search hit includes the BM25 score and the original <code translate="no">TEXT</code> value.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> results[<span class="hljs-number">0</span>]:
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;id: <span class="hljs-subst">{hit[<span class="hljs-string">&#x27;id&#x27;</span>]}</span>, score: <span class="hljs-subst">{hit[<span class="hljs-string">&#x27;distance&#x27;</span>]}</span>&quot;</span>)
     <span class="hljs-built_in">print</span>(hit[<span class="hljs-string">&quot;entity&quot;</span>][<span class="hljs-string">&quot;content&quot;</span>])
 <button class="copy-code-btn"></button></code></pre>
-<p>BM25 함수, 스파스 벡터 인덱스 및 전체 텍스트 검색용 쿼리 구문에 대한 자세한 내용은 <a href="/docs/ko/full-text-search.md">전체 텍스트 검색을</a> 참조하십시오.</p>
+<p>For more information about BM25 functions, sparse vector indexes, and query syntax for full text search, refer to <a href="/docs/ko/full-text-search.md">Full Text Search</a>.</p>

@@ -1,13 +1,12 @@
 ---
 id: use-json-fields.md
-title: JSON-Feld
+title: JSON Field
 summary: >-
-  Mit Milvus können Sie strukturierte Daten in einem einzigen Feld speichern und
-  indizieren, indem Sie den JSON-Datentyp verwenden. Dies ermöglicht flexible
-  Schemata mit verschachtelten Attributen und gleichzeitig eine effiziente
-  Filterung über JSON-Indizierung.
+  Milvus allows you to store and index structured data within a single field
+  using the JSON data type. This enables flexible schemas with nested attributes
+  while still allowing efficient filtering via JSON indexing.
 ---
-<h1 id="JSON-Field" class="common-anchor-header">JSON-Feld<button data-href="#JSON-Field" class="anchor-icon" translate="no">
+<h1 id="JSON-Field" class="common-anchor-header">JSON Field<button data-href="#JSON-Field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -22,8 +21,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Milvus ermöglicht Ihnen die Speicherung und Indizierung strukturierter Daten in einem einzigen Feld unter Verwendung des Datentyps <code translate="no">JSON</code>. Dies ermöglicht flexible Schemata mit verschachtelten Attributen und gleichzeitig eine effiziente Filterung über JSON-Indizierung.</p>
-<h2 id="What-is-a-JSON-field" class="common-anchor-header">Was ist ein JSON-Feld?<button data-href="#What-is-a-JSON-field" class="anchor-icon" translate="no">
+    </button></h1><p>Milvus allows you to store and index structured data within a single field using the <code translate="no">JSON</code> data type. This enables flexible schemas with nested attributes while still allowing efficient filtering via JSON indexing.</p>
+<h2 id="What-is-a-JSON-field" class="common-anchor-header">What is a JSON field?<button data-href="#What-is-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,8 +37,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ein JSON-Feld ist ein schema-definiertes Feld in Milvus, das strukturierte Schlüssel-Wert-Daten speichert. Die Werte können Strings, Zahlen, Boolesche Werte, Arrays oder tief verschachtelte Objekte enthalten.</p>
-<p>Hier ist ein Beispiel dafür, wie ein JSON-Feld in einem Dokument aussehen könnte:</p>
+    </button></h2><p>A JSON field is a schema-defined field in Milvus that stores structured key-value data. The values can include strings, numbers, booleans, arrays, or deeply nested objects.</p>
+<p>Here’s an example of what a JSON field might look like in a document:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     <span class="hljs-attr">&quot;category&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;electronics&quot;</span><span class="hljs-punctuation">,</span>
@@ -59,12 +58,12 @@ summary: >-
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>In diesem Beispiel:</p>
+<p>In this example:</p>
 <ul>
-<li><p><code translate="no">metadata</code> ist das im Schema definierte JSON-Feld.</p></li>
-<li><p>Sie können flache Werte (z. B. <code translate="no">category</code>, <code translate="no">in_stock</code>), Arrays (<code translate="no">tags</code>) und verschachtelte Objekte (<code translate="no">supplier</code>) speichern.</p></li>
+<li><p><code translate="no">metadata</code> is the JSON field defined in the schema.</p></li>
+<li><p>You can store flat values (e.g. <code translate="no">category</code>, <code translate="no">in_stock</code>), arrays (<code translate="no">tags</code>), and nested objects (<code translate="no">supplier</code>).</p></li>
 </ul>
-<h2 id="Define-a-JSON-field-in-the-schema" class="common-anchor-header">Definieren Sie ein JSON-Feld im Schema<button data-href="#Define-a-JSON-field-in-the-schema" class="anchor-icon" translate="no">
+<h2 id="Define-a-JSON-field-in-the-schema" class="common-anchor-header">Define a JSON field in the schema<button data-href="#Define-a-JSON-field-in-the-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -79,15 +78,20 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Um ein JSON-Feld zu verwenden, definieren Sie es explizit im Schema der Sammlung, indem Sie <code translate="no">DataType</code> als <code translate="no">JSON</code> angeben.</p>
-<p>Im folgenden Beispiel wird eine Sammlung erstellt, deren Schema diese Felder enthält:</p>
+    </button></h2><p>To use a JSON field, explicitly define it in the collection schema by specifying the <code translate="no">DataType</code> as <code translate="no">JSON</code>.</p>
+<p>The example below creates a collection with its schema containing these fields:</p>
 <ul>
-<li><p>Den Primärschlüssel (<code translate="no">product_id</code>)</p></li>
-<li><p>Ein Feld <code translate="no">vector</code> (obligatorisch für jede Sammlung)</p></li>
-<li><p>Ein <code translate="no">metadata</code> Feld vom Typ <code translate="no">JSON</code>, das strukturierte Daten wie flache Werte, Arrays oder verschachtelte Objekte speichern kann</p></li>
+<li><p>The primary key (<code translate="no">product_id</code>)</p></li>
+<li><p>A <code translate="no">vector</code> field (mandatory for each collection)</p></li>
+<li><p>A <code translate="no">metadata</code> field of type <code translate="no">JSON</code>, which can store structured data like flat values, arrays, or nested objects</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -257,9 +261,9 @@ curl --request POST \
 
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Sie können auch die Funktion "Dynamisches Feld" aktivieren, um nicht deklarierte Felder flexibel zu speichern, aber das ist für die Funktion von JSON-Feldern nicht erforderlich. Weitere Informationen finden Sie unter <a href="/docs/de/v2.6.x/enable-dynamic-field.md">Dynamisches Feld</a>.</p>
+<p>You can also enable the dynamic field feature to store undeclared fields flexibly, but it’s not required for JSON fields to function. For more information, refer to <a href="/docs/de/v2.6.x/enable-dynamic-field.md">Dynamic Field</a>.</p>
 </div>
-<h2 id="Insert-entities-with-JSON-data" class="common-anchor-header">Einfügen von Entitäten mit JSON-Daten<button data-href="#Insert-entities-with-JSON-data" class="anchor-icon" translate="no">
+<h2 id="Insert-entities-with-JSON-data" class="common-anchor-header">Insert entities with JSON data<button data-href="#Insert-entities-with-JSON-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -274,9 +278,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Sobald die Sammlung erstellt ist, fügen Sie Entitäten, die strukturierte JSON-Objekte enthalten, in das <code translate="no">metadata</code> JSON-Feld ein.</p>
+    </button></h2><p>Once the collection is created, insert entities that contain structured JSON objects in the <code translate="no">metadata</code> JSON field.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">entities = [
     {
         <span class="hljs-string">&quot;product_id&quot;</span>: <span class="hljs-number">1</span>,
@@ -430,7 +439,7 @@ curl --request POST \
 }&quot;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Index-values-inside-the-JSON-field" class="common-anchor-header">Indexwerte innerhalb des JSON-Feldes<button data-href="#Index-values-inside-the-JSON-field" class="anchor-icon" translate="no">
+<h2 id="Index-values-inside-the-JSON-field" class="common-anchor-header">Index values inside the JSON field<button data-href="#Index-values-inside-the-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -445,15 +454,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Um die skalare Filterung auf JSON-Feldern zu beschleunigen, unterstützt Milvus die folgenden Arten von Indizes:</p>
+    </button></h2><p>To accelerate scalar filtering on JSON fields, Milvus supports the following types of indexes:</p>
 <ul>
-<li><p><strong>JSON-Pfadindex</strong> - indexiert bestimmte JSON-Pfade mit einem deklarierten skalaren Typ.</p></li>
-<li><p><strong>JSON flat index</strong> - indiziert ein ganzes JSON-Objekt (oder einen Teilbaum) mit automatischer Typisierung.</p></li>
+<li><p><strong>JSON path index</strong> – index specific JSON paths with a declared scalar type.</p></li>
+<li><p><strong>JSON flat index</strong> – index an entire JSON object (or subtree) with automatic type inference.</p></li>
 </ul>
 <div class="alert note">
-<p>Die Indizierung von JSON-Feldern ist <strong>optional</strong>. Sie können auch ohne Index nach JSON-Pfaden abfragen oder filtern, aber dies kann zu einer langsameren Leistung aufgrund einer Brute-Force-Suche führen.</p>
+<p>Indexing JSON fields is <strong>optional</strong>. You can still query or filter by JSON paths without an index, but it may result in slower performance due to brute-force search.</p>
 </div>
-<h3 id="Choose-between-path-index-and-flat-index--Milvus-26x" class="common-anchor-header">Wählen Sie zwischen Pfadindex und flachem Index<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Choose-between-path-index-and-flat-index--Milvus-26x" class="anchor-icon" translate="no">
+<h3 id="Choose-between-path-index-and-flat-index" class="common-anchor-header">Choose between path index and flat index<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Choose-between-path-index-and-flat-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -470,54 +479,54 @@ curl --request POST \
       </svg>
     </button></h3><table>
    <tr>
-     <th><p><strong>Fähigkeit</strong></p></th>
-     <th><p><strong>JSON-Pfad-Index</strong></p></th>
-     <th><p><strong>Flacher JSON-Index</strong></p></th>
+     <th><p><strong>Capability</strong></p></th>
+     <th><p><strong>JSON Path Index</strong></p></th>
+     <th><p><strong>JSON Flat Index</strong></p></th>
    </tr>
    <tr>
-     <td><p>Was er indiziert</p></td>
-     <td><p>Spezifische(r) Pfad(e), die Sie benennen</p></td>
-     <td><p>Alle abgeflachten Pfade unter einem Objektpfad</p></td>
+     <td><p>What it indexes</p></td>
+     <td><p>Specific path(s) you name</p></td>
+     <td><p>All flattened paths under an object path</p></td>
    </tr>
    <tr>
-     <td><p>Behandlung von Typen</p></td>
-     <td><p>Sie deklarieren <code translate="no">json_cast_type</code> (skalare Typen)</p></td>
-     <td><p>Muss JSON sein (automatische Typinferenz)</p></td>
+     <td><p>Type handling</p></td>
+     <td><p>You declare <code translate="no">json_cast_type</code> (scalar types)</p></td>
+     <td><p>Must be JSON (auto type inference)</p></td>
    </tr>
    <tr>
-     <td><p>Arrays als LHS¹</p></td>
-     <td><p>Unterstützt</p></td>
-     <td><p>Nicht unterstützt</p></td>
+     <td><p>Arrays as LHS¹</p></td>
+     <td><p>Supported</p></td>
+     <td><p>Not supported</p></td>
    </tr>
    <tr>
-     <td><p>Abfragegeschwindigkeit</p></td>
-     <td><p><strong>Hoch</strong> bei indizierten Pfaden</p></td>
-     <td><p><strong>Hoch</strong>, im Durchschnitt etwas niedriger</p></td>
+     <td><p>Query speed</p></td>
+     <td><p><strong>High</strong> on indexed paths</p></td>
+     <td><p><strong>High</strong>, slightly lower on average</p></td>
    </tr>
    <tr>
-     <td><p>Festplattennutzung</p></td>
-     <td><p>Niedriger</p></td>
-     <td><p>Höher</p></td>
+     <td><p>Disk use</p></td>
+     <td><p>Lower</p></td>
+     <td><p>Higher</p></td>
    </tr>
 </table>
-<p>¹ <em>Arrays als LHS</em> bedeutet, dass die linke Seite des Filterausdrucks z. B. ein JSON-Array ist:</p>
+<p>¹ <em>Arrays as LHS</em> means the left-hand side of the filter expression is a JSON array, for example:</p>
 <pre><code translate="no" class="language-plaintext">metadata[&quot;tags&quot;] == [&quot;clearance&quot;, &quot;summer_sale&quot;]
 json_contains(metadata[&quot;tags&quot;], &quot;clearance&quot;)
 <button class="copy-code-btn"></button></code></pre>
-<p>In diesen Fällen ist <code translate="no">metadata[&quot;tags&quot;]</code> ein Array. JSON flat indexing beschleunigt solche Filter nicht - verwenden Sie stattdessen einen JSON path index mit einem Array cast type.</p>
-<p><strong>Verwenden Sie den JSON-Pfadindex, wenn:</strong></p>
+<p>In these cases, <code translate="no">metadata[&quot;tags&quot;]</code> is an array. JSON flat indexing does not accelerate such filters — use a JSON path index with an array cast type instead.</p>
+<p><strong>Use JSON path index when:</strong></p>
 <ul>
-<li><p>Sie die abzufragenden Hotkeys im Voraus kennen.</p></li>
-<li><p>Sie filtern müssen, wenn die linke Seite ein Array ist.</p></li>
-<li><p>Sie die Plattennutzung minimieren möchten.</p></li>
+<li><p>You know the hot keys to query in advance.</p></li>
+<li><p>You need to filter where the left-hand side is an array.</p></li>
+<li><p>You want to minimize disk usage.</p></li>
 </ul>
-<p><strong>Verwenden Sie einen flachen JSON-Index, wenn:</strong></p>
+<p><strong>Use JSON flat index when:</strong></p>
 <ul>
-<li><p>Sie einen ganzen Teilbaum (einschließlich der Wurzel) indizieren möchten.</p></li>
-<li><p>Ihre JSON-Struktur sich häufig ändert.</p></li>
-<li><p>Sie eine breitere Abfrageabdeckung wünschen, ohne jeden Pfad zu deklarieren.</p></li>
+<li><p>You want to index a whole subtree (including the root).</p></li>
+<li><p>Your JSON structure changes frequently.</p></li>
+<li><p>You want broader query coverage without declaring every path.</p></li>
 </ul>
-<h3 id="JSON-path-indexing" class="common-anchor-header">JSON-Pfad-Indizierung<button data-href="#JSON-path-indexing" class="anchor-icon" translate="no">
+<h3 id="JSON-path-indexing" class="common-anchor-header">JSON path indexing<button data-href="#JSON-path-indexing" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -532,67 +541,72 @@ json_contains(metadata[&quot;tags&quot;], &quot;clearance&quot;)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Um einen JSON-Pfadindex zu erstellen, geben Sie an:</p>
+    </button></h3><p>To create a JSON path index, specify:</p>
 <ul>
-<li><p><strong>JSON path</strong> (<code translate="no">json_path</code>): Der Pfad zu dem Schlüssel oder dem verschachtelten Feld innerhalb Ihres JSON-Objekts, das Sie indizieren möchten.</p>
+<li><p><strong>JSON path</strong> (<code translate="no">json_path</code>): The path to the key or nested field within your JSON object that you want to index.</p>
 <ul>
-<li><p>Beispiel:</p>
+<li><p>Example:</p>
 <ul>
-<li><p>Für einen Schlüssel, <code translate="no">metadata[&quot;category&quot;]</code></p></li>
-<li><p>Für ein verschachteltes Feld, <code translate="no">metadata[&quot;contact&quot;][&quot;email&quot;]</code></p></li>
+<li><p>For a key, <code translate="no">metadata[&quot;category&quot;]</code></p></li>
+<li><p>For a nested field, <code translate="no">metadata[&quot;contact&quot;][&quot;email&quot;]</code></p></li>
 </ul>
-<p>Damit wird festgelegt, wo die Indizierungsmaschine innerhalb der JSON-Struktur suchen soll.</p></li>
+<p>This defines where the indexing engine should look inside the JSON structure.</p></li>
 </ul></li>
-<li><p><strong>JSON-Cast-Typ</strong> (<code translate="no">json_cast_type</code>): Der Datentyp, den Milvus bei der Interpretation und Indizierung des Wertes am angegebenen Pfad verwenden soll.</p>
+<li><p><strong>JSON cast type</strong> (<code translate="no">json_cast_type</code>): The data type that Milvus should use when interpreting and indexing the value at the specified path.</p>
 <ul>
-<li><p>Dieser Typ muss mit dem tatsächlichen Datentyp des zu indizierenden Feldes übereinstimmen. Wenn Sie den Datentyp während der Indizierung in einen anderen konvertieren wollen, sollten Sie <a href="/docs/de/v2.6.x/use-json-fields.md#Use-JSON-cast-functions-for-type-conversion">eine Cast-Funktion verwenden</a>.</p></li>
-<li><p>Eine vollständige Liste finden Sie <a href="/docs/de/v2.6.x/use-json-fields.md#Supported-JSON-cast-types">unten</a>.</p></li>
+<li><p>This type must match the actual data type of the field being indexed. If you want to convert the data type to another during indexing, consider <a href="/docs/de/v2.6.x/use-json-fields.md#Use-JSON-cast-functions-for-type-conversion">using a cast function</a>.</p></li>
+<li><p>For a complete list, see <a href="/docs/de/v2.6.x/use-json-fields.md#Supported-JSON-cast-types">below</a>.</p></li>
 </ul></li>
 </ul>
-<h4 id="Supported-JSON-cast-types" class="common-anchor-header">Unterstützte JSON-Cast-Typen</h4><p>Bei Cast-Typen wird die Groß- und Kleinschreibung nicht berücksichtigt. Die folgenden Typen werden unterstützt:</p>
+<h4 id="Supported-JSON-cast-types" class="common-anchor-header">Supported JSON cast types</h4><p>Cast types are case-insensitive. The following types are supported:</p>
 <table>
    <tr>
-     <th><p>Cast-Typ</p></th>
-     <th><p>Beschreibung</p></th>
-     <th><p>Beispiel JSON-Wert</p></th>
+     <th><p>Cast Type</p></th>
+     <th><p>Description</p></th>
+     <th><p>Example JSON Value</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">bool</code></p></td>
-     <td><p>Boolescher Wert</p></td>
+     <td><p>Boolean value</p></td>
      <td><p><code translate="no">true</code>, <code translate="no">false</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">double</code></p></td>
-     <td><p>Numerischer Wert (Integer oder Float)</p></td>
+     <td><p>Numeric value (integer or float)</p></td>
      <td><p><code translate="no">42</code>, <code translate="no">99.99</code>, <code translate="no">-15.5</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">varchar</code></p></td>
-     <td><p>String-Wert</p></td>
+     <td><p>String value</p></td>
      <td><p><code translate="no">"electronics"</code>, <code translate="no">"BrandA"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">array_bool</code></p></td>
-     <td><p>Array von Booleschen Werten</p></td>
+     <td><p>Array of booleans</p></td>
      <td><p><code translate="no">[true, false, true]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">array_double</code></p></td>
-     <td><p>Array von Zahlen</p></td>
+     <td><p>Array of numbers</p></td>
      <td><p><code translate="no">[1.2, 3.14, 42]</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">array_varchar</code></p></td>
-     <td><p>Array mit Zeichenketten</p></td>
+     <td><p>Array of strings</p></td>
      <td><p><code translate="no">["tag1", "tag2", "tag3"]</code></p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>Arrays sollten für eine optimale Indizierung Elemente desselben Typs enthalten. Weitere Informationen finden Sie unter <a href="/docs/de/v2.6.x/array_data_type.md">Array-Feld</a>.</p>
+<p>Arrays should contain elements of the same type for optimal indexing. For more information, refer to <a href="/docs/de/v2.6.x/array_data_type.md">Array Field</a>.</p>
 </div>
-<h4 id="Example-Create-JSON-path-indexes" class="common-anchor-header">Beispiel: JSON-Pfadindizes erstellen</h4><p>Unter Verwendung der <code translate="no">metadata</code> JSON-Struktur aus unserer Einführung, sind hier Beispiele, wie man Indizes auf verschiedenen JSON-Pfaden erstellen kann:</p>
+<h4 id="Example-Create-JSON-path-indexes" class="common-anchor-header">Example: Create JSON path indexes</h4><p>Using the <code translate="no">metadata</code> JSON structure from our introduction, here are examples of how to create indexes on different JSON paths:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Index the category field as a string</span>
 index_params = client.prepare_index_params()
 
@@ -696,22 +710,27 @@ indexOpt2 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot;p
   }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h4 id="Use-JSON-cast-functions-for-type-conversion--Milvus-2514+" class="common-anchor-header">Verwenden Sie JSON-Cast-Funktionen für die Typkonvertierung<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.14+</span></h4><p>Wenn Ihr JSON-Feldschlüssel Werte in einem falschen Format enthält (z. B. Zahlen, die als Strings gespeichert sind), können Sie Cast-Funktionen verwenden, um Werte während der Indizierung zu konvertieren.</p>
-<h5 id="Supported-cast-functions" class="common-anchor-header">Unterstützte Cast-Funktionen</h5><p>Bei Cast-Funktionen wird die Groß-/Kleinschreibung nicht berücksichtigt. Die folgenden Typen werden unterstützt:</p>
+<h4 id="Use-JSON-cast-functions-for-type-conversion" class="common-anchor-header">Use JSON cast functions for type conversion<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.14+</span></h4><p>If your JSON field key contains values in an incorrect format (e.g., numbers stored as strings), you can use cast functions to convert values during indexing.</p>
+<h5 id="Supported-cast-functions" class="common-anchor-header">Supported cast functions</h5><p>Cast functions are case-insensitive. The following types are supported:</p>
 <table>
    <tr>
-     <th><p>Cast-Funktion</p></th>
-     <th><p>Konvertiert von → nach</p></th>
-     <th><p>Anwendungsfall</p></th>
+     <th><p>Cast Function</p></th>
+     <th><p>Converts From → To</p></th>
+     <th><p>Use Case</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">"STRING_TO_DOUBLE"</code></p></td>
-     <td><p>String → Numerisch (double)</p></td>
-     <td><p>Konvertiert <code translate="no">"99.99"</code> in <code translate="no">99.99</code></p></td>
+     <td><p>String → Numeric (double)</p></td>
+     <td><p>Convert <code translate="no">"99.99"</code> to <code translate="no">99.99</code></p></td>
    </tr>
 </table>
-<h5 id="Example-Cast-string-numbers-to-double" class="common-anchor-header">Beispiel: String-Zahlen in double umwandeln</h5><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<h5 id="Example-Cast-string-numbers-to-double" class="common-anchor-header">Example: Cast string numbers to double</h5><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Convert string numbers to double for indexing</span>
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
@@ -768,11 +787,11 @@ indexOpt3 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot;p
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
 <ul>
-<li><p>Der Parameter <code translate="no">json_cast_type</code> ist obligatorisch und muss mit dem Ausgabetyp der Cast-Funktion übereinstimmen.</p></li>
-<li><p>Wenn die Konvertierung fehlschlägt (z.B. nicht-numerischer String), wird der Wert übersprungen und nicht indiziert.</p></li>
+<li><p>The <code translate="no">json_cast_type</code> parameter is mandatory and must be the same as the cast function’s output type.</p></li>
+<li><p>If conversion fails (e.g., non-numeric string), the value is skipped and not indexed.</p></li>
 </ul>
 </div>
-<h3 id="JSON-flat-indexing--Milvus-26x" class="common-anchor-header">Flache JSON-Indizierung<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#JSON-flat-indexing--Milvus-26x" class="anchor-icon" translate="no">
+<h3 id="JSON-flat-indexing" class="common-anchor-header">JSON flat indexing<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#JSON-flat-indexing" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -787,35 +806,40 @@ indexOpt3 := milvusclient.NewCreateIndexOption(<span class="hljs-string">&quot;p
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Bei der <strong>flachen JSON-Indizierung</strong> indiziert Milvus alle Schlüssel-Wert-Paare innerhalb eines JSON-Objektpfades (einschließlich verschachtelter Objekte), indem es die JSON-Struktur <em>reduziert</em> und automatisch den Typ jedes Wertes ableitet.</p>
-<h4 id="How-flattening-and-type-inference-work" class="common-anchor-header">Wie Flattening und Typinferenz funktionieren</h4><p>Wenn Sie einen flachen JSON-Index für einen Objektpfad erstellen, wird Milvus:</p>
+    </button></h3><p>For <strong>JSON flat indexing</strong>, Milvus indexes all key–value pairs within a JSON object path (including nested objects) by <em>flattening</em> the JSON structure and automatically inferring the type of each value.</p>
+<h4 id="How-flattening-and-type-inference-work" class="common-anchor-header">How flattening and type inference work</h4><p>When you create a JSON flat index on an object path, Milvus will:</p>
 <ol>
-<li><p><strong>Flatten</strong> - Rekursives Durchlaufen des Objekts, beginnend mit dem angegebenen <code translate="no">json_path</code> und Extrahieren verschachtelter Schlüssel-Wert-Paare als voll qualifizierte Pfade. Unter Verwendung des früheren <code translate="no">metadata</code> Beispiels:</p>
+<li><p><strong>Flatten</strong> – Recursively traverse the object starting from the specified <code translate="no">json_path</code> and extract nested key–value pairs as fully qualified paths. Using the earlier <code translate="no">metadata</code> example:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-attr">&quot;metadata&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;category&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;electronics&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;price&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">99.99</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;supplier&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;country&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;USA&quot;</span> <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>wird:</p>
+<p>becomes:</p>
 <pre><code translate="no" class="language-plaintext">metadata[&quot;category&quot;] = &quot;electronics&quot;
 metadata[&quot;price&quot;] = 99.99
 metadata[&quot;supplier&quot;][&quot;country&quot;] = &quot;USA&quot;
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p><strong>Typen automatisch ableiten</strong> - Für jeden Wert bestimmt Milvus seinen Typ in der folgenden Reihenfolge:</p>
+<li><p><strong>Infer types automatically</strong> – For each value, Milvus determines its type in the following order:</p>
 <pre><code translate="no" class="language-plaintext">unsigned integer → signed integer → floating-point → string
 <button class="copy-code-btn"></button></code></pre>
-<p>Der erste Typ, der auf den Wert passt, wird für die Indizierung verwendet.</p>
-<p>Das bedeutet, dass der ermittelte Typ immer <strong>einer dieser vier</strong> ist.</p>
-<p>Die Typisierung wird <strong>pro Dokument</strong> durchgeführt, so dass ein und derselbe Pfad in verschiedenen Dokumenten unterschiedliche abgeleitete Typen haben kann.</p>
-<p>Nach der Typisierung werden die reduzierten Daten intern als Terme mit ihren abgeleiteten Typen dargestellt, zum Beispiel:</p>
+<p>The first type that fits the value is used for indexing.</p>
+<p>This means the inferred type will always be <strong>one of these four</strong>.</p>
+<p>Type inference is performed <strong>per document</strong>, so the same path can have different inferred types across documents.</p>
+<p>After type inference, the flattened data is internally represented as terms with their inferred types, for example:</p>
 <pre><code translate="no" class="language-plaintext">(&quot;category&quot;, Text, &quot;electronics&quot;)
 (&quot;price&quot;, Double, 99.99)
 (&quot;supplier.country&quot;, Text, &quot;USA&quot;)
 <button class="copy-code-btn"></button></code></pre></li>
 </ol>
-<h4 id="Example-Create-JSON-flat-index" class="common-anchor-header">Beispiel: Erstellen eines flachen JSON-Index</h4><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+<h4 id="Example-Create-JSON-flat-index" class="common-anchor-header">Example: Create JSON flat index</h4><div class="multipleCode">
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 1. Create a flat index on the root object of the JSON column (covers the entire JSON subtree)</span>
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;metadata&quot;</span>,
@@ -846,7 +870,7 @@ index_params.add_index(
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Apply-indexes-to-the-collection" class="common-anchor-header">Indizes auf die Sammlung anwenden<button data-href="#Apply-indexes-to-the-collection" class="anchor-icon" translate="no">
+<h3 id="Apply-indexes-to-the-collection" class="common-anchor-header">Apply indexes to the collection<button data-href="#Apply-indexes-to-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -861,9 +885,14 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Nachdem Sie die Indexparameter definiert haben, können Sie sie mit <code translate="no">create_index()</code> auf die Sammlung anwenden:</p>
+    </button></h3><p>After defining the index parameters, you can apply them to the collection using <code translate="no">create_index()</code>:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">client.create_index(
     collection_name=<span class="hljs-string">&quot;product_catalog&quot;</span>,
     index_params=index_params
@@ -907,7 +936,7 @@ curl --request POST \
   \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Filter-by-JSON-field-values" class="common-anchor-header">Nach JSON-Feldwerten filtern<button data-href="#Filter-by-JSON-field-values" class="anchor-icon" translate="no">
+<h2 id="Filter-by-JSON-field-values" class="common-anchor-header">Filter by JSON field values<button data-href="#Filter-by-JSON-field-values" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -922,10 +951,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Nach dem Einfügen und Indizieren von JSON-Feldern können Sie mit Standard-Filterausdrücken mit JSON-Pfadsyntax nach ihnen filtern.</p>
-<p>Zum Beispiel:</p>
+    </button></h2><p>After inserting and indexing JSON fields, you can filter on them using standard filter expressions with JSON path syntax.</p>
+<p>For example:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata[&quot;category&quot;] == &quot;electronics&quot;&#x27;</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;metadata[&quot;price&quot;] &gt; 50&#x27;</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot;], &quot;featured&quot;)&#x27;</span>
@@ -947,13 +981,13 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
 <span class="hljs-built_in">export</span> filterPrice=<span class="hljs-string">&#x27;metadata[&quot;price&quot;] &gt; 50&#x27;</span>
 <span class="hljs-built_in">export</span> filterTags=<span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot;], &quot;featured&quot;)&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Um diese Ausdrücke in einer Suche oder Abfrage zu verwenden, stellen Sie sicher, dass:</p>
+<p>To use these expressions in a search or query, make sure:</p>
 <ul>
-<li><p>Sie haben einen Index für jedes Vektorfeld erstellt.</p></li>
-<li><p>Die Sammlung ist in den Speicher geladen.</p></li>
+<li><p>You have created an index on each vector field.</p></li>
+<li><p>The collection is loaded into memory.</p></li>
 </ul>
-<p>Eine vollständige Liste der unterstützten Operatoren und Ausdrücke finden Sie unter <a href="/docs/de/v2.6.x/json-operators.md">JSON-Operatoren</a>.</p>
-<h2 id="Pull-it-all-together" class="common-anchor-header">Alles zusammenfassen<button data-href="#Pull-it-all-together" class="anchor-icon" translate="no">
+<p>For a full list of supported operators and expressions, refer to <a href="/docs/de/v2.6.x/json-operators.md">JSON Operators</a>.</p>
+<h2 id="Pull-it-all-together" class="common-anchor-header">Pull it all together<button data-href="#Pull-it-all-together" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -968,15 +1002,15 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Inzwischen haben Sie gelernt, wie man strukturierte Werte innerhalb eines JSON-Feldes definiert, einfügt und optional indiziert.</p>
-<p>Um den Arbeitsablauf in einer realen Anwendung zu vervollständigen, müssen Sie auch Folgendes tun</p>
+    </button></h2><p>By now, you’ve learned how to define, insert, and optionally index structured values inside a JSON field.</p>
+<p>To complete the workflow in a real-world application, you’ll also need to:</p>
 <ul>
-<li><p><strong>Erstellen Sie einen Index für Ihre Vektorfelder</strong> (obligatorisch für jedes Vektorfeld in einer Sammlung)</p>
-<p>Siehe <a href="/docs/de/v2.6.x/create-collection.md#Optional-Set-Index-Parameters">Indexparameter festlegen</a></p></li>
-<li><p><strong>Laden Sie die Sammlung</strong></p>
-<p>Siehe <a href="/docs/de/v2.6.x/load-and-release.md">Laden &amp; Freigeben</a></p></li>
-<li><p><strong>Suchen oder Abfragen mit JSON-Pfadfiltern</strong></p>
-<p>Siehe <a href="/docs/de/v2.6.x/filtered-search.md">Gefilterte Suche</a> und <a href="/docs/de/v2.6.x/json-operators.md">JSON-Operatoren</a></p></li>
+<li><p><strong>Create an index on your vector fields</strong> (mandatory for each vector field in a collection)</p>
+<p>Refer to <a href="/docs/de/v2.6.x/create-collection.md#Optional-Set-Index-Parameters">Set Index Parameters</a></p></li>
+<li><p><strong>Load the collection</strong></p>
+<p>Refer to <a href="/docs/de/v2.6.x/load-and-release.md">Load & Release</a></p></li>
+<li><p><strong>Search or query using JSON path filters</strong></p>
+<p>Refer to <a href="/docs/de/v2.6.x/filtered-search.md">Filtered Search</a> and <a href="/docs/de/v2.6.x/json-operators.md">JSON Operators</a></p></li>
 </ul>
 <h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -993,7 +1027,7 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="What-are-the-differences-between-a-JSON-field-and-the-dynamic-field" class="common-anchor-header">Was sind die Unterschiede zwischen einem JSON-Feld und einem dynamischen Feld?<button data-href="#What-are-the-differences-between-a-JSON-field-and-the-dynamic-field" class="anchor-icon" translate="no">
+    </button></h2><h3 id="What-are-the-differences-between-a-JSON-field-and-the-dynamic-field" class="common-anchor-header">What are the differences between a JSON field and the dynamic field?<button data-href="#What-are-the-differences-between-a-JSON-field-and-the-dynamic-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1009,12 +1043,12 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
         ></path>
       </svg>
     </button></h3><ul>
-<li><p>Das<strong>JSON-Feld</strong> ist schema-definiert. Sie müssen das Feld explizit im Schema deklarieren.</p></li>
-<li><p>Das<strong>dynamische Feld</strong> ist ein verstecktes JSON-Objekt (<code translate="no">$meta</code>), das automatisch jedes Feld speichert, das nicht im Schema definiert ist.</p></li>
+<li><p><strong>JSON field</strong> is schema-defined. You must explicitly declare the field in the schema.</p></li>
+<li><p><strong>Dynamic field</strong> is a hidden JSON object (<code translate="no">$meta</code>) that automatically stores any field not defined in the schema.</p></li>
 </ul>
-<p>Beide unterstützen verschachtelte Strukturen und JSON-Pfadindizierung, aber dynamische Felder sind besser für optionale oder sich entwickelnde Datenstrukturen geeignet.</p>
-<p>Weitere Informationen finden Sie unter <a href="/docs/de/v2.6.x/enable-dynamic-field.md">Dynamisches Feld</a>.</p>
-<h3 id="Are-there-any-limitations-on-the-size-of-a-JSON-field" class="common-anchor-header">Gibt es irgendwelche Beschränkungen für die Größe eines JSON-Feldes?<button data-href="#Are-there-any-limitations-on-the-size-of-a-JSON-field" class="anchor-icon" translate="no">
+<p>Both support nested structures and JSON path indexing, but dynamic fields are more suitable for optional or evolving data structures.</p>
+<p>Refer to <a href="/docs/de/v2.6.x/enable-dynamic-field.md">Dynamic Field</a> for details.</p>
+<h3 id="Are-there-any-limitations-on-the-size-of-a-JSON-field" class="common-anchor-header">Are there any limitations on the size of a JSON field?<button data-href="#Are-there-any-limitations-on-the-size-of-a-JSON-field" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1029,8 +1063,8 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ja. Jedes JSON-Feld ist auf 65.536 Byte begrenzt.</p>
-<h3 id="Does-a-JSON-field-support-setting-a-default-value" class="common-anchor-header">Unterstützt ein JSON-Feld die Festlegung eines Standardwerts?<button data-href="#Does-a-JSON-field-support-setting-a-default-value" class="anchor-icon" translate="no">
+    </button></h3><p>Yes. Each JSON field is limited to 65,536 bytes.</p>
+<h3 id="Does-a-JSON-field-support-setting-a-default-value" class="common-anchor-header">Does a JSON field support setting a default value?<button data-href="#Does-a-JSON-field-support-setting-a-default-value" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1045,9 +1079,9 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Nein, JSON-Felder unterstützen keine Standardwerte. Sie können jedoch <code translate="no">nullable=True</code> festlegen, wenn Sie das Feld definieren, um leere Einträge zuzulassen.</p>
-<p>Weitere Informationen finden Sie unter <a href="/docs/de/v2.6.x/nullable-and-default.md">Nullable &amp; Default</a>.</p>
-<h3 id="Are-there-any-naming-conventions-for-JSON-field-keys" class="common-anchor-header">Gibt es Namenskonventionen für JSON-Feldschlüssel?<button data-href="#Are-there-any-naming-conventions-for-JSON-field-keys" class="anchor-icon" translate="no">
+    </button></h3><p>No, JSON fields do not support default values. However, you can set <code translate="no">nullable=True</code> when defining the field to allow empty entries.</p>
+<p>Refer to <a href="/docs/de/v2.6.x/nullable-and-default.md">Nullable & Default</a> for details.</p>
+<h3 id="Are-there-any-naming-conventions-for-JSON-field-keys" class="common-anchor-header">Are there any naming conventions for JSON field keys?<button data-href="#Are-there-any-naming-conventions-for-JSON-field-keys" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1062,13 +1096,13 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ja, um die Kompatibilität mit Abfragen und Indizierungen zu gewährleisten:</p>
+    </button></h3><p>Yes, to ensure compatibility with queries and indexing:</p>
 <ul>
-<li><p>Verwenden Sie in JSON-Schlüsseln nur Buchstaben, Zahlen und Unterstriche.</p></li>
-<li><p>Vermeiden Sie die Verwendung von Sonderzeichen, Leerzeichen oder Punkten (<code translate="no">.</code>, <code translate="no">/</code>, etc.).</p></li>
-<li><p>Inkompatible Schlüssel können zu Parsing-Problemen in Filterausdrücken führen.</p></li>
+<li><p>Use only letters, numbers, and underscores in JSON keys.</p></li>
+<li><p>Avoid using special characters, spaces, or dots (<code translate="no">.</code>, <code translate="no">/</code>, etc.).</p></li>
+<li><p>Incompatible keys may cause parsing issues in filter expressions.</p></li>
 </ul>
-<h3 id="How-does-Milvus-handle-string-values-in-JSON-fields" class="common-anchor-header">Wie behandelt Milvus Zeichenkettenwerte in JSON-Feldern?<button data-href="#How-does-Milvus-handle-string-values-in-JSON-fields" class="anchor-icon" translate="no">
+<h3 id="How-does-Milvus-handle-string-values-in-JSON-fields" class="common-anchor-header">How does Milvus handle string values in JSON fields?<button data-href="#How-does-Milvus-handle-string-values-in-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1083,14 +1117,14 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus speichert String-Werte genau so, wie sie in der JSON-Eingabe erscheinen - ohne semantische Umwandlung. Nicht korrekt zitierte Zeichenketten können beim Parsen zu Fehlern führen.</p>
-<p><strong>Beispiele für gültige Zeichenketten</strong>:</p>
+    </button></h3><p>Milvus stores string values exactly as they appear in the JSON input—without semantic transformation. Improperly quoted strings may result in errors during parsing.</p>
+<p><strong>Examples of valid strings</strong>:</p>
 <pre><code translate="no" class="language-plaintext">&quot;a\&quot;b&quot;, &quot;a&#x27;b&quot;, &quot;a\\b&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Beispiele für ungültige Zeich</strong>enketten:</p>
+<p><strong>Examples of invalid strings</strong>:</p>
 <pre><code translate="no" class="language-plaintext">&#x27;a&quot;b&#x27;, &#x27;a\&#x27;b&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="What-filtering-logic-does-Milvus-use-for-indexed-JSON-paths" class="common-anchor-header">Welche Filterlogik verwendet Milvus für indizierte JSON-Pfade?<button data-href="#What-filtering-logic-does-Milvus-use-for-indexed-JSON-paths" class="anchor-icon" translate="no">
+<h3 id="What-filtering-logic-does-Milvus-use-for-indexed-JSON-paths" class="common-anchor-header">What filtering logic does Milvus use for indexed JSON paths?<button data-href="#What-filtering-logic-does-Milvus-use-for-indexed-JSON-paths" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1106,14 +1140,14 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
         ></path>
       </svg>
     </button></h3><ul>
-<li><p><strong>Numerische Indizierung</strong>:</p>
-<p>Wenn ein Index mit <code translate="no">json_cast_type=&quot;double&quot;</code> erstellt wird, werden nur numerische Filterbedingungen (z. B. <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">== 42</code>) den Index nutzen. Nicht numerische Bedingungen können auf einen Brute-Force-Scan zurückgreifen.</p></li>
-<li><p><strong>String-Indizierung</strong>:</p>
-<p>Wenn ein Index <code translate="no">json_cast_type=&quot;varchar&quot;</code> verwendet, profitieren nur String-Filterbedingungen von dem Index; andere Typen können auf einen Brute-Force-Scan zurückfallen.</p></li>
-<li><p><strong>Boolesche Indizierung</strong>:</p>
-<p>Die boolesche Indizierung verhält sich ähnlich wie die Zeichenkettenindizierung, wobei der Index nur dann verwendet wird, wenn die Bedingung strikt wahr oder falsch ist.</p></li>
+<li><p><strong>Numeric Indexing</strong>:</p>
+<p>If an index is created with <code translate="no">json_cast_type=&quot;double&quot;</code>, only numeric filter conditions (e.g., <code translate="no">&gt;</code>, <code translate="no">&lt;</code>, <code translate="no">== 42</code>) will leverage the index. Non-numeric conditions may fall back to a brute-force scan.</p></li>
+<li><p><strong>String Indexing</strong>:</p>
+<p>If an index uses <code translate="no">json_cast_type=&quot;varchar&quot;</code>, only string filter conditions will benefit from the index; other types may fall back to a brute-force scan.</p></li>
+<li><p><strong>Boolean Indexing</strong>:</p>
+<p>Boolean indexing behaves similarly to string indexing, with index usage only when the condition strictly matches true or false.</p></li>
 </ul>
-<h3 id="What-about-numeric-precision-when-indexing-JSON-fields" class="common-anchor-header">Was ist mit der numerischen Präzision bei der Indizierung von JSON-Feldern?<button data-href="#What-about-numeric-precision-when-indexing-JSON-fields" class="anchor-icon" translate="no">
+<h3 id="What-about-numeric-precision-when-indexing-JSON-fields" class="common-anchor-header">What about numeric precision when indexing JSON fields?<button data-href="#What-about-numeric-precision-when-indexing-JSON-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1128,9 +1162,9 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Milvus speichert alle indizierten numerischen Werte als Doubles.</p>
-<p>Wenn ein numerischer Wert <strong>2^53</strong> überschreitet, kann er an Präzision verlieren. Dieser Präzisionsverlust kann dazu führen, dass Filterabfragen nicht genau mit Werten übereinstimmen, die außerhalb des Bereichs liegen.</p>
-<h3 id="Can-I-create-multiple-indexes-on-the-same-JSON-path-with-different-cast-types" class="common-anchor-header">Kann ich mehrere Indizes für denselben JSON-Pfad mit unterschiedlichen Cast-Typen erstellen?<button data-href="#Can-I-create-multiple-indexes-on-the-same-JSON-path-with-different-cast-types" class="anchor-icon" translate="no">
+    </button></h3><p>Milvus stores all indexed numeric values as doubles.</p>
+<p>If a numeric value exceeds <strong>2^53</strong>, it may lose precision. This loss of precision can result in filter queries not matching out-of-range values exactly.</p>
+<h3 id="Can-I-create-multiple-indexes-on-the-same-JSON-path-with-different-cast-types" class="common-anchor-header">Can I create multiple indexes on the same JSON path with different cast types?<button data-href="#Can-I-create-multiple-indexes-on-the-same-JSON-path-with-different-cast-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1145,8 +1179,8 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Nein, jeder JSON-Pfad unterstützt <strong>nur einen Index</strong>. Sie müssen einen einzigen <code translate="no">json_cast_type</code> wählen, der Ihren Daten entspricht. Das Erstellen mehrerer Indizes auf demselben Pfad mit unterschiedlichen Cast-Typen wird nicht unterstützt.</p>
-<h3 id="What-if-values-on-a-JSON-path-have-inconsistent-types" class="common-anchor-header">Was passiert, wenn Werte in einem JSON-Pfad inkonsistente Typen haben?<button data-href="#What-if-values-on-a-JSON-path-have-inconsistent-types" class="anchor-icon" translate="no">
+    </button></h3><p>No, each JSON path supports <strong>only one index</strong>. You must choose a single <code translate="no">json_cast_type</code> that matches your data. Creating multiple indexes on the same path with different cast types is not supported.</p>
+<h3 id="What-if-values-on-a-JSON-path-have-inconsistent-types" class="common-anchor-header">What if values on a JSON path have inconsistent types?<button data-href="#What-if-values-on-a-JSON-path-have-inconsistent-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1161,8 +1195,8 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Inkonsistente Typen zwischen Entitäten können zu einer <strong>teilweisen Indizierung</strong> führen. Wenn beispielsweise <code translate="no">metadata[&quot;price&quot;]</code> sowohl als Zahl (<code translate="no">99.99</code>) als auch als Zeichenkette (<code translate="no">&quot;99.99&quot;</code>) gespeichert ist und der Index mit <code translate="no">json_cast_type=&quot;double&quot;</code> definiert wird, werden nur die numerischen Werte indiziert. Die Einträge in String-Form werden übersprungen und erscheinen nicht in den Filterergebnissen.</p>
-<h3 id="Can-I-use-filters-with-a-different-type-than-the-indexed-cast-type" class="common-anchor-header">Kann ich Filter mit einem anderen Typ als dem indizierten Cast-Typ verwenden?<button data-href="#Can-I-use-filters-with-a-different-type-than-the-indexed-cast-type" class="anchor-icon" translate="no">
+    </button></h3><p>Inconsistent types across entities can lead to <strong>partial indexing</strong>. For example, if <code translate="no">metadata[&quot;price&quot;]</code> is stored as both a number (<code translate="no">99.99</code>) and a string (<code translate="no">&quot;99.99&quot;</code>), and the index is defined with <code translate="no">json_cast_type=&quot;double&quot;</code>, only the numeric values will be indexed. The string-form entries will be skipped and not appear in filter results.</p>
+<h3 id="Can-I-use-filters-with-a-different-type-than-the-indexed-cast-type" class="common-anchor-header">Can I use filters with a different type than the indexed cast type?<button data-href="#Can-I-use-filters-with-a-different-type-than-the-indexed-cast-type" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -1177,4 +1211,4 @@ filter := <span class="hljs-string">&#x27;json_contains(metadata[&quot;tags&quot
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Wenn Ihr Filterausdruck einen anderen Typ als den des Index <code translate="no">json_cast_type</code> verwendet, <strong>verwendet</strong> das System <strong>den Index nicht</strong> und kann auf einen langsameren Brute-Force-Scan zurückgreifen, sofern die Daten dies zulassen. Um die beste Leistung zu erzielen, sollten Sie Ihren Filterausdruck immer an den Cast-Typ des Indexes anpassen.</p>
+    </button></h3><p>If your filter expression uses a different type than the index’s <code translate="no">json_cast_type</code>, the system will <strong>not use the index</strong>, and may fall back to a slower brute-force scan—if the data allows. For best performance, always align your filter expression with the cast type of the index.</p>

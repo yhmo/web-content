@@ -1,7 +1,9 @@
 ---
 id: yandex-cloud.md
 title: Yandex CloudCompatible with Milvus 2.6.x
-summary: このトピックでは、Milvus における Yandex Cloud の埋め込み機能の設定方法と使用方法について説明します。
+summary: >-
+  This topic describes how to configure and use Yandex Cloud embedding functions
+  in Milvus.
 beta: Milvus 2.6.x
 ---
 <h1 id="Yandex-Cloud" class="common-anchor-header">Yandex Cloud<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.x</span><button data-href="#Yandex-Cloud" class="anchor-icon" translate="no">
@@ -19,8 +21,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>このトピックでは、Milvus で Yandex Cloud の埋め込み関数を設定および使用する方法について説明します。</p>
-<h2 id="Choose-an-embedding-model" class="common-anchor-header">埋め込みモデルの選択<button data-href="#Choose-an-embedding-model" class="anchor-icon" translate="no">
+    </button></h1><p>This topic describes how to configure and use Yandex Cloud embedding functions in Milvus.</p>
+<h2 id="Choose-an-embedding-model" class="common-anchor-header">Choose an embedding model<button data-href="#Choose-an-embedding-model" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,9 +37,9 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusは、<code translate="no">yc</code> プロバイダーを通じて、Yandex Cloud AI Studioのテキストベクトル化モデルをサポートしています。「Function parameters」で、<code translate="no">model_name</code> を、Milvusが呼び出すべきYandex CloudモデルのURIに設定してください。</p>
-<p>たとえば、ドキュメント用の「Yandex Text Embeddings」では、<code translate="no">emb://&lt;folder_ID&gt;/text-search-doc/latest</code> のようなモデル URI が使用され、256 次元のベクトルが返されます。利用可能なモデル URI および次元については、<a href="https://aistudio.yandex.ru/docs/en/ai-studio/concepts/embeddings">「テキストベクトル化モデル」</a>を参照してください。</p>
-<h2 id="Configure-credentials" class="common-anchor-header">認証情報の設定<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus supports Yandex Cloud AI Studio text vectorization models through the <code translate="no">yc</code> provider. In the Function parameters, set <code translate="no">model_name</code> to the Yandex Cloud model URI that Milvus should call.</p>
+<p>For example, Yandex Text Embeddings for documents use a model URI such as <code translate="no">emb://&lt;folder_ID&gt;/text-search-doc/latest</code> and return 256-dimensional vectors. For available model URIs and dimensions, refer to <a href="https://aistudio.yandex.ru/docs/en/ai-studio/concepts/embeddings">Text vectorization models</a>.</p>
+<h2 id="Configure-credentials" class="common-anchor-header">Configure credentials<button data-href="#Configure-credentials" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -52,8 +54,8 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvusが埋め込みをリクエストするには、Yandex CloudのAPIキーを指定する必要があります。APIキーは、<code translate="no">milvus.yaml</code> で設定するか、環境変数を通じて指定できます。</p>
-<h3 id="Option-1-Configuration-file" class="common-anchor-header">オプション 1: 設定ファイル<button data-href="#Option-1-Configuration-file" class="anchor-icon" translate="no">
+    </button></h2><p>Milvus must know your Yandex Cloud API key before it can request embeddings. You can configure the API key in <code translate="no">milvus.yaml</code> or through an environment variable.</p>
+<h3 id="Option-1-Configuration-file" class="common-anchor-header">Option 1: Configuration file<button data-href="#Option-1-Configuration-file" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -68,7 +70,7 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>APIキーを<code translate="no">milvus.yaml</code> に保存し、Yandex Cloudプロバイダーをその認証情報ラベルに指定します。</p>
+    </button></h3><p>Store your API key in <code translate="no">milvus.yaml</code> and point the Yandex Cloud provider to the credential label.</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-comment"># milvus.yaml</span>
 <span class="hljs-attr">credential:</span>
   <span class="hljs-attr">yandex_apikey:</span>
@@ -81,7 +83,7 @@ beta: Milvus 2.6.x
         <span class="hljs-attr">credential:</span> <span class="hljs-string">yandex_apikey</span>
         <span class="hljs-comment"># url: https://llm.api.cloud.yandex.net/foundationModels/v1/textEmbedding</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Option-2-Environment-variable" class="common-anchor-header">オプション 2: 環境変数<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
+<h3 id="Option-2-Environment-variable" class="common-anchor-header">Option 2: Environment variable<button data-href="#Option-2-Environment-variable" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -96,20 +98,20 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">milvus.yaml</code> に一致する認証情報が設定されていない場合、Milvus は以下の環境変数から Yandex Cloud API キーを読み取ることができます:</p>
+    </button></h3><p>If no matching credential is configured in <code translate="no">milvus.yaml</code>, Milvus can read the Yandex Cloud API key from the following environment variable:</p>
 <table>
    <tr>
-     <th><p>変数</p></th>
-     <th><p>必須？</p></th>
-     <th><p>説明</p></th>
+     <th><p>Variable</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">MILVUS_YC_API_KEY</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>Milvus サービスが Yandex Cloud AI Studio を呼び出す際に使用する Yandex Cloud API キー。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>Yandex Cloud API key used by the Milvus service to call Yandex Cloud AI Studio.</p></td>
    </tr>
 </table>
-<h2 id="Use-embedding-function" class="common-anchor-header">埋め込み関数の使用<button data-href="#Use-embedding-function" class="anchor-icon" translate="no">
+<h2 id="Use-embedding-function" class="common-anchor-header">Use embedding function<button data-href="#Use-embedding-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -124,7 +126,7 @@ beta: Milvus 2.6.x
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>認証情報を設定したら、入力テキストフィールドと出力ベクトルフィールドを含むスキーマを定義し、そのスキーマに Yandex Cloud 埋め込み関数を追加します。</p>
+    </button></h2><p>Once credentials are configured, define a schema with an input text field and an output vector field, then add a Yandex Cloud embedding Function to the schema.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -149,7 +151,7 @@ text_embedding_function = Function(
 
 schema.add_function(text_embedding_function)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Yandex-Cloud-specific-parameters" class="common-anchor-header">Yandex Cloud固有のパラメータ<button data-href="#Yandex-Cloud-specific-parameters" class="anchor-icon" translate="no">
+<h3 id="Yandex-Cloud-specific-parameters" class="common-anchor-header">Yandex Cloud-specific parameters<button data-href="#Yandex-Cloud-specific-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -166,37 +168,37 @@ schema.add_function(text_embedding_function)
       </svg>
     </button></h3><table>
    <tr>
-     <th><p>パラメータ</p></th>
-     <th><p>必須？</p></th>
-     <th><p>説明</p></th>
-     <th><p>値 / 例</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Required?</p></th>
+     <th><p>Description</p></th>
+     <th><p>Value / Example</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">provider</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>使用する埋め込みモデルプロバイダ。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The embedding model provider to use.</p></td>
      <td><p><code translate="no">"yc"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">model_name</code></p></td>
-     <td><p>はい</p></td>
-     <td><p>呼び出す Yandex Cloud モデルの URI。</p></td>
+     <td><p>Yes</p></td>
+     <td><p>The Yandex Cloud model URI to call.</p></td>
      <td><p><code translate="no">"emb://&lt;folder_ID&gt;/text-search-doc/latest"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">credential</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p><code translate="no">milvus.yaml</code> の最上位セクションである `<code translate="no">credential:</code> ` で定義された認証情報のラベル。</p></td>
+     <td><p>No</p></td>
+     <td><p>The label of a credential defined in the top-level <code translate="no">credential:</code> section of <code translate="no">milvus.yaml</code>.</p></td>
      <td><p><code translate="no">"yandex_apikey"</code></p></td>
    </tr>
    <tr>
      <td><p><code translate="no">dim</code></p></td>
-     <td><p>いいえ</p></td>
-     <td><p>出力ベクトルの次元。設定する場合、その値は出力ベクトルフィールドの次元と一致する必要があります。</p></td>
+     <td><p>No</p></td>
+     <td><p>The output vector dimension. If set, the value must match the dimension of the output vector field.</p></td>
      <td><p><code translate="no">"256"</code></p></td>
    </tr>
 </table>
-<h2 id="Next-steps" class="common-anchor-header">次の手順<button data-href="#Next-steps" class="anchor-icon" translate="no">
+<h2 id="Next-steps" class="common-anchor-header">Next steps<button data-href="#Next-steps" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -211,4 +213,4 @@ schema.add_function(text_embedding_function)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>埋め込み関数の設定が完了したら、<a href="/docs/ja/embedding-function-overview.md">「埋め込み関数の概要」</a>を参照し、インデックスの作成、データの挿入、およびセマンティック検索の実行に関する手順を確認してください。</p>
+    </button></h2><p>After configuring the embedding function, refer to <a href="/docs/ja/embedding-function-overview.md">Embedding Function Overview</a> for guidance on creating indexes, inserting data, and running semantic search.</p>

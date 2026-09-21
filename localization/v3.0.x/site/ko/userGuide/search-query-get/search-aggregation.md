@@ -1,7 +1,9 @@
 ---
 id: search-aggregation.md
 title: Search AggregationCompatible with Milvus 3.0.x
-summary: '벡터 검색 결과를 버킷별로 그룹화하고, 버킷별 지표를 계산한 뒤, 버킷을 정렬하여 대표적인 검색 결과를 반환합니다.'
+summary: >-
+  Group vector search results into buckets, compute per-bucket metrics, order
+  buckets, and return representative hits.
 beta: Milvus 3.0.x
 ---
 <h1 id="Search-Aggregation" class="common-anchor-header">Search Aggregation<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Search-Aggregation" class="anchor-icon" translate="no">

@@ -1,9 +1,9 @@
 ---
 id: switch_milvus_standalone_mq_type-operator.md
-summary: Aprenda a cambiar el tipo de cola de mensajes para Milvus standalone.
-title: Cambiar el tipo de MQ para Milvus Standalone
+summary: Learn how to switch the message queue type for Milvus standalone.
+title: Switch MQ Type for Milvus Standalone
 ---
-<h1 id="Switch-MQ-Type-for-Milvus-Standalone" class="common-anchor-header">Cambiar el tipo de MQ para Milvus Standalone<button data-href="#Switch-MQ-Type-for-Milvus-Standalone" class="anchor-icon" translate="no">
+<h1 id="Switch-MQ-Type-for-Milvus-Standalone" class="common-anchor-header">Switch MQ Type for Milvus Standalone<button data-href="#Switch-MQ-Type-for-Milvus-Standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,11 +18,11 @@ title: Cambiar el tipo de MQ para Milvus Standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Este tema describe cómo cambiar el tipo de cola de mensajes (MQ) para un despliegue independiente de Milvus existente. Milvus admite el cambio de MQ en línea sin tiempo de inactividad.</p>
+    </button></h1><p>This topic describes how to switch the message queue (MQ) type for an existing Milvus standalone deployment. Milvus supports online MQ switching without downtime.</p>
 <div class="alert warning">
-<p>Esta característica está pendiente de lanzamiento y está sujeta a cambios. Póngase en contacto con el soporte de Milvus si desea probarla o si tiene alguna pregunta.</p>
+<p>This feature is pending release and is subject to change. Please reach out to Milvus support if you want to try it out or have any questions.</p>
 </div>
-<h2 id="Prerequisites" class="common-anchor-header">Requisitos previos<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -38,10 +38,10 @@ title: Cambiar el tipo de MQ para Milvus Standalone
         ></path>
       </svg>
     </button></h2><ul>
-<li>Una instancia Milvus Standalone en ejecución instalada a través de <a href="/docs/es/install_standalone-docker.md">Docker</a> o <a href="/docs/es/install_standalone-docker-compose.md">Docker Compose</a>.</li>
-<li>La instancia de Milvus se ha actualizado a la última versión compatible con esta función de Switch MQ.</li>
+<li>A running Milvus Standalone instance installed via <a href="/docs/es/v2.6.x/install_standalone-docker.md">Docker</a> or <a href="/docs/es/v2.6.x/install_standalone-docker-compose.md">Docker Compose</a>.</li>
+<li>The Milvus instance has been upgraded to the latest version that supports this Switch MQ feature.</li>
 </ul>
-<h2 id="General-workflow" class="common-anchor-header">Flujo de trabajo general<button data-href="#General-workflow" class="anchor-icon" translate="no">
+<h2 id="General-workflow" class="common-anchor-header">General workflow<button data-href="#General-workflow" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -56,18 +56,18 @@ title: Cambiar el tipo de MQ para Milvus Standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>El flujo de trabajo general para cambiar el tipo de MQ es el siguiente:</p>
+    </button></h2><p>The general workflow for switching the MQ type is as follows:</p>
 <ol>
-<li>Asegúrese de que la instancia de Milvus se está ejecutando correctamente.</li>
-<li>Confirme el tipo de MQ de origen y el tipo de MQ de destino.</li>
-<li>Configure los ajustes de acceso del MQ de destino en la configuración de Milvus sin cambiar el valor <code translate="no">mqType</code>.</li>
-<li>Active el cambio llamando a la API WAL alter.</li>
-<li>Supervise los registros para comprobar que la conmutación se ha completado correctamente.</li>
+<li>Ensure the Milvus instance is running properly.</li>
+<li>Confirm the source MQ type and the target MQ type.</li>
+<li>Configure the target MQ’s access settings into the Milvus configuration without changing the <code translate="no">mqType</code> value.</li>
+<li>Trigger the switch by calling the WAL alter API.</li>
+<li>Monitor the logs to verify the switch has completed successfully.</li>
 </ol>
 <div class="alert note">
-<p>Antes de conmutar, asegúrese de que el MQ de destino no contiene temas con los mismos nombres que los utilizados por la instancia Milvus actual. Esto es especialmente importante si el servicio MQ de destino ha sido utilizado previamente por otra instancia de Milvus, ya que los nombres de temas conflictivos pueden provocar un comportamiento inesperado.</p>
+<p>Before switching, ensure that the target MQ does not contain topics with the same names as those used by the current Milvus instance. This is especially important if the target MQ service has been previously used by another Milvus instance, as conflicting topic names can lead to unexpected behavior.</p>
 </div>
-<h2 id="Switch-from-RocksMQ-to-Woodpecker-Local-Storage" class="common-anchor-header">Cambiar de RocksMQ a Woodpecker (Almacenamiento local)<button data-href="#Switch-from-RocksMQ-to-Woodpecker-Local-Storage" class="anchor-icon" translate="no">
+<h2 id="Switch-from-RocksMQ-to-Woodpecker-Local-Storage" class="common-anchor-header">Switch from RocksMQ to Woodpecker (Local Storage)<button data-href="#Switch-from-RocksMQ-to-Woodpecker-Local-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -82,8 +82,8 @@ title: Cambiar el tipo de MQ para Milvus Standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Este procedimiento se aplica a las implementaciones <strong>Milvus Standalone Docker</strong> que utilizan RocksMQ de forma predeterminada.</p>
-<h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Paso 1: Verifique que la instancia de Milvus se está ejecutando<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
+    </button></h2><p>This procedure applies to <strong>Milvus Standalone Docker</strong> deployments that use RocksMQ by default.</p>
+<h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Step 1: Verify the Milvus instance is running<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -98,8 +98,8 @@ title: Cambiar el tipo de MQ para Milvus Standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Asegúrese de que su instancia Milvus Standalone Docker está funcionando correctamente. Puede comprobarlo creando una colección de prueba, insertando datos y ejecutando una consulta.</p>
-<h3 id="Step-2-Configure-Woodpecker-with-local-storage" class="common-anchor-header">Paso 2: Configurar Woodpecker con almacenamiento local<button data-href="#Step-2-Configure-Woodpecker-with-local-storage" class="anchor-icon" translate="no">
+    </button></h3><p>Ensure your Milvus Standalone Docker instance is running properly. You can verify this by creating a test collection, inserting data, and running a query.</p>
+<h3 id="Step-2-Configure-Woodpecker-with-local-storage" class="common-anchor-header">Step 2: Configure Woodpecker with local storage<button data-href="#Step-2-Configure-Woodpecker-with-local-storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -114,15 +114,15 @@ title: Cambiar el tipo de MQ para Milvus Standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Actualice la configuración de Milvus para añadir la configuración de Woodpecker <strong>sin</strong> cambiar el valor de <code translate="no">mqType</code>. Cree o actualice el archivo <code translate="no">user.yaml</code> con el siguiente contenido:</p>
+    </button></h3><p>Update the Milvus configuration to add Woodpecker settings <strong>without</strong> changing the <code translate="no">mqType</code> value. Create or update the <code translate="no">user.yaml</code> file with the following content:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">woodpecker:</span>
   <span class="hljs-attr">storage:</span>
     <span class="hljs-attr">type:</span> <span class="hljs-string">local</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>A continuación, reinicie la instancia de Milvus para aplicar la configuración:</p>
+<p>Then restart the Milvus instance to apply the configuration:</p>
 <pre><code translate="no" class="language-shell">bash standalone_embed.sh restart
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Execute-the-MQ-switch" class="common-anchor-header">Paso 3: Ejecutar el conmutador MQ<button data-href="#Step-3-Execute-the-MQ-switch" class="anchor-icon" translate="no">
+<h3 id="Step-3-Execute-the-MQ-switch" class="common-anchor-header">Step 3: Execute the MQ switch<button data-href="#Step-3-Execute-the-MQ-switch" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -137,15 +137,15 @@ title: Cambiar el tipo de MQ para Milvus Standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ejecute el siguiente comando para activar el cambio a Woodpecker:</p>
+    </button></h3><p>Run the following command to trigger the switch to Woodpecker:</p>
 <pre><code translate="no" class="language-shell">curl -X POST http://&lt;mixcoord_addr&gt;:9091/management/wal/alter \
   -H &quot;Content-Type: application/json&quot; \
   -d &#x27;{&quot;target_wal_name&quot;: &quot;woodpecker&quot;}&#x27;
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Sustituya <code translate="no">&lt;mixcoord_addr&gt;</code> por la dirección real de su servicio MixCoord (por defecto, <code translate="no">localhost</code> para despliegues autónomos).</p>
+<p>Replace <code translate="no">&lt;mixcoord_addr&gt;</code> with the actual address of your MixCoord service (by default, <code translate="no">localhost</code> for standalone deployments).</p>
 </div>
-<h3 id="Step-4-Verify-the-switch-is-complete" class="common-anchor-header">Paso 4: Compruebe que el cambio se ha completado<button data-href="#Step-4-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
+<h3 id="Step-4-Verify-the-switch-is-complete" class="common-anchor-header">Step 4: Verify the switch is complete<button data-href="#Step-4-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,20 +160,20 @@ title: Cambiar el tipo de MQ para Milvus Standalone
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>El proceso de cambio se completa automáticamente. Controle los registros de Milvus en busca de los siguientes mensajes clave para confirmar que el cambio ha finalizado:</p>
+    </button></h3><p>The switch process completes automatically. Monitor the Milvus logs for the following key messages to confirm the switch has finished:</p>
 <pre><code translate="no">WAL <span class="hljs-keyword">switch</span> success: &lt;MQ1&gt; <span class="hljs-keyword">switch</span> to &lt;MQ2&gt; finish, re-opening required
 AlterWAL broadcast message acknowledged <span class="hljs-keyword">by</span> all vchannels
 successfully updated mq.type configuration <span class="hljs-keyword">in</span> etcd
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>En los mensajes de registro anteriores, <code translate="no">&lt;MQ1&gt;</code> es el tipo de MQ de origen (<code translate="no">rocksmq</code>), y <code translate="no">&lt;MQ2&gt;</code> es el tipo de MQ de destino (<code translate="no">woodpecker</code>).</p>
+<p>In the log messages above, <code translate="no">&lt;MQ1&gt;</code> is the source MQ type (<code translate="no">rocksmq</code>), and <code translate="no">&lt;MQ2&gt;</code> is the target MQ type (<code translate="no">woodpecker</code>).</p>
 <ul>
-<li>El primer mensaje indica que el cambio de WAL del origen al destino ha finalizado.</li>
-<li>El segundo mensaje indica que se han conmutado todos los canales físicos.</li>
-<li>El tercer mensaje indica que la configuración de <code translate="no">mq.type</code> se ha actualizado en etcd.</li>
+<li>The first message indicates that the WAL switch from the source to the target has completed.</li>
+<li>The second message indicates that all physical channels have been switched.</li>
+<li>The third message indicates that the <code translate="no">mq.type</code> configuration has been updated in etcd.</li>
 </ul>
 </div>
-<h2 id="Switch-from-RocksMQ-to-Woodpecker-MinIO-Storage" class="common-anchor-header">Cambio de RocksMQ a Woodpecker (Almacenamiento MinIO)<button data-href="#Switch-from-RocksMQ-to-Woodpecker-MinIO-Storage" class="anchor-icon" translate="no">
+<h2 id="Switch-from-RocksMQ-to-Woodpecker-MinIO-Storage" class="common-anchor-header">Switch from RocksMQ to Woodpecker (MinIO Storage)<button data-href="#Switch-from-RocksMQ-to-Woodpecker-MinIO-Storage" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -188,11 +188,11 @@ successfully updated mq.type configuration <span class="hljs-keyword">in</span> 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Este procedimiento se aplica a los despliegues <strong>Milvus Standalone Docker Compose</strong>.</p>
+    </button></h2><p>This procedure applies to <strong>Milvus Standalone Docker Compose</strong> deployments.</p>
 <div class="alert note">
-<p>A partir de Milvus v2.6, la configuración por defecto <code translate="no">docker-compose.yaml</code> ya declara <code translate="no">mqType</code> como Woodpecker. A menos que haya modificado la configuración por defecto o actualizado desde v2.5, este procedimiento puede no ser necesario.</p>
+<p>Starting from Milvus v2.6, the default <code translate="no">docker-compose.yaml</code> already declares <code translate="no">mqType</code> as Woodpecker. Unless you have modified the default configuration or upgraded from v2.5, this procedure may not be necessary.</p>
 </div>
-<h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Paso 1: Verifique que la instancia de Milvus esté funcionando<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
+<h3 id="Step-1-Verify-the-Milvus-instance-is-running" class="common-anchor-header">Step 1: Verify the Milvus instance is running<button data-href="#Step-1-Verify-the-Milvus-instance-is-running" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -207,8 +207,8 @@ successfully updated mq.type configuration <span class="hljs-keyword">in</span> 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Asegúrese de que su instancia Milvus Standalone Docker Compose se está ejecutando correctamente.</p>
-<h3 id="Step-2-Optional-Verify-Woodpecker-configuration" class="common-anchor-header">Paso 2: (Opcional) Verificar la configuración de Woodpecker<button data-href="#Step-2-Optional-Verify-Woodpecker-configuration" class="anchor-icon" translate="no">
+    </button></h3><p>Ensure your Milvus Standalone Docker Compose instance is running properly.</p>
+<h3 id="Step-2-Optional-Verify-Woodpecker-configuration" class="common-anchor-header">Step 2: (Optional) Verify Woodpecker configuration<button data-href="#Step-2-Optional-Verify-Woodpecker-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -223,17 +223,17 @@ successfully updated mq.type configuration <span class="hljs-keyword">in</span> 
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La configuración predeterminada de Milvus ya establece el tipo de almacenamiento de Woodpecker en MinIO, por lo que no se requiere ninguna configuración adicional en la mayoría de los casos.</p>
-<p>Sin embargo, si ha personalizado previamente la configuración de Woodpecker, debe asegurarse de que <code translate="no">woodpecker.storage.type</code> está establecido en <code translate="no">minio</code>. Cree o actualice el archivo <code translate="no">user.yaml</code> con el siguiente contenido:</p>
+    </button></h3><p>The default Milvus configuration already sets Woodpecker storage type to MinIO, so no additional configuration is required in most cases.</p>
+<p>However, if you have previously customized the Woodpecker configuration, you must ensure that <code translate="no">woodpecker.storage.type</code> is set to <code translate="no">minio</code>. Create or update the <code translate="no">user.yaml</code> file with the following content:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">woodpecker:</span>
   <span class="hljs-attr">storage:</span>
     <span class="hljs-attr">type:</span> <span class="hljs-string">minio</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>A continuación, reinicie la instancia de Milvus para aplicar la configuración:</p>
+<p>Then restart the Milvus instance to apply the configuration:</p>
 <pre><code translate="no" class="language-shell">docker compose down
 docker compose up -d
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-3-Execute-the-MQ-switch" class="common-anchor-header">Paso 3: Ejecutar el conmutador MQ<button data-href="#Step-3-Execute-the-MQ-switch" class="anchor-icon" translate="no">
+<h3 id="Step-3-Execute-the-MQ-switch" class="common-anchor-header">Step 3: Execute the MQ switch<button data-href="#Step-3-Execute-the-MQ-switch" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -248,15 +248,15 @@ docker compose up -d
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Ejecute el siguiente comando para activar el cambio a Woodpecker:</p>
+    </button></h3><p>Run the following command to trigger the switch to Woodpecker:</p>
 <pre><code translate="no" class="language-shell">curl -X POST http://&lt;mixcoord_addr&gt;:9091/management/wal/alter \
   -H &quot;Content-Type: application/json&quot; \
   -d &#x27;{&quot;target_wal_name&quot;: &quot;woodpecker&quot;}&#x27;
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Sustituya <code translate="no">&lt;mixcoord_addr&gt;</code> por la dirección real de su servicio MixCoord (por defecto, <code translate="no">localhost</code> para despliegues autónomos).</p>
+<p>Replace <code translate="no">&lt;mixcoord_addr&gt;</code> with the actual address of your MixCoord service (by default, <code translate="no">localhost</code> for standalone deployments).</p>
 </div>
-<h3 id="Step-4-Verify-the-switch-is-complete" class="common-anchor-header">Paso 4: Compruebe que el cambio se ha completado<button data-href="#Step-4-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
+<h3 id="Step-4-Verify-the-switch-is-complete" class="common-anchor-header">Step 4: Verify the switch is complete<button data-href="#Step-4-Verify-the-switch-is-complete" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -271,16 +271,16 @@ docker compose up -d
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>El proceso de cambio se completa automáticamente. Controle los registros de Milvus en busca de los siguientes mensajes clave para confirmar que el cambio ha finalizado:</p>
+    </button></h3><p>The switch process completes automatically. Monitor the Milvus logs for the following key messages to confirm the switch has finished:</p>
 <pre><code translate="no">WAL <span class="hljs-keyword">switch</span> success: &lt;MQ1&gt; <span class="hljs-keyword">switch</span> to &lt;MQ2&gt; finish, re-opening required
 AlterWAL broadcast message acknowledged <span class="hljs-keyword">by</span> all vchannels
 successfully updated mq.type configuration <span class="hljs-keyword">in</span> etcd
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>En los mensajes de registro anteriores, <code translate="no">&lt;MQ1&gt;</code> es el tipo de MQ de origen (<code translate="no">rocksmq</code>), y <code translate="no">&lt;MQ2&gt;</code> es el tipo de MQ de destino (<code translate="no">woodpecker</code>).</p>
+<p>In the log messages above, <code translate="no">&lt;MQ1&gt;</code> is the source MQ type (<code translate="no">rocksmq</code>), and <code translate="no">&lt;MQ2&gt;</code> is the target MQ type (<code translate="no">woodpecker</code>).</p>
 <ul>
-<li>El primer mensaje indica que el cambio de WAL del origen al destino ha finalizado.</li>
-<li>El segundo mensaje indica que se han conmutado todos los canales físicos.</li>
-<li>El tercer mensaje indica que la configuración de <code translate="no">mq.type</code> ha sido actualizada en etcd.</li>
+<li>The first message indicates that the WAL switch from the source to the target has completed.</li>
+<li>The second message indicates that all physical channels have been switched.</li>
+<li>The third message indicates that the <code translate="no">mq.type</code> configuration has been updated in etcd.</li>
 </ul>
 </div>

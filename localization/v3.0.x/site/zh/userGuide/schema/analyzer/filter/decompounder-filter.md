@@ -1,9 +1,11 @@
 ---
 id: decompounder-filter.md
-title: 分词器
-summary: 使用反编译筛选器，用内联字典或注册文件资源拆分复合词。
+title: Decompounder
+summary: >-
+  Use the decompounder filter to split compound words with an inline dictionary
+  or registered file resource.
 ---
-<h1 id="Decompounder" class="common-anchor-header">分词器<button data-href="#Decompounder" class="anchor-icon" translate="no">
+<h1 id="Decompounder" class="common-anchor-header">Decompounder<button data-href="#Decompounder" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -18,8 +20,8 @@ summary: 使用反编译筛选器，用内联字典或注册文件资源拆分�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">decompounder</code> 过滤器可根据指定词典将复合词拆分成单个成分，从而更方便地搜索复合词的各个部分。该过滤器对于德语等经常使用复合词的语言尤其有用。组件字典可以通过<code translate="no">word_list</code> 参数在线提供，也可以通过<code translate="no">word_list_file</code> 参数从<a href="/docs/zh/manage-file-resources.md">注册文件资源</a>加载。</p>
-<h2 id="Configuration" class="common-anchor-header">配置<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">decompounder</code> filter splits compound words into individual components based on a specified dictionary, making it easier to search for parts of compound terms. This filter is particularly useful for languages that frequently use compound words, such as German. The component dictionary can be supplied inline via the <code translate="no">word_list</code> parameter or loaded from a <a href="/docs/zh/manage-file-resources.md">registered file resource</a> via the <code translate="no">word_list_file</code> parameter.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -34,8 +36,8 @@ summary: 使用反编译筛选器，用内联字典或注册文件资源拆分�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">decompounder</code> 过滤器可通过<code translate="no">word_list</code> 参数以内联方式或通过<code translate="no">word_list_file</code> 参数从注册文件资源中接受其组件字典。</p>
-<h3 id="Inline-word-list" class="common-anchor-header">内联字表<button data-href="#Inline-word-list" class="anchor-icon" translate="no">
+    </button></h2><p>The <code translate="no">decompounder</code> filter accepts its component dictionary either inline via the <code translate="no">word_list</code> parameter or from a registered file resource via the <code translate="no">word_list_file</code> parameter.</p>
+<h3 id="Inline-word-list" class="common-anchor-header">Inline word list<button data-href="#Inline-word-list" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -50,9 +52,14 @@ summary: 使用反编译筛选器，用内联字典或注册文件资源拆分�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">decompounder</code> 过滤器是 Milvus 的自定义过滤器。要使用该过滤器，请在过滤器配置中指定<code translate="no">&quot;type&quot;: &quot;decompounder&quot;</code> 以及<code translate="no">word_list</code> 参数，后者提供了要识别的单词组件字典。</p>
+    </button></h3><p>The <code translate="no">decompounder</code> filter is a custom filter in Milvus. To use it, specify <code translate="no">&quot;type&quot;: &quot;decompounder&quot;</code> in the filter configuration, along with a <code translate="no">word_list</code> parameter that provides the dictionary of word components to recognize.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>:[{
@@ -105,20 +112,20 @@ analyzerParams=<span class="hljs-string">&#x27;{
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">decompounder</code> 过滤器接受以下可配置参数。</p>
+<p>The <code translate="no">decompounder</code> filter accepts the following configurable parameters.</p>
 <table>
    <tr>
-     <th><p>参数</p></th>
-     <th><p>说明</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">word_list</code></p></td>
-     <td><p>用于拆分复合词的单词成分列表。该字典决定了如何将复合词分解为单个术语。</p></td>
+     <td><p>A list of word components used to split compound terms. This dictionary determines how compound words are decomposed into individual terms.</p></td>
    </tr>
 </table>
-<p><code translate="no">decompounder</code> 过滤器对标记化器生成的术语进行操作，因此必须与标记化器结合使用。有关 Milvus 中可用的标记化器列表，请参阅<a href="/docs/zh/standard-tokenizer.md">标准</a>标记化器及其同类页面。</p>
-<p>定义<code translate="no">analyzer_params</code> 后，可以在定义 Collections Schema 时将其应用到<code translate="no">VARCHAR</code> 字段。这样，Milvus 就可以使用指定的分析器对该字段中的文本进行处理，从而实现高效的标记化和过滤。详情请参阅<a href="/docs/zh/analyzer-overview.md#Example-use">示例使用</a>。</p>
-<h3 id="Load-word-components-from-a-file-resource--Milvus-30x" class="common-anchor-header">从文件资源加载单词组件<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Load-word-components-from-a-file-resource--Milvus-30x" class="anchor-icon" translate="no">
+<p>The <code translate="no">decompounder</code> filter operates on the terms generated by the tokenizer, so it must be used in combination with a tokenizer. For a list of tokenizers available in Milvus, refer to <a href="/docs/zh/standard-tokenizer.md">Standard Tokenizer</a> and its sibling pages.</p>
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/zh/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h3 id="Load-word-components-from-a-file-resource" class="common-anchor-header">Load word components from a file resource<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Load-word-components-from-a-file-resource" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -133,8 +140,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>对于大型组件字典，尤其是全语言单词表，可将组件存储在文件中，并将该文件注册为远程文件资源，然后通过<code translate="no">word_list_file</code> 参数从过滤器中引用该文件。你可以单独使用<code translate="no">word_list_file</code> ，也可以与内联<code translate="no">word_list</code> 同时使用；当两者都设置时，过滤器会将两个来源合并为一个组件列表。</p>
-<p>文件为纯 UTF-8 文本，<strong>每行一个组件词</strong>。例如</p>
+    </button></h3><p>For large component dictionaries — especially full-language word lists — store the components in a file and register the file as a remote file resource, then reference it from the filter via the <code translate="no">word_list_file</code> parameter. You can use <code translate="no">word_list_file</code> on its own or alongside inline <code translate="no">word_list</code>; when both are set, the filter merges the two sources into a single component list.</p>
+<p>The file is plain UTF‑8 text with <strong>one component word per line</strong>. For example:</p>
 <pre><code translate="no" class="language-plaintext">dampf
 schiff
 fahrt
@@ -142,7 +149,7 @@ brot
 backen
 automat
 <button class="copy-code-btn"></button></code></pre>
-<p>将文件上传到 Milvus 集群配置使用的对象存储，然后注册：</p>
+<p>Upload the file to the object store that your Milvus cluster is configured to use, then register it:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -153,7 +160,7 @@ client.add_file_resource(
     path=<span class="hljs-string">&quot;file/decompounder.txt&quot;</span>,    <span class="hljs-comment"># full S3 object key, including the rootPath prefix</span>
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>通过<code translate="no">word_list_file</code> 在过滤器中引用已注册的资源：</p>
+<p>Reference the registered resource in the filter via <code translate="no">word_list_file</code>:</p>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>: [{
@@ -166,26 +173,26 @@ client.add_file_resource(
     }],
 }
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">word_list_file</code> 参数接受包含以下字段的对象：</p>
+<p>The <code translate="no">word_list_file</code> parameter accepts an object with the following fields:</p>
 <table>
    <tr>
-     <th><p><strong>字段</strong></p></th>
-     <th><p><strong>字段</strong></p></th>
+     <th><p><strong>Field</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
    </tr>
    <tr>
      <td><p><code translate="no">type</code></p></td>
-     <td><p>资源类型。通过<code translate="no">add_file_resource</code> 注册的文件使用<code translate="no">"remote"</code> 。有关自托管部署中使用的<code translate="no">"local"</code> 变体，请参阅<a href="/docs/zh/manage-file-resources.md">管理文件资源</a>。</p></td>
+     <td><p>The resource type. Use <code translate="no">"remote"</code> for a file registered via <code translate="no">add_file_resource</code>. For the <code translate="no">"local"</code> variant used in self-hosted deployments, refer to <a href="/docs/zh/manage-file-resources.md">Manage File Resources</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">resource_name</code></p></td>
-     <td><p>文件在<code translate="no">add_file_resource</code> 注册时使用的名称。</p></td>
+     <td><p>The name used when the file was registered with <code translate="no">add_file_resource</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">file_name</code></p></td>
-     <td><p>注册资源的对象存储路径中的文件名部分（例如，如果资源是通过<code translate="no">path="file/decompounder.txt"</code> 注册的，则为<code translate="no">"decompounder.txt"</code> ）。</p></td>
+     <td><p>The filename portion of the registered resource's object-store path (for example, <code translate="no">"decompounder.txt"</code> if the resource was registered with <code translate="no">path="file/decompounder.txt"</code>).</p></td>
    </tr>
 </table>
-<h2 id="Examples" class="common-anchor-header">示例<button data-href="#Examples" class="anchor-icon" translate="no">
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -200,8 +207,8 @@ client.add_file_resource(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在将分析器配置应用到 Collections 模式之前，请使用<code translate="no">run_analyzer</code> 方法验证其行为。</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">分析器配置<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -217,7 +224,12 @@ client.add_file_resource(
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
     <span class="hljs-string">&quot;filter&quot;</span>:[{
@@ -263,7 +275,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
   ]
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer" class="common-anchor-header">验证使用<code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -279,7 +291,12 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#javascript">NodeJS</a> <a href="#go">Go</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
 )
@@ -344,7 +361,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">预期输出<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

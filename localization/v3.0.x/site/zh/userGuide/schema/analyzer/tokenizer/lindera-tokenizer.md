@@ -1,7 +1,10 @@
 ---
 id: lindera-tokenizer.md
 title: Lindera
-summary: lindera tokenizer 可进行基于词典的词形分析。它专为日语和韩语设计，在这两种语言中，单词之间没有空格分隔，语法标记（微粒）直接附着在单词上。
+summary: >-
+  The lindera tokenizer performs dictionary-based morphological analysis. It is
+  designed for Japanese and Korean—languages where words are not separated by
+  spaces and grammatical markers (particles) attach directly to words.
 ---
 <h1 id="Lindera" class="common-anchor-header">Lindera<button data-href="#Lindera" class="anchor-icon" translate="no">
       <svg translate="no"
@@ -18,11 +21,11 @@ summary: lindera tokenizer 可进行基于词典的词形分析。它专为日�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">lindera</code> tokenizer 可进行基于词典的形态分析。它专为日语和韩语设计，在这两种语言中，单词不以空格分隔，语法标记（微粒）直接附加在单词上。</p>
+    </button></h1><p>The <code translate="no">lindera</code> tokenizer performs dictionary-based morphological analysis. It is designed for Japanese and Korean—languages where words are not separated by spaces and grammatical markers (particles) attach directly to words.</p>
 <div class="alert note">
-<p><strong>适用于中文文本</strong>：虽然<code translate="no">lindera</code> 通过<code translate="no">cc-cedict</code> 词典支持中文，但我们建议使用 <a href="/docs/zh/jieba-tokenizer.md"><code translate="no">jieba</code></a>tokenizer 代替。Jieba 专为中文分词而设计，能提供更好的效果。</p>
+<p><strong>For Chinese text</strong>: While <code translate="no">lindera</code> supports Chinese via the <code translate="no">cc-cedict</code> dictionary, we recommend using the <a href="/docs/zh/jieba-tokenizer.md"><code translate="no">jieba</code></a> tokenizer instead. Jieba is specifically designed for Chinese word segmentation and provides better results.</p>
 </div>
-<h2 id="Overview" class="common-anchor-header">概述<button data-href="#Overview" class="anchor-icon" translate="no">
+<h2 id="Overview" class="common-anchor-header">Overview<button data-href="#Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,38 +40,38 @@ summary: lindera tokenizer 可进行基于词典的词形分析。它专为日�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>日语和韩语是聚合语言：被称为 "微粒 "的语法标记直接附着在名词上，形成许多组合。例如</p>
+    </button></h2><p>Japanese and Korean are agglutinative languages: grammatical markers called particles attach directly to nouns, forming numerous combinations. For example:</p>
 <table>
    <tr>
-     <th><p>语言</p></th>
-     <th><p>词根</p></th>
-     <th><p>+ 词缀</p></th>
-     <th><p>= 组合形式</p></th>
-     <th><p>意义</p></th>
+     <th><p>Language</p></th>
+     <th><p>Root word</p></th>
+     <th><p>+ Particle</p></th>
+     <th><p>= Combined form</p></th>
+     <th><p>Meaning</p></th>
    </tr>
    <tr>
-     <td><p>韩语</p></td>
-     <td><p>首尔</p></td>
-     <td><p>首尔</p></td>
-     <td><p>首尔</p></td>
-     <td><p>在首尔</p></td>
+     <td><p>Korean</p></td>
+     <td><p>서울 (Seoul)</p></td>
+     <td><p>에서</p></td>
+     <td><p>서울에서</p></td>
+     <td><p>in Seoul</p></td>
    </tr>
    <tr>
-     <td><p>日本</p></td>
-     <td><p>东京</p></td>
+     <td><p>Japanese</p></td>
+     <td><p>東京 (Tokyo)</p></td>
      <td><p>に</p></td>
-     <td><p>东京に</p></td>
-     <td><p>前往东京</p></td>
+     <td><p>東京に</p></td>
+     <td><p>to Tokyo</p></td>
    </tr>
 </table>
-<p><code translate="no">lindera</code> tokenizer：</p>
+<p>The <code translate="no">lindera</code> tokenizer:</p>
 <ol>
-<li><p><strong>将文本分割</strong>成单个词素（单词和微粒）</p></li>
-<li><p>用词典中的语音部分 (POS) 信息<strong>标记每个标记符</strong></p></li>
-<li><p><strong>应用过滤器</strong>去除不需要的标记符（如微粒、标点符号等）</p></li>
+<li><p><strong>Segments text</strong> into individual morphemes (words and particles)</p></li>
+<li><p><strong>Tags each token</strong> with part-of-speech (POS) information from the dictionary</p></li>
+<li><p><strong>Applies filters</strong> to remove unwanted tokens (e.g., particles, punctuation)</p></li>
 </ol>
-<p>这个两阶段的过程--先进行分词，再进行基于 POS 的过滤--可以精确控制哪些标记符被编入索引以进行搜索。</p>
-<h2 id="Prerequisites" class="common-anchor-header">前提条件<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>This two-stage process—segmentation followed by POS-based filtering—enables precise control over which tokens are indexed for search.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,49 +87,49 @@ summary: lindera tokenizer 可进行基于词典的词形分析。它专为日�
         ></path>
       </svg>
     </button></h2><div class="alert note">
-<p><strong>Milvus 2.6 以上用户</strong>：您可以跳过本节。所有词典都已预编译并包含在正式版本中。</p>
+<p><strong>Milvus 2.6+ users</strong>: You can skip this section. All dictionaries are pre-compiled and included in the official release.</p>
 </div>
-<p>对于 Milvus 2.5.x，您需要在启用特定词典的情况下编译 Milvus。编译时必须明确包含所有词典。</p>
-<p>要启用特定词典，请在编译命令中包含这些词典：</p>
+<p>For Milvus 2.5.x, you need to compile Milvus with specific dictionaries enabled. All dictionaries must be explicitly included during compilation.</p>
+<p>To enable specific dictionaries, include them in the compilation command:</p>
 <pre><code translate="no" class="language-bash">make milvus TANTIVY_FEATURES=lindera-ipadic,lindera-ko-dic
 <button class="copy-code-btn"></button></code></pre>
-<p>可用词典的完整列表：</p>
+<p>The complete list of available dictionaries:</p>
 <table>
    <tr>
-     <th><p><strong>词典</strong></p></th>
-     <th><p><strong>语言</strong></p></th>
-     <th><p><strong>语言</strong></p></th>
+     <th><p><strong>Dictionary</strong></p></th>
+     <th><p><strong>Language</strong></p></th>
+     <th><p><strong>Description</strong></p></th>
    </tr>
    <tr>
      <td><p>lindera-ko-dic</p></td>
-     <td><p>韩语</p></td>
-     <td><p>韩语形态词典<a href="https://bitbucket.org/eunjeon/mecab-ko-dic">（MeCab Ko-dic）</a></p></td>
+     <td><p>Korean</p></td>
+     <td><p>Korean morphological dictionary (<a href="https://bitbucket.org/eunjeon/mecab-ko-dic">MeCab Ko-dic</a>)</p></td>
    </tr>
    <tr>
      <td><p>lindera-ipadic</p></td>
-     <td><p>日语</p></td>
-     <td><p>标准形态词典<a href="https://taku910.github.io/mecab/">（MeCab IPADIC）</a></p></td>
+     <td><p>Japanese</p></td>
+     <td><p>Standard morphological dictionary (<a href="https://taku910.github.io/mecab/">MeCab IPADIC</a>)</p></td>
    </tr>
    <tr>
      <td><p>lindera-ipadic-neologd</p></td>
-     <td><p>日语</p></td>
-     <td><p>包含新词和专有名词的扩展词典<a href="https://github.com/neologd/mecab-ipadic-neologd">（IPADIC NEologd）</a></p></td>
+     <td><p>Japanese</p></td>
+     <td><p>Extended dictionary with new words and proper nouns (<a href="https://github.com/neologd/mecab-ipadic-neologd">IPADIC NEologd</a>)</p></td>
    </tr>
    <tr>
      <td><p>lindera-unidic</p></td>
-     <td><p>日语</p></td>
-     <td><p>学术标准词典<a href="https://clrd.ninjal.ac.jp/unidic/">(UniDic</a>)</p></td>
+     <td><p>Japanese</p></td>
+     <td><p>Academic standard dictionary (<a href="https://clrd.ninjal.ac.jp/unidic/">UniDic</a>)</p></td>
    </tr>
    <tr>
      <td><p>lindera-cc-cedict</p></td>
-     <td><p>日语</p></td>
-     <td><p>社区维护的汉英词典<a href="https://cc-cedict.org/wiki/">(CC-CEDICT</a>)</p></td>
+     <td><p>Chinese</p></td>
+     <td><p>Community-maintained Chinese-English dictionary (<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>)</p></td>
    </tr>
 </table>
-<p>例如，启用所有词典：</p>
+<p>For example, to enable all dictionaries:</p>
 <pre><code translate="no" class="language-bash">make milvus TANTIVY_FEATURES=lindera-ipadic,lindera-ipadic-neologd,lindera-unidic,lindera-ko-dic,lindera-cc-cedict
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Configuration" class="common-anchor-header">配置<button data-href="#Configuration" class="anchor-icon" translate="no">
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -141,9 +144,14 @@ summary: lindera tokenizer 可进行基于词典的词形分析。它专为日�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>要配置使用<code translate="no">lindera</code> 标记符号生成器的分析器，请将<code translate="no">tokenizer.type</code> 设置为<code translate="no">lindera</code> ，选择<code translate="no">dict_kind</code> 的字典，并可选择应用过滤器。</p>
+    </button></h2><p>To configure an analyzer using the <code translate="no">lindera</code> tokenizer, set <code translate="no">tokenizer.type</code> to <code translate="no">lindera</code>, choose a dictionary with <code translate="no">dict_kind</code>, and optionally apply filters.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: {
         <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;lindera&quot;</span>,
@@ -207,24 +215,24 @@ summary: lindera tokenizer 可进行基于词典的词形分析。它专为日�
 <button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>参数</p></th>
-     <th><p>参数</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">type</code></p></td>
-     <td><p>标记符类型。固定为<code translate="no">"lindera"</code> 。</p></td>
+     <td><p>The type of tokenizer. This is fixed to <code translate="no">"lindera"</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">dict_kind</code></p></td>
-     <td><p>用于定义词汇的字典。可能的值：</p><ul><li><p><code translate="no">ko-dic</code>:韩语 - 韩语形态词典<a href="https://bitbucket.org/eunjeon/mecab-ko-dic">（MeCab Ko-dic）</a></p></li><li><p><code translate="no">ipadic</code>:日语 - 标准形态词典<a href="https://taku910.github.io/mecab/">(MeCab IPADIC</a>)</p></li><li><p><code translate="no">ipadic-neologd</code>:日语新词词典（扩展）- 包括新词和专有名词<a href="https://github.com/neologd/mecab-ipadic-neologd">(IPADIC NEologd</a>)</p></li><li><p><code translate="no">unidic</code>:日语 UniDic（扩展）- 包含详细语言信息的学术标准词典<a href="https://clrd.ninjal.ac.jp/unidic/">(UniDic</a>)</p></li><li><p><code translate="no">cc-cedict</code>:中文普通话（繁体/简体） - 社区维护的汉英词典<a href="https://cc-cedict.org/wiki/">(CC-CEDICT</a>)</p></li></ul></td>
+     <td><p>A dictionary used to define vocabulary. Possible values:</p><ul><li><p><code translate="no">ko-dic</code>: Korean - Korean morphological dictionary (<a href="https://bitbucket.org/eunjeon/mecab-ko-dic">MeCab Ko-dic</a>)</p></li><li><p><code translate="no">ipadic</code>: Japanese - Standard morphological dictionary (<a href="https://taku910.github.io/mecab/">MeCab IPADIC</a>)</p></li><li><p><code translate="no">ipadic-neologd</code>: Japanese with neologism dictionary (extended) - Includes new words and proper nouns (<a href="https://github.com/neologd/mecab-ipadic-neologd">IPADIC NEologd</a>)</p></li><li><p><code translate="no">unidic</code>: Japanese UniDic (extended) - Academic standard dictionary with detailed linguistic information (<a href="https://clrd.ninjal.ac.jp/unidic/">UniDic</a>)</p></li><li><p><code translate="no">cc-cedict</code>: Mandarin Chinese (traditional/simplified) - Community-maintained Chinese-English dictionary (<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>)</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">filter</code></p></td>
-     <td><p>在分段后应用的标记符号级过滤器列表。每个过滤器都是一个对象，具有</p><ul><li><p><code translate="no">kind</code>:过滤器类型。支持的值：</p><ul><li><p><code translate="no">korean_stop_tags</code>:移除与指定的韩国 POS 标记相匹配的标记。</p></li><li><p><code translate="no">japanese_stop_tags</code>:移除与指定日语 POS 标记匹配的词组。</p></li></ul></li><li><p><code translate="no">tags</code>:要过滤掉的 POS 标记列表。可用标记取决于<code translate="no">kind</code> ：</p><ul><li><p>对于<code translate="no">korean_stop_tags</code> ：使用精确的标记代码（如<code translate="no">JKS</code>,<code translate="no">JKO</code>,<code translate="no">SF</code> ）。韩语标记需要精确匹配。有关基于世宗标记集的完整列表，请参阅<a href="https://docs.rs/lindera/latest/src/lindera/token_filter/korean_stop_tags.rs.html">Lindera Korean stop tags source</a>。</p></li><li><p>对于<code translate="no">japanese_stop_tags</code> ：使用精确的标记代码（如<code translate="no">助詞,格助詞</code>,<code translate="no">助詞,係助詞</code>,<code translate="no">助動詞</code> ）。日语标记需要精确匹配。有关完整列表 (IPADIC)，请参阅<a href="https://github.com/taku910/mecab/blob/master/mecab-ipadic/pos-id.def">日语 POS 标记参考</a>。</p></li></ul></li></ul></td>
+     <td><p>A list of tokenizer-level filters to apply after segmentation. Each filter is an object with:</p><ul><li><p><code translate="no">kind</code>: The filter type. Supported values:</p><ul><li><p><code translate="no">korean_stop_tags</code>: Remove tokens matching specified Korean POS tags.</p></li><li><p><code translate="no">japanese_stop_tags</code>: Remove tokens matching specified Japanese POS tags.</p></li></ul></li><li><p><code translate="no">tags</code>: A list of POS tags to filter out. The available tags depend on the <code translate="no">kind</code>:</p><ul><li><p>For <code translate="no">korean_stop_tags</code>: Use exact tag codes (e.g., <code translate="no">JKS</code>, <code translate="no">JKO</code>, <code translate="no">SF</code>). Korean tags require exact matching. For the complete list based on the Sejong tagset, see the <a href="https://docs.rs/lindera/latest/src/lindera/token_filter/korean_stop_tags.rs.html">Lindera Korean stop tags source</a>.</p></li><li><p>For <code translate="no">japanese_stop_tags</code>: Use exact tag codes (e.g., <code translate="no">助詞,格助詞</code>, <code translate="no">助詞,係助詞</code>, <code translate="no">助動詞</code>). Japanese tags require exact matching. For the complete list (IPADIC), see <a href="https://github.com/taku910/mecab/blob/master/mecab-ipadic/pos-id.def">Japanese POS tags reference</a>.</p></li></ul></li></ul></td>
    </tr>
 </table>
-<p>定义<code translate="no">analyzer_params</code> 后，可以在定义 Collections Schema 时将它们应用到<code translate="no">VARCHAR</code> 字段。这样，Milvus 就能使用指定的分析器处理该字段中的文本，以实现高效的标记化和过滤。有关详情，请参阅<a href="/docs/zh/analyzer-overview.md#Example-use">示例使用</a>。</p>
-<h2 id="Examples" class="common-anchor-header">示例<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/zh/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -239,8 +247,8 @@ summary: lindera tokenizer 可进行基于词典的词形分析。它专为日�
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在将分析器配置应用到 Collections 模式之前，请使用<code translate="no">run_analyzer</code> 方法验证其行为。</p>
-<h3 id="Korean-example" class="common-anchor-header">韩语示例<button data-href="#Korean-example" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Korean-example" class="common-anchor-header">Korean example<button data-href="#Korean-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -256,7 +264,12 @@ summary: lindera tokenizer 可进行基于词典的词形分析。它专为日�
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -406,11 +419,11 @@ result, err := client.RunAnalyzer(ctx, option)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>预期输出</strong>：</p>
+<p><strong>Expected output</strong>:</p>
 <pre><code translate="no" class="language-plaintext">[&#x27;서울&#x27;, &#x27;맛있&#x27;, &#x27;음식&#x27;, &#x27;먹&#x27;, &#x27;습니다&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<p>如果没有<code translate="no">korean_stop_tags</code> ，输出将包括<code translate="no">에서</code> (in)、<code translate="no">는</code> (主题标记) 和<code translate="no">을</code> (对象标记) 等微粒，这些微粒通常对搜索无用。</p>
-<h3 id="Japanese-example" class="common-anchor-header">日语示例<button data-href="#Japanese-example" class="anchor-icon" translate="no">
+<p>Without <code translate="no">korean_stop_tags</code>, the output would include particles like <code translate="no">에서</code> (in), <code translate="no">는</code> (topic marker), and <code translate="no">을</code> (object marker), which are typically not useful for search.</p>
+<h3 id="Japanese-example" class="common-anchor-header">Japanese example<button data-href="#Japanese-example" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -426,7 +439,12 @@ result, err := client.RunAnalyzer(ctx, option)
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a> <a href="#java">Java</a> <a href="#go">Go</a> <a href="#javascript">NodeJS</a> <a href="#bash">cURL</a></div>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#bash">cURL</a>
+</div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
 client = MilvusClient(uri=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
@@ -482,7 +500,7 @@ result = client.run_analyzer(sample_text, analyzer_params)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>预期输出：</strong></p>
+<p><strong>Expected output:</strong></p>
 <pre><code translate="no" class="language-plaintext">[&#x27;東京&#x27;, &#x27;スカイ&#x27;, &#x27;ツリー&#x27;, &#x27;最寄り駅&#x27;, &#x27;とう&#x27;, &#x27;きょう&#x27;, &#x27;スカイ&#x27;, &#x27;ツリー&#x27;, &#x27;駅&#x27;]
 <button class="copy-code-btn"></button></code></pre>
-<p>如果没有<code translate="no">japanese_stop_tags</code> ，输出将包括<code translate="no">の</code> （所有格）、<code translate="no">は</code> （主题标记）和<code translate="no">です</code> （共轭词）等语素。</p>
+<p>Without <code translate="no">japanese_stop_tags</code>, the output would include particles like <code translate="no">の</code> (possessive), <code translate="no">は</code> (topic marker), and <code translate="no">です</code> (copula).</p>

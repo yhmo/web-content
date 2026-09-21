@@ -2,9 +2,8 @@
 id: faiss.md
 title: FAISSCompatible with Milvus 3.0.0+
 summary: >-
-  Verwenden Sie die FAISS-Index-Weiterleitung, um in Milvus 3.0 die von der
-  FAISS-Index-Factory bereitgestellten Zeichenfolgen und die factoryspezifischen
-  Suchparameter zu übergeben.
+  Use FAISS index passthrough to supply Faiss index-factory strings and
+  factory-specific search parameters in Milvus 3.0.
 beta: Milvus 3.0.0+
 ---
 <h1 id="FAISS" class="common-anchor-header">FAISS<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#FAISS" class="anchor-icon" translate="no">
@@ -22,12 +21,12 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Der Index-Typ „ <code translate="no">FAISS</code> “ ist eine Pass-Through-Funktion für Experten, die ab Milvus 3.0.0 verfügbar ist. Damit können Sie eine <a href="https://github.com/facebookresearch/faiss/wiki/The-index-factory">Faiss-Index-Factory-Zeichenkette</a> angeben, anstatt einen festen Milvus-Index-Typ auszuwählen.</p>
-<p>Verwenden Sie „ <code translate="no">FAISS</code> “, wenn Sie bereits über ein getestetes Faiss-Rezept verfügen und direkte Kontrolle über dessen Zusammensetzung benötigen. Bei gängigen Rezepten mit einem dedizierten Milvus-Indextyp sollten Sie den dedizierten Typ bevorzugen, da dieser über eine stabile, dokumentierte Parameterkonvention verfügt.</p>
+    </button></h1><p>The <code translate="no">FAISS</code> index type is an expert-level passthrough available in Milvus 3.0.0 and later. It lets you supply a <a href="https://github.com/facebookresearch/faiss/wiki/The-index-factory">Faiss index-factory string</a> instead of selecting a fixed Milvus index type.</p>
+<p>Use <code translate="no">FAISS</code> when you already have a tested Faiss recipe and need direct control over its composition. For common recipes with a dedicated Milvus index type, prefer the dedicated type because it has a stable, documented parameter contract.</p>
 <div class="alert note">
-<p>Ein von Upstream-Faiss akzeptierter Factory-String wird von Milvus nicht automatisch unterstützt. Die Kompatibilität hängt vom Vektorfeldtyp, der Metrik, der Dimension, den in das Milvus-Image kompilierten Faiss-Modulen sowie davon ab, ob der resultierende Index die von Milvus benötigten Operationen unterstützt.</p>
+<p>A factory string accepted by upstream Faiss is not automatically supported by Milvus. Compatibility depends on the vector field type, metric, dimension, Faiss modules compiled into the Milvus image, and whether the resulting index supports the operations that Milvus requires.</p>
 </div>
-<h2 id="Limits" class="common-anchor-header">Einschränkungen<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -43,18 +42,18 @@ beta: Milvus 3.0.0+
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><code translate="no">FAISS</code> unterstützt die Felder „ <code translate="no">FLOAT_VECTOR</code> “ und „ <code translate="no">BINARY_VECTOR</code> “. Die Felder „ <code translate="no">FLOAT16_VECTOR</code> “, „ <code translate="no">BFLOAT16_VECTOR</code> “, „ <code translate="no">INT8_VECTOR</code> “ und „ <code translate="no">SPARSE_FLOAT_VECTOR</code> “ werden nicht unterstützt.</p></li>
-<li><p>Der generische „ <code translate="no">FAISS</code> “-Adapter läuft auf der CPU. Es handelt sich nicht um einen Faiss-GPU-Indextyp.</p></li>
-<li><p>Der Build-Parameter „ <code translate="no">faiss_index_name</code> “ ist erforderlich. Milvus übergibt dessen Wert an Faiss, ohne das Rezept in einen dedizierten Milvus-Indextyp zu konvertieren.</p></li>
-<li><p>Build- und Suchparameter sind fabrikspezifisch. Ein von einer Fabrik unterstützter Parameter kann von einer anderen abgelehnt werden.</p></li>
-<li><p>Für die skalare Filterung muss der zugrunde liegende Faiss-Index einen ID-Selektor unterstützen. Die Tests von Milvus 3.0.0 decken die gefilterte Suche mit den Float-Fabriken „ <code translate="no">Flat</code> “, „ <code translate="no">IVF64,Flat</code> “ und „ <code translate="no">HNSW16,Flat</code> “ ab. Gehen Sie nicht davon aus, dass jede Fabrik Filter unterstützt oder dass binäre „ <code translate="no">FAISS</code> “-Indizes die skalare Filterung unterstützen.</p></li>
-<li><p>Such-Iteratoren werden nicht unterstützt.</p></li>
-<li><p>Der Adapter bietet keine Raw-Vektor-Abfrage.</p></li>
-<li><p>Die Unterstützung der Bereichssuche hängt von der Factory ab. „Float <code translate="no">Flat</code> “ ist in der aktuellen Version enthalten. Verwenden Sie die Bereichssuche nicht mit binären „ <code translate="no">FAISS</code> “-Indizes.</p></li>
-<li><p>Eine Factory kann erfolgreich erstellt werden, aber dennoch einige Milvus-Suchoperationen ablehnen. Beispielsweise lehnt der eigenständige „ <code translate="no">PQ8x4</code> “ den von der skalargefilterten Suche verwendeten Selektor ab. Überprüfen Sie die ungefilterte Verwendung separat.</p></li>
-<li><p>In Milvus 3.0.0 sollten Sie nach einem Neuladen des Index die „ <code translate="no">COSINE</code> “-Scores und die Schwellenwerte für die Bereichssuche überprüfen. Knowhere v3.0.6 stellt den Zustand der Kosinus-Normalisierung des „ <code translate="no">FAISS</code> “-Adapters während der Deserialisierung nicht wieder her.</p></li>
+<li><p><code translate="no">FAISS</code> supports <code translate="no">FLOAT_VECTOR</code> and <code translate="no">BINARY_VECTOR</code> fields. It does not support <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">INT8_VECTOR</code>, or <code translate="no">SPARSE_FLOAT_VECTOR</code> fields.</p></li>
+<li><p>The generic <code translate="no">FAISS</code> adapter runs on CPU. It is not a Faiss GPU index type.</p></li>
+<li><p>The <code translate="no">faiss_index_name</code> build parameter is required. Milvus passes its value to Faiss without converting the recipe to a dedicated Milvus index type.</p></li>
+<li><p>Build and search parameters are factory-specific. A parameter supported by one factory can be rejected by another.</p></li>
+<li><p>Scalar filtering requires the underlying Faiss index to support an ID selector. Milvus 3.0.0 tests cover filtered search with the float factories <code translate="no">Flat</code>, <code translate="no">IVF64,Flat</code>, and <code translate="no">HNSW16,Flat</code>. Do not assume that every factory supports filters or that binary <code translate="no">FAISS</code> indexes support scalar filtering.</p></li>
+<li><p>Search iterators are not supported.</p></li>
+<li><p>The adapter does not provide raw-vector retrieval.</p></li>
+<li><p>Range-search support depends on the factory. Float <code translate="no">Flat</code> has release coverage. Do not use range search with binary <code translate="no">FAISS</code> indexes.</p></li>
+<li><p>A factory can build successfully but still reject some Milvus search operations. For example, standalone <code translate="no">PQ8x4</code> rejects the selector used by scalar-filtered search. Validate unfiltered use separately.</p></li>
+<li><p>In Milvus 3.0.0, validate <code translate="no">COSINE</code> scores and range-search thresholds after an index reload. Knowhere v3.0.6 does not restore the <code translate="no">FAISS</code> adapter’s cosine-normalization state during deserialization.</p></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">So funktioniert es<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -69,15 +68,15 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/faiss-index-flow.png" alt="FAISS index passthrough workflow" class="doc-image" id="faiss-index-passthrough-workflow" /> 
-   <span>FAISS-Index-Passthrough-Workflow</span>
-  
- </span></p>
-<p>Zum Erstellen des Indexes leitet Milvus „ <code translate="no">faiss_index_name</code> “, den Vektorfeldtyp, die Metrik und weitere Erstellungsparameter an den Knowhere-FAISS-Adapter weiter. Der Adapter ruft „ <code translate="no">faiss::index_factory()</code> “ für „ <code translate="no">FLOAT_VECTOR</code> “-Felder oder „ <code translate="no">faiss::index_binary_factory()</code> “ für „ <code translate="no">BINARY_VECTOR</code> “-Felder auf. Das resultierende Objekt ist ein nativer FAISS-Index, der über den normalen Milvus-Index-Lebenszyklus verwaltet wird.</p>
-<p>Für die Suche wandelt der Adapter die übergebenen herstellerspezifischen Parameter in das entsprechende Faiss- <code translate="no">SearchParameters</code> -Objekt um. Bei unterstützten Float-Herstellern übergibt er zudem das Milvus-Filter-Bitset als Faiss-Selektor. Die Selektorunterstützung ist fabrikspezifisch, und die veröffentlichten Tests stellen keine skalare Filterung für „binary <code translate="no">FAISS</code> “-Indizes her. Aus diesem Grund kann ein Rezept in der eigenständigen Faiss-Version gültig sein, aber eine vom Milvus-Suchpfad geforderte Operation ablehnen.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Voraussetzungen<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h2><p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/faiss-index-flow.png" alt="FAISS index passthrough workflow" class="doc-image" id="faiss-index-passthrough-workflow" />
+    <span>FAISS index passthrough workflow</span>
+  </span>
+</p>
+<p>For index building, Milvus forwards <code translate="no">faiss_index_name</code>, the vector field type, the metric, and other build parameters to the Knowhere FAISS adapter. The adapter calls <code translate="no">faiss::index_factory()</code> for <code translate="no">FLOAT_VECTOR</code> fields or <code translate="no">faiss::index_binary_factory()</code> for <code translate="no">BINARY_VECTOR</code> fields. The resulting object is a native Faiss index managed through the normal Milvus index lifecycle.</p>
+<p>For search, the adapter converts the supplied factory-specific parameters into the matching Faiss <code translate="no">SearchParameters</code> object. For supported float factories, it also passes the Milvus filter bitset as a Faiss selector. Selector support is factory-specific, and the released tests do not establish scalar filtering for binary <code translate="no">FAISS</code> indexes. This is why a recipe can be valid in standalone Faiss but reject an operation required by the Milvus search path.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,12 +92,12 @@ beta: Milvus 3.0.0+
         ></path>
       </svg>
     </button></h2><ul>
-<li>Milvus 3.0.0 oder höher</li>
-<li>PyMilvus 3.0.0 oder höher</li>
-<li>Vertrautheit mit der Syntax der Faiss-Index-Factory und den Trainingsanforderungen der ausgewählten Factory</li>
+<li>Milvus 3.0.0 or later</li>
+<li>PyMilvus 3.0.0 or later</li>
+<li>Familiarity with Faiss index-factory syntax and the training requirements of the selected factory</li>
 </ul>
-<p>Anweisungen zur Installation finden Sie unter <a href="/docs/de/install-pymilvus.md">„PyMilvus installieren</a>“.</p>
-<h2 id="Choose-a-factory-string" class="common-anchor-header">Wählen Sie einen Factory-String<button data-href="#Choose-a-factory-string" class="anchor-icon" translate="no">
+<p>For installation instructions, see <a href="/docs/de/install-pymilvus.md">Install PyMilvus</a>.</p>
+<h2 id="Choose-a-factory-string" class="common-anchor-header">Choose a factory string<button data-href="#Choose-a-factory-string" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -113,23 +112,23 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Ein Factory-String beschreibt einen Faiss-Index als Folge von Komponenten. Die folgenden Beispiele wurden mit der Release-Test-Version von Milvus 3.0.0 getestet. Diese Liste erhebt keinen Anspruch auf Vollständigkeit.</p>
+    </button></h2><p>A factory string describes a Faiss index as a sequence of components. The following examples have Milvus 3.0.0 release-test coverage. This list is not exhaustive.</p>
 <table>
 <thead>
-<tr><th>Factory-String</th><th>Feldtyp</th><th>In den Release-Tests getestete Metriken</th><th>Suchparameter</th><th>Anmerkungen</th></tr>
+<tr><th>Factory string</th><th>Field type</th><th>Metrics exercised in release tests</th><th>Search parameters</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td>Keine</td><td>Exakte Suche.</td></tr>
-<tr><td><code translate="no">IVF64,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">nprobe</code></td><td>IVF mit 64 invertierten Listen und unkomprimierten Vektoren.</td></tr>
-<tr><td><code translate="no">HNSW16,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">efSearch</code></td><td>HNSW-Graph mit flacher Vektorspeicherung.</td></tr>
-<tr><td><code translate="no">OPQ16,IVF64,PQ16x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>Fabrikspezifisch</td><td>Kombiniert OPQ, IVF und PQ. Überprüfen Sie Trainingsgröße und Recall anhand Ihrer Daten.</td></tr>
-<tr><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td><code translate="no">nprobe</code>, <code translate="no">k_factor</code></td><td>Verwendet nach der PQ-Kandidatenauswahl einen „Flat Refiner“.</td></tr>
-<tr><td><code translate="no">PQ8x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>Keine</td><td>Integriert Release-Tests. Die skalargefilterte Suche schlägt fehl, da der Index den Selektor ablehnt; überprüfen Sie die ungefilterte Verwendung separat.</td></tr>
-<tr><td><code translate="no">BFlat</code></td><td><code translate="no">BINARY_VECTOR</code></td><td><code translate="no">HAMMING</code></td><td>Keine</td><td>Exakte Suche nach binären Vektoren.</td></tr>
+<tr><td><code translate="no">Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td>None</td><td>Exact search.</td></tr>
+<tr><td><code translate="no">IVF64,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">nprobe</code></td><td>IVF with 64 inverted lists and uncompressed vectors.</td></tr>
+<tr><td><code translate="no">HNSW16,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">efSearch</code></td><td>HNSW graph with flat vector storage.</td></tr>
+<tr><td><code translate="no">OPQ16,IVF64,PQ16x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>Factory-specific</td><td>Combines OPQ, IVF, and PQ. Validate training size and recall with your data.</td></tr>
+<tr><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td><code translate="no">nprobe</code>, <code translate="no">k_factor</code></td><td>Uses a flat refiner after PQ candidate retrieval.</td></tr>
+<tr><td><code translate="no">PQ8x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>None</td><td>Builds in release tests. Scalar-filtered search fails because the index rejects the selector; validate unfiltered use separately.</td></tr>
+<tr><td><code translate="no">BFlat</code></td><td><code translate="no">BINARY_VECTOR</code></td><td><code translate="no">HAMMING</code></td><td>None</td><td>Exact search for binary vectors.</td></tr>
 </tbody>
 </table>
-<p>Die Einträge unter „ <code translate="no">COSINE</code> “ geben die Abdeckung der Build- und Such-Smoke-Tests an. Bei Milvus 3.0.0 wird nach einem Neuladen des Indexes weder die Korrektheit der Bewertung noch der Bereichssuche gewährleistet. Siehe <a href="#limits">„Einschränkungen</a>“.</p>
-<h2 id="Build-and-search-a-float-index" class="common-anchor-header">Erstellen und Durchsuchen eines Float-Index<button data-href="#Build-and-search-a-float-index" class="anchor-icon" translate="no">
+<p>The <code translate="no">COSINE</code> entries indicate build and search smoke coverage. For Milvus 3.0.0, they do not establish score or range-search correctness after an index reload. See <a href="#limits">Limits</a>.</p>
+<h2 id="Build-and-search-a-float-index" class="common-anchor-header">Build and search a float index<button data-href="#Build-and-search-a-float-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -144,9 +143,9 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Das folgende Beispiel erstellt 3.000 128-dimensionale Vektoren. Dies liefert genügend Trainingsdaten für das im Beispiel verwendete „ <code translate="no">IVF64,Flat</code> “-Rezept. Erweitern Sie den Setup-Block und führen Sie ihn aus, bevor Sie den Index erstellen und durchsuchen.</p>
+    </button></h2><p>The following example creates 3,000 128-dimensional vectors. This provides enough training data for the <code translate="no">IVF64,Flat</code> recipe used in the example. Expand the setup block and run it before building and searching the index.</p>
 <p><details></p>
-<p><summary>Vorbereiten der Float-Vektor-Sammlung</summary></p>
+<p><summary>Prepare the float-vector collection</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
@@ -180,7 +179,7 @@ client.insert(collection_name=collection_name, data=rows)
 client.flush(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Build-the-index" class="common-anchor-header">Erstellen Sie den Index<button data-href="#Build-the-index" class="anchor-icon" translate="no">
+<h3 id="Build-the-index" class="common-anchor-header">Build the index<button data-href="#Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -195,7 +194,7 @@ client.flush(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Stellen Sie „ <code translate="no">index_type</code> “ auf „ <code translate="no">FAISS</code> “ ein und wählen Sie mit „ <code translate="no">faiss_index_name</code> “ das native Faiss-Factory-Rezept aus.</p>
+    </button></h3><p>Set <code translate="no">index_type</code> to <code translate="no">FAISS</code>, and use <code translate="no">faiss_index_name</code> to select the native Faiss factory recipe.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;vector&quot;</span>,
@@ -208,8 +207,8 @@ index_params.add_index(
 client.create_index(collection_name=collection_name, index_params=index_params)
 client.load_collection(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
-<p>Die Factory-Zeichenkette „ <code translate="no">IVF64,Flat</code> “ erstellt einen IVF-Index mit 64 invertierten Listen und speichert in jeder Liste unkomprimierte Vektoren.</p>
-<h3 id="Search-the-index" class="common-anchor-header">Durchsuchen Sie den Index<button data-href="#Search-the-index" class="anchor-icon" translate="no">
+<p>The factory string <code translate="no">IVF64,Flat</code> creates an IVF index with 64 inverted lists and stores uncompressed vectors in each list.</p>
+<h3 id="Search-the-index" class="common-anchor-header">Search the index<button data-href="#Search-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -224,7 +223,7 @@ client.load_collection(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Legen Sie fabrikspezifische Suchparameter innerhalb von ` <code translate="no">search_params.params</code>` fest. Bei einer IVF-Fabrik steuert ` <code translate="no">nprobe</code> `, wie viele invertierte Listen Faiss durchsucht.</p>
+    </button></h3><p>Set factory-specific search parameters inside <code translate="no">search_params.params</code>. For an IVF factory, <code translate="no">nprobe</code> controls how many inverted lists Faiss searches.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">search_params = {</span>
 <span class="highlighted-comment-line">    <span class="hljs-string">&quot;params&quot;</span>: {<span class="hljs-string">&quot;nprobe&quot;</span>: <span class="hljs-number">8</span>},</span>
 <span class="highlighted-comment-line">}</span>
@@ -243,8 +242,8 @@ results = client.search(
     <span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> hits:
         <span class="hljs-built_in">print</span>(hit)
 <button class="copy-code-btn"></button></code></pre>
-<p>Die Abfrage verwendet ` <code translate="no">nprobe=8</code>`, sodass Faiss 8 der 64 invertierten Listen durchsucht. Der Filter beschränkt die Ergebnisse auf Entitäten, deren ` <code translate="no">category</code> `-Wert ` <code translate="no">reference</code>` ist.</p>
-<h2 id="Build-and-search-a-binary-index" class="common-anchor-header">Erstellen und Durchsuchen eines Binärindexes<button data-href="#Build-and-search-a-binary-index" class="anchor-icon" translate="no">
+<p>The query uses <code translate="no">nprobe=8</code>, so Faiss searches 8 of the 64 inverted lists. The filter restricts results to entities whose <code translate="no">category</code> value is <code translate="no">reference</code>.</p>
+<h2 id="Build-and-search-a-binary-index" class="common-anchor-header">Build and search a binary index<button data-href="#Build-and-search-a-binary-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -259,9 +258,9 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Verwenden Sie für „ <code translate="no">BINARY_VECTOR</code> “-Felder eine binäre Factory-Zeichenkette wie „ <code translate="no">BFlat</code> “ und eine kompatible binäre Metrik. Erweitern Sie den Setup-Block und führen Sie ihn aus, bevor Sie den Index erstellen und durchsuchen.</p>
+    </button></h2><p>For <code translate="no">BINARY_VECTOR</code> fields, use a binary factory string such as <code translate="no">BFlat</code> and a compatible binary metric. Expand the setup block and run it before building and searching the index.</p>
 <p><details></p>
-<p><summary>Bereiten Sie die Binary-Vector-Sammlung vor</summary></p>
+<p><summary>Prepare the binary-vector collection</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
@@ -287,7 +286,7 @@ client.insert(
 client.flush(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Build-the-index" class="common-anchor-header">Erstellen Sie den Index<button data-href="#Build-the-index" class="anchor-icon" translate="no">
+<h3 id="Build-the-index" class="common-anchor-header">Build the index<button data-href="#Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -302,7 +301,7 @@ client.flush(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Verwenden Sie für dieses Beispiel mit Binärvektoren „ <code translate="no">BFlat</code> “ als Factory-String und „ <code translate="no">HAMMING</code> “ als Metrik.</p>
+    </button></h3><p>Use <code translate="no">BFlat</code> as the factory string and <code translate="no">HAMMING</code> as the metric for this binary-vector example.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;binary_vector&quot;</span>,
@@ -315,7 +314,7 @@ index_params.add_index(
 client.create_index(collection_name=collection_name, index_params=index_params)
 client.load_collection(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Search-the-index" class="common-anchor-header">Durchsuchen Sie den Index<button data-href="#Search-the-index" class="anchor-icon" translate="no">
+<h3 id="Search-the-index" class="common-anchor-header">Search the index<button data-href="#Search-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -330,7 +329,7 @@ client.load_collection(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">BFlat</code> verfügt über keinen familienspezifischen Suchparameter. Übergeben Sie beim Erstellen der Suchanfrage ein leeres „ <code translate="no">params</code> “-Mapping.</p>
+    </button></h3><p><code translate="no">BFlat</code> has no family-specific search parameter. Pass an empty <code translate="no">params</code> mapping when constructing the search request.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">search_params = {<span class="hljs-string">&quot;params&quot;</span>: {}}</span>
 
 results = client.search(
@@ -345,8 +344,8 @@ results = client.search(
     <span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> hits:
         <span class="hljs-built_in">print</span>(hit)
 <button class="copy-code-btn"></button></code></pre>
-<p>Jeder 128-dimensionale Binärvektor wird durch 16 Byte dargestellt. Weitere Informationen finden Sie unter <a href="/docs/de/binary-vector.md">„Binärvektor</a>“.</p>
-<h2 id="Configure-build-and-search-parameters" class="common-anchor-header">Konfigurieren Sie Build- und Suchparameter<button data-href="#Configure-build-and-search-parameters" class="anchor-icon" translate="no">
+<p>Each 128-dimensional binary vector is represented by 16 bytes. For more information, see <a href="/docs/de/binary-vector.md">Binary Vector</a>.</p>
+<h2 id="Configure-build-and-search-parameters" class="common-anchor-header">Configure build and search parameters<button data-href="#Configure-build-and-search-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -361,28 +360,28 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Der Indextyp „ <code translate="no">FAISS</code> “ verfügt über einen erforderlichen Passthrough-Erstellungsparameter.</p>
+    </button></h2><p>The <code translate="no">FAISS</code> index type has one required passthrough build parameter.</p>
 <table>
 <thead>
-<tr><th>Parameter</th><th>Speicherort</th><th>Beschreibung</th></tr>
+<tr><th>Parameter</th><th>Location</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">faiss_index_name</code></td><td><code translate="no">params</code> in <code translate="no">add_index()</code></td><td>Die Zeichenfolge der Faiss-Index-Factory. Zum Beispiel: „ <code translate="no">IVF64,Flat</code> “.</td></tr>
+<tr><td><code translate="no">faiss_index_name</code></td><td><code translate="no">params</code> in <code translate="no">add_index()</code></td><td>The Faiss index-factory string. For example, <code translate="no">IVF64,Flat</code>.</td></tr>
 </tbody>
 </table>
-<p>Legen Sie fabrikspezifische Suchparameter innerhalb von „ <code translate="no">search_params.params</code> “ fest. Die folgende Tabelle enthält gängige Beispiele und erhebt keinen Anspruch auf Vollständigkeit.</p>
+<p>Set factory-specific search parameters inside <code translate="no">search_params.params</code>. The following table lists common examples and is not exhaustive.</p>
 <table>
 <thead>
-<tr><th>Parameter</th><th>Beispiel-Fabrik</th><th>Beschreibung</th></tr>
+<tr><th>Parameter</th><th>Example factory</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">nprobe</code></td><td><code translate="no">IVF64,Flat</code></td><td>Anzahl der zu durchsuchenden invertierten Listen.</td></tr>
-<tr><td><code translate="no">efSearch</code></td><td><code translate="no">HNSW16,Flat</code></td><td>Größe der HNSW-Suchkandidatenliste.</td></tr>
-<tr><td><code translate="no">k_factor</code></td><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td>Anzahl der an den Refiner übergebenen Kandidaten im Verhältnis zum angeforderten Top-K.</td></tr>
+<tr><td><code translate="no">nprobe</code></td><td><code translate="no">IVF64,Flat</code></td><td>Number of inverted lists to search.</td></tr>
+<tr><td><code translate="no">efSearch</code></td><td><code translate="no">HNSW16,Flat</code></td><td>Size of the HNSW search candidate list.</td></tr>
+<tr><td><code translate="no">k_factor</code></td><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td>Number of candidates supplied to the refiner relative to the requested top-K.</td></tr>
 </tbody>
 </table>
-<p>Milvus leitet nur vom Adapter erkannte zusätzliche Parameter weiter. Unbekannte Build-Schlüssel und Suchschlüssel, die von der jeweiligen Factory-Familie nicht unterstützt werden, werden abgelehnt. Milvus unterhält kein universelles Parameterschema für jede mögliche Factory. Lesen Sie die Faiss-Dokumentation für die ausgewählte Factory und überprüfen Sie anschließend den gesamten Build- und Suchablauf anhand der genauen Milvus-Version und des Images, die Sie bereitstellen möchten.</p>
-<h2 id="Handle-errors-and-unsupported-operations" class="common-anchor-header">Behandlung von Fehlern und nicht unterstützten Operationen<button data-href="#Handle-errors-and-unsupported-operations" class="anchor-icon" translate="no">
+<p>Milvus forwards only adapter-recognized additional parameters. Unknown build keys and search keys that the concrete factory family does not support are rejected. Milvus does not maintain a universal parameter schema for every possible factory. Check the Faiss documentation for the selected factory, then validate the complete build and search flow against the exact Milvus version and image that you plan to deploy.</p>
+<h2 id="Handle-errors-and-unsupported-operations" class="common-anchor-header">Handle errors and unsupported operations<button data-href="#Handle-errors-and-unsupported-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -398,13 +397,13 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>Wenn die Factory-Zeichenkette ungültig oder im Milvus-Build nicht verfügbar ist, schlägt der Indexaufbau fehl. Überprüfen Sie den Indexstatus und den Fehlergrund, bevor Sie die Sammlung laden.</p></li>
-<li><p>Wenn ein Parameter den falschen Typ hat, schlägt die Suche fehl. Beispielsweise wird „ <code translate="no">nprobe=&quot;invalid&quot;</code> “ abgelehnt, da „ <code translate="no">nprobe</code> “ numerisch sein muss.</p></li>
-<li><p>Wenn ein Parameter nicht auf die erstellte Factory zutrifft, lehnt der Adapter ihn als nicht unterstützt ab.</p></li>
-<li><p>Wenn eine Factory den Milvus-Selektor nicht unterstützt, kann die gefilterte Suche fehlschlagen, selbst wenn dieselbe Factory in einem eigenständigen Faiss-System suchen kann.</p></li>
-<li><p>Verwenden Sie „ <code translate="no">search_iterator()</code> “ nicht mit einem „ <code translate="no">FAISS</code> “-Index.</p></li>
+<li><p>If the factory string is invalid or unavailable in the Milvus build, index building fails. Check the index state and failure reason before loading the collection.</p></li>
+<li><p>If a parameter has the wrong type, search fails. For example, <code translate="no">nprobe=&quot;invalid&quot;</code> is rejected because <code translate="no">nprobe</code> must be numeric.</p></li>
+<li><p>If a parameter does not apply to the built factory, the adapter rejects it as unsupported.</p></li>
+<li><p>If a factory does not support the Milvus selector, filtered search can fail even when the same factory can search in standalone Faiss.</p></li>
+<li><p>Do not use <code translate="no">search_iterator()</code> with a <code translate="no">FAISS</code> index.</p></li>
 </ul>
-<h2 id="Whats-next" class="common-anchor-header">Was kommt als Nächstes<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -420,7 +419,7 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li>Erfahren Sie in <a href="/docs/de/index-explained.md">„Index Explained“</a>, wie Milvus-Indizes aufgebaut sind.</li>
-<li>Vergleichen Sie die speziellen Index-Typen <a href="/docs/de/ivf-flat.md">„IVF_FLAT</a> “ und <a href="/docs/de/hnsw.md">„HNSW</a> “.</li>
-<li>Lesen Sie <a href="/docs/de/metric.md">den Abschnitt „Metriktypen“</a>, bevor Sie eine Metrik für die Factory auswählen.</li>
+<li>Learn how Milvus indexes are organized in <a href="/docs/de/index-explained.md">Index Explained</a>.</li>
+<li>Compare the dedicated <a href="/docs/de/ivf-flat.md">IVF_FLAT</a> and <a href="/docs/de/hnsw.md">HNSW</a> index types.</li>
+<li>Review <a href="/docs/de/metric.md">Metric Types</a> before choosing a metric for the factory.</li>
 </ul>

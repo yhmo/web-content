@@ -1,10 +1,13 @@
 ---
 id: stemmer-filter.md
-title: 詞幹提取器
+title: Stemmer
 summary: >-
-  詞幹化篩選器會將單詞簡化為其基本形式或詞幹（稱為詞幹化），從而更輕鬆地匹配不同詞形變化下意義相近的單詞。該詞幹化篩選器支援多種語言，可在各種語言環境中實現有效的搜尋與索引。
+  The stemmer filter reduces words to their base or root form (known as
+  stemming), making it easier to match words with similar meanings across
+  different inflections. The stemmer filter supports multiple languages,
+  allowing for effective search and indexing in various linguistic contexts.
 ---
-<h1 id="Stemmer" class="common-anchor-header">詞幹提取器<button data-href="#Stemmer" class="anchor-icon" translate="no">
+<h1 id="Stemmer" class="common-anchor-header">Stemmer<button data-href="#Stemmer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -19,8 +22,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">stemmer</code> 篩選器會將單字還原為其基本形式或詞根（稱為詞幹化），使系統更容易在不同詞形變化中匹配意義相近的單字。<code translate="no">stemmer</code> 篩選器支援多種語言，可在各種語言環境中進行有效的搜尋與索引。</p>
-<h2 id="Configuration" class="common-anchor-header">設定<button data-href="#Configuration" class="anchor-icon" translate="no">
+    </button></h1><p>The <code translate="no">stemmer</code> filter reduces words to their base or root form (known as stemming), making it easier to match words with similar meanings across different inflections. The <code translate="no">stemmer</code> filter supports multiple languages, allowing for effective search and indexing in various linguistic contexts.</p>
+<h2 id="Configuration" class="common-anchor-header">Configuration<button data-href="#Configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -35,13 +38,13 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">stemmer</code> 篩選器是 Milvus 中的自訂篩選器。若要使用此篩選器，請在篩選器配置中指定<code translate="no">&quot;type&quot;: &quot;stemmer&quot;</code> ，並搭配<code translate="no">language</code> 參數來選擇要進行詞幹分析的語言。</p>
+    </button></h2><p>The <code translate="no">stemmer</code> filter is a custom filter in Milvus. To use it, specify <code translate="no">&quot;type&quot;: &quot;stemmer&quot;</code> in the filter configuration, along with a <code translate="no">language</code> parameter to select the desired language for stemming.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -88,21 +91,21 @@ analyzerParams=<span class="hljs-string">&#x27;{
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">stemmer</code> 篩選器接受以下可配置參數。</p>
+<p>The <code translate="no">stemmer</code> filter accepts the following configurable parameters.</p>
 <table>
    <tr>
-     <th><p>參數</p></th>
-     <th><p>說明</p></th>
+     <th><p>Parameter</p></th>
+     <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">language</code></p></td>
-     <td><p>指定詞幹化處理的語言。支援的語言包括：<code translate="no">"arabic"</code> 、<code translate="no">"danish"</code> 、<code translate="no">"dutch"</code> 、<code translate="no">"english"</code> 、<code translate="no">"finnish"</code> 、<code translate="no">"french"</code> 、<code translate="no">"german"</code> 、<code translate="no">"greek"</code> 、<code translate="no">"hungarian"</code> 、<code translate="no">"italian"</code> 、<code translate="no">"norwegian"</code> 、<code translate="no">"portuguese"</code> 、<code translate="no">"romanian"</code> 、<code translate="no">"russian"</code> 、<code translate="no">"spanish"</code> 、<code translate="no">"swedish"</code> 、<code translate="no">"tamil"</code> 、<code translate="no">"turkish"</code></p></td>
+     <td><p>Specifies the language for the stemming process. Supported languages include: <code translate="no">"arabic"</code>, <code translate="no">"danish"</code>, <code translate="no">"dutch"</code>, <code translate="no">"english"</code>, <code translate="no">"finnish"</code>, <code translate="no">"french"</code>, <code translate="no">"german"</code>, <code translate="no">"greek"</code>, <code translate="no">"hungarian"</code>, <code translate="no">"italian"</code>, <code translate="no">"norwegian"</code>, <code translate="no">"portuguese"</code>, <code translate="no">"romanian"</code>, <code translate="no">"russian"</code>, <code translate="no">"spanish"</code>, <code translate="no">"swedish"</code>, <code translate="no">"tamil"</code>, <code translate="no">"turkish"</code></p></td>
    </tr>
 </table>
-<p><code translate="no">stemmer</code> 篩選器是針對分詞器所產生的詞項進行處理，因此必須與分詞器搭配使用。</p>
-<p>對於阿拉伯文，在大多數情況下應使用內建的 <a href="/docs/zh-hant/arabic-analyzer.md"><code translate="no">arabic</code></a> 分析器。內建分析器包含阿拉伯語詞幹化，以及阿拉伯語正規化、小數位數正規化與阿拉伯語停用詞移除功能。僅當您需要建立自訂分析器管線時，才應直接使用<code translate="no">stemmer</code> 篩選器。</p>
-<p>定義<code translate="no">analyzer_params</code> 後，您可在定義集合架構時將其套用至<code translate="no">VARCHAR</code> 欄位。這使 Milvus 能使用指定的分析器處理該欄位中的文字，以實現高效的詞元化與過濾。詳細資訊請參閱「<a href="/docs/zh-hant/analyzer-overview.md#Example-use">使用範例</a>」。</p>
-<h2 id="Examples" class="common-anchor-header">範例<button data-href="#Examples" class="anchor-icon" translate="no">
+<p>The <code translate="no">stemmer</code> filter operates on the terms generated by the tokenizer, so it must be used in combination with a tokenizer.</p>
+<p>For Arabic text, use the built-in <a href="/docs/zh-hant/arabic-analyzer.md"><code translate="no">arabic</code></a> analyzer in most cases. The built-in analyzer includes Arabic stemming together with Arabic normalization, decimal digit normalization, and Arabic stop-word removal. Use the <code translate="no">stemmer</code> filter directly only when you need to build a custom analyzer pipeline.</p>
+<p>After defining <code translate="no">analyzer_params</code>, you can apply them to a <code translate="no">VARCHAR</code> field when defining a collection schema. This allows Milvus to process the text in that field using the specified analyzer for efficient tokenization and filtering. For details, refer to <a href="/docs/zh-hant/analyzer-overview.md#Example-use">Example use</a>.</p>
+<h2 id="Examples" class="common-anchor-header">Examples<button data-href="#Examples" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -117,8 +120,8 @@ analyzerParams=<span class="hljs-string">&#x27;{
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>在將分析器設定套用至您的集合架構之前，請先使用<code translate="no">run_analyzer</code> 方法驗證其運作行為。</p>
-<h3 id="Analyzer-configuration" class="common-anchor-header">分析器設定<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
+    </button></h2><p>Before applying the analyzer configuration to your collection schema, verify its behavior using the <code translate="no">run_analyzer</code> method.</p>
+<h3 id="Analyzer-configuration" class="common-anchor-header">Analyzer configuration<button data-href="#Analyzer-configuration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,11 +137,11 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">analyzer_params = {
     <span class="hljs-string">&quot;tokenizer&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
@@ -179,7 +182,7 @@ analyzerParams=<span class="hljs-string">&#x27;{
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Verification-using-runanalyzer--Milvus-2511+" class="common-anchor-header">使用以下方式進行驗證<code translate="no">run_analyzer</code><span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Verification-using-runanalyzer--Milvus-2511+" class="anchor-icon" translate="no">
+<h3 id="Verification-using-runanalyzer" class="common-anchor-header">Verification using <code translate="no">run_analyzer</code><span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.5.11+</span><button data-href="#Verification-using-runanalyzer" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -195,10 +198,10 @@ analyzerParams=<span class="hljs-string">&#x27;{
         ></path>
       </svg>
     </button></h3><div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#go">   Go</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#go">Go</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> (
     MilvusClient,
@@ -265,7 +268,7 @@ result, err := client.RunAnalyzer(ctx, option)
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># restful</span>
 not support yet
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Expected-output" class="common-anchor-header">預期輸出<button data-href="#Expected-output" class="anchor-icon" translate="no">
+<h3 id="Expected-output" class="common-anchor-header">Expected output<button data-href="#Expected-output" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"

@@ -1,7 +1,9 @@
 ---
 id: faiss.md
 title: FAISSCompatible with Milvus 3.0.0+
-summary: Milvus 3.0에서 FAISS 인덱스 패스스루 기능을 사용하여 Faiss 인덱스 팩토리 문자열과 팩토리별 검색 매개변수를 지정하십시오.
+summary: >-
+  Use FAISS index passthrough to supply Faiss index-factory strings and
+  factory-specific search parameters in Milvus 3.0.
 beta: Milvus 3.0.0+
 ---
 <h1 id="FAISS" class="common-anchor-header">FAISS<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.0+</span><button data-href="#FAISS" class="anchor-icon" translate="no">
@@ -19,12 +21,12 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><code translate="no">FAISS</code> 인덱스 유형은 Milvus 3.0.0 이상 버전에서 사용할 수 있는 전문가 수준의 패스스루 기능입니다. 이 기능을 사용하면 고정된 Milvus 인덱스 유형을 선택하는 대신 <a href="https://github.com/facebookresearch/faiss/wiki/The-index-factory">Faiss 인덱스 팩토리 문자열을</a> 직접 지정할 수 있습니다.</p>
-<p>이미 테스트를 거친 Faiss 레시피가 있고 그 구성을 직접 제어해야 할 경우 <code translate="no">FAISS</code> 를 사용하십시오. 전용 Milvus 인덱스 유형이 있는 일반적인 레시피의 경우, 안정적이고 문서화된 매개변수 계약이 있으므로 전용 유형을 우선적으로 사용하는 것이 좋습니다.</p>
+    </button></h1><p>The <code translate="no">FAISS</code> index type is an expert-level passthrough available in Milvus 3.0.0 and later. It lets you supply a <a href="https://github.com/facebookresearch/faiss/wiki/The-index-factory">Faiss index-factory string</a> instead of selecting a fixed Milvus index type.</p>
+<p>Use <code translate="no">FAISS</code> when you already have a tested Faiss recipe and need direct control over its composition. For common recipes with a dedicated Milvus index type, prefer the dedicated type because it has a stable, documented parameter contract.</p>
 <div class="alert note">
-<p>업스트림 Faiss에서 허용하는 팩토리 문자열이 Milvus에서 자동으로 지원되는 것은 아닙니다. 호환성은 벡터 필드 유형, 메트릭, 차원, Milvus 이미지에 컴파일된 Faiss 모듈, 그리고 생성된 인덱스가 Milvus에서 요구하는 연산을 지원하는지 여부에 따라 달라집니다.</p>
+<p>A factory string accepted by upstream Faiss is not automatically supported by Milvus. Compatibility depends on the vector field type, metric, dimension, Faiss modules compiled into the Milvus image, and whether the resulting index supports the operations that Milvus requires.</p>
 </div>
-<h2 id="Limits" class="common-anchor-header">제한 사항<button data-href="#Limits" class="anchor-icon" translate="no">
+<h2 id="Limits" class="common-anchor-header">Limits<button data-href="#Limits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -40,18 +42,18 @@ beta: Milvus 3.0.0+
         ></path>
       </svg>
     </button></h2><ul>
-<li><p><code translate="no">FAISS</code> <code translate="no">FLOAT_VECTOR</code> 및 필드를 지원합니다. , , 또는 필드는 지원하지 않습니다. <code translate="no">BINARY_VECTOR</code> <code translate="no">FLOAT16_VECTOR</code> <code translate="no">BFLOAT16_VECTOR</code> <code translate="no">INT8_VECTOR</code> <code translate="no">SPARSE_FLOAT_VECTOR</code> </p></li>
-<li><p>일반 <code translate="no">FAISS</code> 어댑터는 CPU에서 실행됩니다. 이는 Faiss GPU 인덱스 유형이 아닙니다.</p></li>
-<li><p><code translate="no">faiss_index_name</code> 빌드 매개변수가 필수입니다. Milvus는 레시피를 전용 Milvus 인덱스 유형으로 변환하지 않고 해당 값을 Faiss로 전달합니다.</p></li>
-<li><p>빌드 및 검색 매개변수는 팩토리별로 다릅니다. 한 팩토리에서 지원하는 매개변수가 다른 팩토리에서는 거부될 수 있습니다.</p></li>
-<li><p>스칼라 필터링을 사용하려면 기본 Faiss 인덱스가 ID 선택기를 지원해야 합니다. Milvus 3.0.0 테스트는 <code translate="no">Flat</code>, <code translate="no">IVF64,Flat</code> 및 <code translate="no">HNSW16,Flat</code> 부동 소수점 팩토리를 사용한 필터링 검색을 다룹니다. 모든 팩토리가 필터를 지원하거나, 이진 <code translate="no">FAISS</code> 인덱스가 스칼라 필터링을 지원한다고 가정하지 마십시오.</p></li>
-<li><p>검색 이터레이터는 지원되지 않습니다.</p></li>
-<li><p>이 어댑터는 원시 벡터 검색 기능을 제공하지 않습니다.</p></li>
-<li><p>범위 검색 지원 여부는 팩토리에 따라 다릅니다. Float <code translate="no">Flat</code> 는 릴리스 범위를 지원합니다. 이진 <code translate="no">FAISS</code> 인덱스에서는 범위 검색을 사용하지 마십시오.</p></li>
-<li><p>팩토리가 성공적으로 빌드되더라도 일부 Milvus 검색 작업을 거부할 수 있습니다. 예를 들어, standalone <code translate="no">PQ8x4</code> 는 스칼라 필터링 검색에서 사용되는 선택자를 거부합니다. 필터링되지 않은 사용에 대해서는 별도로 유효성을 확인하십시오.</p></li>
-<li><p>Milvus 3.0.0에서는 인덱스를 재로드한 후 <code translate="no">COSINE</code> 점수와 범위 검색 임계값을 다시 검증해야 합니다. Knowhere v3.0.6은 역직렬화 과정에서 <code translate="no">FAISS</code> 어댑터의 코사인 정규화 상태를 복원하지 않습니다.</p></li>
+<li><p><code translate="no">FAISS</code> supports <code translate="no">FLOAT_VECTOR</code> and <code translate="no">BINARY_VECTOR</code> fields. It does not support <code translate="no">FLOAT16_VECTOR</code>, <code translate="no">BFLOAT16_VECTOR</code>, <code translate="no">INT8_VECTOR</code>, or <code translate="no">SPARSE_FLOAT_VECTOR</code> fields.</p></li>
+<li><p>The generic <code translate="no">FAISS</code> adapter runs on CPU. It is not a Faiss GPU index type.</p></li>
+<li><p>The <code translate="no">faiss_index_name</code> build parameter is required. Milvus passes its value to Faiss without converting the recipe to a dedicated Milvus index type.</p></li>
+<li><p>Build and search parameters are factory-specific. A parameter supported by one factory can be rejected by another.</p></li>
+<li><p>Scalar filtering requires the underlying Faiss index to support an ID selector. Milvus 3.0.0 tests cover filtered search with the float factories <code translate="no">Flat</code>, <code translate="no">IVF64,Flat</code>, and <code translate="no">HNSW16,Flat</code>. Do not assume that every factory supports filters or that binary <code translate="no">FAISS</code> indexes support scalar filtering.</p></li>
+<li><p>Search iterators are not supported.</p></li>
+<li><p>The adapter does not provide raw-vector retrieval.</p></li>
+<li><p>Range-search support depends on the factory. Float <code translate="no">Flat</code> has release coverage. Do not use range search with binary <code translate="no">FAISS</code> indexes.</p></li>
+<li><p>A factory can build successfully but still reject some Milvus search operations. For example, standalone <code translate="no">PQ8x4</code> rejects the selector used by scalar-filtered search. Validate unfiltered use separately.</p></li>
+<li><p>In Milvus 3.0.0, validate <code translate="no">COSINE</code> scores and range-search thresholds after an index reload. Knowhere v3.0.6 does not restore the <code translate="no">FAISS</code> adapter’s cosine-normalization state during deserialization.</p></li>
 </ul>
-<h2 id="How-it-works" class="common-anchor-header">작동 원리<button data-href="#How-it-works" class="anchor-icon" translate="no">
+<h2 id="How-it-works" class="common-anchor-header">How it works<button data-href="#How-it-works" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -66,15 +68,15 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><span class="img-wrapper">
-  
-   <img translate="no" src="/docs/v3.0.x/assets/faiss-index-flow.png" alt="FAISS index passthrough workflow" class="doc-image" id="faiss-index-passthrough-workflow" /> 
-   <span>FAISS 인덱스 패스스루 워크플로우</span>
-  
- </span></p>
-<p>인덱스 구축 시, Milvus는 <code translate="no">faiss_index_name</code>, 벡터 필드 유형, 메트릭 및 기타 구축 매개변수를 Knowhere FAISS 어댑터로 전달합니다. 어댑터는 <code translate="no">FLOAT_VECTOR</code> 필드의 경우 <code translate="no">faiss::index_factory()</code> 를, <code translate="no">BINARY_VECTOR</code> 필드의 경우 <code translate="no">faiss::index_binary_factory()</code> 를 호출합니다. 그 결과 생성된 객체는 일반적인 Milvus 인덱스 수명 주기를 통해 관리되는 네이티브 Faiss 인덱스입니다.</p>
-<p>검색 시, 어댑터는 제공된 팩토리별 매개변수를 일치하는 Faiss <code translate="no">SearchParameters</code> 객체로 변환합니다. 지원되는 부동소수점 팩토리의 경우, Milvus 필터 비트셋을 Faiss 선택기로도 전달합니다. 셀렉터 지원은 팩토리별로 다르며, 공개된 테스트에서는 이진 <code translate="no">FAISS</code> 인덱스에 대한 스칼라 필터링을 지원하지 않습니다. 이 때문에 레시피가 독립형 Faiss에서는 유효할 수 있지만, Milvus 검색 경로에서 요구하는 작업은 거부될 수 있습니다.</p>
-<h2 id="Prerequisites" class="common-anchor-header">필수 조건<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h2><p>
+  <span class="img-wrapper">
+    <img translate="no" src="/docs/v3.0.x/assets/faiss-index-flow.png" alt="FAISS index passthrough workflow" class="doc-image" id="faiss-index-passthrough-workflow" />
+    <span>FAISS index passthrough workflow</span>
+  </span>
+</p>
+<p>For index building, Milvus forwards <code translate="no">faiss_index_name</code>, the vector field type, the metric, and other build parameters to the Knowhere FAISS adapter. The adapter calls <code translate="no">faiss::index_factory()</code> for <code translate="no">FLOAT_VECTOR</code> fields or <code translate="no">faiss::index_binary_factory()</code> for <code translate="no">BINARY_VECTOR</code> fields. The resulting object is a native Faiss index managed through the normal Milvus index lifecycle.</p>
+<p>For search, the adapter converts the supplied factory-specific parameters into the matching Faiss <code translate="no">SearchParameters</code> object. For supported float factories, it also passes the Milvus filter bitset as a Faiss selector. Selector support is factory-specific, and the released tests do not establish scalar filtering for binary <code translate="no">FAISS</code> indexes. This is why a recipe can be valid in standalone Faiss but reject an operation required by the Milvus search path.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -90,12 +92,12 @@ beta: Milvus 3.0.0+
         ></path>
       </svg>
     </button></h2><ul>
-<li>Milvus 3.0.0 이상</li>
-<li>PyMilvus 3.0.0 이상</li>
-<li>Faiss 인덱스 팩토리 구문 및 선택한 팩토리의 훈련 요구 사항에 대한 이해</li>
+<li>Milvus 3.0.0 or later</li>
+<li>PyMilvus 3.0.0 or later</li>
+<li>Familiarity with Faiss index-factory syntax and the training requirements of the selected factory</li>
 </ul>
-<p>설치 방법은 <a href="/docs/ko/install-pymilvus.md">PyMilvus 설치를</a> 참조하십시오.</p>
-<h2 id="Choose-a-factory-string" class="common-anchor-header">팩토리 문자열 선택<button data-href="#Choose-a-factory-string" class="anchor-icon" translate="no">
+<p>For installation instructions, see <a href="/docs/ko/install-pymilvus.md">Install PyMilvus</a>.</p>
+<h2 id="Choose-a-factory-string" class="common-anchor-header">Choose a factory string<button data-href="#Choose-a-factory-string" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -110,23 +112,23 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>팩토리 문자열은 Faiss 인덱스를 일련의 구성 요소로 설명합니다. 다음 예시는 Milvus 3.0.0 릴리스 테스트에서 검증되었습니다. 이 목록은 모든 경우를 망라하지는 않습니다.</p>
+    </button></h2><p>A factory string describes a Faiss index as a sequence of components. The following examples have Milvus 3.0.0 release-test coverage. This list is not exhaustive.</p>
 <table>
 <thead>
-<tr><th>팩토리 문자열</th><th>필드 유형</th><th>릴리스 테스트에서 검증된 메트릭</th><th>검색 매개변수</th><th>비고</th></tr>
+<tr><th>Factory string</th><th>Field type</th><th>Metrics exercised in release tests</th><th>Search parameters</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td>없음</td><td>정확한 검색.</td></tr>
-<tr><td><code translate="no">IVF64,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">nprobe</code></td><td>64개의 역순 목록과 압축되지 않은 벡터를 사용하는 IVF.</td></tr>
-<tr><td><code translate="no">HNSW16,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">efSearch</code></td><td>플랫 벡터 저장을 사용하는 HNSW 그래프.</td></tr>
-<tr><td><code translate="no">OPQ16,IVF64,PQ16x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>팩토리별</td><td>OPQ, IVF 및 PQ를 결합합니다. 사용자의 데이터로 훈련 규모와 재현율을 검증하십시오.</td></tr>
-<tr><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td><code translate="no">nprobe</code>, <code translate="no">k_factor</code></td><td>PQ 후보 검색 후 플랫 리파이너를 사용합니다.</td></tr>
-<tr><td><code translate="no">PQ8x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>없음</td><td>릴리스 테스트가 내장되어 있습니다. 인덱스가 선택기를 거부하기 때문에 스칼라 필터링 검색이 실패합니다. 필터링되지 않은 사용은 별도로 검증하십시오.</td></tr>
-<tr><td><code translate="no">BFlat</code></td><td><code translate="no">BINARY_VECTOR</code></td><td><code translate="no">HAMMING</code></td><td>없음</td><td>이진 벡터에 대한 정확한 검색.</td></tr>
+<tr><td><code translate="no">Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td>None</td><td>Exact search.</td></tr>
+<tr><td><code translate="no">IVF64,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">nprobe</code></td><td>IVF with 64 inverted lists and uncompressed vectors.</td></tr>
+<tr><td><code translate="no">HNSW16,Flat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code>, <code translate="no">IP</code>, <code translate="no">COSINE</code></td><td><code translate="no">efSearch</code></td><td>HNSW graph with flat vector storage.</td></tr>
+<tr><td><code translate="no">OPQ16,IVF64,PQ16x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>Factory-specific</td><td>Combines OPQ, IVF, and PQ. Validate training size and recall with your data.</td></tr>
+<tr><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td><code translate="no">nprobe</code>, <code translate="no">k_factor</code></td><td>Uses a flat refiner after PQ candidate retrieval.</td></tr>
+<tr><td><code translate="no">PQ8x4</code></td><td><code translate="no">FLOAT_VECTOR</code></td><td><code translate="no">L2</code></td><td>None</td><td>Builds in release tests. Scalar-filtered search fails because the index rejects the selector; validate unfiltered use separately.</td></tr>
+<tr><td><code translate="no">BFlat</code></td><td><code translate="no">BINARY_VECTOR</code></td><td><code translate="no">HAMMING</code></td><td>None</td><td>Exact search for binary vectors.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">COSINE</code> 항목은 빌드 및 검색 스모크 테스트 범위를 나타냅니다. Milvus 3.0.0의 경우, 인덱스 재로드 후 점수 또는 범위 검색의 정확성을 보장하지 않습니다. <a href="#limits">‘제한 사항’을</a> 참조하십시오.</p>
-<h2 id="Build-and-search-a-float-index" class="common-anchor-header">부동소수점 인덱스 빌드 및 검색<button data-href="#Build-and-search-a-float-index" class="anchor-icon" translate="no">
+<p>The <code translate="no">COSINE</code> entries indicate build and search smoke coverage. For Milvus 3.0.0, they do not establish score or range-search correctness after an index reload. See <a href="#limits">Limits</a>.</p>
+<h2 id="Build-and-search-a-float-index" class="common-anchor-header">Build and search a float index<button data-href="#Build-and-search-a-float-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -141,9 +143,9 @@ beta: Milvus 3.0.0+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>다음 예제는 128차원 벡터 3,000개를 생성합니다. 이는 예제에서 사용되는 ‘ <code translate="no">IVF64,Flat</code> ’ 레시피에 충분한 훈련 데이터를 제공합니다. 인덱스를 빌드하고 검색하기 전에 설정 블록을 펼치고 실행하십시오.</p>
+    </button></h2><p>The following example creates 3,000 128-dimensional vectors. This provides enough training data for the <code translate="no">IVF64,Flat</code> recipe used in the example. Expand the setup block and run it before building and searching the index.</p>
 <p><details></p>
-<p><summary>부동소수점 벡터 컬렉션 준비</summary></p>
+<p><summary>Prepare the float-vector collection</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
@@ -177,7 +179,7 @@ client.insert(collection_name=collection_name, data=rows)
 client.flush(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Build-the-index" class="common-anchor-header">인덱스 생성<button data-href="#Build-the-index" class="anchor-icon" translate="no">
+<h3 id="Build-the-index" class="common-anchor-header">Build the index<button data-href="#Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -192,7 +194,7 @@ client.flush(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>' <code translate="no">index_type</code> '을 ' <code translate="no">FAISS</code>'로 설정하고, ' <code translate="no">faiss_index_name</code> '를 사용하여 네이티브 Faiss 팩토리 레시피를 선택하십시오.</p>
+    </button></h3><p>Set <code translate="no">index_type</code> to <code translate="no">FAISS</code>, and use <code translate="no">faiss_index_name</code> to select the native Faiss factory recipe.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;vector&quot;</span>,
@@ -205,8 +207,8 @@ index_params.add_index(
 client.create_index(collection_name=collection_name, index_params=index_params)
 client.load_collection(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
-<p><code translate="no">IVF64,Flat</code> 팩토리 문자열은 64개의 역목록을 가진 IVF 인덱스를 생성하고, 각 목록에 압축되지 않은 벡터를 저장합니다.</p>
-<h3 id="Search-the-index" class="common-anchor-header">인덱스 검색<button data-href="#Search-the-index" class="anchor-icon" translate="no">
+<p>The factory string <code translate="no">IVF64,Flat</code> creates an IVF index with 64 inverted lists and stores uncompressed vectors in each list.</p>
+<h3 id="Search-the-index" class="common-anchor-header">Search the index<button data-href="#Search-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -221,7 +223,7 @@ client.load_collection(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">search_params.params</code> 내에서 팩토리별 검색 매개변수를 설정합니다. IVF 팩토리의 경우, <code translate="no">nprobe</code> 는 Faiss가 검색할 인버티드 리스트의 수를 제어합니다.</p>
+    </button></h3><p>Set factory-specific search parameters inside <code translate="no">search_params.params</code>. For an IVF factory, <code translate="no">nprobe</code> controls how many inverted lists Faiss searches.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">search_params = {</span>
 <span class="highlighted-comment-line">    <span class="hljs-string">&quot;params&quot;</span>: {<span class="hljs-string">&quot;nprobe&quot;</span>: <span class="hljs-number">8</span>},</span>
 <span class="highlighted-comment-line">}</span>
@@ -240,8 +242,8 @@ results = client.search(
     <span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> hits:
         <span class="hljs-built_in">print</span>(hit)
 <button class="copy-code-btn"></button></code></pre>
-<p>쿼리는 ` <code translate="no">nprobe=8</code>`를 사용하므로, Faiss는 64개의 역색인 리스트 중 8개를 검색합니다. 필터는 ` <code translate="no">category</code> ` 값이 ` <code translate="no">reference</code>`인 엔티티로 결과를 제한합니다.</p>
-<h2 id="Build-and-search-a-binary-index" class="common-anchor-header">이진 인덱스 구축 및 검색<button data-href="#Build-and-search-a-binary-index" class="anchor-icon" translate="no">
+<p>The query uses <code translate="no">nprobe=8</code>, so Faiss searches 8 of the 64 inverted lists. The filter restricts results to entities whose <code translate="no">category</code> value is <code translate="no">reference</code>.</p>
+<h2 id="Build-and-search-a-binary-index" class="common-anchor-header">Build and search a binary index<button data-href="#Build-and-search-a-binary-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -256,9 +258,9 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">BINARY_VECTOR</code> 필드의 경우, <code translate="no">BFlat</code> 와 같은 이진 팩토리 문자열과 호환되는 이진 메트릭을 사용하십시오. 인덱스를 구축하고 검색하기 전에 설정 블록을 확장하여 실행하십시오.</p>
+    </button></h2><p>For <code translate="no">BINARY_VECTOR</code> fields, use a binary factory string such as <code translate="no">BFlat</code> and a compatible binary metric. Expand the setup block and run it before building and searching the index.</p>
 <p><details></p>
-<p><summary>바이너리 벡터 컬렉션 준비</summary></p>
+<p><summary>Prepare the binary-vector collection</summary></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> DataType, MilvusClient
@@ -284,7 +286,7 @@ client.insert(
 client.flush(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
 <p></details></p>
-<h3 id="Build-the-index" class="common-anchor-header">인덱스 구축<button data-href="#Build-the-index" class="anchor-icon" translate="no">
+<h3 id="Build-the-index" class="common-anchor-header">Build the index<button data-href="#Build-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -299,7 +301,7 @@ client.flush(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>이 바이너리 벡터 예제에서는 <code translate="no">BFlat</code> 을 팩토리 문자열로, <code translate="no">HAMMING</code> 을 메트릭으로 사용합니다.</p>
+    </button></h3><p>Use <code translate="no">BFlat</code> as the factory string and <code translate="no">HAMMING</code> as the metric for this binary-vector example.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 index_params.add_index(
     field_name=<span class="hljs-string">&quot;binary_vector&quot;</span>,
@@ -312,7 +314,7 @@ index_params.add_index(
 client.create_index(collection_name=collection_name, index_params=index_params)
 client.load_collection(collection_name=collection_name)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Search-the-index" class="common-anchor-header">인덱스 검색<button data-href="#Search-the-index" class="anchor-icon" translate="no">
+<h3 id="Search-the-index" class="common-anchor-header">Search the index<button data-href="#Search-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -327,7 +329,7 @@ client.load_collection(collection_name=collection_name)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><code translate="no">BFlat</code> 에는 패밀리별 검색 매개변수가 없습니다. 검색 요청을 구성할 때 빈 <code translate="no">params</code> 매핑을 전달하십시오.</p>
+    </button></h3><p><code translate="no">BFlat</code> has no family-specific search parameter. Pass an empty <code translate="no">params</code> mapping when constructing the search request.</p>
 <pre><code translate="no" class="language-python"><span class="highlighted-comment-line">search_params = {<span class="hljs-string">&quot;params&quot;</span>: {}}</span>
 
 results = client.search(
@@ -342,8 +344,8 @@ results = client.search(
     <span class="hljs-keyword">for</span> hit <span class="hljs-keyword">in</span> hits:
         <span class="hljs-built_in">print</span>(hit)
 <button class="copy-code-btn"></button></code></pre>
-<p>각 128차원 바이너리 벡터는 16바이트로 표현됩니다. 자세한 내용은 <a href="/docs/ko/binary-vector.md">‘바이너리 벡터’를</a> 참조하십시오.</p>
-<h2 id="Configure-build-and-search-parameters" class="common-anchor-header">빌드 및 검색 매개변수 구성<button data-href="#Configure-build-and-search-parameters" class="anchor-icon" translate="no">
+<p>Each 128-dimensional binary vector is represented by 16 bytes. For more information, see <a href="/docs/ko/binary-vector.md">Binary Vector</a>.</p>
+<h2 id="Configure-build-and-search-parameters" class="common-anchor-header">Configure build and search parameters<button data-href="#Configure-build-and-search-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -358,28 +360,28 @@ results = client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">FAISS</code> 인덱스 유형에는 하나의 필수 패스스루 빌드 매개변수가 있습니다.</p>
+    </button></h2><p>The <code translate="no">FAISS</code> index type has one required passthrough build parameter.</p>
 <table>
 <thead>
-<tr><th>매개변수</th><th>위치</th><th>설명</th></tr>
+<tr><th>Parameter</th><th>Location</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">faiss_index_name</code></td><td><code translate="no">params</code> in <code translate="no">add_index()</code></td><td>Faiss 인덱스 팩토리 문자열입니다. 예: <code translate="no">IVF64,Flat</code>.</td></tr>
+<tr><td><code translate="no">faiss_index_name</code></td><td><code translate="no">params</code> in <code translate="no">add_index()</code></td><td>The Faiss index-factory string. For example, <code translate="no">IVF64,Flat</code>.</td></tr>
 </tbody>
 </table>
-<p><code translate="no">search_params.params</code> 내부에서 팩토리별 검색 매개변수를 설정합니다. 다음 표에는 일반적인 예시가 나열되어 있으나, 이것이 전부는 아닙니다.</p>
+<p>Set factory-specific search parameters inside <code translate="no">search_params.params</code>. The following table lists common examples and is not exhaustive.</p>
 <table>
 <thead>
-<tr><th>매개변수</th><th>예시 공장</th><th>설명</th></tr>
+<tr><th>Parameter</th><th>Example factory</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">nprobe</code></td><td><code translate="no">IVF64,Flat</code></td><td>검색할 역순 목록의 수.</td></tr>
-<tr><td><code translate="no">efSearch</code></td><td><code translate="no">HNSW16,Flat</code></td><td>HNSW 검색 후보 목록의 크기.</td></tr>
-<tr><td><code translate="no">k_factor</code></td><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td>요청된 상위 K개에 대해 리파이너에 제공되는 후보의 수.</td></tr>
+<tr><td><code translate="no">nprobe</code></td><td><code translate="no">IVF64,Flat</code></td><td>Number of inverted lists to search.</td></tr>
+<tr><td><code translate="no">efSearch</code></td><td><code translate="no">HNSW16,Flat</code></td><td>Size of the HNSW search candidate list.</td></tr>
+<tr><td><code translate="no">k_factor</code></td><td><code translate="no">IVF64,PQ8x4,RFlat</code></td><td>Number of candidates supplied to the refiner relative to the requested top-K.</td></tr>
 </tbody>
 </table>
-<p>Milvus는 어댑터가 인식하는 추가 매개변수만 전달합니다. 구체적인 팩토리 계열에서 지원하지 않는 알 수 없는 빌드 키와 검색 키는 거부됩니다. Milvus는 가능한 모든 팩토리에 대한 범용 매개변수 스키마를 유지하지 않습니다. 선택한 팩토리에 대한 Faiss 문서를 확인한 다음, 배포할 예정인 정확한 Milvus 버전 및 이미지를 기준으로 전체 빌드 및 검색 흐름을 검증하십시오.</p>
-<h2 id="Handle-errors-and-unsupported-operations" class="common-anchor-header">오류 및 지원되지 않는 작업 처리<button data-href="#Handle-errors-and-unsupported-operations" class="anchor-icon" translate="no">
+<p>Milvus forwards only adapter-recognized additional parameters. Unknown build keys and search keys that the concrete factory family does not support are rejected. Milvus does not maintain a universal parameter schema for every possible factory. Check the Faiss documentation for the selected factory, then validate the complete build and search flow against the exact Milvus version and image that you plan to deploy.</p>
+<h2 id="Handle-errors-and-unsupported-operations" class="common-anchor-header">Handle errors and unsupported operations<button data-href="#Handle-errors-and-unsupported-operations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -395,13 +397,13 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>팩토리 문자열이 유효하지 않거나 Milvus 빌드에서 사용할 수 없는 경우, 인덱스 구축이 실패합니다. 컬렉션을 로드하기 전에 인덱스 상태와 실패 원인을 확인하십시오.</p></li>
-<li><p>매개변수의 유형이 잘못된 경우 검색이 실패합니다. 예를 들어, ` <code translate="no">nprobe=&quot;invalid&quot;</code> `는 ` <code translate="no">nprobe</code> `가 숫자형이어야 하므로 거부됩니다.</p></li>
-<li><p>매개변수가 구축된 팩토리에 적용되지 않는 경우, 어댑터는 이를 지원되지 않는 것으로 간주하여 거부합니다.</p></li>
-<li><p>팩토리가 Milvus 선택자를 지원하지 않는 경우, 동일한 팩토리가 독립형 Faiss에서는 검색이 가능하더라도 필터링된 검색이 실패할 수 있습니다.</p></li>
-<li><p><code translate="no">FAISS</code> 인덱스와 함께 <code translate="no">search_iterator()</code> 를 사용하지 마십시오.</p></li>
+<li><p>If the factory string is invalid or unavailable in the Milvus build, index building fails. Check the index state and failure reason before loading the collection.</p></li>
+<li><p>If a parameter has the wrong type, search fails. For example, <code translate="no">nprobe=&quot;invalid&quot;</code> is rejected because <code translate="no">nprobe</code> must be numeric.</p></li>
+<li><p>If a parameter does not apply to the built factory, the adapter rejects it as unsupported.</p></li>
+<li><p>If a factory does not support the Milvus selector, filtered search can fail even when the same factory can search in standalone Faiss.</p></li>
+<li><p>Do not use <code translate="no">search_iterator()</code> with a <code translate="no">FAISS</code> index.</p></li>
 </ul>
-<h2 id="Whats-next" class="common-anchor-header">다음 단계<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -417,7 +419,7 @@ results = client.search(
         ></path>
       </svg>
     </button></h2><ul>
-<li><a href="/docs/ko/index-explained.md">'인덱스 설명</a>'에서 Milvus 인덱스가 어떻게 구성되어 있는지 알아보세요.</li>
-<li>전용 <a href="/docs/ko/ivf-flat.md">IVF_FLAT</a> 및 <a href="/docs/ko/hnsw.md">HNSW</a> 인덱스 유형을 비교해 보세요.</li>
-<li>팩토리에 사용할 메트릭을 선택하기 전에 <a href="/docs/ko/metric.md">‘메트릭 유형’을</a> 검토하십시오.</li>
+<li>Learn how Milvus indexes are organized in <a href="/docs/ko/index-explained.md">Index Explained</a>.</li>
+<li>Compare the dedicated <a href="/docs/ko/ivf-flat.md">IVF_FLAT</a> and <a href="/docs/ko/hnsw.md">HNSW</a> index types.</li>
+<li>Review <a href="/docs/ko/metric.md">Metric Types</a> before choosing a metric for the factory.</li>
 </ul>

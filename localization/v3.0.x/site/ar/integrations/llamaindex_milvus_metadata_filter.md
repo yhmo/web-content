@@ -1,12 +1,13 @@
 ---
 id: llamaindex_milvus_metadata_filter.md
-title: تصفية البيانات الوصفية باستخدام LlamaIndex و Milvus
+title: Metadata Filtering with LlamaIndex and Milvus
 related_key: LlamaIndex
 summary: >-
-  يوضح هذا الدفتر استخدام مخزن ميلفوس المتجه في LlamaIndex، مع التركيز على
-  إمكانيات تصفية البيانات الوصفية. ستتعرف على كيفية فهرسة المستندات بالبيانات
-  الوصفية وإجراء عمليات بحث عن المتجهات باستخدام مرشحات البيانات الوصفية المضمنة
-  في LlamaIndex، وتطبيق تعبيرات التصفية الأصلية ل Milvus على مخزن المتجهات.
+  This notebook illustrates the use of the Milvus vector store in LlamaIndex,
+  focusing on metadata filtering capabilities. You will learn how to index
+  documents with metadata, perform vector searches with LlamaIndex's built-in
+  metadata filters, and apply Milvus's native filtering expressions to the
+  vector store.
 ---
 <p><a href="https://colab.research.google.com/github/milvus-io/bootcamp/blob/master/integration/llamaindex/llamaindex_milvus_metadata_filter.ipynb" target="_parent">
 <img translate="no" src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
@@ -14,7 +15,7 @@ summary: >-
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/llamaindex/llamaindex_milvus_metadata_filter.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<h1 id="Metadata-Filtering-with-LlamaIndex-and-Milvus" class="common-anchor-header">تصفية البيانات الوصفية باستخدام LlamaIndex و Milvus<button data-href="#Metadata-Filtering-with-LlamaIndex-and-Milvus" class="anchor-icon" translate="no">
+<h1 id="Metadata-Filtering-with-LlamaIndex-and-Milvus" class="common-anchor-header">Metadata Filtering with LlamaIndex and Milvus<button data-href="#Metadata-Filtering-with-LlamaIndex-and-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -29,9 +30,9 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>يوضح هذا الدفتر استخدام مخزن ميلفوس المتجه في LlamaIndex، مع التركيز على إمكانيات تصفية البيانات الوصفية. ستتعرف على كيفية فهرسة المستندات بالبيانات الوصفية وإجراء عمليات بحث عن المتجهات باستخدام مرشحات البيانات الوصفية المضمنة في LlamaIndex، وتطبيق تعبيرات التصفية الأصلية ل Milvus على مخزن المتجهات.</p>
-<p>بحلول نهاية هذا الدفتر، ستفهم كيفية استخدام ميزات التصفية في Milvus لتضييق نطاق نتائج البحث بناءً على البيانات الوصفية للمستند.</p>
-<h2 id="Prerequisites" class="common-anchor-header">المتطلبات الأساسية<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This notebook illustrates the use of the Milvus vector store in LlamaIndex, focusing on metadata filtering capabilities. You will learn how to index documents with metadata, perform vector searches with LlamaIndex’s built-in metadata filters, and apply Milvus’s native filtering expressions to the vector store.</p>
+<p>By the end of this notebook, you will understand how to utilize Milvus’s filtering features to narrow down search results based on document metadata.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -46,25 +47,25 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><strong>تثبيت التبعيات</strong></p>
-<p>قبل البدء، تأكد من تثبيت التبعيات التالية:</p>
+    </button></h2><p><strong>Install dependencies</strong></p>
+<p>Before getting started, make sure you have the following dependencies installed:</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">pip install llama-index-vector-stores-milvus llama-index</span>
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>إذا كنت تستخدم Google Colab، فقد تحتاج إلى <strong>إعادة تشغيل وقت التشغيل</strong> (انتقل إلى قائمة "وقت التشغيل" في أعلى الواجهة، وحدد "إعادة تشغيل الجلسة" من القائمة المنسدلة).</p>
+<p>If you’re using Google Colab, you may need to <strong>restart the runtime</strong> (Navigate to the “Runtime” menu at the top of the interface, and select “Restart session” from the dropdown menu.)</p>
 </div>
-<p><strong>إعداد الحسابات</strong></p>
-<p>يستخدم هذا البرنامج التعليمي OpenAI لتضمين النص وتوليد الإجابات. تحتاج إلى إعداد <a href="https://platform.openai.com/api-keys">مفتاح OpenAI API</a>.</p>
+<p><strong>Set up accounts</strong></p>
+<p>This tutorial uses OpenAI for text embeddings and answer generation. You need to prepare the <a href="https://platform.openai.com/api-keys">OpenAI API key</a>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> openai
 
 openai.api_key = <span class="hljs-string">&quot;sk-&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>لاستخدام مخزن ناقلات Milvus، حدد خادم Milvus الخاص بك <code translate="no">URI</code> (واختيارياً مع <code translate="no">TOKEN</code>). لبدء تشغيل خادم Milvus، يمكنك إعداد خادم Milvus باتباع <a href="https://milvus.io/docs/install-overview.md">دليل تثبيت Milvus</a> أو ببساطة تجربة <a href="https://docs.zilliz.com/docs/register-with-zilliz-cloud">Zilliz Cloud</a> مجانًا.</p>
+<p>To use the Milvus vector store, specify your Milvus server <code translate="no">URI</code> (and optionally with the <code translate="no">TOKEN</code>). To start a Milvus server, you can set up a Milvus server by following the <a href="https://milvus.io/docs/install-overview.md">Milvus installation guide</a> or simply trying <a href="https://docs.zilliz.com/docs/register-with-zilliz-cloud">Zilliz Cloud</a> for free.</p>
 <pre><code translate="no" class="language-python">URI = <span class="hljs-string">&quot;./milvus_filter_demo.db&quot;</span>  <span class="hljs-comment"># Use Milvus-Lite for demo purpose</span>
 <span class="hljs-comment"># TOKEN = &quot;&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>إعداد البيانات</strong></p>
-<p>في هذا المثال، سنستخدم بعض الكتب ذات العناوين المتشابهة أو المتطابقة ولكن ببيانات وصفية مختلفة (المؤلف، والنوع، وسنة النشر) كعينة للبيانات. سيساعد هذا في توضيح كيف يمكن لـ Milvus تصفية المستندات واسترجاعها بناءً على كل من تشابه المتجهات وسمات البيانات الوصفية.</p>
+<p><strong>Prepare data</strong></p>
+<p>For this example, we’ll use a few books with similar or identical titles but different metadata (author, genre, and publication year) as the sample data. This will help demonstrate how Milvus can filter and retrieve documents based on both vector similarity and metadata attributes.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> llama_index.core.schema <span class="hljs-keyword">import</span> TextNode
 
 nodes = [
@@ -102,7 +103,7 @@ nodes = [
     ),
 ]
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Build-Index" class="common-anchor-header">بناء الفهرس<button data-href="#Build-Index" class="anchor-icon" translate="no">
+<h2 id="Build-Index" class="common-anchor-header">Build Index<button data-href="#Build-Index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -117,7 +118,7 @@ nodes = [
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في هذا القسم، سنقوم بتخزين بيانات العينة في Milvus باستخدام نموذج التضمين الافتراضي (OpenAI's <code translate="no">text-embedding-ada-002</code>). سيتم تحويل العناوين إلى تضمينات نصية وتخزينها في حقل تضمين كثيف، بينما سيتم تخزين جميع البيانات الوصفية في حقول قياسية.</p>
+    </button></h2><p>In this section, we will store sample data in Milvus using the default embedding model (OpenAI’s <code translate="no">text-embedding-ada-002</code>). Titles will be converted into text embeddings and stored in a dense embedding field, while all metadata will be stored in scalar fields.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> llama_index.vector_stores.milvus <span class="hljs-keyword">import</span> MilvusVectorStore
 <span class="hljs-keyword">from</span> llama_index.core <span class="hljs-keyword">import</span> StorageContext, VectorStoreIndex
 
@@ -134,7 +135,7 @@ index = VectorStoreIndex(nodes, storage_context=storage_context)
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no">2025-04-22 08:31:09,871 [DEBUG][_create_connection]: Created new connection using: 19675caa8f894772b3db175b65d0063a (async_milvus_client.py:547)
 </code></pre>
-<h2 id="Metadata-Filters" class="common-anchor-header">مرشحات البيانات الوصفية<button data-href="#Metadata-Filters" class="anchor-icon" translate="no">
+<h2 id="Metadata-Filters" class="common-anchor-header">Metadata Filters<button data-href="#Metadata-Filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -149,8 +150,8 @@ index = VectorStoreIndex(nodes, storage_context=storage_context)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>في هذا القسم، سنقوم بتطبيق فلاتر وشروط البيانات الوصفية المضمنة في LlamaIndex على بحث Milvus.</p>
-<p><strong>تحديد مرشحات البيانات الوصفية</strong></p>
+    </button></h2><p>In this section, we will apply LlamaIndex’s built-in metadata filters and conditions to Milvus search.</p>
+<p><strong>Define metadata filters</strong></p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> llama_index.core.vector_stores <span class="hljs-keyword">import</span> (
     MetadataFilter,
     MetadataFilters,
@@ -165,7 +166,7 @@ filters = MetadataFilters(
     ]
 )
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>استرجاع من مخزن المتجهات باستخدام المرشحات</strong></p>
+<p><strong>Retrieve from vector store with filters</strong></p>
 <pre><code translate="no" class="language-python">retriever = index.as_retriever(filters=filters, similarity_top_k=<span class="hljs-number">5</span>)
 result_nodes = retriever.retrieve(<span class="hljs-string">&quot;Books about life&quot;</span>)
 <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> result_nodes:
@@ -180,7 +181,7 @@ result_nodes = retriever.retrieve(<span class="hljs-string">&quot;Books about li
 Life
 {'author': 'Keith Richards', 'genre': 'Memoir', 'year': 2010}
 </code></pre>
-<h3 id="Multiple-Metdata-Filters" class="common-anchor-header">مرشحات بيانات وصفية متعددة<button data-href="#Multiple-Metdata-Filters" class="anchor-icon" translate="no">
+<h3 id="Multiple-Metdata-Filters" class="common-anchor-header">Multiple Metdata Filters<button data-href="#Multiple-Metdata-Filters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -195,9 +196,9 @@ Life
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>يمكنك أيضًا الجمع بين مرشحات بيانات وصفية متعددة لإنشاء استعلامات أكثر تعقيدًا. يدعم LlamaIndex كلاً من <code translate="no">AND</code> و <code translate="no">OR</code> شروط للجمع بين المرشحات. وهذا يسمح باسترجاع أكثر دقة ومرونة للمستندات بناءً على سمات البيانات الوصفية الخاصة بها.</p>
-<p><strong>الشرط <code translate="no">AND</code></strong></p>
-<p>جرّب مثالاً لتصفية الكتب المنشورة بين عامي 1979 و2010 (تحديدًا، حيث 1979 &lt; السنة ≤ 2010):</p>
+    </button></h3><p>You can also combine multiple metadata filters to create more complex queries. LlamaIndex supports both <code translate="no">AND</code> and <code translate="no">OR</code> conditions to combine filters. This allows for more precise and flexible retrieval of documents based on their metadata attributes.</p>
+<p><strong>Condition <code translate="no">AND</code></strong></p>
+<p>Try an example filtering for books published between 1979 and 2010 (specifically, where 1979 < year ≤ 2010):</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> llama_index.core.vector_stores <span class="hljs-keyword">import</span> FilterCondition
 
 filters = MetadataFilters(
@@ -226,8 +227,8 @@ result_nodes = retriever.retrieve(<span class="hljs-string">&quot;Books about li
 Life
 {'author': 'Keith Richards', 'genre': 'Memoir', 'year': 2010}
 </code></pre>
-<p><strong>الحالة <code translate="no">OR</code></strong></p>
-<p>جرّب مثالاً آخر يقوم بتصفية الكتب التي كتبها إما جورج بيرك أو كيث ريتشاردز:</p>
+<p><strong>Condition <code translate="no">OR</code></strong></p>
+<p>Try another example that filters books written by either Georges Perec or Keith Richards:</p>
 <pre><code translate="no" class="language-python">filters = MetadataFilters(
     filters=[
         MetadataFilter(
@@ -254,7 +255,7 @@ result_nodes = retriever.retrieve(<span class="hljs-string">&quot;Books about li
 Life: A User's Manual
 {'author': 'Georges Perec', 'genre': 'Postmodern Fiction', 'year': 1978}
 </code></pre>
-<h2 id="Use-Milvuss-Keyword-Arguments" class="common-anchor-header">استخدم حجج الكلمات المفتاحية في ميلفوس<button data-href="#Use-Milvuss-Keyword-Arguments" class="anchor-icon" translate="no">
+<h2 id="Use-Milvuss-Keyword-Arguments" class="common-anchor-header">Use Milvus’s Keyword Arguments<button data-href="#Use-Milvuss-Keyword-Arguments" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -269,14 +270,14 @@ Life: A User's Manual
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>بالإضافة إلى إمكانيات التصفية المدمجة، يمكنك استخدام تعبيرات التصفية الأصلية في ميلفوس بواسطة وسيطة الكلمة الرئيسية <code translate="no">string_expr</code>. يسمح لك هذا بتمرير تعبيرات تصفية محددة مباشرةً إلى ملفوس أثناء عمليات البحث، بما يتجاوز تصفية البيانات الوصفية القياسية للوصول إلى إمكانيات التصفية المتقدمة في ملفوس.</p>
-<p>يوفر Milvus خيارات تصفية قوية ومرنة تتيح الاستعلام الدقيق عن بياناتك المتجهة:</p>
+    </button></h2><p>In addition to the built-in filtering capabilities, you can use Milvus’s native filtering expressions by the <code translate="no">string_expr</code> keyword argument. This allows you to pass specific filter expressions directly to Milvus during search operations, extending beyond the standard metadata filtering to access Milvus’s advanced filtering capabilities.</p>
+<p>Milvus provides powerful and flexible filtering options that enable precise querying of your vector data:</p>
 <ul>
-<li>المشغلات الأساسية: عوامل المقارنة وعوامل تصفية النطاق والعوامل الحسابية والعوامل المنطقية</li>
-<li>قوالب تعبيرات التصفية: أنماط محددة مسبقًا لسيناريوهات التصفية الشائعة</li>
-<li>المشغِّلات المتخصصة: مشغلات خاصة بنوع البيانات لحقول JSON أو المصفوفات</li>
+<li>Basic Operators: Comparison operators, range filters, arithmetic operators, and logical operators</li>
+<li>Filter Expression Templates: Predefined patterns for common filtering scenarios</li>
+<li>Specialized Operators: Data type-specific operators for JSON or array fields</li>
 </ul>
-<p>للحصول على وثائق شاملة وأمثلة لتعبيرات تصفية ميلفوس وأمثلة لتعبيرات تصفية <a href="https://milvus.io/docs/boolean.md">ميلفوس،</a> راجع الوثائق الرسمية <a href="https://milvus.io/docs/boolean.md">لتصفية ميلفوس</a>.</p>
+<p>For comprehensive documentation and examples of Milvus filtering expressions, refer to the official documentation of <a href="https://milvus.io/docs/boolean.md">Milvus Filtering</a>.</p>
 <pre><code translate="no" class="language-python">retriever = index.as_retriever(
     vector_store_kwargs={
         <span class="hljs-string">&quot;string_expr&quot;</span>: <span class="hljs-string">&quot;genre like &#x27;%Fiction&#x27;&quot;</span>,

@@ -2,10 +2,10 @@
 id: install_standalone-binary.md
 label: RPM/DEB Package
 related_key: RPM/DEB Package
-summary: 사전 빌드된 RPM/DEB 패키지를 사용하여 Milvus 독립 실행형 버전을 설치하는 방법을 알아보세요.
-title: RPM/DEB 패키지를 사용하여 Milvus 독립형 버전 설치
+summary: Learn how to install Milvus standalone with a pre-built RPM/DEB package.
+title: Install Milvus Standalone with RPM/DEB Package
 ---
-<h1 id="Install-Milvus-Standalone-with-RPMDEB-Package" class="common-anchor-header">RPM/DEB 패키지를 사용하여 Milvus 독립형 버전 설치<button data-href="#Install-Milvus-Standalone-with-RPMDEB-Package" class="anchor-icon" translate="no">
+<h1 id="Install-Milvus-Standalone-with-RPMDEB-Package" class="common-anchor-header">Install Milvus Standalone with RPM/DEB Package<button data-href="#Install-Milvus-Standalone-with-RPMDEB-Package" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,8 +20,8 @@ title: RPM/DEB 패키지를 사용하여 Milvus 독립형 버전 설치
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>이 페이지에서는 미리 빌드된 RPM/DEB 패키지를 사용하여 Milvus 독립 실행형을 설치하는 방법을 설명합니다.</p>
-<h2 id="Prerequisites" class="common-anchor-header">필수 조건<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p>This page illustrates how to install Milvus standalone with a pre-built RPM/DEB package.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,10 +37,10 @@ title: RPM/DEB 패키지를 사용하여 Milvus 독립형 버전 설치
         ></path>
       </svg>
     </button></h2><ul>
-<li>이미 libstdc++ 8.5.0 이상 버전이 설치되어 있어야 합니다.</li>
-<li>설치 전에<a href="/docs/ko/prerequisite-docker.md">하드웨어 및 소프트웨어 요구 사항을 확인하십시오</a>.</li>
+<li>You have already installed libstdc++ 8.5.0 or a later version.</li>
+<li><a href="/docs/ko/prerequisite-docker.md">Check the requirements for hardware and software</a> prior to your installation.</li>
 </ul>
-<h2 id="Download-the-RPMDEB-Package" class="common-anchor-header">RPM/DEB 패키지 다운로드<button data-href="#Download-the-RPMDEB-Package" class="anchor-icon" translate="no">
+<h2 id="Download-the-RPMDEB-Package" class="common-anchor-header">Download the RPM/DEB Package<button data-href="#Download-the-RPMDEB-Package" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -55,15 +55,15 @@ title: RPM/DEB 패키지를 사용하여 Milvus 독립형 버전 설치
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://github.com/milvus-io/milvus/releases/tag/v3.0.1">Milvus 릴리스 페이지에서</a> 시스템 아키텍처에 맞는 RPM/DEB 패키지를 다운로드할 수 있습니다.</p>
+    </button></h2><p>You can download the RPM/DEB package according to your system architecture from the <a href="https://github.com/milvus-io/milvus/releases/tag/v3.0.1">Milvus Releases page</a>.</p>
 <ul>
-<li>x86_64/amd64의 경우, <strong>milvus_3.0.1-1_amd64.deb</strong> 또는 <strong>milvus_3.0.1-1_amd64.rpm</strong> 패키지를 다운로드하십시오.</li>
-<li>ARM64의 경우, <strong>milvus_3.0.1-1_arm64.deb</strong> 또는 <strong>milvus_3.0.1-1_arm64.rpm</strong> 패키지를 다운로드하십시오.</li>
+<li>For x86_64/amd64, download the <strong>milvus_3.0.1-1_amd64.deb</strong> or <strong>milvus_3.0.1-1_amd64.rpm</strong> package.</li>
+<li>For ARM64, download the <strong>milvus_3.0.1-1_arm64.deb</strong> or <strong>milvus_3.0.1-1_arm64.rpm</strong> package.</li>
 </ul>
-<p>다음 명령어는 x86_64/amd64 시스템에서 Milvus Standalone을 실행할 것을 가정합니다.</p>
+<p>The following command assumes that you are going to run Milvus Standalone on a x86_64/amd64 machine.</p>
 <pre><code translate="no" class="language-shell">wget https://github.com/milvus-io/milvus/releases/download/v3.0.1/milvus_3.0.1-1_amd64.rpm -O milvus_3.0.1-1_amd64.rpm
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Install-the-RPMDEB-Package" class="common-anchor-header">RPM/DEB 패키지 설치<button data-href="#Install-the-RPMDEB-Package" class="anchor-icon" translate="no">
+<h2 id="Install-the-RPMDEB-Package" class="common-anchor-header">Install the RPM/DEB Package<button data-href="#Install-the-RPMDEB-Package" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -78,16 +78,16 @@ title: RPM/DEB 패키지를 사용하여 Milvus 독립형 버전 설치
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>RPM/DEB 패키지를 설치하려면 시스템의 패키지 관리자를 사용할 수 있습니다.</p>
-<p>RPM 기반 시스템(CentOS, Fedora, RHEL 등)의 경우, <code translate="no">yum</code> 명령을 사용하여 패키지를 설치하십시오.</p>
+    </button></h2><p>To install the RPM/DEB package, you can use the package manager of your system.</p>
+<p>For RPM-based systems (such as CentOS, Fedora, and RHEL), use the <code translate="no">yum</code> command to install the package.</p>
 <pre><code translate="no" class="language-shell">yum install -y ./milvus_3.0.1-1_amd64.rpm
 rpm -qa| grep milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>DEB 기반 시스템(예: Ubuntu 및 Debian)의 경우, ` <code translate="no">apt</code> ` 명령을 사용하여 패키지를 설치하십시오.</p>
+<p>For DEB-based systems (such as Ubuntu and Debian), use the <code translate="no">apt</code> command to install the package.</p>
 <pre><code translate="no" class="language-shell">apt install -y  ./milvus_3.0.1-1_amd64.deb
 dpkg -l | grep milvus
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Start-Milvus-Standalone" class="common-anchor-header">Milvus 독립형 실행<button data-href="#Start-Milvus-Standalone" class="anchor-icon" translate="no">
+<h2 id="Start-Milvus-Standalone" class="common-anchor-header">Start Milvus Standalone<button data-href="#Start-Milvus-Standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,13 +102,13 @@ dpkg -l | grep milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>설치가 완료되면 Milvus는 systemd 서비스로 설치되며, 다음 명령어를 사용하여 시작할 수 있습니다:</p>
+    </button></h2><p>After the installation is complete, Milvus is installed as a systemd service and can be started using the following command:</p>
 <pre><code translate="no" class="language-shell">systemctl start milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>다음 명령어를 사용하여 Milvus 서비스의 상태를 확인할 수 있습니다:</p>
+<p>You can check the status of the Milvus service using the following command:</p>
 <pre><code translate="no" class="language-shell">systemctl status milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus가 정상적으로 실행 중이라면 다음과 같은 출력이 표시됩니다:</p>
+<p>If Milvus is running successfully, you should see the following output:</p>
 <pre><code translate="no"><span class="hljs-string">●</span> <span class="hljs-string">milvus.service</span> <span class="hljs-bullet">-</span> <span class="hljs-string">Milvus</span> <span class="hljs-string">Standalone</span> <span class="hljs-string">Server</span>
    <span class="hljs-attr">Loaded:</span> <span class="hljs-string">loaded</span> <span class="hljs-string">(/lib/systemd/system/milvus.service;</span> <span class="hljs-string">enabled;</span> <span class="hljs-attr">vendor preset:</span> <span class="hljs-string">enabled)</span>
    <span class="hljs-attr">Active:</span> <span class="hljs-string">active</span> <span class="hljs-string">(running)</span> <span class="hljs-string">since</span> <span class="hljs-string">Fri</span> <span class="hljs-number">2025-08-10 10:30:00 </span><span class="hljs-string">UTC;</span> <span class="hljs-string">5s</span> <span class="hljs-string">ago</span>
@@ -117,11 +117,11 @@ dpkg -l | grep milvus
    <span class="hljs-attr">CGroup:</span> <span class="hljs-string">/system.slice/milvus.service</span>
            <span class="hljs-string">└─1044122</span> <span class="hljs-string">/usr/bin/milvus</span> <span class="hljs-string">run</span> <span class="hljs-string">standalone</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvus 바이너리는 <code translate="no">/usr/bin/milvus</code> 에서, systemd 서비스 파일은 <code translate="no">/lib/systemd/system/milvus.service</code> 에서, 의존성 패키지는 <code translate="no">/usr/lib/milvus/</code> 에서 확인할 수 있습니다.</p>
+<p>You can find the Milvus binary at <code translate="no">/usr/bin/milvus</code>, the systemd service file at <code translate="no">/lib/systemd/system/milvus.service</code>, and the dependencies at <code translate="no">/usr/lib/milvus/</code>.</p>
 <div class="alert note">
-<p>기본적으로 Milvus Standalone은 내장된 etcd와 함께 <strong>Woodpecker</strong> (로컬 파일 시스템)를 메시지 큐로 사용하므로, 별도의 외부 메시징 또는 메타데이터 서비스가 필요하지 않습니다. <a href="/docs/ko/woodpecker.md">Woodpecker를</a> 참조하십시오.</p>
+<p>By default, Milvus Standalone runs <strong>Woodpecker</strong> (local filesystem) as its message queue with embedded etcd, so no external messaging or metadata service is required. See <a href="/docs/ko/woodpecker.md">Woodpecker</a>.</p>
 </div>
-<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(선택 사항) Milvus 구성 업데이트<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
+<h2 id="Optional-Update-Milvus-configurations" class="common-anchor-header">(Optional) Update Milvus configurations<button data-href="#Optional-Update-Milvus-configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -136,8 +136,8 @@ dpkg -l | grep milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><code translate="no">/etc/milvus/configs/milvus.yaml</code> 파일에서 Milvus 구성을 수정할 수 있습니다. 예를 들어, <code translate="no">proxy.healthCheckTimeout</code> 을 <code translate="no">1000</code> ms로 변경하려면 target 매개변수를 검색하여 해당 내용을 수정하면 됩니다. 적용 가능한 구성 항목에 대해서는 <a href="/docs/ko/system_configuration.md">시스템 구성을</a> 참조하십시오.</p>
-<h2 id="Stop-Milvus-Standalone" class="common-anchor-header">Milvus Standalone 중지<button data-href="#Stop-Milvus-Standalone" class="anchor-icon" translate="no">
+    </button></h2><p>You can modify the Milvus configurations in the <code translate="no">/etc/milvus/configs/milvus.yaml</code> file. For example, to change the <code translate="no">proxy.healthCheckTimeout</code> to <code translate="no">1000</code> ms, you can search for the target parameter and modify accordingly. For applicable configuration items, refer to <a href="/docs/ko/system_configuration.md">System Configuration</a>.</p>
+<h2 id="Stop-Milvus-Standalone" class="common-anchor-header">Stop Milvus Standalone<button data-href="#Stop-Milvus-Standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -152,10 +152,10 @@ dpkg -l | grep milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Standalone을 중지하려면 다음 명령을 사용할 수 있습니다.</p>
+    </button></h2><p>To stop Milvus Standalone, you can use the following command:</p>
 <pre><code translate="no" class="language-shell">systemctl stop milvus
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Uninstall-Milvus-Standalone" class="common-anchor-header">Milvus Standalone 제거<button data-href="#Uninstall-Milvus-Standalone" class="anchor-icon" translate="no">
+<h2 id="Uninstall-Milvus-Standalone" class="common-anchor-header">Uninstall Milvus Standalone<button data-href="#Uninstall-Milvus-Standalone" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -170,17 +170,17 @@ dpkg -l | grep milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Standalone을 제거하려면 다음 명령을 사용할 수 있습니다:</p>
-<p>RPM 기반 시스템의 경우:</p>
+    </button></h2><p>To uninstall Milvus Standalone, you can use the following command:</p>
+<p>For RPM-based systems:</p>
 <pre><code translate="no" class="language-shell">rpm -e milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>DEB 기반 시스템의 경우:</p>
+<p>For DEB-based systems:</p>
 <pre><code translate="no" class="language-shell">apt remove milvus
 <button class="copy-code-btn"></button></code></pre>
 <div class="alert note">
-<p>Storage V3는 기본적으로 비활성화되어 있습니다. Storage V3에 의존하는 기능을 사용하기 전에 활성화하십시오. 요구 사항 및 호환성 관련 사항은 <a href="/docs/ko/storage-v3.md">Storage V3를</a> 참조하십시오.</p>
+<p>Storage V3 is disabled by default. Enable it before using features that depend on it. For requirements and compatibility considerations, see <a href="/docs/ko/storage-v3.md">Storage V3</a>.</p>
 </div>
-<h2 id="Whats-next" class="common-anchor-header">다음 단계<button data-href="#Whats-next" class="anchor-icon" translate="no">
+<h2 id="Whats-next" class="common-anchor-header">What’s next<button data-href="#Whats-next" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -195,29 +195,29 @@ dpkg -l | grep milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus Standalone를 설치한 후에는 다음을 수행할 수 있습니다:</p>
+    </button></h2><p>Having installed Milvus Standalone, you can:</p>
 <ul>
-<li><p><a href="/docs/ko/quickstart.md">'빠른 시작'을</a> 확인하여 Milvus의 기능을 살펴보세요.</p></li>
-<li><p>Milvus의 기본 작동 방식을 알아보세요:</p>
+<li><p>Check <a href="/docs/ko/quickstart.md">Quickstart</a> to see what Milvus can do.</p></li>
+<li><p>Learn the basic operations of Milvus:</p>
 <ul>
-<li><a href="/docs/ko/manage_databases.md">데이터베이스 관리</a></li>
-<li><a href="/docs/ko/manage-collections.md">컬렉션 관리</a></li>
-<li><a href="/docs/ko/manage-partitions.md">파티션 관리</a></li>
-<li><a href="/docs/ko/insert-update-delete.md">삽입, 업서트 및 삭제</a></li>
-<li><a href="/docs/ko/single-vector-search.md">단일 벡터 검색</a></li>
-<li><a href="/docs/ko/multi-vector-search.md">하이브리드 검색</a></li>
+<li><a href="/docs/ko/manage_databases.md">Manage Databases</a></li>
+<li><a href="/docs/ko/manage-collections.md">Manage Collections</a></li>
+<li><a href="/docs/ko/manage-partitions.md">Manage Partitions</a></li>
+<li><a href="/docs/ko/insert-update-delete.md">Insert, Upsert & Delete</a></li>
+<li><a href="/docs/ko/single-vector-search.md">Single-Vector Search</a></li>
+<li><a href="/docs/ko/multi-vector-search.md">Hybrid Search</a></li>
 </ul></li>
-<li><p><a href="/docs/ko/upgrade_milvus_cluster-helm.md">Helm 차트를 사용하여 Milvus 업그레이드하기</a>.</p></li>
-<li><p><a href="/docs/ko/scaleout.md">Milvus 클러스터 확장하기</a>.</p></li>
-<li><p>클라우드에 Milvus 클러스터 배포:</p>
+<li><p><a href="/docs/ko/upgrade_milvus_cluster-helm.md">Upgrade Milvus Using Helm Chart</a>.</p></li>
+<li><p><a href="/docs/ko/scaleout.md">Scale your Milvus cluster</a>.</p></li>
+<li><p>Deploy your Milvu cluster on clouds:</p>
 <ul>
 <li><a href="/docs/ko/eks.md">Amazon EKS</a></li>
 <li><a href="/docs/ko/gcp.md">Google Cloud</a></li>
 <li><a href="/docs/ko/azure.md">Microsoft Azure</a></li>
 </ul></li>
-<li><p>Milvus의 가시성 확보 및 관리를 위한 직관적인 웹 인터페이스인 <a href="/docs/ko/milvus-webui.md">Milvus WebUI를</a> 살펴보세요.</p></li>
-<li><p>Milvus 데이터 백업을 위한 오픈 소스 도구인 <a href="/docs/ko/milvus_backup_overview.md">Milvus Backup을</a> 살펴보세요.</p></li>
-<li><p>Milvus 디버깅 및 동적 구성 업데이트를 위한 오픈 소스 도구인 <a href="/docs/ko/birdwatcher_overview.md">Birdwatcher를</a> 살펴보세요.</p></li>
-<li><p>직관적인 Milvus 관리를 위한 오픈 소스 GUI 도구인 <a href="https://github.com/zilliztech/attu">Attu를</a> 살펴보세요.</p></li>
-<li><p><a href="/docs/ko/monitor.md">Prometheus를 사용하여 Milvus를 모니터링하세요</a>.</p></li>
+<li><p>Explore <a href="/docs/ko/milvus-webui.md">Milvus WebUI</a>, an intuitive web interface for Milvus observability and management.</p></li>
+<li><p>Explore <a href="/docs/ko/milvus_backup_overview.md">Milvus Backup</a>, an open-source tool for Milvus data backups.</p></li>
+<li><p>Explore <a href="/docs/ko/birdwatcher_overview.md">Birdwatcher</a>, an open-source tool for debugging Milvus and dynamic configuration updates.</p></li>
+<li><p>Explore <a href="https://github.com/zilliztech/attu">Attu</a>, an open-source GUI tool for intuitive Milvus management.</p></li>
+<li><p><a href="/docs/ko/monitor.md">Monitor Milvus with Prometheus</a>.</p></li>
 </ul>

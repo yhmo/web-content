@@ -1,18 +1,16 @@
 ---
 id: best-practices-for-array-of-structs.md
-title: >-
-  Проектирование модели данных с помощью массива структурCompatible with Milvus
-  2.6.4+
+title: Data Model Design with an Array of StructsCompatible with Milvus 2.6.4+
 summary: >-
-  Современные приложения ИИ, особенно в сфере Интернета вещей (IoT) и
-  автономного вождения, обычно оперируют структурированными событиями:
-  показаниями датчиков с временной меткой и векторным вложением, диагностическим
-  журналом с кодом ошибки и аудиофрагментом или фрагментом поездки с указанием
-  местоположения, скорости и контекста сцены. Все это требует от базы данных
-  встроенной поддержки приема и поиска вложенных данных.
+  Modern AI applications, especially in the Internet of Things (IoT) and
+  autonomous driving, typically reason over rich, structured events: a sensor
+  reading with its timestamp and vector embedding, a diagnostic log with an
+  error code and audio snippet, or a trip segment with location, speed, and
+  scene context. These require the database to natively support the ingestion
+  and search of nested data.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Data-Model-Design-with-an-Array-of-Structs" class="common-anchor-header">Проектирование модели данных с помощью массива структур<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Data-Model-Design-with-an-Array-of-Structs" class="anchor-icon" translate="no">
+<h1 id="Data-Model-Design-with-an-Array-of-Structs" class="common-anchor-header">Data Model Design with an Array of Structs<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Data-Model-Design-with-an-Array-of-Structs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -27,9 +25,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Современные приложения искусственного интеллекта, особенно в сфере Интернета вещей (IoT) и автономного вождения, обычно оперируют богатыми структурированными событиями: показаниями датчиков с временной меткой и векторным вложением, диагностическим журналом с кодом ошибки и аудиофрагментом или сегментом поездки с указанием местоположения, скорости и контекста сцены. Все это требует от базы данных встроенной поддержки приема и поиска вложенных данных.</p>
-<p>Вместо того чтобы просить пользователя преобразовывать атомарные структурные события в плоские модели данных, Milvus представляет массив структур, где каждая структура в массиве может содержать скаляры и векторы, сохраняя семантическую целостность.</p>
-<h2 id="Why-Array-of-Structs" class="common-anchor-header">Почему именно массив структур<button data-href="#Why-Array-of-Structs" class="anchor-icon" translate="no">
+    </button></h1><p>Modern AI applications, especially in the Internet of Things (IoT) and autonomous driving, typically reason over rich, structured events: a sensor reading with its timestamp and vector embedding, a diagnostic log with an error code and audio snippet, or a trip segment with location, speed, and scene context. These require the database to natively support the ingestion and search of nested data.</p>
+<p>Instead of asking the user to convert their atomic structural events into flat data models, Milvus introduces the Array of Structs, where each Struct in the array can hold scalars and vectors, preserving semantic integrity.</p>
+<h2 id="Why-Array-of-Structs" class="common-anchor-header">Why Array of Structs<button data-href="#Why-Array-of-Structs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -44,15 +42,15 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Современные приложения искусственного интеллекта, от автономного вождения до мультимодального поиска, все чаще опираются на вложенные разнородные данные. Традиционные плоские модели данных с трудом справляются с представлением сложных взаимосвязей, таких как<strong>"один документ с множеством аннотированных фрагментов</strong>" или<strong>"одна сцена вождения с множеством наблюдаемых маневров</strong>". Именно в этом случае тип данных Array of Structs в Milvus является идеальным.</p>
-<p>Массив структур позволяет хранить упорядоченный набор структурированных элементов, где каждая структура содержит свою собственную комбинацию скалярных полей и векторных вкраплений. Это делает его идеальным для:</p>
+    </button></h2><p>Modern AI applications, from autonomous driving to multimodal retrieval, increasingly rely on nested, heterogeneous data. Traditional flat data models struggle to represent complex relationships like "<strong>one document with many annotated chunks</strong>" or "<strong>one driving scene with multiple observed maneuvers</strong>". This is where the Array of Structs data type in Milvus shines.</p>
+<p>An Array of Structs allows you to store an ordered set of structured elements, where each Struct contains its own combination of scalar fields and vector embeddings. This makes it ideal for:</p>
 <ul>
-<li><p><strong>Иерархических данных</strong>: Родительские сущности с множеством дочерних записей, например, книга с большим количеством текстовых фрагментов или видео с большим количеством аннотированных кадров.</p></li>
-<li><p><strong>Мультимодальные вкрапления</strong>: Каждая структура может содержать несколько векторов, например, текстовые вкрапления плюс вкрапления изображений, а также метаданные.</p></li>
-<li><p><strong>Временные или последовательные данные</strong>: Структуры в поле Array естественным образом представляют временные серии или пошаговые события.</p></li>
+<li><p><strong>Hierarchical data</strong>: Parent entities with multiple child records, such as a book with many text chunks, or a video with many annotated frames.</p></li>
+<li><p><strong>Multimodal embeddings</strong>: Each Struct can hold multiple vectors, such as text embedding plus image embedding, alongside metadata.</p></li>
+<li><p><strong>Temporal or sequential data</strong>: Structs in an Array field naturally represent time-series or step-by-step events.</p></li>
 </ul>
-<p>В отличие от традиционных обходных путей, которые хранят JSON блобы или разбивают данные по нескольким коллекциям, массив структур обеспечивает собственное применение схемы, векторную индексацию и эффективное хранение в Milvus.</p>
-<h2 id="Schema-design-guidelines" class="common-anchor-header">Рекомендации по проектированию схем<button data-href="#Schema-design-guidelines" class="anchor-icon" translate="no">
+<p>Unlike traditional workarounds that store JSON blobs or split data across multiple collections, the Array of Structs provides native schema enforcement, vector indexing, and efficient storage within Milvus.</p>
+<h2 id="Schema-design-guidelines" class="common-anchor-header">Schema design guidelines<button data-href="#Schema-design-guidelines" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -67,8 +65,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>В дополнение ко всем рекомендациям, рассмотренным в разделе <a href="/docs/ru/schema-hands-on.md">"Проектирование модели данных для поиска"</a>, перед началом использования массива структур в вашей модели данных вам следует учесть следующие моменты.</p>
-<h3 id="Define-the-Struct-schema" class="common-anchor-header">Определите схему структуры<button data-href="#Define-the-Struct-schema" class="anchor-icon" translate="no">
+    </button></h2><p>In addition to all the guidelines discussed in <a href="/docs/ru/schema-hands-on.md">Data Model Design for Search</a>, you should also consider the following things before starting to use an Array of Structs in your data model design.</p>
+<h3 id="Define-the-Struct-schema" class="common-anchor-header">Define the Struct schema<button data-href="#Define-the-Struct-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -83,9 +81,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Прежде чем добавлять поле Array в коллекцию, определите внутреннюю схему Struct. Каждое поле в структуре должно иметь явный тип, скалярный<strong>(VARCHAR</strong>, <strong>INT</strong>, <strong>BOOLEAN</strong> и т. д.) или векторный<strong>(FLOAT_VECTOR</strong>).</p>
-<p>Рекомендуется сохранять схему Struct компактной, включая в нее только те поля, которые вы будете использовать для поиска или отображения. Избегайте раздувания неиспользуемых метаданных.</p>
-<h3 id="Set-the-max-capacity-thoughtfully" class="common-anchor-header">Вдумчиво устанавливайте максимальную емкость<button data-href="#Set-the-max-capacity-thoughtfully" class="anchor-icon" translate="no">
+    </button></h3><p>Before adding the Array field to your collection, define the inner Struct schema. Each field in the struct must be explicitly typed, scalar (<strong>VARCHAR</strong>, <strong>INT</strong>, <strong>BOOLEAN</strong>, etc.) or vector (<strong>FLOAT_VECTOR</strong>).</p>
+<p>You are advised to keep the Struct schema lean by only including fields you’ll use for retrieval or display. Avoid bloating with unused metadata.</p>
+<h3 id="Set-the-max-capacity-thoughtfully" class="common-anchor-header">Set the max capacity thoughtfully<button data-href="#Set-the-max-capacity-thoughtfully" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,9 +98,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Каждое поле Array имеет атрибут, определяющий максимальное количество элементов, которое поле Array может содержать для каждой сущности. Установите это значение, исходя из верхней границы вашего сценария использования. Например, в одном документе может быть 1000 текстовых фрагментов или 100 маневров в одной сцене вождения.</p>
-<p>Слишком большое значение приводит к растрате памяти, и вам придется провести некоторые вычисления, чтобы определить максимальное количество структур в поле Array.</p>
-<h3 id="Index-vector-fields-in-Structs" class="common-anchor-header">Индексировать векторные поля в структурах<button data-href="#Index-vector-fields-in-Structs" class="anchor-icon" translate="no">
+    </button></h3><p>Each Array field has an attribute that specifies the maximum number of elements the Array field can hold for each entity. Set this based on your use case’s upper bound. For example, there are 1,000 text chunks per document, or 100 maneuvers per driving scene.</p>
+<p>An excessively high value wastes memory, and you’ll need to do some calculations to determine the maximum number of Structs in the Array field.</p>
+<h3 id="Index-vector-fields-in-Structs" class="common-anchor-header">Index vector fields in Structs<button data-href="#Index-vector-fields-in-Structs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -117,9 +115,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Индексация обязательна для векторных полей, включая как векторные поля в коллекции, так и поля, определенные в структурах. Для векторных полей в структурах в качестве типа индекса следует использовать <code translate="no">AUTOINDEX</code> или <code translate="no">HNSW</code>, а в качестве типа метрики - серию <code translate="no">MAX_SIM</code>.</p>
-<p>Подробные сведения о всех применимых ограничениях см. в разделе <a href="/docs/ru/array-of-structs.md#Limits">Ограничения</a>.</p>
-<h2 id="A-real-world-example-Modeling-the-CoVLA-dataset-for-autonomous-driving" class="common-anchor-header">Пример из реального мира: Моделирование набора данных CoVLA для автономного вождения<button data-href="#A-real-world-example-Modeling-the-CoVLA-dataset-for-autonomous-driving" class="anchor-icon" translate="no">
+    </button></h3><p>Indexing is mandatory for vector fields, including both the vector fields in a collection and those defined in a Struct. For vector fields in a Struct, you should use <code translate="no">AUTOINDEX</code> or <code translate="no">HNSW</code> as the index type and <code translate="no">MAX_SIM</code> series as the metric type.</p>
+<p>For details on all applicable limits, refer to <a href="/docs/ru/array-of-structs.md#Limits">the limits</a>.</p>
+<h2 id="A-real-world-example-Modeling-the-CoVLA-dataset-for-autonomous-driving" class="common-anchor-header">A real-world example: Modeling the CoVLA dataset for autonomous driving<button data-href="#A-real-world-example-Modeling-the-CoVLA-dataset-for-autonomous-driving" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -134,14 +132,14 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Набор данных Comprehensive Vision-Language-Action (CoVLA), представленный компанией <a href="https://tur.ing/posts/s1QUA1uh">Turing Motors</a> и принятый на Зимней конференции по применению компьютерного зрения (WACV) 2025 года, представляет собой богатую основу для обучения и оценки моделей Vision-Language-Action (VLA) в автономном вождении. Каждая точка данных, обычно представляющая собой видеоклип, содержит не только необработанные визуальные данные, но и структурированные подписи, описывающие:</p>
+    </button></h2><p>The Comprehensive Vision-Language-Action (CoVLA) dataset, introduced by <a href="https://tur.ing/posts/s1QUA1uh">Turing Motors</a> and accepted at the Winter Conference on Applications of Computer Vision (WACV) 2025, provides a rich foundation for training and evaluating Vision-Language-Action (VLA) models in autonomous driving. Each data point, which is usually a video clip, contains not just raw visual input but also structured captions describing:</p>
 <ul>
-<li><p><strong>Поведение эгомобиля</strong> (например, "Поворот налево, уступая дорогу встречному транспорту"),</p></li>
-<li><p><strong>обнаруженные объекты</strong> (например, ведущие транспортные средства, пешеходы, светофоры) и</p></li>
-<li><p><strong>Надпись</strong> на уровне кадра сцены.</p></li>
+<li><p>The <strong>ego vehicle’s behaviors</strong> (e.g., “Merge left while yielding to oncoming traffic”),</p></li>
+<li><p>The <strong>detected objects</strong> present (e.g., leading vehicles, pedestrians, traffic lights), and</p></li>
+<li><p>A frame-level <strong>caption</strong> of the scene.</p></li>
 </ul>
-<p>Такая иерархическая и мультимодальная природа делает ее идеальным кандидатом для функции Array of Structs. Подробные сведения о наборе данных CoVLA см. на <a href="https://turingmotors.github.io/covla-ad/">веб-сайте набора данных CoVLA</a>.</p>
-<h3 id="Step-1-Map-the-dataset-into-a-collection-schema" class="common-anchor-header">Шаг 1: Сопоставление набора данных со схемой коллекции<button data-href="#Step-1-Map-the-dataset-into-a-collection-schema" class="anchor-icon" translate="no">
+<p>This hierarchical, multi-modal nature makes it an ideal candidate for the Array of Structs feature. For details on the CoVLA dataset, refer to the <a href="https://turingmotors.github.io/covla-ad/">CoVLA Dataset Website</a>.</p>
+<h3 id="Step-1-Map-the-dataset-into-a-collection-schema" class="common-anchor-header">Step 1: Map the dataset into a collection schema<button data-href="#Step-1-Map-the-dataset-into-a-collection-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -156,8 +154,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Набор данных CoVLA - это крупномасштабный мультимодальный набор данных о вождении, состоящий из 10 000 видеоклипов общей продолжительностью более 80 часов. Кадры сэмплируются с частотой 20 Гц, каждый кадр аннотируется подробными подписями на естественном языке, а также информацией о состоянии автомобиля и координатах обнаруженных объектов.</p>
-<p>Структура набора данных выглядит следующим образом:</p>
+    </button></h3><p>The CoVLA dataset is a large-scale, multimodal driving dataset comprising 10,000 video clips, totaling over 80 hours of footage. It samples frames at a rate of 20Hz and annotates each frame with detailed natural language captions along with information on vehicle states and the coordinates of detected objects.</p>
+<p>The dataset structure is as follows:</p>
 <pre><code translate="no" class="language-python">├── video_1                                       (VIDEO) <span class="hljs-comment"># video.mp4</span>
 │   ├── video_id                                  (INT)
 │   ├── video_url                                 (STRING)
@@ -198,29 +196,31 @@ beta: Milvus 2.6.4+
 ├── ...
 ├── video_n
 <button class="copy-code-btn"></button></code></pre>
-<p>Можно заметить, что структура набора данных CoVLA сильно иерархизирована: собранные данные разделены на множество файлов <code translate="no">.jsonl</code>, а также видеоклипы в формате <code translate="no">.mp4</code>.</p>
-<p>В Milvus для создания вложенных структур в схеме коллекции можно использовать либо поле JSON, либо поле Array-of-Structs. Когда векторные вложения являются частью вложенного формата, поддерживается только поле Array-of-Structs. Однако структура внутри массива не может сама содержать другие вложенные структуры. Чтобы хранить набор данных CoVLA, сохраняя важные взаимосвязи, необходимо удалить ненужную иерархию и уплостить данные, чтобы они соответствовали схеме коллекции Milvus.</p>
-<p>На диаграмме ниже показано, как мы можем смоделировать этот набор данных, используя схему, приведенную ниже:</p>
+<p>You can find that the structure of the CoVLA dataset is highly hierarchical, dividing the collected data into multiple <code translate="no">.jsonl</code> files, along with the video clips in the <code translate="no">.mp4</code> format.</p>
+<p>In Milvus, you can use either a JSON field or an Array-of-Structs field to create nested structures within a collection schema. When vector embeddings are part of the nested format, only an Array-of-Structs field is supported. However, a Struct inside an Array cannot itself contain further nested structures. To store the CoVLA dataset while retaining essential relationships, you need to remove unnecessary hierarchy and flatten the data so it fits the Milvus collection schema.</p>
+<p>The diagram below illustrates how we can model this dataset using the schema illustrated in the following schema:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/dataset-model.png" alt="Dataset Model" class="doc-image" id="dataset-model" />
-   </span> <span class="img-wrapper"> <span>Модель набора данных</span> </span></p>
-<p>На приведенной выше диаграмме показана структура видеоклипа, состоящая из следующих полей:</p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/dataset-model.png" alt="Dataset Model" class="doc-image" id="dataset-model" />
+    <span>Dataset Model</span>
+  </span>
+</p>
+<p>The above diagram illustrates the structure of a video clip, which comprises the following fields:</p>
 <ul>
-<li><p><code translate="no">video_id</code> служит первичным ключом, который принимает целые числа типа INT64.</p></li>
-<li><p><code translate="no">states</code> необработанное JSON-тело, содержащее состояние эгомобиля в каждом кадре текущего видео.</p></li>
-<li><p><code translate="no">captions</code> Массив структур, каждая из которых имеет следующие поля:</p>
+<li><p><code translate="no">video_id</code> serves as the primary key, which accepts integers of the INT64 type.</p></li>
+<li><p><code translate="no">states</code> is a raw JSON body that contains the state of the ego vehicle in each frame of the current video.</p></li>
+<li><p><code translate="no">captions</code> is an Array of Structs with each Struct having the following fields:</p>
 <ul>
-<li><p><code translate="no">frame_id</code> идентифицирует конкретный кадр в текущем видео.</p></li>
-<li><p><code translate="no">plain_caption</code> описание текущего кадра без учета окружающей обстановки, такой как погода, состояние дороги и т. д., а <code translate="no">plain_cap_vector</code> - соответствующий вектор вкраплений.</p></li>
-<li><p><code translate="no">rich_caption</code> описание текущего кадра с окружающей средой, а <code translate="no">rich_cap_vector</code> - соответствующий вектор вкраплений.</p></li>
-<li><p><code translate="no">risk</code> описание риска, которому подвергается эго-транспортное средство в текущем кадре, и <code translate="no">risk_vector</code> - соответствующие векторные вложения, и</p></li>
-<li><p>Все остальные атрибуты кадра, такие как <code translate="no">road</code>, <code translate="no">weather</code>, <code translate="no">is_tunnel</code>, <code translate="no">has_pedestrain</code> и т. д..</p></li>
+<li><p><code translate="no">frame_id</code> identifies a specific frame within the current video.</p></li>
+<li><p><code translate="no">plain_caption</code> is a description of the current frame without the ambient environment, such as weather, road condition, etc., and <code translate="no">plain_cap_vector</code> is its corresponding vector embeddings.</p></li>
+<li><p><code translate="no">rich_caption</code> is a description of the current frame with the ambient environment, and <code translate="no">rich_cap_vector</code> is its corresponding vector embeddings.</p></li>
+<li><p><code translate="no">risk</code> is a description of the risk that the ego vehicle faces in the current frame, and <code translate="no">risk_vector</code> is its corresponding vector embeddings, and</p></li>
+<li><p>All the other attributes of the frame, such as <code translate="no">road</code>, <code translate="no">weather</code>, <code translate="no">is_tunnel</code>, <code translate="no">has_pedestrain</code>, etc…</p></li>
 </ul></li>
-<li><p><code translate="no">traffic_lights</code> это JSON-тело, содержащее все сигналы светофора, идентифицированные в текущем кадре.</p></li>
-<li><p><code translate="no">front_cars</code> также является массивом структур, который содержит все ведущие автомобили, идентифицированные в текущем кадре.</p></li>
+<li><p><code translate="no">traffic_lights</code> is a JSON body that contains all the traffic light signals identified in the current frame.</p></li>
+<li><p><code translate="no">front_cars</code> is also an Array of Structs that contains all the leading cars identified in the current frame.</p></li>
 </ul>
-<h3 id="Step-2-Initialize-the-schemas" class="common-anchor-header">Шаг 2: Инициализация схем<button data-href="#Step-2-Initialize-the-schemas" class="anchor-icon" translate="no">
+<h3 id="Step-2-Initialize-the-schemas" class="common-anchor-header">Step 2: Initialize the schemas<button data-href="#Step-2-Initialize-the-schemas" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -235,9 +235,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Для начала нам нужно инициализировать схему для caption Struct, front_cars Struct и коллекции.</p>
+    </button></h3><p>To start, we need to initialize the schema for a caption Struct, a front_cars Struct, and the collection.</p>
 <ul>
-<li><p>Инициализируйте схему для структуры Caption.</p>
+<li><p>Initialize the schema for the Caption Struct.</p>
 <pre><code translate="no" class="language-python">client = MilvusClient(<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
 
 <span class="hljs-comment"># create the schema for the caption struct</span>
@@ -371,9 +371,9 @@ schema_for_caption.add_field(
     description=<span class="hljs-string">&quot;whether there is a carrier car present&quot;</span>
 )
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Инициализируйте схему для структуры Front Car.</p>
+<li><p>Initialize the schema for the Front Car Struct</p>
 <p><div class="alert note"></p>
-<p>Хотя передний автомобиль не использует векторные вложения, его все равно нужно включить в массив Struct, поскольку размер данных превышает максимальный для поля JSON.</p>
+<p>Although a front car does not involve vector embeddings, you still need to include it as an array of Struct because the data size exceeds the maximum for a JSON field.</p>
 <p></div></p>
 <pre><code translate="no" class="language-python">schema_for_front_car = client.create_struct_field_schema()
 
@@ -419,7 +419,7 @@ schema_for_front_car.add_field(
     description=<span class="hljs-string">&quot;acceleration of the leading vehicle&quot;</span>
 )
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Инициализация схемы для коллекции</p>
+<li><p>Initialize the schema for the collection</p>
 <pre><code translate="no" class="language-python">schema = client.create_schema()
 
 schema.add_field(
@@ -463,7 +463,7 @@ schema.add_field(
 )
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h3 id="Step-3-Set-index-parameters" class="common-anchor-header">Шаг 3: Задайте параметры индекса<button data-href="#Step-3-Set-index-parameters" class="anchor-icon" translate="no">
+<h3 id="Step-3-Set-index-parameters" class="common-anchor-header">Step 3: Set index parameters<button data-href="#Step-3-Set-index-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -478,7 +478,7 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Все векторные поля должны быть проиндексированы. Чтобы проиндексировать векторные поля в элементе Struct, необходимо использовать <code translate="no">AUTOINDEX</code> или <code translate="no">HNSW</code> в качестве типа индекса и метрический тип серии <code translate="no">MAX_SIM</code> для измерения сходства между списками встраивания.</p>
+    </button></h3><p>All vector fields must be indexed. To index the vector fields in an element Struct, you need to use <code translate="no">AUTOINDEX</code> or <code translate="no">HNSW</code> as the index type and the <code translate="no">MAX_SIM</code> series metric type to measure the similarities between embedding lists.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
 index_params.add_index(
@@ -505,8 +505,8 @@ index_params.add_index(
     index_params={<span class="hljs-string">&quot;M&quot;</span>: <span class="hljs-number">16</span>, <span class="hljs-string">&quot;efConstruction&quot;</span>: <span class="hljs-number">200</span>}
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>Рекомендуется включить измельчение JSON для полей JSON, чтобы ускорить фильтрацию в этих полях.</p>
-<h3 id="Step-4-Create-a-collection" class="common-anchor-header">Шаг 4: Создание коллекции<button data-href="#Step-4-Create-a-collection" class="anchor-icon" translate="no">
+<p>You are advised to enable JSON shredding for JSON fields to accelerate filtering within these fields.</p>
+<h3 id="Step-4-Create-a-collection" class="common-anchor-header">Step 4: Create a collection<button data-href="#Step-4-Create-a-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -521,14 +521,14 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>После того как схемы и индексы готовы, можно создать целевую коллекцию следующим образом:</p>
+    </button></h3><p>Once the schemas and indexes are ready, you can create the target collection as follows:</p>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;covla_dataset&quot;</span>,
     schema=schema,
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-5-Insert-the-data" class="common-anchor-header">Шаг 5: Вставка данных<button data-href="#Step-5-Insert-the-data" class="anchor-icon" translate="no">
+<h3 id="Step-5-Insert-the-data" class="common-anchor-header">Step 5: Insert the data<button data-href="#Step-5-Insert-the-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -543,8 +543,8 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Turing Motos организует набор данных CoVLA в нескольких файлах, включая необработанные видеоклипы (<code translate="no">.mp4</code>), штаты (<code translate="no">states.jsonl</code>), подписи (<code translate="no">captions.jsonl</code>), светофоры (<code translate="no">traffic_lights.jsonl</code>) и передние автомобили (<code translate="no">front_cars.jsonl</code>).</p>
-<p>Необходимо объединить фрагменты данных для каждого видеоклипа из этих файлов и вставить данные. Ниже приведен скрипт для объединения данных для конкретного видеоклипа.</p>
+    </button></h3><p>Turing Motos organizes the CoVLA dataset in multiple files, including raw video clips (<code translate="no">.mp4</code>), states (<code translate="no">states.jsonl</code>), captions (<code translate="no">captions.jsonl</code>), traffic lights (<code translate="no">traffic_lights.jsonl</code>), and front cars (<code translate="no">front_cars.jsonl</code>).</p>
+<p>You need to merge the data pieces for each video clip from these files and insert the data. The following is the script to merge the data pieces for a specific video clip.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
 
@@ -621,7 +621,7 @@ data = {
     <span class="hljs-string">&quot;front_cars&quot;</span>: front_cars
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>После соответствующей обработки данных их можно вставить следующим образом:</p>
+<p>Once you have processed the data accordingly, you can insert it as follows:</p>
 <pre><code translate="no" class="language-python">client.insert(
     collection_name=<span class="hljs-string">&quot;covla_dataset&quot;</span>,
     data=[data]

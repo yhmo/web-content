@@ -1,19 +1,16 @@
 ---
 id: full-text-search.md
-title: Recherche en texte intégral
+title: Full Text Search
 summary: >-
-  La recherche en texte intégral est une fonctionnalité qui permet de récupérer
-  des documents contenant des termes ou des expressions spécifiques dans des
-  ensembles de données textuelles, puis de classer les résultats en fonction de
-  leur pertinence. Cette fonctionnalité pallie les limites de la recherche
-  sémantique, qui peut passer à côté de termes précis, vous garantissant ainsi
-  d’obtenir les résultats les plus précis et les plus pertinents d’un point de
-  vue contextuel. De plus, elle simplifie les recherches vectorielles en
-  acceptant des entrées de texte brut, convertissant automatiquement vos données
-  textuelles en représentations vectorielles clairsemées sans qu'il soit
-  nécessaire de générer manuellement ces représentations.
+  Full text search is a feature that retrieves documents containing specific
+  terms or phrases in text datasets, then ranking the results based on
+  relevance. This feature overcomes semantic search limitations, which might
+  overlook precise terms, ensuring you receive the most accurate and
+  contextually relevant results. Additionally, it simplifies vector searches by
+  accepting raw text input, automatically converting your text data into sparse
+  embeddings without the need to manually generate vector embeddings.
 ---
-<h1 id="Full-Text-Search" class="common-anchor-header">Recherche en texte intégral<button data-href="#Full-Text-Search" class="anchor-icon" translate="no">
+<h1 id="Full-Text-Search" class="common-anchor-header">Full Text Search<button data-href="#Full-Text-Search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -28,12 +25,12 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>La recherche en texte intégral est une fonctionnalité qui permet de récupérer des documents contenant des termes ou des expressions spécifiques dans des ensembles de données textuelles, puis de classer les résultats en fonction de leur pertinence. Cette fonctionnalité pallie les limites de la recherche sémantique, qui peut passer à côté de termes précis, vous garantissant ainsi d'obtenir les résultats les plus précis et les plus pertinents d'un point de vue contextuel. De plus, elle simplifie les recherches vectorielles en acceptant la saisie de texte brut, convertissant automatiquement vos données textuelles en représentations vectorielles clairsemées sans qu'il soit nécessaire de générer manuellement ces représentations.</p>
-<p>Utilisant l’algorithme BM25 pour le calcul de la pertinence, cette fonctionnalité est particulièrement utile dans les scénarios de génération augmentée par la recherche (RAG), où elle donne la priorité aux documents qui correspondent étroitement à des termes de recherche spécifiques.</p>
+    </button></h1><p>Full text search is a feature that retrieves documents containing specific terms or phrases in text datasets, then ranking the results based on relevance. This feature overcomes semantic search limitations, which might overlook precise terms, ensuring you receive the most accurate and contextually relevant results. Additionally, it simplifies vector searches by accepting raw text input, automatically converting your text data into sparse embeddings without the need to manually generate vector embeddings.</p>
+<p>Using the BM25 algorithm for relevance scoring, this feature is particularly valuable in retrieval-augmented generation (RAG) scenarios, where it prioritizes documents that closely match specific search terms.</p>
 <div class="alert note">
-<p>En intégrant la recherche en texte intégral à la recherche vectorielle dense basée sur la sémantique, vous pouvez améliorer la précision et la pertinence des résultats de recherche. Pour plus d’informations, consultez la section <a href="/docs/fr/multi-vector-search.md">Recherche hybride</a>.</p>
+<p>By integrating full text search with semantic-based dense vector search, you can enhance the accuracy and relevance of search results. For more information, refer to <a href="/docs/fr/multi-vector-search.md">Hybrid Search</a>.</p>
 </div>
-<h2 id="BM25-implementation" class="common-anchor-header">Implémentation de BM25<button data-href="#BM25-implementation" class="anchor-icon" translate="no">
+<h2 id="BM25-implementation" class="common-anchor-header">BM25 implementation<button data-href="#BM25-implementation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -48,28 +45,28 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus propose une recherche en texte intégral optimisée par l’algorithme de pertinence BM25, une fonction de notation largement adoptée dans les systèmes de recherche d’informations, et l’intègre dans le flux de travail de recherche afin de fournir des résultats textuels précis et classés par pertinence.</p>
-<p>La recherche en texte intégral dans Milvus suit le flux de travail ci-dessous :</p>
+    </button></h2><p>Milvus provides full text search powered by the BM25 relevance algorithm, a widely adopted scoring function in information retrieval systems, and Milvus integrates it into the search workflow to deliver accurate, relevance-ranked text results.</p>
+<p>Full text search in Milvus follows the workflow below:</p>
 <ol>
-<li><p><strong>Saisie de texte brut</strong>: vous insérez des documents textuels ou saisissez une requête en texte brut, sans qu’aucun modèle d’encodage ne soit nécessaire.</p></li>
-<li><p><strong>Analyse du texte</strong>: Milvus utilise un <a href="/docs/fr/analyzer-overview.md">analyseur</a> pour traiter votre texte en termes significatifs pouvant être indexés et recherchés.</p></li>
-<li><p><strong>Traitement par la fonction BM25</strong>: une fonction intégrée transforme ces termes en représentations vectorielles creuses optimisées pour le calcul de score BM25.</p></li>
-<li><p><strong>Stockage dans une collection</strong>: Milvus stocke les représentations vectorielles clairsemées obtenues dans une collection afin de permettre une récupération et un classement rapides.</p></li>
-<li><p><strong>Notation de pertinence BM25</strong>: au moment de la recherche, Milvus applique la fonction de notation BM25 pour calculer la pertinence des documents et renvoyer les résultats classés qui correspondent le mieux aux termes de la requête.</p></li>
+<li><p><strong>Raw text input</strong>: You insert text documents or provide a query using plain text, no embedding models required.</p></li>
+<li><p><strong>Text analysis</strong>: Milvus uses an <a href="/docs/fr/analyzer-overview.md">analyzer</a> to process your text into meaningful terms that can be indexed and searched.</p></li>
+<li><p><strong>BM25 function processing</strong>: A built-in function transforms these terms into sparse vector representations optimized for BM25 scoring.</p></li>
+<li><p><strong>Collection store</strong>: Milvus stores the resulting sparse embeddings in a collection for fast retrieval and ranking.</p></li>
+<li><p><strong>BM25 relevance scoring</strong>: At search time, Milvus applies the BM25 scoring function to compute document relevance and return ranked results that best match the query terms.</p></li>
 </ol>
-<p><span class="img-wrapper">
-  
-   <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/full-text-search.png" alt="Full Text Search" class="doc-image" id="full-text-search" /> 
-   <span>Recherche en texte intégral</span>
-  
- </span></p>
-<p>Pour utiliser la recherche en texte intégral, suivez ces étapes principales :</p>
+<p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/full-text-search.png" alt="Full Text Search" class="doc-image" id="full-text-search" />
+    <span>Full Text Search</span>
+  </span>
+</p>
+<p>To use full text search, follow these main steps:</p>
 <ol>
-<li><p><a href="/docs/fr/full-text-search.md#Create-a-collection-for-BM25-full-text-search">Créer une collection</a>: configurez les champs requis et définissez une fonction BM25 qui convertit le texte brut en représentations clairsemées.</p></li>
-<li><p><a href="/docs/fr/full-text-search.md#Insert-text-data">Insérez les données</a>: importez vos documents de texte brut dans la collection.</p></li>
-<li><p><a href="/docs/fr/full-text-search.md#Perform-full-text-search">Effectuez des recherches</a>: utilisez une requête en langage naturel pour obtenir des résultats classés en fonction de la pertinence BM25.</p></li>
+<li><p><a href="/docs/fr/full-text-search.md#Create-a-collection-for-BM25-full-text-search">Create a collection</a>: Set up the required fields and define a BM25 function that converts raw text into sparse embeddings.</p></li>
+<li><p><a href="/docs/fr/full-text-search.md#Insert-text-data">Insert data</a>: Ingest your raw text documents to the collection.</p></li>
+<li><p><a href="/docs/fr/full-text-search.md#Perform-full-text-search">Perform searches</a>: Use natural-language query text to retrieve ranked results based on BM25 relevance.</p></li>
 </ol>
-<h2 id="Create-a-collection-for-BM25-full-text-search" class="common-anchor-header">Créer une collection pour la recherche en texte intégral BM25<button data-href="#Create-a-collection-for-BM25-full-text-search" class="anchor-icon" translate="no">
+<h2 id="Create-a-collection-for-BM25-full-text-search" class="common-anchor-header">Create a collection for BM25 full text search<button data-href="#Create-a-collection-for-BM25-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -84,8 +81,8 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pour activer la recherche en texte intégral basée sur BM25, vous devez préparer une collection avec les champs requis, définir une fonction BM25 pour générer des vecteurs clairsemés, configurer un index, puis créer la collection.</p>
-<h3 id="Define-schema-fields" class="common-anchor-header">Définir les champs du schéma<button data-href="#Define-schema-fields" class="anchor-icon" translate="no">
+    </button></h2><p>To enable BM25-powered full text search, you must prepare a collection with the required fields, define a BM25 function to generate sparse vectors, configure an index, and then create the collection.</p>
+<h3 id="Define-schema-fields" class="common-anchor-header">Define schema fields<button data-href="#Define-schema-fields" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,18 +97,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Le schéma de votre collection doit inclure au moins trois champs obligatoires :</p>
+    </button></h3><p>Your collection schema must include at least three required fields:</p>
 <ul>
-<li><p><strong>Champ principal</strong>: identifie de manière unique chaque entité de la collection.</p></li>
-<li><p><strong>Champ de type chaîne</strong> (<code translate="no">VARCHAR</code> ou <code translate="no">TEXT</code>) : stocke les documents texte bruts. Vous devez définir l'<code translate="no">enable_analyzer=True</code> afin que Milvus puisse traiter le texte pour le classement par pertinence BM25. Par défaut, Milvus utilise l' <a href="/docs/fr/standard-analyzer.md"><code translate="no">standard</code></a><a href="/docs/fr/standard-analyzer.md"> analyzer</a> pour l’analyse de texte. Pour configurer un autre analyzer, consultez <a href="/docs/fr/analyzer-overview.md">la section Présentation des analyzers</a>. Les exemples de cette page utilisent <code translate="no">VARCHAR</code>; pour les textes longs, vous pouvez définir le champ d’entrée comme <code translate="no">TEXT</code> et omettre <code translate="no">max_length</code>. Pour un exemple complet, consultez la <a href="/docs/fr/text.md">section Champ de texte</a>.</p></li>
-<li><p><strong>Champ de vecteurs clairsemés</strong> (<code translate="no">SPARSE_FLOAT_VECTOR</code>) : stocke les représentations clairsemées générées automatiquement par la fonction BM25.</p></li>
+<li><p><strong>Primary field</strong>: Uniquely identifies each entity in the collection.</p></li>
+<li><p><strong>String field</strong> (<code translate="no">VARCHAR</code> or <code translate="no">TEXT</code>): Stores raw text documents. Must set <code translate="no">enable_analyzer=True</code> so Milvus can process the text for BM25 relevance ranking. By default, Milvus uses the <a href="/docs/fr/standard-analyzer.md"><code translate="no">standard</code></a><a href="/docs/fr/standard-analyzer.md"> analyzer</a> for text analysis. To configure a different analyzer, refer to <a href="/docs/fr/analyzer-overview.md">Analyzer Overview</a>. The examples on this page use <code translate="no">VARCHAR</code>; for long text, you can define the input field as <code translate="no">TEXT</code> and omit <code translate="no">max_length</code>. For a complete example, refer to <a href="/docs/fr/text.md">Text Field</a>.</p></li>
+<li><p><strong>Sparse vector field</strong> (<code translate="no">SPARSE_FLOAT_VECTOR</code>): Stores sparse embeddings automatically generated by the BM25 function.</p></li>
 </ul>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient, DataType, Function, FunctionType
 
@@ -212,7 +210,7 @@ schema.WithField(entity.NewField().
   },
 ];
 
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res.<span class="hljs-property">results</span>)
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(schema);
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> schema=<span class="hljs-string">&#x27;{
         &quot;autoId&quot;: true,
@@ -238,13 +236,28 @@ schema.WithField(entity.NewField().
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Dans la configuration ci-dessus,</p>
+<pre><code translate="no" class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;milvus/MilvusClientV2.h&quot;</span></span>
+
+<span class="hljs-keyword">auto</span> client = milvus::MilvusClientV2::<span class="hljs-built_in">Create</span>();
+
+milvus::ConnectParam connect_param{<span class="hljs-string">&quot;http://localhost:19530&quot;</span>, <span class="hljs-string">&quot;root:Milvus&quot;</span>};
+<span class="hljs-keyword">auto</span> status = client-&gt;<span class="hljs-built_in">Connect</span>(connect_param);
+<span class="hljs-keyword">if</span> (!status.<span class="hljs-built_in">IsOk</span>()) {
+    std::cout &lt;&lt; status.<span class="hljs-built_in">Message</span>() &lt;&lt; std::endl;
+}
+
+milvus::CollectionSchemaPtr schema = std::<span class="hljs-built_in">make_shared</span>&lt;milvus::CollectionSchema&gt;();
+schema-&gt;<span class="hljs-built_in">AddField</span>({<span class="hljs-string">&quot;id&quot;</span>, milvus::DataType::INT64, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>});
+schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs-built_in">FieldSchema</span>(<span class="hljs-string">&quot;text&quot;</span>, milvus::DataType::VARCHAR).<span class="hljs-built_in">WithMaxLength</span>(<span class="hljs-number">1000</span>).<span class="hljs-built_in">EnableAnalyzer</span>(<span class="hljs-literal">true</span>));
+schema-&gt;<span class="hljs-built_in">AddField</span>(milvus::<span class="hljs-built_in">FieldSchema</span>(<span class="hljs-string">&quot;sparse&quot;</span>, milvus::DataType::SPARSE_FLOAT_VECTOR));
+<button class="copy-code-btn"></button></code></pre>
+<p>In the preceding config,</p>
 <ul>
-<li><p><code translate="no">id</code>: sert de clé primaire et est généré automatiquement avec <code translate="no">auto_id=True</code>.</p></li>
-<li><p><code translate="no">text</code>: stocke vos données textuelles brutes pour les opérations de recherche en texte intégral. Le champ peut utiliser <code translate="no">VARCHAR</code> pour le texte court ou <code translate="no">TEXT</code> pour les contenus sources volumineux.</p></li>
-<li><p><code translate="no">sparse</code>: un champ vectoriel réservé au stockage d’embeddings clairsemés générés en interne pour les opérations de recherche en texte intégral. Le type de données doit être <code translate="no">SPARSE_FLOAT_VECTOR</code>.</p></li>
+<li><p><code translate="no">id</code>: serves as the primary key and is automatically generated with <code translate="no">auto_id=True</code>.</p></li>
+<li><p><code translate="no">text</code>: stores your raw text data for full text search operations. The field can use <code translate="no">VARCHAR</code> for bounded text or <code translate="no">TEXT</code> for long source content.</p></li>
+<li><p><code translate="no">sparse</code>: a vector field reserved to store internally generated sparse embeddings for full text search operations. The data type must be <code translate="no">SPARSE_FLOAT_VECTOR</code>.</p></li>
 </ul>
-<h3 id="Define-the-BM25-function" class="common-anchor-header">Définir la fonction BM25<button data-href="#Define-the-BM25-function" class="anchor-icon" translate="no">
+<h3 id="Define-the-BM25-function" class="common-anchor-header">Define the BM25 function<button data-href="#Define-the-BM25-function" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -259,14 +272,15 @@ schema.WithField(entity.NewField().
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>La fonction BM25 convertit le texte tokenisé en vecteurs clairsemés prenant en charge le calcul de score BM25.</p>
-<p>Définissez la fonction et ajoutez-la à votre schéma :</p>
+    </button></h3><p>The BM25 function converts tokenized text into sparse vectors that support BM25 scoring.</p>
+<p>Define the function and add it to your schema:</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">bm25_function = Function(
     name=<span class="hljs-string">&quot;text_bm25_emb&quot;</span>, <span class="hljs-comment"># Function name</span>
@@ -305,7 +319,7 @@ schema.WithFunction(function)
       <span class="hljs-attr">output_field_names</span>: [<span class="hljs-string">&#x27;sparse&#x27;</span>],
       <span class="hljs-attr">params</span>: {},
     },
-]；
+];
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> schema=<span class="hljs-string">&#x27;{
         &quot;autoId&quot;: true,
@@ -340,32 +354,37 @@ schema.WithFunction(function)
         ]
     }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-cpp">milvus::FunctionPtr function = std::<span class="hljs-built_in">make_shared</span>&lt;milvus::Function&gt;(<span class="hljs-string">&quot;text_bm25_emb&quot;</span>, milvus::FunctionType::BM25);
+function-&gt;<span class="hljs-built_in">AddInputFieldName</span>(<span class="hljs-string">&quot;text&quot;</span>);
+function-&gt;<span class="hljs-built_in">AddOutputFieldName</span>(<span class="hljs-string">&quot;sparse&quot;</span>);
+schema-&gt;<span class="hljs-built_in">AddFunction</span>(function);
+<button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Paramètre</p></th>
+     <th><p>Parameter</p></th>
      <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">name</code></p></td>
-     <td><p>Nom de la fonction. Cette fonction convertit votre texte brut issu du champ « <code translate="no">text</code> » en vecteurs clairs compatibles avec BM25, qui seront stockés dans le champ « <code translate="no">sparse</code> ».</p></td>
+     <td><p>The name of the function. This function converts your raw text from the <code translate="no">text</code> field into BM25-compatible sparse vectors that will be stored in the <code translate="no">sparse</code> field.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">input_field_names</code></p></td>
-     <td><p>Nom du champ « <code translate="no">VARCHAR</code> » ou « <code translate="no">TEXT</code> » nécessitant une conversion de texte en vecteur clairsemé. Pour « <code translate="no">FunctionType.BM25</code> », ce paramètre n’accepte qu’un seul nom de champ.</p></td>
+     <td><p>The name of the <code translate="no">VARCHAR</code> or <code translate="no">TEXT</code> field requiring text-to-sparse-vector conversion. For <code translate="no">FunctionType.BM25</code>, this parameter accepts only one field name.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">output_field_names</code></p></td>
-     <td><p>Nom du champ dans lequel les vecteurs creux générés en interne seront stockés. Pour <code translate="no">FunctionType.BM25</code>, ce paramètre n’accepte qu’un seul nom de champ.</p></td>
+     <td><p>The name of the field where the internally generated sparse vectors will be stored. For <code translate="no">FunctionType.BM25</code>, this parameter accepts only one field name.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">function_type</code></p></td>
-     <td><p>Le type de fonction à utiliser. Doit être <code translate="no">FunctionType.BM25</code>.</p></td>
+     <td><p>The type of the function to use. Must be <code translate="no">FunctionType.BM25</code>.</p></td>
    </tr>
 </table>
 <div class="alert note">
-<p>Si plusieurs champs de texte nécessitent un traitement BM25, définissez <strong>une fonction BM25 par champ</strong>, chacune avec un nom et un champ de sortie uniques.</p>
+<p>If multiple text fields require BM25 processing, define <strong>one BM25 function per field</strong>, each with a unique name and output field.</p>
 </div>
-<h3 id="Configure-the-index" class="common-anchor-header">Configurer l’index<button data-href="#Configure-the-index" class="anchor-icon" translate="no">
+<h3 id="Configure-the-index" class="common-anchor-header">Configure the index<button data-href="#Configure-the-index" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -380,13 +399,14 @@ schema.WithFunction(function)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Après avoir défini le schéma avec les champs nécessaires et la fonction intégrée, configurez l’index de votre collection.</p>
+    </button></h3><p>After defining the schema with necessary fields and the built-in function, set up the index for your collection.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
@@ -450,41 +470,46 @@ indexes.add(IndexParam.builder()
         }
     ]&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-cpp"><span class="hljs-keyword">auto</span> index_params = milvus::<span class="hljs-built_in">IndexDesc</span>(<span class="hljs-string">&quot;sparse&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, milvus::IndexType::SPARSE_INVERTED_INDEX, milvus::MetricType::BM25);
+index_params.<span class="hljs-built_in">AddExtraParam</span>(<span class="hljs-string">&quot;inverted_index_algo&quot;</span>, <span class="hljs-string">&quot;DAAT_MAXSCORE&quot;</span>);
+index_params.<span class="hljs-built_in">AddExtraParam</span>(<span class="hljs-string">&quot;bm25_k1&quot;</span>, <span class="hljs-string">&quot;1.2&quot;</span>);
+index_params.<span class="hljs-built_in">AddExtraParam</span>(<span class="hljs-string">&quot;bm25_b&quot;</span>, <span class="hljs-string">&quot;0.75&quot;</span>);
+<button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Paramètre</p></th>
+     <th><p>Parameter</p></th>
      <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">field_name</code></p></td>
-     <td><p>Nom du champ vectoriel à indexer. Pour la recherche en texte intégral, il doit s'agir du champ qui stocke les vecteurs clairsemés générés. Dans cet exemple, définissez la valeur sur <code translate="no">sparse</code>.</p></td>
+     <td><p>The name of the vector field to index. For full text search, this should be the field that stores the generated sparse vectors. In this example, set the value to <code translate="no">sparse</code>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">index_type</code></p></td>
-     <td><p>Type d’index à créer. Pour la recherche en texte intégral BM25 dans Milvus, définissez cette valeur sur <code translate="no">SPARSE_INVERTED_INDEX</code>. Pour plus d’informations, consultez <a href="/docs/fr/sparse-inverted-index.md">SPARSE_INVERTED_INDEX</a>.</p></td>
+     <td><p>The type of the index to create. For BM25 full text search in Milvus, set this value to <code translate="no">SPARSE_INVERTED_INDEX</code>. For more information, refer to <a href="/docs/fr/sparse-inverted-index.md">SPARSE_INVERTED_INDEX</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">metric_type</code></p></td>
-     <td><p>La valeur de ce paramètre doit être définie sur « <code translate="no">BM25</code> » spécifiquement pour la fonctionnalité de recherche en texte intégral.</p></td>
+     <td><p>The value for this parameter must be set to <code translate="no">BM25</code> specifically for full text search functionality.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params</code></p></td>
-     <td><p>Un dictionnaire de paramètres supplémentaires spécifiques à l’index.</p></td>
+     <td><p>A dictionary of additional parameters specific to the index.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.inverted_index_algo</code></p></td>
-     <td><p>L'algorithme utilisé pour la construction et l'interrogation de l'index inversé clairsemé BM25. Valeurs valides :</p><ul><li><p><code translate="no">"DAAT_MAXSCORE"</code> (par défaut) : traitement des requêtes MaxScore « Document-at-a-Time ». Cette option convient aux charges de travail de recherche en texte intégral présentant des valeurs <em>k</em> élevées ou aux requêtes comportant de nombreux termes. Pour plus d’informations, consultez la section <a href="https://dl.acm.org/doi/10.1016/0306-4573%2895%2900020-H">Évaluation des requêtes : stratégies et optimisations</a>.</p></li><li><p><code translate="no">"DAAT_WAND"</code>: Traitement des requêtes WAND « Document-at-a-Time ». Cette option est adaptée aux charges de travail de recherche en texte intégral présentant de faibles valeurs <em>de k</em> ou aux requêtes courtes. Pour plus d’informations, consultez la section « <a href="https://dl.acm.org/doi/10.1145/956863.956944">Évaluation efficace des requêtes à l’aide d’un processus de recherche à deux niveaux</a> ».</p></li><li><p><code translate="no">"TAAT_NAIVE"</code>: Traitement de requêtes « terme par terme » de base. Utilisez cette option comme référence, ou lorsque vous avez besoin que le score s’adapte dynamiquement aux statistiques globales de la collection, telles que la longueur moyenne des documents.</p></li><li><p><code translate="no">"BLOCK_MAX_MAXSCORE"</code>: Traitement des requêtes MaxScore avec des métadonnées de score maximal au niveau des blocs. Pour plus d’informations, consultez la section « <a href="https://dl.acm.org/doi/10.1145/2009916.2010048">Récupération plus rapide des k meilleurs documents à l’aide d’index Block-Max</a> ».</p></li><li><p><code translate="no">"BLOCK_MAX_WAND"</code>: Traitement des requêtes WAND avec des métadonnées de score maximal au niveau des blocs. Pour plus d’informations, consultez la section « <a href="https://dl.acm.org/doi/10.1145/2009916.2010048">Récupération plus rapide des k meilleurs documents à l’aide d’index Block-Max</a> ».</p></li></ul></td>
+     <td><p>The algorithm used for building and querying the BM25 sparse inverted index. Valid values:</p><ul><li><p><code translate="no">"DAAT_MAXSCORE"</code> (default): Document-at-a-Time MaxScore query processing. This option is suitable for full text search workloads with high <em>k</em> values or queries with many terms. For background, refer to <a href="https://dl.acm.org/doi/10.1016/0306-4573%2895%2900020-H">Query Evaluation: Strategies and Optimizations</a>.</p></li><li><p><code translate="no">"DAAT_WAND"</code>: Document-at-a-Time WAND query processing. This option is suitable for full text search workloads with small <em>k</em> values or short queries. For background, refer to <a href="https://dl.acm.org/doi/10.1145/956863.956944">Efficient Query Evaluation using a Two-Level Retrieval Process</a>.</p></li><li><p><code translate="no">"TAAT_NAIVE"</code>: Basic Term-at-a-Time query processing. Use this option as a baseline, or when you need scoring to adapt dynamically to global collection statistics such as average document length.</p></li><li><p><code translate="no">"BLOCK_MAX_MAXSCORE"</code>: MaxScore query processing with block-level max-score metadata. For background, refer to <a href="https://dl.acm.org/doi/10.1145/2009916.2010048">Faster Top-k Document Retrieval Using Block-Max Indexes</a>.</p></li><li><p><code translate="no">"BLOCK_MAX_WAND"</code>: WAND query processing with block-level max-score metadata. For background, refer to <a href="https://dl.acm.org/doi/10.1145/2009916.2010048">Faster Top-k Document Retrieval Using Block-Max Indexes</a>.</p></li></ul></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.bm25_k1</code></p></td>
-     <td><p>Contrôle la saturation de la fréquence des termes. Des valeurs plus élevées augmentent l’importance de la fréquence des termes dans le classement des documents. Plage recommandée : [1,2 ; 2,0]. Valeur par défaut : 1,2.</p></td>
+     <td><p>Controls the term frequency saturation. Higher values increase the importance of term frequencies in document ranking. Recommended range: [1.2, 2.0]. Default value: 1.2.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.bm25_b</code></p></td>
-     <td><p>Contrôle le degré de normalisation de la longueur des documents. On utilise généralement des valeurs comprises entre 0 et 1, la valeur par défaut étant 0,75. Une valeur de 0 signifie qu’il n’y a pas de normalisation de la longueur, tandis qu’une valeur de 1 signifie une normalisation complète de la longueur.</p></td>
+     <td><p>Controls the extent to which document length is normalized. Values between 0 and 1 are typically used, with a default value of 0.75. A value of 0 means no length normalization, while a value of 1 means full length normalization.</p></td>
    </tr>
 </table>
-<h3 id="Create-the-collection" class="common-anchor-header">Créer la collection<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
+<h3 id="Create-the-collection" class="common-anchor-header">Create the collection<button data-href="#Create-the-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -499,13 +524,14 @@ indexes.add(IndexParam.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Créez maintenant la collection à l’aide du schéma et des paramètres d’index définis.</p>
+    </button></h3><p>Now create the collection using the schema and index parameters defined.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>, 
@@ -530,12 +556,12 @@ client.createCollection(requestCreate);
     <span class="hljs-comment">// handle error</span>
 }
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-javascript"><span class="hljs-keyword">await</span> client.<span class="hljs-title function_">create_collection</span>(
-    <span class="hljs-attr">collection_name</span>: <span class="hljs-string">&#x27;my_collection&#x27;</span>, 
-    <span class="hljs-attr">schema</span>: schema, 
+<pre><code translate="no" class="language-javascript"><span class="hljs-keyword">await</span> client.<span class="hljs-title function_">create_collection</span>({
+    <span class="hljs-attr">collection_name</span>: <span class="hljs-string">&#x27;my_collection&#x27;</span>,
+    <span class="hljs-attr">schema</span>: schema,
     <span class="hljs-attr">index_params</span>: index_params,
     <span class="hljs-attr">functions</span>: functions
-);
+});
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash"><span class="hljs-built_in">export</span> CLUSTER_ENDPOINT=<span class="hljs-string">&quot;http://localhost:19530&quot;</span>
 <span class="hljs-built_in">export</span> TOKEN=<span class="hljs-string">&quot;root:Milvus&quot;</span>
@@ -551,7 +577,15 @@ curl --request POST \
     \&quot;indexParams\&quot;: <span class="hljs-variable">$indexParams</span>
 }&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Insert-text-data" class="common-anchor-header">Insérer des données textuelles<button data-href="#Insert-text-data" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp"><span class="hljs-keyword">auto</span> status = client-&gt;<span class="hljs-built_in">CreateCollection</span>(milvus::<span class="hljs-built_in">CreateCollectionRequest</span>()
+                                    .<span class="hljs-built_in">WithCollectionName</span>(<span class="hljs-string">&quot;my_collection&quot;</span>)
+                                    .<span class="hljs-built_in">WithCollectionSchema</span>(schema)
+                                    .<span class="hljs-built_in">AddIndex</span>(std::<span class="hljs-built_in">move</span>(index_params)));
+<span class="hljs-keyword">if</span> (!status.<span class="hljs-built_in">IsOk</span>()) {
+    std::cout &lt;&lt; status.<span class="hljs-built_in">Message</span>() &lt;&lt; std::endl;
+}
+<button class="copy-code-btn"></button></code></pre>
+<h2 id="Insert-text-data" class="common-anchor-header">Insert text data<button data-href="#Insert-text-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -566,13 +600,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Une fois votre collection et votre index configurés, vous êtes prêt à insérer des données textuelles. Pour cela, il vous suffit de fournir le texte brut. La fonction intégrée que nous avons définie précédemment génère automatiquement le vecteur creux correspondant à chaque entrée de texte.</p>
+    </button></h2><p>After setting up your collection and index, you’re ready to insert text data. In this process, you need only to provide the raw text. The built-in function we defined earlier automatically generates the corresponding sparse vector for each text entry.</p>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">client.insert(<span class="hljs-string">&#x27;my_collection&#x27;</span>, [
     {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval is a field of study.&#x27;</span>},
@@ -597,15 +632,26 @@ client.insert(InsertReq.builder()
         .data(rows)
         .build());
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-go"><span class="hljs-comment">// go</span>
+<pre><code translate="no" class="language-go">_, err = client.Insert(ctx, milvusclient.NewColumnBasedInsertOption(<span class="hljs-string">&quot;my_collection&quot;</span>).
+    WithVarcharColumn(<span class="hljs-string">&quot;text&quot;</span>, []<span class="hljs-type">string</span>{
+        <span class="hljs-string">&quot;information retrieval is a field of study.&quot;</span>,
+        <span class="hljs-string">&quot;information retrieval focuses on finding relevant information in large datasets.&quot;</span>,
+        <span class="hljs-string">&quot;data mining and information retrieval overlap in research.&quot;</span>,
+    }),
+)
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+    fmt.Println(err.Error())
+    <span class="hljs-comment">// handle error</span>
+}
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-javascript"><span class="hljs-keyword">await</span> client.<span class="hljs-title function_">insert</span>({
-<span class="hljs-attr">collection_name</span>: <span class="hljs-string">&#x27;my_collection&#x27;</span>, 
-<span class="hljs-attr">data</span>: [
-    {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval is a field of study.&#x27;</span>},
-    {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval focuses on finding relevant information in large datasets.&#x27;</span>},
-    {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;data mining and information retrieval overlap in research.&#x27;</span>},
-]);
+    <span class="hljs-attr">collection_name</span>: <span class="hljs-string">&#x27;my_collection&#x27;</span>,
+    <span class="hljs-attr">data</span>: [
+        {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval is a field of study.&#x27;</span>},
+        {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;information retrieval focuses on finding relevant information in large datasets.&#x27;</span>},
+        {<span class="hljs-string">&#x27;text&#x27;</span>: <span class="hljs-string">&#x27;data mining and information retrieval overlap in research.&#x27;</span>},
+    ],
+});
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">curl --request POST \
 --url <span class="hljs-string">&quot;<span class="hljs-variable">${CLUSTER_ENDPOINT}</span>/v2/vectordb/entities/insert&quot;</span> \
@@ -622,7 +668,22 @@ client.insert(InsertReq.builder()
 }&#x27;</span>
 
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Perform-full-text-search" class="common-anchor-header">Effectuer une recherche en texte intégral<button data-href="#Perform-full-text-search" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp">milvus::EntityRows data = {
+    {{<span class="hljs-string">&quot;text&quot;</span>, <span class="hljs-string">&quot;information retrieval is a field of study.&quot;</span>}},
+    {{<span class="hljs-string">&quot;text&quot;</span>, <span class="hljs-string">&quot;information retrieval focuses on finding relevant information in large datasets.&quot;</span>}},
+    {{<span class="hljs-string">&quot;text&quot;</span>, <span class="hljs-string">&quot;data mining and information retrieval overlap in research.&quot;</span>}}
+};
+
+milvus::InsertResponse response;
+<span class="hljs-keyword">auto</span> status = client-&gt;<span class="hljs-built_in">Insert</span>(milvus::<span class="hljs-built_in">InsertRequest</span>()
+                                .<span class="hljs-built_in">WithCollectionName</span>(<span class="hljs-string">&quot;my_collection&quot;</span>)
+                                .<span class="hljs-built_in">WithRowsData</span>(std::<span class="hljs-built_in">move</span>(data))
+                                , response);
+<span class="hljs-keyword">if</span> (!status.<span class="hljs-built_in">IsOk</span>()) {
+    std::cout &lt;&lt; status.<span class="hljs-built_in">Message</span>() &lt;&lt; std::endl;
+}
+<button class="copy-code-btn"></button></code></pre>
+<h2 id="Perform-full-text-search" class="common-anchor-header">Perform full text search<button data-href="#Perform-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -637,16 +698,17 @@ client.insert(InsertReq.builder()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Une fois les données insérées dans votre collection, vous pouvez effectuer des recherches en texte intégral à l’aide de requêtes en texte brut. Milvus convertit automatiquement votre requête en vecteur creux et classe les résultats de recherche correspondants à l’aide de l’algorithme BM25, puis renvoie les topK (<code translate="no">limit</code>) résultats.</p>
+    </button></h2><p>Once you’ve inserted data into your collection, you can perform full text searches using raw text queries. Milvus automatically converts your query into a sparse vector and ranks the matched search results using the BM25 algorithm, and then returns the topK (<code translate="no">limit</code>) results.</p>
 <div class="alert note">
-<p>Vous pouvez mettre en évidence les termes correspondants dans les résultats de recherche en configurant un surligneur de texte. Consultez la section « <a href="/docs/fr/text-highlighter.md">Surligneur de texte</a> » pour plus de détails.</p>
+<p>You can highlight the matched terms in search results by configuring a text highlighter. See <a href="/docs/fr/text-highlighter.md">Text Highlighter</a> for details.</p>
 </div>
 <div class="multipleCode">
-   <a href="#python">Python</a>
- <a href="#java">   Java</a>
- <a href="#go">   Go</a>
- <a href="#javascript">   NodeJS</a>
- <a href="#bash">   cURL</a>
+    <a href="#python">Python</a>
+    <a href="#java">Java</a>
+    <a href="#go">Go</a>
+    <a href="#javascript">NodeJS</a>
+    <a href="#cpp">C++</a>
+    <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python">res = client.search(
     collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>, 
@@ -693,13 +755,13 @@ resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
     fmt.Println(<span class="hljs-string">&quot;text: &quot;</span>, resultSet.GetColumn(<span class="hljs-string">&quot;text&quot;</span>).FieldData().GetScalars())
 }
 <button class="copy-code-btn"></button></code></pre>
-<pre><code translate="no" class="language-javascript"><span class="hljs-keyword">await</span> client.<span class="hljs-title function_">search</span>(
-    <span class="hljs-attr">collection_name</span>: <span class="hljs-string">&#x27;my_collection&#x27;</span>, 
+<pre><code translate="no" class="language-javascript"><span class="hljs-keyword">await</span> client.<span class="hljs-title function_">search</span>({
+    <span class="hljs-attr">collection_name</span>: <span class="hljs-string">&#x27;my_collection&#x27;</span>,
     <span class="hljs-attr">data</span>: [<span class="hljs-string">&#x27;whats the focus of information retrieval?&#x27;</span>],
     <span class="hljs-attr">anns_field</span>: <span class="hljs-string">&#x27;sparse&#x27;</span>,
     <span class="hljs-attr">output_fields</span>: [<span class="hljs-string">&#x27;text&#x27;</span>],
     <span class="hljs-attr">limit</span>: <span class="hljs-number">3</span>,
-)
+});
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">curl --request POST \
 --url <span class="hljs-string">&quot;<span class="hljs-variable">${CLUSTER_ENDPOINT}</span>/v2/vectordb/entities/search&quot;</span> \
@@ -721,18 +783,31 @@ resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
     }
 }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-cpp"><span class="hljs-keyword">auto</span> request = milvus::<span class="hljs-built_in">SearchRequest</span>()
+                       .<span class="hljs-built_in">WithCollectionName</span>(<span class="hljs-string">&quot;my_collection&quot;</span>)
+                       .<span class="hljs-built_in">AddEmbeddedText</span>(<span class="hljs-string">&quot;whats the focus of information retrieval?&quot;</span>)
+                       .<span class="hljs-built_in">WithLimit</span>(<span class="hljs-number">3</span>)
+                       .<span class="hljs-built_in">WithAnnsField</span>(<span class="hljs-string">&quot;sparse&quot;</span>)
+                       .<span class="hljs-built_in">AddOutputField</span>(<span class="hljs-string">&quot;text&quot;</span>);
+
+milvus::SearchResponse response;
+<span class="hljs-keyword">auto</span> status = client-&gt;<span class="hljs-built_in">Search</span>(request, response);
+<span class="hljs-keyword">if</span> (!status.<span class="hljs-built_in">IsOk</span>()) {
+    std::cout &lt;&lt; status.<span class="hljs-built_in">Message</span>() &lt;&lt; std::endl;
+}
+<button class="copy-code-btn"></button></code></pre>
 <table>
    <tr>
-     <th><p>Paramètre</p></th>
+     <th><p>Parameter</p></th>
      <th><p>Description</p></th>
    </tr>
    <tr>
      <td><p><code translate="no">search_params</code></p></td>
-     <td><p>Dictionnaire contenant les paramètres de recherche.</p></td>
+     <td><p>A dictionary containing search parameters.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">params.drop_ratio_search</code></p></td>
-     <td><p>Proportion de termes de faible importance à ignorer lors de la recherche. La valeur doit être comprise dans l'intervalle [0,0 ; 1,0). Pour plus de détails, consultez la section « <a href="/docs/fr/sparse_vector.md">Vecteur clairsemé</a> ».</p></td>
+     <td><p>Proportion of low-importance terms to ignore during search. The value must be in the range [0.0, 1.0). For details, refer to <a href="/docs/fr/sparse_vector.md">Sparse Vector</a>.</p></td>
    </tr>
    <tr>
      <td></td>
@@ -740,19 +815,19 @@ resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
    </tr>
    <tr>
      <td><p><code translate="no">data</code></p></td>
-     <td><p>Texte brut de la requête en langage naturel. Milvus convertit automatiquement votre requête textuelle en vecteurs clairsemés à l’aide de la fonction BM25 — ne fournissez pas de vecteurs précalculés.</p></td>
+     <td><p>Raw query text in natural language. Milvus automatically converts your text query into sparse vectors using the BM25 function - do not provide pre-computed vectors.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">anns_field</code></p></td>
-     <td><p>Nom du champ contenant les vecteurs clairsemés générés en interne.</p></td>
+     <td><p>The name of the field that contains internally generated sparse vectors.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">output_fields</code></p></td>
-     <td><p>Liste des noms de champs à renvoyer dans les résultats de recherche. Prend en charge tous les champs <strong>à l'exception du champ de vecteurs clairsemés</strong> contenant les représentations générées par BM25. Les champs de sortie courants incluent le champ de clé primaire (par exemple, <code translate="no">id</code>) et le champ de texte d'origine (par exemple, <code translate="no">text</code>). Pour plus d'informations, consultez <a href="/docs/fr/full-text-search.md#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search">la FAQ</a>.</p></td>
+     <td><p>List of field names to return in search results. Supports all fields <strong>except the sparse vector field</strong> containing BM25-generated embeddings. Common output fields include the primary key field (e.g., <code translate="no">id</code>) and the original text field (e.g., <code translate="no">text</code>). For more information, refer to <a href="/docs/fr/full-text-search.md#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search">FAQ</a>.</p></td>
    </tr>
    <tr>
      <td><p><code translate="no">limit</code></p></td>
-     <td><p>Nombre maximal de résultats les plus pertinents à renvoyer.</p></td>
+     <td><p>Maximum number of top matches to return.</p></td>
    </tr>
 </table>
 <h2 id="FAQ" class="common-anchor-header">FAQ<button data-href="#FAQ" class="anchor-icon" translate="no">
@@ -770,7 +845,7 @@ resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="common-anchor-header">Puis-je générer ou accéder aux vecteurs clairsemés générés par la fonction BM25 dans la recherche en texte intégral ?<button data-href="#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="common-anchor-header">Can I output or access the sparse vectors generated by the BM25 function in full text search?<button data-href="#Can-I-output-or-access-the-sparse-vectors-generated-by-the-BM25-function-in-full-text-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -785,34 +860,87 @@ resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Non, les vecteurs creux générés par la fonction BM25 ne sont ni directement accessibles ni exportables dans la recherche en texte intégral. Voici les détails :</p>
+    </button></h3><p>No, the sparse vectors generated by the BM25 function are not directly accessible or outputable in full text search. Here are the details:</p>
 <ul>
-<li><p>La fonction BM25 génère en interne des vecteurs creux à des fins de classement et de recherche</p></li>
-<li><p>Ces vecteurs sont stockés dans le champ « sparse », mais ne peuvent pas être inclus dans <code translate="no">output_fields</code></p></li>
-<li><p>Vous ne pouvez exporter que les champs de texte d'origine et les métadonnées (telles que <code translate="no">id</code>, <code translate="no">text</code>)</p></li>
+<li><p>The BM25 function generates sparse vectors internally for ranking and retrieval</p></li>
+<li><p>These vectors are stored in the sparse field but cannot be included in <code translate="no">output_fields</code></p></li>
+<li><p>You can only output the original text fields and metadata (like <code translate="no">id</code>, <code translate="no">text</code>)</p></li>
 </ul>
-<p>Exemple :</p>
+<p>Example:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># ❌ This throws an error - you cannot output the sparse field</span>
 client.search(
-    collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>, 
+    collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>,
     data=[<span class="hljs-string">&#x27;query text&#x27;</span>],
     anns_field=<span class="hljs-string">&#x27;sparse&#x27;</span>,
-<span class="highlighted-wrapper-line">    output_fields=[<span class="hljs-string">&#x27;text&#x27;</span>, <span class="hljs-string">&#x27;sparse&#x27;</span>]  <span class="hljs-comment"># &#x27;sparse&#x27; causes an error</span></span>
+<span class="highlighted-wrapper-line">    output_fields=[<span class="hljs-string">&#x27;text&#x27;</span>, <span class="hljs-string">&#x27;sparse&#x27;</span>],  <span class="hljs-comment"># &#x27;sparse&#x27; causes an error</span></span>
     limit=<span class="hljs-number">3</span>,
     search_params=search_params
 )
 
 <span class="hljs-comment"># ✅ This works - output text fields only</span>
 client.search(
-    collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>, 
+    collection_name=<span class="hljs-string">&#x27;my_collection&#x27;</span>,
     data=[<span class="hljs-string">&#x27;query text&#x27;</span>],
     anns_field=<span class="hljs-string">&#x27;sparse&#x27;</span>,
-<span class="highlighted-wrapper-line">    output_fields=[<span class="hljs-string">&#x27;text&#x27;</span>]</span>
+<span class="highlighted-wrapper-line">    output_fields=[<span class="hljs-string">&#x27;text&#x27;</span>],</span>
     limit=<span class="hljs-number">3</span>,
     search_params=search_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="common-anchor-header">Pourquoi dois-je définir un champ de vecteur clairsemé si je ne peux pas y accéder ?<button data-href="#Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-java"><span class="hljs-comment">// Searching with the sparse field in outputFields throws an error.</span>
+<span class="hljs-comment">// Only output the original text and metadata fields.</span>
+<span class="hljs-type">SearchResp</span> <span class="hljs-variable">searchResp</span> <span class="hljs-operator">=</span> client.search(SearchReq.builder()
+        .collectionName(<span class="hljs-string">&quot;my_collection&quot;</span>)
+        .data(Collections.singletonList(<span class="hljs-keyword">new</span> <span class="hljs-title class_">EmbeddedText</span>(<span class="hljs-string">&quot;query text&quot;</span>)))
+        .annsField(<span class="hljs-string">&quot;sparse&quot;</span>)
+        .topK(<span class="hljs-number">3</span>)
+        .outputFields(Collections.singletonList(<span class="hljs-string">&quot;text&quot;</span>))
+        .build());
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-go"><span class="hljs-comment">// Searching with the sparse field in output_fields throws an error.</span>
+<span class="hljs-comment">// Only output the original text and metadata fields.</span>
+resultSets, err := client.Search(ctx, milvusclient.NewSearchOption(
+    <span class="hljs-string">&quot;my_collection&quot;</span>,
+    <span class="hljs-number">3</span>,
+    []entity.Vector{entity.Text(<span class="hljs-string">&quot;query text&quot;</span>)},
+).WithConsistencyLevel(entity.ClStrong).
+    WithANNSField(<span class="hljs-string">&quot;sparse&quot;</span>).
+    WithAnnParam(index.NewCustomAnnParam()).
+    WithOutputFields(<span class="hljs-string">&quot;text&quot;</span>))
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-javascript"><span class="hljs-comment">// Searching with the sparse field in output_fields throws an error.</span>
+<span class="hljs-comment">// Only output the original text and metadata fields.</span>
+<span class="hljs-keyword">await</span> client.<span class="hljs-title function_">search</span>({
+    <span class="hljs-attr">collection_name</span>: <span class="hljs-string">&#x27;my_collection&#x27;</span>,
+    <span class="hljs-attr">data</span>: [<span class="hljs-string">&#x27;query text&#x27;</span>],
+    <span class="hljs-attr">anns_field</span>: <span class="hljs-string">&#x27;sparse&#x27;</span>,
+    <span class="hljs-attr">output_fields</span>: [<span class="hljs-string">&#x27;text&#x27;</span>],
+    <span class="hljs-attr">limit</span>: <span class="hljs-number">3</span>,
+});
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-bash">curl --request POST \
+--url <span class="hljs-string">&quot;<span class="hljs-variable">${CLUSTER_ENDPOINT}</span>/v2/vectordb/entities/search&quot;</span> \
+--header <span class="hljs-string">&quot;Authorization: Bearer <span class="hljs-variable">${TOKEN}</span>&quot;</span> \
+--header <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+--header <span class="hljs-string">&quot;Request-Timeout: 10&quot;</span> \
+--data-raw <span class="hljs-string">&#x27;{
+    &quot;collectionName&quot;: &quot;my_collection&quot;,
+    &quot;data&quot;: [&quot;query text&quot;],
+    &quot;annsField&quot;: &quot;sparse&quot;,
+    &quot;limit&quot;: 3,
+    &quot;outputFields&quot;: [&quot;text&quot;]
+}&#x27;</span>
+<button class="copy-code-btn"></button></code></pre>
+<pre><code translate="no" class="language-cpp"><span class="hljs-comment">// Searching with the sparse field in output_fields throws an error.</span>
+<span class="hljs-comment">// Only output the original text and metadata fields.</span>
+milvus::SearchRequest request = milvus::<span class="hljs-built_in">SearchRequest</span>()
+    .<span class="hljs-built_in">WithCollectionName</span>(<span class="hljs-string">&quot;my_collection&quot;</span>)
+    .<span class="hljs-built_in">AddEmbeddedText</span>(<span class="hljs-string">&quot;query text&quot;</span>)
+    .<span class="hljs-built_in">WithLimit</span>(<span class="hljs-number">3</span>)
+    .<span class="hljs-built_in">WithAnnsField</span>(<span class="hljs-string">&quot;sparse&quot;</span>)
+    .<span class="hljs-built_in">AddOutputField</span>(<span class="hljs-string">&quot;text&quot;</span>);
+<button class="copy-code-btn"></button></code></pre>
+<h3 id="Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="common-anchor-header">Why do I need to define a sparse vector field if I can’t access it?<button data-href="#Why-do-I-need-to-define-a-sparse-vector-field-if-I-cant-access-it" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -827,16 +955,16 @@ client.search(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Le champ de vecteurs creux sert d’index de recherche interne, à l’instar des index de base de données avec lesquels les utilisateurs n’interagissent pas directement.</p>
-<p><strong>Justification de la conception</strong>:</p>
+    </button></h3><p>The sparse vector field serves as an internal search index, similar to database indexes that users don’t directly interact with.</p>
+<p><strong>Design Rationale</strong>:</p>
 <ul>
-<li><p>Séparation des préoccupations : vous travaillez avec du texte (entrée/sortie), Milvus gère les vecteurs (traitement interne)</p></li>
-<li><p>Performances : les vecteurs creux précalculés permettent un classement BM25 rapide lors des requêtes</p></li>
-<li><p>Expérience utilisateur : les opérations vectorielles complexes sont masquées derrière une interface textuelle simple</p></li>
+<li><p>Separation of Concerns: You work with text (input/output), Milvus handles vectors (internal processing)</p></li>
+<li><p>Performance: Pre-computed sparse vectors enable fast BM25 ranking during queries</p></li>
+<li><p>User Experience: Abstracts away complex vector operations behind a simple text interface</p></li>
 </ul>
-<p><strong>Si vous avez besoin d'accéder aux vecteurs</strong>:</p>
+<p><strong>If you need vector access</strong>:</p>
 <ul>
-<li><p>Utilisez des opérations manuelles sur les vecteurs creux plutôt que la recherche en texte intégral</p></li>
-<li><p>Créez des collections distinctes pour les workflows personnalisés impliquant des vecteurs creux</p></li>
+<li><p>Use manual sparse vector operations instead of full text search</p></li>
+<li><p>Create separate collections for custom sparse vector workflows</p></li>
 </ul>
-<p>Pour plus de détails, consultez la section « <a href="/docs/fr/sparse_vector.md">Vecteurs creux</a> ».</p>
+<p>For details, refer to <a href="/docs/fr/sparse_vector.md">Sparse Vector</a>.</p>

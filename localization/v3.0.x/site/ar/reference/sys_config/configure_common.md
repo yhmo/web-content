@@ -2,9 +2,9 @@
 id: configure_common.md
 related_key: configure
 group: system_configuration.md
-summary: تعرف على كيفية تكوين الإعدادات الشائعة في Milvus.
+summary: Learn how to configure common for Milvus.
 ---
-<h1 id="common-related-Configurations" class="common-anchor-header">التكوينات ذات الصلة<button data-href="#common-related-Configurations" class="anchor-icon" translate="no">
+<h1 id="common-related-Configurations" class="common-anchor-header">common-related Configurations<button data-href="#common-related-Configurations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,13 +37,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.defaultPartitionName">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        اسم القسم الافتراضي عند إنشاء مجموعة      </td>
+      <td>        Name of the default partition when a collection is created      </td>
       <td>_default</td>
     </tr>
   </tbody>
@@ -66,13 +66,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.defaultIndexName">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        اسم الفهرس عند إنشائه دون تحديد اسم      </td>
+      <td>        Name of the index when it is created with name unspecified      </td>
       <td>_default_idx</td>
     </tr>
   </tbody>
@@ -95,13 +95,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.entityExpiration">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        انتهاء صلاحية الكيان بالثواني، تحذير: -1 تعني عدم انتهاء الصلاحية أبدًا      </td>
+      <td>        Entity expiration in seconds, CAUTION -1 means never expire      </td>
       <td>-1</td>
     </tr>
   </tbody>
@@ -124,13 +124,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.indexSliceSize">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        حجم شريحة الفهرس بالميغابايت      </td>
+      <td>        Index slice size in MB      </td>
       <td>16</td>
     </tr>
   </tbody>
@@ -153,13 +153,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.threadCoreCoefficient.highPriority">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        تحدد هذه المعلمة عدد المرات التي يكون فيها عدد الخيوط يساوي عدد النوى في تجمع الأولوية العالية      </td>
+      <td>        This parameter specify how many times the number of threads is the number of cores in high priority pool      </td>
       <td>10</td>
     </tr>
   </tbody>
@@ -182,13 +182,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.threadCoreCoefficient.middlePriority">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        تحدد هذه المعلمة عدد المرات التي يكون فيها عدد الخيوط يساوي عدد النوى في تجمع الأولوية المتوسطة      </td>
+      <td>        This parameter specify how many times the number of threads is the number of cores in middle priority pool      </td>
       <td>5</td>
     </tr>
   </tbody>
@@ -211,13 +211,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.threadCoreCoefficient.lowPriority">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        تحدد هذه المعلمة عدد المرات التي يكون فيها عدد الخيوط يساوي عدد النوى في تجمع الأولوية المنخفضة      </td>
+      <td>        This parameter specify how many times the number of threads is the number of cores in low priority pool      </td>
       <td>1</td>
     </tr>
   </tbody>
@@ -240,13 +240,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.gracefulTime">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        مللي ثانية. تمثل الفاصل الزمني (بالمللي ثانية) الذي يجب طرح وقت وصول الطلب منه في حالة التناسق المحدود.      </td>
+      <td>        milliseconds. it represents the interval (in ms) by which the request arrival time needs to be subtracted in the case of Bounded Consistency.      </td>
       <td>5000</td>
     </tr>
   </tbody>
@@ -269,13 +269,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.gracefulStopTimeout">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        ثوانٍ. سيؤدي ذلك إلى إجبار الخادم على الإنهاء إذا لم تكتمل عملية الإيقاف التدريجي خلال هذه المدة.      </td>
+      <td>        seconds. it will force quit the server if the graceful stop process is not completed during this time.      </td>
       <td>1800</td>
     </tr>
   </tbody>
@@ -298,13 +298,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.storageType">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        يرجى التعديل في Milvus المدمج: local، القيم المتاحة هي [local، remote، opendal]، القيمة minio لم تعد مستخدمة، استخدم remote بدلاً منها      </td>
+      <td>        please adjust in embedded Milvus: local, available values are [local, remote, opendal], value minio is deprecated, use remote instead      </td>
       <td>remote</td>
     </tr>
   </tbody>
@@ -327,13 +327,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.storage.useLoonFFI">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th>
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        ما إذا كان سيتم استخدام Storage V3 لعمليات الكتابة الجديدة ومخرجات الضغط. هذه المعلمة قابلة للتحديث.      </td>
+      <td>        Whether to use Storage V3 for new writes and compaction output. This parameter is refreshable.      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -356,17 +356,17 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.simdType">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>القيمة الافتراضية: auto</li>      
-        <li>القيم الصالحة: [auto, avx512, avx2, avx, sse4_2]</li>      
-        <li>يُستخدم هذا التكوين فقط بواسطة querynode و indexnode، وهو يحدد مجموعة تعليمات وحدة المعالجة المركزية (CPU) للبحث وبناء الفهرس.</li>      </td>
-      <td>تلقائي</td>
+        <li>Default value: auto</li>      
+        <li>Valid values: [auto, avx512, avx2, avx, sse4_2]</li>      
+        <li>This configuration is only used by querynode and indexnode, it selects CPU instruction set for Searching and Index-building.</li>      </td>
+      <td>auto</td>
     </tr>
   </tbody>
 </table>
@@ -388,15 +388,15 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.superUsers">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>سيتجاهل المستخدمون المتميزون بعض عمليات فحص النظام،</li>      
-        <li>مثل التحقق من كلمة المرور القديمة عند تحديث بيانات الاعتماد</li>      </td>
+        <li>The superusers will ignore some system check processes,</li>      
+        <li>like the old password verification when updating the credential</li>      </td>
       <td></td>
     </tr>
   </tbody>
@@ -419,13 +419,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.defaultRootPassword">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        كلمة المرور الافتراضية لمستخدم الجذر. الحد الأقصى للطول هو 72 حرفًا، ويجب استخدام علامات الاقتباس المزدوجة.      </td>
+      <td>        default password for root user. The maximum length is 72 characters, and double quotes are required.      </td>
       <td>Milvus</td>
     </tr>
   </tbody>
@@ -448,13 +448,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.rootShouldBindRole">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        ما إذا كان يجب على المستخدم الجذر ربط دور عند تمكين التفويض.      </td>
+      <td>        Whether the root user should bind a role when the authorization is enabled.      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -477,13 +477,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.rbac.overrideBuiltInPrivilegeGroups.enabled">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        ما إذا كان يجب تجاوز مجموعات الامتيازات المدمجة أم لا      </td>
+      <td>        Whether to override build-in privilege groups      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -506,14 +506,14 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.rbac.cluster.readonly.privileges">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        امتيازات القراءة فقط على مستوى المجموعة      </td>
-      <td>ListDatabases، SelectOwnership، SelectUser، DescribeResourceGroup، ListResourceGroups، ListPrivilegeGroups</td>
+      <td>        Cluster level readonly privileges      </td>
+      <td>ListDatabases,SelectOwnership,SelectUser,DescribeResourceGroup,ListResourceGroups,ListPrivilegeGroups</td>
     </tr>
   </tbody>
 </table>
@@ -535,14 +535,14 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.rbac.cluster.readwrite.privileges">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        امتيازات القراءة والكتابة على مستوى المجموعة      </td>
-      <td>ListDatabases، SelectOwnership، SelectUser، DescribeResourceGroup، ListResourceGroups، ListPrivilegeGroups، FlushAll، TransferNode، TransferReplica، UpdateResourceGroups</td>
+      <td>        Cluster level readwrite privileges      </td>
+      <td>ListDatabases,SelectOwnership,SelectUser,DescribeResourceGroup,ListResourceGroups,ListPrivilegeGroups,FlushAll,TransferNode,TransferReplica,UpdateResourceGroups</td>
     </tr>
   </tbody>
 </table>
@@ -564,14 +564,14 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.rbac.cluster.admin.privileges">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        امتيازات الإدارة على مستوى المجموعة      </td>
-      <td>ListDatabases، SelectOwnership، SelectUser، DescribeResourceGroup، ListResourceGroups، ListPrivilegeGroups، FlushAll، TransferNode، TransferReplica،تحديث مجموعات الموارد، النسخ الاحتياطي لـ RBAC، استعادة RBAC، إنشاء قاعدة بيانات، حذف قاعدة بيانات، إنشاء ملكية، حذف ملكية، إدارة الملكية، إنشاء مجموعة موارد، حذف مجموعة موارد، تحديث مستخدم، إعادة تسمية مجموعة، إنشاء مجموعة امتيازات، حذف مجموعة امتيازات، تشغيل مجموعة امتيازات</td>
+      <td>        Cluster level admin privileges      </td>
+      <td>ListDatabases,SelectOwnership,SelectUser,DescribeResourceGroup,ListResourceGroups,ListPrivilegeGroups,FlushAll,TransferNode,TransferReplica,UpdateResourceGroups,BackupRBAC,RestoreRBAC,CreateDatabase,DropDatabase,CreateOwnership,DropOwnership,ManageOwnership,CreateResourceGroup,DropResourceGroup,UpdateUser,RenameCollection,CreatePrivilegeGroup,DropPrivilegeGroup,OperatePrivilegeGroup</td>
     </tr>
   </tbody>
 </table>
@@ -593,14 +593,14 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.rbac.database.readonly.privileges">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        امتيازات القراءة فقط على مستوى قاعدة البيانات      </td>
-      <td>ShowCollections، DescribeDatabase</td>
+      <td>        Database level readonly privileges      </td>
+      <td>ShowCollections,DescribeDatabase</td>
     </tr>
   </tbody>
 </table>
@@ -622,14 +622,14 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.rbac.database.readwrite.privileges">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        امتيازات القراءة والكتابة على مستوى قاعدة البيانات      </td>
-      <td>ShowCollections، DescribeDatabase، AlterDatabase</td>
+      <td>        Database level readwrite privileges      </td>
+      <td>ShowCollections,DescribeDatabase,AlterDatabase</td>
     </tr>
   </tbody>
 </table>
@@ -651,14 +651,14 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.rbac.database.admin.privileges">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        امتيازات الإدارة على مستوى قاعدة البيانات      </td>
-      <td>ShowCollections، DescribeDatabase، AlterDatabase، CreateCollection، DropCollection</td>
+      <td>        Database level admin privileges      </td>
+      <td>ShowCollections,DescribeDatabase,AlterDatabase,CreateCollection,DropCollection</td>
     </tr>
   </tbody>
 </table>
@@ -680,14 +680,14 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.rbac.collection.readonly.privileges">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        امتيازات القراءة فقط على مستوى المجموعة      </td>
-      <td>Query، Search، IndexDetail، GetFlushState، GetLoadState، GetLoadingProgress، HasPartition، ShowPartitions، DescribeCollection، DescribeAlias، GetStatistics، ListAliases</td>
+      <td>        Collection level readonly privileges      </td>
+      <td>Query,Search,IndexDetail,GetFlushState,GetLoadState,GetLoadingProgress,HasPartition,ShowPartitions,DescribeCollection,DescribeAlias,GetStatistics,ListAliases</td>
     </tr>
   </tbody>
 </table>
@@ -709,14 +709,14 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.rbac.collection.readwrite.privileges">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        امتيازات القراءة والكتابة على مستوى المجموعة      </td>
-      <td>الاستعلام، والبحث، وتفاصيل الفهرس، والحصول على حالة التفريغ، والحصول على حالة التحميل، والحصول على تقدم التحميل، ووجود التقسيم، وعرض التقسيمات، ووصف المجموعة،وصف الاسم المستعار، الحصول على الإحصائيات، سرد الأسماء المستعارة، التحميل، التحرير، الإدراج، الحذف، التحديث أو الإدراج، الاستيراد، التفريغ، الضغط، موازنة الحمل، إنشاء الفهرس، حذف الفهرس، إنشاء القسم، حذف القسم</td>
+      <td>        Collection level readwrite privileges      </td>
+      <td>Query,Search,IndexDetail,GetFlushState,GetLoadState,GetLoadingProgress,HasPartition,ShowPartitions,DescribeCollection,DescribeAlias,GetStatistics,ListAliases,Load,Release,Insert,Delete,Upsert,Import,Flush,Compaction,LoadBalance,CreateIndex,DropIndex,CreatePartition,DropPartition</td>
     </tr>
   </tbody>
 </table>
@@ -738,14 +738,14 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.security.rbac.collection.admin.privileges">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        امتيازات الإدارة على مستوى المجموعة      </td>
-      <td>الاستعلام، البحث، تفاصيل الفهرس، الحصول على حالة التفريغ، الحصول على حالة التحميل، الحصول على تقدم التحميل، وجود التقسيم، عرض التقسيمات، وصف المجموعة،وصف الاسم المستعار، والحصول على الإحصائيات، وسرد الأسماء المستعارة، والتحميل، والتحرير، والإدراج، والحذف، والتحديث أو الإدراج، والاستيراد، والتفريغ، والضغط، وموازنة الحمل، وإنشاء الفهرس، وإلغاء الفهرس، وإنشاء القسم، وإلغاء القسم، وإنشاء الاسم المستعار، وإلغاء الاسم المستعار</td>
+      <td>        Collection level admin privileges      </td>
+      <td>Query,Search,IndexDetail,GetFlushState,GetLoadState,GetLoadingProgress,HasPartition,ShowPartitions,DescribeCollection,DescribeAlias,GetStatistics,ListAliases,Load,Release,Insert,Delete,Upsert,Import,Flush,Compaction,LoadBalance,CreateIndex,DropIndex,CreatePartition,DropPartition,CreateAlias,DropAlias</td>
     </tr>
   </tbody>
 </table>
@@ -767,13 +767,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.session.ttl">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        قيمة ttl عند منح الجلسة ترخيصًا لتسجيل الخدمة      </td>
+      <td>        ttl value when session granting a lease to register service      </td>
       <td>30</td>
     </tr>
   </tbody>
@@ -796,13 +796,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.session.retryTimes">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        عدد مرات إعادة المحاولة عند إرسال الجلسة لطلبات etcd      </td>
+      <td>        retry times when session sending etcd requests      </td>
       <td>30</td>
     </tr>
   </tbody>
@@ -825,13 +825,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.locks.metrics.enable">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        ما إذا كان سيتم جمع إحصائيات لأقفال المقاييس أم لا      </td>
+      <td>        whether gather statistics for metrics locks      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -854,13 +854,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.locks.threshold.info">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        الحد الأدنى للميلي ثانية لطباعة المدد الزمنية في مستوى المعلومات      </td>
+      <td>        minimum milliseconds for printing durations in info level      </td>
       <td>500</td>
     </tr>
   </tbody>
@@ -883,13 +883,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.locks.threshold.warn">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        الحد الأدنى لعدد الميلي ثانية لطباعة المدد الزمنية في مستوى التحذير      </td>
+      <td>        minimum milliseconds for printing durations in warn level      </td>
       <td>1000</td>
     </tr>
   </tbody>
@@ -912,13 +912,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.locks.maxWLockConditionalWaitTime">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        الحد الأقصى لعدد الثواني لانتظار شرط wlock      </td>
+      <td>        maximum seconds for waiting wlock conditional      </td>
       <td>600</td>
     </tr>
   </tbody>
@@ -941,17 +941,17 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.ttMsgEnabled">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>تحديد ما إذا كان سيتم تعطيل آلية المراسلة الزمنية الداخلية للنظام. </li>      
-        <li>في حالة التعطيل (ضبط القيمة على false)، لن يسمح النظام بعمليات DML، بما في ذلك الإدراج والحذف والاستعلامات وعمليات البحث. </li>      
-        <li>وهذا يساعد Milvus-CDC على مزامنة البيانات التراكمية</li>      </td>
-      <td>صحيح</td>
+        <li>Whether to disable the internal time messaging mechanism for the system. </li>      
+        <li>If disabled (set to false), the system will not allow DML operations, including insertion, deletion, queries, and searches. </li>      
+        <li>This helps Milvus-CDC synchronize incremental data</li>      </td>
+      <td>true</td>
     </tr>
   </tbody>
 </table>
@@ -973,13 +973,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.traceLogMode">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        تتبع معلومات الطلب      </td>
+      <td>        trace request info      </td>
       <td>0</td>
     </tr>
   </tbody>
@@ -1002,13 +1002,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.bloomFilterSize">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        الحجم الأولي لمرشح بلوم      </td>
+      <td>        bloom filter initial size      </td>
       <td>100000</td>
     </tr>
   </tbody>
@@ -1031,13 +1031,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.bloomFilterType">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        نوع مرشح بلوم، يدعم BasicBloomFilter و BlockedBloomFilter      </td>
+      <td>        bloom filter type, support BasicBloomFilter and BlockedBloomFilter      </td>
       <td>BlockedBloomFilter</td>
     </tr>
   </tbody>
@@ -1060,13 +1060,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.maxBloomFalsePositive">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        الحد الأقصى لمعدل الإيجابيات الخاطئة لمرشح بلوم      </td>
+      <td>        max false positive rate for bloom filter      </td>
       <td>0.001</td>
     </tr>
   </tbody>
@@ -1089,13 +1089,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.bloomFilterApplyBatchSize">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        حجم الدفعة عند تطبيق pk على مرشح بلوم      </td>
+      <td>        batch size when to apply pk to bloom filter      </td>
       <td>1000</td>
     </tr>
   </tbody>
@@ -1118,13 +1118,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.collectionReplicateEnable">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        ما إذا كان سيتم تمكين تكرار المجموعة أم لا.      </td>
+      <td>        Whether to enable collection replication.      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -1147,13 +1147,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.usePartitionKeyAsClusteringKey">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        إذا كانت القيمة "true"، فقم بإجراء ضغط التجميع وتقليم المقاطع في حقل مفتاح التقسيم      </td>
+      <td>        if true, do clustering compaction and segment prune on partition key field      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -1176,13 +1176,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.useVectorAsClusteringKey">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        إذا كانت القيمة "صحيح"، فقم بإجراء ضغط التجميع وتقليم المقاطع على حقل المتجه      </td>
+      <td>        if true, do clustering compaction and segment prune on vector field      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -1205,14 +1205,14 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.enableVectorClusteringKey">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        إذا كانت القيمة "صحيح"، فقم بتمكين مفتاح تجميع المتجهات وضغط تجميع المتجهات      </td>
-      <td>خطأ</td>
+      <td>        if true, enable vector clustering key and vector clustering compaction      </td>
+      <td>false</td>
     </tr>
   </tbody>
 </table>
@@ -1234,13 +1234,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.localRPCEnabled">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        تمكين RPC المحلي للاتصال الداخلي عند استخدام الوضع المختلط أو الوضع المستقل.      </td>
+      <td>        enable local rpc for internal communication when mix or standalone mode.      </td>
       <td>false</td>
     </tr>
   </tbody>
@@ -1263,13 +1263,13 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.sync.taskPoolReleaseTimeoutSeconds">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>        الحد الأقصى لوقت الانتظار حتى تنتهي المهمة وتحرر الموارد في المجموعة      </td>
+      <td>        The maximum time to wait for the task to finish and release resources in the pool      </td>
       <td>60</td>
     </tr>
   </tbody>
@@ -1292,18 +1292,18 @@ summary: تعرف على كيفية تكوين الإعدادات الشائعة
     </button></h2><table id="common.clusterID">
   <thead>
     <tr>
-      <th class="width80">الوصف</th>
-      <th class="width20">القيمة الافتراضية</th> 
+      <th class="width80">Description</th>
+      <th class="width20">Default Value</th> 
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <li>المعرف الفريد للمجموعة المستخدمة في إنشاء المعرف التلقائي (AutoID) لضمان التفرّد العالمي عبر مجموعات Milvus المتعددة.</li>      
-        <li>القيم الصالحة: [0، 1، 2، 3، 4، 5، 6، 7] (يدعم ما يصل إلى 8 مجموعات)</li>      
-        <li>يجب أن يكون لكل مجموعة معرّف مجموعة فريد (clusterID) لمنع تداخل معرّفات AutoID عند تشغيل مجموعات متعددة.</li>      
-        <li>يتم تضمين هذا المعرف في بنية معرّف التلقائي (AutoID) ذات 64 بت كجزء من مقطع cluster_id.</li>      
-        <li>لمزيد من المعلومات، راجع <a href="/docs/ar/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">الحقل الأساسي وAutoID</a>.</li>      </td>
+        <li>Unique identifier for the cluster used in AutoID generation to ensure global uniqueness across multiple Milvus clusters.</li>      
+        <li>Valid values: [0, 1, 2, 3, 4, 5, 6, 7] (supports up to 8 clusters)</li>      
+        <li>Each cluster must have a unique clusterID to prevent AutoID overlap when running multiple clusters.</li>      
+        <li>This ID is embedded in the 64-bit AutoID structure as part of the cluster_id segment.</li>      
+        <li>For more information, refer to <a href="/docs/ar/primary-field.md#Ensure-global-AutoID-uniqueness-across-clusters">Primary Field & AutoID</a>.</li>      </td>
       <td>0</td>
     </tr>
   </tbody>

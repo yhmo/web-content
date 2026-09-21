@@ -1,11 +1,13 @@
 ---
 id: langchain_milvus_async.md
 summary: >-
-  本教程探讨如何利用 langchain-milvus
-  中的异步函数构建高性能应用程序。通过使用异步方法，您可以显著提高应用程序的吞吐量和响应速度，尤其是在处理大规模检索时。
-title: LangChain Milvus 集成中的异步函数
+  This tutorial explores how to leverage asynchronous functions in
+  langchain-milvus to build high-performance applications. By using async
+  methods, you can significantly improve your application's throughput and
+  responsiveness, especially when dealing with large-scale retrieval.
+title: Asynchronous Functions in LangChain Milvus Integration
 ---
-<h1 id="Asynchronous-Functions-in-LangChain-Milvus-Integration" class="common-anchor-header">LangChain Milvus 集成中的异步函数<button data-href="#Asynchronous-Functions-in-LangChain-Milvus-Integration" class="anchor-icon" translate="no">
+<h1 id="Asynchronous-Functions-in-LangChain-Milvus-Integration" class="common-anchor-header">Asynchronous Functions in LangChain Milvus Integration<button data-href="#Asynchronous-Functions-in-LangChain-Milvus-Integration" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -26,8 +28,8 @@ title: LangChain Milvus 集成中的异步函数
 <a href="https://github.com/milvus-io/bootcamp/blob/master/integration/langchain/langchain_milvus_async.ipynb" target="_blank">
 <img translate="no" src="https://img.shields.io/badge/View%20on%20GitHub-555555?style=flat&logo=github&logoColor=white" alt="GitHub Repository"/>
 </a></p>
-<p>本教程探讨如何利用<a href="https://github.com/langchain-ai/langchain-milvus">langchain-milvus</a>中的异步函数构建高性能应用程序。通过使用异步方法，您可以显著提高应用程序的吞吐量和响应速度，尤其是在处理大规模检索时。无论您是要构建实时推荐系统、在应用程序中实现语义搜索，还是要创建 RAG（检索增强生成）管道，async 操作符都能帮助您更高效地处理并发请求。高性能向量数据库 Milvus 与 LangChain 强大的 LLM 抽象相结合，可以为构建可扩展的人工智能应用奠定坚实的基础。</p>
-<h2 id="Async-API-Overview" class="common-anchor-header">异步 API 概述<button data-href="#Async-API-Overview" class="anchor-icon" translate="no">
+<p>This tutorial explores how to leverage asynchronous functions in <a href="https://github.com/langchain-ai/langchain-milvus">langchain-milvus</a> to build high-performance applications. By using async methods, you can significantly improve your application’s throughput and responsiveness, especially when dealing with large-scale retrieval. Whether you’re building a real-time recommendation system, implementing semantic search in your application, or creating a RAG (Retrieval-Augmented Generation) pipeline, async operations can help you handle concurrent requests more efficiently. The high-performance vector database Milvus combined with LangChain’s powerful LLM abstractions can provide a robust foundation for building scalable AI applications.</p>
+<h2 id="Async-API-Overview" class="common-anchor-header">Async API Overview<button data-href="#Async-API-Overview" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,39 +44,46 @@ title: LangChain Milvus 集成中的异步函数
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>langchain-milvus 提供了全面的异步操作支持，显著提高了大规模并发场景下的性能。异步 API 与同步 API 保持一致的界面设计。</p>
-<h3 id="Core-Async-Functions" class="common-anchor-header">核心异步函数</h3><p>要在 langchain-milvus 中使用异步操作，只需在方法名称中添加<code translate="no">a</code> 前缀即可。这样，在处理并发检索请求时，可以更好地利用资源，提高吞吐量。</p>
+    </button></h2><p>langchain-milvus provides comprehensive asynchronous operation support, significantly improving performance in large-scale concurrent scenarios. The async API maintains consistent interface design with sync API.</p>
+<h3 id="Core-Async-Functions" class="common-anchor-header">Core Async Functions<button data-href="#Core-Async-Functions" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>To use async operations in langchain-milvus, simply add an <code translate="no">a</code> prefix to method names. This allows for better resource utilization and improved throughput when handling concurrent retrieval requests.</p>
 <table>
 <thead>
-<tr><th>操作符类型</th><th>同步方法</th><th>异步方法</th><th>说明</th></tr>
+<tr><th>Operation Type</th><th>Sync Method</th><th>Async Method</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>添加文本</td><td><code translate="no">add_texts()</code></td><td><code translate="no">aadd_texts()</code></td><td>向向量存储中添加文本</td></tr>
-<tr><td>添加文档</td><td><code translate="no">add_documents()</code></td><td><code translate="no">aadd_documents()</code></td><td>向向量存储中添加文档</td></tr>
-<tr><td>添加嵌入向量</td><td><code translate="no">add_embeddings()</code></td><td><code translate="no">aadd_embeddings()</code></td><td>添加嵌入向量</td></tr>
-<tr><td>相似性搜索</td><td><code translate="no">similarity_search()</code></td><td><code translate="no">asimilarity_search()</code></td><td>文本语义搜索</td></tr>
-<tr><td>向量搜索</td><td><code translate="no">similarity_search_by_vector()</code></td><td><code translate="no">asimilarity_search_by_vector()</code></td><td>通过向量进行语义搜索</td></tr>
-<tr><td>带分数搜索</td><td><code translate="no">similarity_search_with_score()</code></td><td><code translate="no">asimilarity_search_with_score()</code></td><td>通过文本进行语义搜索并返回相似度得分</td></tr>
-<tr><td>带分数的向量搜索</td><td><code translate="no">similarity_search_with_score_by_vector()</code></td><td><code translate="no">asimilarity_search_with_score_by_vector()</code></td><td>通过向量进行语义搜索并返回相似性得分</td></tr>
-<tr><td>多样性搜索</td><td><code translate="no">max_marginal_relevance_search()</code></td><td><code translate="no">amax_marginal_relevance_search()</code></td><td>MMR搜索（返回相似度，同时优化多样性）</td></tr>
-<tr><td>向量多样性搜索</td><td><code translate="no">max_marginal_relevance_search_by_vector()</code></td><td><code translate="no">amax_marginal_relevance_search_by_vector()</code></td><td>按向量进行 MMR 搜索</td></tr>
-<tr><td>删除操作符</td><td><code translate="no">delete()</code></td><td><code translate="no">adelete()</code></td><td>删除文件</td></tr>
-<tr><td>增加操作符</td><td><code translate="no">upsert()</code></td><td><code translate="no">aupsert()</code></td><td>倒插（如果已有则更新，否则插入）文件</td></tr>
-<tr><td>元数据搜索</td><td><code translate="no">search_by_metadata()</code></td><td><code translate="no">asearch_by_metadata()</code></td><td>元数据过滤查询</td></tr>
-<tr><td>获取主键</td><td><code translate="no">get_pks()</code></td><td><code translate="no">aget_pks()</code></td><td>通过表达式获取主键</td></tr>
-<tr><td>从文本创建</td><td><code translate="no">from_texts()</code></td><td><code translate="no">afrom_texts()</code></td><td>从文本创建向量存储</td></tr>
+<tr><td>Add Texts</td><td><code translate="no">add_texts()</code></td><td><code translate="no">aadd_texts()</code></td><td>Add texts to vector store</td></tr>
+<tr><td>Add Documents</td><td><code translate="no">add_documents()</code></td><td><code translate="no">aadd_documents()</code></td><td>Add documents to vector store</td></tr>
+<tr><td>Add Embeddings</td><td><code translate="no">add_embeddings()</code></td><td><code translate="no">aadd_embeddings()</code></td><td>Add embedding vectors</td></tr>
+<tr><td>Similarity Search</td><td><code translate="no">similarity_search()</code></td><td><code translate="no">asimilarity_search()</code></td><td>Semantic search by text</td></tr>
+<tr><td>Vector Search</td><td><code translate="no">similarity_search_by_vector()</code></td><td><code translate="no">asimilarity_search_by_vector()</code></td><td>Semantic search by vector</td></tr>
+<tr><td>Search with Score</td><td><code translate="no">similarity_search_with_score()</code></td><td><code translate="no">asimilarity_search_with_score()</code></td><td>Semantic search by text and return similarity scores</td></tr>
+<tr><td>Vector Search with Score</td><td><code translate="no">similarity_search_with_score_by_vector()</code></td><td><code translate="no">asimilarity_search_with_score_by_vector()</code></td><td>Semantic search by vector and return similarity scores</td></tr>
+<tr><td>Diversity Search</td><td><code translate="no">max_marginal_relevance_search()</code></td><td><code translate="no">amax_marginal_relevance_search()</code></td><td>MMR search (return similar ones while also optimizing for diversity)</td></tr>
+<tr><td>Vector Diversity Search</td><td><code translate="no">max_marginal_relevance_search_by_vector()</code></td><td><code translate="no">amax_marginal_relevance_search_by_vector()</code></td><td>MMR search by vector</td></tr>
+<tr><td>Delete Operation</td><td><code translate="no">delete()</code></td><td><code translate="no">adelete()</code></td><td>Delete documents</td></tr>
+<tr><td>Upsert Operation</td><td><code translate="no">upsert()</code></td><td><code translate="no">aupsert()</code></td><td>Upsert (update if existing, otherwise insert) documents</td></tr>
+<tr><td>Metadata Search</td><td><code translate="no">search_by_metadata()</code></td><td><code translate="no">asearch_by_metadata()</code></td><td>Query with metadata filtering</td></tr>
+<tr><td>Get Primary Keys</td><td><code translate="no">get_pks()</code></td><td><code translate="no">aget_pks()</code></td><td>Get primary keys by expression</td></tr>
+<tr><td>Create from Texts</td><td><code translate="no">from_texts()</code></td><td><code translate="no">afrom_texts()</code></td><td>Create vector store from texts</td></tr>
 </tbody>
 </table>
-<p>有关这些函数的更多详细信息，请参阅<a href="https://python.langchain.com/api_reference/milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#milvus">API 参考资料</a>。</p>
-<h3 id="Performance-Benefits" class="common-anchor-header">性能优势</h3><p>在处理大量并发请求时，异步操作符可显著提高性能，尤其适用于以下情况：</p>
-<ul>
-<li>批量文档处理</li>
-<li>高并发搜索场景</li>
-<li>生产型 RAG 应用程序</li>
-<li>大规模数据导入/导出</li>
-</ul>
-<p>在本教程中，我们将通过同步操作和异步操作的详细比较来展示这些性能优势，告诉您如何在应用程序中利用异步 API 获得最佳性能。</p>
-<h2 id="Before-you-begin" class="common-anchor-header">开始之前<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+<p>For more detailed information about these functions, please refer to the <a href="https://python.langchain.com/api_reference/milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#milvus">API Reference</a>.</p>
+<h3 id="Performance-Benefits" class="common-anchor-header">Performance Benefits<button data-href="#Performance-Benefits" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -89,23 +98,46 @@ title: LangChain Milvus 集成中的异步函数
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>本页面上的代码片段需要以下依赖项：</p>
+    </button></h3><p>Async operations provide significant performance improvements when handling large volumes of concurrent requests, particularly suitable for:</p>
+<ul>
+<li>Batch document processing</li>
+<li>High-concurrency search scenarios</li>
+<li>Production RAG applications</li>
+<li>Large-scale data import/export</li>
+</ul>
+<p>In this tutorial, we’ll demonstrate these performance benefits through detailed comparisons of synchronous and asynchronous operations, showing you how to leverage async APIs for optimal performance in your applications.</p>
+<h2 id="Before-you-begin" class="common-anchor-header">Before you begin<button data-href="#Before-you-begin" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h2><p>Code snippets on this page require the following dependencies:</p>
 <pre><code translate="no" class="language-python">! pip install -U pymilvus langchain-milvus langchain langchain-core langchain-openai langchain-text-splitters nest-asyncio
 <button class="copy-code-btn"></button></code></pre>
 <blockquote>
-<p>如果您使用的是 Google Colab，要启用刚刚安装的依赖项，可能需要<strong>重新启动运行时</strong>（点击屏幕顶部的 "运行时 "菜单，从下拉菜单中选择 "重新启动会话"）。</p>
+<p>If you are using Google Colab, to enable dependencies just installed, you may need to <strong>restart the runtime</strong> (click on the “Runtime” menu at the top of the screen, and select “Restart session” from the dropdown menu).</p>
 </blockquote>
-<p>我们将使用 OpenAI 模型。您应将<a href="https://platform.openai.com/docs/quickstart">api key</a> <code translate="no">OPENAI_API_KEY</code> 作为环境变量：</p>
+<p>We will use OpenAI models. You should prepare the <a href="https://platform.openai.com/docs/quickstart">api key</a> <code translate="no">OPENAI_API_KEY</code> as an environment variable:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 os.environ[<span class="hljs-string">&quot;OPENAI_API_KEY&quot;</span>] = <span class="hljs-string">&quot;sk-***********&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>如果使用的是 Jupyter Notebook，则需要在运行异步代码前运行这行代码：</p>
+<p>If you are using Jupyter Notebook, you need to run this line of code before running the asynchronous code:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> nest_asyncio
 
 nest_asyncio.apply()
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Exploring-Async-APIs-and-Performance-Comparison" class="common-anchor-header">探索异步 API 和性能比较<button data-href="#Exploring-Async-APIs-and-Performance-Comparison" class="anchor-icon" translate="no">
+<h2 id="Exploring-Async-APIs-and-Performance-Comparison" class="common-anchor-header">Exploring Async APIs and Performance Comparison<button data-href="#Exploring-Async-APIs-and-Performance-Comparison" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -120,8 +152,8 @@ nest_asyncio.apply()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>现在，让我们深入了解使用 langchain-milvus 进行同步操作和异步操作的性能比较。</p>
-<p>首先，导入必要的库：</p>
+    </button></h2><p>Now let’s dive deeper into the performance comparison between synchronous and asynchronous operations with langchain-milvus.</p>
+<p>First, import the necessary libraries:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> asyncio
 <span class="hljs-keyword">import</span> random
 <span class="hljs-keyword">import</span> time
@@ -132,7 +164,22 @@ nest_asyncio.apply()
 <span class="hljs-comment"># Define the Milvus URI</span>
 URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Setting-up-Test-Functions" class="common-anchor-header">设置测试函数</h3><p>让我们创建辅助函数来生成测试数据：</p>
+<h3 id="Setting-up-Test-Functions" class="common-anchor-header">Setting up Test Functions<button data-href="#Setting-up-Test-Functions" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Let’s create helper functions to generate test data:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">random_id</span>():
     <span class="hljs-string">&quot;&quot;&quot;Generate a random string ID&quot;&quot;&quot;</span>
     random_num_str = <span class="hljs-string">&quot;&quot;</span>
@@ -158,7 +205,22 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
         docs.append(doc)
     <span class="hljs-keyword">return</span> docs
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Initialize-the-Vector-Store" class="common-anchor-header">初始化向量存储</h3><p>在运行性能测试之前，我们需要建立一个干净的 Milvus 向量存储。该函数确保我们每次测试都从一个全新的 Collections 开始，消除先前数据的任何干扰：</p>
+<h3 id="Initialize-the-Vector-Store" class="common-anchor-header">Initialize the Vector Store<button data-href="#Initialize-the-Vector-Store" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Before we can run our performance tests, we need to set up a clean Milvus vector store. This function ensures we start with a fresh collection for each test, eliminating any interference from previous data:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">init_vector_store</span>():
     <span class="hljs-string">&quot;&quot;&quot;Initialize and return a fresh vector store for testing&quot;&quot;&quot;</span>
     <span class="hljs-keyword">return</span> Milvus(
@@ -169,7 +231,22 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
         drop_old=<span class="hljs-literal">True</span>,  <span class="hljs-comment"># Always start with a fresh collection</span>
     )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Async-vs-Sync-Add-Documents" class="common-anchor-header">异步与同步添加文档</h3><p>现在，让我们比较一下同步与异步添加文档的性能。这些函数将帮助我们衡量在向量存储中添加多个文档时，异步操作能快多少。异步版本为每个文档添加创建任务并并发运行，而同步版本则逐个处理文档：</p>
+<h3 id="Async-vs-Sync-Add-Documents" class="common-anchor-header">Async vs Sync: Add Documents<button data-href="#Async-vs-Sync-Add-Documents" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Now let’s compare the performance of synchronous vs asynchronous document addition. These functions will help us measure how much faster async operations can be when adding multiple documents to the vector store. The async version creates tasks for each document addition and runs them concurrently, while the sync version processes documents one by one:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">async_add</span>(<span class="hljs-params">milvus_store, num_adding</span>):
     <span class="hljs-string">&quot;&quot;&quot;Add documents asynchronously and measure the time&quot;&quot;&quot;</span>
     docs = generate_test_documents(num_adding)
@@ -193,7 +270,7 @@ URI = <span class="hljs-string">&quot;http://localhost:19530&quot;</span>
     end_time = time.time()
     <span class="hljs-keyword">return</span> end_time - start_time
 <button class="copy-code-btn"></button></code></pre>
-<p>现在，让我们用不同的文档数量来执行性能测试，看看实际的性能差异。我们将使用不同的负载进行测试，以了解异步操作与同步操作相比如何扩展。测试将测量两种方法的执行时间，并帮助展示异步操作的性能优势：</p>
+<p>Now let’s execute our performance tests with different document counts to see the real-world performance differences. We’ll test with varying loads to understand how async operations scale compared to their synchronous counterparts. The tests will measure execution time for both approaches and help demonstrate the performance benefits of asynchronous operations:</p>
 <pre><code translate="no" class="language-python">add_counts = [<span class="hljs-number">10</span>, <span class="hljs-number">100</span>]
 
 <span class="hljs-comment"># Get the event loop</span>
@@ -233,7 +310,22 @@ Async add for 100 documents took 2.77 seconds
 Sync add for 10 documents took 5.36 seconds
 Sync add for 100 documents took 65.60 seconds
 </code></pre>
-<h3 id="Async-vs-Sync-Search" class="common-anchor-header">异步与同步：搜索</h3><p>为了进行搜索性能比较，我们需要先填充向量存储。通过创建多个并发搜索查询并比较同步和异步方法的执行时间，以下函数将帮助我们衡量搜索性能：</p>
+<h3 id="Async-vs-Sync-Search" class="common-anchor-header">Async vs Sync: Search<button data-href="#Async-vs-Sync-Search" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>For the search performance comparison, we’ll need to populate the vector store first. The following functions will help us measure search performance by creating multiple concurrent search queries and comparing the execution time between synchronous and asynchronous approaches:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">populate_vector_store</span>(<span class="hljs-params">milvus_store, num_docs=<span class="hljs-number">1000</span></span>):
     <span class="hljs-string">&quot;&quot;&quot;Populate the vector store with test documents&quot;&quot;&quot;</span>
     docs = generate_test_documents(num_docs)
@@ -263,7 +355,7 @@ Sync add for 100 documents took 65.60 seconds
     end_time = time.time()
     <span class="hljs-keyword">return</span> end_time - start_time
 <button class="copy-code-btn"></button></code></pre>
-<p>现在让我们运行全面的搜索性能测试，看看异步操作与同步操作相比如何扩展。我们将使用不同的查询量进行测试，以展示异步操作的性能优势，尤其是当并发操作的数量增加时：</p>
+<p>Now let’s run comprehensive search performance tests to see how async operations scale compared to synchronous ones. We’ll test with different query volumes to demonstrate the performance benefits of asynchronous operations, especially as the number of concurrent operations increases:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Initialize and populate the vector store</span>
 milvus_store = init_vector_store()
 populate_vector_store(milvus_store, <span class="hljs-number">1000</span>)
@@ -293,7 +385,22 @@ Async search for 100 queries took 3.72 seconds
 Sync search for 10 queries took 6.07 seconds
 Sync search for 100 queries took 54.22 seconds
 </code></pre>
-<h3 id="Async-vs-Sync-Delete" class="common-anchor-header">异步与同步删除</h3><p>删除操作是异步操作可以显著提高性能的另一个关键方面。让我们创建函数来测量同步和异步删除操作的性能差异。这些测试将有助于展示异步操作如何更高效地处理批量删除：</p>
+<h3 id="Async-vs-Sync-Delete" class="common-anchor-header">Async vs Sync: Delete<button data-href="#Async-vs-Sync-Delete" class="anchor-icon" translate="no">
+      <svg translate="no"
+        aria-hidden="true"
+        focusable="false"
+        height="20"
+        version="1.1"
+        viewBox="0 0 16 16"
+        width="16"
+      >
+        <path
+          fill="#0092E4"
+          fill-rule="evenodd"
+          d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+        ></path>
+      </svg>
+    </button></h3><p>Delete operations are another critical aspect where async operations can provide significant performance improvements. Let’s create functions to measure the performance difference between synchronous and asynchronous delete operations. These tests will help demonstrate how async operations can handle batch deletions more efficiently:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">async_delete</span>(<span class="hljs-params">milvus_store, num_deleting</span>):
     <span class="hljs-string">&quot;&quot;&quot;Delete documents asynchronously and measure the time&quot;&quot;&quot;</span>
     start_time = time.time()
@@ -316,7 +423,7 @@ Sync search for 100 queries took 54.22 seconds
     end_time = time.time()
     <span class="hljs-keyword">return</span> end_time - start_time
 <button class="copy-code-btn"></button></code></pre>
-<p>现在，让我们执行删除性能测试，量化性能差异。我们将从一个填充了测试数据的全新向量存储开始，然后使用同步和异步两种方法执行删除操作：</p>
+<p>Now let’s execute the delete performance tests to quantify the performance difference. We’ll start with a fresh vector store populated with test data, then perform delete operations using both synchronous and asynchronous approaches:</p>
 <pre><code translate="no" class="language-python">delete_counts = [<span class="hljs-number">10</span>, <span class="hljs-number">100</span>]
 
 <span class="hljs-comment"># Initialize and populate the vector store</span>
@@ -355,7 +462,7 @@ Async delete for 100 operations took 0.61 seconds
 Sync delete for 10 operations took 2.82 seconds
 Sync delete for 100 operations took 29.21 seconds
 </code></pre>
-<h2 id="Conclusion" class="common-anchor-header">结论<button data-href="#Conclusion" class="anchor-icon" translate="no">
+<h2 id="Conclusion" class="common-anchor-header">Conclusion<button data-href="#Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -370,11 +477,11 @@ Sync delete for 100 operations took 29.21 seconds
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>本教程展示了使用 LangChain 和 Milvus 进行异步操作的显著性能优势。我们比较了同步和异步版本的添加、搜索和删除操作，展示了异步操作如何大幅提高速度，尤其是在大批量操作时。</p>
-<p>主要启示</p>
+    </button></h2><p>This tutorial demonstrated the significant performance advantages of using asynchronous operations with LangChain and Milvus. We compared the synchronous and asynchronous versions of add, search, and delete operations, showing how async operations can provide substantial speed improvements, especially for large batch operations.</p>
+<p>Key takeaways:</p>
 <ol>
-<li>在执行许多可以并行运行的单个操作时，异步操作能带来最大收益</li>
-<li>对于产生较高吞吐量的工作负载，同步操作和非同步操作之间的性能差距会拉大</li>
-<li>异步操作可充分利用机器的计算能力</li>
+<li>Async operations deliver the most benefit when performing many individual operations that can run in parallel</li>
+<li>For workload that generates higher throughput, the performance gap between sync and async operations widens</li>
+<li>Async operations fully utilize the compute power of the machines</li>
 </ol>
-<p>在使用 LangChain 和 Milvus 构建生产型 RAG 应用程序时，如果对性能有要求，尤其是并发操作，请考虑使用 async API。</p>
+<p>When building production RAG applications with LangChain and Milvus, consider using the async API when performance is a concern, especially for concurrent operations.</p>

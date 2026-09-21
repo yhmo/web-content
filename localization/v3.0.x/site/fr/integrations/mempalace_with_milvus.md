@@ -1,15 +1,14 @@
 ---
 id: mempalace_with_milvus.md
 summary: >-
-  Dans ce tutoriel, nous allons utiliser l'interface en ligne de commande (CLI)
-  de MemPalace pour extraire un sous-ensemble réel de la documentation publique
-  de Milvus et l'enregistrer dans Milvus. Le corpus contient de la documentation
-  sur les analyseurs, les tokeniseurs et les filtres de tokens. Ces pages,
-  étroitement liées entre elles, fournissent suffisamment d'éléments de
-  distraction pour rendre les exemples de recherche pertinents.
-title: MemPalace avec Milvus
+  In this tutorial, we will use the MemPalace CLI to mine a real subset of the
+  public Milvus documentation and store it in Milvus. The corpus contains
+  documentation about analyzers, tokenizers, and token filters. These closely
+  related pages provide enough distractors to make the retrieval examples
+  meaningful.
+title: MemPalace with Milvus
 ---
-<h1 id="MemPalace-with-Milvus" class="common-anchor-header">MemPalace avec Milvus<button data-href="#MemPalace-with-Milvus" class="anchor-icon" translate="no">
+<h1 id="MemPalace-with-Milvus" class="common-anchor-header">MemPalace with Milvus<button data-href="#MemPalace-with-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,10 +23,10 @@ title: MemPalace avec Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><a href="https://github.com/MemPalace/mempalace">MemPalace</a> est une couche de mémoire destinée aux agents de codage et aux workflows de développement de longue durée. Elle organise les connaissances du projet en ailes, salles et tiroirs, puis rend le contenu d’origine consultable d’une session à l’autre.</p>
-<p>Dans ce tutoriel, nous allons utiliser l’interface CLI de MemPalace pour extraire un sous-ensemble réel de la <a href="https://github.com/milvus-io/milvus-docs">documentation</a> publique <a href="https://github.com/milvus-io/milvus-docs">de Milvus</a> et le stocker dans <a href="https://milvus.io/">Milvus</a>. Le corpus contient de la documentation sur les analyseurs, les tokeniseurs et les filtres de tokens. Ces pages étroitement liées fournissent suffisamment d’éléments de distraction pour rendre les exemples de recherche pertinents.</p>
-<p>L’exemple utilise Milvus Lite ; il s’exécute donc localement, sans Docker ni serveur de base de données distinct. La même configuration MemPalace peut également pointer vers un serveur Milvus ou Zilliz Cloud pour des déploiements partagés.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Prérequis<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+    </button></h1><p><a href="https://github.com/MemPalace/mempalace">MemPalace</a> is a memory layer for coding agents and long-running development workflows. It organizes project knowledge into wings, rooms, and drawers, then makes the original content searchable across sessions.</p>
+<p>In this tutorial, we will use the MemPalace CLI to mine a real subset of the public <a href="https://github.com/milvus-io/milvus-docs">Milvus documentation</a> and store it in <a href="https://milvus.io/">Milvus</a>. The corpus contains documentation about analyzers, tokenizers, and token filters. These closely related pages provide enough distractors to make the retrieval examples meaningful.</p>
+<p>The example uses Milvus Lite, so it runs locally without Docker or a separate database server. The same MemPalace configuration can also point to Milvus server or Zilliz Cloud for shared deployments.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -42,12 +41,12 @@ title: MemPalace avec Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Installez MemPalace avec ses dépendances Milvus facultatives depuis PyPI. La commande ne spécifie intentionnellement aucune version, de sorte qu’une nouvelle installation installe la dernière version disponible.</p>
+    </button></h2><p>Install MemPalace with its optional Milvus dependencies from PyPI. The command intentionally does not pin a version, so a new installation resolves the latest available release.</p>
 <pre><code translate="no" class="language-shell">uv tool install &quot;mempalace[milvus]&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Vous aurez également besoin de Git pour télécharger le corpus de documentation.</p>
-<p>Ce tutoriel utilise le modèle d’embedding local MiniLM de MemPalace ; il ne nécessite donc pas de clé API pour un modèle externe. La première commande d’exploration ou de recherche peut télécharger un petit modèle d’embedding ONNX.</p>
-<h2 id="Configure-the-workspace" class="common-anchor-header">Configurer l’espace de travail<button data-href="#Configure-the-workspace" class="anchor-icon" translate="no">
+<p>You also need Git to download the documentation corpus.</p>
+<p>This tutorial uses MemPalace’s local MiniLM embedding model, so it does not require an external model API key. The first mining or search command may download a small ONNX embedding model.</p>
+<h2 id="Configure-the-workspace" class="common-anchor-header">Configure the workspace<button data-href="#Configure-the-workspace" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -62,7 +61,7 @@ title: MemPalace avec Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Créez un espace de travail comportant des répertoires distincts pour la documentation et le « palace » :</p>
+    </button></h2><p>Create a workspace with separate directories for the documentation and the palace:</p>
 <pre><code translate="no" class="language-shell">mkdir -p mempalace-milvus-demo
 cd mempalace-milvus-demo
 
@@ -73,16 +72,16 @@ export MEMPALACE_EMBEDDING_MODEL=&quot;minilm&quot;
 export MEMPALACE_EMBEDDING_DEVICE=&quot;cpu&quot;
 export MEMPALACE_EMBEDDING_THREADS=&quot;2&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Nous transmettons ` <code translate="no">--backend milvus</code> ` aux commandes MemPalace ci-dessous. Comme aucune URI Milvus distante n’est configurée, MemPalace crée une base de données Milvus Lite locale à l’adresse ` <code translate="no">$PALACE_DIR/milvus.db</code>`.</p>
+<p>We pass <code translate="no">--backend milvus</code> to the MemPalace commands below. Because no remote Milvus URI is configured, MemPalace creates a local Milvus Lite database at <code translate="no">$PALACE_DIR/milvus.db</code>.</p>
 <blockquote>
-<p>En ce qui concerne l’argument <code translate="no">MilvusClient</code> utilisé par le backend :</p>
+<p>As for the argument of <code translate="no">MilvusClient</code> used by the backend:</p>
 <ul>
-<li>Définir <code translate="no">uri</code> sur un chemin local, tel que <code translate="no">./milvus.db</code>, est l’option la plus pratique. Cela utilise automatiquement <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> pour stocker les données localement.</li>
-<li>Pour un déploiement à plus grande échelle, vous pouvez utiliser un <a href="https://milvus.io/docs/quickstart.md">serveur Milvus</a> et définir l’URI sur son point de terminaison, par exemple <code translate="no">http://localhost:19530</code>.</li>
-<li>Pour utiliser <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, configurez l’URI et le jeton en indiquant respectivement le <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">point de terminaison public et la clé API</a> du cluster.</li>
+<li>Setting the <code translate="no">uri</code> to a local path, such as <code translate="no">./milvus.db</code>, is the most convenient option. It automatically uses <a href="https://milvus.io/docs/milvus_lite.md">Milvus Lite</a> to store data locally.</li>
+<li>For a larger deployment, you can use a <a href="https://milvus.io/docs/quickstart.md">Milvus server</a> and set the URI to its endpoint, such as <code translate="no">http://localhost:19530</code>.</li>
+<li>To use <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, set the URI and token to the cluster’s <a href="https://docs.zilliz.com/docs/on-zilliz-cloud-console#free-cluster-details">Public Endpoint and API key</a>.</li>
 </ul>
 </blockquote>
-<h2 id="Download-the-Milvus-documentation-corpus" class="common-anchor-header">Télécharger le corpus de documentation Milvus<button data-href="#Download-the-Milvus-documentation-corpus" class="anchor-icon" translate="no">
+<h2 id="Download-the-Milvus-documentation-corpus" class="common-anchor-header">Download the Milvus documentation corpus<button data-href="#Download-the-Milvus-documentation-corpus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -97,7 +96,7 @@ export MEMPALACE_EMBEDDING_THREADS=&quot;2&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Le référentiel de documentation de Milvus est bien plus volumineux que ce dont cet exemple a besoin. Utilisez la fonctionnalité « sparse checkout » de Git pour ne télécharger que le répertoire de documentation de l’Analyzer à partir de la branche <code translate="no">v3.0.x</code>:</p>
+    </button></h2><p>The Milvus documentation repository is much larger than this example needs. Use Git sparse checkout to download only the Analyzer documentation directory from the <code translate="no">v3.0.x</code> branch:</p>
 <pre><code translate="no" class="language-shell">git clone \
   --depth 1 \
   --filter=blob:none \
@@ -113,21 +112,21 @@ cp -R \
   &quot;$DOCS_REPO/site/en/userGuide/schema/analyzer&quot; \
   &quot;$PROJECT_DIR&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Au moment de la rédaction de ce document, ce répertoire contient 31 pages Markdown. Elles comprennent des guides généraux sur Analyzer et trois groupes de pages étroitement liées :</p>
+<p>At the time of writing, this directory contains 31 Markdown pages. They include general Analyzer guides and three groups of closely related pages:</p>
 <pre><code translate="no" class="language-text">milvus-analyzer-docs/
 ├── analyzer/       # Built-in language analyzers
 ├── filter/         # Token filters
 ├── tokenizer/      # Tokenizers
 └── *.md            # Analyzer overviews and selection guides
 <button class="copy-code-btn"></button></code></pre>
-<p>Vérifiez le nombre de pages sources :</p>
+<p>Confirm the number of source pages:</p>
 <pre><code translate="no" class="language-shell">find &quot;$PROJECT_DIR&quot; -type f -name &quot;*.md&quot; | wc -l
 <button class="copy-code-btn"></button></code></pre>
-<p>Résultat de référence :</p>
+<p>Reference output:</p>
 <pre><code translate="no" class="language-text">31
 <button class="copy-code-btn"></button></code></pre>
-<p>Le nombre exact peut varier à mesure que la branche de documentation de Milvus est mise à jour.</p>
-<h2 id="Define-the-MemPalace-rooms" class="common-anchor-header">Définir les pièces MemPalace<button data-href="#Define-the-MemPalace-rooms" class="anchor-icon" translate="no">
+<p>The exact count may change as the Milvus documentation branch is updated.</p>
+<h2 id="Define-the-MemPalace-rooms" class="common-anchor-header">Define the MemPalace rooms<button data-href="#Define-the-MemPalace-rooms" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -142,8 +141,8 @@ cp -R \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>MemPalace peut détecter des « rooms » lors de l’ <code translate="no">mempalace init</code>, mais son processus d’initialisation effectue également une classification heuristique des entités à l’échelle du projet et enregistre les résultats acceptés dans un registre d’entités. Cette étape de classification n’est pas nécessaire pour définir ce corpus de documentation ; nous fournissons donc directement cette petite taxonomie. Au cours de l’exploration, MemPalace peut tout de même associer des métadonnées d’entités heuristiques déterministes et créer des liens internes de type « hallway » ; ces associations ne déterminent pas quelle pièce reçoit un fichier et ne modifient pas les recherches par pièce décrites ci-dessous.</p>
-<p>Créez un fichier « <code translate="no">$PROJECT_DIR/mempalace.yaml</code> » avec le contenu suivant :</p>
+    </button></h2><p>MemPalace can detect rooms during <code translate="no">mempalace init</code>, but its initialization flow also performs project-wide heuristic entity classification and writes the accepted results to an entity registry. That classification step is not needed to define this documentation corpus, so we provide the small taxonomy directly. During mining, MemPalace may still attach deterministic heuristic entity metadata and build internal hallway links; those associations do not decide which room receives a file or change the room-scoped searches below.</p>
+<p>Create <code translate="no">$PROJECT_DIR/mempalace.yaml</code> with the following content:</p>
 <pre><code translate="no" class="language-yaml"><span class="hljs-attr">wing:</span> <span class="hljs-string">milvus_analyzer_docs</span>
 <span class="hljs-attr">rooms:</span>
   <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">analyzer</span>
@@ -162,9 +161,9 @@ cp -R \
     <span class="hljs-attr">description:</span> <span class="hljs-string">Analyzer</span> <span class="hljs-string">documentation</span> <span class="hljs-string">that</span> <span class="hljs-string">does</span> <span class="hljs-string">not</span> <span class="hljs-string">fit</span> <span class="hljs-string">another</span> <span class="hljs-string">room</span>
     <span class="hljs-attr">keywords:</span> []
 <button class="copy-code-btn"></button></code></pre>
-<p>L’aile représente l’ensemble du corpus de documentation. Une pièce représente un domaine thématique. MemPalace achemine un fichier en vérifiant d’abord son répertoire, puis son nom de fichier, puis les mots-clés de pièce présents dans son contenu. Un fichier situé sous <code translate="no">filter/</code>, par exemple, est directement acheminé vers la pièce « <code translate="no">filter</code> ».</p>
-<p>Chaque fichier est ensuite divisé en segments de texte qui se chevauchent. Chaque segment devient un tiroir contenant le code Markdown tel quel ainsi que des métadonnées telles que <code translate="no">wing</code>, <code translate="no">room</code>, <code translate="no">source_file</code>, <code translate="no">chunk_index</code> et les numéros de ligne de la source. Les « rooms » et les tiroirs restent des métadonnées logiques au sein des collections Milvus de MemPalace ; MemPalace ne crée pas de collection Milvus distincte pour chaque « room ».</p>
-<h2 id="Mine-the-documentation-into-Milvus" class="common-anchor-header">Extrayer la documentation dans Milvus<button data-href="#Mine-the-documentation-into-Milvus" class="anchor-icon" translate="no">
+<p>The wing represents the whole documentation corpus. A room represents a topic area. MemPalace routes a file by checking its directory first, then its filename, then room keywords in its content. A file under <code translate="no">filter/</code>, for example, goes directly to the <code translate="no">filter</code> room.</p>
+<p>Each file is then split into overlapping text chunks. Every chunk becomes a drawer containing the verbatim Markdown and metadata such as <code translate="no">wing</code>, <code translate="no">room</code>, <code translate="no">source_file</code>, <code translate="no">chunk_index</code>, and source line numbers. The rooms and drawers remain logical metadata inside MemPalace’s Milvus collections; MemPalace does not create a separate Milvus collection for every room.</p>
+<h2 id="Mine-the-documentation-into-Milvus" class="common-anchor-header">Mine the documentation into Milvus<button data-href="#Mine-the-documentation-into-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -179,13 +178,13 @@ cp -R \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Extraire les données du projet à l’aide du backend Milvus :</p>
+    </button></h2><p>Mine the project with the Milvus backend:</p>
 <pre><code translate="no" class="language-shell">mempalace \
   --palace &quot;$PALACE_DIR&quot; \
   mine &quot;$PROJECT_DIR&quot; \
   --backend milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>Référence de la sortie à partir de l’instantané de documentation validé :</p>
+<p>Reference output from the validated documentation snapshot:</p>
 <pre><code translate="no" class="language-text">=======================================================
   Done.
   Files processed: 31
@@ -198,11 +197,11 @@ cp -R \
     tokenizer             7 files
 =======================================================
 <button class="copy-code-btn"></button></code></pre>
-<p>MemPalace lit le Markdown sans le résumer ni le réécrire, calcule les représentations locales et stocke les tiroirs dans Milvus. Sur l’instantané de documentation testé, 31 fichiers ont généré 473 tiroirs.</p>
-<p>Vérifier les pièces résultantes et le nombre de tiroirs :</p>
+<p>MemPalace reads the Markdown without summarizing or rewriting it, computes local embeddings, and stores the drawers in Milvus. On the tested documentation snapshot, 31 files produced 473 drawers.</p>
+<p>Check the resulting rooms and drawer counts:</p>
 <pre><code translate="no" class="language-shell">mempalace --palace &quot;$PALACE_DIR&quot; status --backend milvus
 <button class="copy-code-btn"></button></code></pre>
-<p>Résultats de référence :</p>
+<p>Reference output:</p>
 <pre><code translate="no" class="language-text">=======================================================
   MemPalace Status -- 473 drawers
 =======================================================
@@ -214,8 +213,8 @@ cp -R \
 
 =======================================================
 <button class="copy-code-btn"></button></code></pre>
-<p>Le nombre exact de « drawers » peut varier lorsque la documentation en amont change, car les pages plus longues génèrent davantage de segments.</p>
-<h2 id="Semantic-search" class="common-anchor-header">Recherche sémantique<button data-href="#Semantic-search" class="anchor-icon" translate="no">
+<p>The exact drawer count can change when the upstream documentation changes because longer pages produce more chunks.</p>
+<h2 id="Semantic-search" class="common-anchor-header">Semantic search<button data-href="#Semantic-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -230,7 +229,7 @@ cp -R \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilisez <code translate="no">mempalace search</code> pour récupérer de la documentation en fonction de son sens. La question suivante ne mentionne pas de fichier spécifique ni de fonctionnalité d’Analyzer :</p>
+    </button></h2><p>Use <code translate="no">mempalace search</code> to retrieve documentation by meaning. The following question does not name a specific file or Analyzer feature:</p>
 <pre><code translate="no" class="language-shell">mempalace \
   --palace &quot;$PALACE_DIR&quot; \
   search &quot;How should I analyze documents that mix several languages?&quot; \
@@ -238,7 +237,7 @@ cp -R \
   --wing milvus_analyzer_docs \
   --results 3
 <button class="copy-code-btn"></button></code></pre>
-<p>Résultats de référence (les scores peuvent varier) :</p>
+<p>Reference output (scores may vary):</p>
 <pre><code translate="no" class="language-text">Results for: &quot;How should I analyze documents that mix several languages?&quot;
 Wing: milvus_analyzer_docs
 
@@ -250,8 +249,8 @@ Wing: milvus_analyzer_docs
 [3] milvus_analyzer_docs / analyzer
     Source: multi-language-analyzers.md
 <button class="copy-code-btn"></button></code></pre>
-<p>Lors de l'exécution validée, les trois résultats provenaient tous de <code translate="no">multi-language-analyzers.md</code>, même si le corpus contenait également des pages consacrées à des analyseurs, des tokeniseurs et des filtres linguistiques individuels.</p>
-<h2 id="Search-within-a-room" class="common-anchor-header">Recherche au sein d’une « room »<button data-href="#Search-within-a-room" class="anchor-icon" translate="no">
+<p>In the validated run, all three results came from <code translate="no">multi-language-analyzers.md</code>, even though the corpus also contained pages for individual language analyzers, tokenizers, and filters.</p>
+<h2 id="Search-within-a-room" class="common-anchor-header">Search within a room<button data-href="#Search-within-a-room" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -266,7 +265,7 @@ Wing: milvus_analyzer_docs
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Les filtres de « room » sont utiles lorsque des concepts apparentés apparaissent dans l’ensemble du corpus. La requête suivante recherche uniquement dans la « room » <code translate="no">filter</code> un moyen de faire correspondre des termes équivalents :</p>
+    </button></h2><p>Room filters are useful when related concepts appear throughout the corpus. The following query searches only the <code translate="no">filter</code> room for a way to make equivalent terms match:</p>
 <pre><code translate="no" class="language-shell">mempalace \
   --palace &quot;$PALACE_DIR&quot; \
   search &quot;How can equivalent terms such as USA and United States match one another?&quot; \
@@ -275,7 +274,7 @@ Wing: milvus_analyzer_docs
   --room filter \
   --results 3
 <button class="copy-code-btn"></button></code></pre>
-<p>Résultats de référence (les scores peuvent varier) :</p>
+<p>Reference output (scores may vary):</p>
 <pre><code translate="no" class="language-text">Results for: &quot;How can equivalent terms such as USA and United States match one another?&quot;
 Wing: milvus_analyzer_docs
 Room: filter
@@ -288,8 +287,8 @@ Room: filter
 [3] milvus_analyzer_docs / filter
     Source: stop-filter.md
 <button class="copy-code-btn"></button></code></pre>
-<p>Le premier résultat devrait provenir de <code translate="no">synonym-filter.md</code>. La contrainte de « room » est appliquée via les métadonnées des tiroirs avant la recherche vectorielle ; les tiroirs de tokenisation et d’analyse linguistique sont donc exclus de cette recherche.</p>
-<h2 id="Search-for-exact-terms" class="common-anchor-header">Recherche de termes exacts<button data-href="#Search-for-exact-terms" class="anchor-icon" translate="no">
+<p>The top result should come from <code translate="no">synonym-filter.md</code>. The room constraint is applied through drawer metadata before the vector search, so tokenizer and language-analyzer drawers are excluded from this search.</p>
+<h2 id="Search-for-exact-terms" class="common-anchor-header">Search for exact terms<button data-href="#Search-for-exact-terms" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -304,7 +303,7 @@ Room: filter
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>L’interface CLI de MemPalace combine la similarité sémantique avec les signaux BM25 lors du classement des candidats à la recherche vectorielle. Les noms exacts de configuration et de fonctionnalités peuvent donc améliorer le classement sans passer à un mode de recherche CLI distinct.</p>
+    </button></h2><p>The MemPalace CLI combines semantic similarity with BM25 signals when ranking the vector-search candidates. Exact configuration names and feature names can therefore improve the ranking without switching to a separate CLI search mode.</p>
 <pre><code translate="no" class="language-shell">mempalace \
   --palace &quot;$PALACE_DIR&quot; \
   search &quot;language_identifier tokenizer&quot; \
@@ -313,7 +312,7 @@ Room: filter
   --room tokenizer \
   --results 3
 <button class="copy-code-btn"></button></code></pre>
-<p>Résultats de référence (les scores peuvent varier) :</p>
+<p>Reference output (scores may vary):</p>
 <pre><code translate="no" class="language-text">Results for: &quot;language_identifier tokenizer&quot;
 Wing: milvus_analyzer_docs
 Room: tokenizer
@@ -326,8 +325,8 @@ Room: tokenizer
 [3] milvus_analyzer_docs / tokenizer
     Source: lindera-tokenizer.md
 <button class="copy-code-btn"></button></code></pre>
-<p>Les résultats devraient privilégier <code translate="no">language-identifier.md</code>, qui documente le tokeniseur <code translate="no">language_identifier</code> utilisé pour sélectionner les analyseurs en fonction de la langue détectée.</p>
-<h2 id="Inspect-the-Milvus-collections" class="common-anchor-header">Inspecter les collections Milvus<button data-href="#Inspect-the-Milvus-collections" class="anchor-icon" translate="no">
+<p>The results should favor <code translate="no">language-identifier.md</code>, which documents the <code translate="no">language_identifier</code> tokenizer used to select analyzers based on detected language.</p>
+<h2 id="Inspect-the-Milvus-collections" class="common-anchor-header">Inspect the Milvus collections<button data-href="#Inspect-the-Milvus-collections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -342,7 +341,7 @@ Room: tokenizer
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>MemPalace gère automatiquement son schéma Milvus. Pour vérifier ce qui a été stocké, enregistrez le script suivant sous le nom <code translate="no">inspect_milvus.py</code>. Il ouvre la même base de données Milvus Lite, inspecte les collections et compte les tiroirs par pièce :</p>
+    </button></h2><p>MemPalace manages its Milvus schema automatically. To confirm what was stored, save the following script as <code translate="no">inspect_milvus.py</code>. It opens the same Milvus Lite database, inspects the collections, and counts drawers by room:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
 
@@ -367,18 +366,18 @@ rows = client.query(
 room_counts = Counter(row[<span class="hljs-string">&quot;metadata&quot;</span>][<span class="hljs-string">&quot;room&quot;</span>] <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> rows)
 <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Drawers by room:&quot;</span>, <span class="hljs-built_in">dict</span>(<span class="hljs-built_in">sorted</span>(room_counts.items())))
 <button class="copy-code-btn"></button></code></pre>
-<p>Exécutez le script avec le même ensemble de dépendances facultatives que celui utilisé par l’interface CLI :</p>
+<p>Run the script with the same optional dependency set used by the CLI:</p>
 <pre><code translate="no" class="language-shell">export MEMPALACE_MILVUS_LITE_PATH=&quot;$PALACE_DIR/milvus.db&quot;
 uv run --with &quot;mempalace[milvus]&quot; inspect_milvus.py
 <button class="copy-code-btn"></button></code></pre>
-<p>Exemple de sortie :</p>
+<p>Reference output:</p>
 <pre><code translate="no" class="language-text">mempalace_closets: rows=74, fields=[&#x27;id&#x27;, &#x27;document&#x27;, &#x27;metadata&#x27;, &#x27;vector&#x27;, &#x27;sparse&#x27;]
 mempalace_drawers: rows=473, fields=[&#x27;id&#x27;, &#x27;document&#x27;, &#x27;metadata&#x27;, &#x27;vector&#x27;, &#x27;sparse&#x27;]
 Drawers by room: {&#x27;analyzer&#x27;: 212, &#x27;filter&#x27;: 156, &#x27;tokenizer&#x27;: 105}
 <button class="copy-code-btn"></button></code></pre>
-<p>Pour l’instantané de documentation testé, le fichier <code translate="no">mempalace_drawers</code> contenait 473 lignes et le fichier <code translate="no">mempalace_closets</code> contenait 74 enregistrements de navigation interne. Le nombre de placards et de tiroirs n’a pas besoin de correspondre. Les métadonnées des tiroirs indiquaient 212 tiroirs dans <code translate="no">analyzer</code>, 156 dans <code translate="no">filter</code> et 105 dans <code translate="no">tokenizer</code>.</p>
-<p>Cette inspection s’exécute dans un nouveau processus et rouvre la base de données créée par l’interface CLI, ce qui confirme également que les données sont conservées d’une commande à l’autre.</p>
-<h2 id="Optional-use-Milvus-server-or-Zilliz-Cloud" class="common-anchor-header">Facultatif : utiliser le serveur Milvus ou Zilliz Cloud<button data-href="#Optional-use-Milvus-server-or-Zilliz-Cloud" class="anchor-icon" translate="no">
+<p>For the tested documentation snapshot, <code translate="no">mempalace_drawers</code> contained 473 rows and <code translate="no">mempalace_closets</code> contained 74 internal navigation records. Closet and drawer counts do not need to match. The drawer metadata showed 212 drawers in <code translate="no">analyzer</code>, 156 in <code translate="no">filter</code>, and 105 in <code translate="no">tokenizer</code>.</p>
+<p>This inspection runs in a new process and reopens the database created by the CLI, which also confirms that the data persists across commands.</p>
+<h2 id="Optional-use-Milvus-server-or-Zilliz-Cloud" class="common-anchor-header">Optional: use Milvus server or Zilliz Cloud<button data-href="#Optional-use-Milvus-server-or-Zilliz-Cloud" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -393,19 +392,19 @@ Drawers by room: {&#x27;analyzer&#x27;: 212, &#x27;filter&#x27;: 156, &#x27;toke
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Pour un déploiement partagé, définissez les variables d’environnement de connexion Milvus avant d’exécuter les mêmes commandes de la CLI MemPalace. Ne les définissez pas pour utiliser la base de données Milvus Lite locale indiquée ci-dessus.</p>
-<p>Pour le serveur Milvus :</p>
+    </button></h2><p>For a shared deployment, set the Milvus connection environment variables before running the same MemPalace CLI commands. Leave them unset to use the local Milvus Lite database shown above.</p>
+<p>For Milvus server:</p>
 <pre><code translate="no" class="language-shell">export MEMPALACE_MILVUS_URI=&quot;http://localhost:19530&quot;
 export MEMPALACE_MILVUS_DB_NAME=&quot;default&quot;
 export MEMPALACE_MILVUS_NAMESPACE=&quot;team-memory&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Pour le cloud Zilliz :</p>
+<p>For Zilliz Cloud:</p>
 <pre><code translate="no" class="language-shell">export MEMPALACE_MILVUS_URI=&quot;https://your-cluster.api.region.zillizcloud.com&quot;
 export MEMPALACE_MILVUS_TOKEN=&quot;your-api-key&quot;
 export MEMPALACE_MILVUS_DB_NAME=&quot;default&quot;
 export MEMPALACE_MILVUS_NAMESPACE=&quot;team-memory&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Les commandes de bout en bout présentées dans ce tutoriel ont été validées avec Milvus Lite. Les paramètres de serveur et de cloud ci-dessus constituent des configurations de déploiement facultatives et n’étaient pas nécessaires pour la validation locale.</p>
+<p>The end-to-end commands in this tutorial were validated with Milvus Lite. The server and cloud settings above are optional deployment configurations and were not required for the local validation.</p>
 <h2 id="Conclusion" class="common-anchor-header">Conclusion<button data-href="#Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -421,4 +420,4 @@ export MEMPALACE_MILVUS_NAMESPACE=&quot;team-memory&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>MemPalace offre aux agents un moyen structuré de conserver les connaissances relatives à un projet : une « aile » sépare le corpus, les « salles » définissent le périmètre au niveau des thèmes et les « tiroirs » conservent le texte source d’origine. Dans cet exemple, 31 pages de documentation Milvus étroitement liées deviennent des centaines de tiroirs consultables plutôt que quelques enregistrements manuscrits. Milvus assure le stockage persistant des vecteurs, des données clairsemées, du texte et des métadonnées derrière cette structure.</p>
+    </button></h2><p>MemPalace gives agents a structured way to preserve project knowledge: a wing separates the corpus, rooms provide topic-level scope, and drawers retain the original source text. In this example, 31 closely related Milvus documentation pages become hundreds of searchable drawers rather than a few hand-written records. Milvus provides persistent vector, sparse, text, and metadata storage behind that structure.</p>

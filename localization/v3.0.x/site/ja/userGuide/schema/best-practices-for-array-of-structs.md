@@ -1,11 +1,16 @@
 ---
 id: best-practices-for-array-of-structs.md
-title: 構造体の配列によるデータモデル設計Compatible with Milvus 2.6.4+
+title: Data Model Design with an Array of StructsCompatible with Milvus 2.6.4+
 summary: >-
-  現代のAIアプリケーション、特にモノのインターネット（IoT）や自律走行では、通常、リッチで構造化されたイベントを推論する。例えば、タイムスタンプとベクトル埋め込みのセンサー読み取り値、エラーコードとオーディオスニペットの診断ログ、または位置、速度、シーンコンテキストのある旅行セグメントなどである。このような場合、データベースはネスト化されたデータの取り込みと検索をネイティブにサポートする必要がある。
+  Modern AI applications, especially in the Internet of Things (IoT) and
+  autonomous driving, typically reason over rich, structured events: a sensor
+  reading with its timestamp and vector embedding, a diagnostic log with an
+  error code and audio snippet, or a trip segment with location, speed, and
+  scene context. These require the database to natively support the ingestion
+  and search of nested data.
 beta: Milvus 2.6.4+
 ---
-<h1 id="Data-Model-Design-with-an-Array-of-Structs" class="common-anchor-header">構造体の配列によるデータモデル設計<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Data-Model-Design-with-an-Array-of-Structs" class="anchor-icon" translate="no">
+<h1 id="Data-Model-Design-with-an-Array-of-Structs" class="common-anchor-header">Data Model Design with an Array of Structs<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 2.6.4+</span><button data-href="#Data-Model-Design-with-an-Array-of-Structs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +25,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>現代のAIアプリケーション、特にモノのインターネット（IoT）や自律走行では、リッチで構造化されたイベントを推論するのが一般的だ。例えば、タイムスタンプとベクトル埋め込みを持つセンサーの読み取り値、エラーコードとオーディオスニペットを持つ診断ログ、あるいは位置、速度、シーンコンテキストを持つ旅行セグメントなどである。これらは、データベースがネスト化されたデータの取り込みと検索をネイティブにサポートする必要があります。</p>
-<p>Milvusは、ユーザーにアトミックな構造イベントをフラットなデータモデルに変換するよう求める代わりに、Array of Structsを導入します。Array内の各Structは、セマンティックインテグリティを保持したまま、スカラーやベクトルを保持することができます。</p>
-<h2 id="Why-Array-of-Structs" class="common-anchor-header">なぜArray of Structsなのか？<button data-href="#Why-Array-of-Structs" class="anchor-icon" translate="no">
+    </button></h1><p>Modern AI applications, especially in the Internet of Things (IoT) and autonomous driving, typically reason over rich, structured events: a sensor reading with its timestamp and vector embedding, a diagnostic log with an error code and audio snippet, or a trip segment with location, speed, and scene context. These require the database to natively support the ingestion and search of nested data.</p>
+<p>Instead of asking the user to convert their atomic structural events into flat data models, Milvus introduces the Array of Structs, where each Struct in the array can hold scalars and vectors, preserving semantic integrity.</p>
+<h2 id="Why-Array-of-Structs" class="common-anchor-header">Why Array of Structs<button data-href="#Why-Array-of-Structs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,15 +42,15 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>自律走行からマルチモーダル検索に至るまで、現代のAIアプリケーションは、ネスト化された異種データにますます依存するようになっています。従来のフラットなデータモデルでは、<strong>「1つのドキュメントに多数の注釈が付けられたチャンク</strong>」や<strong>「1つの運転シーンに複数の観察された操作</strong>」といった複雑な関係を表現するのに苦労する。そこでMilvusのArray of Structsデータ型が威力を発揮します。</p>
-<p>Array of Structsでは、構造化された要素の順序付きセットを格納することができ、各Structはスカラーフィールドとベクトル埋め込みを独自に組み合わせて格納します。そのため、以下のような用途に最適です：</p>
+    </button></h2><p>Modern AI applications, from autonomous driving to multimodal retrieval, increasingly rely on nested, heterogeneous data. Traditional flat data models struggle to represent complex relationships like "<strong>one document with many annotated chunks</strong>" or "<strong>one driving scene with multiple observed maneuvers</strong>". This is where the Array of Structs data type in Milvus shines.</p>
+<p>An Array of Structs allows you to store an ordered set of structured elements, where each Struct contains its own combination of scalar fields and vector embeddings. This makes it ideal for:</p>
 <ul>
-<li><p><strong>階層データ</strong>：階層的データ：複数の子レコードを持つ親エンティティ。例えば、多くのテキストチャンクを持つ書籍や、多くのアノテーションフレームを持つ動画など。</p></li>
-<li><p><strong>マルチモーダル埋め込み</strong>：各構造体は、メタデータとともに、テキスト埋め込みと画像埋め込みなど、複数のベクトルを保持できる。</p></li>
-<li><p><strong>時系列データまたはシーケンシャルデータ</strong>：ArrayフィールドのStructは、時系列またはステップバイステップのイベントを自然に表現します。</p></li>
+<li><p><strong>Hierarchical data</strong>: Parent entities with multiple child records, such as a book with many text chunks, or a video with many annotated frames.</p></li>
+<li><p><strong>Multimodal embeddings</strong>: Each Struct can hold multiple vectors, such as text embedding plus image embedding, alongside metadata.</p></li>
+<li><p><strong>Temporal or sequential data</strong>: Structs in an Array field naturally represent time-series or step-by-step events.</p></li>
 </ul>
-<p>JSON blobを保存したり、複数のコレクションにデータを分割する従来の回避策とは異なり、Array of Structsはスキーマのネイティブなエンフォースメント、ベクトルインデックス、Milvus内での効率的なストレージを提供します。</p>
-<h2 id="Schema-design-guidelines" class="common-anchor-header">スキーマ設計ガイドライン<button data-href="#Schema-design-guidelines" class="anchor-icon" translate="no">
+<p>Unlike traditional workarounds that store JSON blobs or split data across multiple collections, the Array of Structs provides native schema enforcement, vector indexing, and efficient storage within Milvus.</p>
+<h2 id="Schema-design-guidelines" class="common-anchor-header">Schema design guidelines<button data-href="#Schema-design-guidelines" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -60,8 +65,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="/docs/ja/schema-hands-on.md">検索のためのデータモデル設計で</a>説明したすべてのガイドラインに加え、データモデル設計でArray of Structsの使用を開始する前に以下のことも考慮する必要があります。</p>
-<h3 id="Define-the-Struct-schema" class="common-anchor-header">Struct スキーマの定義<button data-href="#Define-the-Struct-schema" class="anchor-icon" translate="no">
+    </button></h2><p>In addition to all the guidelines discussed in <a href="/docs/ja/schema-hands-on.md">Data Model Design for Search</a>, you should also consider the following things before starting to use an Array of Structs in your data model design.</p>
+<h3 id="Define-the-Struct-schema" class="common-anchor-header">Define the Struct schema<button data-href="#Define-the-Struct-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -76,9 +81,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>コレクションに Array フィールドを追加する前に、内部の Struct スキーマを定義します。構造体の各フィールドは、スカラー<strong>（VARCHAR</strong>、<strong>INT</strong>、<strong>BOOLEAN</strong> など）またはベクトル<strong>（FLOAT_VECTOR</strong>）で明示的に型付けする必要があります。</p>
-<p>Struct スキーマには、検索や表示に使用するフィールドのみを含めるようにして、無駄のないスキーマを維持することをお勧めします。未使用のメタデータで肥大化しないようにしましょう。</p>
-<h3 id="Set-the-max-capacity-thoughtfully" class="common-anchor-header">最大容量は慎重に設定する<button data-href="#Set-the-max-capacity-thoughtfully" class="anchor-icon" translate="no">
+    </button></h3><p>Before adding the Array field to your collection, define the inner Struct schema. Each field in the struct must be explicitly typed, scalar (<strong>VARCHAR</strong>, <strong>INT</strong>, <strong>BOOLEAN</strong>, etc.) or vector (<strong>FLOAT_VECTOR</strong>).</p>
+<p>You are advised to keep the Struct schema lean by only including fields you’ll use for retrieval or display. Avoid bloating with unused metadata.</p>
+<h3 id="Set-the-max-capacity-thoughtfully" class="common-anchor-header">Set the max capacity thoughtfully<button data-href="#Set-the-max-capacity-thoughtfully" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -93,9 +98,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>各Arrayフィールドには、各エンティティに対してArrayフィールドが保持できる要素の最大数を指定する属性があります。これは、ユースケースの上限に基づいて設定します。たとえば、ドキュメントごとに1,000個のテキストチャンクがあるとか、運転シーンごとに100個のマニューバーがあるとします。</p>
-<p>値が高すぎるとメモリを浪費するため、Array フィールドの Structs の最大数を決定するための計算が必要になります。</p>
-<h3 id="Index-vector-fields-in-Structs" class="common-anchor-header">ベクトルフィールドのインデックス<button data-href="#Index-vector-fields-in-Structs" class="anchor-icon" translate="no">
+    </button></h3><p>Each Array field has an attribute that specifies the maximum number of elements the Array field can hold for each entity. Set this based on your use case’s upper bound. For example, there are 1,000 text chunks per document, or 100 maneuvers per driving scene.</p>
+<p>An excessively high value wastes memory, and you’ll need to do some calculations to determine the maximum number of Structs in the Array field.</p>
+<h3 id="Index-vector-fields-in-Structs" class="common-anchor-header">Index vector fields in Structs<button data-href="#Index-vector-fields-in-Structs" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -110,9 +115,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>コレクション内のベクトルフィールドと Struct 内で定義されたベクトルフィールドの両方を含め、ベクトルフィールドにはインデクシングが必須です。Struct 内のベクトル・フィールドでは、<code translate="no">AUTOINDEX</code> または<code translate="no">HNSW</code> をインデックス・タイプとして、<code translate="no">MAX_SIM</code> 系列をメトリック・タイプとして使用する必要があります。</p>
-<p>適用可能なすべてのリミットの詳細については、<a href="/docs/ja/array-of-structs.md#Limits">リミットを</a>参照してください。</p>
-<h2 id="A-real-world-example-Modeling-the-CoVLA-dataset-for-autonomous-driving" class="common-anchor-header">実際の例自律走行のためのCoVLAデータセットのモデリング<button data-href="#A-real-world-example-Modeling-the-CoVLA-dataset-for-autonomous-driving" class="anchor-icon" translate="no">
+    </button></h3><p>Indexing is mandatory for vector fields, including both the vector fields in a collection and those defined in a Struct. For vector fields in a Struct, you should use <code translate="no">AUTOINDEX</code> or <code translate="no">HNSW</code> as the index type and <code translate="no">MAX_SIM</code> series as the metric type.</p>
+<p>For details on all applicable limits, refer to <a href="/docs/ja/array-of-structs.md#Limits">the limits</a>.</p>
+<h2 id="A-real-world-example-Modeling-the-CoVLA-dataset-for-autonomous-driving" class="common-anchor-header">A real-world example: Modeling the CoVLA dataset for autonomous driving<button data-href="#A-real-world-example-Modeling-the-CoVLA-dataset-for-autonomous-driving" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -127,14 +132,14 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p><a href="https://tur.ing/posts/s1QUA1uh">Turing Motorsによって</a>導入され、Winter Conference on Applications of Computer Vision (WACV) 2025で採択されたComprehensive Vision-Language-Action (CoVLA)データセットは、自律走行におけるVision-Language-Action (VLA)モデルの訓練と評価のための豊富な基盤を提供する。各データポイント（通常はビデオクリップ）には、生の視覚入力だけでなく、構造化されたキャプションも含まれています：</p>
+    </button></h2><p>The Comprehensive Vision-Language-Action (CoVLA) dataset, introduced by <a href="https://tur.ing/posts/s1QUA1uh">Turing Motors</a> and accepted at the Winter Conference on Applications of Computer Vision (WACV) 2025, provides a rich foundation for training and evaluating Vision-Language-Action (VLA) models in autonomous driving. Each data point, which is usually a video clip, contains not just raw visual input but also structured captions describing:</p>
 <ul>
-<li><p><strong>自車両の行動</strong>（例：「対向車に譲りながら左へ合流」）、</p></li>
-<li><p><strong>検出されたオブジェクト</strong>（先行車、歩行者、信号機など）。</p></li>
-<li><p>シーンのフレームレベルの<strong>キャプション</strong>。</p></li>
+<li><p>The <strong>ego vehicle’s behaviors</strong> (e.g., “Merge left while yielding to oncoming traffic”),</p></li>
+<li><p>The <strong>detected objects</strong> present (e.g., leading vehicles, pedestrians, traffic lights), and</p></li>
+<li><p>A frame-level <strong>caption</strong> of the scene.</p></li>
 </ul>
-<p>この階層的でマルチモーダルな性質は、Array of Structs機能の理想的な候補となる。CoVLAデータセットの詳細については、<a href="https://turingmotors.github.io/covla-ad/">CoVLAデータセットウェブサイトを</a>参照。</p>
-<h3 id="Step-1-Map-the-dataset-into-a-collection-schema" class="common-anchor-header">ステップ1：データセットをコレクションスキーマにマップする<button data-href="#Step-1-Map-the-dataset-into-a-collection-schema" class="anchor-icon" translate="no">
+<p>This hierarchical, multi-modal nature makes it an ideal candidate for the Array of Structs feature. For details on the CoVLA dataset, refer to the <a href="https://turingmotors.github.io/covla-ad/">CoVLA Dataset Website</a>.</p>
+<h3 id="Step-1-Map-the-dataset-into-a-collection-schema" class="common-anchor-header">Step 1: Map the dataset into a collection schema<button data-href="#Step-1-Map-the-dataset-into-a-collection-schema" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -149,8 +154,8 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>CoVLAデータセットは、10,000のビデオクリップ、合計80時間以上の映像からなる大規模なマルチモーダル運転データセットである。20Hzのレートでフレームをサンプリングし、各フレームに、車両の状態や検出された物体の座標に関する情報とともに、詳細な自然言語キャプションを注釈している。</p>
-<p>データセットの構造は以下の通り：</p>
+    </button></h3><p>The CoVLA dataset is a large-scale, multimodal driving dataset comprising 10,000 video clips, totaling over 80 hours of footage. It samples frames at a rate of 20Hz and annotates each frame with detailed natural language captions along with information on vehicle states and the coordinates of detected objects.</p>
+<p>The dataset structure is as follows:</p>
 <pre><code translate="no" class="language-python">├── video_1                                       (VIDEO) <span class="hljs-comment"># video.mp4</span>
 │   ├── video_id                                  (INT)
 │   ├── video_url                                 (STRING)
@@ -191,29 +196,31 @@ beta: Milvus 2.6.4+
 ├── ...
 ├── video_n
 <button class="copy-code-btn"></button></code></pre>
-<p>CoVLAデータセットの構造は高度に階層化されており、収集されたデータは、<code translate="no">.mp4</code> 形式のビデオクリップとともに、複数の<code translate="no">.jsonl</code> ファイルに分割されていることがわかる。</p>
-<p>Milvusでは、JSONフィールドまたはArray-of-Structsフィールドを使用して、コレクションスキーマ内に入れ子構造を作成することができる。ベクトル埋め込みが入れ子形式の一部である場合、Array-of-Structsフィールドのみがサポートされます。ただし、Array 内の Struct は、それ自体にさらなる入れ子構造を含めることはできない。CoVLAデータセットを本質的な関係を保持したまま保存するためには、不要な階層構造を取り除き、Milvusコレクションスキーマに適合するようにデータを平坦化する必要があります。</p>
-<p>下図は、以下のスキーマを使用して、このデータセットをどのようにモデル化できるかを示している：</p>
+<p>You can find that the structure of the CoVLA dataset is highly hierarchical, dividing the collected data into multiple <code translate="no">.jsonl</code> files, along with the video clips in the <code translate="no">.mp4</code> format.</p>
+<p>In Milvus, you can use either a JSON field or an Array-of-Structs field to create nested structures within a collection schema. When vector embeddings are part of the nested format, only an Array-of-Structs field is supported. However, a Struct inside an Array cannot itself contain further nested structures. To store the CoVLA dataset while retaining essential relationships, you need to remove unnecessary hierarchy and flatten the data so it fits the Milvus collection schema.</p>
+<p>The diagram below illustrates how we can model this dataset using the schema illustrated in the following schema:</p>
 <p>
-  
-   <span class="img-wrapper"> <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/dataset-model.png" alt="Dataset Model" class="doc-image" id="dataset-model" />
-   </span> <span class="img-wrapper"> <span>データセット・モデル</span> </span></p>
-<p>上図はビデオクリップの構造を示しており、以下のフィールドで構成される：</p>
+  <span class="img-wrapper">
+    <img translate="no" src="https://milvus-docs.s3.us-west-2.amazonaws.com/assets/dataset-model.png" alt="Dataset Model" class="doc-image" id="dataset-model" />
+    <span>Dataset Model</span>
+  </span>
+</p>
+<p>The above diagram illustrates the structure of a video clip, which comprises the following fields:</p>
 <ul>
-<li><p><code translate="no">video_id</code> はプライマリキーで、INT64 型の整数を受け入れます。</p></li>
-<li><p><code translate="no">states</code> は生のJSONボディで、現在の動画の各フレームにおける自車両の状態を含む。</p></li>
-<li><p><code translate="no">captions</code> は Struct の配列で、各 Struct は以下のフィールドを持つ：</p>
+<li><p><code translate="no">video_id</code> serves as the primary key, which accepts integers of the INT64 type.</p></li>
+<li><p><code translate="no">states</code> is a raw JSON body that contains the state of the ego vehicle in each frame of the current video.</p></li>
+<li><p><code translate="no">captions</code> is an Array of Structs with each Struct having the following fields:</p>
 <ul>
-<li><p><code translate="no">frame_id</code> は、現在のビデオ内の特定のフレームを識別します。</p></li>
-<li><p><code translate="no">plain_caption</code> は、天候や道路状況などの周囲環境を含まない現在のフレームの説明であり、<code translate="no">plain_cap_vector</code> はその対応するベクトル埋め込みです。</p></li>
-<li><p><code translate="no">rich_caption</code> は周囲環境を含む現在のフレームの説明であり、<code translate="no">rich_cap_vector</code> はその対応するベクトル埋め込みである。</p></li>
-<li><p><code translate="no">risk</code> は現在のフレームで自車両が直面するリスクの記述であり、<code translate="no">risk_vector</code> はその対応するベクトル埋め込みである。</p></li>
-<li><p><code translate="no">road</code>,<code translate="no">weather</code>,<code translate="no">is_tunnel</code>,<code translate="no">has_pedestrain</code>, etc...のようなフレームの他のすべての属性。</p></li>
+<li><p><code translate="no">frame_id</code> identifies a specific frame within the current video.</p></li>
+<li><p><code translate="no">plain_caption</code> is a description of the current frame without the ambient environment, such as weather, road condition, etc., and <code translate="no">plain_cap_vector</code> is its corresponding vector embeddings.</p></li>
+<li><p><code translate="no">rich_caption</code> is a description of the current frame with the ambient environment, and <code translate="no">rich_cap_vector</code> is its corresponding vector embeddings.</p></li>
+<li><p><code translate="no">risk</code> is a description of the risk that the ego vehicle faces in the current frame, and <code translate="no">risk_vector</code> is its corresponding vector embeddings, and</p></li>
+<li><p>All the other attributes of the frame, such as <code translate="no">road</code>, <code translate="no">weather</code>, <code translate="no">is_tunnel</code>, <code translate="no">has_pedestrain</code>, etc…</p></li>
 </ul></li>
-<li><p><code translate="no">traffic_lights</code> は、現在のフレームで識別されたすべての信号機を含むJSONボディです。</p></li>
-<li><p><code translate="no">front_cars</code> はまた、現在のフレームで識別されたすべての先頭車両を含むArray of Structsです。</p></li>
+<li><p><code translate="no">traffic_lights</code> is a JSON body that contains all the traffic light signals identified in the current frame.</p></li>
+<li><p><code translate="no">front_cars</code> is also an Array of Structs that contains all the leading cars identified in the current frame.</p></li>
 </ul>
-<h3 id="Step-2-Initialize-the-schemas" class="common-anchor-header">ステップ2：スキーマの初期化<button data-href="#Step-2-Initialize-the-schemas" class="anchor-icon" translate="no">
+<h3 id="Step-2-Initialize-the-schemas" class="common-anchor-header">Step 2: Initialize the schemas<button data-href="#Step-2-Initialize-the-schemas" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -228,9 +235,9 @@ beta: Milvus 2.6.4+
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>手始めに、caption Struct、front_cars Struct、コレクションのスキーマを初期化する必要がある。</p>
+    </button></h3><p>To start, we need to initialize the schema for a caption Struct, a front_cars Struct, and the collection.</p>
 <ul>
-<li><p>Caption Struct のスキーマを初期化する。</p>
+<li><p>Initialize the schema for the Caption Struct.</p>
 <pre><code translate="no" class="language-python">client = MilvusClient(<span class="hljs-string">&quot;http://localhost:19530&quot;</span>)
 
 <span class="hljs-comment"># create the schema for the caption struct</span>
@@ -364,9 +371,9 @@ schema_for_caption.add_field(
     description=<span class="hljs-string">&quot;whether there is a carrier car present&quot;</span>
 )
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>Front Car Structのスキーマを初期化する。</p>
+<li><p>Initialize the schema for the Front Car Struct</p>
 <p><div class="alert note"></p>
-<p>フロントカーはベクトル埋め込みを伴いませんが、データサイズがJSONフィールドの最大値を超えるため、Structの配列として含める必要があります。</p>
+<p>Although a front car does not involve vector embeddings, you still need to include it as an array of Struct because the data size exceeds the maximum for a JSON field.</p>
 <p></div></p>
 <pre><code translate="no" class="language-python">schema_for_front_car = client.create_struct_field_schema()
 
@@ -412,7 +419,7 @@ schema_for_front_car.add_field(
     description=<span class="hljs-string">&quot;acceleration of the leading vehicle&quot;</span>
 )
 <button class="copy-code-btn"></button></code></pre></li>
-<li><p>コレクションのスキーマを初期化する</p>
+<li><p>Initialize the schema for the collection</p>
 <pre><code translate="no" class="language-python">schema = client.create_schema()
 
 schema.add_field(
@@ -456,7 +463,7 @@ schema.add_field(
 )
 <button class="copy-code-btn"></button></code></pre></li>
 </ul>
-<h3 id="Step-3-Set-index-parameters" class="common-anchor-header">ステップ 3: インデックスパラメータの設定<button data-href="#Step-3-Set-index-parameters" class="anchor-icon" translate="no">
+<h3 id="Step-3-Set-index-parameters" class="common-anchor-header">Step 3: Set index parameters<button data-href="#Step-3-Set-index-parameters" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -471,7 +478,7 @@ schema.add_field(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>すべてのベクトルフィールドにインデックスを付ける必要があります。要素 Struct 内のベクトルフィールドにインデックスを付けるには、インデックスタイプとして<code translate="no">AUTOINDEX</code> または<code translate="no">HNSW</code> を使用し、埋め込みリスト間の類似度を測定するために<code translate="no">MAX_SIM</code> 系のメトリックタイプを使用する必要があります。</p>
+    </button></h3><p>All vector fields must be indexed. To index the vector fields in an element Struct, you need to use <code translate="no">AUTOINDEX</code> or <code translate="no">HNSW</code> as the index type and the <code translate="no">MAX_SIM</code> series metric type to measure the similarities between embedding lists.</p>
 <pre><code translate="no" class="language-python">index_params = client.prepare_index_params()
 
 index_params.add_index(
@@ -498,8 +505,8 @@ index_params.add_index(
     index_params={<span class="hljs-string">&quot;M&quot;</span>: <span class="hljs-number">16</span>, <span class="hljs-string">&quot;efConstruction&quot;</span>: <span class="hljs-number">200</span>}
 )
 <button class="copy-code-btn"></button></code></pre>
-<p>JSONフィールド内のフィルタリングを高速化するために、JSONフィールドのJSONシュレッダーを有効にすることをお勧めします。</p>
-<h3 id="Step-4-Create-a-collection" class="common-anchor-header">ステップ4: コレクションの作成<button data-href="#Step-4-Create-a-collection" class="anchor-icon" translate="no">
+<p>You are advised to enable JSON shredding for JSON fields to accelerate filtering within these fields.</p>
+<h3 id="Step-4-Create-a-collection" class="common-anchor-header">Step 4: Create a collection<button data-href="#Step-4-Create-a-collection" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -514,14 +521,14 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>スキーマとインデックスの準備ができたら、以下のようにターゲット・コレクションを作成できます：</p>
+    </button></h3><p>Once the schemas and indexes are ready, you can create the target collection as follows:</p>
 <pre><code translate="no" class="language-python">client.create_collection(
     collection_name=<span class="hljs-string">&quot;covla_dataset&quot;</span>,
     schema=schema,
     index_params=index_params
 )
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Step-5-Insert-the-data" class="common-anchor-header">ステップ 5: データの挿入<button data-href="#Step-5-Insert-the-data" class="anchor-icon" translate="no">
+<h3 id="Step-5-Insert-the-data" class="common-anchor-header">Step 5: Insert the data<button data-href="#Step-5-Insert-the-data" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -536,8 +543,8 @@ index_params.add_index(
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Turing Motosは、生のビデオクリップ(<code translate="no">.mp4</code>)、状態(<code translate="no">states.jsonl</code>)、キャプション(<code translate="no">captions.jsonl</code>)、信号機(<code translate="no">traffic_lights.jsonl</code>)、前方の車(<code translate="no">front_cars.jsonl</code>)を含む、複数のファイルでCoVLAデータセットを整理する。</p>
-<p>これらのファイルから各ビデオクリップのデータ片をマージし、データを挿入する必要があります。以下は、特定のビデオクリップのデータピースをマージするスクリプトです。</p>
+    </button></h3><p>Turing Motos organizes the CoVLA dataset in multiple files, including raw video clips (<code translate="no">.mp4</code>), states (<code translate="no">states.jsonl</code>), captions (<code translate="no">captions.jsonl</code>), traffic lights (<code translate="no">traffic_lights.jsonl</code>), and front cars (<code translate="no">front_cars.jsonl</code>).</p>
+<p>You need to merge the data pieces for each video clip from these files and insert the data. The following is the script to merge the data pieces for a specific video clip.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">from</span> openai <span class="hljs-keyword">import</span> OpenAI
 
@@ -614,7 +621,7 @@ data = {
     <span class="hljs-string">&quot;front_cars&quot;</span>: front_cars
 }
 <button class="copy-code-btn"></button></code></pre>
-<p>データを適切に処理したら、次のように挿入します：</p>
+<p>Once you have processed the data accordingly, you can insert it as follows:</p>
 <pre><code translate="no" class="language-python">client.insert(
     collection_name=<span class="hljs-string">&quot;covla_dataset&quot;</span>,
     data=[data]

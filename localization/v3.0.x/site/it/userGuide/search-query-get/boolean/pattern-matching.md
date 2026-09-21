@@ -1,14 +1,13 @@
 ---
 id: pattern-matching.md
-title: Corrispondenza dei pattern
+title: Pattern Matching
 summary: >-
-  Milvus supporta la corrispondenza di pattern di stringhe con i caratteri jolly
-  LIKE e le espressioni regolari RE2. È possibile utilizzare i filtri di pattern
-  per individuare prefissi, suffissi, sottostringhe, codici strutturati, domini
-  e-mail, percorsi URL e altri pattern di stringhe nei campi VARCHAR, nei
-  percorsi delle stringhe JSON o negli elementi ARRAY.
+  Milvus supports string pattern matching with LIKE wildcard patterns and RE2
+  regular expressions. Use pattern filters to match prefixes, suffixes,
+  substrings, structured codes, email domains, URL paths, and other string
+  patterns in VARCHAR fields, JSON string paths, or ARRAY elements.
 ---
-<h1 id="Pattern-Matching" class="common-anchor-header">Corrispondenza dei pattern<button data-href="#Pattern-Matching" class="anchor-icon" translate="no">
+<h1 id="Pattern-Matching" class="common-anchor-header">Pattern Matching<button data-href="#Pattern-Matching" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -23,18 +22,19 @@ summary: >-
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>Nelle applicazioni di ricerca agentica, la ricerca vettoriale e la corrispondenza dei modelli in stile grep spesso si integrano a vicenda. La ricerca vettoriale recupera le entità semanticamente rilevanti, mentre la corrispondenza dei modelli restringe tali risultati in base a strutture di stringhe esatte, quali codici di errore, prefissi di log, domini e-mail, percorsi URL o identificatori.</p>
-<p>In Milvus, è possibile esprimere questi vincoli di pattern nei filtri scalari utilizzando <code translate="no">LIKE</code> per una semplice corrispondenza con caratteri jolly e <code translate="no">=~</code> o <code translate="no">!~</code> per le espressioni regolari <a href="https://github.com/google/re2/wiki/syntax">RE2</a>. È possibile combinare questi filtri con <code translate="no">query</code>, <code translate="no">search</code> o la ricerca ibrida.</p>
+    </button></h1><p>In agentic search applications, vector search and grep-style pattern matching often complement each other. Vector search retrieves entities that are semantically relevant, while pattern matching narrows those results by exact string structures, such as error codes, log prefixes, email domains, URL paths, or identifiers.</p>
+<p>In Milvus, you can express these pattern constraints in scalar filters with <code translate="no">LIKE</code> for simple wildcard matching, and <code translate="no">=~</code> or <code translate="no">!~</code> for <a href="https://github.com/google/re2/wiki/syntax">RE2</a> regular expressions. You can combine these filters with <code translate="no">query</code>, <code translate="no">search</code>, or hybrid search.</p>
 <div class="alert note">
-<p>Questa pagina descrive la corrispondenza dei pattern nelle espressioni dei filtri scalari utilizzate da <code translate="no">query</code>, <code translate="no">search</code> e dalla ricerca ibrida. Queste espressioni valutano i valori dei campi e non modificano i token prodotti da un analizzatore. Per filtrare i token durante l’analisi del testo, consultare <a href="/docs/it/regex-filter.md">Filtro dell’analizzatore Regex</a>.</p>
+<p>This page describes pattern matching in scalar filter expressions used by <code translate="no">query</code>, <code translate="no">search</code>, and hybrid search. These expressions evaluate field values and do not change the tokens produced by an analyzer. To filter tokens during text analysis, refer to <a href="/docs/it/regex-filter.md">Regex Analyzer Filter</a>.</p>
 </div>
-<p>Le espressioni di corrispondenza dei pattern vengono scritte nel parametro ` <code translate="no">filter</code> `. Ad esempio, la seguente query individua i messaggi di log che contengono un codice di errore come ` <code translate="no">E1001</code>`:</p>
+<p>Pattern matching expressions are written in the <code translate="no">filter</code> parameter. For example, the following query matches log messages that contain an error code such as <code translate="no">E1001</code>:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 
@@ -117,8 +117,31 @@ curl --request POST \
     &quot;outputFields&quot;: [&quot;message&quot;, &quot;severity&quot;]
   }&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Gli esempi in questa pagina si concentrano sull’espressione assegnata a ` <code translate="no">filter</code>`. È possibile utilizzare la stessa sintassi dell’espressione di filtro nelle operazioni di Milvus che accettano un filtro scalare, come ` <code translate="no">query</code>`, ` <code translate="no">search</code>` e la ricerca ibrida.</p>
-<h2 id="Supported-field-types" class="common-anchor-header">Tipi di campo supportati<button data-href="#Supported-field-types" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;milvus/MilvusClientV2.h&quot;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+
+<span class="hljs-keyword">auto</span> client = milvus::MilvusClientV2::<span class="hljs-built_in">Create</span>();
+
+milvus::ConnectParam connect_param{<span class="hljs-string">&quot;http://localhost:19530&quot;</span>, <span class="hljs-string">&quot;root:Milvus&quot;</span>};
+<span class="hljs-keyword">auto</span> status = client-&gt;<span class="hljs-built_in">Connect</span>(connect_param);
+<span class="hljs-keyword">if</span> (!status.<span class="hljs-built_in">IsOk</span>()) {
+    std::cout &lt;&lt; status.<span class="hljs-built_in">Message</span>() &lt;&lt; std::endl;
+}
+
+<span class="hljs-keyword">auto</span> request = milvus::<span class="hljs-built_in">QueryRequest</span>()
+                   .<span class="hljs-built_in">WithCollectionName</span>(<span class="hljs-string">&quot;log_events&quot;</span>)
+                   .<span class="hljs-built_in">WithFilter</span>(<span class="hljs-string">R&quot;(message =~ &quot;E[0-9]{4}&quot;)&quot;</span>)
+                   .<span class="hljs-built_in">AddOutputField</span>(<span class="hljs-string">&quot;message&quot;</span>)
+                   .<span class="hljs-built_in">AddOutputField</span>(<span class="hljs-string">&quot;severity&quot;</span>);
+
+milvus::QueryResponse response;
+status = client-&gt;<span class="hljs-built_in">Query</span>(request, response);
+<span class="hljs-keyword">if</span> (!status.<span class="hljs-built_in">IsOk</span>()) {
+    std::cout &lt;&lt; status.<span class="hljs-built_in">Message</span>() &lt;&lt; std::endl;
+}
+<button class="copy-code-btn"></button></code></pre>
+<p>The examples on this page focus on the expression assigned to <code translate="no">filter</code>. You can use the same filter expression syntax in Milvus operations that accept a scalar filter, such as <code translate="no">query</code>, <code translate="no">search</code>, and hybrid search.</p>
+<h2 id="Supported-field-types" class="common-anchor-header">Supported field types<button data-href="#Supported-field-types" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -133,19 +156,19 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>La corrispondenza dei pattern è disponibile per i valori stringa.</p>
+    </button></h2><p>Pattern matching is available for string values.</p>
 <table>
 <thead>
-<tr><th>Destinazione</th><th><code translate="no">LIKE</code></th><th>Regex <code translate="no">=~</code> / <code translate="no">!~</code></th><th>Note</th></tr>
+<tr><th>Target</th><th><code translate="no">LIKE</code></th><th>Regex <code translate="no">=~</code> / <code translate="no">!~</code></th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">VARCHAR</code> campo</td><td>Sì</td><td>Sì</td><td>Destinazione tipica per la corrispondenza di pattern nei campi stringa.</td></tr>
-<tr><td><code translate="no">JSON</code> percorso con tipo di conversione " <code translate="no">VARCHAR</code> "</td><td>Sì</td><td>Sì</td><td>Il valore del percorso JSON deve essere una stringa per ottenere corrispondenze positive. Se si crea un indice sul percorso JSON per l'accelerazione, impostare <code translate="no">json_cast_type=&quot;varchar&quot;</code>.</td></tr>
-<tr><td><code translate="no">ARRAY&lt;VARCHAR&gt;</code> elemento</td><td>Sì</td><td>Sì</td><td>Corrisponde a un elemento specifico in base all'indice, ad esempio <code translate="no">tags[0]</code>. La corrispondenza del pattern <strong>non</strong> esegue la scansione di tutti gli elementi; si applica solo all'elemento all'indice specificato.</td></tr>
-<tr><td>Destinazioni numeriche, booleane, vettoriali, <code translate="no">TEXT</code> o altre non<code translate="no">VARCHAR</code> </td><td>No</td><td>No</td><td>La corrispondenza con il pattern è disponibile solo per i valori di tipo " <code translate="no">VARCHAR</code> ", i percorsi JSON che si risolvono in stringhe o gli elementi " <code translate="no">ARRAY&lt;VARCHAR&gt;</code> " indicizzati.</td></tr>
+<tr><td><code translate="no">VARCHAR</code> field</td><td>Yes</td><td>Yes</td><td>Typical target for pattern matching on string fields.</td></tr>
+<tr><td><code translate="no">JSON</code> path with <code translate="no">VARCHAR</code> cast type</td><td>Yes</td><td>Yes</td><td>The JSON path value must be a string for positive matches. If you create an index on the JSON path for acceleration, set <code translate="no">json_cast_type=&quot;varchar&quot;</code>.</td></tr>
+<tr><td><code translate="no">ARRAY&lt;VARCHAR&gt;</code> element</td><td>Yes</td><td>Yes</td><td>Match a specific element by index, such as <code translate="no">tags[0]</code>. Pattern matching does <strong>not</strong> scan all elements; it only applies to the element at the specified index.</td></tr>
+<tr><td>Numeric, Boolean, vector, <code translate="no">TEXT</code>, or other non-<code translate="no">VARCHAR</code> targets</td><td>No</td><td>No</td><td>Pattern matching is available only for <code translate="no">VARCHAR</code> values, JSON paths that resolve to strings, or indexed <code translate="no">ARRAY&lt;VARCHAR&gt;</code> elements.</td></tr>
 </tbody>
 </table>
-<h2 id="Choose-LIKE-or-regex" class="common-anchor-header">Scegliere LIKE o regex<button data-href="#Choose-LIKE-or-regex" class="anchor-icon" translate="no">
+<h2 id="Choose-LIKE-or-regex" class="common-anchor-header">Choose LIKE or regex<button data-href="#Choose-LIKE-or-regex" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -160,24 +183,24 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Scegli l’operatore più semplice che esprima il modello di cui hai bisogno.</p>
-<p>Se hai bisogno di una corrispondenza esatta della stringa, ti consigliamo di utilizzare <code translate="no">==</code> invece della corrispondenza dei pattern. Usa <code translate="no">LIKE</code> o regex solo quando il filtro deve corrispondere a un pattern.</p>
+    </button></h2><p>Choose the simplest operator that expresses the pattern you need.</p>
+<p>If you need an exact string match, we recommend you use <code translate="no">==</code> instead of pattern matching. Use <code translate="no">LIKE</code> or regex only when the filter needs to match a pattern.</p>
 <table>
 <thead>
-<tr><th>Requisiti</th><th>Operatore consigliato</th><th>Esempio</th><th>Descrizione</th></tr>
+<tr><th>Requirement</th><th>Recommended operator</th><th>Example</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>Uguaglianza esatta della stringa</td><td><code translate="no">==</code></td><td><code translate="no">status == &quot;active&quot;</code></td><td>Corrispondenza esatta della stringa <code translate="no">active</code>.</td></tr>
-<tr><td>Corrispondenza semplice del prefisso</td><td><code translate="no">LIKE</code></td><td><code translate="no">name LIKE &quot;Prod%&quot;</code></td><td>Corrisponde alle stringhe che iniziano con <code translate="no">Prod</code>.</td></tr>
-<tr><td>Corrispondenza semplice del suffisso</td><td><code translate="no">LIKE</code></td><td><code translate="no">filename LIKE &quot;%.json&quot;</code></td><td>Corrisponde alle stringhe che terminano con <code translate="no">.json</code>.</td></tr>
-<tr><td>Corrispondenza semplice "contiene"</td><td><code translate="no">LIKE</code></td><td><code translate="no">description LIKE &quot;%vector database%&quot;</code></td><td>Trova i valori che contengono <code translate="no">vector database</code> in qualsiasi punto della stringa.</td></tr>
-<tr><td>Corrispondenza di un codice strutturato o di un modello a lunghezza fissa</td><td><code translate="no">=~</code></td><td><code translate="no">code =~ &quot;E[0-9]{4}&quot;</code></td><td>Trova stringhe che, distinguendo tra maiuscole e minuscole, contengono <code translate="no">E</code> seguito da quattro cifre, come ad esempio <code translate="no">E1001</code>.</td></tr>
-<tr><td>Corrispondenza di pattern senza distinzione tra maiuscole e minuscole</td><td><code translate="no">=~</code> con <code translate="no">(?i)</code></td><td><code translate="no">message =~ &quot;(?i)error&quot;</code></td><td>Trova <code translate="no">error</code>, <code translate="no">ERROR</code> o altre varianti con maiuscole e minuscole.</td></tr>
-<tr><td>Escludi i valori che corrispondono a un modello regex</td><td><code translate="no">!~</code></td><td><code translate="no">message !~ &quot;^DEBUG&quot;</code></td><td>Esclude le stringhe che iniziano con <code translate="no">DEBUG</code>.</td></tr>
+<tr><td>Exact string equality</td><td><code translate="no">==</code></td><td><code translate="no">status == &quot;active&quot;</code></td><td>Exact match of the string <code translate="no">active</code>.</td></tr>
+<tr><td>Simple prefix match</td><td><code translate="no">LIKE</code></td><td><code translate="no">name LIKE &quot;Prod%&quot;</code></td><td>Matches strings that start with <code translate="no">Prod</code>.</td></tr>
+<tr><td>Simple suffix match</td><td><code translate="no">LIKE</code></td><td><code translate="no">filename LIKE &quot;%.json&quot;</code></td><td>Matches strings that end with <code translate="no">.json</code>.</td></tr>
+<tr><td>Simple contains match</td><td><code translate="no">LIKE</code></td><td><code translate="no">description LIKE &quot;%vector database%&quot;</code></td><td>Matches values that contain <code translate="no">vector database</code> anywhere in the string.</td></tr>
+<tr><td>Match a structured code or fixed-length pattern</td><td><code translate="no">=~</code></td><td><code translate="no">code =~ &quot;E[0-9]{4}&quot;</code></td><td>Matches strings that case-sensitively contain <code translate="no">E</code> followed by four digits, such as <code translate="no">E1001</code>.</td></tr>
+<tr><td>Case-insensitive pattern matching</td><td><code translate="no">=~</code> with <code translate="no">(?i)</code></td><td><code translate="no">message =~ &quot;(?i)error&quot;</code></td><td>Matches <code translate="no">error</code>, <code translate="no">ERROR</code>, or other case variants.</td></tr>
+<tr><td>Exclude values that match a regex pattern</td><td><code translate="no">!~</code></td><td><code translate="no">message !~ &quot;^DEBUG&quot;</code></td><td>Excludes strings that start with <code translate="no">DEBUG</code>.</td></tr>
 </tbody>
 </table>
-<p>Utilizza <code translate="no">LIKE</code> per una semplice corrispondenza con caratteri jolly. Utilizza regex quando il modello richiede classi di caratteri, ripetizioni, alternanze come <code translate="no">error|failed</code>, ancore o corrispondenze senza distinzione tra maiuscole e minuscole.</p>
-<h2 id="Use-LIKE" class="common-anchor-header">Utilizzare LIKE<button data-href="#Use-LIKE" class="anchor-icon" translate="no">
+<p>Use <code translate="no">LIKE</code> for simple wildcard matching. Use regex when the pattern needs character classes, repetition, alternation such as <code translate="no">error|failed</code>, anchors, or case-insensitive matching.</p>
+<h2 id="Use-LIKE" class="common-anchor-header">Use LIKE<button data-href="#Use-LIKE" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -192,17 +215,17 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>L'operatore <code translate="no">LIKE</code> serve per semplici corrispondenze con caratteri jolly sui valori stringa. Supporta solo i seguenti caratteri jolly:</p>
+    </button></h2><p>The <code translate="no">LIKE</code> operator is for simple wildcard matching on string values. It supports only the following wildcards:</p>
 <table>
 <thead>
-<tr><th>Carattere jolly</th><th>Descrizione</th></tr>
+<tr><th>Wildcard</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">%</code></td><td>Corrisponde a zero o più caratteri.</td></tr>
-<tr><td><code translate="no">_</code></td><td>Corrisponde esattamente a un carattere.</td></tr>
+<tr><td><code translate="no">%</code></td><td>Matches zero or more characters.</td></tr>
+<tr><td><code translate="no">_</code></td><td>Matches exactly one character.</td></tr>
 </tbody>
 </table>
-<h3 id="Common-LIKE-patterns" class="common-anchor-header">Modelli LIKE comuni<button data-href="#Common-LIKE-patterns" class="anchor-icon" translate="no">
+<h3 id="Common-LIKE-patterns" class="common-anchor-header">Common LIKE patterns<button data-href="#Common-LIKE-patterns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -217,19 +240,19 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Utilizza la posizione di <code translate="no">%</code> e <code translate="no">_</code> per controllare dove appare il testo fisso nella stringa corrispondente.</p>
+    </button></h3><p>Use the position of <code translate="no">%</code> and <code translate="no">_</code> to control where the fixed text appears in the matched string.</p>
 <table>
 <thead>
-<tr><th>Requisiti</th><th>Modello</th><th>Esempio di filtro</th></tr>
+<tr><th>Requirement</th><th>Pattern</th><th>Filter example</th></tr>
 </thead>
 <tbody>
-<tr><td>Inizia con un prefisso</td><td><code translate="no">Prod%</code></td><td><code translate="no">filter = 'name LIKE &quot;Prod%&quot;'</code></td></tr>
-<tr><td>Termina con un suffisso</td><td><code translate="no">%.json</code></td><td><code translate="no">filter = 'filename LIKE &quot;%.json&quot;'</code></td></tr>
-<tr><td>Contiene una sottostringa</td><td><code translate="no">%vector%</code></td><td><code translate="no">filter = 'description LIKE &quot;%vector%&quot;'</code></td></tr>
-<tr><td>Corrisponde a un carattere in una posizione fissa</td><td><code translate="no">AB_%</code></td><td><code translate="no">filter = 'code LIKE &quot;AB_%&quot;'</code></td></tr>
+<tr><td>Starts with a prefix</td><td><code translate="no">Prod%</code></td><td><code translate="no">filter = 'name LIKE &quot;Prod%&quot;'</code></td></tr>
+<tr><td>Ends with a suffix</td><td><code translate="no">%.json</code></td><td><code translate="no">filter = 'filename LIKE &quot;%.json&quot;'</code></td></tr>
+<tr><td>Contains a substring</td><td><code translate="no">%vector%</code></td><td><code translate="no">filter = 'description LIKE &quot;%vector%&quot;'</code></td></tr>
+<tr><td>Matches one character at a fixed position</td><td><code translate="no">AB_%</code></td><td><code translate="no">filter = 'code LIKE &quot;AB_%&quot;'</code></td></tr>
 </tbody>
 </table>
-<h3 id="LIKE-matching-behavior" class="common-anchor-header">Comportamento di corrispondenza LIKE<button data-href="#LIKE-matching-behavior" class="anchor-icon" translate="no">
+<h3 id="LIKE-matching-behavior" class="common-anchor-header">LIKE matching behavior<button data-href="#LIKE-matching-behavior" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -244,9 +267,9 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Utilizzare <code translate="no">LIKE</code> per le corrispondenze di prefisso, suffisso, contenuto e singolo carattere in posizione fissa. <code translate="no">LIKE</code> non supporta classi di caratteri come <code translate="no">[0-9]</code>, alternanze come <code translate="no">error|failed</code>, conteggi di ripetizioni come <code translate="no">{4}</code>, ancore come <code translate="no">^</code> o <code translate="no">$</code>, né flag di ignoranza maiuscole/minuscole come <code translate="no">(?i)</code>. Per tali pattern, utilizzare le espressioni regolari (regex).</p>
-<p>Utilizza <code translate="no">==</code> per l'uguaglianza esatta dell'intera stringa. Utilizza <code translate="no">LIKE</code> solo quando il filtro richiede la corrispondenza con caratteri jolly.</p>
-<h3 id="Escaping-wildcards-in-a-LIKE-pattern" class="common-anchor-header">Escape dei caratteri jolly in un modello LIKE<button data-href="#Escaping-wildcards-in-a-LIKE-pattern" class="anchor-icon" translate="no">
+    </button></h3><p>Use <code translate="no">LIKE</code> for prefix, suffix, contains, and fixed-position single-character matches. <code translate="no">LIKE</code> does not support character classes such as <code translate="no">[0-9]</code>, alternation such as <code translate="no">error|failed</code>, repeat counts such as <code translate="no">{4}</code>, anchors such as <code translate="no">^</code> or <code translate="no">$</code>, or case-insensitive flags such as <code translate="no">(?i)</code>. Use regex for those patterns.</p>
+<p>Use <code translate="no">==</code> for exact full-string equality. Use <code translate="no">LIKE</code> only when the filter needs wildcard matching.</p>
+<h3 id="Escaping-wildcards-in-a-LIKE-pattern" class="common-anchor-header">Escaping wildcards in a LIKE pattern<button data-href="#Escaping-wildcards-in-a-LIKE-pattern" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -261,14 +284,14 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Nei modelli <code translate="no">LIKE</code>, <code translate="no">%</code> corrisponde a zero o più caratteri e <code translate="no">_</code> corrisponde esattamente a un carattere. Per trovare una corrispondenza letterale con <code translate="no">%</code>, <code translate="no">_</code> o <code translate="no">\</code>, esca il carattere con una barra rovesciata (<code translate="no">\</code>):</p>
+    </button></h3><p>In <code translate="no">LIKE</code> patterns, <code translate="no">%</code> matches zero or more characters and <code translate="no">_</code> matches exactly one character. To match <code translate="no">%</code>, <code translate="no">_</code>, or <code translate="no">\</code> literally, escape the character with a backslash (<code translate="no">\</code>):</p>
 <ul>
-<li><code translate="no">name LIKE r&quot;\%&quot;</code> corrisponde al valore letterale <code translate="no">%</code>.</li>
-<li><code translate="no">name LIKE r&quot;\_%&quot;</code> corrisponde ai valori che iniziano con un carattere letterale <code translate="no">_</code>.</li>
-<li><code translate="no">name LIKE r&quot;\\%&quot;</code> corrisponde ai valori che iniziano con una barra rovesciata letterale.</li>
+<li><code translate="no">name LIKE r&quot;\%&quot;</code> matches the literal value <code translate="no">%</code>.</li>
+<li><code translate="no">name LIKE r&quot;\_%&quot;</code> matches values that start with a literal <code translate="no">_</code>.</li>
+<li><code translate="no">name LIKE r&quot;\\%&quot;</code> matches values that start with a literal backslash.</li>
 </ul>
-<p>I letterali di stringa grezzi, scritti come <code translate="no">r&quot;...&quot;</code> o <code translate="no">r'...'</code>, mantengono le barre rovesciate tali e quali nelle espressioni dei filtri di Milvus. Sono consigliati per <code translate="no">LIKE</code> e per i pattern regex che contengono barre rovesciate. Senza una stringa grezza, i normali letterali di stringa elaborano comunque le sequenze di escape prima che il pattern venga valutato, quindi potrebbero essere necessarie più barre rovesciate.</p>
-<h2 id="Use-regex" class="common-anchor-header">Utilizzare le espressioni regolari<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Use-regex" class="anchor-icon" translate="no">
+<p>Raw string literals, written as <code translate="no">r&quot;...&quot;</code> or <code translate="no">r'...'</code>, keep backslashes verbatim in Milvus filter expressions. They are recommended for <code translate="no">LIKE</code> and regex patterns that contain backslashes. Without a raw string, ordinary string literals still process escape sequences before the pattern is evaluated, so more backslashes may be required.</p>
+<h2 id="Use-regex" class="common-anchor-header">Use regex<span class="beta-tag" style="background-color:rgb(0, 179, 255);color:white" translate="no">Compatible with Milvus 3.0.x</span><button data-href="#Use-regex" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -283,18 +306,18 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Utilizzare i filtri regex quando il pattern richiede funzionalità delle espressioni regolari quali classi di caratteri, ripetizioni, alternanze, ancore o corrispondenze che non distinguono tra maiuscole e minuscole. Milvus applica un’espressione regolare <a href="https://github.com/google/re2/wiki/syntax">RE2</a> a un valore stringa.</p>
-<p>Il lato destro di <code translate="no">=~</code> o <code translate="no">!~</code> deve essere un letterale stringa.</p>
+    </button></h2><p>Use regex filters when the pattern requires regular expression features such as character classes, repetition, alternation, anchors, or case-insensitive matching. Milvus applies an <a href="https://github.com/google/re2/wiki/syntax">RE2</a> regular expression to a string value.</p>
+<p>The right side of <code translate="no">=~</code> or <code translate="no">!~</code> must be a string literal.</p>
 <table>
 <thead>
-<tr><th>Operatore</th><th>Significato</th><th>Esempio</th></tr>
+<tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">=~</code></td><td>Corrisponde ai valori che soddisfano il modello di espressione regolare.</td><td><code translate="no">filter = 'message =~ &quot;E[0-9]{4}&quot;'</code></td></tr>
-<tr><td><code translate="no">!~</code></td><td>Esclude i valori che soddisfano il pattern regex.</td><td><code translate="no">filter = 'message !~ &quot;^DEBUG&quot;'</code></td></tr>
+<tr><td><code translate="no">=~</code></td><td>Matches values that satisfy the regex pattern.</td><td><code translate="no">filter = 'message =~ &quot;E[0-9]{4}&quot;'</code></td></tr>
+<tr><td><code translate="no">!~</code></td><td>Excludes values that satisfy the regex pattern.</td><td><code translate="no">filter = 'message !~ &quot;^DEBUG&quot;'</code></td></tr>
 </tbody>
 </table>
-<h3 id="Use-raw-string-literals" class="common-anchor-header">Utilizzare stringhe letterali "raw"<button data-href="#Use-raw-string-literals" class="anchor-icon" translate="no">
+<h3 id="Use-raw-string-literals" class="common-anchor-header">Use raw string literals<button data-href="#Use-raw-string-literals" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -309,14 +332,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>I letterali stringa grezzi sono consigliati per i modelli regex che contengono barre rovesciate. In una stringa grezza, scritta come <code translate="no">r&quot;...&quot;</code> o <code translate="no">r'...'</code>, le barre rovesciate vengono passate al motore regex alla lettera. Ciò evita l'escape aggiuntivo richiesto dai normali letterali stringa.</p>
-<p>Ad esempio:</p>
+    </button></h3><p>Raw string literals are recommended for regex patterns that contain backslashes. In a raw string, written as <code translate="no">r&quot;...&quot;</code> or <code translate="no">r'...'</code>, backslashes are passed to the regex engine verbatim. This avoids the extra escaping required by ordinary string literals.</p>
+<p>For example:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">r&#x27;filename =~ r&quot;\.json$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -328,9 +352,11 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;filename =~ r&quot;\.json$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Questo pattern trova corrispondenza con stringhe che terminano con <code translate="no">.json</code>, come ad esempio <code translate="no">report.json</code>.</p>
-<p>Senza una stringa raw nell’espressione del filtro Milvus, le normali stringhe letterali elaborano le sequenze di escape prima che il pattern regex venga valutato. I caratteri letterali sottoposti a escape potrebbero quindi richiedere ulteriori backslash nella stringa del linguaggio host.</p>
-<h3 id="Common-regex-patterns" class="common-anchor-header">Modelli di espressioni regolari comuni<button data-href="#Common-regex-patterns" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">R&quot;(filename =~ r&quot;\.json$&quot;)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p>This matches strings that end with <code translate="no">.json</code>, such as <code translate="no">report.json</code>.</p>
+<p>Without a raw string in the Milvus filter expression, ordinary string literals process escape sequences before the regex pattern is evaluated. Escaped literal characters may therefore require additional backslashes in the host-language string.</p>
+<h3 id="Common-regex-patterns" class="common-anchor-header">Common regex patterns<button data-href="#Common-regex-patterns" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -345,29 +371,30 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Gli esempi seguenti utilizzano la sintassi RE2 comune nelle espressioni dei filtri di Milvus. Per la sintassi completa delle espressioni regolari, consultare il riferimento <a href="https://github.com/google/re2/wiki/syntax">alla sintassi RE2</a>.</p>
+    </button></h3><p>The following examples use common RE2 syntax in Milvus filter expressions. For complete regex syntax, refer to the <a href="https://github.com/google/re2/wiki/syntax">RE2 syntax</a> reference.</p>
 <table>
 <thead>
-<tr><th>Requisito</th><th>Modello</th><th>Esempio di filtro</th></tr>
+<tr><th>Requirement</th><th>Pattern</th><th>Filter example</th></tr>
 </thead>
 <tbody>
-<tr><td>Contiene testo letterale</td><td><code translate="no">error</code></td><td><code translate="no">filter = 'message =~ &quot;error&quot;'</code></td></tr>
-<tr><td>Inizia con un prefisso</td><td><code translate="no">^ERR</code></td><td><code translate="no">filter = 'code =~ &quot;^ERR&quot;'</code></td></tr>
-<tr><td>Termina con un suffisso</td><td><code translate="no">\.json$</code></td><td><code translate="no">filter = 'filename =~ &quot;\\.json$&quot;'</code></td></tr>
-<tr><td>Corrisponde a una sequenza di cifre</td><td><code translate="no">[0-9]+</code></td><td><code translate="no">filter = 'message =~ &quot;[0-9]+&quot;'</code></td></tr>
-<tr><td>Corrisponde a un numero fisso di cifre</td><td><code translate="no">[0-9]{4}</code></td><td><code translate="no">filter = 'code =~ &quot;[0-9]{4}&quot;'</code></td></tr>
-<tr><td>Corrisponde a un dominio di posta elettronica</td><td><code translate="no">@example\.com$</code></td><td><code translate="no">filter = 'email =~ &quot;@example\\.com$&quot;'</code></td></tr>
-<tr><td>Corrisponde senza distinzione tra maiuscole e minuscole</td><td><code translate="no">(?i)error</code></td><td><code translate="no">filter = 'message =~ &quot;(?i)error&quot;'</code></td></tr>
-<tr><td>Corrisponde alla stringa completa</td><td><code translate="no">^prod-[0-9]+$</code></td><td><code translate="no">filter = 'name =~ &quot;^prod-[0-9]+$&quot;'</code></td></tr>
+<tr><td>Contains literal text</td><td><code translate="no">error</code></td><td><code translate="no">filter = 'message =~ &quot;error&quot;'</code></td></tr>
+<tr><td>Starts with a prefix</td><td><code translate="no">^ERR</code></td><td><code translate="no">filter = 'code =~ &quot;^ERR&quot;'</code></td></tr>
+<tr><td>Ends with a suffix</td><td><code translate="no">\.json$</code></td><td><code translate="no">filter = 'filename =~ &quot;\\.json$&quot;'</code></td></tr>
+<tr><td>Matches a digit sequence</td><td><code translate="no">[0-9]+</code></td><td><code translate="no">filter = 'message =~ &quot;[0-9]+&quot;'</code></td></tr>
+<tr><td>Matches a fixed number of digits</td><td><code translate="no">[0-9]{4}</code></td><td><code translate="no">filter = 'code =~ &quot;[0-9]{4}&quot;'</code></td></tr>
+<tr><td>Matches an email domain</td><td><code translate="no">@example\.com$</code></td><td><code translate="no">filter = 'email =~ &quot;@example\\.com$&quot;'</code></td></tr>
+<tr><td>Matches case-insensitively</td><td><code translate="no">(?i)error</code></td><td><code translate="no">filter = 'message =~ &quot;(?i)error&quot;'</code></td></tr>
+<tr><td>Matches the full string</td><td><code translate="no">^prod-[0-9]+$</code></td><td><code translate="no">filter = 'name =~ &quot;^prod-[0-9]+$&quot;'</code></td></tr>
 </tbody>
 </table>
-<p>Per trovare una delle diverse parole, usa l'alternanza con <code translate="no">|</code>:</p>
+<p>To match one of several words, use alternation with <code translate="no">|</code>:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message =~ &quot;error|failed|timeout&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -379,13 +406,16 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message =~ &quot;error|failed|timeout&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Quando si effettuano corrispondenze letterali con i metacaratteri delle espressioni regolari, è necessario precederli con il carattere di escape nel pattern dell’espressione regolare. Ad esempio, per trovare un punto letterale (<code translate="no">\.</code> nell’espressione regolare), scrivere <code translate="no">\\.</code> in una stringa sorgente Python, Java, Go o Node.js:</p>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">R&quot;(message =~ &quot;error|failed|timeout&quot;)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p>When matching regex metacharacters literally, escape them in the regex pattern. For example, to match a literal dot (<code translate="no">\.</code> in regex), write <code translate="no">\\.</code> in a Python, Java, Go, or Node.js source string:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;email =~ &quot;@gmail\\.com$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -397,8 +427,10 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;email =~ &quot;@gmail\\.com$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Nota: i filtri regex di Milvus seguono la sintassi RE2. Se un pattern regex utilizza una sintassi non supportata da RE2 o è altrimenti non valido, Milvus rifiuta l’espressione del filtro. Per i dettagli sui metacaratteri regex, i flag e il comportamento di corrispondenza, consultare il riferimento <a href="https://github.com/google/re2/wiki/syntax">alla sintassi RE2</a>.</p>
-<h3 id="Matching-behavior" class="common-anchor-header">Comportamento di corrispondenza<button data-href="#Matching-behavior" class="anchor-icon" translate="no">
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">R&quot;(email =~ &quot;@gmail\\.com$&quot;)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p>Note: Milvus regex filters follow RE2 syntax. If a regex pattern uses syntax that RE2 does not support or is otherwise invalid, Milvus rejects the filter expression. For details about regex metacharacters, flags, and matching behavior, refer to the <a href="https://github.com/google/re2/wiki/syntax">RE2 syntax</a> reference.</p>
+<h3 id="Matching-behavior" class="common-anchor-header">Matching behavior<button data-href="#Matching-behavior" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -413,14 +445,15 @@ curl --request POST \
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><strong>Corrispondenza di sottostringhe</strong></p>
-<p>La corrispondenza delle espressioni regolari di Milvus utilizza la semantica delle sottostringhe. Il modello non deve necessariamente corrispondere all’intero valore del campo. Ad esempio, il seguente filtro corrisponde sia a <code translate="no">E1001</code> che a <code translate="no">failed with E1001 after retry</code>:</p>
+    </button></h3><p><strong>Substring matching</strong></p>
+<p>Milvus regex matching uses substring semantics. The pattern does not need to match the entire field value. For example, the following filter matches both <code translate="no">E1001</code> and <code translate="no">failed with E1001 after retry</code>:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -432,13 +465,16 @@ curl --request POST \
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message =~ &quot;E[0-9]{4}&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Per trovare corrispondenze con l’intero valore del campo, utilizzare gli ancoraggi <code translate="no">^</code> e <code translate="no">$</code>:</p>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">R&quot;(message =~ &quot;E[0-9]{4}&quot;)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p>To match the entire field value, use the <code translate="no">^</code> and <code translate="no">$</code> anchors:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Match only values that are exactly E followed by four digits</span>
 <span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</span>
@@ -455,14 +491,17 @@ filter := <span class="hljs-string">`code =~ &quot;^E[0-9]{4}$&quot;`</span>
 <pre><code translate="no" class="language-bash"><span class="hljs-comment"># Match only values that are exactly E followed by four digits</span>
 filter=<span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Campi VARCHAR nullabili</strong></p>
-<p>I filtri regex non individuano i valori nulli. Ciò vale sia per ` <code translate="no">=~</code> ` che per ` <code translate="no">!~</code>`. Se si desidera escludere un pattern regex ma mantenere i valori nulli, aggiungere esplicitamente ` <code translate="no">OR field IS NULL</code>`:</p>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">R&quot;(code =~ &quot;^E[0-9]{4}$&quot;)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p><strong>Nullable VARCHAR fields</strong></p>
+<p>Regex filters do not match null values. This applies to both <code translate="no">=~</code> and <code translate="no">!~</code>. If you want to exclude a regex pattern but keep null values, explicitly add <code translate="no">OR field IS NULL</code>:</p>
 <div class="multipleCode">
- <a href="#python">Python</a>
- <a href="#java"> Java</a>
- <a href="#go"> Go</a>
- <a href="#javascript"> Node.js</a>
- <a href="#bash"> cURL</a>
+  <a href="#python">Python</a>
+  <a href="#java">Java</a>
+  <a href="#go">Go</a>
+  <a href="#javascript">Node.js</a>
+  <a href="#cpp">C++</a>
+  <a href="#bash">cURL</a>
 </div>
 <pre><code translate="no" class="language-python"><span class="hljs-built_in">filter</span> = <span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot; OR message IS NULL&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
@@ -474,18 +513,20 @@ filter=<span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</sp
 <button class="copy-code-btn"></button></code></pre>
 <pre><code translate="no" class="language-bash">filter=<span class="hljs-string">&#x27;message !~ &quot;^DEBUG&quot; OR message IS NULL&#x27;</span>
 <button class="copy-code-btn"></button></code></pre>
-<p><strong>Percorsi JSON</strong></p>
-<p>Per i percorsi JSON, i filtri regex si comportano in modo diverso quando il percorso è assente, nullo o si risolve in un valore non stringa:</p>
+<pre><code translate="no" class="language-cpp">std::string filter = <span class="hljs-string">R&quot;(message !~ &quot;^DEBUG&quot; OR message IS NULL)&quot;</span>;
+<button class="copy-code-btn"></button></code></pre>
+<p><strong>JSON paths</strong></p>
+<p>For JSON paths, regex filters behave differently when the path is missing, null, or resolves to a non-string value:</p>
 <table>
 <thead>
-<tr><th>Filtro</th><th>Include valori mancanti/null/non stringa?</th><th>Note</th></tr>
+<tr><th>Filter</th><th>Includes missing/null/non-string values?</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td><code translate="no">json_field[&quot;path&quot;] =~ &quot;pattern&quot;</code></td><td>No</td><td>Corrisponde solo ai valori stringa che soddisfano il modello regex.</td></tr>
-<tr><td><code translate="no">json_field[&quot;path&quot;] !~ &quot;pattern&quot;</code></td><td>Sì</td><td>Restituisce le entità il cui percorso è mancante, nullo, non di tipo stringa o una stringa che non corrisponde al pattern regex.</td></tr>
+<tr><td><code translate="no">json_field[&quot;path&quot;] =~ &quot;pattern&quot;</code></td><td>No</td><td>Matches only string values that satisfy the regex pattern.</td></tr>
+<tr><td><code translate="no">json_field[&quot;path&quot;] !~ &quot;pattern&quot;</code></td><td>Yes</td><td>Returns entities where the path is missing, null, non-string, or a string that does not match the regex pattern.</td></tr>
 </tbody>
 </table>
-<h2 id="Accelerate-pattern-matching-with-indexes" class="common-anchor-header">Accelerare la corrispondenza dei modelli con gli indici<button data-href="#Accelerate-pattern-matching-with-indexes" class="anchor-icon" translate="no">
+<h2 id="Accelerate-pattern-matching-with-indexes" class="common-anchor-header">Accelerate pattern matching with indexes<button data-href="#Accelerate-pattern-matching-with-indexes" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -500,16 +541,16 @@ filter=<span class="hljs-string">&#x27;code =~ &quot;^E[0-9]{4}$&quot;&#x27;</sp
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Milvus supporta diversi tipi di indici sui campi stringa che possono essere utilizzati insieme a filtri " <code translate="no">LIKE</code> " e filtri regex su campi " <code translate="no">VARCHAR</code> " o percorsi stringa JSON, come <code translate="no">NGRAM</code>, <code translate="no">STL_SORT</code>, <code translate="no">INVERTED</code> e <code translate="no">BITMAP</code>. La corrispondenza dei pattern può funzionare senza un indice, ma un indice può migliorare le prestazioni su set di dati di grandi dimensioni.</p>
-<p>L'efficacia dell'indice dipende dall'espressione del pattern, dalla capacità di Milvus di estrarre sottostringhe letterali fisse, nonché dalla cardinalità e dalla distribuzione del campo di destinazione. I pattern di tipo prefisso, come <code translate="no">name LIKE &quot;Prod%&quot;</code>, possono trarre vantaggio da strategie di indicizzazione diverse rispetto ai pattern di tipo infisso o suffisso, come <code translate="no">description LIKE &quot;%vector%&quot;</code> o <code translate="no">filename LIKE &quot;%.json&quot;</code>.</p>
-<p>Utilizzate la tabella seguente come punto di partenza, quindi effettuate un benchmark con il vostro carico di lavoro:</p>
+    </button></h2><p>Milvus supports several index types on string fields that can be used together with <code translate="no">LIKE</code> and regex filters on <code translate="no">VARCHAR</code> fields or JSON string paths, such as <code translate="no">NGRAM</code>, <code translate="no">STL_SORT</code>, <code translate="no">INVERTED</code>, and <code translate="no">BITMAP</code>. Pattern matching can work without an index, but an index can improve performance on large datasets.</p>
+<p>Index effectiveness depends on the pattern expression, whether Milvus can extract fixed literal substrings, and the cardinality and distribution of the target field. Prefix-style patterns such as <code translate="no">name LIKE &quot;Prod%&quot;</code> may benefit from different index strategies than infix or suffix patterns such as <code translate="no">description LIKE &quot;%vector%&quot;</code> or <code translate="no">filename LIKE &quot;%.json&quot;</code>.</p>
+<p>Use the following table as a starting point, then benchmark with your own workload:</p>
 <table>
 <thead>
-<tr><th>Modello o caratteristica dei dati</th><th>Indice da prendere in considerazione</th><th>Note</th></tr>
+<tr><th>Pattern or data characteristic</th><th>Index to consider</th><th>Notes</th></tr>
 </thead>
 <tbody>
-<tr><td>Contiene sottostringhe letterali fisse, come <code translate="no">message =~ &quot;error.*timeout&quot;</code> oppure <code translate="no">message LIKE &quot;%database%&quot;</code></td><td><code translate="no">NGRAM</code></td><td>Utile quando Milvus è in grado di estrarre sottostringhe letterali significative dal modello. Per ulteriori dettagli, consultare <a href="/docs/it/ngram.md">NGRAM</a>.</td></tr>
-<tr><td>Filtri di stringa con prefisso, esatti o di tipo "uguaglianza", specialmente su campi con cardinalità da bassa a moderata</td><td><code translate="no">STL_SORT</code>, <code translate="no">INVERTED</code> o <code translate="no">BITMAP</code></td><td>Possono risultare più efficaci quando il campo presenta valori ripetuti o quando il filtro si avvicina alla corrispondenza esatta. Per i dettagli, fare riferimento a <a href="/docs/it/stl-sort.md">STL_SORT</a>, <a href="/docs/it/inverted.md">INVERTED</a> e <a href="/docs/it/bitmap.md">BITMAP</a>.</td></tr>
-<tr><td>Modelli Regex senza letterali fissi, o modelli dominati da classi di caratteri, token brevi o caratteri jolly</td><td>Eseguire test di benchmark prima di fare affidamento sull’accelerazione tramite indice</td><td>Questi pattern potrebbero fornire una selettività dell’indice limitata e ricorrere a scansioni più estese.</td></tr>
+<tr><td>Contains fixed literal substrings, such as <code translate="no">message =~ &quot;error.*timeout&quot;</code> or <code translate="no">message LIKE &quot;%database%&quot;</code></td><td><code translate="no">NGRAM</code></td><td>Helps when Milvus can extract meaningful literal substrings from the pattern. For details, refer to <a href="/docs/it/ngram.md">NGRAM</a>.</td></tr>
+<tr><td>Prefix, exact, or equality-like string filters, especially on fields with low to moderate cardinality</td><td><code translate="no">STL_SORT</code>, <code translate="no">INVERTED</code>, or <code translate="no">BITMAP</code></td><td>May be more effective when the field has repeated values or when the filter is close to exact matching. For details, refer to <a href="/docs/it/stl-sort.md">STL_SORT</a>, <a href="/docs/it/inverted.md">INVERTED</a>, and <a href="/docs/it/bitmap.md">BITMAP</a>.</td></tr>
+<tr><td>Regex patterns without fixed literals, or patterns dominated by character classes, short tokens, or wildcards</td><td>Benchmark before relying on index acceleration</td><td>These patterns may provide limited index selectivity and can fall back to broader scans.</td></tr>
 </tbody>
 </table>

@@ -1,15 +1,14 @@
 ---
 id: everos_with_milvus.md
 summary: >-
-  Dalam tutorial ini, kita akan membuat asisten proyek yang dapat mengingat
-  keputusan peluncuran di berbagai percakapan terpisah. Kita akan menambahkan
-  percakapan mengenai peluncuran Project Atlas bersamaan dengan percakapan yang
-  tidak terkait mengenai proyek-proyek lain. EverOS akan menggunakan LLM untuk
-  mengekstrak informasi yang disimpan, sementara Milvus menyimpan indeks BM25
-  dan vektor yang digunakan untuk pencarian hibrida.
-title: Membangun Memori Agen Jangka Panjang dengan EverOS dan Milvus
+  In this tutorial, we will build a project assistant that remembers release
+  decisions across separate conversations. We will add conversations about the
+  Project Atlas launch alongside unrelated conversations about other projects.
+  EverOS will use an LLM to extract the memories, while Milvus stores the BM25
+  and vector indexes used for hybrid search.
+title: Build Long-Term Agent Memory with EverOS and Milvus
 ---
-<h1 id="Build-Long-Term-Agent-Memory-with-EverOS-and-Milvus" class="common-anchor-header">Membangun Memori Agen Jangka Panjang dengan EverOS dan Milvus<button data-href="#Build-Long-Term-Agent-Memory-with-EverOS-and-Milvus" class="anchor-icon" translate="no">
+<h1 id="Build-Long-Term-Agent-Memory-with-EverOS-and-Milvus" class="common-anchor-header">Build Long-Term Agent Memory with EverOS and Milvus<button data-href="#Build-Long-Term-Agent-Memory-with-EverOS-and-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -24,8 +23,8 @@ title: Membangun Memori Agen Jangka Panjang dengan EverOS dan Milvus
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p><a href="https://github.com/EverMind-AI/EverOS">EverOS</a> adalah sistem memori berbasis Markdown untuk agen AI. Sistem ini mengekstrak memori yang tahan lama dari percakapan, mempertahankan Markdown sebagai sumber kebenaran, dan membangun indeks turunan yang dapat dicari.</p>
-<p>Dalam tutorial ini, kita akan membangun asisten proyek yang mengingat keputusan rilis di berbagai percakapan terpisah. Kita akan menambahkan percakapan tentang peluncuran Project Atlas bersamaan dengan percakapan yang tidak terkait tentang proyek lain. EverOS akan menggunakan LLM untuk mengekstrak memori tersebut, sementara <a href="https://milvus.io/">Milvus</a> menyimpan indeks BM25 dan vektor yang digunakan untuk pencarian hibrida.</p>
+    </button></h1><p><a href="https://github.com/EverMind-AI/EverOS">EverOS</a> is a Markdown-first memory system for AI agents. It extracts durable memories from conversations, keeps Markdown as the source of truth, and builds a searchable derived index.</p>
+<p>In this tutorial, we will build a project assistant that remembers release decisions across separate conversations. We will add conversations about the Project Atlas launch alongside unrelated conversations about other projects. EverOS will use an LLM to extract the memories, while <a href="https://milvus.io/">Milvus</a> stores the BM25 and vector indexes used for hybrid search.</p>
 <pre><code translate="no" class="language-text">Conversations
       |
       v
@@ -35,8 +34,8 @@ EverOS + LLM ------&gt; Markdown memory files
       v
 Milvus ------&gt; BM25 + vector hybrid search
 <button class="copy-code-btn"></button></code></pre>
-<p>LLM dan model embedding memiliki tanggung jawab yang berbeda. LLM mengubah percakapan menjadi memori terstruktur. Model embedding mengubah memori tersebut dan kueri pencarian selanjutnya menjadi vektor. Pencarian hibrida dasar dalam tutorial ini tidak memerlukan model reranking.</p>
-<h2 id="Prerequisites" class="common-anchor-header">Prasyarat<button data-href="#Prerequisites" class="anchor-icon" translate="no">
+<p>The LLM and embedding model have different responsibilities. The LLM turns a conversation into structured memories. The embedding model converts those memories and later search queries into vectors. The basic hybrid search in this tutorial does not require a reranking model.</p>
+<h2 id="Prerequisites" class="common-anchor-header">Prerequisites<button data-href="#Prerequisites" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -51,15 +50,15 @@ Milvus ------&gt; BM25 + vector hybrid search
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Anda memerlukan:</p>
+    </button></h2><p>You need:</p>
 <ul>
-<li>Python 3.12 atau yang lebih baru</li>
+<li>Python 3.12 or later</li>
 <li><a href="https://docs.astral.sh/uv/"><code translate="no">uv</code></a></li>
-<li><a href="https://milvus.io/docs/install-overview.md">Server Milvus</a> yang aktif</li>
-<li><a href="https://platform.openai.com/api-keys">Kunci API OpenAI</a></li>
+<li>A running <a href="https://milvus.io/docs/install-overview.md">Milvus Server</a></li>
+<li>An <a href="https://platform.openai.com/api-keys">OpenAI API key</a></li>
 </ul>
-<p>Tutorial ini terhubung ke Server Milvus di <code translate="no">http://localhost:19530</code>. EverOS juga mendukung <a href="https://zilliz.com/cloud">Zilliz Cloud</a> melalui pengaturan URI dan token yang sama. Backend Milvus-nya mengharapkan titik akhir jarak jauh dan tidak menerima jalur file Milvus Lite.</p>
-<h2 id="Install-EverOS" class="common-anchor-header">Instal EverOS<button data-href="#Install-EverOS" class="anchor-icon" translate="no">
+<p>This tutorial connects to Milvus Server at <code translate="no">http://localhost:19530</code>. EverOS also supports <a href="https://zilliz.com/cloud">Zilliz Cloud</a> through the same URI and token settings. Its Milvus backend expects a remote endpoint and does not accept a Milvus Lite file path.</p>
+<h2 id="Install-EverOS" class="common-anchor-header">Install EverOS<button data-href="#Install-EverOS" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -74,20 +73,20 @@ Milvus ------&gt; BM25 + vector hybrid search
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Buat proyek lokal dan instal EverOS beserta dependensi Milvus opsionalnya:</p>
+    </button></h2><p>Create a local project and install EverOS with its optional Milvus dependencies:</p>
 <pre><code translate="no" class="language-shell">mkdir everos-milvus-demo
 cd everos-milvus-demo
 
 uv init --bare --python 3.12
 uv add &quot;everos[milvus]&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Perintah ini sengaja tidak menetapkan versi tertentu, sehingga instalasi baru akan menggunakan rilis EverOS terbaru yang kompatibel.</p>
-<p>Inisialisasi akar memori terpisah untuk tutorial ini:</p>
+<p>The command intentionally does not pin a version, so a new installation resolves the latest compatible EverOS release.</p>
+<p>Initialize a separate memory root for the tutorial:</p>
 <pre><code translate="no" class="language-shell">export EVEROS_ROOT=&quot;$PWD/everos-data&quot;
 uv run everos init --root &quot;$EVEROS_ROOT&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>EverOS akan membuat <code translate="no">everos.toml</code> dan <code translate="no">ome.toml</code> di bawah direktori ini. EverOS juga akan menulis memori yang diekstrak di sini.</p>
-<h2 id="Configure-OpenAI-and-Milvus" class="common-anchor-header">Konfigurasikan OpenAI dan Milvus<button data-href="#Configure-OpenAI-and-Milvus" class="anchor-icon" translate="no">
+<p>EverOS creates <code translate="no">everos.toml</code> and <code translate="no">ome.toml</code> under this directory. It will also write the extracted memories here.</p>
+<h2 id="Configure-OpenAI-and-Milvus" class="common-anchor-header">Configure OpenAI and Milvus<button data-href="#Configure-OpenAI-and-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -102,7 +101,7 @@ uv run everos init --root &quot;$EVEROS_ROOT&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Tetapkan kunci API OpenAI dan konfigurasikan EverOS melalui variabel lingkungan:</p>
+    </button></h2><p>Set the OpenAI API key and configure EverOS through environment variables:</p>
 <pre><code translate="no" class="language-shell">export OPENAI_API_KEY=&quot;YOUR_OPENAI_API_KEY&quot;
 export MILVUS_URI=&quot;http://localhost:19530&quot;
 
@@ -121,9 +120,9 @@ export EVEROS_EMBEDDING__DIMENSIONS=&quot;1024&quot;
 
 export EVEROS_MEMORIZE__MODE=&quot;chat&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>EverOS menggunakan OpenAI baik untuk ekstraksi memori maupun embedding. Secara default, <code translate="no">text-embedding-3-small</code> mengembalikan dimensi <code translate="no">1536</code>, tetapi EverOS meneruskan nilai <code translate="no">dimensions</code> yang telah dikonfigurasi ke OpenAI. Tutorial ini meminta dimensi <code translate="no">1024</code> agar sesuai dengan skema Milvus yang dikelola oleh EverOS.</p>
-<p>Mode memori <code translate="no">chat</code> membuat contoh ini tetap berfokus pada memori pengguna. EverOS mengelola koleksi Milvus dan skemanya, sehingga Anda tidak perlu membuatnya sendiri.</p>
-<h2 id="Start-EverOS" class="common-anchor-header">Jalankan EverOS<button data-href="#Start-EverOS" class="anchor-icon" translate="no">
+<p>EverOS uses OpenAI for both memory extraction and embeddings. <code translate="no">text-embedding-3-small</code> returns <code translate="no">1536</code> dimensions by default, but EverOS forwards the configured <code translate="no">dimensions</code> value to OpenAI. This tutorial requests <code translate="no">1024</code> dimensions to match the Milvus schemas managed by EverOS.</p>
+<p>The <code translate="no">chat</code> memory mode keeps this example focused on user memories. EverOS manages the Milvus collections and their schemas, so you do not need to create them yourself.</p>
+<h2 id="Start-EverOS" class="common-anchor-header">Start EverOS<button data-href="#Start-EverOS" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -138,14 +137,14 @@ export EVEROS_MEMORIZE__MODE=&quot;chat&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Jalankan server HTTP EverOS:</p>
+    </button></h2><p>Start the EverOS HTTP server:</p>
 <pre><code translate="no" class="language-shell">uv run everos server start --root &quot;$EVEROS_ROOT&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Biarkan terminal ini tetap terbuka. EverOS terhubung ke Milvus dan membuat tujuh koleksi indeks turunan dengan awalan yang telah dikonfigurasi saat startup.</p>
-<p>Buka terminal lain di direktori proyek yang sama dan periksa layanan:</p>
+<p>Keep this terminal open. EverOS connects to Milvus and creates seven derived-index collections with the configured prefix during startup.</p>
+<p>Open another terminal in the same project directory and check the service:</p>
 <pre><code translate="no" class="language-shell">curl http://127.0.0.1:8000/health
 <button class="copy-code-btn"></button></code></pre>
-<p>Contoh keluaran:</p>
+<p>Reference output:</p>
 <pre><code translate="no" class="language-json"><span class="hljs-punctuation">{</span>
   <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ok&quot;</span><span class="hljs-punctuation">,</span>
   <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1.3.0&quot;</span><span class="hljs-punctuation">,</span>
@@ -162,8 +161,8 @@ export EVEROS_MEMORIZE__MODE=&quot;chat&quot;
   <span class="hljs-punctuation">}</span>
 <span class="hljs-punctuation">}</span>
 <button class="copy-code-btn"></button></code></pre>
-<p>Respons tersebut berisi bidang status tambahan. Nilai-nilai penting untuk tutorial ini adalah <code translate="no">status: &quot;ok&quot;</code>, <code translate="no">llm: true</code>, <code translate="no">embed: true</code>, dan <code translate="no">cascade.healthy: true</code>.</p>
-<h2 id="Add-project-conversations" class="common-anchor-header">Tambahkan percakapan proyek<button data-href="#Add-project-conversations" class="anchor-icon" translate="no">
+<p>The response contains additional health fields. The important values for this tutorial are <code translate="no">status: &quot;ok&quot;</code>, <code translate="no">llm: true</code>, <code translate="no">embed: true</code>, and <code translate="no">cascade.healthy: true</code>.</p>
+<h2 id="Add-project-conversations" class="common-anchor-header">Add project conversations<button data-href="#Add-project-conversations" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -178,8 +177,8 @@ export EVEROS_MEMORIZE__MODE=&quot;chat&quot;
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Program Python berikut mengirimkan sepuluh percakapan independen ke EverOS. Atlas memiliki diskusi terpisah untuk peluncuran dan pembatalan. Delapan percakapan tentang proyek lain berfungsi sebagai pengalih perhatian sehingga pencarian selanjutnya harus mengidentifikasi ingatan proyek yang benar.</p>
-<p>Simpan kode berikut sebagai <code translate="no">add_memories.py</code>:</p>
+    </button></h2><p>The following Python program sends ten independent conversations to EverOS. Atlas has separate launch and rollback discussions. Eight conversations about other projects provide distractors so that the later search has to identify the correct project memories.</p>
+<p>Save the following code as <code translate="no">add_memories.py</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">from</span> urllib.request <span class="hljs-keyword">import</span> Request, urlopen
@@ -468,10 +467,10 @@ conversations = [
     )
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">{session_id}</span>: <span class="hljs-subst">{added[<span class="hljs-string">&#x27;status&#x27;</span>]}</span> -&gt; <span class="hljs-subst">{flushed[<span class="hljs-string">&#x27;status&#x27;</span>]}</span>&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Jalankan dari direktori proyek:</p>
+<p>Run it from the project directory:</p>
 <pre><code translate="no" class="language-shell">uv run python add_memories.py
 <button class="copy-code-btn"></button></code></pre>
-<p>Output referensi:</p>
+<p>Reference output:</p>
 <pre><code translate="no" class="language-text">atlas-release: accumulated -&gt; extracted
 atlas-rollback: accumulated -&gt; extracted
 orion-pricing: accumulated -&gt; extracted
@@ -483,8 +482,8 @@ aurora-observability: accumulated -&gt; extracted
 comet-invoices: accumulated -&gt; extracted
 solstice-research: accumulated -&gt; extracted
 <button class="copy-code-btn"></button></code></pre>
-<p>Menyetel ` <code translate="no">defer_extraction</code> ` ke ` <code translate="no">true</code> ` menyimpan setiap percakapan dalam buffer yang tahan lama tanpa meminta LLM untuk mendeteksi batas. Panggilan ` <code translate="no">/flush</code> ` berikut menandai akhir sesi tersebut dan memicu satu ekstraksi. EverOS kemudian menulis episode yang diekstraksi ke Markdown dan menyematkannya secara asinkron ke indeks Milvus.</p>
-<h2 id="Inspect-the-Markdown-memory" class="common-anchor-header">Periksa memori Markdown<button data-href="#Inspect-the-Markdown-memory" class="anchor-icon" translate="no">
+<p>Setting <code translate="no">defer_extraction</code> to <code translate="no">true</code> stores each conversation in the durable buffer without asking the LLM to detect a boundary. The following <code translate="no">/flush</code> call marks the end of that session and triggers one extraction. EverOS then writes the extracted episode to Markdown and asynchronously embeds it for the Milvus index.</p>
+<h2 id="Inspect-the-Markdown-memory" class="common-anchor-header">Inspect the Markdown memory<button data-href="#Inspect-the-Markdown-memory" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -499,14 +498,14 @@ solstice-research: accumulated -&gt; extracted
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Berkas episode yang dihasilkan disimpan di bawah cakupan aplikasi, proyek, dan pengguna:</p>
+    </button></h2><p>The generated episode file is stored under the application, project, and user scopes:</p>
 <pre><code translate="no" class="language-shell">find &quot;$EVEROS_ROOT/project-assistant/launch-planning/users/maya/episodes&quot; \
   -type f -name &quot;*.md&quot;
 <button class="copy-code-btn"></button></code></pre>
-<p>Output referensi (tanggal pada nama file mencerminkan waktu saat Anda menjalankan contoh ini):</p>
+<p>Reference output (the filename date reflects when you run the example):</p>
 <pre><code translate="no" class="language-text">everos-data/project-assistant/launch-planning/users/maya/episodes/episode-2026-09-08.md
 <button class="copy-code-btn"></button></code></pre>
-<p>Buka berkas tersebut untuk melihat memori yang diekstraksi oleh LLM. Cuplikan singkatnya terlihat seperti ini:</p>
+<p>Open the file to see the LLM-extracted memories. A shortened excerpt looks like this:</p>
 <pre><code translate="no" class="language-markdown"><span class="hljs-section">## ep<span class="hljs-emphasis">_20260908_</span>00000001</span>
 
 <span class="hljs-strong">**owner<span class="hljs-emphasis">_id**: maya
@@ -521,8 +520,8 @@ Maya decided that Project Atlas would launch with a 10% canary on September 30.
 The promotion to all users would occur only after the checkout error rate remained
 below 1% for 30 minutes.
 </span></span><button class="copy-code-btn"></button></code></pre>
-<p>Kata-kata, pengenal, dan cap waktu yang tepat dapat bervariasi karena memori diekstraksi oleh LLM. File Markdown asli tetap menjadi sumber kebenaran yang dapat diandalkan; indeks Milvus dapat dibangun kembali dari file tersebut.</p>
-<h2 id="Search-the-memories" class="common-anchor-header">Cari kenangan<button data-href="#Search-the-memories" class="anchor-icon" translate="no">
+<p>Exact wording, identifiers, and timestamps can vary because the memory is extracted by the LLM. The original Markdown files remain the durable source of truth; the Milvus index can be rebuilt from them.</p>
+<h2 id="Search-the-memories" class="common-anchor-header">Search the memories<button data-href="#Search-the-memories" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -537,7 +536,7 @@ below 1% for 30 minutes.
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Gunakan pencarian hibrida untuk menanyakan apa yang harus diingat sebelum Atlas diluncurkan. Simpan kode berikut sebagai <code translate="no">search_memories.py</code>:</p>
+    </button></h2><p>Use hybrid search to ask what should be remembered before Atlas goes live. Save the following code as <code translate="no">search_memories.py</code>:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> json
 <span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">from</span> urllib.request <span class="hljs-keyword">import</span> Request, urlopen
@@ -580,17 +579,17 @@ expected_sessions = {<span class="hljs-string">&quot;atlas-release&quot;</span>,
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">{rank}</span>. <span class="hljs-subst">{episode[<span class="hljs-string">&#x27;session_id&#x27;</span>]}</span> | score=<span class="hljs-subst">{episode[<span class="hljs-string">&#x27;score&#x27;</span>]:<span class="hljs-number">.3</span>f}</span>&quot;</span>)
     <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;   <span class="hljs-subst">{episode[<span class="hljs-string">&#x27;subject&#x27;</span>]}</span>&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Jalankan pencarian:</p>
+<p>Run the search:</p>
 <pre><code translate="no" class="language-shell">uv run python search_memories.py
 <button class="copy-code-btn"></button></code></pre>
-<p>Hasil referensi (skor dan kata-katanya mungkin berbeda):</p>
+<p>Reference output (scores and wording may vary):</p>
 <pre><code translate="no" class="language-text">1. atlas-release | score=0.492
    Project Atlas Launch Plan: 10% Canary Rollout on September 30 with Error Rate Gate
 2. atlas-rollback | score=0.400
    Atlas Rollback Plan Details: Priya as Owner, 2% Error Trigger, 24-Hour Image Retention
 <button class="copy-code-btn"></button></code></pre>
-<p>Kedua percakapan Atlas ditampilkan di atas delapan percakapan yang tidak terkait. EverOS mengirimkan kueri ke titik akhir embedding OpenAI, meminta Milvus untuk kandidat BM25 dan vektor dalam lingkup aplikasi dan proyek Maya, serta menggabungkan kedua daftar hasil tersebut.</p>
-<h2 id="Inspect-the-Milvus-collections" class="common-anchor-header">Periksa koleksi Milvus<button data-href="#Inspect-the-Milvus-collections" class="anchor-icon" translate="no">
+<p>Both Atlas conversations are returned ahead of the eight unrelated conversations. EverOS sends the query to the OpenAI embedding endpoint, asks Milvus for BM25 and vector candidates within Maya’s application and project scope, and fuses the two result lists.</p>
+<h2 id="Inspect-the-Milvus-collections" class="common-anchor-header">Inspect the Milvus collections<button data-href="#Inspect-the-Milvus-collections" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -605,7 +604,7 @@ expected_sessions = {<span class="hljs-string">&quot;atlas-release&quot;</span>,
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>EverOS membuat satu koleksi untuk setiap jenis memori turunan yang didukung. Gunakan <code translate="no">MilvusClient</code> untuk mencantumkan jumlah barisnya:</p>
+    </button></h2><p>EverOS creates one collection for each supported derived memory kind. Use <code translate="no">MilvusClient</code> to list their row counts:</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> os
 
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
@@ -636,7 +635,7 @@ memory_kinds = [
 
 client.close()
 <button class="copy-code-btn"></button></code></pre>
-<p>Lihat hasil dari proses yang telah divalidasi:</p>
+<p>Reference output from the validated run:</p>
 <pre><code translate="no" class="language-text">agent_case: 0 rows
 agent_skill: 0 rows
 atomic_fact: 50 rows
@@ -645,8 +644,8 @@ foresight: 0 rows
 knowledge_topic: 0 rows
 user_profile: 1 rows
 <button class="copy-code-btn"></button></code></pre>
-<p>Jumlah pasti fakta atomik dapat bervariasi tergantung pada keluaran LLM. Sepuluh baris episode sesuai dengan sepuluh percakapan yang telah disimpan. Koleksi lainnya tersedia untuk mode memori dan fitur EverOS yang tidak diuji dalam contoh terfokus ini.</p>
-<h2 id="Use-another-Milvus-deployment" class="common-anchor-header">Gunakan penyebaran Milvus lainnya<button data-href="#Use-another-Milvus-deployment" class="anchor-icon" translate="no">
+<p>The exact number of atomic facts may vary with the LLM output. The ten episode rows correspond to the ten flushed conversations. The other collections are available for EverOS memory modes and features that this focused example does not exercise.</p>
+<h2 id="Use-another-Milvus-deployment" class="common-anchor-header">Use another Milvus deployment<button data-href="#Use-another-Milvus-deployment" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -661,8 +660,8 @@ user_profile: 1 rows
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Untuk menggunakan titik akhir Milvus Server lain atau <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, perbarui <code translate="no">EVEROS_MILVUS__URI</code>. Tetapkan <code translate="no">EVEROS_MILVUS__TOKEN</code> jika titik akhir memerlukan otentikasi. Kode pengambilan data dan pencarian tetap tidak berubah.</p>
-<h2 id="Conclusion" class="common-anchor-header">Kesimpulan<button data-href="#Conclusion" class="anchor-icon" translate="no">
+    </button></h2><p>To use another Milvus Server endpoint or <a href="https://zilliz.com/cloud">Zilliz Cloud</a>, update <code translate="no">EVEROS_MILVUS__URI</code>. Set <code translate="no">EVEROS_MILVUS__TOKEN</code> when the endpoint requires authentication. The ingestion and search code remains unchanged.</p>
+<h2 id="Conclusion" class="common-anchor-header">Conclusion<button data-href="#Conclusion" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -677,4 +676,4 @@ user_profile: 1 rows
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><p>Dengan menggabungkan EverOS dan Milvus, Anda dapat mengubah percakapan menjadi memori yang tahan lama dan mengaksesnya melalui kata kunci serta sinyal semantik. Anda dapat menyesuaikan pola yang sama untuk memberikan memori jangka panjang kepada asisten dan aplikasi agen lainnya bagi pengguna, proyek, serta alur kerja Anda sendiri.</p>
+    </button></h2><p>By combining EverOS with Milvus, you can turn conversations into durable memories and retrieve them through keyword and semantic signals. You can adapt the same pattern to give assistants and other agentic applications long-term memory for your own users, projects, and workflows.</p>

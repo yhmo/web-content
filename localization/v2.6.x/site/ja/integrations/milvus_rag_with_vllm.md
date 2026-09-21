@@ -1,11 +1,13 @@
 ---
 id: milvus_rag_with_vllm.md
 summary: >-
-  このブログでは、Milvus、vLLM、Llama
-  3.1を使ってRAGを構築し、実行する方法を紹介します。具体的には、Milvusにテキスト情報をベクター埋め込みとして埋め込み、保存し、このベクターストアを知識ベースとして使用して、ユーザーの質問に関連するテキストチャンクを効率的に検索する方法を紹介します。
-title: Milvus、vLLM、Llama 3.1によるRAGの構築
+  This blog will show you how to build and run a RAG with Milvus, vLLM, and
+  Llama 3.1. More specifically, I will show you how to embed and store text
+  information as vector embeddings in Milvus and use this vector store as a
+  knowledge base to efficiently retrieve text chunks relevant to user questions.
+title: 'Building RAG with Milvus, vLLM, and Llama 3.1'
 ---
-<h1 id="Building-RAG-with-Milvus-vLLM-and-Llama-31" class="common-anchor-header">Milvus、vLLM、Llama 3.1によるRAGの構築<button data-href="#Building-RAG-with-Milvus-vLLM-and-Llama-31" class="anchor-icon" translate="no">
+<h1 id="Building-RAG-with-Milvus-vLLM-and-Llama-31" class="common-anchor-header">Building RAG with Milvus, vLLM, and Llama 3.1<button data-href="#Building-RAG-with-Milvus-vLLM-and-Llama-31" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -20,9 +22,9 @@ title: Milvus、vLLM、Llama 3.1によるRAGの構築
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h1><p>カリフォルニア大学バークレー校は、2024年7月、LLM推論とサービングのための高速で使いやすいライブラリである<a href="https://docs.vllm.ai/en/latest/index.html">vLLMを</a>、インキュベーション段階のプロジェクトとして<a href="https://lfaidata.foundation/">LF AI &amp; Data Foundationに</a>寄贈しました。私たちはvLLMがLF AI &amp; Dataファミリーに加わることを歓迎します！🎉</p>
-<p>大規模言語モデル<a href="https://zilliz.com/glossary/large-language-models-(llms)">（LLM</a>）と<a href="https://zilliz.com/learn/what-is-vector-database">ベクトル・データベースは</a>、通常、<a href="https://zilliz.com/glossary/ai-hallucination">AI幻覚に</a>対処するための一般的なAIアプリケーション・アーキテクチャである<a href="https://zilliz.com/learn/Retrieval-Augmented-Generation">RAG（</a>Retrieval Augmented Generation）を構築するために組み合わせられます。このブログでは、Milvus、vLLM、Llama 3.1を使ってRAGを構築し、実行する方法を紹介します。具体的には、Milvusにテキスト情報を<a href="https://zilliz.com/glossary/vector-embeddings">ベクトル埋め込みとして</a>埋め込み、保存し、このベクトルストアを知識ベースとして使用して、ユーザーの質問に関連するテキストチャンクを効率的に検索する方法を紹介します。最後に、vLLMを活用してMetaのLlama 3.1-8Bモデルを提供し、検索されたテキストによって拡張された回答を生成します。さあ、飛び込もう！</p>
-<h2 id="Introduction-to-Milvus-vLLM-and-Meta’s-Llama-31" class="common-anchor-header">Milvus、vLLM、MetaのLlama 3.1の紹介<button data-href="#Introduction-to-Milvus-vLLM-and-Meta’s-Llama-31" class="anchor-icon" translate="no">
+    </button></h1><p>The University of California – Berkeley donated <a href="https://docs.vllm.ai/en/latest/index.html">vLLM</a>, a fast and easy-to-use library for LLM inference and serving, to <a href="https://lfaidata.foundation/">LF AI & Data Foundation</a> as an incubation-stage project in July 2024. As a fellow member project, we’d like to welcome vLLM joining the LF AI & Data family! 🎉</p>
+<p>Large Language Models (<a href="https://zilliz.com/glossary/large-language-models-(llms)">LLMs</a>) and <a href="https://zilliz.com/learn/what-is-vector-database">vector databases</a> are usually paired to build Retrieval Augmented Generation (<a href="https://zilliz.com/learn/Retrieval-Augmented-Generation">RAG</a>), a popular AI application architecture to address <a href="https://zilliz.com/glossary/ai-hallucination">AI Hallucinations</a>. This blog will show you how to build and run a RAG with Milvus, vLLM, and Llama 3.1. More specifically, I will show you how to embed and store text information as <a href="https://zilliz.com/glossary/vector-embeddings">vector embeddings</a> in Milvus and use this vector store as a knowledge base to efficiently retrieve text chunks relevant to user questions. Finally, we’ll leverage vLLM to serve Meta’s Llama 3.1-8B model to generate answers augmented by the retrieved text. Let’s dive in!</p>
+<h2 id="Introduction-to-Milvus-vLLM-and-Meta’s-Llama-31" class="common-anchor-header">Introduction to Milvus, vLLM, and Meta’s Llama 3.1<button data-href="#Introduction-to-Milvus-vLLM-and-Meta’s-Llama-31" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -37,7 +39,7 @@ title: Milvus、vLLM、Llama 3.1によるRAGの構築
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Milvus-vector-database" class="common-anchor-header">Milvusベクトルデータベース<button data-href="#Milvus-vector-database" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Milvus-vector-database" class="common-anchor-header">Milvus vector database<button data-href="#Milvus-vector-database" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -52,7 +54,7 @@ title: Milvus、vLLM、Llama 3.1によるRAGの構築
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><a href="https://zilliz.com/what-is-milvus"><strong>Milvusは</strong></a>、<a href="https://zilliz.com/learn/generative-ai">Generative AI</a>(GenAI)ワークロード用のベクトルを保存、インデックス付け、検索するための、オープンソースの<a href="https://zilliz.com/blog/what-is-a-real-vector-database">目的別</a>分散ベクトルデータベースである。<a href="https://zilliz.com/blog/a-review-of-hybrid-search-in-milvus">ハイブリッド検索、</a> <a href="https://zilliz.com/blog/what-is-new-with-metadata-filtering-in-milvus">メタデータフィルタリング</a>、リランキングを実行し、何兆ものベクトルを効率的に処理する能力により、MilvusはAIおよび機械学習ワークロードに最適な選択肢となっています。<a href="https://github.com/milvus-io/">Milvusは</a>、ローカル、クラスタ、またはフルマネージド<a href="https://zilliz.com/cloud">Zillizクラウドで</a>稼働させることができます。</p>
+    </button></h3><p><a href="https://zilliz.com/what-is-milvus"><strong>Milvus</strong></a> is an open-source, <a href="https://zilliz.com/blog/what-is-a-real-vector-database">purpose-built</a>, distributed vector database for storing, indexing, and searching vectors for <a href="https://zilliz.com/learn/generative-ai">Generative AI</a> (GenAI) workloads. Its ability to perform <a href="https://zilliz.com/blog/a-review-of-hybrid-search-in-milvus">hybrid search,</a> <a href="https://zilliz.com/blog/what-is-new-with-metadata-filtering-in-milvus">metadata filtering</a>, reranking, and efficiently handle trillions of vectors makes Milvus a go-to choice for AI and machine learning workloads. <a href="https://github.com/milvus-io/">Milvus</a> can be run locally, on a cluster, or hosted in the fully managed <a href="https://zilliz.com/cloud">Zilliz Cloud</a>.</p>
 <h3 id="vLLM" class="common-anchor-header">vLLM<button data-href="#vLLM" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
@@ -68,24 +70,24 @@ title: Milvus、vLLM、Llama 3.1によるRAGの構築
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><a href="https://vllm.readthedocs.io/en/latest/index.html"><strong>vLLMは</strong></a>、UC Berkeley SkyLabで開始されたオープンソースプロジェクトで、LLMサービングパフォーマンスの最適化に焦点を当てています。PagedAttentionによる効率的なメモリ管理、継続的なバッチ処理、最適化されたCUDAカーネルを使用しています。従来の方法と比較して、vLLMはGPUメモリ使用量を半分に削減しながら、配信性能を最大24倍向上させた。</p>
-<p>論文<a href="https://arxiv.org/abs/2309.06180">「Efficient Memory Management for Large Language Model Serving with PagedAttention</a>」によると、KVキャッシュはGPUメモリの約30%を使用しており、潜在的なメモリ問題につながっている。KVキャッシュは連続したメモリに格納されますが、サイズが変わるとメモリの断片化が起こり、計算効率が悪くなります。</p>
+    </button></h3><p><a href="https://vllm.readthedocs.io/en/latest/index.html"><strong>vLLM</strong></a> is an open-source project started at UC Berkeley SkyLab focused on optimizing LLM serving performance. It uses efficient memory management with PagedAttention, continuous batching, and optimized CUDA kernels. Compared to traditional methods, vLLM improves serving performance by up to 24x while cutting GPU memory usage in half.</p>
+<p>According to the paper "<a href="https://arxiv.org/abs/2309.06180">Efficient Memory Management for Large Language Model Serving with PagedAttention</a>," the KV cache uses around 30% of GPU memory, leading to potential memory issues. The KV cache is stored in contiguous memory, but changing size can cause memory fragmentation, which is inefficient for computation.</p>
 <p>
   <span class="img-wrapper">
     <img translate="no" src="/docs/v2.6.x/assets/vllm_1.png" alt="" class="doc-image" id="" />
     <span></span>
   </span>
 </p>
-<p><em>画像1.既存システムにおけるKVキャッシュのメモリ管理（2023 Paged Attention<a href="https://arxiv.org/pdf/2309.06180">論文）</a></em></p>
-<p>KVキャッシュに仮想メモリを使用することで、vLLMは必要に応じて物理GPUメモリのみを割り当て、メモリの断片化を排除し、事前割り当てを回避します。テストでは、vLLMは<a href="https://huggingface.co/docs/transformers/main_classes/text_generation">HuggingFace Transformers</a>（HF）および<a href="https://github.com/huggingface/text-generation-inference">Text Generation Inference</a>（TGI）を上回り、NVIDIA A10GおよびA100 GPU上でHFより最大24倍、TGIより最大3.5倍高いスループットを達成しました。</p>
+<p><em>Image 1. KV cache memory management in existing systems (2023 Paged Attention  <a href="https://arxiv.org/pdf/2309.06180">paper</a>)</em></p>
+<p>By using virtual memory for the KV cache, vLLM only allocates physical GPU memory as needed, eliminating memory fragmentation and avoiding pre-allocation. In tests, vLLM outperformed <a href="https://huggingface.co/docs/transformers/main_classes/text_generation">HuggingFace Transformers</a> (HF) and <a href="https://github.com/huggingface/text-generation-inference">Text Generation Inference</a> (TGI), achieving up to 24x higher throughput than HF and 3.5x higher than TGI on NVIDIA A10G and A100 GPUs.</p>
 <p>
   <span class="img-wrapper">
     <img translate="no" src="/docs/v2.6.x/assets/vllm_2.png" alt="" class="doc-image" id="" />
     <span></span>
   </span>
 </p>
-<p><em>画像2.vLLMは、HFより8.5倍～15倍、TGIより3.3倍～3.5倍高いスループットを達成している（2023<a href="https://blog.vllm.ai/2023/06/20/vllm.html">vLLMブログ</a>）。</em></p>
-<h3 id="Meta’s-Llama-31" class="common-anchor-header">メタのラマ3.1<button data-href="#Meta’s-Llama-31" class="anchor-icon" translate="no">
+<p><em>Image 2. Serving throughput when each request asks for three parallel output completions. vLLM achieves 8.5x—15x higher throughput than HF and 3.3x—3.5x higher throughput than TGI (2023 <a href="https://blog.vllm.ai/2023/06/20/vllm.html">vLLM blog</a>).</em></p>
+<h3 id="Meta’s-Llama-31" class="common-anchor-header">Meta’s Llama 3.1<button data-href="#Meta’s-Llama-31" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -100,9 +102,9 @@ title: Milvus、vLLM、Llama 3.1によるRAGの構築
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p><a href="https://ai.meta.com/research/publications/the-llama-3-herd-of-models"><strong>Meta's Llama 3.1が</strong></a>2024年7月23日に発表された。405Bモデルはいくつかの公開ベンチマークで最先端の性能を発揮し、128,000の入力トークンのコンテキストウィンドウを持ち、様々な商用利用が許可されている。4,050億パラメータモデルと並行して、Meta社はLlama3 70B（700億パラメータ）と8B（80億パラメータ）の更新版をリリースした。モデルウェイトは<a href="https://info.deeplearning.ai/e3t/Ctc/LX+113/cJhC404/VWbMJv2vnLfjW3Rh6L96gqS5YW7MhRLh5j9tjNN8BHR5W3qgyTW6N1vHY6lZ3l8N8htfRfqP8DzW72mhHB6vwYd2W77hFt886l4_PV22X226RPmZbW67mSH08gVp9MW2jcZvf24w97BW207Jmf8gPH0yW20YPQv261xxjW8nc6VW3jj-nNW6XdRhg5HhZk_W1QS0yL9dJZb0W818zFK1w62kdW8y-_4m1gfjfNW2jswrd3xbv-yW5mrvdk3n-KqyW45sLMF21qDrwW5TR3vr2MYxZ9W2hWhq23q-nQdW4blHqh3JlZWfW937hlZ58-KJCW82Pgv9384MbYW7yp56M6pvzd6f77wnH004">Metaのウェブサイトから</a>ダウンロードできる。</p>
-<p>重要な洞察は、生成されたデータを微調整することでパフォーマンスを向上させることができるが、質の低い例はパフォーマンスを低下させる可能性があるということだった。Llamaチームは、モデル自体、補助モデル、およびその他のツールを使用して、これらの悪い例を特定し、除去するために広範囲に働きました。</p>
-<h2 id="Build-and-Perform-the-RAG-Retrieval-with-Milvus" class="common-anchor-header">Milvusを使ったRAG検索の構築と実行<button data-href="#Build-and-Perform-the-RAG-Retrieval-with-Milvus" class="anchor-icon" translate="no">
+    </button></h3><p><a href="https://ai.meta.com/research/publications/the-llama-3-herd-of-models"><strong>Meta’s Llama 3.1</strong></a> was announced on July 23, 2024. The 405B model delivers state-of-the-art performance on several public benchmarks and has a context window of 128,000 input tokens with various commercial uses permitted. Alongside the 405-billion parameter model, Meta released an updated version of Llama3 70B (70 billion parameters) and 8B (8 billion parameters). Model weights are available to download <a href="https://info.deeplearning.ai/e3t/Ctc/LX+113/cJhC404/VWbMJv2vnLfjW3Rh6L96gqS5YW7MhRLh5j9tjNN8BHR5W3qgyTW6N1vHY6lZ3l8N8htfRfqP8DzW72mhHB6vwYd2W77hFt886l4_PV22X226RPmZbW67mSH08gVp9MW2jcZvf24w97BW207Jmf8gPH0yW20YPQv261xxjW8nc6VW3jj-nNW6XdRhg5HhZk_W1QS0yL9dJZb0W818zFK1w62kdW8y-_4m1gfjfNW2jswrd3xbv-yW5mrvdk3n-KqyW45sLMF21qDrwW5TR3vr2MYxZ9W2hWhq23q-nQdW4blHqh3JlZWfW937hlZ58-KJCW82Pgv9384MbYW7yp56M6pvzd6f77wnH004">on Meta’s website</a>.</p>
+<p>A key insight was that fine-tuning generated data can boost performance, but poor-quality examples can degrade it. The Llama team worked extensively to identify and remove these bad examples using the model itself, auxiliary models, and other tools.</p>
+<h2 id="Build-and-Perform-the-RAG-Retrieval-with-Milvus" class="common-anchor-header">Build and Perform the RAG-Retrieval with Milvus<button data-href="#Build-and-Perform-the-RAG-Retrieval-with-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -117,7 +119,7 @@ title: Milvus、vLLM、Llama 3.1によるRAGの構築
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Prepare-your-dataset" class="common-anchor-header">データセットを準備する。<button data-href="#Prepare-your-dataset" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Prepare-your-dataset" class="common-anchor-header">Prepare your dataset.<button data-href="#Prepare-your-dataset" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -132,7 +134,7 @@ title: Milvus、vLLM、Llama 3.1によるRAGの構築
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>私はこのデモのデータセットとして<a href="https://milvus.io/docs/">Milvusの</a>公式<a href="https://milvus.io/docs/">ドキュメントを</a>使用し、ダウンロードしてローカルに保存した。</p>
+    </button></h3><p>I used the official <a href="https://milvus.io/docs/">Milvus documentation</a> as my dataset for this demo, which I downloaded and saved locally.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> langchain.document_loaders <span class="hljs-keyword">import</span> DirectoryLoader
 <span class="hljs-comment"># Load HTML files already saved in a local directory</span>
 path = <span class="hljs-string">&quot;../../RAG/rtdocs_new/&quot;</span>
@@ -150,7 +152,7 @@ pprint.pprint(docs[<span class="hljs-number">0</span>].metadata)
 Why Milvus Docs Tutorials Tools Blog Community Stars0 Try Managed Milvus FREE Search Home v2.4.x About ...
 {&#x27;source&#x27;: &#x27;https://milvus.io/docs/quickstart.md&#x27;}
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Download-an-embedding-model" class="common-anchor-header">埋め込みモデルをダウンロードする。<button data-href="#Download-an-embedding-model" class="anchor-icon" translate="no">
+<h3 id="Download-an-embedding-model" class="common-anchor-header">Download an embedding model.<button data-href="#Download-an-embedding-model" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -165,7 +167,7 @@ Why Milvus Docs Tutorials Tools Blog Community Stars0 Try Managed Milvus FREE Se
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>次に、HuggingFaceから無料のオープンソースの<a href="https://zilliz.com/ai-models">埋め込み</a>モデルをダウンロードする。</p>
+    </button></h3><p>Next, download a free, open-source <a href="https://zilliz.com/ai-models">embedding model</a> from HuggingFace.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">import</span> torch
 <span class="hljs-keyword">from</span> sentence_transformers <span class="hljs-keyword">import</span> SentenceTransformer
 
@@ -194,7 +196,7 @@ MAX_SEQ_LENGTH_IN_TOKENS = encoder.get_max_seq_length()
 EMBEDDING_DIM: 1024
 MAX_SEQ_LENGTH: 512
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Chunk-and-encode-your-custom-data-as-vectors" class="common-anchor-header">カスタム・データをチャンクして、ベクトルとしてエンコードする。<button data-href="#Chunk-and-encode-your-custom-data-as-vectors" class="anchor-icon" translate="no">
+<h3 id="Chunk-and-encode-your-custom-data-as-vectors" class="common-anchor-header">Chunk and encode your custom data as vectors.<button data-href="#Chunk-and-encode-your-custom-data-as-vectors" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -209,7 +211,7 @@ MAX_SEQ_LENGTH: 512
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>ここでは、512文字の固定長で、10％の重なりを使用する。</p>
+    </button></h3><p>I’ll use a fixed length of 512 characters with 10% overlap.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-keyword">from</span> langchain.text_splitter <span class="hljs-keyword">import</span> RecursiveCharacterTextSplitter
 
 
@@ -259,7 +261,7 @@ dict_list = []
 <pre><code translate="no" class="language-text">chunk_size: 512, chunk_overlap: 51.0
 22 docs split into 355 child documents.
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Save-the-vectors-in-Milvus" class="common-anchor-header">Milvusでベクターを保存する。<button data-href="#Save-the-vectors-in-Milvus" class="anchor-icon" translate="no">
+<h3 id="Save-the-vectors-in-Milvus" class="common-anchor-header">Save the vectors in Milvus.<button data-href="#Save-the-vectors-in-Milvus" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -274,7 +276,7 @@ dict_list = []
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>エンコードされたベクトル埋め込みをMilvusベクトルデータベースに取り込む。</p>
+    </button></h3><p>Ingest the encoded vector embedding in the Milvus vector database.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Connect a client to the Milvus Lite server.</span>
 <span class="hljs-keyword">from</span> pymilvus <span class="hljs-keyword">import</span> MilvusClient
 mc = MilvusClient(<span class="hljs-string">&quot;milvus_demo.db&quot;</span>)
@@ -305,7 +307,7 @@ end_time = time.time()
 <pre><code translate="no" class="language-text">Start inserting entities
 Milvus insert time for 355 vectors: 0.2 seconds
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Perform-a-vector-search" class="common-anchor-header">ベクトル検索を行う。<button data-href="#Perform-a-vector-search" class="anchor-icon" translate="no">
+<h3 id="Perform-a-vector-search" class="common-anchor-header">Perform a vector search.<button data-href="#Perform-a-vector-search" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -320,7 +322,7 @@ Milvus insert time for 355 vectors: 0.2 seconds
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>質問をし、Milvusの知識ベースから最近傍のチャンクを検索します。</p>
+    </button></h3><p>Ask a question and search for the nearest neighbor chunks from your knowledge base in Milvus.</p>
 <pre><code translate="no" class="language-python">SAMPLE_QUESTION = <span class="hljs-string">&quot;What do the parameters for HNSW mean?&quot;</span>
 
 
@@ -349,7 +351,7 @@ results = mc.search(
     limit=TOP_K,
     consistency_level=<span class="hljs-string">&quot;Eventually&quot;</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>検索結果は以下のようになります。</p>
+<p>The retrieved result is as shown below.</p>
 <pre><code translate="no" class="language-text">Retrieved result #1
 distance = 0.7001987099647522
 (&#x27;Chunk text: layer, finds the node closest to the target in this layer, and&#x27;
@@ -364,7 +366,7 @@ distance = 0.6953287124633789
 &#x27;to the target&#x27;)
 source: https://milvus.io/docs/index.md
 <button class="copy-code-btn"></button></code></pre>
-<h2 id="Build-and-Perform-the-RAG-Generation-with-vLLM-and-Llama-31-8B" class="common-anchor-header">vLLMとLlama 3.1-8BによるRAG生成のビルドと実行<button data-href="#Build-and-Perform-the-RAG-Generation-with-vLLM-and-Llama-31-8B" class="anchor-icon" translate="no">
+<h2 id="Build-and-Perform-the-RAG-Generation-with-vLLM-and-Llama-31-8B" class="common-anchor-header">Build and Perform the RAG-Generation with vLLM and Llama 3.1-8B<button data-href="#Build-and-Perform-the-RAG-Generation-with-vLLM-and-Llama-31-8B" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -379,7 +381,7 @@ source: https://milvus.io/docs/index.md
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h2><h3 id="Install-vLLM-and-models-from-HuggingFace" class="common-anchor-header">vLLMとHuggingFaceのモデルをインストールする。<button data-href="#Install-vLLM-and-models-from-HuggingFace" class="anchor-icon" translate="no">
+    </button></h2><h3 id="Install-vLLM-and-models-from-HuggingFace" class="common-anchor-header">Install vLLM and models from HuggingFace<button data-href="#Install-vLLM-and-models-from-HuggingFace" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -394,8 +396,8 @@ source: https://milvus.io/docs/index.md
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>vLLMはデフォルトでHuggingFaceから大きな言語モデルをダウンロードします。一般的に、HuggingFaceで新しいモデルを使いたい場合は、いつでもpip install --upgradeまたは-Uを実行してください。また、vLLMでMetaのLlama 3.1モデルの推論を実行するにはGPUが必要です。</p>
-<p>vLLMがサポートする全モデルの一覧は、こちらの<a href="https://docs.vllm.ai/en/latest/models/supported_models.html#supported-models">ドキュメントページを</a>ご覧ください。</p>
+    </button></h3><p>vLLM downloads large language models from HuggingFace by default. In general, anytime you want to use a brand new model on HuggingFace, you should do a pip install --upgrade or -U. Also, you’ll need a GPU to run inference of Meta’s Llama 3.1 models with vLLM.</p>
+<p>For a full list of all vLLM-supported models, see this <a href="https://docs.vllm.ai/en/latest/models/supported_models.html#supported-models">documentation page</a>.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">(Recommended) Create a new conda environment.</span>
 conda create -n myenv python=3.11 -y
 conda activate myenv
@@ -416,8 +418,8 @@ torch.cuda.empty_cache()
 # </span><span class="language-bash">Check the GPU.</span>
 !nvidia-smi
 <button class="copy-code-btn"></button></code></pre>
-<p>vLLMのインストール方法については、<a href="https://docs.vllm.ai/en/latest/getting_started/installation.html">インストール</a>ページを参照してください。</p>
-<h3 id="Get-a-HuggingFace-token" class="common-anchor-header">HuggingFaceトークンを取得する。<button data-href="#Get-a-HuggingFace-token" class="anchor-icon" translate="no">
+<p>To learn more about how to install vLLM, see its <a href="https://docs.vllm.ai/en/latest/getting_started/installation.html">installation</a> page.</p>
+<h3 id="Get-a-HuggingFace-token" class="common-anchor-header">Get a HuggingFace token.<button data-href="#Get-a-HuggingFace-token" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -432,17 +434,17 @@ torch.cuda.empty_cache()
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>Meta Llama 3.1のようなHuggingFace上のいくつかのモデルは、ユーザーがウェイトをダウンロードできるようにする前に、ライセンスを受け入れることを要求します。したがって、HuggingFaceアカウントを作成し、モデルのライセンスを承認し、トークンを生成する必要があります。</p>
-<p>HuggingFaceのこの<a href="https://huggingface.co/meta-llama/Meta-Llama-3.1-70B">Llama3.1のページに</a>アクセスすると、条件に同意するよう求めるメッセージが表示されます。<strong>Accept License</strong>"をクリックし、モデルの重みをダウンロードする前にメタ条件を承認してください。承認には通常1日もかかりません。</p>
-<p><strong>承認を受けたら、新しいHuggingFaceトークンを生成しなければなりません。古いトークンは新しい権限では使えません。</strong></p>
-<p>vLLMをインストールする前に、新しいトークンでHuggingFaceにログインしてください。以下では、トークンを保存するためにColab secretsを使用しています。</p>
+    </button></h3><p>Some models on HuggingFace, such as Meta Llama 3.1, require the user to accept their license before being able to download the weights. Therefore, you must create a HuggingFace account, accept the model’s license, and generate a token.</p>
+<p>When visiting this <a href="https://huggingface.co/meta-llama/Meta-Llama-3.1-70B">Llama3.1 page</a> on HuggingFace, you’ll get a message asking you to agree to the terms. Click “<strong>Accept License</strong>” to accept Meta terms before downloading model weights. The approval usually takes less than a day.</p>
+<p><strong>After you receive approval, you must generate a new HuggingFace token. Your old tokens will not work with the new permissions.</strong></p>
+<p>Before installing vLLM, log in to HuggingFace with your new token. Below, I used Colab secrets to store the token.</p>
 <pre><code translate="no" class="language-shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Login to HuggingFace using your new token.</span>
 from huggingface_hub import login
 from google.colab import userdata
 hf_token = userdata.get(&#x27;HF_TOKEN&#x27;)
 login(token = hf_token, add_to_git_credential=True)
 <button class="copy-code-btn"></button></code></pre>
-<h3 id="Run-the-RAG-Generation" class="common-anchor-header">RAGジェネレーションの実行<button data-href="#Run-the-RAG-Generation" class="anchor-icon" translate="no">
+<h3 id="Run-the-RAG-Generation" class="common-anchor-header">Run the RAG-Generation<button data-href="#Run-the-RAG-Generation" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -457,7 +459,7 @@ login(token = hf_token, add_to_git_credential=True)
           d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
         ></path>
       </svg>
-    </button></h3><p>デモでは、<code translate="no">Llama-3.1-8B</code> モデルを実行する。これは、スピンアップするためにGPUとかなりのメモリを必要とする。以下の例は、A100 GPUを搭載したGoogle Colab Pro（月額10ドル）で実行した。vLLMの実行方法の詳細については、<a href="https://docs.vllm.ai/en/latest/getting_started/quickstart.html">クイックスタート・ドキュメントを</a>ご覧ください。</p>
+    </button></h3><p>In the demo, we run <code translate="no">Llama-3.1-8B</code> model, which requires GPU and sizable memory to spin up. The following example was run on Google Colab Pro ($10/month) with an A100 GPU. To learn more about how to run vLLM, you can check out the <a href="https://docs.vllm.ai/en/latest/getting_started/quickstart.html">Quickstart documentation</a>.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># 1. Choose a model</span>
 MODELTORUN = <span class="hljs-string">&quot;meta-llama/Meta-Llama-3.1-8B-Instruct&quot;</span>
 
@@ -475,7 +477,7 @@ llm = LLM(model=MODELTORUN,
          seed=<span class="hljs-number">415</span>,
          max_num_batched_tokens=<span class="hljs-number">3000</span>)
 <button class="copy-code-btn"></button></code></pre>
-<p>Milvusから取得したコンテキストとソースを使用してプロンプトを記述します。</p>
+<p>Write a prompt using contexts and sources retrieved from Milvus.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Separate all the context together by space.</span>
 contexts_combined = <span class="hljs-string">&#x27; &#x27;</span>.join(contexts)
 <span class="hljs-comment"># Lance Martin, LangChain, says put the best contexts at the end.</span>
@@ -497,7 +499,7 @@ User&#x27;s question: <span class="hljs-subst">{SAMPLE_QUESTION}</span>
 
 prompts = [SYSTEM_PROMPT]
 <button class="copy-code-btn"></button></code></pre>
-<p>次に、取得したチャンクとプロンプトに詰め込まれた元の質問を使って答えを生成する。</p>
+<p>Now, generate an answer using the retrieved chunks and the original question stuffed into the prompt.</p>
 <pre><code translate="no" class="language-python"><span class="hljs-comment"># Sampling parameters</span>
 sampling_params = SamplingParams(temperature=<span class="hljs-number">0.2</span>, top_p=<span class="hljs-number">0.95</span>)
 
@@ -521,9 +523,9 @@ Generated text: &#x27;Answer: The parameters for HNSW (Hiera(rchical Navigable S
 &#x27;recall rate at the cost of increased search time. * efConstruction and ef: &#x27; 
 &#x27;These parameters specify a search range when building or searching an index.&#x27;
 <button class="copy-code-btn"></button></code></pre>
-<p>上の答えは私には完璧に見えます！</p>
-<p>このデモに興味を持たれた方は、ご自由にお試しいただき、感想をお聞かせください。また、<a href="https://discord.com/invite/8uyFbECzPX">DiscordのMilvusコミュニティに</a>参加して、GenAI開発者全員と直接会話することもできます。</p>
-<h2 id="References" class="common-anchor-header">参考文献<button data-href="#References" class="anchor-icon" translate="no">
+<p>That answer above looks perfect to me!</p>
+<p>If you’re interested in this demo, feel free to try it yourself and let us know your thoughts. You’re also welcome to join our <a href="https://discord.com/invite/8uyFbECzPX">Milvus community on Discord</a> to have conversations with all the GenAI developers directly.</p>
+<h2 id="References" class="common-anchor-header">References<button data-href="#References" class="anchor-icon" translate="no">
       <svg translate="no"
         aria-hidden="true"
         focusable="false"
@@ -539,10 +541,10 @@ Generated text: &#x27;Answer: The parameters for HNSW (Hiera(rchical Navigable S
         ></path>
       </svg>
     </button></h2><ul>
-<li><p>vLLM<a href="https://docs.vllm.ai/en/latest/getting_started/installation.html">公式ドキュメントと</a> <a href="https://docs.vllm.ai/en/latest/models/supported_models.html#supported-models">モデルページ</a></p></li>
-<li><p><a href="https://arxiv.org/pdf/2309.06180">ページングされた注意に関する2023 vLLM論文</a></p></li>
-<li><p>Ray Summitでの<a href="https://www.youtube.com/watch?v=80bIUggRJf4">2023 vLLMプレゼンテーション</a></p></li>
-<li><p>vLLM blog:<a href="https://blog.vllm.ai/2023/06/20/vllm.html">vLLM: PagedAttentionを使った簡単、高速、安価なLLM Serving</a></p></li>
-<li><p>vLLMサーバの運用に役立つブログ<a href="https://ploomber.io/blog/vllm-deploy/">vLLMのデプロイ：ステップ・バイ・ステップ・ガイド</a></p></li>
-<li><p><a href="https://ai.meta.com/research/publications/the-llama-3-herd-of-models/">ラマ3世モデルの群れ｜研究 - AI at Meta</a></p></li>
+<li><p>vLLM <a href="https://docs.vllm.ai/en/latest/getting_started/installation.html">official documentation</a> and <a href="https://docs.vllm.ai/en/latest/models/supported_models.html#supported-models">model page</a>.</p></li>
+<li><p><a href="https://arxiv.org/pdf/2309.06180">2023 vLLM paper on Paged Attention</a></p></li>
+<li><p><a href="https://www.youtube.com/watch?v=80bIUggRJf4">2023 vLLM presentation</a> at Ray Summit</p></li>
+<li><p>vLLM blog: <a href="https://blog.vllm.ai/2023/06/20/vllm.html">vLLM: Easy, Fast, and Cheap LLM Serving with PagedAttention</a></p></li>
+<li><p>Helpful blog about running the vLLM server: <a href="https://ploomber.io/blog/vllm-deploy/">Deploying vLLM: a Step-by-Step Guide</a></p></li>
+<li><p><a href="https://ai.meta.com/research/publications/the-llama-3-herd-of-models/">The Llama 3 Herd of Models | Research - AI at Meta</a></p></li>
 </ul>
