@@ -162,6 +162,8 @@ This method returns a promise that resolves to a **SearchResults** object.
 
 - **status** (*ResStatus*) -
 
+    A **ResStatus** object with the following members.
+
     - **code** (*number*) -
 
         A code that indicates the operation result. It remains **0** if this operation succeeds.

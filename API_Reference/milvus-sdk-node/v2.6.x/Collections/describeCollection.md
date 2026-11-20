@@ -74,6 +74,8 @@ This method returns a promise that resolves to a **DescribeCollectionResponse** 
 
 - **status** (*ResStatus*) -
 
+    A **ResStatus** object with the following members.
+
     - **code** (*number*) -
 
         A code that indicates the operation result. It remains **0** if this operation succeeds.
@@ -88,7 +90,7 @@ This method returns a promise that resolves to a **DescribeCollectionResponse** 
 
 - **schema** (*CollectionSchema*) -
 
-    The CollectionSchema object.
+    The CollectionSchema object. The following members belong to `CollectionSchema`.
 
     - **autoID** (*boolean*) -
 

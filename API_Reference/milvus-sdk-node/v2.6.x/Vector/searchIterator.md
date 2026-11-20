@@ -12,6 +12,7 @@ await milvusClient.searchIterator(data: SearchIteratorReq)
 await milvusClient.searchIterator({
     collection_name: string,
     data: SearchData | SearchData[],
+    vector?: SearchData | SearchData[],
     batchSize: number,
     limit?: number,
     filter?: string,
@@ -52,7 +53,11 @@ await milvusClient.searchIterator({
 
     **[REQUIRED]**
 
-    The query vector(s). Supported types include FloatVector (number[]), BFloat16Vector (Uint8Array), Float16Vector (Uint8Array), BinaryVector (number[]), and SparseFloatVector. You can use `vector` as an alias of this parameter.
+    The query vector(s). Supported types include FloatVector (number[]), BFloat16Vector (Uint8Array), Float16Vector (Uint8Array), BinaryVector (number[]), and SparseFloatVector. Provide either **data** or **vector**.
+
+- **vector** ([SearchData](SearchData.md) | SearchData[]) -
+
+    An alias of **data** for the query vector(s).
 
 - **batchSize** (*number*) -
 

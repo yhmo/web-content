@@ -117,7 +117,7 @@ await milvusClient.search({
 
 - **params** (*keyValueObj*) -
 
-    The additional search parameters in key-value pairs.
+    The additional search parameters in key-value pairs. These are the keys accepted in the search `params`; they are not members of `keyValueObj`.
 
     - **radius** (*number*) -
 
@@ -218,8 +218,6 @@ await milvusClient.search({
 
     A reranking strategy with its custom parameters. You can either use a **RerankerObj**, a **FunctionObject**, or a **FunctionScore**. See [RerankerObj](RerankerObj.md) and [FunctionObject](../Collections/FunctionObject.md).
 
-    A **RerankerObj** has the following parameters.
-
 - **nq** (*number*) -
 
     The number of query vectors.
@@ -258,6 +256,8 @@ This method returns a promise that resolves to a **SearchResults** object.
 **PARAMETERS:**
 
 - **status** (*ResStatus*) -
+
+    A **ResStatus** object with the following members.
 
     - **code** (*number*) -
 

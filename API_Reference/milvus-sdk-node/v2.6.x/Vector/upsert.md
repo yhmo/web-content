@@ -150,7 +150,7 @@ This method returns a promise that resolves to a **MutationResult** object, incl
 
 - **status** (*ResStatus*)
 
-    A **ResStatus** object.
+    A **ResStatus** object with the following members.
 
     - **code** (*number*) -
 
